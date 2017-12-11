@@ -1,0 +1,20 @@
+﻿## Interface: 30100
+## Title: AtlasLoot_WrathoftheLichKing
+## Title-zhCN: 副本掉落 |cFF0099FF[巫妖王之怒]|r
+## Title-zhTW: |r|cFF0099FF[地圖]|rAL 巫妖王之怒
+## Notes: AtlasLoot loot tables from the Wrath of the Lich King
+## Notes-zhCN: AtlasLoot Enhanced 的《巫妖王之怒》副本掉落信息
+## Notes-zhTW: AtlasLoot 巫妖王之怒副本掉落物品資料庫
+## Author: Daviesh
+## Version: v5.11.01
+## X-eMail: oma_daviesh@hotmail.com
+## X-Category: Map
+## X-License: GPL v2
+## X-DuowanAddon: 地图
+## X-Website: http://www.atlasloot.net
+## Dependencies: AtlasLoot
+## LoadOnDemand: 1
+## X-Revision: Duowan
+
+wrathofthelichking.lua
+localization.lua

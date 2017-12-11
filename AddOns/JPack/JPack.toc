@@ -1,0 +1,24 @@
+## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: 支持多样背包的智能整理
+## X-Curse-Packaged-Version: r75
+## X-Curse-Project-Name: JPack
+## X-Curse-Project-ID: jpack
+## X-Curse-Repository-ID: wow/jpack/mainline
+
+## Title: JPack
+## Notes: Quick (re)sort out your items in your bags/bank/guildbank!
+## Notes-zhCN: 背包整理
+## Version: 0.7.8
+## SavedVariables: JPackDB
+## Author: Jason Green, yleaf, 阳一
+## OptionalDeps: tekDebug
+## X-ProjectHome: http://wow.curseforge.com/addons/jpack/
+## Dependencies: Duowan
+## X-Revision: Duowan
+
+
+localization\locales.xml
+JPack.lua
+
+JPackConfig.lua

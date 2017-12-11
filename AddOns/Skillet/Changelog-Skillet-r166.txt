@@ -1,0 +1,37 @@
+------------------------------------------------------------------------
+r166 | StingerSoft | 2009-06-11 10:40:12 +0000 (Thu, 11 Jun 2009) | 2 lines
+Changed paths:
+   M /trunk/Locale/Locale-enUS.lua
+   M /trunk/Locale/Locale-ruRU.lua
+   M /trunk/UI/MainFrame.lua
+   M /trunk/UI/MainFrame.xml
+
+Skillet:
+- change button position
+------------------------------------------------------------------------
+r165 | xska | 2009-06-07 12:01:12 +0000 (Sun, 07 Jun 2009) | 2 lines
+Changed paths:
+   M /trunk/SkilletStitch-1.1.lua
+
+Skillet:
+- Light Parchment is buyable too, dunno why PT doesn't have it
+------------------------------------------------------------------------
+r164 | xinhuan | 2009-06-07 03:33:39 +0000 (Sun, 07 Jun 2009) | 1 line
+Changed paths:
+   M /trunk/LibPossessions.lua
+
+Also search the new bags (mail, currency, keyring) now saved by BankItems.
+------------------------------------------------------------------------
+r163 | xinhuan | 2009-06-07 03:12:20 +0000 (Sun, 07 Jun 2009) | 1 line
+Changed paths:
+   M /trunk/LibPossessions.lua
+
+Fix error caused by removal of BankItems_Trim function by replacing it with strtrim.
+------------------------------------------------------------------------
+r162 | nogudnik | 2008-12-21 09:32:10 +0000 (Sun, 21 Dec 2008) | 2 lines
+Changed paths:
+   M /trunk/SkilletStitch-1.1.lua
+
+Added Sparkling Apple Cider (34412) as a buyable item.
+
+------------------------------------------------------------------------

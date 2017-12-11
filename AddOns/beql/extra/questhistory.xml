@@ -1,0 +1,509 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+	<Script file="questhistory.lua"/>
+
+	<Frame name="beqlbeqlQuestHistoryListFrameTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="575" y="14"/>
+		</Size>
+		<NormalTexture file="Interface\Buttons\UI-MinusButton-UP">
+			<Size>
+				<AbsDimension x="16" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT">
+					<Offset>
+						<AbsDimension x="3" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</NormalTexture>
+		<Scripts>
+			<OnClick>
+				beql:QuestHistoryTitleClick(arg1)
+			</OnClick>
+		</Scripts>
+		<ButtonText nonspacewrap="true">
+			<Size>
+				<AbsDimension x="575" y="0"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="20" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</ButtonText>
+		<NormalFont inherits="GameFontNormal" justifyH="LEFT"/>		
+	</Frame>
+
+	<Frame name="beqlHistoryFrame" toplevel="true" parent="UIParent" movable="true" enableMouse="true" hidden="true">
+		<Size><AbsDimension x="600" y="500"/></Size>
+		<Anchors><Anchor point="CENTER"></Anchor></Anchors>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize><AbsValue val="32"/></TileSize>
+			<EdgeSize><AbsValue val="32"/></EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture file="Interface\DialogFrame\UI-DialogBox-Header">
+					<Size><AbsDimension x="256" y="64"/></Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset><AbsDimension x="0" y="12"/></Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture file="Interface\DialogFrame\UI-DialogBox-Divider">
+					<Size><AbsDimension x="760" y="20"/></Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset><AbsDimension x="12" y="-55"/></Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture file="Interface\DialogFrame\UI-DialogBox-Divider">
+					<Size><AbsDimension x="760" y="20"/></Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset><AbsDimension x="12" y="-400"/></Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>								
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString inherits="GameFontNormal" text="Quest History">
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parent"></Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnUpdate>
+				beql:HistoryAnimate(elapsed)
+			</OnUpdate>
+		</Scripts>
+		
+	<Frames>
+
+		<Button name="$parentButtonClose" inherits="UIPanelCloseButton">
+			<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-3" y="-3"/>
+						</Offset>
+					</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick> beql:HistoryToggle() </OnClick>
+			</Scripts>
+		</Button>
+		
+		<Button name="beqlHistoryCharacterList" inherits="UIPanelButtonTemplate" text="">
+			<Size>
+				<AbsDimension x="160" y="24"/>
+			</Size>		
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="10" y="-25"/>
+					</Offset>
+				</Anchor>
+			</Anchors>			
+			<Scripts>
+				<OnClick>
+						beql:HistoryCharListClick()
+				</OnClick>
+			</Scripts>
+		</Button>
+		
+		<Button name="beqlHistoryFilterButton" inherits="UIPanelButtonTemplate" text="">
+			<Size>
+				<AbsDimension x="160" y="24"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPRIGHT">
+					<Offset>
+						<AbsDimension x="-20" y="-25"/>
+					</Offset>
+				</Anchor>
+			</Anchors>			
+			<Scripts>
+				<OnClick>
+						beql:HistoryFilterClick()
+				</OnClick>
+			</Scripts>		
+		</Button>
+	
+		<ScrollFrame name="beqlHistoryListScrollFrame" inherits="FauxScrollFrameTemplate">
+			<Size>
+				<AbsDimension x="575" y="330"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPRIGHT">
+					<Offset>
+						<AbsDimension x="-35" y="-65"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnVerticalScroll>
+					FauxScrollFrame_OnVerticalScroll(14, Beql_ScrollFrame_Update)
+				</OnVerticalScroll>
+			</Scripts>
+		</ScrollFrame>	
+	
+		<Frame name="beqlHistoryDetailFrame" hidden="true">
+		<Size>
+			<AbsDimension x="575" y="170"/>
+		</Size>
+		<Anchors>
+			<Anchor point="BOTTOM">
+				<Offset>
+					<AbsDimension x="0" y="65"/>
+				</Offset>
+			</Anchor>
+		</Anchors>		
+		<Layers>
+			<Layer level="OVERLAY">	
+	
+			<FontString name="beqlHistoryDetailLine1" inherits="GameFontNormal" text="">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="beqlHistoryDetailFrame">
+						<Offset>
+							<AbsDimension x="0" y="15"/>
+						</Offset>				
+					</Anchor>
+				</Anchors>
+			</FontString>
+			
+			<FontString name="beqlHistoryDetailLine2" inherits="GameFontNormal" text="">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="beqlHistoryDetailLine1">
+						<Offset>
+							<AbsDimension x="0" y="-15"/>
+						</Offset>				
+					</Anchor>
+				</Anchors>
+			</FontString>			
+			
+			<FontString name="beqlHistoryDetailLine3" inherits="GameFontNormal" text="">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="beqlHistoryDetailLine2">
+						<Offset>
+							<AbsDimension x="0" y="-15"/>
+						</Offset>				
+					</Anchor>
+				</Anchors>
+			</FontString>
+			
+			<FontString name="beqlHistoryDetailLine4" inherits="GameFontNormal" text="">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="beqlHistoryDetailLine3">
+						<Offset>
+							<AbsDimension x="0" y="-15"/>
+						</Offset>				
+					</Anchor>
+				</Anchors>
+			</FontString>	
+			
+			<FontString name="beqlHistoryDetailLine5" inherits="GameFontNormal" text="">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="beqlHistoryDetailLine4">
+						<Offset>
+							<AbsDimension x="0" y="-15"/>
+						</Offset>				
+					</Anchor>
+				</Anchors>
+			</FontString>								
+			
+			<FontString name="beqlHistoryDetailLine6" inherits="GameFontNormal" text="">
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" relativeTo="beqlHistoryDetailFrame">
+						<Offset>
+							<AbsDimension x="0" y="15"/>
+						</Offset>				
+					</Anchor>
+				</Anchors>
+			</FontString>					
+			
+			<FontString name="beqlHistoryDetailLine7" inherits="GameFontNormal" text="">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="beqlHistoryDetailLine6">
+						<Offset>
+							<AbsDimension x="0" y="-15"/>
+						</Offset>				
+					</Anchor>
+				</Anchors>
+			</FontString>				
+
+			<FontString name="beqlHistoryDetailLine8" inherits="GameFontNormal" text="">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="beqlHistoryDetailLine7">
+						<Offset>
+							<AbsDimension x="0" y="-15"/>
+						</Offset>				
+					</Anchor>
+				</Anchors>
+			</FontString>	
+			
+			<FontString name="beqlHistoryDetailLine9" inherits="GameFontNormal" text="">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="beqlHistoryDetailLine8">
+						<Offset>
+							<AbsDimension x="0" y="-15"/>
+						</Offset>				
+					</Anchor>
+				</Anchors>
+			</FontString>				
+			
+			<FontString name="beqlHistoryDetailLine10" inherits="GameFontNormal" text="">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="beqlHistoryDetailLine9">
+						<Offset>
+							<AbsDimension x="0" y="-15"/>
+						</Offset>				
+					</Anchor>
+				</Anchors>
+			</FontString>				
+			
+			</Layer>		
+		</Layers>
+		</Frame>
+	
+		<Button name="beqlQuestHistoryListFrame1" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="1" >
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="10" y="-65"/>
+						</Offset>
+					</Anchor>
+				</Anchors>		
+		</Button>
+		<Button name="beqlQuestHistoryListFrame2" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="2">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame1" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame3" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="3">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame2" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame4" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="4">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame3" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame5" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="5">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame4" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame6" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="6">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame5" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame7" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="7">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame6" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame8" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="8">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame7" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame9" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="9">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame8" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame10" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="10">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame9" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame11" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="11">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame10" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame12" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="12">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame11" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame13" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="13">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame12" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame14" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="14">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame13" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame15" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="15">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame14" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame16" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="16">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame15" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame17" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="17">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame16" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame18" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="18">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame17" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame19" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="19">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame18" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame20" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="20">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame19" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame21" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="21">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame20" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame22" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="22">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame21" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame23" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="23">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame22" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame24" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="24">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame23" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+		<Button name="beqlQuestHistoryListFrame25" inherits="beqlbeqlQuestHistoryListFrameTemplate" hidden="true" id="25">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="beqlQuestHistoryListFrame24" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+		</Button>	
+	
+	</Frames>		
+		
+	</Frame>
+</Ui>

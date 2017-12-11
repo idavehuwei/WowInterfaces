@@ -1,0 +1,32 @@
+## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: GTFO副本危险站位提醒插件，当你处于危险的位置，如：站在火里，站在冰的AOE里用音效来提醒你，按照你所处位置的危险等级播放不同的声音提醒。
+## Title: GTFO
+## Notes: GTFO, you're dying!
+## Author: Zensunim of Malygos
+## Version: 3.4.2
+## DefaultState: Enabled
+## OptionalDeps: PowerAuras
+## SavedVariables: GTFOData
+## X-Compatible-With: 40000
+Localization\enUS.lua
+Localization\deDE.lua
+Localization\ruRU.lua
+Localization\frFR.lua
+Localization\zhCN.lua
+Localization\zhTW.lua
+GTFO.lua
+GTFO_Spells_Generic.lua
+GTFO_Spells_Classic.lua
+GTFO_Spells_BC.lua
+GTFO_Spells_LK.lua
+GTFO_Spells_CAT.lua
+GTFO_Spells_Special.lua
+GTFO_Fail_Generic.lua
+GTFO_Fail_Classic.lua
+GTFO_Fail_BC.lua
+GTFO_Fail_LK.lua
+GTFO_Fail_CAT.lua
+GTFO_Mobs.lua
+GTFO_PowerAuras.lua
+GTFO.xml

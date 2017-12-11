@@ -1,0 +1,39 @@
+## Interface: 30100
+## Version: 3.1.2
+## Title: [Duowan] Postal
+## Title-zhCN: [多玩] 邮件助手 Postal
+## Title-zhTW: [多玩] 郵件助手 Postal
+## Author: Xinhuan
+## X-Credits: Ammo, Rabbit, Grennon
+## X-Category: Mail
+## Notes: Postal: Enhanced Mailbox support
+## Notes-ruRU: Postal: Расширенная поддержка почтового ящика
+## Notes-frFR: Postal: améliorations diverses de l'interface d'envoi/réception de courriers.
+## Notes-esES: Postal: soporte mejorado para el buzon
+## Notes-zhTW: Postal: 強化信箱功能。
+## Notes-zhCN: Postal: 增强信箱功能
+## OptionalDeps: Ace3
+## X-DuowanAddon: 界面聊天
+## SavedVariables: Postal3DB
+## X-Curse-Packaged-Version: v3.1.2
+## X-Curse-Project-Name: Postal
+## X-Curse-Project-ID: postal
+## X-Curse-Repository-ID: wow/postal/mainline
+
+## LoadManagers: AddonLoader
+## X-LoadOn-Mailbox: true
+## X-Email: xinhuan AT gmail DOT com
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+Localization.lua
+Postal.lua
+
+Modules\Express.lua
+Modules\OpenAll.lua
+Modules\Wire.lua
+Modules\Select.lua
+Modules\TradeBlock.lua
+Modules\Rake.lua
+Modules\BlackBook.lua

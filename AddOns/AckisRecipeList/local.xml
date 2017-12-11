@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.blizzard.com/wow/ui/" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+<!--@non-debug@-->
+<Include file="Locals\ARLLocals-enUS.lua"/>
+<!--@end-non-debug@-->
+<Include file="Locals\ARLLocals-koKR.lua"/>
+<Include file="Locals\ARLLocals-frFR.lua"/>
+<Include file="Locals\ARLLocals-zhCN.lua"/>
+<Include file="Locals\ARLLocals-zhTW.lua"/>
+<!--@non-debug@-->
+<Include file="Locals\ARLLocals-deDE.lua"/>
+<!--@end-non-debug@-->
+<Include file="Locals\ARLLocals-esES.lua"/>
+<!--@non-debug@-->
+<Include file="Locals\ARLLocals-esMX.lua"/>
+<!--@end-non-debug@-->
+<Include file="Locals\ARLLocals-ruRU.lua"/>
+
+<!--@debug@
+<Include file="Locals\testenUS.lua"/>
+<Include file="Locals\testdeDE.lua"/>
+<Include file="Locals\testesMX.lua"/>
+@end-debug@-->
+
+</Ui>

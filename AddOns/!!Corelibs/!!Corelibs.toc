@@ -1,0 +1,11 @@
+## Interface: 30100
+## Title: [Core] |cFFFF0000 -core libs-|r
+## Notes: The core library
+## Title-zhCN: [核心] |cFFFF0000基本库|r
+## Notes-zhCN: 基本库, 所有多玩插件的必须依赖此库, 请不要禁用.
+## Title-zhTW: [核心] |cFFFF0000基本庫|r
+## Notes-zhTW: 基本庫, 所有多玩插件的必須依賴此庫, 請不要禁用.
+## Author: dugu@bigfoot
+## X-DuowanAddon: 基本库
+
+Corelibs.xml

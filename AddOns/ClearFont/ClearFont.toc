@@ -1,0 +1,17 @@
+﻿## Interface: 30100
+## Title: ClearFont |r|cFF0099FFby Ice|r
+## Notes: Modify Game Fonts and Size, Color, Shadow Of Them.(For FontShow Compatible Mode)
+## Title-zhCN: |CFFFF8000界面|R 游戏字体
+## Notes-zhCN: 更改游戏默认字体
+## Title-zhTW: |CFFFF8000介面|R 遊戲字體
+## Notes-zhTW: 更改遊戲預設字體
+## X-Repple: 界面
+## Version: v3.05b
+## Author: Kirkburn
+## URL: http://bbs.game.mop.com/viewthread.php?tid=1503056
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## Dependencies: Duowan
+## X-Revision: Duowan
+
+ClearFont.lua

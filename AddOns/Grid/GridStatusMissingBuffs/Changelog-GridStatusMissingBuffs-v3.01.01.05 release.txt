@@ -1,0 +1,349 @@
+------------------------------------------------------------------------
+r72 | azethoth | 2009-04-22 17:58:22 +0000 (Wed, 22 Apr 2009) | 1 line
+Changed paths:
+   A /tags/v3.01.01.05 release (from /trunk:71)
+
+Tagging as v3.01.01.05 release
+------------------------------------------------------------------------
+r71 | Azethoth | 2009-04-22 17:57:47 +0000 (Wed, 22 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/GridStatusMissingBuffs.lua
+   M /trunk/GridStatusMissingBuffs.toc
+
+--isMine -> caster
+------------------------------------------------------------------------
+r70 | Azethoth | 2009-02-01 00:57:43 +0000 (Sun, 01 Feb 2009) | 1 line
+Changed paths:
+   M /trunk/GridStatusMissingBuffs.lua
+
+-- Check for nil settings.buffs
+------------------------------------------------------------------------
+r68 | Azethoth | 2009-01-18 17:17:57 +0000 (Sun, 18 Jan 2009) | 2 lines
+Changed paths:
+   M /trunk/GridStatusMissingBuffs.lua
+   M /trunk/GridStatusMissingBuffs.toc
+
+-- Dalaran Brilliance and Intellect added to int buff group
+-- Changed icon to the Dalaran one
+------------------------------------------------------------------------
+r67 | StingerSoft | 2009-01-17 12:26:47 +0000 (Sat, 17 Jan 2009) | 1 line
+Changed paths:
+   M /trunk/GridStatusMissingBuffsLocale-ruRU.lua
+
+-ruRU update
+------------------------------------------------------------------------
+r66 | Azethoth | 2009-01-16 23:35:03 +0000 (Fri, 16 Jan 2009) | 3 lines
+Changed paths:
+   M /trunk/GridStatusMissingBuffs.lua
+
+-- Get rid of single buffs in the default.  These are now completely handled in Grid itself.
+-- This means deleting Thorns, Inner Fire, Horn of Winter.
+-- Version the db and delete old configs for Thorns, Inner Fire, Horn of Winter, the deleted paladin buffs.
+------------------------------------------------------------------------
+r64 | Azethoth | 2009-01-15 15:24:13 +0000 (Thu, 15 Jan 2009) | 1 line
+Changed paths:
+   M /trunk/GridStatusMissingBuffs.lua
+   M /trunk/GridStatusMissingBuffs.toc
+
+-- Implement enable callbacks
+------------------------------------------------------------------------
+r63 | Azethoth | 2009-01-05 11:21:10 +0000 (Mon, 05 Jan 2009) | 1 line
+Changed paths:
+   M /trunk/GridStatusMissingBuffs.toc
+
+-- Update note a bit
+------------------------------------------------------------------------
+r62 | Azethoth | 2009-01-05 11:10:14 +0000 (Mon, 05 Jan 2009) | 5 lines
+Changed paths:
+   M /trunk/GridStatusMissingBuffs.lua
+   M /trunk/GridStatusMissingBuffs.toc
+   A /trunk/GridStatusMissingBuffsLocale-esES.lua
+   A /trunk/GridStatusMissingBuffsLocale-frFR.lua
+
+-- Alpha version compatible with upcoming unitGuid version of grid.  Requires that version of Grid to work.
+-- Update to guid based status changes
+-- Horn of Winter + Deathknight support
+-- Dump SpecialEventsEmbed-Auras
+-- Dummy french and spanish translations
+------------------------------------------------------------------------
+r61 | Azethoth | 2008-12-30 00:36:55 +0000 (Tue, 30 Dec 2008) | 2 lines
+Changed paths:
+   M /trunk/GridStatusMissingBuffs.lua
+
+-- Alpha version compatible with upcoming unitGuid version of grid.  Requires that version of Grid to work.
+-- Switch Roster-2.1 -> GridRoster.lua
+------------------------------------------------------------------------
+r60 | Azethoth | 2008-11-14 13:22:35 +0000 (Fri, 14 Nov 2008) | 1 line
+Changed paths:
+   M /trunk
+
+-- delete obsolete property
+------------------------------------------------------------------------
+r58 | Azethoth | 2008-11-12 15:58:16 +0000 (Wed, 12 Nov 2008) | 2 lines
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/GridStatusMissingBuffs.lua
+   M /trunk/GridStatusMissingBuffs.toc
+   M /trunk/GridStatusMissingBuffsLocale-ruRU.lua
+
+-- Update version and web links
+-- eol property
+------------------------------------------------------------------------
+r57 | Azethoth | 2008-11-12 02:35:37 +0000 (Wed, 12 Nov 2008) | 2 lines
+Changed paths:
+   M /trunk/GridStatusMissingBuffs.lua
+
+-- Restore Blessing of Sanctuary and Greater Blessing of Sanctuary.
+-- Remove Blessing of Salvation and Greater Blessing of Salvation
+------------------------------------------------------------------------
+r56 | Viktor3b | 2008-10-29 15:22:24 +0000 (Wed, 29 Oct 2008) | 1 line
+Changed paths:
+   A /trunk/GridStatusMissingBuffs.toc
+
+
+------------------------------------------------------------------------
+r55 | Viktor3b | 2008-10-29 15:22:13 +0000 (Wed, 29 Oct 2008) | 1 line
+Changed paths:
+   A /trunk/GridStatusMissingBuffsLocale-ruRU.lua
+
+
+------------------------------------------------------------------------
+r54 | Viktor3b | 2008-10-29 15:22:02 +0000 (Wed, 29 Oct 2008) | 1 line
+Changed paths:
+   D /trunk/GridStatusMissingBuffs.toc
+
+
+------------------------------------------------------------------------
+r51 | Azethoth | 2008-10-14 23:18:16 +0000 (Tue, 14 Oct 2008) | 3 lines
+Changed paths:
+   M /trunk/GridStatusMissingBuffs.lua
+   M /trunk/GridStatusMissingBuffs.toc
+
+GridStatusMissingBuffs:
+-- toc
+-- Remove Blessings of light & sanctuary
+------------------------------------------------------------------------
+r50 | root | 2008-09-29 22:20:47 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   A /trunk/.pkgmeta
+
+Facilitate WowAce-on-CurseForge transition
+------------------------------------------------------------------------
+r48 | root | 2008-09-29 20:58:08 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   D /tmp/trunk/GridStatusMissingBuffs
+   A /trunk (from /tmp/trunk/GridStatusMissingBuffs:47)
+
+Importing old repo data under /trunk
+------------------------------------------------------------------------
+r47 | Roemer | 2008-09-28 09:23:41 +0000 (Sun, 28 Sep 2008) | 5 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+
+GridStatusMissingBuffs:
+- Added Thorns
+- Added Inner Fire
+- Fixed default Icons
+- Set default Classes for all Buffs
+------------------------------------------------------------------------
+r44 | kunda | 2008-07-01 18:30:34 +0000 (Tue, 01 Jul 2008) | 3 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+
+GridStatusMissingBuffs:
+- fix 'Prayer of Shadow Protection' typo
+- texture fix from AgentRocket (forum post)
+------------------------------------------------------------------------
+r43 | toadkiller | 2008-06-29 00:42:54 +0000 (Sun, 29 Jun 2008) | 3 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs
+
+GridStatusMissingBuffs    :
+-- log template update
+
+------------------------------------------------------------------------
+r42 | toadkiller | 2008-06-24 23:03:59 +0000 (Tue, 24 Jun 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+
+GridStatusMissingBuffs:
+-- Dump BabbleSpell
+------------------------------------------------------------------------
+r41 | scorpion | 2008-05-23 18:40:09 +0000 (Fri, 23 May 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffsLocale-zhTW.lua
+
+GridStatusMissingBuffs:
+- Update zhTW localization
+------------------------------------------------------------------------
+r40 | ananhaid | 2008-05-23 09:46:19 +0000 (Fri, 23 May 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.toc
+
+GridStatusMissingBuffs:
+- zhCN/zhTW update.
+------------------------------------------------------------------------
+r39 | ananhaid | 2008-05-22 13:43:10 +0000 (Thu, 22 May 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.toc
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffsLocale-zhCN.lua
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffsLocale-zhTW.lua
+
+GridStatusMissingBuffs:
+ -zhCN/zhTW update.
+------------------------------------------------------------------------
+r37 | sayclub | 2008-04-16 14:01:15 +0000 (Wed, 16 Apr 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffsLocale-koKR.lua
+
+GridStatusMissingBuffs :
+- koKR Update
+------------------------------------------------------------------------
+r36 | kunda | 2008-04-16 13:06:51 +0000 (Wed, 16 Apr 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+
+GridStatusMissingBuffs: the pets, the pets!
+------------------------------------------------------------------------
+r35 | kunda | 2008-04-16 12:25:24 +0000 (Wed, 16 Apr 2008) | 4 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.toc
+   A /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffsLocale-deDE.lua
+   A /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffsLocale-enUS.lua
+   A /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffsLocale-koKR.lua
+   A /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffsLocale-zhCN.lua
+   A /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffsLocale-zhTW.lua
+
+GridStatusMissingBuffs:
+- use LibBabble-Class-3.0 because Grid use it
+- moved localizations to separate files
+- added an option to define (based on YOUR class) if a missing buff status is shown or not (default is on for all classes)
+------------------------------------------------------------------------
+r34 | scorpio0920 | 2008-04-14 22:56:54 +0000 (Mon, 14 Apr 2008) | 3 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.toc
+
+GridStatusMissingBuffs:
+- Update zhTW localization.
+- Added zhCN localization.
+------------------------------------------------------------------------
+r33 | kunda | 2008-04-10 03:10:24 +0000 (Thu, 10 Apr 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+
+GridStatusMissingBuffs: AddBuffGroup: fix (thanks Fritos) and localized description
+------------------------------------------------------------------------
+r32 | kunda | 2008-04-08 11:00:39 +0000 (Tue, 08 Apr 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.toc
+
+GridStatusMissingBuffs: toc interface 20400 & fix ShadowProtection icon string - thanks dyree
+------------------------------------------------------------------------
+r30 | kunda | 2008-02-17 16:59:25 +0000 (Sun, 17 Feb 2008) | 5 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.toc
+
+GridStatusMissingBuffs:
+- use LibBabble-Spell-3.0 because Grid uses it
+- removed OptionalDeps and X-Embeds from toc because Grid has all we need
+- removed usage in 'Buff Icon' and from all locales because we don't need it
+- added deDE
+------------------------------------------------------------------------
+r29 | dfscott | 2008-02-09 01:16:49 +0000 (Sat, 09 Feb 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+
+GridStatusMissingBuffs:
+- Add Shadow Protection/Prayer of Shadow Protection
+------------------------------------------------------------------------
+r28 | toadkiller | 2007-11-13 22:54:59 +0000 (Tue, 13 Nov 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.toc
+
+GridStatusMissingBuffs:
+- toc change
+------------------------------------------------------------------------
+r27 | scorpion | 2007-11-13 02:21:37 +0000 (Tue, 13 Nov 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+
+GridStatusMissingBuffs :
+- Updated localization zhTW
+------------------------------------------------------------------------
+r26 | sayclub | 2007-10-24 12:20:50 +0000 (Wed, 24 Oct 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+
+GridStatusMissingBuffs :
+- Updated localization koKR
+------------------------------------------------------------------------
+r25 | shag | 2007-10-24 10:09:38 +0000 (Wed, 24 Oct 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+
+GridStatusMissingBuffs
+- Added settings to display missing buffs on self/party/raid
+------------------------------------------------------------------------
+r24 | toadkiller | 2007-09-26 09:56:42 +0000 (Wed, 26 Sep 2007) | 3 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.toc
+
+GridStatusMissingBuffs:
+-- Updated toc for 2.2 & classified it as a Unit Frame addon
+
+------------------------------------------------------------------------
+r23 | helium | 2007-09-10 11:07:23 +0000 (Mon, 10 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.toc
+
+GridStatusMissingBuffs: added zhTW localization
+------------------------------------------------------------------------
+r22 | toadkiller | 2007-05-22 21:45:41 +0000 (Tue, 22 May 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.toc
+
+GridStatusMissingBuffs:
+-Update TOC & wiki link
+------------------------------------------------------------------------
+r21 | toadkiller | 2007-04-17 07:42:12 +0000 (Tue, 17 Apr 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+
+GridStatusMissingBuffs:
+- Try to avoid error by making buffName default to "", take 2
+------------------------------------------------------------------------
+r20 | toadkiller | 2007-04-17 07:36:44 +0000 (Tue, 17 Apr 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+
+GridStatusMissingBuffs:
+- Try to avoid error by making buffName default to "" 
+------------------------------------------------------------------------
+r19 | sayclub | 2007-04-04 14:12:27 +0000 (Wed, 04 Apr 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+   M /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.toc
+
+GridStatusMissingBuffs: Added localization koKR
+------------------------------------------------------------------------
+r18 | toadkiller | 2007-04-02 21:09:03 +0000 (Mon, 02 Apr 2007) | 2 lines
+Changed paths:
+   A /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.lua
+   A /tmp/trunk/GridStatusMissingBuffs/GridStatusMissingBuffs.toc
+
+GridStatusMissingBuffs:
+-Adding orphaned by author MissingBuff status so it can get maintained.  Only shows an indicator when a buff is missing.  Also handles combined buffs like GotW & MotW etc.
+------------------------------------------------------------------------
+r17 | toadkiller | 2007-04-02 20:54:39 +0000 (Mon, 02 Apr 2007) | 1 line
+Changed paths:
+   A /tmp/trunk/GridStatusMissingBuffs
+
+./GridStatusMissingBuffs
+------------------------------------------------------------------------

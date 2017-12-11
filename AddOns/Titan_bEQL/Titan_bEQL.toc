@@ -1,0 +1,15 @@
+﻿## Interface: 30100
+## Title: Titan_bEQL
+## Notes: TiatanPanel plugin for Bayi's Extended Questlog
+## Notes-deDE: TiatanPanel plugin für Bayi's Extended Questlog
+## RequiredDeps: beql, Titan
+## X-Curse-Packaged-Version: r230
+## X-Curse-Project-Name: Bayi's Extended Questlog
+## X-Curse-Project-ID: bayis-extended-questlog
+## X-Curse-Repository-ID: wow/bayis-extended-questlog/mainline
+
+## Author: Angelike (EU/Gilneas)
+## Version: 1.0
+## URL: http://www.wowace.com/addons/bayis-extended-questlog/
+
+Titan_bEQL.xml

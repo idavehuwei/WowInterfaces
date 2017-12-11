@@ -1,0 +1,17 @@
+## Interface: 30100
+## Title: [Duowan] GearScoreLite
+## Title-zhCN: [多玩] 装备评分 (GearScoreLite)
+## Title-zhTW: [多玩] 裝備評分 (GearScoreLite)
+
+## Notes: Quickly and easily judge a player's level of Gear.
+## Notes-zhCN: 快速计算玩家的装备分数
+## Notes-zhTW: 快速計算玩家的裝備分數
+## X-DuowanAddon: 商业物品
+
+## Version: 3x03
+## Author: Mirrikat45
+## SavedVariables: GS_Settings
+## X-Revision: Duowan
+## Dependencies: Duowan
+informationLite.lua
+GearScoreLite.lua

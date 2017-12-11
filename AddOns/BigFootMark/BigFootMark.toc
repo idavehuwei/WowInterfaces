@@ -1,0 +1,16 @@
+﻿## Interface: 30100
+## Title: |cff00ff00NPCMark|r
+## Title-zhTW: NPC標記(|cff00ff00NPCMark|r)
+## Title-zhCN: NPC标记(|cff00ff00NPCMark|r)
+## Version: 0.1.4
+## Author: Terry
+## Notes-zhCN: |cff00ffff艾泽拉斯国家地理|r自主开发的NPC标记。
+## Notes-zhTW: |cff00ffff艾澤拉斯國家地理|r自主開發的NPC標記。
+## SavedVariables: BigFootMarkDB,BigFootMarkMappingDB
+## X-DuowanAddon: 地图
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand:
+
+BigFootMark.xml
+

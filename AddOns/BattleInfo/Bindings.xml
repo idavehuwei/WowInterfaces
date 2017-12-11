@@ -1,0 +1,14 @@
+<Bindings>
+	<Binding name="BATTLEINFO_QUEUE" header="BATTLEINFO">
+		BattleInfo_Binding_Queue()
+	</Binding>
+	<Binding name="BATTLEINFO_ALWAYS_QUEUE">
+		BattleInfo_Binding_AlwayQueue()
+	</Binding>
+	<Binding name="BATTLEINFO_JOIN">
+		BattleInfo_Binding_Join()
+	</Binding>
+	<Binding name="BATTLEINFO_LEAVE">
+		BattleInfo_Binding_Leave()
+	</Binding>
+</Bindings>

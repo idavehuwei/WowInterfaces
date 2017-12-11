@@ -1,0 +1,1059 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Button name="GameTooltipTemplatetestbutton" parent="UIParent"  text="Open QuestEditor" inherits="UIPanelButtonTemplate">
+		<ButtonText name="$parentText"/>
+		<NormalFont style="GameFontNormalSmall"/>
+		<HighlightFont style="GameFontHighlightSmall"/>
+		<DisabledFont style="GameFontDisableSmall"/>
+		<Size>
+			<AbsDimension x="100" y="20"/>
+		</Size>		
+		<Anchors>
+			<Anchor point="TOPRIGHT">
+				<Offset>
+					<AbsDimension x="0" y="-250"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Scripts>
+			<OnClick>
+					if LibQuestInfoFrame:IsVisible() then
+						LibQuestInfoFrame:Hide()
+					else
+						LibQuestInfoFrame:Show()
+					end
+			</OnClick>
+		</Scripts>
+	</Button>
+
+	<GameTooltip name="LibQuestInfoEditorTooltip" inherits="GameTooltipTemplate" parent="UIParent" toplevel="true" frameStrata="TOOLTIP" hidden="true">
+		<Scripts>
+			<Onload>
+				GameTooltip_OnLoad(self);
+				self:SetOwner(WorldFrame, "ANCHOR_TOPLEFT");
+			</Onload>
+		</Scripts>
+	</GameTooltip>
+	
+	<Button name="LibQuestInfoButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="299" y="16"/>
+		</Size>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString name="$parentTag" inherits="GameFontNormal" justifyH="RIGHT" parentKey="tag">
+					<Size>
+						<AbsDimension x="0" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-2" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<NormalTexture file="Interface\Buttons\UI-MinusButton-UP">
+			<Size>
+				<AbsDimension x="16" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT">
+					<Offset>
+						<AbsDimension x="3" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</NormalTexture>
+		<HighlightTexture name="$parentHighlight" file="Interface\Buttons\UI-PlusButton-Hilight" alphaMode="ADD">
+			<Size>
+				<AbsDimension x="16" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT">
+					<Offset>
+						<AbsDimension x="3" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</HighlightTexture>
+		<ButtonText name="$parentNormalText" nonspacewrap="true" parentKey="normalText">
+			<Size>
+				<AbsDimension x="0" y="10"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT">
+					<Offset>
+						<AbsDimension x="20" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors> 
+		</ButtonText>
+		<NormalFont style="GameFontNormalLeft"/>
+		<HighlightFont style="GameFontHighlightLeft"/>
+		<DisabledFont style="GameFontDisableLeft"/>
+		<Scripts>
+			<OnLoad>
+				LibQuestInfoTileButton_OnLoad(self);
+			</OnLoad>
+			<OnClick>
+				--LibQuestInfoTileButton_OnClick(self)
+			</OnClick>
+			<OnEnter>
+				if self.qID then
+					LibQuestInfoEditorTooltip:ClearLines();
+					LibQuestInfoEditorTooltip:SetOwner(self, ANCHOR_RIGHT);
+					LibQuestInfoEditorTooltip:SetHyperlink("quest:" .. self.qID)
+				end
+			</OnEnter>
+			<OnLeave>
+				if LibQuestInfoEditorTooltip:IsVisible() then
+					LibQuestInfoEditorTooltip:Hide()
+				end
+			</OnLeave>
+		</Scripts>
+	</Button>
+	
+	<Frame name="LibQuestInfoFrame" toplevel="true" parent="UIParent" movable="true" enableMouse="true" hidden="true">
+		<Size>
+			<AbsDimension x="600" y="500"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"></Anchor>
+		</Anchors>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture file="Interface\DialogFrame\UI-DialogBox-Header">
+					<Size><AbsDimension x="256" y="64"/></Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset><AbsDimension x="0" y="12"/></Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture file="Interface\DialogFrame\UI-DialogBox-Divider">
+					<Size><AbsDimension x="760" y="20"/></Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset><AbsDimension x="12" y="-360"/></Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString inherits="GameFontNormal" name="$parentTitleText" text="Quest Editor">
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parent"></Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentButtonClose" inherits="UIPanelCloseButton">
+				<Anchors>
+						<Anchor point="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="-3" y="-3"/>
+							</Offset>
+						</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						local parent = self:GetParent()
+						parent:Hide()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Frame name="$parentHighlight" hidden="true" parentKey="Highlight">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="BOTTOMRIGHT"/>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture name="QuestLogSkillHighlight" file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD"/>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>
+						--print(self:GetName())
+						--self:SetParent(nil);
+					</OnLoad>
+				</Scripts>
+			</Frame>
+			
+			<ScrollFrame name="$parentScrollFrame" inherits="HybridScrollFrameTemplate">
+				<Size>
+					<AbsDimension x="546" y="330"/>
+				</Size>
+				<Anchors>
+					<Anchor  point="TOPLEFT" >
+						<Offset>
+							<AbsDimension x="24" y="-30"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Frames>
+					<Slider name="$parentScrollBar" inherits="HybridScrollBarTemplate" parentKey="scrollBar">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
+								<Offset x="0" y="-13"/>
+							</Anchor>
+							<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT">
+								<Offset x="0" y="14"/>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								local name = self:GetName();
+								_G[name.."BG"]:Hide();
+								_G[name.."Top"]:Hide();
+								_G[name.."Bottom"]:Hide();
+								_G[name.."Middle"]:Hide();
+								self.doNotHide = true;
+							</OnLoad>
+						</Scripts>
+					</Slider>
+				</Frames>
+				<Scripts>
+					<OnLoad>
+						LibQuestInfoScrollFrame_OnLoad(self)
+						--beql:BrowserQuestlistInit(self)
+					</OnLoad>
+				</Scripts>
+			</ScrollFrame>
+			
+			<Frame name="$parentEditFrame" hidden="false">
+				<Size>
+					<AbsDimension x="575" y="135"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>		
+				<Layers>
+					<Layer level="OVERLAY">	
+						<FontString name="$parentQuestTitle" text="%% QuestTitle %%" inherits="GameFontNormalSmall" parentKey="QTitle">
+							<Anchors>
+								<Anchor point="TOPLEFT" >
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentLevelLabel" text="QuestLevel" inherits="GameFontNormalSmall">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentQuestTitle" relativepoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentMinLevelLabel" text="min. QuestLevel" inherits="GameFontNormalSmall" parentKey="MinLevelLabel">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentLevelLabel" relativepoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentFlags" text="QuestFlags" inherits="GameFontNormalSmall">
+							<Anchors>
+								<Anchor point="TOPLEFT"  relativeTo="$parentMinLevelLabel" relativepoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentDaily" text="Daily" inherits="GameFontNormalSmall">
+							<Anchors>
+								<Anchor point="TOPLEFT"  relativeTo="$parentFlags" relativepoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentWeekly" text="Weekly" inherits="GameFontNormalSmall">
+							<Anchors>
+								<Anchor point="TOPLEFT"  relativeTo="$parentDaily" relativepoint="TOPLEFT">
+									<Offset>
+										<AbsDimension x="75" y="0"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentDisabled" text="Disabled" inherits="GameFontNormalSmall">
+							<Anchors>
+								<Anchor point="TOPLEFT"  relativeTo="$parentDaily" relativepoint="TOPLEFT">
+									<Offset>
+										<AbsDimension x="150" y="0"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentZone" text="Zone" inherits="GameFontNormalSmall">
+							<Anchors>
+								<Anchor point="TOPLEFT"  relativeTo="$parentDaily" relativepoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentObjective1" inherits="GameFontNormalSmall" text="Obj. 1" parentKey="OLabel1">
+							<Anchors>
+								<Anchor point="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="-250" y="-25"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentObjective2" inherits="GameFontNormalSmall" text="Obj. 2" parentKey="OLabel2">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentObjective1" relativepoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentObjective3" inherits="GameFontNormalSmall" text="Obj. 3" parentKey="OLabel3">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentObjective2" relativepoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentObjective4" inherits="GameFontNormalSmall" text="Obj. 4" parentKey="OLabel4">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentObjective3" relativepoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentObjective5" inherits="GameFontNormalSmall" text="Obj. 5" parentKey="OLabel5">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentObjective4" relativepoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentObjective6" inherits="GameFontNormalSmall" text="Obj. 6" parentKey="OLabel6">
+							<Anchors>
+								<Anchor point="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="-125" y="-25"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentObjective7" inherits="GameFontNormalSmall" text="Obj. 7" parentKey="OLabel7">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentObjective6" relativepoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentObjective8" inherits="GameFontNormalSmall" text="Obj. 8" parentKey="OLabel8">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentObjective7" relativepoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentObjective9" inherits="GameFontNormalSmall" text="Obj. 9" parentKey="OLabel9">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentObjective8" relativepoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentObjective10" inherits="GameFontNormalSmall" text="Obj. 10" parentKey="OLabel10">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentObjective9" relativepoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>				
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>		
+				</Layers>
+				<Frames>
+					<EditBox name="$parentLevelEditBox" letters="3" historyLines="0" parentKey="EditLevel">
+						<Size>
+							<AbsDimension x="50" y="15"/>
+						</Size>
+						<Anchors>
+								<Anchor point="TOPLEFT"  relativeTo="$parentLevelLabel" relativepoint="TOPLEFT">
+									<Offset>
+										<AbsDimension x="125" y="0"/>
+									</Offset>
+								</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer level="BACKGROUND">
+
+								<Texture name="$parentLeft" file="Interface\ClassTrainerFrame\UI-ClassTrainer-FilterBorder">
+									<Size>
+										<AbsDimension x="12" y="20"/>
+									</Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset>
+												<AbsDimension x="-11" y="0"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+									<TexCoords left="0" right="0.09375" top="0" bottom="1.0"/>
+								</Texture>
+								<Texture name="$parentMiddle" file="Interface\ClassTrainerFrame\UI-ClassTrainer-FilterBorder">
+									<Size>
+										<AbsDimension x="25" y="20"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+									</Anchors>
+									<TexCoords left="0.09375" right="0.90625" top="0" bottom="1.0"/>
+								</Texture>
+								<Texture name="$parentRight" file="Interface\ClassTrainerFrame\UI-ClassTrainer-FilterBorder">
+									<Size>
+										<AbsDimension x="12" y="20"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+									</Anchors>
+									<TexCoords left="0.90625" right="1.0" top="0" bottom="1.0"/>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnLoad>
+								self:SetNumeric()
+								self:SetAutoFocus(false)
+							</OnLoad>
+							<OnTextChanged>
+								--MacroPopupOkayButton_Update();
+								--MacroFrameSelectedMacroName:SetText(self:GetText());
+							</OnTextChanged>
+							<OnEscapePressed function="MacroPopupFrame_CancelEdit"/>
+							<OnEnterPressed>
+								self:ClearFocus();
+								--if ( MacroPopupOkayButton:IsEnabled() ~= 0 ) then
+								--	MacroPopupOkayButton_OnClick(MacroPopupOkayButton);
+								--end
+							</OnEnterPressed>
+						</Scripts>
+						<FontString inherits="ChatFontSmall"/>
+					</EditBox>
+					<EditBox name="$parentMinLevelEditBox" letters="3" historyLines="0" parentKey="EditMinLevel">
+						<Size>
+							<AbsDimension x="50" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"  relativeTo="$parentMinLevelLabel" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="125" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer level="BACKGROUND">
+								<Texture name="$parentLeft" file="Interface\ClassTrainerFrame\UI-ClassTrainer-FilterBorder">
+									<Size>
+										<AbsDimension x="12" y="20"/>
+									</Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset>
+												<AbsDimension x="-11" y="0"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+									<TexCoords left="0" right="0.09375" top="0" bottom="1.0"/>
+								</Texture>
+								<Texture name="$parentMiddle" file="Interface\ClassTrainerFrame\UI-ClassTrainer-FilterBorder">
+									<Size>
+										<AbsDimension x="25" y="20"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+									</Anchors>
+									<TexCoords left="0.09375" right="0.90625" top="0" bottom="1.0"/>
+								</Texture>
+								<Texture name="$parentRight" file="Interface\ClassTrainerFrame\UI-ClassTrainer-FilterBorder">
+									<Size>
+										<AbsDimension x="12" y="20"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+									</Anchors>
+									<TexCoords left="0.90625" right="1.0" top="0" bottom="1.0"/>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnLoad>
+								self:SetNumeric()
+								self:SetAutoFocus(false)
+							</OnLoad>
+							<OnTextChanged>
+								--MacroPopupOkayButton_Update();
+								--MacroFrameSelectedMacroName:SetText(self:GetText());
+							</OnTextChanged>
+							<OnEscapePressed function="MacroPopupFrame_CancelEdit"/>
+							<OnEnterPressed>
+								self:ClearFocus();
+								--if ( MacroPopupOkayButton:IsEnabled() ~= 0 ) then
+								--	MacroPopupOkayButton_OnClick(MacroPopupOkayButton);
+								--end
+							</OnEnterPressed>
+						</Scripts>
+						<FontString inherits="ChatFontSmall"/>
+					</EditBox>
+					<Button name="$parentTagSelect" inherits="GameMenuButtonTemplate" text="none" parentKey="BtnTag">
+						<Size>
+							<AbsDimension x="100" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentFlags" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="100" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								local parent = self:GetParent()
+								parent.SelectFrame.mode = "Tag"
+								parent.SelectFrame:Show()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<CheckButton name="$parentCheckDaily" inherits="UICheckButtonTemplate" text="none" parentKey="ChkDaily">
+						<Size>
+							<AbsDimension x="15" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentDaily" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="30" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								--TradeSkillSubClassDropDown_OnLoad(self)
+							</OnLoad>
+						</Scripts>
+					</CheckButton>
+					<CheckButton name="$parentCheckWeekly" inherits="UICheckButtonTemplate" text="none" parentKey="ChkWeekly">
+						<Size>
+							<AbsDimension x="15" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentWeekly" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="40" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								--TradeSkillSubClassDropDown_OnLoad(self)
+							</OnLoad>
+						</Scripts>
+					</CheckButton>
+					<Button name="$parentZoneselect" inherits="GameMenuButtonTemplate" text="none" parentKey="BtnZone">
+						<Size>
+							<AbsDimension x="50" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentZone" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="125" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								local parent = self:GetParent()
+								parent.SelectFrame.mode = "Zone"
+								parent.SelectFrame:Show()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentObjective1Button" inherits="GameMenuButtonTemplate" text="none" parentKey="OBtn1">
+						<Size>
+							<AbsDimension x="60" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentObjective1" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="40" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								local parent = self:GetParent()
+								parent.SelectFrame.mode = "Objective1"
+								parent.SelectFrame:Show()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentObjective2Button" inherits="GameMenuButtonTemplate" text="none" parentKey="OBtn2">
+						<Size>
+							<AbsDimension x="60" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentObjective2" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="40" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								local parent = self:GetParent()
+								parent.SelectFrame.mode = "Objective2"
+								parent.SelectFrame:Show()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentObjective3Button" inherits="GameMenuButtonTemplate" text="none" parentKey="OBtn3">
+						<Size>
+							<AbsDimension x="60" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentObjective3" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="40" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								local parent = self:GetParent()
+								parent.SelectFrame.mode = "Objective3"
+								parent.SelectFrame:Show()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentObjective4Button" inherits="GameMenuButtonTemplate" text="none" parentKey="OBtn4">
+						<Size>
+							<AbsDimension x="60" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentObjective4" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="40" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								local parent = self:GetParent()
+								parent.SelectFrame.mode = "Objective4"
+								parent.SelectFrame:Show()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentObjective5Button" inherits="GameMenuButtonTemplate" text="none" parentKey="OBtn5">
+						<Size>
+							<AbsDimension x="60" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentObjective5" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="40" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								local parent = self:GetParent()
+								parent.SelectFrame.mode = "Objective5"
+								parent.SelectFrame:Show()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentObjective6Button" inherits="GameMenuButtonTemplate" text="none" parentKey="OBtn6">
+						<Size>
+							<AbsDimension x="60" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentObjective6" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="40" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								local parent = self:GetParent()
+								parent.SelectFrame.mode = "Objective6"
+								parent.SelectFrame:Show()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentObjective7Button" inherits="GameMenuButtonTemplate" text="none" parentKey="OBtn7">
+						<Size>
+							<AbsDimension x="60" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentObjective7" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="40" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								local parent = self:GetParent()
+								parent.SelectFrame.mode = "Objective7"
+								parent.SelectFrame:Show()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentObjective8Button" inherits="GameMenuButtonTemplate" text="none" parentKey="OBtn8">
+						<Size>
+							<AbsDimension x="60" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentObjective8" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="40" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								local parent = self:GetParent()
+								parent.SelectFrame.mode = "Objective8"
+								parent.SelectFrame:Show()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentObjective9Button" inherits="GameMenuButtonTemplate" text="none" parentKey="OBtn9">
+						<Size>
+							<AbsDimension x="60" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentObjective9" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="40" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								local parent = self:GetParent()
+								parent.SelectFrame.mode = "Objective9"
+								parent.SelectFrame:Show()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentObjective10Button" inherits="GameMenuButtonTemplate" text="none" parentKey="OBtn10">
+						<Size>
+							<AbsDimension x="60" y="15"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentObjective10" relativepoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="40" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								local parent = self:GetParent()
+								parent.SelectFrame.mode = "Objective10"
+								parent.SelectFrame:Show()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentReset" inherits="GameMenuButtonTemplate" text="Reset">
+						<Size>
+							<AbsDimension x="100" y="20"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativeTo="$parent" relativepoint="BOTTOMRIGHT">
+								<Offset>
+									<AbsDimension x="-135" y="30"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								--TradeSkillSubClassDropDown_OnLoad(self)
+							</OnLoad>
+						</Scripts>
+					</Button>
+					<Button name="$parentSave" inherits="GameMenuButtonTemplate" text="Save">
+						<Size>
+							<AbsDimension x="100" y="20"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativeTo="$parent" relativepoint="BOTTOMRIGHT">
+								<Offset>
+									<AbsDimension x="-20" y="30"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								--TradeSkillSubClassDropDown_OnLoad(self)
+							</OnLoad>
+						</Scripts>
+					</Button>
+					<Frame name="$parentSelectFrame" toplevel="true" hidden="true" parentKey="SelectFrame">
+						<Size>
+							<AbsDimension x="160" y="135"/>
+						</Size>
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT"></Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="4" right="4" top="4" bottom="4"/>
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="32"/>
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="32"/>
+							</EdgeSize>
+						</Backdrop>
+						<Frames>
+							<Button name="$parentButtonClose" inherits="UIPanelCloseButton">
+								<Anchors>
+										<Anchor point="TOPRIGHT">
+											<Offset>
+												<AbsDimension x="-3" y="-3"/>
+											</Offset>
+										</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+										local parent = self:GetParent()
+										parent:Hide()
+									</OnClick>
+								</Scripts>
+							</Button>
+							<Button name="$parentButton1" text="text1" parentKey="Btn1">
+								<Size>
+									<AbsDimension x="150" y="15"/>
+								</Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset>
+											<AbsDimension x="5" y="-15"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<ButtonText name="$parentText"/>
+								<NormalFont style="GameFontHighlight"/>
+								<HighlightFont style="GameFontHighlight"/>
+								<DisabledFont style="GameFontDisable"/>
+								<HighlightTexture file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD"/>
+								<Scripts>
+									<OnClick>
+										LibQuestInfoSelectFrameButton_OnClick(self)
+									</OnClick>
+								</Scripts>
+							</Button>
+							<Button name="$parentButton2" text="text2" parentKey="Btn2">
+								<Size>
+									<AbsDimension x="150" y="15"/>
+								</Size>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parentButton1" relativepoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<ButtonText name="$parentText"/>
+								<NormalFont style="GameFontHighlight"/>
+								<HighlightFont style="GameFontHighlight"/>
+								<DisabledFont style="GameFontDisable"/>
+								<HighlightTexture file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD"/>
+								<Scripts>
+									<OnClick>
+										LibQuestInfoSelectFrameButton_OnClick(self)
+									</OnClick>
+								</Scripts>
+							</Button>
+							<Button name="$parentButton3" text="text3" parentKey="Btn3">
+								<Size>
+									<AbsDimension x="150" y="15"/>
+								</Size>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parentButton2" relativepoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<ButtonText name="$parentText"/>
+								<NormalFont style="GameFontHighlight"/>
+								<HighlightFont style="GameFontHighlight"/>
+								<DisabledFont style="GameFontDisable"/>
+								<HighlightTexture file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD"/>
+								<Scripts>
+									<OnClick>
+										LibQuestInfoSelectFrameButton_OnClick(self)
+									</OnClick>
+								</Scripts>
+							</Button>
+							<Button name="$parentButton4" text="text4" parentKey="Btn4">
+								<Size>
+									<AbsDimension x="150" y="15"/>
+								</Size>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parentButton3" relativepoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<ButtonText name="$parentText"/>
+								<NormalFont style="GameFontHighlight"/>
+								<HighlightFont style="GameFontHighlight"/>
+								<DisabledFont style="GameFontDisable"/>
+								<HighlightTexture file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD"/>
+								<Scripts>
+									<OnClick>
+										LibQuestInfoSelectFrameButton_OnClick(self)
+									</OnClick>
+								</Scripts>
+							</Button>
+							<Button name="$parentButton5" text="text5" parentKey="Btn5">
+								<Size>
+									<AbsDimension x="150" y="15"/>
+								</Size>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parentButton4" relativepoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<ButtonText name="$parentText"/>
+								<NormalFont style="GameFontHighlight"/>
+								<HighlightFont style="GameFontHighlight"/>
+								<DisabledFont style="GameFontDisable"/>
+								<HighlightTexture file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD"/>
+								<Scripts>
+									<OnClick>
+										LibQuestInfoSelectFrameButton_OnClick(self)
+									</OnClick>
+								</Scripts>
+							</Button>
+							<Button name="$parentButton6" text="text6" parentKey="Btn6">
+								<Size>
+									<AbsDimension x="150" y="15"/>
+								</Size>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parentButton5" relativepoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<ButtonText name="$parentText"/>
+								<NormalFont style="GameFontHighlight"/>
+								<HighlightFont style="GameFontHighlight"/>
+								<DisabledFont style="GameFontDisable"/>
+								<HighlightTexture file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD"/>
+								<Scripts>
+									<OnClick>
+										LibQuestInfoSelectFrameButton_OnClick(self)
+									</OnClick>
+								</Scripts>
+							</Button>
+							<Button name="$parentButton7" text="text7" parentKey="Btn7">
+								<Size>
+									<AbsDimension x="150" y="15"/>
+								</Size>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parentButton6" relativepoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<ButtonText name="$parentText"/>
+								<NormalFont style="GameFontHighlight"/>
+								<HighlightFont style="GameFontHighlight"/>
+								<DisabledFont style="GameFontDisable"/>
+								<HighlightTexture file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD"/>
+								<Scripts>
+									<OnClick>
+										LibQuestInfoSelectFrameButton_OnClick(self)
+									</OnClick>
+								</Scripts>
+							</Button>
+
+							</Frames>
+						<Scripts>
+							<OnShow>
+								LibQuestInfoSelectFrame_OnShow(self)
+							</OnShow>
+						</Scripts>
+					</Frame>
+				</Frames>
+				<Scripts>
+					<OnLoad>
+						--LibQuestInfoEditFrame_OnLoad(self)
+					</OnLoad>
+				</Scripts>
+			</Frame>
+		</Frames>		
+		<Scripts>
+			<OnLoad>
+				LibQuestInfoFrame_OnLoad(self)
+			</OnLoad>
+			<OnShow>
+				LibQuestInfoScrollFrame_Update()
+			</OnShow>
+		</Scripts>
+		
+	</Frame>
+	
+</Ui>

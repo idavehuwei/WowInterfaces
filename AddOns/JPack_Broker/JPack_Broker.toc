@@ -1,0 +1,12 @@
+## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 JPack|r 背包整理。
+## Title: JPack Broker
+## Notes: Data Broker support for jpack!
+## Dependencies: JPack
+## X-Curse-Packaged-Version: r75
+## X-Curse-Project-Name: JPack
+## X-Curse-Project-ID: jpack
+## X-Curse-Repository-ID: wow/jpack/mainline
+
+JPack_Broker.lua

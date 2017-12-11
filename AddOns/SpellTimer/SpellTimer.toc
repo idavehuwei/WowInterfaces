@@ -1,0 +1,15 @@
+## Interface: 30100
+## Title: Spell Timer
+## Notes: Dispaly some timer with progress bar to remind user how long the spells will remains.
+## Title-zhCN: [多玩] 法术计时器
+## Notes-zhCN: 显示一些计时器提醒用户这些法术还剩下多少时间。
+## Title-zhTW: [多玩] 法術計時器
+## Notes-zhTW: 顯示一些計時器提醒用戶這些法術還剩下多少時間。
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand:
+## X-DuowanAddon: 战斗
+## SavedVariables: SPELL_TIMER_SPELLS_DATE
+## SavedVariablesPerCharacter: SpellTimer_Config
+
+SpellTimer.xml

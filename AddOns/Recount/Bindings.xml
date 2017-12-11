@@ -1,0 +1,29 @@
+<Bindings>
+	<Binding name="RECOUNT_PREVIOUSPAGE" header="RECOUNT">Recount:MainWindowPrevMode()</Binding>
+	<Binding name="RECOUNT_NEXTPAGE">Recount:MainWindowNextMode()</Binding>
+	<Binding name="RECOUNT_DAMAGE">Recount:SetMainWindowMode(1)</Binding>
+	<Binding name="RECOUNT_DPS">Recount:SetMainWindowMode(2)</Binding>
+	<Binding name="RECOUNT_FRIENDLYFIRE">Recount:SetMainWindowMode(3)</Binding>
+	<Binding name="RECOUNT_DAMAGETAKEN">Recount:SetMainWindowMode(4)</Binding>
+	<Binding name="RECOUNT_HEALING">Recount:SetMainWindowMode(5)</Binding>
+	<Binding name="RECOUNT_HEALINGTAKEN">Recount:SetMainWindowMode(6)</Binding>
+	<Binding name="RECOUNT_OVERHEALING">Recount:SetMainWindowMode(7)</Binding>
+	<Binding name="RECOUNT_DEATHS">Recount:SetMainWindowMode(8)</Binding>
+	<Binding name="RECOUNT_DOTS">Recount:SetMainWindowMode(9)</Binding>
+	<Binding name="RECOUNT_HOTS">Recount:SetMainWindowMode(10)</Binding>
+	<Binding name="RECOUNT_DISPELS">Recount:SetMainWindowMode(11)</Binding>
+	<Binding name="RECOUNT_DISPELLED">Recount:SetMainWindowMode(12)</Binding>
+	<Binding name="RECOUNT_INTERRUPTS">Recount:SetMainWindowMode(13)</Binding>
+	<Binding name="RECOUNT_CCBREAKER">Recount:SetMainWindowMode(14)</Binding>
+	<Binding name="RECOUNT_ACTIVITY">Recount:SetMainWindowMode(15)</Binding>
+	<Binding name="RECOUNT_MANA">Recount:SetMainWindowMode(17)</Binding>
+	<Binding name="RECOUNT_ENERGY">Recount:SetMainWindowMode(18)</Binding>
+	<Binding name="RECOUNT_RAGE">Recount:SetMainWindowMode(19)</Binding>
+	<Binding name="RECOUNT_REPORT_MAIN">Recount:ShowReport("Main",Recount.ReportData)</Binding>
+	<Binding name="RECOUNT_REPORT_DETAILS">Recount:ShowReport("Detail",Recount.ReportDetail)</Binding>
+	<Binding name="RECOUNT_RESET_DATA">Recount:ShowReset()</Binding>
+	<Binding name="RECOUNT_SHOW_MAIN">Recount.MainWindow:Show();Recount:RefreshMainWindow()</Binding>
+	<Binding name="RECOUNT_HIDE_MAIN">Recount.MainWindow:Hide()</Binding>
+	<Binding name="RECOUNT_TOGGLE_MAIN">if Recount.MainWindow:IsShown() then Recount.MainWindow:Hide() else Recount.MainWindow:Show();Recount:RefreshMainWindow() end</Binding>
+	<Binding name="RECOUNT_TOGGLE_PAUSE">Recount:SetGlobalDataCollect(not Recount.db.profile.GlobalDataCollect)</Binding>
+</Bindings>

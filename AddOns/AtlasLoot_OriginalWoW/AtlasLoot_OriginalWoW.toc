@@ -1,0 +1,22 @@
+﻿## Interface: 30100
+## Title: AtlasLoot_OriginalWoW
+## Title-deDE: AtlasLoot |cFF0099FF[Alte Instanzen]|r
+## Title-zhCN: 副本掉落 |cFF0099FF[经典旧世]|r
+## Title-zhTW: |r|cFF0099FF[地圖]|rAL 艾澤拉斯世界
+## Notes: AtlasLoot loot tables from pre-Burning Crusade
+## Notes-deDE: AtlasLoot Loot-Tabellen für Instanzen vor Burning Crusade
+## Notes-zhCN: AtlasLoot Enhanced 的《燃烧的远征》发售之前的副本掉落信息
+## Notes-zhTW: AtlasLoot 艾澤拉斯副本掉落物品資料庫
+## Author: Daviesh
+## Version: v5.11.01
+## X-eMail: oma_daviesh@hotmail.com
+## X-Category: Map
+## X-License: GPL v2
+## X-DuowanAddon: 地图
+## X-Website: http://www.atlasloot.net
+## Dependencies: AtlasLoot
+## LoadOnDemand: 1
+## X-Revision: Duowan
+
+originalwow.lua
+localization.lua

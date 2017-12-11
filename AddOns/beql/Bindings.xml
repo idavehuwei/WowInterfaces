@@ -1,0 +1,9 @@
+<Bindings>
+	<Binding name="TrackerToggle" header="beqlTITLE">
+		if beql.db.char.saved.minimizedtracker then 		
+			beql:TrackerMaximize() 
+		else 
+			beql:TrackerMinimize() 
+		end
+	</Binding>
+</Bindings>

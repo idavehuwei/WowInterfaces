@@ -1,0 +1,18 @@
+## Interface: 30100
+## Title: [Duowan] Enigma Unit Frames
+## Notes: Enhanced Unit Frames including HP/MP values, class, race, level tag, and more ...
+## Title-zhCN: [多玩] 头像增强 EN_UnitFrames
+## Notes-zhCN: 增强显示头像，显示目标的目标的目标，小队头像显示队员职业等级，并显示生命值及法力值|nShift点击并拖动即可改变头像位置|n
+## Title-zhTW: [多玩] 頭像增強 EN_UnitFrames
+## Notes-zhTW: 增強顯示頭像，顯示目標的目標的目標，小隊頭像顯示隊員職業等級，並顯示生命值及法力值|nShift點擊並拖動即可改變頭像位置|n
+## X-Repple: 頭像
+## Version: 3.1.1
+## Author: Enigma
+## X-DuowanAddon: 界面聊天
+## SavedVariables: DuowanAddon_EUF_Options
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand:
+
+
+EN_UnitFrames.xml

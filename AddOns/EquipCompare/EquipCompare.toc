@@ -1,0 +1,19 @@
+﻿## Interface: 30100
+## LoadOnDemand: 0
+## Title: EquipCompare
+## Author: Legorol
+## Version: 2.16
+## Notes: Compare items easily with ones you have equipped (2.16)
+## Title-zhCN: |CFFFF8000辅助|R 装备比较
+## Notes-zhCN: 作者:芳芳|n简易的将所看到的物品与目前自己身上所装备的物品做比较|N|CFF0099FF需要基础函数库|R
+## Title-zhTW: |CFFFF8000輔助|R 裝備比較
+## Notes-zhTW: 簡易的將所看到的物品與目前自己身上所裝備的物品做比較|N|CFF0099FF需要基礎函式庫|R
+## X-Repple: 辅助
+## SavedVariables: EquipCompare_Enabled, EquipCompare_ControlMode, EquipCompare_UseCV, EquipCompare_AltMode, EquipCompare_Shiftup
+## OptionalDeps: Khaos, Cosmos, Satellite, Sky, CharactersViewer, LootLink
+localization.lua
+localization.cn.lua
+localization.tw.lua
+localization.post.lua
+EquipCompare.lua
+EquipCompare.xml

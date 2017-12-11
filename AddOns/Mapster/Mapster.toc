@@ -1,0 +1,34 @@
+## Interface: 30100
+## Title: [Duowan] Mapster
+## Notes: Simple Map Mod
+## Title-zhCN: [多玩] 地图增强
+## Notes-zhCN: 简单实用的地图模块
+## Title-zhTW: [多玩] 地圖增強
+## Notes-zhTW: 簡單實用的地圖模塊
+## Author: Nevcairiel
+## SavedVariables: MapsterDB
+## X-Category: Map
+## Version: 1.3.8
+## X-License: All rights reserved.
+## X-Curse-Packaged-Version: 1.3.8
+## X-Curse-Project-Name: Mapster
+## X-Curse-Project-ID: mapster
+## X-Curse-Repository-ID: wow/mapster/mainline
+## X-DuowanAddon: 地图
+## OptionalDeps: Ace3, LibBabble-Zone-3.0, LibWindow-1.1
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+Locale\locale.xml
+
+Mapster.lua
+Config.lua
+
+Coords.lua
+GroupIcons.lua
+BattleMap.lua
+FogClear.lua
+InstanceMaps.lua
+#Scaling.lua
+ZoneInfo.lua

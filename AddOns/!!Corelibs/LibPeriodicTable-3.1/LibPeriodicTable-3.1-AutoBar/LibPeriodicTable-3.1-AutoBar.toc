@@ -1,0 +1,12 @@
+﻿## Interface: 20400
+## LoadOnDemand: 1
+## Title: Lib: PeriodicTable-3.1 [|cffeda55fConsumable|r]
+## Notes: PeriodicTable data module.
+## Author: Toadkiller
+## Version: 3.1
+## Dependencies: LibPeriodicTable-3.1
+## X-Category: Library
+## X-License: LGPL v2.1
+## X-PeriodicTable-3.1-Module: AutoBar
+
+LibPeriodicTable-3.1-AutoBar.lua

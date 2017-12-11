@@ -1,0 +1,28 @@
+## Interface: 30100
+## Title: [Duowan]  Clique
+## Title-zhCN: [多玩] 一键施法 Clique
+## Notes-zhCN: 通过绑定按键来快速施法
+## Title-zhTW: [多玩] 一鍵施法 Clique
+## Notes-zhTW: 通過綁定按鍵來快速施法
+## Author: Cladhaire
+## Version: wowi:revision
+## Notes: Simply powerful click-casting interface
+## SavedVariables: DuowanAddon_CliqueDB
+## OptionalDeps: Dongle
+## X-Curse-Packaged-Version: r141-release
+## X-Curse-Project-Name: Clique
+## X-Curse-Project-ID: clique
+## X-Curse-Repository-ID: wow/clique/mainline
+## X-DuowanAddon: 团队副本
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+Dongle.lua
+Clique.xml
+Clique.lua
+Localization.enUS.lua
+Localization.zhCN.lua
+Localization.zhTW.lua
+CliqueOptions.lua
+CliqueUtils.lua

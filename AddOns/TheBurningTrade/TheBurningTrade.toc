@@ -1,0 +1,21 @@
+## Interface: 30100
+## Title: [Duowan] TheBurningTrade-交易增强
+## Notes: trade log, mage warlock trade assistant
+## Title-zhCN: [多玩] 交易增强 TheBurningTrade
+## Notes-zhCN: 交易记录,造水助手,交易界面增强
+## Title-zhTW: [多玩] 交易增強 TheBurningTrade
+## Notes-zhTW: 交易記錄,造水助手,交易介面增強
+## Author: Warbaby-二区暗影之月<凌翼>
+## X-DuowanAddon: 商业物品
+## OptionalDeps: Skinner
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand:1
+## SavedVariables: DuowanAddon_TradeLog_Enabled, DuowanAddon_TBT_Enabled
+## SavedVariablesPerCharacter: DuowanAddon_TradeLog_TradesHistory, DuowanAddon_TRADE_LOG_BUTTON_POS, DuowanAddon_TradeLog_Announce_Checked, DuowanAddon_TradeLog_AnnounceChannel
+
+localization-enUS.lua
+localization-zhCN.lua
+localization-zhTW.lua
+TheBurningTrade.xml
+TradeLogFrame.xml

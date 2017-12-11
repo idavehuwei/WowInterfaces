@@ -1,0 +1,41 @@
+﻿## Interface: 30100
+## Title: GatherMate
+## Notes: Collects Herbs, Mines, Gas Clouds and Fishing locations and adds them to the worldmap and minimap
+## Title: [多玩] 采集助手 GatherMate
+## Notes: 在大地图和小地图上标记草药、矿石、气体云雾和鱼群讯息
+## Title: [多玩] 採集助手 GatherMate
+## Notes: 在大地圖和小地圖上標記草藥、礦石、氣體雲霧和魚群訊息
+## Author: kagaro, Xinhuan, Ammo, Nevcairiel
+## X-Email: sal.scotto@gmail.com
+## X-Credits: OttoDeFe for the launher icon.
+## SavedVariables: GatherMateDB, GatherMateHerbDB, GatherMateMineDB, GatherMateFishDB, GatherMateGasDB, GatherMateTreasureDB
+## X-Category: Map
+## Version: v1.23
+## X-License: GPL v2
+## X-DuowanAddon: 地图
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+#@no-lib-strip@
+#Libs\LibStub\LibStub.lua
+#Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+#Libs\AceAddon-3.0\AceAddon-3.0.xml
+#Libs\AceEvent-3.0\AceEvent-3.0.xml
+#Libs\AceDB-3.0\AceDB-3.0.xml
+#Libs\AceLocale-3.0\AceLocale-3.0.xml
+#Libs\AceGUI-3.0\AceGUI-3.0.xml
+#Libs\AceConsole-3.0\AceConsole-3.0.xml
+#Libs\AceConfig-3.0\AceConfig-3.0.xml
+#Libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
+#@end-no-lib-strip@
+
+Locales\embed.xml
+
+GatherMate.lua
+Display.lua
+Collector.lua
+Constants.lua
+Config.lua
+
+#GatherMate_Data\data.xml

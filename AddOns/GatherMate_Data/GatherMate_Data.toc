@@ -1,0 +1,23 @@
+﻿## Interface: 30100
+## Notes: Wowhead Data dump for GatherMate
+## Notes-zhTW: Wowhead 資料轉存至採集助手
+## Notes-zhCN: Wowhead 资料转存至采集助手
+## Title: GatherMateData
+## Title-zhTW: [多玩] 採集助手資料庫
+## Title-zhCN: [多玩] 采集助手数据库
+## Author: kagaro, Xinhuan, Ammo (review and sounding board)
+## X-Category: Map
+## X-Email: sal.scotto@gmail.com
+## Version: 1.0
+## X-Generated-Version: $Revision: 275 $
+## X-DuowanAddon: 地图
+## Dependencies: GatherMate, Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+MiningData.lua
+HerbalismData.lua
+GasData.lua
+FishData.lua
+TreasureData.lua
+GatherMateData.lua

@@ -1,0 +1,19 @@
+﻿## Author: Shinisuryu
+## Title: BuyEmAll 2.8.6
+## Interface: 30100
+## Notes: Enhances shift-click interface at vendors
+## Title-zhCN: |CFFFF8000辅助|R 材料购买助手
+## Notes-zhCN: Shift点击购买物品时的,可以成组购买物品
+## Title-zhTW: |CFFFF8000輔助|R 材料購買助手
+## Notes-zhTW: Shift點擊購買物品時的,可以成組購買物品
+## X-Repple: 辅助
+## Dependencies: Duowan
+## X-Revision: Duowan
+
+CogsBagSpace.lua
+Localization.enUS.lua
+Localization.zhCN.lua
+Localization.zhTW.lua
+BuyEmAll.lua
+BuyEmAll.xml
+SpaceCalc.lua

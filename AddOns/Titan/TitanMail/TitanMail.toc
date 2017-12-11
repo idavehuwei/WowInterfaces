@@ -1,0 +1,10 @@
+## Interface: 30100
+## Title: Titan Panel [|cffeda55fBag|r] |cff00aa004.2.5.30100|r
+## Notes: Adds Email information to Titan Panel
+## Author: Dean
+## SavedVariables:
+## OptionalDeps:
+## Dependencies: Titan
+## Version: 4.2.5.30100
+## X-Child-Of: Titan
+TitanMail.xml

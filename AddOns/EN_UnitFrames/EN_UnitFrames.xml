@@ -1,0 +1,18 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+E:\PROGRA~1\Altova\XMLSpy2006\UI.xsd">	
+
+	<Script file="EN_UnitFramesLocal.lua"/>	
+	<Script file="EN_UnitFrames.lua"/>
+	<Include file="mods.xml"/>
+	<!-- General -->
+	<Frame name="EUF_General" parent="UIParent" hidden="true">
+		<Scripts>
+			<OnLoad>
+				EUF_OnLoad(self);
+			</OnLoad>
+			<OnEvent>
+				EUF_OnEvent(self, event, arg1);
+			</OnEvent>
+		</Scripts>
+	</Frame>
+</Ui>

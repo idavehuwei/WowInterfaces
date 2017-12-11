@@ -1,0 +1,32 @@
+## Interface: 30100
+## Title: Bayi's Extended Questlog
+## Author: Namdrof, BloodOmen, Angelike
+## SavedVariables: beqlDB
+## Version: 1.0.8
+## URL: http://www.wowace.com/addons/bayis-extended-questlog/
+## X-Curse-Packaged-Version: r218
+## X-Curse-Project-Name: Bayi's Extended Questlog
+## X-Curse-Project-ID: bayis-extended-questlog
+## X-Curse-Repository-ID: wow/bayis-extended-questlog/mainline
+## X-Category: Quest
+## X-Email: no yet
+## X-Embeds: Ace3, FuBarPlugin-2.0, Deformat, TabletLib, LibQuixote-2.0, Waterfall-1.0, DewdropLib
+## OptionalDeps: Ace3, Titan, FuBar, Deformat, TabletLib, LibQuixote-2.0, Waterfall-1.0, DewdropLib
+## Dependencies: Duowan
+## X-Revision: Duowan
+
+locales\localization.lua
+locales\localization-cn.lua
+#locales\localization-tw.lua
+
+beql.lua
+questlog.lua
+tracker.lua
+tooltip.lua
+achievement.lua
+
+extra\goodies.lua
+#extra\beqltitan.xml
+extra\questhistory.xml
+
+options3.0.lua

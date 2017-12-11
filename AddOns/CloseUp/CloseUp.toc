@@ -1,0 +1,14 @@
+## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: 增强试衣间界面
+## Title: CloseUp
+## Notes: Adds model viewing flexibility
+## Author: TotalPackage
+## Version: 3.3.001
+## X-Category: Interface Enhancements
+## SavedVariables: CU_HideBG
+
+## LoadManagers: AddonLoader
+## X-LoadOn-Always: delayed
+
+core.lua

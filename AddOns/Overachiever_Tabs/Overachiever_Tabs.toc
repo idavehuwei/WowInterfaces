@@ -1,0 +1,24 @@
+﻿## Interface: 30100
+## Title: Overachiever - Tabs
+## Version: 0.43
+## Author: Tuhljin
+## Notes: Achievement frame tabs module.
+## Title-zhCN: |CFFFF8000辅助|R 成就追踪器 Tabs
+## Notes-zhCN: 作者:芳芳|n成就追踪器的 Tabs 模块
+## Title-zhTW: |CFFFF8000輔助|R 成就追蹤器 Tabs
+## Notes-zhTW: 成就追蹤器的 Tabs 模組
+## X-Repple: 辅助
+## LoadOnDemand: 1
+## LoadWith: Blizzard_AchievementUI
+## Dependencies: Overachiever
+## SavedVariables: Overachiever_Tabs_Settings
+## X-Curse-Packaged-Version: v0.43
+## X-Curse-Project-Name: Overachiever - achievement tools and tweaks
+## X-Curse-Project-ID: overachiever
+## X-Curse-Repository-ID: wow/overachiever/mainline
+
+localization.lua
+build.lua
+Search.lua
+Suggestions.lua
+Watch.lua

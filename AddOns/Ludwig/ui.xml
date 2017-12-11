@@ -1,0 +1,360 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+
+	<Script file="ui.lua"/>
+
+	<Button name="LudwigItemButtonTemplate" enableMouseWheel="false" justifyH="LEFT" virtual="true">
+		<Size x="300" y="22"/>
+
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentIcon">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT">
+							<Offset x="4" y="0"/>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.07" right="0.93" top="0.07" bottom="0.93"/>
+				</Texture>
+			</Layer>
+		</Layers>
+
+		<ButtonText>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset x="28" y="0"/>
+				</Anchor>
+				<Anchor point="BOTTOMRIGHT"/>
+			</Anchors>
+		</ButtonText>
+
+		<Scripts>
+			<OnLoad>
+				self.UpdateTooltip = LudwigUI_OnItemEnter
+			</OnLoad>
+			<OnClick>
+				LudwigUI_OnItemClick(self)
+			</OnClick>
+			<OnEnter>
+				LudwigUI_OnItemEnter(self)
+			</OnEnter>
+			<OnLeave>
+				LudwigUI_OnItemLeave(self)
+			</OnLeave>
+		</Scripts>
+
+		<NormalFont style="GameFontNormalLeft"/>
+		<HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD"/>
+	</Button>
+
+	<Frame name="LudwigFrame" enableMouse="true" toplevel="true" movable="true" hidden="true" parent="UIParent">
+		<Size x="384" y="512"/>
+
+		<Attributes>
+			<Attribute name="UIPanelLayout-defined" type="boolean" value="true"/>
+			<Attribute name="UIPanelLayout-enabled" type="boolean" value="true"/>
+			<Attribute name="UIPanelLayout-whileDead" type="boolean" value="true"/>
+			<Attribute name="UIPanelLayout-area" type="string" value="left"/>
+			<Attribute name="UIPanelLayout-pushable" type="number" value="3"/>
+		</Attributes>
+
+		<HitRectInsets>
+			<AbsInset left="0" right="35" top="0" bottom="75"/>
+		</HitRectInsets>
+
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentIcon">
+					<Size x="62" y="62"/>
+				</Texture>
+			</Layer>
+
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontHighlight" text="TEXT">
+					<Size x="300" y="14"/>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset x="0" y="-16"/>
+						</Anchor>
+					</Anchors>
+				</FontString>
+
+				<Texture file="Interface\TaxiFrame\UI-TaxiFrame-TopLeft">
+					<Size x="256" y="256"/>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
+				</Texture>
+
+				<Texture file="Interface\TaxiFrame\UI-TaxiFrame-TopRight">
+					<Size x="128" y="256"/>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="256" y="0"/>
+						</Anchor>
+					</Anchors>
+				</Texture>
+
+				<Texture file="Interface\PaperDollInfoFrame\SkillFrame-BotLeft">
+					<Size x="256" y="256"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT"/>
+					</Anchors>
+				</Texture>
+				<Texture file="Interface\PaperDollInfoFrame\SkillFrame-BotRight">
+					<Size x="128" y="256"/>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+
+		<Frames>
+	        <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset x="-29" y="-8"/>
+					</Anchor>
+				</Anchors>
+	        </Button>
+
+			<Button name="$parentRefresh">
+				<Size x="64" y="64"/>
+
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="4" y="-4"/>
+					</Anchor>
+				</Anchors>
+
+				<Scripts>
+					<OnLoad>
+						self.icon = getglobal(self:GetParent():GetName().."Icon")
+						self.icon:ClearAllPoints()
+						self.icon:SetPoint("CENTER", self)
+						SetPortraitToTexture(self.icon, "Interface/Icons/INV_Misc_Book_04")
+					</OnLoad>
+					<OnMouseDown>
+						self.icon:SetWidth(56); self.icon:SetHeight(56)
+						self.icon:SetTexCoord(0.075, 0.925, 0.075, 0.925)
+					</OnMouseDown>
+					<OnMouseUp>
+						self.icon:SetWidth(62); self.icon:SetHeight(62)
+						self.icon:SetTexCoord(0, 1, 0, 1)
+					</OnMouseUp>
+					<OnClick>
+						LudwigUI_Refresh()
+					</OnClick>
+				</Scripts>
+
+				<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight">
+					<Size x="78" y="78"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</HighlightTexture>
+			</Button>
+
+			<EditBox name="$parentSearch" autoFocus="false" inherits="InputBoxTemplate">
+				<Size x="148" y="20"/>
+
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="84" y="-44"/>
+					</Anchor>
+				</Anchors>
+
+				<Scripts>
+					<OnShow>
+						if self:GetText() == '' then
+							self:SetText(_G['SEARCH'])
+						end
+					</OnShow>
+					<OnEnterPressed>
+						self:ClearFocus()
+					</OnEnterPressed>
+					<OnTextChanged>
+						LudwigUI_OnSearchChanged(self, self:GetText())
+					</OnTextChanged>
+					<OnTabPressed>
+						getglobal(self:GetParent():GetName() .. 'MinLevel'):SetFocus()
+					</OnTabPressed>
+					<OnEditFocusLost>
+						self:HighlightText(0, 0)
+
+						if self:GetText() == '' then
+							self:SetText(_G['SEARCH'])
+						end
+					</OnEditFocusLost>
+					<OnEditFocusGained>
+						self:HighlightText()
+
+						if self:GetText() == _G['SEARCH'] then
+							self:SetText('')
+						end
+					</OnEditFocusGained>
+				</Scripts>
+			</EditBox>
+
+			<EditBox name="$parentMinLevel" letters="2" numeric="true" autoFocus="false" inherits="InputBoxTemplate">
+				<Size x="25" y="16"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentSearch" relativePoint="RIGHT">
+						<Offset x="12" y="0"/>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parentHyphen" inherits="GameFontHighlightSmall" text="-">
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parent" relativePoint="RIGHT">
+									<Offset x="0" y="1"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnTabPressed>
+						_G[self:GetParent():GetName() .. 'MaxLevel']:SetFocus()
+					</OnTabPressed>
+					<OnEnterPressed>
+						self:ClearFocus()
+					</OnEnterPressed>
+					<OnTextChanged>
+						LudwigUI_OnMinLevelChanged(self, self:GetText())
+					</OnTextChanged>
+				</Scripts>
+			</EditBox>
+
+			<EditBox name="$parentMaxLevel" letters="2" numeric="true" autoFocus="false" inherits="InputBoxTemplate">
+				<Size x="25" y="16"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentMinLevel" relativePoint="RIGHT">
+						<Offset x="12" y="0"/>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnTabPressed>
+						_G[self:GetParent():GetName() .. 'Search']:SetFocus()
+					</OnTabPressed>
+					<OnEnterPressed>
+						self:ClearFocus()
+					</OnEnterPressed>
+					<OnTextChanged>
+						LudwigUI_OnMaxLevelChanged(self, self:GetText())
+					</OnTextChanged>
+				</Scripts>
+			</EditBox>
+
+			<Button name="$parentReset">
+				<Size x="39" y="39"/>
+
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentMaxLevel" relativePoint="RIGHT">
+						<Offset x="-2" y="-2"/>
+					</Anchor>
+				</Anchors>
+
+				<Scripts>
+					<OnClick>
+						LudwigUI_Reset()
+					</OnClick>
+				</Scripts>
+
+				<NormalTexture file="Interface\Buttons\CancelButton-Up"/>
+				<PushedTexture file="Interface\Buttons\CancelButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\CancelButton-Highlight" alphaMode="ADD"/>
+			</Button>
+
+			<ScrollFrame name="$parentScroll" inherits="FauxScrollFrameTemplate">
+				<Size x="298" y="332"/>
+
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="20" y="-74"/>
+					</Anchor>
+				</Anchors>
+
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
+							<Size x="31" y="256"/>
+
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
+									<Offset x="-2" y="5"/>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0" right="0.484375" top="0" bottom="1.0"/>
+						</Texture>
+
+						<Texture file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
+							<Size x="31" y="106"/>
+
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT">
+									<Offset x="-2" y="-2"/>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.515625" right="1.0" top="0" bottom="0.4140625"/>
+						</Texture>
+					</Layer>
+				</Layers>
+
+				<Scripts>
+					<OnShow>
+						LudwigUI_OnScrollFrameShow()
+					</OnShow>
+					<OnHide>
+						LudwigUI_OnScrollFrameHide()
+					</OnHide>
+					<OnVerticalScroll>
+						FauxScrollFrame_OnVerticalScroll(self, arg1, LWUI_SHOWN, function(self) LudwigUI_UpdateList() end)
+					</OnVerticalScroll>
+				</Scripts>
+			</ScrollFrame>
+
+			<Frame name="$parentQuality" inherits="UIDropDownMenuTemplate">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset x="0" y="72"/>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnShow>
+						LudwigUI_OnQualityShow(self)
+					</OnShow>
+				</Scripts>
+			</Frame>
+
+			<Frame name="$parentType" inherits="UIDropDownMenuTemplate">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset x="110" y="72"/>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnShow>
+						LudwigUI_OnTypeShow(self)
+					</OnShow>
+				</Scripts>
+			</Frame>
+		</Frames>
+
+		<Scripts>
+			<OnLoad>
+				LudwigUI_OnLoad(self)
+			</OnLoad>
+			<OnShow>
+				LudwigUI_OnShow(self)
+				PlaySound("igCharacterInfoOpen")
+			</OnShow>
+			<OnHide>
+				LudwigUI_OnHide(self)
+				PlaySound("igCharacterInfoClose")
+			</OnHide>
+		</Scripts>
+	</Frame>
+</Ui>

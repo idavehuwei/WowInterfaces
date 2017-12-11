@@ -1,0 +1,16 @@
+## Interface: 30200
+## Title: Lib: DebugLog-1.0
+## Notes: Library providing simple debug logging.
+## Author: Adirelle
+## X-eMail: adirelle@tagada-team.net
+## Version: v1.0.2b
+## X-Date: 2009-02-16T12:56:13Z
+## X-Category: Library
+## X-License: GPL v2 or later
+## SavedVariables: LibDebugLog10PersitenceDB
+## X-Curse-Packaged-Version: v1.0.2b
+## X-Curse-Project-Name: LibDebugLog-1.0
+## X-Curse-Project-ID: libdebuglog-1-0
+## X-Curse-Repository-ID: wow/libdebuglog-1-0/mainline
+
+LibDebugLog-1.0.xml

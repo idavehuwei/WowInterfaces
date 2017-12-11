@@ -1,0 +1,63 @@
+## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: 整合部分常用模块，并进行了若干修改的Grid免设置单目录带库整合大全包。
+## Title: Grid
+## Notes: A modular, lightweight and screen-estate saving grid of party/raid unit frames
+## Notes-zhCN: 小巧的轻量级模块化队伍框架
+## Notes-zhTW: 精簡的團隊框架功能
+## Author: Pastamancer & Maia
+## Version: 1.30100.2009041601
+## X-ReleaseDate: "$Date: 2009-04-16 14:30:17 +0000 (Thu, 16 Apr 2009) $"
+## X-Website: http://www.wowace.com/projects/grid/
+## X-Category: UnitFrame
+## X-AceForum: 2525
+## X-RelSite-WoWI: 5747
+## X-RelSite-Curse: 9503
+## X-Curse-Packaged-Version: r1197
+## X-Curse-Project-Name: Grid
+## X-Curse-Project-ID: grid
+## X-Curse-Repository-ID: wow/grid/mainline
+
+## SavedVariables: GridDB
+
+## DefaultState: enabled
+## LoadOnDemand: 0
+
+## OptionalDeps: Ace2, LibBabble-Class-3.0, CallbackHandler-1.0, ChatThrottleLib, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-3.0, LibSharedMedia-3.0, UTF8, Clique, CT_RaidAssist, FuBar, JustClick, oRA2, SharedMedia
+
+#Locales
+GridLocale-enUS.lua
+GridLocale-zhCN.lua
+GridLocale-zhTW.lua
+
+# Grid
+GridCore.lua
+GridRoster.lua
+GridRange.lua
+GridLayout.lua
+GridLayoutLayouts.lua
+GridFrame.lua
+GridStatus.lua
+
+GridStatusHealth.lua
+GridStatusAggro.lua
+GridStatusName.lua
+GridStatusMana.lua
+GridStatusHeals.lua
+GridStatusAuras.lua
+GridStatusTarget.lua
+GridStatusRange.lua
+GridStatusVoiceComm.lua
+GridStatusVehicle.lua
+GridStatusReadyCheck.lua
+
+GridCooldownText\embeds.xml
+GridManaBars\embeds.xml
+GridStatusBanzai\embeds.xml
+GridStatusBrutallus\embeds.xml
+GridStatusBrutallusMeteor\embeds.xml
+GridStatusKalecgos\embeds.xml
+GridStatusHots\embeds.xml
+GridStatusMissingBuffs\embeds.xml
+GridStatusRaidDebuff\embeds.xml
+GridStatusTwins\embeds.xml

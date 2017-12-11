@@ -1,0 +1,15 @@
+## Interface: 30100
+## Title: [Duowan] Attack Timer
+## Notes: Displays a progress bar for your attack speed
+## Title-zhCN: [多玩] 近战进度条
+## Notes-zhCN: 显示你的近战武器攻击的间隔时间
+## Title-zhTW: [多玩] 近戰進度條
+## Notes-zhTW: 顯示你的近戰武器攻擊的間隔時間
+## Author: 独孤傲雪
+## X-DuowanAddon: 战斗
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+## SavedVariables:
+
+AttackTimer.xml

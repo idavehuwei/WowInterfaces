@@ -1,0 +1,15 @@
+Archarodim:
+	- - More data in debug reports about UnitGUID() strange behavior after group updates :/
+	- - Added a dev version warning at start for people who complains about the error reports ;-)
+	- - fixes a LUA error that occures in rare race conditions (Dcr_LiveList.lua:426: attempt to index field '?' (a nil value))
+	- - small optimisation in the group scanning functions.
+	- - Added more data to the sanity check report.
+	- - fixes "Sanity check failed in LiveList:GetDebuff() no MUF for unit"
+	- - MUF status were no longer updated after the last debuff was removed (bug introduced in beta6)
+	- - Added the latency to the debug reporter.
+	- - Sanity check update (more data) and tweaks
+	- - Show MUFs only when their position is set correctly to avoid MUFs overlapping at maximum in race condition (entering combat while players are joining/leaving the raid).
+	This won't prevent overlapping from happening since the player may enter in combat at any moment while the MUFs are being reordered. (this is rare though)
+	- changed "Refresh speed" option value max limit from 20 to 82.
+	- - Added a sanity check to confirm an hypothesis about why COMBAT_LOG_EVENT_UNFILTERED() fails sometimes.
+	- - Fixes the virtual test affliction creation that was broken since the last commit.

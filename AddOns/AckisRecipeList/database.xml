@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.blizzard.com/wow/ui/" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+<Include file="RecipeDB\ARL-Alchemy.lua"/>
+<Include file="RecipeDB\ARL-Blacksmith.lua"/>
+<Include file="RecipeDB\ARL-Cook.lua"/>
+<Include file="RecipeDB\ARL-Enchant.lua"/>
+<Include file="RecipeDB\ARL-Engineer.lua"/>
+<Include file="RecipeDB\ARL-FirstAid.lua"/>
+<Include file="RecipeDB\ARL-Inscription.lua"/>
+<Include file="RecipeDB\ARL-Jewelcraft.lua"/>
+<Include file="RecipeDB\ARL-Leatherwork.lua"/>
+<Include file="RecipeDB\ARL-Runeforge.lua"/>
+<Include file="RecipeDB\ARL-Smelt.lua"/>
+<Include file="RecipeDB\ARL-Tailor.lua"/>
+
+<Include file="RecipeDB\ARL-Custom.lua"/>
+<Include file="RecipeDB\ARL-Mob.lua"/>
+<Include file="RecipeDB\ARL-Quest.lua"/>
+<Include file="RecipeDB\ARL-Reputation.lua"/>
+<Include file="RecipeDB\ARL-Seasonal.lua"/>
+<Include file="RecipeDB\ARL-Trainer.lua"/>
+<Include file="RecipeDB\ARL-Vendor.lua"/>
+
+</Ui>

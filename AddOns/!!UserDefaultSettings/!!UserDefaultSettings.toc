@@ -1,0 +1,13 @@
+## Interface: 30100
+## Title: [Core] |cFFFF0000 -User Default Settings-|r
+## Notes: The user default settings
+## Title-zhCN: [核心] |cFFFF0000用户默认设置|r
+## Notes-zhCN: 用户默认设置, 所有插件的必须依赖此库, 请不要禁用.
+## Title-zhTW: [核心] |cFFFF0000用戶默認設置|r
+## Notes-zhTW: 用戶默認設置, 所有外掛程式的必須依賴此庫, 請不要禁用.
+## Author: wanghong
+## Dependencies: !!Corelibs
+## SavedVariables: UserDefaultSettingsDB
+## X-DuowanAddon: 基本库
+
+UserDefaultSettings.xml

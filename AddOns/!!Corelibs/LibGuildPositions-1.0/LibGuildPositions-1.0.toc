@@ -1,0 +1,11 @@
+## Interface: 30200
+## Title: Lib: GuildPositions-1.0
+## Notes: Communicates with guild members for their positions on the world map
+## Author: ckknight
+## X-eMail: ckknight@gmail.com
+## Version: 1.0
+## X-Category: Library
+## X-License: MIT
+## OptionalDeps: ChatThrottleLib
+
+LibGuildPositions-1.0.lua

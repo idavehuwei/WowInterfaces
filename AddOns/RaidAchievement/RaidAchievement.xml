@@ -1,0 +1,354 @@
+﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+<Script file="RaidAchievement.lua"/>    
+<Frame name="RaidAchievementframe">
+
+	<Scripts>
+	<OnLoad>PhoenixStyleEA_OnLoad()</OnLoad>
+	<OnEvent>if(thisaddonworkea) then PhoenixStyleEA_OnEvent() end</OnEvent>
+	<OnUpdate>if(thisaddonworkea and ramsgupdate==1) then ramain_OnUpdate(arg1) end</OnUpdate>
+
+
+	</Scripts>
+	</Frame>
+
+<Frame name="PSFeamain" hidden="true" toplevel="true" virtual="true" frameStrata="DIALOG" movable="true" enableMouse="true" parent="UIParent">
+	<Size> 
+	<AbsDimension x="750" y="400"/> 
+	</Size> 
+	<Anchors>
+		<Anchor point="CENTER"/>
+	</Anchors>
+
+
+<Scripts>
+	<OnMouseDown>this:StartMoving()</OnMouseDown>
+	<OnMouseUp>this:StopMovingOrSizing()</OnMouseUp>
+	<OnDragStop>this:StopMovingOrSizing()</OnDragStop>
+	<OnShow>PSFea_showoptions()</OnShow>
+	</Scripts>
+ </Frame>
+
+
+
+<Frame name="PSFeamain1" hidden="true" inherits="PSFeamain">
+	<Size> 
+	<AbsDimension x="750" y="400"/> 
+	</Size> 
+	<Anchors> 
+	<Anchor point="LEFT" /> 
+	</Anchors> 
+
+	<Layers> 
+	<Layer level="ARTWORK"> 
+
+
+	</Layer> 
+
+
+	</Layers> 
+<frames>
+
+
+
+
+ <Frame name="PSFeamain2" hidden="true">
+
+	<Size> 
+	<AbsDimension x="150" y="400"/> 
+	</Size> 
+	<Anchors> 
+	<Anchor point="LEFT" /> 
+	</Anchors> 
+	<Layers> 
+	<Layer level="ARTWORK"> 
+		<FontString name="$parent_Text" inherits="GameFontNormal" text="   RaidAchievement">
+			<Anchors><Anchor point="LEFT" relativePoint="TOPLEFT" /></Anchors>
+
+		</FontString>
+
+	</Layer> 
+
+	</Layers>
+
+
+	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+		<TileSize>
+			<AbsValue val="32"/>
+		</TileSize>
+		<EdgeSize>
+			<AbsValue val="32"/>
+		</EdgeSize>
+		<BackgroundInsets>
+			<AbsInset left="11" right="12" top="12" bottom="11"/>
+		</BackgroundInsets>
+	</Backdrop>
+<Frames>
+<Button name="$parent_Button3" inherits="UIPanelButtonTemplate" text="psealeftmenu1">
+			<Size> 
+			<AbsDimension x="120" y="21"/> 
+			</Size> 
+			<Anchors> 
+				<Anchor point="TOP">
+					<Offset x="0" y="-20" />
+				</Anchor>
+			</Anchors> 
+			<Scripts>
+				<OnClick>PSFea_buttonaddon()</OnClick>
+			</Scripts>
+		</Button>
+<Button name="$parent_Button5" inherits="UIPanelButtonTemplate" text="psealeftmenu4">
+			<Size> 
+			<AbsDimension x="120" y="21"/> 
+			</Size> 
+			<Anchors> 
+				<Anchor point="TOP">
+					<Offset x="0" y="-45" />
+				</Anchor>
+			</Anchors> 
+			<Scripts>
+				<OnClick>whra_button()</OnClick>
+			</Scripts>
+		</Button>
+<Button name="$parent_Button4" inherits="UIPanelButtonTemplate" text="psealeftmenu3">
+			<Size> 
+			<AbsDimension x="120" y="21"/> 
+			</Size> 
+			<Anchors> 
+				<Anchor point="TOP">
+					<Offset x="0" y="-70" />
+				</Anchor>
+			</Anchors> 
+			<Scripts>
+				<OnClick>nxra_button()</OnClick>
+			</Scripts>
+		</Button>
+<Button name="$parent_Button6" inherits="UIPanelButtonTemplate" text="psealeftmenu5">
+			<Size> 
+			<AbsDimension x="120" y="21"/> 
+			</Size> 
+			<Anchors> 
+				<Anchor point="TOP">
+					<Offset x="0" y="-95" />
+				</Anchor>
+			</Anchors> 
+			<Scripts>
+				<OnClick>PSFea_buttonulda()</OnClick>
+			</Scripts>
+		</Button>
+<Button name="$parent_ButtonPS" inherits="UIPanelButtonTemplate" text="PhoenixStyle">
+			<Size> 
+			<AbsDimension x="120" y="21"/> 
+			</Size> 
+			<Anchors> 
+				<Anchor point="BOTTOM">
+					<Offset x="0" y="20" />
+				</Anchor>
+			</Anchors> 
+			<Scripts>
+				<OnClick>PSFea_PSaddon()</OnClick>
+			</Scripts>
+		</Button>
+</Frames>
+	</Frame>
+
+<Frame name="PSFeamain3" hidden="true">
+
+
+	<Size> 
+	<AbsDimension x="600" y="400"/> 
+	</Size> 
+	<Anchors> 
+	<Anchor point="RIGHT"></Anchor>
+	</Anchors> 
+	<Layers> 
+<Layer level="OVERLAY"> 
+		<Texture name="$parentTexture" file="Interface\AddOns\RaidAchievement\phoenix_addon">
+			<Anchors>
+				<Anchor point="CENTER" relativePoint="CENTER"><Offset x="0" y="0" /></Anchor>
+			</Anchors>
+			<TexCoords left="0" right="1" top="0" bottom="1"/> 
+		</Texture>
+		<FontString name="$parent_Text" inherits="GameFontNormal" text="www.phoenix-wow.ru">
+			<Anchors><Anchor point="LEFT" relativePoint="BOTTOMLEFT"><Offset x="20" y="23" /></Anchor></Anchors>
+		</FontString>
+		<FontString name="$parent_Text" inherits="GameFontNormal" text="PSFeaserver">
+			<Anchors><Anchor point="RIGHT" relativePoint="TOPRIGHT"><Offset x="-18" y="-21" /></Anchor></Anchors>
+		</FontString>
+
+	</Layer>
+	</Layers> 
+	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+		<TileSize>
+			<AbsValue val="32"/>
+		</TileSize>
+		<EdgeSize>
+			<AbsValue val="32"/>
+		</EdgeSize>
+		<BackgroundInsets>
+			<AbsInset left="11" right="12" top="12" bottom="11"/>
+		</BackgroundInsets>
+	</Backdrop>
+<frames>
+<CheckButton name="$parent_CheckButton1" inherits="UICheckButtonTemplate">
+			<Size>
+				<AbsDimension x="25" y="25"/>
+			</Size>
+			<Anchors> 
+				<Anchor point="TOPLEFT">
+					<Offset x="20" y="-15" />
+				</Anchor>
+			</Anchors>
+			<Scripts>
+			<OnLoad>getglobal(this:GetName().."Text"):SetText(pseaaddonon)</OnLoad>
+			<OnClick>PSFeavkladdon()</OnClick>
+			</Scripts>
+		</CheckButton>
+</frames>
+	</Frame>
+
+<Button name="$parent_Button1" inherits="UIPanelButtonTemplate" text="pseaaddoncancel">
+			<Size> 
+			<AbsDimension x="70" y="24"/> 
+			</Size> 
+			<Anchors> 
+				<Anchor point="BOTTOMRIGHT">
+					<Offset x="-9" y="9" />
+				</Anchor>
+			</Anchors> 
+			<Scripts>
+				<OnClick>PSFea_buttonclose()</OnClick>
+			</Scripts>
+		</Button>
+<Button name="$parent_Button2" inherits="UIPanelButtonTemplate" text="pseaaddonok">
+			<Size> 
+			<AbsDimension x="70" y="24"/> 
+			</Size> 
+			<Anchors> 
+				<Anchor point="BOTTOMRIGHT">
+					<Offset x="-80" y="9" />
+				</Anchor>
+			</Anchors> 
+			<Scripts>
+				<OnClick>PSFea_buttonsaveexit()</OnClick>
+			</Scripts>
+		</Button>
+
+<Frame name="PSFeamain12" hidden="true">
+
+	<Size> 
+	<AbsDimension x="600" y="400"/> 
+	</Size> 
+	<Anchors> 
+	<Anchor point="RIGHT" /> 
+	</Anchors> 
+	<Layers> 
+	<Layer level="ARTWORK"> 
+		<FontString name="$parent_Text" inherits="GameFontNormal" text="pseauinomodule1">
+			<Anchors><Anchor point="LEFT" relativePoint="TOPLEFT" /></Anchors>
+		</FontString>
+		<FontString name="$parent_Text" inherits="GameFontNormal" text="pseauinomodule2">
+			<Anchors><Anchor point="CENTER" relativePoint="CENTER"><Offset x="0" y="90" /></Anchor></Anchors>
+	</FontString>
+	</Layer> 
+	</Layers> 
+	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+		<TileSize>
+			<AbsValue val="32"/>
+		</TileSize>
+		<EdgeSize>
+			<AbsValue val="32"/>
+		</EdgeSize>
+		<BackgroundInsets>
+			<AbsInset left="11" right="12" top="12" bottom="11"/>
+		</BackgroundInsets>
+	</Backdrop>
+	</Frame>
+
+<Frame name="PSFeamain10" hidden="true">
+
+	<Size> 
+	<AbsDimension x="600" y="400"/> 
+	</Size> 
+	<Anchors> 
+	<Anchor point="RIGHT" /> 
+	</Anchors> 
+	<Layers> 
+	<Layer level="ARTWORK"> 
+		<FontString name="$parent_Text" inherits="GameFontNormal" text="pseauierror">
+			<Anchors><Anchor point="LEFT" relativePoint="TOPLEFT" /></Anchors>
+		</FontString>
+		<FontString name="$parent_Text" inherits="GameFontNormal" text="pseauierroraddonoff">
+			<Anchors><Anchor point="CENTER" relativePoint="CENTER"><Offset x="0" y="90" /></Anchor></Anchors>
+		</FontString>
+
+	</Layer> 
+
+	</Layers> 
+	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+		<TileSize>
+		<AbsValue val="32"/>
+		</TileSize>
+		<EdgeSize>
+			<AbsValue val="32"/>
+		</EdgeSize>
+		<BackgroundInsets>
+			<AbsInset left="11" right="12" top="12" bottom="11"/>
+		</BackgroundInsets>
+	</Backdrop>
+	</Frame>
+
+<Frame name="PSFeamain11" hidden="true">
+
+	<Size> 
+	<AbsDimension x="600" y="400"/> 
+	</Size> 
+	<Anchors> 
+	<Anchor point="RIGHT" /> 
+	</Anchors> 
+	<Layers> 
+	<Layer level="ARTWORK"> 
+		<FontString name="$parent_Text" inherits="GameFontNormal" text="pseauierror">
+			<Anchors><Anchor point="LEFT" relativePoint="TOPLEFT" /></Anchors>
+		</FontString>
+		<FontString name="$parent_Text" inherits="GameFontNormal" text="pseapsaddonanet">
+			<Anchors><Anchor point="CENTER" relativePoint="CENTER"><Offset x="0" y="90" /></Anchor></Anchors>
+		</FontString>
+		<FontString name="$parent_Text" inherits="GameFontNormal" text="pseapsaddonanet2">
+			<Anchors><Anchor point="CENTER" relativePoint="CENTER"><Offset x="0" y="70" /></Anchor></Anchors>
+		</FontString>
+
+	</Layer> 
+
+	</Layers> 
+	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+		<TileSize>
+		<AbsValue val="32"/>
+		</TileSize>
+		<EdgeSize>
+			<AbsValue val="32"/>
+		</EdgeSize>
+		<BackgroundInsets>
+			<AbsInset left="11" right="12" top="12" bottom="11"/>
+		</BackgroundInsets>
+	</Backdrop>
+	</Frame>
+
+
+</frames>
+	</Frame>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+</Ui>

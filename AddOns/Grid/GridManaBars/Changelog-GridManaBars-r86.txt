@@ -1,0 +1,17 @@
+------------------------------------------------------------------------
+r86 | julith | 2009-05-15 06:13:39 +0000 (Fri, 15 May 2009) | 2 lines
+Changed paths:
+   M /trunk/GridManaBar.lua
+   M /trunk/GridManaBars.toc
+
+GridManaBars:
+- updated for grids changeable border size
+------------------------------------------------------------------------
+r84 | julith | 2009-04-26 00:07:11 +0000 (Sun, 26 Apr 2009) | 2 lines
+Changed paths:
+   M /trunk/GridManaBar.lua
+   M /trunk/GridManaBars.toc
+
+GridManaBars:
+- corrected frame alignment
+------------------------------------------------------------------------

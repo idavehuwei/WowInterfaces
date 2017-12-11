@@ -1,0 +1,17 @@
+﻿## Interface: 30100
+## Author: SLore
+## Title:[Duowan] RaidAlerter
+## Notes: RaidAlerter
+## Title-zhCN:  [多玩] 团队报警系统 |cFF8000FFRaidAlerter|r
+## Notes-zhCN: 提供RAID和5人副本队伍的各种特色警报如：MT血量危急、嘲讽抵抗、仇恨、驱散、猎人误导、被控制、打破控制和团队检查等。建议配合团队助手和首领模块一起使用。发送团队警报需要团长L或者助理A权限，小队报警则无需权限。
+## Title-zhTW: [多玩] 團隊報警系統 |cFF8000FFRaidAlerter|r
+## Notes-zhTW: 提供RAID和5人副本隊伍的各種特色警報如：MT血量危急、嘲諷抵抗、仇恨、驅散、獵人誤導、被控制、打破控制和團隊檢查等。建議配合團隊助手和首領模組一起使用。發送團隊警報需要團長L或者助理A權限，小隊報警則無需權限。
+## Version: 20090822
+## X-DuowanAddon: 团队副本
+## URL: http://bbs.game.mop.com/viewthread.php?tid=1504373
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+## SavedVariables: RaidAlerter_SET,RaidAlerter_SET_AttackFramePosition
+RaidAlerter.xml
+# OptionalDeps: oRA2, CT_RaidAssist

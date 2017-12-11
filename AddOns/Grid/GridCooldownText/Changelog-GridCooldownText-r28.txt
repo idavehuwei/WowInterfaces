@@ -1,0 +1,20 @@
+------------------------------------------------------------------------
+r28 | Whitetooth | 2008-10-19 06:46:49 +0000 (Sun, 19 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/GridCooldownText.toc
+
+toc 30000
+------------------------------------------------------------------------
+r27 | root | 2008-09-29 22:06:36 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   A /trunk/.pkgmeta
+
+Facilitate WowAce-on-CurseForge transition
+------------------------------------------------------------------------
+r25 | root | 2008-09-29 20:58:07 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   D /tmp/trunk/GridCooldownText
+   A /trunk (from /tmp/trunk/GridCooldownText:24)
+
+Importing old repo data under /trunk
+------------------------------------------------------------------------

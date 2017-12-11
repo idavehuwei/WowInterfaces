@@ -1,0 +1,11 @@
+﻿## Interface: 30000
+## Title: Lib: HealComm-3.0
+## Notes: Keeps track of healing spells cast by everyone in a group.
+## Author: xbeeps
+## X-Category: Library
+## X-Curse-Packaged-Version: r51
+## X-Curse-Project-Name: LibHealComm-3.0
+## X-Curse-Project-ID: libhealcomm-3-0
+## X-Curse-Repository-ID: wow/libhealcomm-3-0/mainline
+
+LibHealComm-3.0.lua

@@ -1,0 +1,36 @@
+Version 2.0.7
+- Updated tracking dot images to the new 3.1 layout. Nandini blip users rejoice!
+- Fix a bug causing the compass texture to remain shown when enabling "Rotate Minimap" in Blizzard's options and disabling it in Chinchilla's options.
+- Use Blizzard's "showClock" CVar instead of our SavedVariables for saving the hidden status of the minimap clock.
+
+Version 2.0.6
+- Fixed compass points reverting to red everytime you tried to change their colour.
+- Fixed compass points not rotating after exitting WoW with Rotate Minimap enabled.
+- Fixed the border changing to white when enabling Rotate Minimap for the first time since login.
+
+Version 2.0.5
+- Fixed a bug causing the co-ordinates block not to be scaled on login.
+- Fixed a bug causing the GM Ticket Status frame to move back to it's default location on login.
+- Removed all leftover references to the Quest Timer frame, as it was merged into the Watch Frame in Patch 3.1.
+
+Version 2.0.4
+- Added options to reposition the GM Ticket Status frame.
+- Added options to show/hide the vehicle seats.
+- Fixed the border changing to white when enabling/disabling Rotating Minimap.
+- Fixed compass rotating the wrong way round.
+- Tweak the Expander module to shrink the player arrow (fixes ticket #3).
+- Load libraries and modules from the .toc.
+- The "Profiles" section now appears at the bottom of the modules list instead of in the middle of it.
+- Set the width of the "Enable" option to "full" to force other options onto a new line (which looks nicer imo).
+
+Version 2.0.3
+- Remove all references to the Watch Frame, since the user can move and resize it manually.
+
+Version 2.0.2
+- Fix another bug, this one involving broken concatenations.
+
+Version 2.0.1
+- Fix a bug in the MoveButtons module.
+
+Version 2.0
+- Completely re-written, now using Ace-3.0 instead of LibRock. Your SavedVariables will be reset as a result. Sorry.

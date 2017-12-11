@@ -1,0 +1,22 @@
+------------------------------------------------------------------------
+r75 | yleaf | 2010-02-22 16:35:14 +0000 (Mon, 22 Feb 2010) | 1 line
+Changed paths:
+   M /trunk/localization/localization.en.lua
+   M /trunk/localization/localization.tw.lua
+
+update locales
+------------------------------------------------------------------------
+r74 | yleaf | 2010-02-22 16:29:46 +0000 (Mon, 22 Feb 2010) | 1 line
+Changed paths:
+   M /trunk/JPack.lua
+
+add things back from r71
+------------------------------------------------------------------------
+r73 | jasongreen | 2009-12-11 18:23:12 +0000 (Fri, 11 Dec 2009) | 1 line
+Changed paths:
+   M /trunk/JPack.lua
+   M /trunk/localization/localization.cn.lua
+   M /trunk/localization/localization.en.lua
+
+filter the low level equipments and consumable items as garbage,base on formula item.level < character level*0.9
+------------------------------------------------------------------------
