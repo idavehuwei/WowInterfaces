@@ -209,7 +209,7 @@ if (dwIsConfigurableAddOn("HunterMod") and class == "HUNTER") then
 		CLASSMOD_HUNTERMOD_AUTOSHOT_ENABLE,
 		"",
 		"HunterModAutoShotEnable",
-		1,
+		0,
 		function (arg)
 			if (arg == 1) then
 				if (dwIsAddOnLoaded("HunterMod")) then

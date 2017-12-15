@@ -165,7 +165,7 @@ function QuartzPet:OnInitialize()
 		hideblizz = true,
 
 		--x =  -- applied automatically in :ApplySettings()
-		y = 300,
+		y = 150,
 		h = 18,
 		w = 200,
 		scale = 1,
@@ -422,7 +422,7 @@ do
 		local qpdb = Quartz:AcquireDBNamespace("Player").profile
 		castBarParent:ClearAllPoints()
 		if not db.x then
-			db.x = (UIParent:GetWidth() / 2 - (db.w * db.scale)) / db.scale - 5
+			db.x = (UIParent:GetWidth() / 2 - (db.w * db.scale) / 2) / db.scale - 25
 		end
 		castBarParent:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', db.x, db.y)
 		castBarParent:SetWidth(db.w+9)

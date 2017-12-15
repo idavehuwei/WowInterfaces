@@ -22,17 +22,17 @@ function cwdg_WatchPetActionBar()
     RegisterUnitWatch(PetActionBarFrame);
 end
 
-local cwdg_button = CreateFrame("Frame");
-cwdg_button:RegisterEvent("VARIABLES_LOADED");
-cwdg_button:RegisterEvent("ADDON_LOADED");
-cwdg_button:RegisterEvent("PLAYER_TARGET_CHANGED");
-cwdg_button:SetScript("OnEvent", function(self, event, modname)
-    if (event == "ADDON_LOADED" and modname == "Blizzard_RaidUI") then
-        dwSecureCall(cwdg_WatchRaidGroupButtons);
-    elseif (event == "VARIABLES_LOADED") then
-        dwSecureCall(cwdg_WatchPetActionBar);
-    end
-end);
+-- local cwdg_button = CreateFrame("Frame");
+-- cwdg_button:RegisterEvent("VARIABLES_LOADED");
+-- cwdg_button:RegisterEvent("ADDON_LOADED");
+-- cwdg_button:RegisterEvent("PLAYER_TARGET_CHANGED");
+-- cwdg_button:SetScript("OnEvent", function(self, event, modname)
+--     if (event == "ADDON_LOADED" and modname == "Blizzard_RaidUI") then
+--         dwSecureCall(cwdg_WatchRaidGroupButtons);
+--     elseif (event == "VARIABLES_LOADED") then
+--         -- dwSecureCall(cwdg_WatchPetActionBar);
+--     end
+-- end);
 
 if GetLocale() == "zhTW" then
     -- talent
@@ -288,10 +288,10 @@ local function UpdatePositionValue()
         PETACTIONBAR_XPOS = 36;
     end
 
-    if ( AspectPosionBar and AspectPosionBar:IsShown() and AspectPosionBarFrame:GetNumShapeshiftForms() > 0) then
-        local index = AspectPosionBarFrame:GetNumShapeshiftForms();
-        PETACTIONBAR_XPOS = _G["AspectPosionBarButton" .. index]:GetRight() + 5;
-    end
+    -- if ( AspectPosionBar and AspectPosionBar:IsShown() and AspectPosionBarFrame:GetNumShapeshiftForms() > 0) then
+    --     local index = AspectPosionBarFrame:GetNumShapeshiftForms();
+    --     PETACTIONBAR_XPOS = _G["AspectPosionBarButton" .. index]:GetRight() + 5;
+    -- end
 end
 
 PetActionBarFrame_UpdatePosition = function()
@@ -299,7 +299,11 @@ PetActionBarFrame_UpdatePosition = function()
         UpdatePositionValue();
         PetActionBarFrame.slideTimer=nil;
         PetActionBarFrame:ClearAllPoints();
-        PetActionBarFrame:SetPoint("TOPLEFT", PetActionBarFrame:GetParent(), "BOTTOMLEFT", PETACTIONBAR_XPOS, PETACTIONBAR_YPOS);
+        if ( AspectPosionBar and AspectPosionBar:IsShown() and AspectPosionBarFrame:GetNumShapeshiftForms() > 0) then
+            PetActionBarFrame:SetPoint("TOPRIGHT", PetActionBarFrame:GetParent(), "BOTTOMRIGHT", 65, PETACTIONBAR_YPOS);
+        else
+            PetActionBarFrame:SetPoint("TOPLEFT", PetActionBarFrame:GetParent(), "BOTTOMLEFT", PETACTIONBAR_XPOS, PETACTIONBAR_YPOS);
+        end
     end
 end
 

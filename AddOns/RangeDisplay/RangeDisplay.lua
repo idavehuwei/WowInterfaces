@@ -234,7 +234,7 @@ local function applyFontSettings(ud)
 end
 
 local function applySettings(ud)
-	--print(ud.name);
+    --print(ud.name);
     if (ud.db.enabled) then
         ud:enable()
         ud.mainFrame:ClearAllPoints()
@@ -265,7 +265,7 @@ local function createOverlay(ud)
     ud.overlayText:SetText(L[unit])
 end
 function RangeDisplayOpenConfigDialog()
-	RangeDisplay:openConfigDialog();
+    RangeDisplay:openConfigDialog();
 end
 local function createFrame(ud)
     local unit = ud.unit

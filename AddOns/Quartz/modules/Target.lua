@@ -163,8 +163,8 @@ function QuartzTarget:OnInitialize()
 	db = Quartz:AcquireDBNamespace("Target")
 	Quartz:RegisterDefaults("Target", "profile", {
 		--x =  -- applied automatically in :ApplySettings()
-		y = 250,
-		h = 13,
+		y = 210,
+		h = 15,
 		w = 200,
 		scale = 1,
 
