@@ -152,12 +152,6 @@ local zone_data = { -- {width, height, zoneID}
 	UtgardeKeep1 = { 489.721500396729, 734.580993652344, 135},
 	UtgardeKeep2 = { 320.720293045044, 481.081008911133, 136},
 	UtgardeKeep3 = { 491.054512023926, 736.581008911133, 137},
-	IsleofConquest = { 2650.0, 1766.66658401489, 138},
-	TheArgentColiseum = { 2599.99996948242, 1733.33334350586, 139},
-	TheArgentColiseum1 = { 246.657989501953, 369.986186981201, 140},
-	TheArgentColiseum1 = { 246.657989501953, 369.986186981201, 141},
-	TheArgentColiseum2 = { 493.330017089844, 739.996017456055, 142},
-	HrothgarsLanding = { 3677.08312988281, 2452.083984375, 143},
 }
 -- meta table to return 0 for all unknown zones, instances, and what not
 local emptyZoneTbl = {0,0,0}
@@ -536,8 +530,8 @@ local node_textures = {
 		[226] = icon_path.."Mine\\ethernium.tga",
 		[227] = icon_path.."Mine\\ethernium.tga",
 		-- place holder graphic
-		[228] = icon_path.."Mine\\cobalt.tga",
-		[229] = icon_path.."Mine\\cobalt.tga",
+		[228] = icon_path.."Mine\\cobolt.tga",
+		[229] = icon_path.."Mine\\cobolt.tga",
 		[230] = icon_path.."Mine\\titanium.tga",
 		[231] = icon_path.."Mine\\saronite.tga",
 		[232] = icon_path.."Mine\\saronite.tga",
@@ -547,9 +541,9 @@ local node_textures = {
 		[302] = icon_path.."Gas\\swamp_gas.tga",
 		[303] = icon_path.."Gas\\arcane_vortex.tga",
 		[304] = icon_path.."Gas\\felmist.tga",
-		[305] = icon_path.."Gas\\steam.tga",
-		[306] = icon_path.."Gas\\cinder.tga",
-		[307] = icon_path.."Gas\\arctic.tga",
+		[305] = icon_path.."Gas\\swamp_gas.tga",
+		[306] = icon_path.."Gas\\felmist.tga",
+		[307] = icon_path.."Gas\\arcane_vortex.tga",
 	},
 	["Herb Gathering"] = {
 		[401] = icon_path.."Herb\\peacebloom.tga",

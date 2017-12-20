@@ -22,11 +22,11 @@ local pickSpell = (GetSpellInfo(1804))
 --[[
 Convert for 3.1.3 Item IDs to get the name for Gascloud Item´s
 ]]
-local Dampf = (GetItemInfo(37705)) or ""
-local Windig = (GetItemInfo(22572)) or ""
-local Sumpf = (GetItemInfo(22578)) or ""
-local Teufel = (GetItemInfo(22577)) or ""
-local Arkan = (GetItemInfo(22576)) or ""
+local Dampf = (GetItemInfo(37705))
+local Windig = (GetItemInfo(22572))
+local Sumpf = (GetItemInfo(22578))
+local Teufel = (GetItemInfo(22577))
+local Arkan = (GetItemInfo(22576))
 
 local spells = { -- spellname to "database name"
 	[miningSpell] = "Mining",
@@ -126,7 +126,7 @@ function Collector:GasBuffDetector(b,timestamp, eventType, srcGUID, srcName, src
 	if foundTarget or (prevSpell and prevSpell ~= gasSpell) then return end	
 	if eventType == "SPELL_CAST_SUCCESS" and  spellName == gasSpell then
 	ga = gasSpell		
-	elseif eventType == "UNIT_DISSIPATES" and  ga == gasSpell then
+	elseif eventType == "UNIT_DIED" and  ga == gasSpell and (dstName == NL["Cinder Cloud"] or dstName == NL["Arctic Cloud"]) then
 		foundTarget = true
 		self:addItem(ga,dstName)
 		ga = "No"
@@ -137,7 +137,6 @@ end
 ]]
 function Collector:Loot(eventl,was)
 	if ga ~= gasSpell then return	end	
-	if not was then return end
 	if eventl == "CHAT_MSG_LOOT" and ga == gasSpell  then			
 	if gam == "0" and strfind(was, Dampf) then		
 		foundTarget = true	
@@ -181,7 +180,6 @@ end
 ]]
 function Collector:CursorChange()
 	if foundTarget then return end
-	-- Modify by dugu@bigfoot
 	if (MouseIsOver(MinimapCluster)) then return end
 	if spells[prevSpell] then 
 		self:GetWorldTarget()
@@ -331,7 +329,7 @@ end
 ]]
 function Collector:GetWorldTarget()
 	if foundTarget or not spells[curSpell] then return end
-	if (MinimapCluster:IsMouseOver()) then return end
+	if (MouseIsOver(MinimapCluster)) then return end
 	local what = tooltipLeftText1:GetText()
 	local nodeID = GatherMate:GetIDForNode(spells[prevSpell], what)
 	if what and prevSpell and what ~= prevSpell and nodeID then

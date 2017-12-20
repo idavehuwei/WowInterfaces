@@ -5,7 +5,6 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("GatherMate", "zhCN")
 if not L then return end
 
-L["GatherMate"] = "采集助手"
 L["Add this location to Cartographer_Waypoints"] = "将该地点加入Cartographer_Waypoints"
 L["Add this location to TomTom waypoints"] = "将该地点加入TomTom节点"
 L["Always show"] = "总是显示"
@@ -289,7 +288,7 @@ NL["Ragveil"] = "邪雾草"
 NL["Rich Adamantite Deposit"] = "富精金矿脉"
 NL["Rich Cobalt Deposit"] = "富钴矿脉"
 NL["Rich Saronite Deposit"] = "富蓝铜矿脉"
-NL["Rich Thorium Vein"] = "富瑟银矿脉"
+NL["Rich Thorium Vein"] = "富瑟银矿"
 NL["Sagefish School"] = "鼠尾鱼群"
 NL["Saronite Deposit"] = "蓝铜矿脉"
 NL["Scarlet Footlocker"] = "血色十字军提箱"

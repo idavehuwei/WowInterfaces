@@ -16,8 +16,8 @@ local defaults = {
 	profile = {
 		scale       = 0.75,
 		alpha       = 1,
-		show = { 
-			["Treasure"] = "always",
+		show = {
+			["Treasure"] = "active",
 			["*"] = "with_profession"
 		},
 		showMinimap = true,
@@ -51,17 +51,17 @@ local defaults = {
 			["Fishing"]        = false,
 			["Mining"]         = false,
 			["Extract Gas"]    = false,
-			["Treasure"]	   = false,			
+			["Treasure"]	   = false,
 		},
 		importers = {
-			["*"] = { 
-				["Style"] = "Merge", 
+			["*"] = {
+				["Style"] = "Merge",
 				["Databases"] = {},
 				["lastImport"] = 0,
-				["autoImport"] = false,
-				["bcOnly"] = true,
+				["autoImport"] = true,
+				["bcOnly"] = false,
 			},
-		}	
+		}
 	},
 }
 local floor = floor
@@ -76,7 +76,7 @@ function GatherMate:OnInitialize()
 	self.db.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
 	self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
 	self.db.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
-	
+
 	-- Setup our saved vars, we dont use AceDB, cause it over kills
 	-- These 4 savedvars are global and doesnt need char specific stuff in it
 	GatherMateHerbDB = GatherMateHerbDB or {}
@@ -107,12 +107,12 @@ end
 function GatherMate:OnProfileChanged(db,name)
 	db = self.db.profile
 	filter = db.filter
-	
+
 	GatherMate:SendMessage("GatherMateConfigChanged")
 end
 --[[
 	create a reverse lookup table for input table (we use it for english names of nodes)
-]] 
+]]
 function GatherMate:CreateReversedTable(tbl)
 	if reverseTables[tbl] then
 		return reverseTables[tbl]
@@ -218,7 +218,7 @@ end
 do
 	local emptyTbl = {}
 	local tablestack = setmetatable({}, {__mode = 'k'})
-	
+
 	local function dbCoordIterNearby(t, prestate)
 		if not t then return nil end
 		local data = t.data
@@ -226,7 +226,7 @@ do
 		local xLocal, yLocal, yw, yh = t.xLocal, t.yLocal, t.yw, t.yh
 		local radiusSquared, filterTable, ignoreFilter = t.radiusSquared, t.filterTable, t.ignoreFilter
 		while state do
-			if filterTable[value] or ignoreFilter then 
+			if filterTable[value] or ignoreFilter then
 				-- inline the :getXY() here in critical minimap update loop
 				local x2, y2 = floor(state / 10000) / 10000, (state % 10000) / 10000
 				local x = (x2 - xLocal) * yw
@@ -240,7 +240,7 @@ do
 		tablestack[t] = true
 		return nil, nil
 	end
-	
+
 	--[[
 		Find all nearby nodes within the radius of the given (x,y) for a nodeType and zone
 		this function returns an iterator
@@ -248,7 +248,7 @@ do
 	function GatherMate:FindNearbyNode(zone, x, y, nodeType, radius, ignoreFilter)
 		local tbl = next(tablestack) or {}
 		tablestack[tbl] = nil
-		
+
 		tbl.data = gmdbs[nodeType][self.zoneData[zone][3]] or emptyTbl
 		tbl.yw, tbl.yh = self.zoneData[zone][1], self.zoneData[zone][2]
 		tbl.radiusSquared = radius * radius
@@ -264,7 +264,7 @@ do
 		local state, value = next(data, prestate)
 		local filterTable = t.filterTable
 		while state do
-			if filterTable[value] then 
+			if filterTable[value] then
 				return state, value
 			end
 			state, value = next(data, state)
@@ -272,7 +272,7 @@ do
 		tablestack[t] = true
 		return nil, nil
 	end
-	
+
 	--[[
 		This function returns an iterator for the given zone and nodeType
 	]]
@@ -283,7 +283,7 @@ do
 		else
 			local tbl = next(tablestack) or {}
 			tablestack[tbl] = nil
-			
+
 			tbl.data = t
 			tbl.filterTable = filter[nodeType]
 			return dbCoordIter, tbl, nil
@@ -393,37 +393,3 @@ function GatherMate:DeleteNodeFromZone(nodeType, nodeID, zone)
 	end
 end
 
-
----------------------
--- DuowanInterface
-function GatherMate_Toggle(switch)
-	if (switch) then
-		db.showWorldMap = true;
-		GatherMapOptionButton:Show();
-		GatherMate:EnableModule("Display");
-	else
-		db.showWorldMap = false;
-		GatherMapOptionButton:Hide();
-		GatherMate:DisableModule("Display");
-	end
-end
-
-function GatherMate_MinimapToggle(switch)
-	local Display = GatherMate:GetModule("Display", true);
-	if (switch) then
-		db.showMinimap = true;
-	else
-		db.showMinimap = false;
-		if (Display) then
-			Display:CleanMinimapPins();
-		end
-	end
-end
-
-function GatherMate_TreasureToggle(switch)
-	if (switch) then
-		db.show["Treasure"] = "always";
-	else
-		db.show["Treasure"] = "never";
-	end
-end

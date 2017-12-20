@@ -88,16 +88,8 @@ end
 local tooltip_template = "|c%02x%02x%02x%02x%s|r"
 local function showPin(self)
 	if (self.title) then
-		local tooltip, pinset
-		if self.worldmap then
-			-- override default UI to hide the tooltip
-			--WorldMapBlobFrame:SetScript("OnUpdate", nil)
-			tooltip = WorldMapTooltip
-			pinset = worldmapPins
-		else
-			tooltip = GameTooltip
-			pinset = minimapPins
-		end
+		local tooltip = self.worldmap and WorldMapTooltip or GameTooltip
+		local pinset = self.worldmap and worldmapPins or minimapPins
 		local x, y = self:GetCenter()
 		local parentX, parentY = UIParent:GetCenter()
 		if ( x > parentX ) then
@@ -129,13 +121,7 @@ end
 	Pin OnLeave
 ]]
 local function hidePin(self)
-	if self.worldmap then
-		-- restore default UI
-		--WorldMapBlobFrame:SetScript("OnUpdate", WorldMapBlobFrame_OnUpdate)
-		WorldMapTooltip:Hide()
-	else
-		GameTooltip:Hide()
-	end
+	if self.worldmap then WorldMapTooltip:Hide() else GameTooltip:Hide() end
 end
 --[[
 	Pin click handler
@@ -156,7 +142,7 @@ end
 	Add pin location to Cartographer_Waypoints
 ]]
 local function addCartWaypoint(button,pin)
-	if Cartographer and Cartographer.HasModule and Cartographer:HasModule("Waypoints") and Cartographer:IsModuleActive("Waypoints") then
+	if Cartographer and Cartographer:HasModule("Waypoints") and Cartographer:IsModuleActive("Waypoints") then
 		local x, y = GatherMate:getXY(pin.coords)
 		local cartCoordID = floor(x*10000 + 0.5) + floor(y*10000 + 0.5)*10001
 		local BZR = LibStub("LibBabble-Zone-3.0"):GetReverseLookupTable()
@@ -191,7 +177,7 @@ local function generatePinMenu(self,level)
 		info.isTitle      = nil
 		info.notCheckable = nil
 		for id, pin in pairs(worldmapPins) do
-			if pin:IsMouseOver() and pin.title then
+			if MouseIsOver(pin) and pin.title then
 				info.text = L["Delete"] .. " :" ..pin.title
 				info.icon = nodeTextures[pin.nodeType][GatherMate:GetIDForNode(pin.nodeType, pin.title)]
 				info.func = deletePin
@@ -201,7 +187,7 @@ local function generatePinMenu(self,level)
 		end
 
 		-- Cartographer_Waypoints menu item
-		if Cartographer and Cartographer.HasModule and Cartographer:HasModule("Waypoints") and Cartographer:IsModuleActive("Waypoints") then
+		if Cartographer and Cartographer:HasModule("Waypoints") and Cartographer:IsModuleActive("Waypoints") then
 			info.text = L["Add this location to Cartographer_Waypoints"]
 			info.icon = nil
 			info.func = addCartWaypoint
@@ -403,7 +389,7 @@ function Display:getMapPin()
 	-- create a new pin
 	pinCount = pinCount + 1
 	pin = CreateFrame("Button", "GatherMatePin"..pinCount, WorldMapButton)
-	pin:SetFrameLevel(pin:GetFrameLevel() + 10)
+	pin:SetFrameLevel(5)
 	pin:EnableMouse(true)
 	pin:SetWidth(16)
 	pin:SetHeight(16)
@@ -551,7 +537,7 @@ function Display:addMiniPin(pin, refresh)
 		pin:Show()
 		pin:ClearAllPoints()
 		pin:SetPoint("CENTER", Minimap, "CENTER", diffX * minimapWidth, -diffY * minimapHeight)
-		pin:SetAlpha(min(alpha,db.alpha))
+		pin:SetAlpha(alpha)
 	else
 		pin:Hide()
 	end
@@ -759,9 +745,6 @@ function Display:UpdateMiniMap(force)
 	end
 end
 
-function Display:CleanMinimapPins()
-	clearpins(minimapPins);
-end
 --[[
 	Refresh the worldmap
 	we check profile preferences for what to display
