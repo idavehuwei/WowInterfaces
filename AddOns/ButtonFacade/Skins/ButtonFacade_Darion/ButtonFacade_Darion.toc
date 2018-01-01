@@ -1,0 +1,16 @@
+## Interface: 30000
+## X-BigfootType: 1
+## X-BigfootDesc: 给动作条加上各种个性化的边框和皮肤。
+## Title: ButtonFacade: |cffff8000Darion|r
+## Version: 3.0.3.2
+## Notes: Darion skin for Button Facade.
+## Author: Darsain
+## X-eMail: darsain@gmail.com
+## X-Website: 
+## X-Category: Action Bars
+## X-Credits: JJ Sheets, etc.
+## X-Curse-Packaged-Version: 3.0.3.2
+
+## OptionalDeps: LibButtonFacade, ButtonFacade
+
+Skins.lua

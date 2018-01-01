@@ -1,0 +1,18 @@
+## Interface: 30100
+## Title: [Grid] GridStatusRaidDebuff
+## Title-zhCN: 团队框架(GridStatusRaidDebuff 模块)
+## Notes: Adds a status & indicator to Grid for debuffs which used by Raid Mobs.
+## Notes-zhCN: [Grid] 在 Grid 添加团队减益状态提示。
+## Notes-zhTW: [Grid] 在 Grid 添加團隊減益狀態提示。
+## Author: Azelkeeber(KR)
+## Version: 3.0
+## Dependencies: Grid
+## OptionalDeps: Ace2, LibBabble-Zone-3.0
+## X-Embeds: Ace2, LibBabble-Zone-3.0
+## X-Category: UnitFrame
+## X-GridStatusModule: GridStatusRaidDebuff
+## X-Revision: BigFoot
+## LoadWith: Grid
+## LoadOnDemand: 1
+
+GridStatusRaidDebuff.lua

@@ -1,0 +1,198 @@
+------------------------------------------------------------------------
+r52 | pb_ee1 | 2009-04-25 00:13:54 +0000 (Sat, 25 Apr 2009) | 1 line
+Changed paths:
+   A /tags/1.0.2-release (from /trunk:51)
+
+Tagging as 1.0.2-release
+------------------------------------------------------------------------
+r51 | pb_ee1 | 2009-04-25 00:13:15 +0000 (Sat, 25 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/SharedMediaAdditionalFonts.toc
+
+SharedMediaAdditionalFonts: TOC Update
+------------------------------------------------------------------------
+r49 | pb_ee1 | 2008-10-15 23:26:18 +0000 (Wed, 15 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/SharedMediaAdditionalFonts.lua
+   A /trunk/fonts/X360.ttf
+
+SharedMediaAdditionalFonts: Adding X360 font.
+------------------------------------------------------------------------
+r48 | pb_ee1 | 2008-10-15 23:24:20 +0000 (Wed, 15 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/SharedMediaAdditionalFonts.toc
+
+SharedMediaAdditionalFonts: Fixing TOC.
+------------------------------------------------------------------------
+r46 | root | 2008-09-29 22:19:01 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   A /trunk/.pkgmeta
+
+Facilitate WowAce-on-CurseForge transition
+------------------------------------------------------------------------
+r44 | root | 2008-09-29 20:58:38 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   D /tmp/trunk/SharedMediaAdditionalFonts
+   A /trunk (from /tmp/trunk/SharedMediaAdditionalFonts:43)
+
+Importing old repo data under /trunk
+------------------------------------------------------------------------
+r43 | pb_ee1 | 2008-09-14 19:50:39 +0000 (Sun, 14 Sep 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts/SharedMediaAdditionalFonts.lua
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/impact.ttf
+
+SharedMediaAdditionalFonts: Adding Impact font
+------------------------------------------------------------------------
+r42 | pb_ee1 | 2008-09-02 19:33:28 +0000 (Tue, 02 Sep 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts/SharedMediaAdditionalFonts.lua
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/LiberationSans-Regular.ttf
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/LiberationSerif-Regular.ttf
+
+SharedMediaAdditionalFonts: Adding Liberation Fonts
+------------------------------------------------------------------------
+r39 | pb_ee1 | 2008-07-16 22:51:37 +0000 (Wed, 16 Jul 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts/SharedMediaAdditionalFonts.lua
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/Accidental Presidency.ttf
+
+SharedMediaAdditionalFonts: Adding Accidental Presidency
+------------------------------------------------------------------------
+r37 | pb_ee1 | 2008-04-12 14:58:22 +0000 (Sat, 12 Apr 2008) | 4 lines
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts/Core.lua
+   M /tmp/trunk/SharedMediaAdditionalFonts/SharedMediaAdditionalFonts.toc
+
+SharedMediaAdditionalFonts:
+- Removed useless comments in Core.lua
+- TOC update
+- X-Credits
+------------------------------------------------------------------------
+r33 | elsia | 2008-03-06 17:01:57 +0000 (Thu, 06 Mar 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts
+   M /tmp/trunk/SharedMediaAdditionalFonts/Core.lua
+   A /tmp/trunk/SharedMediaAdditionalFonts/Libs
+   A /tmp/trunk/SharedMediaAdditionalFonts/Libs/LibStub.lua
+   A /tmp/trunk/SharedMediaAdditionalFonts/SharedMediaAdditionalFonts.lua
+   M /tmp/trunk/SharedMediaAdditionalFonts/SharedMediaAdditionalFonts.toc
+   M /tmp/trunk/SharedMediaAdditionalFonts/embeds.xml
+
+SharedMediaAdditionalFonts:Mirror treatment from SharedMedia to Register with any library that is present (LSM-3.0, LSM-2.0, SML).
+------------------------------------------------------------------------
+r29 | funkydude | 2007-11-13 17:19:46 +0000 (Tue, 13 Nov 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts/SharedMediaAdditionalFonts.toc
+
+.trunk: Bump toc for various addons and libraries working on the PTR
+------------------------------------------------------------------------
+r28 | pb_ee1 | 2007-11-06 21:26:28 +0000 (Tue, 06 Nov 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts/Core.lua
+
+SharedMediaAdditionalFonts: Removing unused data in Core.lua.
+------------------------------------------------------------------------
+r27 | pb_ee1 | 2007-11-04 17:51:15 +0000 (Sun, 04 Nov 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts/Core.lua
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/DIOGENES.ttf
+
+SharedMediaAdditionalFonts: Adding Diogenes font.
+------------------------------------------------------------------------
+r26 | pb_ee1 | 2007-10-02 22:29:08 +0000 (Tue, 02 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts/SharedMediaAdditionalFonts.toc
+
+SharedMediaAdditionalFonts: Updating TOC.
+------------------------------------------------------------------------
+r25 | pb_ee1 | 2007-09-22 21:31:39 +0000 (Sat, 22 Sep 2007) | 3 lines
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts/Core.lua
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/ALBAS___.ttf
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/Blazed.ttf
+   D /tmp/trunk/SharedMediaAdditionalFonts/fonts/DARK11__.ttf
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/Disko.ttf
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/Pokemon Solid.ttf
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/Rock Show Whiplash.ttf
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/Solange.ttf
+   D /tmp/trunk/SharedMediaAdditionalFonts/fonts/stonehen.ttf
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/trashco.ttf
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/waltographUI.ttf
+
+SharedMediaAdditionalFonts:
+- Adding some very cool & tested fonts.
+- You should really give it a try!
+------------------------------------------------------------------------
+r24 | pb_ee1 | 2007-09-19 06:53:52 +0000 (Wed, 19 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts/Core.lua
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/MystikOrbs.ttf
+
+SharedMediaAdditionalFonts: Adding MystikOrbs.
+------------------------------------------------------------------------
+r23 | pb_ee1 | 2007-09-18 17:48:38 +0000 (Tue, 18 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts/Core.lua
+   D /tmp/trunk/SharedMediaAdditionalFonts/fonts/Firstv2p.ttf
+   D /tmp/trunk/SharedMediaAdditionalFonts/fonts/TECHNOID.ttf
+   D /tmp/trunk/SharedMediaAdditionalFonts/fonts/UnrealT.ttf
+
+SharedMediaAdditionalFonts: Removing unusable fonts.
+------------------------------------------------------------------------
+r22 | pb_ee1 | 2007-09-18 15:27:45 +0000 (Tue, 18 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts/Core.lua
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/TECHNOID.ttf
+
+SharedMediaAdditionalFonts: Forcing upload of TECHNOID.TTF.
+------------------------------------------------------------------------
+r21 | pb_ee1 | 2007-09-18 15:22:13 +0000 (Tue, 18 Sep 2007) | 3 lines
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts
+   M /tmp/trunk/SharedMediaAdditionalFonts/Core.lua
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/Firstv2p.ttf
+   A /tmp/trunk/SharedMediaAdditionalFonts/fonts/starcine.ttf
+
+SharedMediaAdditionalFonts:
+- Correcting tsvn:logtemplate.
+- Adding three fonts to be tested.
+------------------------------------------------------------------------
+r20 | pb_ee1 | 2007-09-18 14:53:30 +0000 (Tue, 18 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionalFonts/Core.lua
+   A /tmp/trunk/SharedMediaAdditionalFonts/SharedMediaAdditionalFonts.toc (from /tmp/trunk/SharedMediaAdditionalFonts/SharedMediaAdditionnalFonts.toc:19)
+   D /tmp/trunk/SharedMediaAdditionalFonts/SharedMediaAdditionnalFonts.toc
+
+SharedMediaAdditionalFonts: Fixing typo in AddOn name (and thus in file paths).
+------------------------------------------------------------------------
+r19 | pb_ee1 | 2007-09-18 14:50:11 +0000 (Tue, 18 Sep 2007) | 1 line
+Changed paths:
+   A /tmp/trunk/SharedMediaAdditionalFonts (from /tmp/trunk/SharedMediaAdditionnalFonts:18)
+   D /tmp/trunk/SharedMediaAdditionnalFonts
+
+Renamed to correct spelling xD
+------------------------------------------------------------------------
+r18 | pb_ee1 | 2007-09-18 11:47:34 +0000 (Tue, 18 Sep 2007) | 4 lines
+Changed paths:
+   M /tmp/trunk/SharedMediaAdditionnalFonts
+   A /tmp/trunk/SharedMediaAdditionnalFonts/Core.lua
+   A /tmp/trunk/SharedMediaAdditionnalFonts/SharedMediaAdditionnalFonts.toc
+   A /tmp/trunk/SharedMediaAdditionnalFonts/embeds.xml
+   A /tmp/trunk/SharedMediaAdditionnalFonts/fonts
+   A /tmp/trunk/SharedMediaAdditionnalFonts/fonts/DARK11__.ttf
+   A /tmp/trunk/SharedMediaAdditionnalFonts/fonts/FRAKS___.ttf
+   A /tmp/trunk/SharedMediaAdditionnalFonts/fonts/UnrealT.ttf
+   A /tmp/trunk/SharedMediaAdditionnalFonts/fonts/stonehen.ttf
+
+SharedMediaAdditionnalFonts:
+- Initial commit.
+- Please read the comments in Core.lua if you want to add your own font.
+- Based on MyMedia code (from SharedMedia).
+------------------------------------------------------------------------
+r17 | pb_ee1 | 2007-09-18 11:32:35 +0000 (Tue, 18 Sep 2007) | 1 line
+Changed paths:
+   A /tmp/trunk/SharedMediaAdditionnalFonts
+
+SharedMediaAdditionnalFonts: Creating folder.
+------------------------------------------------------------------------

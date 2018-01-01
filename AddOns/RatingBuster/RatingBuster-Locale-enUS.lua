@@ -1,6 +1,6 @@
 --[[
 Name: RatingBuster enUS locale
-Revision: $Revision: 223 $
+Revision: $Revision: 240 $
 Translated by:
 - Whitetooth (hotdogee [at] gmail [dot] com)
 ]]
@@ -23,12 +23,14 @@ L["Suspend/resume this addon"] = true
 ---------------------------
 -- Slash Command Options --
 ---------------------------
-L["RatingBuster"] = true;
 L["General Settings"] = true
 L["Profiles"] = true
 -- /rb win
 L["Options Window"] = true
 L["Shows the Options Window"] = true
+-- /rb hidebzcomp
+L["Hide Blizzard Item Comparisons"] = true
+L["Disable Blizzard stat change summary when using the built-in comparison tooltip"] = true
 -- /rb statmod
 L["Enable Stat Mods"] = true
 L["Enable support for Stat Mods"] = true
@@ -499,6 +501,7 @@ L["Red Socket"] = EMPTY_SOCKET_RED
 L["ItemID or Link of the gem you would like to auto fill"] = true
 L["<ItemID|Link>"] = true
 L["|cffffff7f%s|r is now set to |cffffff7f[%s]|r"] = true
+L["Invalid input: %s. ItemID or ItemLink required."] = true
 L["Queried server for Gem: %s. Try again in 5 secs."] = true
 -- /rb sum gem yellow
 L["Yellow Socket"] = EMPTY_SOCKET_YELLOW

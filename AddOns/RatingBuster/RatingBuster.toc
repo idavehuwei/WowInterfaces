@@ -1,29 +1,26 @@
-## Interface: 30100
-## Title: [Duowan] RatingBuster
-## Title-zhTW: [多玩] 裝備屬性解析 RatingBuster
-## Notes-zhCN: 装备属性分析 RatingBuster
-## Title-zhCN: [多玩] 装备属性分析 RatingBuster
+﻿## Interface: 30100
+## Title: RatingBuster
 ## Notes: Item stat breakdown, analysis and comparison
 ## Notes-zhTW: 裝備數值解析與比較
 ## Author: Whitetooth
-## X-eMail: hotdogee [at] gmail [dot] com
-## X-DuowanAddon: 团队副本
-## SavedVariables: DuowanAddon_RatingBusterDB, DuowanAddon_EnhancedCharStatsDB
-## OptionalDeps: !!!CWDGLibsPack, Ace3, LibTipHooker-1.1, LibStatLogic-1.1, UTF8, LibBabble-Inventory-3.0, TankPoints
-## X-Embeds: Ace3, LibTipHooker-1.1, LibStatLogic-1.1, UTF8, LibBabble-Inventory-3.0
-## X-Category: Interface Enhancements
-## Dependencies: Duowan
-## X-Revision: Duowan
-## LoadOnDemand:
-## X-RelSite-WoWI: 5819
-## X-RelSite-Curse: 4991
-## X-License: GPL v2
-## X-Encoding: UTF-8
+## X-Revision: BigFoot
+## SavedVariables: RatingBusterDB
+## OptionalDeps: Ace3, LibTipHooker-1.1, LibStatLogic-1.1, UTF8, LibBabble-Inventory-3.0, LibDualSpec-1.0, TankPoints
 
+
+######################
 # Localization Files #
+######################
 RatingBuster-Locale-enUS.lua
+RatingBuster-Locale-ruRU.lua
 RatingBuster-Locale-zhCN.lua
 RatingBuster-Locale-zhTW.lua
+RatingBuster-Locale-deDE.lua
+RatingBuster-Locale-frFR.lua
+RatingBuster-Locale-koKR.lua
+RatingBuster-Locale-esES.lua
 
+########
 # Core #
+########
 RatingBuster.lua

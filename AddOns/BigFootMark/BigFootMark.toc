@@ -8,9 +8,7 @@
 ## Notes-zhTW: |cff00ffff艾澤拉斯國家地理|r自主開發的NPC標記。
 ## SavedVariables: BigFootMarkDB,BigFootMarkMappingDB
 ## X-DuowanAddon: 地图
-## Dependencies: Duowan
-## X-Revision: Duowan
-## LoadOnDemand:
+## Dependencies: BigFoot
 
 BigFootMark.xml
 

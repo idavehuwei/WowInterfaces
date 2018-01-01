@@ -1,0 +1,20 @@
+## Interface: 30100
+## Title: TrinketMenu
+## Title-zhCN: 饰品管理
+## Author: Gello
+## Notes: AddOn to manage trinkets
+## Notes-zhCN: 方便地管理饰品。
+## SavedVariables: TrinketMenuOptions
+## SavedVariablesPerCharacter: TrinketMenuPerOptions, TrinketMenuQueue
+## LoadOnDemand: 1
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+ClickBinder.lua
+TrinketMenu.lua
+TrinketMenu.xml
+TrinketMenuOpt.lua
+TrinketMenuOpt.xml
+TrinketMenuQueue.lua
+TrinketMenuQueue.xml
+localization.lua
+TrinketMenuConfig.lua

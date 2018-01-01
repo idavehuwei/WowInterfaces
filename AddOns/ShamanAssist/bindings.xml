@@ -1,0 +1,11 @@
+<Bindings>
+	<Binding name="CLICK SMAButton1:LeftButton" runOnUp="true" header="SMA_HEADER">--[[dummy]]</Binding>
+	<Binding name="CLICK SMAButton2:LeftButton" runOnUp="true">--[[dummy]]</Binding>
+	<Binding name="CLICK SMAButton3:LeftButton" runOnUp="true">--[[dummy]]</Binding>
+	<Binding name="CLICK SMAButton4:LeftButton" runOnUp="true">--[[dummy]]</Binding>	
+	<Binding name="CLICK SMAButton1:RightButton" runOnUp="true">--[[dummy]]</Binding>
+	<Binding name="CLICK SMAButton2:RightButton" runOnUp="true">--[[dummy]]</Binding>
+	<Binding name="CLICK SMAButton3:RightButton" runOnUp="true">--[[dummy]]</Binding>
+	<Binding name="CLICK SMAButton4:RightButton" runOnUp="true">--[[dummy]]</Binding>
+	<Binding name="CLICK SMACALLBACK:LeftButton" runOnUp="true">--[[dummy]]</Binding>	
+</Bindings>

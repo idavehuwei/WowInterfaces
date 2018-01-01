@@ -1,0 +1,17 @@
+## Interface: 30100
+## Title: Shaman Assist
+## Notes: Provides a simple totem action bar for shaman.
+## Title-zhCN: 萨满助手
+## Notes-zhCN: 提供一条简易的图腾动作条以及其他专为萨满祭司准备的功能.
+## Title-zhTW: 薩滿助手
+## Notes-zhTW: 提供一條簡易的圖騰動作條以及其他專為薩滿祭司準備的功能.
+## Author: 独孤傲雪
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+## SavedVariables: SMA_Config
+
+localization.lua
+ShamanAssist.lua
+cyCircled.lua
+Options.lua

@@ -10,7 +10,7 @@ local BZ = LibStub("LibBabble-Zone-3.0")
 local BZL = BZ:GetLookupTable()
 local BZR = BZ:GetReverseLookupTable()
 
-local boss, current_zone, viewer, current_boss
+local boss, current_zone, viewer
 
 local InstanceMaps_Loot_ScanTooltip
 function mod:OnEnable()
@@ -18,9 +18,7 @@ function mod:OnEnable()
 	self:RegisterMessage("InstanceMap_Show")
 	self:RegisterMessage("InstanceMap_Hide", "HideViewer")
 
-	InstanceMaps_Loot_ScanTooltip = CreateFrame("GameTooltip", 
-	"InstanceMaps_Loot_ScanTooltip", 
-	UIParent, "GameTooltipTemplate")
+	InstanceMaps_Loot_ScanTooltip = CreateFrame("GameTooltip", "InstanceMaps_Loot_ScanTooltip", UIParent, "GameTooltipTemplate")
 	InstanceMaps_Loot_ScanTooltip:SetOwner(UIParent, "ANCHOR_NONE")
 end
 
@@ -35,14 +33,14 @@ end
 
 function mod:InstanceMaps_Notes_Click(event, title, zone, data)
 	if not (title and BBR[title]) then return end
-	self:DisplayLoot(zone, title)	
+	self:DisplayLoot(zone, title)
 end
 
 function mod:DisplayLoot(zone, title)
 	local old_boss = boss
 	boss = BBR[title]
 	current_zone = zone
-	current_boss = boss
+
 	if boss == old_boss then
 		-- close the viewer
 		boss = nil
@@ -52,53 +50,24 @@ function mod:DisplayLoot(zone, title)
 	self:UpdateViewer()
 end
 
-function addon:ShowBoss(zone, boss)
-	local old_boss = boss
-	boss = BBR[boss] and BBR[boss] or boss
-	if boss == current_boss then
-		return mod:HideViewer()
-	end
-	current_boss = boss
-	current_zone = zone
-	mod:UpdateViewer()
-end
-
 function mod:UpdateViewer()
-	boss = current_boss;
-	if not (current_boss and current_zone) then return end
+	if not (boss and current_zone) then return end
 	if not viewer then
-		local scroll = CreateFrame("ScrollFrame", "InstanceMaps_ScrollFrame", UIParent, "UIPanelScrollFrameTemplate");
-		scroll:SetWidth(250);
-		scroll:SetPoint("TOPRIGHT", instanceMapFrame, "TOPRIGHT", -20, 0);
-		scroll:SetPoint("BOTTOMRIGHT", instanceMapFrame, "BOTTOMRIGHT", -2, 0);
-		scroll:SetFrameStrata("FULLSCREEN");		
-		instanceMapFrame:SetScript("OnShow", function(self)
-			scroll:SetFrameLevel(self:GetFrameLevel() + 3);
-			scroll:Show();
-		end);
-		instanceMapFrame:SetScript("OnHide", function(self)
-			scroll:Hide();
-		end);
-		
 		viewer = LibStub("LibSimpleFrame-1.0"):New("InstanceMaps_LootViewer", {
-			position = {point="TOPLEFT", relpoint="TOPLEFT", x=-2, y=0},
+			position = {point="CENTER", x=0, y=0},
 			lock = false,
 			scale = 1,
 			strata = "FULLSCREEN",
 			fade = 1,
 			opacity = 1,
 			width = 250,
-			border = {0.9, 0.82, 0, 0},
-			background = {0, 0, 0, 0.3},
+			border = {0.9, 0.82, 0, 1},
+			background = {0, 0, 0, 1},
 			min_height = 20,
-		}, 0, scroll);
+		})
 		local close = CreateFrame("Button", nil, viewer, "UIPanelCloseButton")
 		close:SetPoint("TOPRIGHT", viewer)
-		close:SetScript("OnClick", self.HideViewer)				
-		viewer.core:SetClampedToScreen(false);
-		viewer.core:SetFrameLevel(scroll:GetFrameLevel() + 3);
-		scroll:SetScrollChild(viewer.core);
-		viewer:Attach("TOPRIGHT", scroll, "TOPRIGHT", -2, 0);
+		close:SetScript("OnClick", self.HideViewer)
 	end
 
 	-- haxxor
@@ -111,9 +80,7 @@ function mod:UpdateViewer()
 	end
 	-- end haxxor
 
-	if not pt("InstanceLoot." .. current_zone .. "." .. boss) and not 
-	pt("InstanceLootHeroic." .. 
-	current_zone .. "." .. boss) then
+	if not pt("InstanceLoot." .. current_zone .. "." .. boss) and not pt("InstanceLootHeroic." .. current_zone .. "." .. boss) then
 		self:Print(("PT3 has no table InstanceLoot.%s.%s"):format(current_zone, boss))
 		return self:HideViewer()
 	end
@@ -134,11 +101,9 @@ function mod:UpdateViewer()
 	end
 
 	--viewer:AddLine("Close"):Handler("OnLeftClick", hide_viewer)
+
 	viewer:Size()
 	viewer:SetPosition()
-	for i,l in pairs(viewer.lines) do
-		l:RegisterForDrag(nil)		
-	end
 	viewer:Show()
 end
 
@@ -168,10 +133,11 @@ function mod:AddSetTo(viewer, set)
 		local line
 		if link then
 			local r, g, b = GetItemQualityColor(rarity)
-			line = viewer:AddLine("|T"..texture..":12|t "..name, percentage):Color(r, g, 
-			b):Handler("OnEnter", self.OnMouseEnter, link)
+			line = viewer:AddLine("|T"..texture..":12|t "..name, percentage):Color(r, g, b)
+				:Handler("OnEnter", self.OnMouseEnter, link)
 		else
-			line = viewer:AddLine(id, percentage):Color(1, 0, 0):Handler("OnEnter", self.OnUnknownEnter)
+			line = viewer:AddLine(id, percentage):Color(1, 0, 0)
+				:Handler("OnEnter", self.OnUnknownEnter)
 		end
 		line:Handler("OnLeftClick", self.DropClick, id):Handler("OnLeave", self.OnMouseLeave)
 	end
@@ -210,18 +176,18 @@ function mod.DropClick(_, id)
 end
 
 function mod.OnMouseEnter(_, link)
-	--GameTooltip_SetDefaultAnchor(GameTooltip, this)	
-	WorldMapTooltip:SetOwner(viewer, "ANCHOR_RIGHT");	
-	WorldMapTooltip:SetHyperlink(link)
+	--GameTooltip_SetDefaultAnchor(GameTooltip, this)
+	GameTooltip:SetOwner(viewer, "ANCHOR_RIGHT")
+	GameTooltip:SetHyperlink(link)
 end
 
 function mod.OnUnknownEnter()
 	--GameTooltip_SetDefaultAnchor(GameTooltip, this)
-	WorldMapTooltip:SetOwner(viewer, "ANCHOR_RIGHT")
-	WorldMapTooltip:SetText(L["Unknown item; click to query"])
+	GameTooltip:SetOwner(viewer, "ANCHOR_RIGHT")
+	GameTooltip:SetText(L["Unknown item; click to query"])
 end
 
 function mod.OnMouseLeave()
-	WorldMapTooltip:Hide()
+	GameTooltip:Hide()
 end
 

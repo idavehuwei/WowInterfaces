@@ -17,8 +17,7 @@
 ## SavedVariables: _NPCScanOptions
 ## SavedVariablesPerCharacter: _NPCScanOptionsCharacter
 ## OptionalDeps: Ace3, LibTextTable-1.0, LibSharedMedia-3.0
-## Dependencies: Duowan
-## X-Revision: Duowan
+## Dependencies: !!UserDefaultSettings
 
 Locales.xml
 

@@ -1,8 +1,8 @@
-## Interface: 30100
-## LoadOnDemand: 0
-## Title: [Duowan] InstanceMaps
-## Title-zhCN: [多玩] 副本地图 InstanceMaps
-## Title-zhTW: [多玩] 副本地圖 InstanceMaps
+﻿## Interface: 30100
+## LoadOnDemand: 1
+## Title: InstanceMaps
+## Title-zhCN: 副本地图
+## Title-zhTW: 副本地圖
 ## Notes: Maps.  Like, for instances.
 ## Notes-zhCN: 在大地图上增加一个副本地图, 显示Boss位置以及掉落物
 ## Notes-zhTW: 在大地圖上增加一個副本地圖, 顯示首領位置以及掉落物
@@ -10,14 +10,13 @@
 ## eMail: kemayo@gmail.com
 ## X-Category: Map
 ## X-License: LGPL v2.1
-## X-DuowanAddon: 地图
-## Dependencies: Duowan
+## Dependencies: BigFoot
 ## OptionalDeps: Ace3, LibTourist-3.0, LibBabble-Zone-3.0, LibBabble-Boss-3.0, LibPeriodicTable-3.1, LibSimpleFrame-1.0
-## X-Embeds: Ace3, LibTourist-3.0, LibBabble-Zone-3.0, LibBabble-Boss-3.0, LibPeriodicTable-3.1, LibSimpleFrame-1.0
+
 ## X-Credits: Shameless ripping out of bits of Cartographer
-## SavedVariables: DuowanAddon_InstanceMapsDB
-## X-Revision: Duowan
-## LoadOnDemand: 1
+## SavedVariables: InstanceMapsDB
+## X-Revision: BigFoot
+
 
 Locales\Locale-enUS.lua
 Locales\Locale-zhCN.lua

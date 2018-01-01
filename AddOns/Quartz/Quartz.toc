@@ -30,8 +30,7 @@
 ## X-LoadOn-UNIT_SPELLCAST_START: LoadAddOn('Quartz')
 ## X-LoadOn-NotResting: true
 ## X-LoadOn-Slash: /quartz
-## Dependencies: Duowan
-## X-Revision: Duowan
+## Dependencies: !!UserDefaultSettings
 
 locale\Quartz-enUS.lua
 locale\Quartz-ruRU.lua

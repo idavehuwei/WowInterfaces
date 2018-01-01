@@ -18,7 +18,7 @@
 ## X-Curse-Project-Name: Ackis Recipe List
 ## X-Curse-Project-ID: arl
 ## X-Curse-Repository-ID: wow/arl/mainline
- 
+
 #@non-debug@
 ## Notes: Scans your tradeskills and tells you which recipes you are missing, along with information on how to obtain them.
 ## Notes-frFR: Analyse vos métiers et vous indique les recettes qui vous manquent, ainsi que des informations sur la façon de les obtenir.
@@ -59,11 +59,6 @@
 ## X-LoadOn-Slash: /arl
 ## X-LoadOn-Events: TRADE_SKILL_SHOW
 ## X-LoadOn-TRADE_SKILL_SHOW: AddonLoader:LoadAddOn("AckisRecipeList"); AckisRecipeList:TRADE_SKILL_SHOW()
-
-#@no-lib-strip@
-# Libraries
-embeds.xml
-#@end-no-lib-strip@
 
 # Localization files
 local.xml

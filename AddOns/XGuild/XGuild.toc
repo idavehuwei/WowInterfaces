@@ -10,7 +10,6 @@
 ## Author: Zek、Xgale
 ## OptionalDeps:
 ## SavedVariables:
-## Dependencies: Duowan
-## X-Revision: Duowan
+## Dependencies: !!UserDefaultSettings
 
 XGuild.lua

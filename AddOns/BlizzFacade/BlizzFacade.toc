@@ -1,0 +1,27 @@
+﻿## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 ButtonFacade|r 增加 ButtonFacade 支持到默认界面。。
+## Title: BlizzFacade
+## Version: 3.2.30
+## Notes: Adds ButtonFacade support to the default interface.
+## Notes-frFR: Ajoute le support de ButtonFacade à l'interface par défaut.
+## Notes-koKR: 기본 인터페이스에 ButtonFacade 지원을 추가합니다.
+## Author: StormFX
+## X-eMail: stormfx@gmail.com
+## X-Website: http://www.wowace.com/projects/blizzfacade
+## X-Category: Interface Enhancements
+## Dependencies: ButtonFacade
+## X-WoWI-ID: 13800
+## OptionalDeps: Ace3
+## SavedVariables: BlizzFacadeDB
+## X-Curse-Packaged-Version: 3.2.30
+## X-Curse-Project-Name: BlizzFacade
+## X-Curse-Project-ID: blizzfacade
+## X-Curse-Repository-ID: wow/blizzfacade/mainline
+
+# Locales
+Locales.lua
+
+# Core
+Core.lua
+Modules\Modules.xml

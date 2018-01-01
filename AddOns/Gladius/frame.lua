@@ -1,4 +1,4 @@
-local Gladius = Gladius
+﻿local Gladius = Gladius
 local db
 local currentBracket
 local LSM = LibStub("LibSharedMedia-3.0")
@@ -40,8 +40,7 @@ end
 
 --Create main frame
 function Gladius:CreateFrame()
-	
-	currentBracket = Gladius.currentBracket and Gladius.currentBracket or 5
+	currentBracket = Gladius.currentBracket
 	db = self.db.profile
 	
 	local backdrop = {bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", tile = true, tileSize = 16,}
@@ -93,7 +92,6 @@ function Gladius:CreateFrame()
 	end
 	self.frame:EnableMouse(true)
 	self.frame:SetMovable(true)
-	self.frame:SetToplevel(true);
 	self.frame:RegisterForDrag("LeftButton")
 	
 	self.frame:SetScript('OnDragStart', function(self) 
@@ -142,7 +140,6 @@ end
 --Create a button
 function Gladius:CreateButton(i)
 	db = self.db.profile
-	local fontPath = GameFontNormalSmall:GetFont()
 
 	if (not self.frame) then
 		self:CreateFrame()
@@ -152,18 +149,11 @@ function Gladius:CreateButton(i)
 	button:Hide()
 	
 	--selected frame (solid frame around the players target)
-    button.selected =  CreateFrame("Frame", nil, button)
+    button.selected =  CreateFrame("Frame", "Selected", button)
     button.selected:SetBackdrop({edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1,})
-    button.selected:SetFrameStrata("HIGH")
-    button.selected:Hide()
-    
-    --focus frame (solid frame around the players focus)
-    local focusBorder =  CreateFrame("Frame", nil, button)
-    focusBorder:SetBackdrop({edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1,})
-    focusBorder:Hide()
 	
 	--Health bar   
-	local healthBar = CreateFrame("StatusBar", nil, button)
+	local healthBar = CreateFrame("StatusBar", "HealthBar", button)
 	healthBar:ClearAllPoints()
 	healthBar:SetPoint("TOPLEFT",button,"TOPLEFT", classIconSize, 0)
 	healthBar:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT")
@@ -185,7 +175,7 @@ function Gladius:CreateButton(i)
     healthBar.highlight:Hide()
 
 	--Mana bar
-	local manaBar = CreateFrame("StatusBar", nil, button)
+	local manaBar = CreateFrame("StatusBar", "ManaBar", button)
 	manaBar:ClearAllPoints()
 	manaBar:SetPoint("TOPLEFT",healthBar,"BOTTOMLEFT",0,-1)
 	manaBar:SetMinMaxValues(0, 100)
@@ -196,7 +186,7 @@ function Gladius:CreateButton(i)
 	manaBar.bg:SetAlpha(0.3)
 
 	--Cast bar
-	local castBar=CreateFrame("StatusBar", nil, button)
+	local castBar=CreateFrame("StatusBar", "CastBar", button)
 	castBar:SetMinMaxValues(0, 100)
 	castBar:SetValue(0)
 	castBar:SetScript("OnUpdate", CastUpdate)
@@ -228,7 +218,7 @@ function Gladius:CreateButton(i)
     
     --the text
 	auraFrame.text = auraFrame:CreateFontString(nil,"OVERLAY")
-	auraFrame.text:SetFont(fontPath, db.auraFontSize)
+	auraFrame.text:SetFont(L["GFont"], db.auraFontSize)
 	auraFrame.text:SetTextColor(db.auraFontColor.r,db.auraFontColor.g,db.auraFontColor.b,db.auraFontColor.a)
 	auraFrame.text:SetShadowOffset(1, -1)
 	auraFrame.text:SetShadowColor(0, 0, 0, 1)
@@ -241,7 +231,7 @@ function Gladius:CreateButton(i)
     
 	--Name text
 	local text = healthBar:CreateFontString(nil,"OVERLAY")
-	text:SetFont(fontPath, db.healthFontSize)
+	text:SetFont(L["GFont"], db.healthFontSize)
 	text:SetTextColor(db.healthFontColor.r,db.healthFontColor.g,db.healthFontColor.b,db.healthFontColor.a)
 	text:SetShadowOffset(1, -1)
 	text:SetShadowColor(0, 0, 0, 1)
@@ -250,7 +240,7 @@ function Gladius:CreateButton(i)
 	
 	--Trinket "text"
 	local trinket = healthBar:CreateFontString(nil,"OVERLAY")
-	trinket:SetFont(fontPath, db.healthFontSize)
+	trinket:SetFont(L["GFont"], db.healthFontSize)
 	trinket:SetTextColor(db.healthFontColor.r,db.healthFontColor.g,db.healthFontColor.b,db.healthFontColor.a)
 	trinket:SetShadowOffset(1, -1)
 	trinket:SetShadowColor(0, 0, 0, 1)
@@ -260,25 +250,28 @@ function Gladius:CreateButton(i)
 	local overrideTrinket = button:CreateTexture(nil, "OVERLAY")
 	overrideTrinket:ClearAllPoints()
     overrideTrinket:SetPoint("TOPLEFT",button,"TOPLEFT",-2,0)
-
+    overrideTrinket.cooldown = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
+    overrideTrinket.cooldown:ClearAllPoints()
+    overrideTrinket.cooldown:SetAllPoints(overrideTrinket)
+    
     --Big trinket icon
     local bigTrinket = button:CreateTexture(nil, "ARTWORK")
-
+    bigTrinket.cooldown = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
+    
     --Small trinket icon
     local smallTrinket = button:CreateTexture(nil, "ARTWORK")
-
+    smallTrinket.cooldown = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
+    
     --Grid-style trinket icon
-	local gridTrinket =  CreateFrame("Frame", nil, button)
-	gridTrinket:SetBackdrop({bgFile = "Interface\\ChatFrame\\ChatFrameBackground", tileSize = 1, edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1,})
+	local gridTrinket =  CreateFrame("Frame", "Selected", button)
+    gridTrinket:SetBackdrop({bgFile = "Interface\\ChatFrame\\ChatFrameBackground", tileSize = 1, edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1,})
 	gridTrinket:SetBackdropColor(0,1,0,1)
 	gridTrinket:SetBackdropBorderColor(0,0,0,1)
-	
-	-- cooldown frame for trinkets
-	local cooldownFrame = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
+	gridTrinket.cooldown = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
 
 	--Health text
 	local healthText = healthBar:CreateFontString(nil,"LOW")
-	healthText:SetFont(fontPath, db.healthFontSize)
+	healthText:SetFont(L["GFont"], db.healthFontSize)
 	healthText:SetTextColor(db.healthFontColor.r,db.healthFontColor.g,db.healthFontColor.b,db.healthFontColor.a)
 	healthText:SetShadowOffset(1, -1)
 	healthText:SetShadowColor(0, 0, 0, 1)
@@ -287,7 +280,7 @@ function Gladius:CreateButton(i)
 	
 	--Mana text
 	local manaText = manaBar:CreateFontString(nil,"LOW")
-	manaText:SetFont(fontPath, db.manaFontSize)
+	manaText:SetFont(L["GFont"], db.manaFontSize)
 	manaText:SetTextColor(db.manaFontColor.r,db.manaFontColor.g,db.manaFontColor.b,db.manaFontColor.a)
 	manaText:SetShadowOffset(1, -1)
 	manaText:SetShadowColor(0, 0, 0, 1)
@@ -296,7 +289,7 @@ function Gladius:CreateButton(i)
 
 	--Class and race text
 	local classText = manaBar:CreateFontString(nil,"LOW")
-	classText:SetFont(fontPath, db.manaFontSize)
+	classText:SetFont(L["GFont"], db.manaFontSize)
 	classText:SetTextColor(db.manaFontColor.r,db.manaFontColor.g,db.manaFontColor.b,db.manaFontColor.a)
 	classText:SetShadowOffset(1, -1)
 	classText:SetShadowColor(0, 0, 0, 1)
@@ -305,7 +298,7 @@ function Gladius:CreateButton(i)
 	
 	--Cast bar texts
 	local castBarTextSpell = castBar:CreateFontString(nil,"LOW")
-	castBarTextSpell:SetFont(fontPath, db.castBarFontSize)
+	castBarTextSpell:SetFont(L["GFont"], db.castBarFontSize)
 	castBarTextSpell:SetTextColor(db.castBarFontColor.r,db.castBarFontColor.g,db.castBarFontColor.b,db.castBarFontColor.a)
 	castBarTextSpell:SetShadowOffset(1, -1)
 	castBarTextSpell:SetShadowColor(0, 0, 0, 1)
@@ -313,7 +306,7 @@ function Gladius:CreateButton(i)
 	castBarTextSpell:SetPoint("LEFT",5,0)
 
 	local castBarTextTime = castBar:CreateFontString(nil,"LOW")
-	castBarTextTime:SetFont(fontPath, db.castBarFontSize)
+	castBarTextTime:SetFont(L["GFont"], db.castBarFontSize)
 	castBarTextTime:SetTextColor(db.castBarFontColor.r,db.castBarFontColor.g,db.castBarFontColor.b,db.castBarFontColor.a)
 	castBarTextTime:SetShadowOffset(1, -1)
 	castBarTextTime:SetShadowColor(0, 0, 0, 1)
@@ -323,7 +316,7 @@ function Gladius:CreateButton(i)
     --Secure button for target and focus
 	local secure = CreateFrame("Button", "GladiusButton"..i, button, "SecureActionButtonTemplate")
 	secure:RegisterForClicks("AnyUp")
-	
+    
     button.mana = manaBar
     button.health = healthBar
     button.castBar = castBar
@@ -332,7 +325,6 @@ function Gladius:CreateButton(i)
     button.manaText = manaText
     button.healthText = healthText
     button.text = text
-    button.cooldownFrame = cooldownFrame
     button.trinket = trinket
     button.overrideTrinket = overrideTrinket
     button.smallTrinket = smallTrinket
@@ -344,105 +336,16 @@ function Gladius:CreateButton(i)
     button.auraFrame = auraFrame
     button.highlight = healthBar.highlight
     button.selected = button.selected
-    button.focusBorder = focusBorder
     button.secure = secure
     button.id = i
-    
-    -- create a pet bar for this unit
-    button.pet = Gladius:CreatePetButton(i, button)
 
     return button
-end
-
-function Gladius:CreatePetButton(id, parent)
-	db = self.db.profile
-	local fontPath = GameFontNormalSmall:GetFont()
-	
-	local button = CreateFrame("Frame", "GladiusPetButtonFrame"..id, parent)
-	button:Hide()
-	
-	--Health bar   
-	local healthBar = CreateFrame("StatusBar", nil, button)
-	healthBar:SetMinMaxValues(0, 100)
-	
-	healthBar.bg = healthBar:CreateTexture(nil, "BACKGROUND")
-	healthBar.bg:ClearAllPoints()
-	healthBar.bg:SetAllPoints(healthBar)
-	healthBar.bg:SetAlpha(0.3)
-	
-	--selected frame (solid frame around the players target)
-    local selected =  CreateFrame("Frame", nil, button)
-    selected:SetBackdrop({edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1,})	
-	selected:SetBackdropBorderColor(db.selectedFrameColor.r,db.selectedFrameColor.g,db.selectedFrameColor.b,db.selectedFrameColor.a)
-    selected:SetFrameStrata("HIGH")
-    selected:SetHeight(db.petBarHeight + 4)
-	selected:SetWidth(db.petBarWidth + 4)
-	selected:ClearAllPoints()
-	selected:SetPoint("CENTER", healthBar,"CENTER")
-    
-    --focus frame (solid frame around the players focus)
-    local focusBorder =  CreateFrame("Frame", nil, button)
-	focusBorder:SetBackdrop({edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1,})
-	focusBorder:SetBackdropBorderColor(db.focusBorderColor.r,db.focusBorderColor.g,db.focusBorderColor.b,db.focusBorderColor.a)	
-	focusBorder:SetHeight(db.petBarHeight + 4)
-	focusBorder:SetWidth(db.petBarWidth + 4)
-	focusBorder:ClearAllPoints()
-	focusBorder:SetPoint("CENTER", healthBar,"CENTER")	
-	
-	--Highlight for the health bar
-	healthBar.highlight = healthBar:CreateTexture(nil, "OVERLAY")
-    healthBar.highlight:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
-    healthBar.highlight:SetBlendMode("ADD")
-    healthBar.highlight:SetAlpha(0.5)
-    healthBar.highlight:ClearAllPoints()
-    healthBar.highlight:SetAllPoints(healthBar)
-    healthBar.highlight:Hide()
-	
-	--Name text
-	local nameText = healthBar:CreateFontString(nil,"LOW")
-	nameText:SetFont(fontPath, db.manaFontSize)
-	nameText:SetTextColor(db.manaFontColor.r,db.manaFontColor.g,db.manaFontColor.b,db.manaFontColor.a)
-	nameText:SetShadowOffset(1, -1)
-	nameText:SetShadowColor(0, 0, 0, 1)
-	nameText:SetJustifyH("CENTER")
-	nameText:SetPoint("LEFT",5,0)
-	
-	--Health text
-	local healthText = healthBar:CreateFontString(nil,"LOW")
-	healthText:SetFont(fontPath, db.manaFontSize)
-	healthText:SetTextColor(db.manaFontColor.r,db.manaFontColor.g,db.manaFontColor.b,db.manaFontColor.a)
-	healthText:SetShadowOffset(1, -1)
-	healthText:SetShadowColor(0, 0, 0, 1)
-	healthText:SetJustifyH("CENTER")
-	healthText:SetPoint("RIGHT",-5,0)
-	healthText:SetText("100%")
-	
-	--Secure
-	local secure = CreateFrame("Button", "GladiusPetButton"..id, button, "SecureActionButtonTemplate")
-	secure:RegisterForClicks("AnyUp")
-	secure:SetAllPoints(healthBar)
-	secure:SetWidth(db.petBarWidth)
-	secure:SetHeight(db.petBarHeight)
-	secure:SetHeight(db.petBarHeight)
-	
-	button.selected = selected
-	button.focusBorder = focusBorder
-	button.highlight = healthBar.highlight
-	button.health = healthBar
-	button.nameText = nameText
-	button.healthText = healthText
-	button.secure = secure
-	button.id = id
-	
-	return button
-	
 end
 
 --Update the frame and all buttons
 function Gladius:UpdateFrame()
 	local oldBracket
 	db = self.db.profile
-	local fontPath = GameFontNormalSmall:GetFont()
 	currentBracket = Gladius.currentBracket
 	
 	if (not self.frame) then return end
@@ -493,11 +396,6 @@ function Gladius:UpdateFrame()
 		targetIconSize = 0
 	end
 	
-	if ( db.showPets ) then			
-		margin = margin + db.petBarHeight + 2
-		height = height + currentBracket * ( db.petBarHeight+2 )
-	end
-	
 	if (db.trinketDisplay == "bigIcon" and db.trinketStatus) then
 		width = width+classIconSize*db.bigTrinketScale
 		extraSelectedWidth = extraSelectedWidth + (classIconSize*db.bigTrinketScale)
@@ -509,7 +407,7 @@ function Gladius:UpdateFrame()
 	--set frame size and position
 	self.frame:ClearAllPoints()
 	if (db.x==0 and db.y==0) then
-		self.frame:SetPoint("CENTER", UIParent, "CENTER",0,-15)
+		self.frame:SetPoint("TOP", UIParent, "TOP",0,-15)
 	else
 		local scale = self.frame:GetEffectiveScale()
 		if ( not db.growUp ) then
@@ -564,7 +462,8 @@ function Gladius:UpdateFrame()
 	
 	--update all the buttons
 	for i=1, currentBracket do
-		local button = self.buttons["arena"..i]
+	
+		button = self.buttons["arena"..i]
 		
 		--set button and secure button sizes
 		button:SetHeight(db.barHeight)
@@ -591,21 +490,27 @@ function Gladius:UpdateFrame()
 				button.secure:SetPoint("BOTTOM",self.buttons["arena" .. i-1],"TOP", 0, margin-extraBarHeight)
 			end
 		end
-			
+		
+		--color of selected border
+		if (button.GUID == UnitGUID("target") and db.selectedBorder) then
+			button.selected:SetBackdropBorderColor(db.selectedFrameColor.r,db.selectedFrameColor.g,db.selectedFrameColor.b,db.selectedFrameColor.a)
+		elseif (button.GUID ~= UnitGUID("target") or (button.GUID == UnitGUID("target") and not db.selectedBorder)) then
+			button.selected:SetBackdropBorderColor(db.selectedFrameColor.r,db.selectedFrameColor.g,db.selectedFrameColor.b,0)
+		end
+	
+		--set highlight visiblity
+		if (button.GUID == UnitGUID("target") and db.highlight) then
+			button.highlight:Show()
+		elseif (button.GUID == UnitGUID("target") and not db.highlight) then
+			button.highlight:Hide()
+		end
+		
 		--size of the selected frame
 		button.selected:SetHeight(selectedHeight)
 		button.selected:SetWidth(db.barWidth+extraSelectedWidth+targetIconSize+9)
 		button.selected:ClearAllPoints()
 		button.selected:SetPoint("TOP",button,"TOP", offset-1, 3)
-		button.selected:SetBackdropBorderColor(db.selectedFrameColor.r,db.selectedFrameColor.g,db.selectedFrameColor.b,db.selectedFrameColor.a)	
 		
-		--size of the selected frame
-		button.focusBorder:SetHeight(selectedHeight)
-		button.focusBorder:SetWidth(db.barWidth+extraSelectedWidth+targetIconSize+9)
-		button.focusBorder:ClearAllPoints()
-		button.focusBorder:SetPoint("TOP",button,"TOP", offset-1, 3)
-		button.focusBorder:SetBackdropBorderColor(db.focusBorderColor.r,db.focusBorderColor.g,db.focusBorderColor.b,db.focusBorderColor.a)
-				
 		--health bar location and texture
 		button.health:ClearAllPoints()
 		if (db.classIcon) then
@@ -655,12 +560,12 @@ function Gladius:UpdateFrame()
 		end
 		
 		--font sizes and color
-		button.text:SetFont(fontPath, db.healthFontSize)
-		button.healthText:SetFont(fontPath, db.healthFontSize)
-		button.manaText:SetFont(fontPath, db.manaFontSize)
-		button.classText:SetFont(fontPath, db.manaFontSize)
-		button.castBar.spellText:SetFont(fontPath, db.castBarFontSize)
-		button.castBar.timeText:SetFont(fontPath, db.castBarFontSize)
+		button.text:SetFont(L["GFont"], db.healthFontSize)
+		button.healthText:SetFont(L["GFont"], db.healthFontSize)
+		button.manaText:SetFont(L["GFont"], db.manaFontSize)
+		button.classText:SetFont(L["GFont"], db.manaFontSize)
+		button.castBar.spellText:SetFont(L["GFont"], db.castBarFontSize)
+		button.castBar.timeText:SetFont(L["GFont"], db.castBarFontSize)
 		
 		
 		--power bar colors
@@ -717,11 +622,15 @@ function Gladius:UpdateFrame()
 		button.overrideTrinket:SetWidth(classIconSize)
 		button.overrideTrinket:SetHeight(classIconSize+1)
 		button.overrideTrinket:SetTexture(Gladius:GetTrinketIcon("player", false))
-
+		button.overrideTrinket.cooldown:SetWidth(classIconSize)
+		button.overrideTrinket.cooldown:SetHeight(classIconSize+1)	
+		
 		if (db.trinketDisplay ~= "overrideIcon" or not db.trinketStatus or not db.classIcon) then
 			button.overrideTrinket:Hide()
+			button.overrideTrinket.cooldown:Hide()
 		else
 			button.overrideTrinket:Show()
+			button.overrideTrinket.cooldown:Show()
 		end
 		
 		--the big trinket icon		
@@ -731,11 +640,18 @@ function Gladius:UpdateFrame()
 		button.bigTrinket:ClearAllPoints()
 		local parent = db.targetIcon and button.targetIcon or button
 		button.bigTrinket:SetPoint("TOPRIGHT",parent,"TOPRIGHT", (classIconSize+1)*db.bigTrinketScale, 0)
-
+		
+		button.bigTrinket.cooldown:SetWidth(classIconSize)
+		button.bigTrinket.cooldown:SetHeight(classIconSize+1)	
+		button.bigTrinket.cooldown:ClearAllPoints()
+		button.bigTrinket.cooldown:SetAllPoints(button.bigTrinket)
+		
 		if (db.trinketDisplay ~= "bigIcon" or not db.trinketStatus) then
 			button.bigTrinket:Hide()
+			button.bigTrinket.cooldown:Hide()
 		else
 			button.bigTrinket:Show()
+			button.bigTrinket.cooldown:Show()
 		end
 		
 		--small trinket icon
@@ -745,10 +661,17 @@ function Gladius:UpdateFrame()
 		button.smallTrinket:ClearAllPoints()
 		button.smallTrinket:SetPoint("LEFT",button.mana,"RIGHT")
 		
+		button.smallTrinket.cooldown:SetWidth(db.manaBarHeight)
+		button.smallTrinket.cooldown:SetHeight(db.manaBarHeight)	
+		button.smallTrinket.cooldown:ClearAllPoints()
+		button.smallTrinket.cooldown:SetAllPoints(button.smallTrinket)
+		
 		if (db.trinketDisplay ~= "smallIcon" or not db.trinketStatus) then
 			button.smallTrinket:Hide()
+			button.smallTrinket.cooldown:Hide()
 		else
 			button.smallTrinket:Show()
+			button.smallTrinket.cooldown:Show()
 		end
 		
 		--grid trinket icon
@@ -757,42 +680,23 @@ function Gladius:UpdateFrame()
 		button.gridTrinket:ClearAllPoints()
 		button.gridTrinket:SetPoint("LEFT",button.mana,"RIGHT")
 		
-		if (db.trinketDisplay ~= "gridIcon") then
+		button.gridTrinket.cooldown:SetWidth(db.manaBarHeight)
+		button.gridTrinket.cooldown:SetHeight(db.manaBarHeight)	
+		button.gridTrinket.cooldown:ClearAllPoints()
+		button.gridTrinket.cooldown:SetAllPoints(button.gridTrinket)
+		
+		if (db.trinketDisplay ~= "gridIcon" or not db.trinketStatus) then
 			button.gridTrinket:Hide()
+			button.gridTrinket.cooldown:Hide()
 		else
 			button.gridTrinket:Show()
+			button.gridTrinket.cooldown:Show()
 		end
 		
-		-- cooldown frame
-		if ( db.trinketStatus and ( db.trinketDisplay == "overrideIcon" or db.trinketDisplay == "bigIcon" or db.trinketDisplay == "smallIcon" or db.trinketDisplay == "gridIcon" ) ) then 
-			button.cooldownFrame:ClearAllPoints()
-			
-			if ( db.trinketDisplay == "overrideIcon" ) then
-				button.cooldownFrame:SetAllPoints(button.overrideTrinket)
-				button.cooldownFrame:SetWidth(classIconSize)
-				button.cooldownFrame:SetHeight(classIconSize+1)	
-			elseif ( db.trinketDisplay == "bigIcon" ) then
-				button.cooldownFrame:SetWidth(classIconSize)
-				button.cooldownFrame:SetHeight(classIconSize+1)	
-				button.cooldownFrame:SetAllPoints(button.bigTrinket)
-			elseif ( db.trinketDisplay == "smallIcon" ) then
-				button.cooldownFrame:SetWidth(db.manaBarHeight)
-				button.cooldownFrame:SetHeight(db.manaBarHeight)	
-				button.cooldownFrame:SetAllPoints(button.smallTrinket)
-			elseif ( db.trinketDisplay == "gridIcon" ) then
-				button.cooldownFrame:SetWidth(db.manaBarHeight)
-				button.cooldownFrame:SetHeight(db.manaBarHeight)	
-				button.cooldownFrame:SetAllPoints(button.gridTrinket)
-			end
-			
-			button.cooldownFrame:Show()
-		else
-			button.cooldownFrame:Hide()
-		end
-				
 		--do some extra updates if the frame is in test mode
 		if (self.frame.testing) then
 			button.classText:SetText("")
+			
 			
 			--set the class/race text
 			if (db.classText) then
@@ -807,61 +711,25 @@ function Gladius:UpdateFrame()
 				end
 			end
 			
-			--set health text
-			local currentHealth, maxHealth = button.healthActual, button.healthMax
-			local healthPercent = button.healthPercentage
-			local healthText
-			
-			if ( db.healthActual ) then
-				healthText = db.shortHpMana and currentHealth > 9999 and string.format("%.1fk", (currentHealth / 1000)) or currentHealth  
-			end
-			
-			if ( db.healthMax ) then
-				local text = db.shortHpMana and maxHealth > 9999 and string.format("%.1fk", (maxHealth / 1000)) or maxHealth
-				if ( healthText ) then
-					healthText = string.format("%s/%s", healthText, text)
-				else
-					healthText = text
-				end
-			end
-			
-			if ( db.healthPercentage) then
-				if ( healthText ) then
-					healthText = string.format("%s (%d%%)", healthText, healthPercent)
-				else
-					healthText = string.format("%d%%", healthPercent)
-				end		
-			end
-			
-			button.healthText:SetText(healthText)
-						
 			--set the mana text
-			local currentMana, maxMana = button.manaActual, button.manaMax
-			local manaPercent = button.manaPercentage
-			local manaText
-			
-			if ( db.manaActual ) then
-				manaText = db.shortHpMana and currentMana > 9999 and string.format("%.1fk", (currentMana / 1000)) or currentMana  
+			button.manaText:SetText("")
+			if (db.manaActual) then
+				button.manaText:SetFormattedText("%d", button.manaActual)
 			end
-			
-			if ( db.manaMax ) then
-				local text = db.shortHpMana and maxMana > 9999 and string.format("%.1fk", (maxMana / 1000)) or maxMana
-				if ( manaText ) then
-					manaText = string.format("%s/%s", manaText, text)
+			if (db.manaMax) then
+				if button.manaText:GetText() then
+					button.manaText:SetFormattedText("%s/%d", button.manaText:GetText(), button.manaMax)
 				else
-					manaText = text
+					button.manaText:SetFormattedText("%d", button.manaMax)
 				end
 			end
-			
-			if ( db.manaPercentage) then
-				if ( manaText ) then
-					manaText = string.format("%s (%d%%)", manaText, manaPercent)
+			if (db.manaPercentage) then
+				if button.manaText:GetText() then
+					button.manaText:SetFormattedText("%s (%d%%)", button.manaText:GetText(), button.manaPercentage)
 				else
-					manaText = string.format("%d%%", manaPercent)
+					button.manaText:SetFormattedText("%d%%", button.manaPercentage)
 				end		
 			end
-			
-			button.manaText:SetText(manaText)
 			
 			--Trinket text toggling
 			if (not db.trinketStatus or (db.trinketDisplay ~= "nameText" and db.trinketDisplay ~= "nameIcon")) then
@@ -876,96 +744,5 @@ function Gladius:UpdateFrame()
 		end
 		
 		Gladius:UpdateAttributes("arena"..i)
-		
 	end
-	
-	for i=1, currentBracket do
-		local button = self.buttons["arena" .. i]
-		
-		if ( not db.showPets ) then 
-			button.pet:Hide()
-		else
-			button.pet:Show()
-		end
-		
-		-- health bar and background
-		button.pet.health:SetWidth(db.petBarWidth)
-		button.pet.health:SetHeight(db.petBarHeight)
-		button.pet.health:SetStatusBarTexture(LSM:Fetch(LSM.MediaType.STATUSBAR, db.barTexture))	
-		button.pet.health.bg:SetTexture(LSM:Fetch(LSM.MediaType.STATUSBAR, db.barTexture))
-		button.pet.health:SetStatusBarColor(db.healthColor.r,db.healthColor.g,db.healthColor.b,db.healthColor.a)
-		
-		-- points
-		local margin margin = db.castBar and db.castBarHeight+3 or 0
-		margin = db.powerBar and margin+db.manaBarHeight or margin
-		button.pet.health:ClearAllPoints()
-		button.pet.health:SetPoint("TOPLEFT",button,"BOTTOMLEFT", 0, -4-margin)
-		
-		-- text
-		button.pet.nameText:SetFont(fontPath, db.petFontSize)
-		button.pet.nameText:SetTextColor(db.petBarFontColor.r, db.petBarFontColor.g, db.petBarFontColor.b, db.petBarFontColor.a)
-		button.pet.healthText:SetFont(fontPath, db.petFontSize)
-		button.pet.healthText:SetTextColor(db.petBarFontColor.r, db.petBarFontColor.g, db.petBarFontColor.b, db.petBarFontColor.a)
-		
-		if ( not db.showPetType ) then
-			button.pet.nameText:Hide()
-		else	
-			button.pet.nameText:Show()
-		end
-		
-		if ( not db.showPetHealth ) then
-			button.pet.healthText:Hide()
-		else	
-			button.pet.healthText:Show()
-		end
-		
-		button.pet.selected:SetWidth(db.petBarWidth+4)
-		button.pet.selected:SetHeight(db.petBarHeight+4)
-		
-		Gladius:UpdateAttributes("arenapet"..i)
-		
-		if ( self.frame.testing ) then
-			--Update frame for pets
-			local lastNum = i-1
-			if ( lastNum > 0 ) then
-				local lastUnit = self.buttons["arena" .. lastNum]
-				if ( not lastUnit.isPetClass and db.showPets ) then
-					Gladius:NewNonPetUnit("arena"..lastNum)
-				end
-			end
-			
-			if ( db.showPets and i == currentBracket and not button.isPetClass ) then
-				Gladius:NewNonPetUnit("arena"..i)
-			end
-			
-			Gladius:UNIT_PET(nil, "player")
-		end
-			
-	end
-	
-	Gladius:PLAYER_TARGET_CHANGED(nil)
-	Gladius:PLAYER_FOCUS_CHANGED(nil)
-	
-end
-
-function Gladius:NewNonPetUnit(unit)
-	db = self.db.profile
-	local button = self.buttons[unit]
-	local currUnit = tonumber(string.sub(unit, -1))
-	local margin = db.barBottomMargin
-	margin = db.castBar and margin+db.castBarHeight or margin
-	margin = db.powerBar and margin+db.manaBarHeight or margin
-	margin = db.showPets and margin+db.petBarHeight+2 or margin
-	
-	Gladius.frame:SetHeight(self.frame:GetHeight() - db.petBarHeight - 2)
-	button.pet:Hide()
-	
-	if ( currUnit < Gladius.currentBracket ) then
-		local nextButton = self.buttons["arena" .. currUnit+1]
-		nextButton:ClearAllPoints()
-		nextButton.secure:ClearAllPoints()
-		nextButton:SetPoint("TOP",button,"BOTTOM", 0, -margin+db.petBarHeight+2)
-		nextButton.secure:SetPoint("TOP",button,"BOTTOM", 0, -margin+db.petBarHeight+2)
-	end
-	
 end

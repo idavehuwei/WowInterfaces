@@ -21,8 +21,28 @@ local function GridFrame_OnShow(self)
 end
 
 local function GridFrame_OnAttributeChanged(self, name, value)
+	local frame = GridFrame.registeredFrames[self:GetName()]
+
+	if not frame then
+		return
+	end
+
 	if name == "unit" then
-		GridFrame:UpdateFrameUnits()
+		if value then
+			frame.unit = value
+
+			local unitGUID = UnitGUID(value)
+			if unitGUID ~= nil then
+				frame.unitGUID = unitGUID
+			end
+
+			GridFrame:UpdateIndicators(frame)
+		else
+			-- unit is nil
+			frame.unitGUID = nil
+			frame.unitName = nil
+			frame.unit = value
+		end
 	elseif name == "type1" and (not value or value == "") then
 		self:SetAttribute("type1", "target")
 	end
@@ -30,9 +50,6 @@ end
 
 local function GridFrame_Initialize(self)
 	GridFrame:RegisterFrame(self)
-
-	self:SetAttribute("toggleForVehicle", true)
-
 	self:SetScript("OnShow", GridFrame_OnShow)
 	self:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
 end
@@ -64,25 +81,20 @@ function GridFrameClass.prototype:init(frame)
 	GridFrameClass.super.prototype.init(self)
 	self.frame = frame
 	self:CreateFrames()
-	self:Reset()
+	-- self:Reset()
 end
 
 function GridFrameClass.prototype:Reset()
 	for _,indicator in ipairs(self.indicators) do
 		self:ClearIndicator(indicator.type)
 	end
-	self:SetBorderSize(GridFrame.db.profile.borderSize)
+	self:SetWidth(GridFrame:GetFrameWidth())
+	self:SetHeight(GridFrame:GetFrameHeight())
 	self:SetOrientation(GridFrame.db.profile.orientation)
 	self:SetTextOrientation(GridFrame.db.profile.textorientation)
 	self:EnableText2(GridFrame.db.profile.enableText2)
 	self:SetIconSize(GridFrame.db.profile.iconSize, GridFrame.db.profile.iconBorderSize)
 	self:EnableMouseoverHighlight(GridFrame.db.profile.enableMouseoverHighlight)
-end
-
-function GridFrameClass.prototype:GetModifiedUnit()
-	local f = self.frame
-
-	return SecureButton_GetModifiedUnit(f)
 end
 
 function GridFrameClass.prototype:CreateFrames()
@@ -153,14 +165,14 @@ function GridFrameClass.prototype:CreateFrames()
 	f.Text2:SetFont(font, GridFrame.db.profile.fontSize)
 	f.Text2:SetJustifyH("CENTER")
 	f.Text2:SetJustifyV("CENTER")
-	f.Text2:SetPoint("TOP", f, "CENTER", 0, 4)
+	f.Text2:SetPoint("TOP", f, "CENTER")
 	f.Text2:Hide()
 
 	-- create icon background/border
 	f.IconBG = CreateFrame("Frame", nil, f)
 	f.IconBG:SetWidth(GridFrame.db.profile.iconSize)
 	f.IconBG:SetHeight(GridFrame.db.profile.iconSize)
-	f.IconBG:SetPoint("CENTER", f, "CENTER", GridFrame.db.profile.iconxoffset, GridFrame.db.profile.iconyoffset)
+	f.IconBG:SetPoint("CENTER", f, "CENTER")
 	f.IconBG:SetBackdrop( {
 				-- bgFile = "Interface\\Addons\\Grid\\white16x16", tile = true, tileSize = 16,
 				edgeFile = "Interface\\Addons\\Grid\\white16x16", edgeSize = 2,
@@ -173,7 +185,7 @@ function GridFrameClass.prototype:CreateFrames()
 
 	-- create icon
 	f.Icon = f.IconBG:CreateTexture("Icon", "OVERLAY")
-	f.Icon:SetPoint("CENTER", f.IconBG, "CENTER", 0, 0)
+	f.Icon:SetPoint("CENTER", f.IconBG, "CENTER")
 	f.Icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
 	f.Icon:SetTexture(1,1,1,0)
 
@@ -187,15 +199,15 @@ function GridFrameClass.prototype:CreateFrames()
 
 	-- create icon cooldown
 	f.IconCD = CreateFrame("Cooldown", nil, f.IconBG, "CooldownFrameTemplate")
-	f.IconCD:SetAllPoints(f.IconBG)
+	f.IconCD:SetAllPoints(f.Icon)
 	f.IconCD:SetScript("OnHide", function()
 		f.IconStackText:SetParent(f.IconBG)
-		f.IconStackText:SetPoint("BOTTOMRIGHT", f.IconBG, 0, 2)
+		f.IconStackText:SetPoint("BOTTOMRIGHT", f.IconBG, 2, -2)
 	end)
 
 	-- create icon stack text
 	f.IconStackText = f.IconBG:CreateFontString(nil, "OVERLAY")
-	f.IconStackText:SetPoint("BOTTOMRIGHT", f.IconBG, 0, 2)
+	f.IconStackText:SetPoint("BOTTOMRIGHT", f.IconBG, 2, -2)
 	f.IconStackText:SetFontObject(GameFontHighlightSmall)
 	f.IconStackText:SetFont(font, GridFrame.db.profile.fontSize, "OUTLINE")
 	f.IconStackText:SetJustifyH("RIGHT")
@@ -219,18 +231,14 @@ end
 
 -- shows the default unit tooltip
 function GridFrameClass.prototype:OnEnter(frame)
-	local unit = self.unit
-	local showTooltip = GridFrame.db.profile.showTooltip
+	if GridFrame.db.profile.showTooltip == "Always" or
+		(GridFrame.db.profile.showTooltip == "OOC" and
+			(not Grid.inCombat or
+				(self.unit and UnitIsDeadOrGhost(self.unit)))) then
 
-	if unit and UnitExists(unit) and (
-		showTooltip == "Always" or
-		(showTooltip == "OOC" and
-			(not InCombatLockdown() or
-			 UnitIsDeadOrGhost(unit)))
-		) then
-
-		frame.unit = unit
+		frame.unit = self.unit
 		UnitFrame_OnEnter(frame)
+		frame:SetScript("OnUpdate", UnitFrame_OnUpdate)
 	else
 		self:OnLeave(frame)
 	end
@@ -238,6 +246,7 @@ end
 
 function GridFrameClass.prototype:OnLeave(frame)
 	UnitFrame_OnLeave(frame)
+	frame:SetScript("OnUpdate", nil)
 end
 
 function GridFrameClass.prototype:SetWidth(width)
@@ -245,10 +254,9 @@ function GridFrameClass.prototype:SetWidth(width)
 	if not InCombatLockdown() then
 		f:SetWidth(width)
 	end
-	local newWidth = width - (GridFrame.db.profile.borderSize+1)*2
-	f.Bar:SetWidth(newWidth)
-	f.BarBG:SetWidth(newWidth)
-	f.HealingBar:SetWidth(newWidth)
+	f.Bar:SetWidth(width-4)
+	f.BarBG:SetWidth(width-4)
+	f.HealingBar:SetWidth(width-4)
 
 	self:PlaceIndicators()
 end
@@ -258,10 +266,9 @@ function GridFrameClass.prototype:SetHeight(height)
 	if not InCombatLockdown() then
 		f:SetHeight(height)
 	end
-	local newHeight = height - (GridFrame.db.profile.borderSize+1)*2
-	f.Bar:SetHeight(newHeight)
-	f.BarBG:SetHeight(newHeight)
-	f.HealingBar:SetHeight(newHeight)
+	f.Bar:SetHeight(height-4)
+	f.BarBG:SetHeight(height-4)
+	f.HealingBar:SetHeight(height-4)
 
 	self:PlaceIndicators()
 end
@@ -310,7 +317,7 @@ function GridFrameClass.prototype:PlaceIndicators()
 		f.Text2:SetJustifyV("CENTER")
 		f.Text2:ClearAllPoints()
 		if self.enableText2 then
-			f.Text2:SetPoint("RIGHT", f, "RIGHT", -2, 4)
+			f.Text2:SetPoint("RIGHT", f, "RIGHT", -2, 0)
 		end
 	else
 		f.Text:SetJustifyH("CENTER")
@@ -331,32 +338,9 @@ function GridFrameClass.prototype:PlaceIndicators()
 		f.Text2:SetJustifyV("CENTER")
 		f.Text2:ClearAllPoints()
 		if self.enableText2 then
-			f.Text2:SetPoint("TOP", f, "CENTER", 0, 4)
+			f.Text2:SetPoint("TOP", f, "CENTER")
 		end
 	end
-end
-
-function GridFrameClass.prototype:SetBorderSize(borderSize)
-	local f = self.frame
-
-	local backdrop = f:GetBackdrop()
-
-	backdrop.edgeSize = borderSize
-	backdrop.insets.left = borderSize
-	backdrop.insets.right = borderSize
-	backdrop.insets.top = borderSize
-	backdrop.insets.bottom = borderSize
-
-	local r, g, b, a = f:GetBackdropBorderColor()
-
-	f:SetBackdrop(backdrop)
-	f:SetBackdropBorderColor(r, g, b, a)
-	f:SetBackdropColor(0,0,0,1)
-
-	self:SetWidth(GridFrame:GetFrameWidth())
-	self:SetHeight(GridFrame:GetFrameHeight())
-
-	self:PositionAllIndicators()
 end
 
 function GridFrameClass.prototype:SetCornerSize(size)
@@ -397,16 +381,6 @@ function GridFrameClass.prototype:SetIconSize(size, borderSize)
 
 	f.Icon:SetWidth(size)
 	f.Icon:SetHeight(size)
-end
-
-function GridFrameClass.prototype:SetIconoffset(xoffset,yoffset)
-	if not xoffset then xoffset = GridFrame.db.profile.iconxoffset end
-	if not yoffset then yoffset = GridFrame.db.profile.iconyoffset end
-
-	local f = self.frame
-
-	f.IconBG:SetPoint("CENTER", f, "CENTER", xoffset, yoffset)
-
 end
 
 function GridFrameClass.prototype:EnableMouseoverHighlight(enabled)
@@ -557,41 +531,27 @@ function GridFrameClass.prototype:CreateIndicator(indicator)
    f:SetBackdropColor(1,1,1,1)
    f:SetFrameLevel(5)
    f:Hide()
-
-   self.frame[indicator] = f
-
-   self:PositionIndicator(indicator)
-end
-
-function GridFrameClass.prototype:PositionIndicator(indicator)
-   local f = self.frame[indicator]
-   if f then
-      local borderSize = GridFrame:GetBorderSize()
-	  -- position indicator wherever needed
-	  if indicator == "corner1" then
-		 -- bottom left
-		 f:SetPoint("BOTTOMLEFT", self.frame, "BOTTOMLEFT", borderSize, borderSize)
-	  elseif indicator == "corner2" then
-		 -- bottom right
-		 f:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -borderSize, borderSize)
-	  elseif indicator == "corner3" then
-		 -- top right
-		 f:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -borderSize, -borderSize)
-	  elseif indicator == "corner4" then
-		 -- top left
-		 f:SetPoint("TOPLEFT", self.frame, "TOPLEFT", borderSize, -borderSize)
-	  end
+   
+   -- position indicator wherever needed
+   if indicator == "corner1" then
+      -- bottom left
+      f:SetPoint("BOTTOMLEFT", self.frame, "BOTTOMLEFT", 1, 1)
+   elseif indicator == "corner2" then
+      -- bottom right
+      f:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -1, 1)
+   elseif indicator == "corner3" then
+      -- top right
+      f:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -1, -1)
+   elseif indicator == "corner4" then
+      -- top left
+      f:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 1, -1)
    end
-end
-
-function GridFrameClass.prototype:PositionAllIndicators()
-	for indicator in pairs(GridFrame.db.profile.statusmap) do
-		self:PositionIndicator(indicator)
-	end
+   
+   self.frame[indicator] = f
 end
 
 function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, maxValue, texture, start, duration, stack)
-
+	
 	if not color then color = { r = 1, g = 1, b = 1, a = 1 } end
 	if indicator == "border" then
 		self.frame:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
@@ -653,8 +613,8 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 				self.frame.Icon:SetAlpha(1)
 			end
 
-			if type(duration) == "number" and duration > 0 and
-				type(start) == "number" and start > 0 and
+			if type(duration) == "number" and duration > 0 and 
+				type(start) == "number" and start > 0 and 
 				GridFrame.db.profile.enableIconCooldown then
 				self.frame.IconCD:SetCooldown(start, duration)
 				self.frame.IconCD:Show()
@@ -663,14 +623,14 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 			else
 				self.frame.IconCD:Hide()
 			end
-
-			if tonumber(stack) and tonumber(stack) > 1 and
+			
+			if tonumber(stack) and tonumber(stack) > 1 and 
 				GridFrame.db.profile.enableIconStackText then
 				self.frame.IconStackText:SetText(stack)
 			else
 				self.frame.IconStackText:SetText("")
 			end
-
+			
 			self.frame.IconBG:Show()
 			self.frame.Icon:Show()
 		else
@@ -732,12 +692,15 @@ GridFrame = Grid:NewModule("GridFrame")
 GridFrame.frameClass = GridFrameClass
 GridFrame.InitialConfigFunction = GridFrame_Initialize
 
+-- Added by Sharak@BigFoot
+GridFrame.frames = {}
+GridFrame.registeredFrames = {}
+
 --{{{  AceDB defaults
 
 GridFrame.defaultDB = {
 	frameHeight = 35,
 	frameWidth = 70,
-	borderSize = 1,
 	cornerSize = 7,
 	orientation = "HORIZONTAL",
 	textorientation = "VERTICAL",
@@ -747,74 +710,59 @@ GridFrame.defaultDB = {
 	font = "Friz Quadrata TT",
 	texture = "Gradient",
 	iconSize = 16,
-	iconxoffset = -29,
-	iconyoffset = 0,
-	iconBorderSize = 0,
+	iconBorderSize = 1,
 	enableIconStackText = true,
 	enableIconCooldown = true,
 	enableMouseoverHighlight = true,
 	debug = false,
+	-- Modified by Sharak@BigFoot
 	invertBarColor = true,
 	showTooltip = "OOC",
 	textlength = 8,
 	healingBar_intensity = 0.5,
 	statusmap = {
 		["text"] = {
-			alert_death = false,
-			debuff_Ghost = false,
-			alert_feignDeath = false,
-			alert_offline = false,
+			alert_death = true,
+			debuff_Ghost = true,
+			alert_feignDeath = true,
+			alert_offline = true,
 			unit_name = true,
-			unit_healthDeficit = false,
-      alert_heals = false,
+			unit_healthDeficit = true,
+            alert_heals = true,
 		},
 		["text2"] = {
 			alert_death = true,
 			debuff_Ghost = true,
 			alert_feignDeath = true,
 			alert_offline = true,
-			alert_heals = true,
-			alert_Brutallus = true,
-			alert_TwinsStack = true,
 		},
 		["border"] = {
-			alert_lowHealth = false,
-			alert_lowMana = false,
-			player_target = false,
-			alert_aggro = true,
-			alert_banzai = true,
-			alert_Brutallus = true,
-			alert_kalecgos = true,
+			alert_lowHealth = true,
+			alert_lowMana = true,
+			player_target = true,
 		},
 		["corner1"] = {
-			alert_heals = false,
+			alert_heals = true,
 		},
 		["corner2"] = {
 		},
 		["corner3"] = {
-			debuff_poison = false,
-			debuff_magic = false,
-			debuff_disease = false,
-			debuff_curse = false,
-			buffGroup_ArcaneIntellect = true,
-			buffGroup_Fortitude = true,
-			buffGroup_MarkoftheWild = true,
-			buffGroup_DivineSpirit = true,
-			buffGroup_ShadowProtection = true,
-			alert_BrutallusMeteorStack = true,
+			debuff_poison = true,
+			debuff_magic = true,
+			debuff_disease = true,
+			debuff_curse = true,
 		},
 		["corner4"] = {
-			alert_aggro = false,
+			alert_aggro = true,
 		},
 		["frameAlpha"] = {
 			alert_death = true,
 			alert_offline = true,
-			alert_range_10 = false,
-			alert_range_28 = false,
-			alert_range_30 = false,
-			alert_range_38 = true,
+			alert_range_10 = true,
+			alert_range_28 = true,
+			alert_range_30 = true,
 			alert_range_40 = true,
-			alert_range_100 = false,
+			alert_range_100 = true,
 		},
 		["bar"] = {
 			alert_death = true,
@@ -831,15 +779,11 @@ GridFrame.defaultDB = {
 		["healingBar"] = {
 			alert_heals = true,
 		},
-		["manabar"] = {
-			unit_mana = true,
-		},
 		["icon"] = {
-			debuff_poison = false,
-			debuff_magic = false,
-			debuff_disease = false,
-			debuff_curse = false,
-			alert_RaidDebuff = true,
+			debuff_poison = true,
+			debuff_magic = true,
+			debuff_disease = true,
+			debuff_curse = true,
 			ready_check = true,
 		}
 	},
@@ -989,21 +933,6 @@ GridFrame.options = {
 						      GridFrame:ScheduleEvent("GridFrame_UpdateLayoutSize", "Grid_ReloadLayout", 0.5)
 					      end,
 				},
-				["bordersize"] = {
-					type = "range",
-					name = L["Border Size"],
-					desc = L["Adjust the size of the border indicators."],
-					min = 1,
-					max = 9,
-					step = 1,
-					get = function ()
-							  return GridFrame.db.profile.borderSize
-						  end,
-					set = function (v)
-							  GridFrame.db.profile.borderSize = v
-						      GridFrame:WithAllFrames(function (f) f:SetBorderSize(v) end)
-						  end,
-				},
 				["cornersize"] = {
 					type = "range",
 					name = L["Corner Size"],
@@ -1052,38 +981,6 @@ GridFrame.options = {
 							  local iconSize = GridFrame.db.profile.iconSize
 							  GridFrame:WithAllFrames(function (f) f:SetIconSize(iconSize, v) end)
 						  end,
-				},
-				["iconxoffset"] = {
-					type = "range",
-					name = L["Icon X offset"],
-					desc = L["Adjust the offset of the X-axis for center icon."],
-					min = -30,
-					max = 30,
-					step = 1,
-					get = function ()
-						      return GridFrame.db.profile.iconxoffset
-					      end,
-					set = function (v)
-						      GridFrame.db.profile.iconxoffset = v
-							    local iconyoffset = GridFrame.db.profile.iconyoffset
-						      GridFrame:WithAllFrames(function (f) f:SetIconoffset(v, iconyoffset) end)
-					      end,
-				},
-				["iconyoffset"] = {
-					type = "range",
-					name = L["Icon Y offset"],
-					desc = L["Adjust the offset of the Y-axis for center icon."],
-					min = -15,
-					max = 15,
-					step = 1,
-					get = function ()
-						      return GridFrame.db.profile.iconyoffset
-					      end,
-					set = function (v)
-						      GridFrame.db.profile.iconyoffset = v
-							    local iconxoffset = GridFrame.db.profile.iconxoffset
-						      GridFrame:WithAllFrames(function (f) f:SetIconoffset(iconxoffset, v) end)
-					      end,
 				},
 				["iconstacktext"] = {
 					type = "toggle",
@@ -1217,35 +1114,28 @@ function GridFrame:OnInitialize()
 	self.super.OnInitialize(self)
 	self.debugging = self.db.profile.debug
 
-	self.frames = {}
-	self.registeredFrames = {}
+	-- Removed by Sharak@BigFoot
+	-- self.frames = {}
+	-- self.registeredFrames = {}
 end
 
 function GridFrame:OnEnable()
 	self:RegisterEvent("Grid_StatusGained")
 	self:RegisterEvent("Grid_StatusLost")
-
+	self:UpdateOptionsMenu()
 	self:RegisterEvent("Grid_StatusRegistered", "UpdateOptionsMenu")
 	self:RegisterEvent("Grid_StatusUnregistered", "UpdateOptionsMenu")
-
-	self:RegisterEvent("Grid_ColorsChanged", "UpdateAllFrames")
-
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateFrameUnits")
-	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateFrameUnits")
-	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateFrameUnits")
-	self:RegisterEvent("Grid_RosterUpdated", "UpdateFrameUnits")
-
+	self:ResetAllFrames()
+	self:UpdateAllFrames()
 	media.RegisterCallback(self, "LibSharedMedia_Registered", "LibSharedMedia_Update")
 	media.RegisterCallback(self, "LibSharedMedia_SetGlobal", "LibSharedMedia_Update")
-
-	self:Reset()
 end
 
 function GridFrame:LibSharedMedia_Update(callback, type, handle)
- 	if type == "font" then
- 		self:WithAllFrames(function (f) f:SetFrameFont(media:Fetch("font", self.db.profile.font), self.db.profile.fontSize) end)
- 	elseif type == "statusbar" then
- 		self:WithAllFrames(function (f) f:SetFrameTexture(media:Fetch("statusbar", self.db.profile.texture)) end)
+	if type == "font" then
+		self:WithAllFrames(function (f) f:SetFrameFont(media:Fetch("font", self.db.profile.font)) end)
+	elseif type == "statusbar" then
+		self:WithAllFrames(function (f) f:SetFrameTexture(media:Fetch("statusbar", self.db.profile.texture)) end)
 	end
 end
 
@@ -1264,7 +1154,6 @@ function GridFrame:Reset()
 	GridFrame:WithAllFrames(function (f) f:SetFrameFont(font, GridFrame.db.profile.fontSize) end)
 
 	self:ResetAllFrames()
-	self:UpdateFrameUnits()
 	self:UpdateAllFrames()
 end
 
@@ -1273,7 +1162,6 @@ function GridFrame:RegisterFrame(frame)
 
 	self.registeredFrameCount = (self.registeredFrameCount or 0) + 1
 	self.registeredFrames[frame:GetName()] = self.frameClass:new(frame)
-	self:UpdateFrameUnits()
 end
 
 function GridFrame:WithAllFrames(func)
@@ -1302,7 +1190,9 @@ end
 function GridFrame:UpdateAllFrames()
 	self:WithAllFrames(
 		function (f)
-			GridFrame:UpdateIndicators(f)
+			if f.unit then
+				GridFrame:UpdateIndicators(f)
+			end
 		end)
 end
 
@@ -1321,75 +1211,35 @@ function GridFrame:GetFrameHeight()
 	return self.db.profile.frameHeight
 end
 
-function GridFrame:GetBorderSize()
-	return self.db.profile.borderSize
-end
-
 function GridFrame:GetCornerSize()
 	return self.db.profile.cornerSize
 end
 
-function GridFrame:UpdateFrameUnits()
-	for frame_name, frame in pairs(self.registeredFrames) do
-		if frame.frame:IsVisible() then
-			local old_unit = frame.unit
-			local old_guid = frame.unitGUID
-			local unitid = frame:GetModifiedUnit()
-			local guid = unitid and UnitGUID(unitid) or nil
-
-			if old_unit ~= unitid or old_guid ~= guid then
-				self:Debug("Updating", frame_name, "to", unitid, guid,
-						   "was", old_unit, old_guid)
-
-				if unitid then
-					frame.unit = unitid
-					frame.unitGUID = guid
-
-					if guid then
-						self:UpdateIndicators(frame)
-					end
-				else
-					frame.unit = nil
-					frame.unitGUID = nil
-
-					self:ClearIndicators(frame)
-				end
-			end
-		end
-	end
-end
-
 function GridFrame:UpdateIndicators(frame)
-	local unitid = frame.unit
+	local unitid = frame.unit or frame.frame and frame.frame.GetAttribute and frame.frame:GetAttribute("unit")
 	if not unitid then return end
 
 	-- self.statusmap[indicator][status]
 	for indicator in pairs(self.db.profile.statusmap) do
-		self:UpdateIndicator(frame, indicator)
-	end
-end
-
-function GridFrame:ClearIndicators(frame)
-	for indicator in pairs(self.db.profile.statusmap) do
-		frame:ClearIndicator(indicator)
+		self:UpdateIndicator(frame, unitid, indicator)
 	end
 end
 
 function GridFrame:UpdateIndicatorsForStatus(frame, status)
-	local unitid = frame.unit
+	local unitid = frame.unit or frame.frame and frame.frame.GetAttribute and frame.frame:GetAttribute("unit")
 	if not unitid then return end
 
 	-- self.statusmap[indicator][status]
 	local statusmap = self.db.profile.statusmap
 	for indicator, map_for_indicator in pairs(statusmap) do
 		if map_for_indicator[status] then
-			self:UpdateIndicator(frame, indicator)
+			self:UpdateIndicator(frame, unitid, indicator)
 		end
 	end
 end
 
-function GridFrame:UpdateIndicator(frame, indicator)
-	local status = self:StatusForIndicator(frame.unitid, frame.unitGUID, indicator)
+function GridFrame:UpdateIndicator(frame, unitid, indicator)
+	local status = self:StatusForIndicator(unitid, indicator)
 	if status then
 		-- self:Debug("Showing status", status.text, "for", name, "on", indicator)
 		frame:SetIndicator(indicator,
@@ -1407,12 +1257,14 @@ function GridFrame:UpdateIndicator(frame, indicator)
 	end
 end
 
-function GridFrame:StatusForIndicator(unitid, guid, indicator)
+function GridFrame:StatusForIndicator(unitid, indicator)
 	local topPriority = 0
 	local topStatus
 	local statusmap = self.db.profile.statusmap[indicator]
+	local guid = UnitGUID(unitid)
 
 	-- self.statusmap[indicator][status]
+
 	for statusName,enabled in pairs(statusmap) do
 		local status = (enabled and GridStatus:GetCachedStatus(guid, statusName))
 		if status then

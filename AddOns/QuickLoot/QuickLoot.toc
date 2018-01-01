@@ -1,0 +1,11 @@
+## Interface: 30100
+## Title: Quick Loot
+## Notes: Show loot window on the position of your mouse.                                     Runtime: |cff00ff00Low|r                                  Memory: |cff00ff00Low|r
+## Title-zhCN: 快速拾取
+## Notes-zhCN: 当你拾取物品时拾取窗口跟随你鼠标的位置移动。                                   运行时间占用率：|cff00ff00低|r                           内存占用率：|cff00ff00低|r
+## Title-zhTW: 快速拾取
+## Notes-zhTW: 當你拾取物品時拾取窗口跟隨你鼠標的位置移動。                                   運行時間占用率：|cff00ff00低|r                           內存占用率：|cff00ff00低|r
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## LoadOnDemand: 0
+QuickLoot.xml

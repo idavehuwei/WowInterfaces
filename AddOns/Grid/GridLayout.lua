@@ -59,7 +59,7 @@ function GridLayoutHeaderClass.prototype:CreateFrames(isPetGroup)
 
 	self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS,
 							 GridLayoutFrame, template)
-	self.frame:SetAttribute("template", "SecureUnitButtonTemplate")
+	self.frame:SetAttribute("template", "SecureUnitButtonTemplate") 
 	self.frame.initialConfigFunction = GridLayout_InitialConfigFunction
 end
 
@@ -461,7 +461,7 @@ if media then
 				  GridLayout.db.profile.borderTexture = v
 				  GridLayout:UpdateColor()
 			  end,
-	}
+	}		  
 
 	GridLayout.options.args.advanced.args["border"] = border_options
 end
@@ -483,13 +483,13 @@ function GridLayout:OnEnable()
 	if not self.frame then
 		self:CreateFrames()
 	end
-
+	
 	self:UpdateTabVisibility()
 
 	self.forceRaid = true
 	self:ScheduleEvent(self.CombatFix, 1, self)
-
-	self:LoadLayout(self.db.profile.layout or self.db.profile.layouts["heroic_raid"])
+	
+	self:LoadLayout(self.db.profile.layout)
 	-- position and scale frame
 	self:RestorePosition()
 	self:Scale()
@@ -579,9 +579,7 @@ end
 
 function GridLayout:UpdateTabVisibility()
 	local settings = self.db.profile
-	if not InCombatLockdown() then
-		self.frame:EnableMouse(settings.hideTab)
-	end
+	self.frame:EnableMouse(settings.hideTab)
 
 	if settings.FrameLock or settings.hideTab then
 		self.frame.tab:Hide()
@@ -798,11 +796,6 @@ local function getColumnAnchorPoint(point, horizontal)
 end
 
 function GridLayout:LoadLayout(layoutName)
-	self.db.profile.layout = layoutName
-	if InCombatLockdown() then
-		reloadLayoutQueued = true
-		return
-	end
 	local p = self.db.profile
 	local horizontal = p.horizontal
 	local layout = self.layoutSettings[layoutName]

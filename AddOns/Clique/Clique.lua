@@ -5,7 +5,7 @@
 Clique = {Locals = {}}
 
 assert(DongleStub, string.format("Clique requires DongleStub."))
-DongleStub("Dongle-1.2"):New("Clique", Clique)
+DongleStub("Dongle-1.1"):New("Clique", Clique)
 Clique.version = GetAddOnMetadata("Clique", "Version")
 if Clique.version == "wowi:revision" then Clique.version = "SVN" end
 
@@ -30,13 +30,10 @@ function Clique:Enable()
 			blacklist = {
 			},
 			tooltips = false,
-		},
-        char = {
-            switchSpec = false,
-        },
+		}
 	}
 	
-	self.db = self:InitializeDB("DuowanAddon_CliqueDB", self.defaults)
+	self.db = self:InitializeDB("CliqueDB", self.defaults)
 	self.profile = self.db.profile
 	self.clicksets = self.profile.clicksets
 
@@ -69,20 +66,6 @@ function Clique:Enable()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 
 	self:RegisterEvent("LEARNED_SPELL_IN_TAB")
-    self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-    self:RegisterEvent("ADDON_LOADED")
-
-    -- Change to correct profile based on talent spec
-    if self.db.char.switchSpec then
-        self.silentProfile = true
-        self.talentGroup = GetActiveTalentGroup()
-        if self.talentGroup == 1 and self.db.char.primaryProfile then
-            self.db:SetProfile(self.db.char.primaryProfile)
-        elseif self.talentGroup == 2 and self.db.char.secondaryProfile then
-            self.db:SetProfile(self.db.char.secondaryProfile)
-        end
-        self.silentProfile = false
-    end
 
 	self:UpdateClicks()
 
@@ -121,11 +104,6 @@ function Clique:Enable()
 
 	-- Place the Clique tab
 	self:LEARNED_SPELL_IN_TAB()
-
-    -- Register the arena frames, if they're already loaded
-    if IsAddOnLoaded("Blizzard_ArenaUI") then
-        self:EnableArenaFrames()
-    end
 end
 
 function Clique:EnableFrames()
@@ -141,13 +119,8 @@ function Clique:EnableFrames()
 		PartyMemberFrame3PetFrame,
 		PartyMemberFrame4PetFrame,
 		TargetFrame,
-		TargetFrameToT,
+		TargetofTargetFrame,
 		FocusFrame,
-        FocusFrameToT,
-        Boss1TargetFrame,
-        Boss2TargetFrame,
-        Boss3TargetFrame,
-        Boss4TargetFrame,
     }
     
     for i,frame in pairs(tbl) do
@@ -204,7 +177,6 @@ function Clique:SpellBookButtonPressed(frame, button)
 	self:PLAYER_REGEN_ENABLED()
 end
 
--- Player is LEAVING combat
 function Clique:PLAYER_REGEN_ENABLED()
 	self:ApplyClickSet(L.CLICKSET_DEFAULT)
 	self:RemoveClickSet(L.CLICKSET_HARMFUL)
@@ -212,7 +184,6 @@ function Clique:PLAYER_REGEN_ENABLED()
 	self:ApplyClickSet(self.ooc)
 end
 
--- Player is ENTERING combat
 function Clique:PLAYER_REGEN_DISABLED()
 	self:RemoveClickSet(self.ooc)
 	self:ApplyClickSet(L.CLICKSET_DEFAULT)
@@ -225,40 +196,46 @@ function Clique:UpdateClicks()
 	local harm = self.clicksets[L.CLICKSET_HARMFUL]
 	local help = self.clicksets[L.CLICKSET_HELPFUL]
 
-    -- Since harm/help buttons take priority over any others, we can't
-    --
-    -- just apply the OOC set last.  Instead we use the self.ooc pseudo
-    -- set (which we build here) which contains only those help/harm
-    -- buttons that don't conflict with those defined in OOC.
+	self.ooc = self.ooc or {}
+	for k,v in pairs(self.ooc) do self.ooc[k] = nil end
 
-    self.ooc = table.wipe(self.ooc or {})
+	for modifier,entry in pairs(harm) do
+		local button = string.gsub(entry.button, "harmbutton", "")
+		button = tonumber(button)
+		local mask = false
 
-    -- Create a hash map of the "taken" combinations
-    local takenBinds = {}
+		for k,v in pairs(ooc) do
+ 			if button == v.button and v.modifier == entry.modifier then
+				mask = true
+			end
+		end
 
-    for name, entry in pairs(ooc) do
-        local key = string.format("%s:%s", entry.modifier, entry.button)
-        takenBinds[key] = true
-        table.insert(self.ooc, entry)
-    end
+		if not mask then
+			table.insert(self.ooc, entry)
+		end
+	end
 
-    for name, entry in pairs(harm) do
-        local button = string.gsub(entry.button, "harmbutton", "")
-        local key = string.format("%s:%s", entry.modifier, button)
-        if not takenBinds[key] then
-            table.insert(self.ooc, entry)
-        end
-    end
+	for modifier,entry in pairs(help) do
+		local button = string.gsub(entry.button, "helpbutton", "")
+		button = tonumber(button)
+		local mask = false
 
-    for name, entry in pairs(help) do
-        local button = string.gsub(entry.button, "helpbutton", "")
-        local key = string.format("%s:%s", entry.modifier, button)
-        if not takenBinds[key] then
-            table.insert(self.ooc, entry)
-        end
-    end
+		for k,v in pairs(ooc) do
+ 			if button == v.button and v.modifier == entry.modifier then
+				mask = true
+			end
+		end
+
+		if not mask then
+			table.insert(self.ooc, entry)
+		end
+	end
+
+	for modifier,entry in pairs(ooc) do
+		table.insert(self.ooc, entry)
+	end
 	
-    self:UpdateTooltip()
+	self:UpdateTooltip()
 end
 
 function Clique:RegisterFrame(frame)
@@ -277,12 +254,11 @@ function Clique:RegisterFrame(frame)
 	end
 
 	frame:RegisterForClicks("AnyUp")
-	
-	--if frame:CanChangeAttribute() or frame:CanChangeProtectedState() then
+
 	if frame:CanChangeProtectedState() then
 		if InCombatLockdown() then
 			self:ApplyClickSet(L.CLICKSET_DEFAULT, frame)
-			self:ApplyClickSet(L.CLICKSET_HELPFUL, frame)
+			self:ApplyClickSet(L.CLICKSET_HOSTILE, frame)
 			self:ApplyClickSet(L.CLICKSET_HARMFUL, frame)
 		else
 			self:ApplyClickSet(L.CLICKSET_DEFAULT, frame)
@@ -330,9 +306,7 @@ end
 
 function Clique:DONGLE_PROFILE_CHANGED(event, db, parent, svname, profileKey)
 	if db == self.db then
-        if not self.silentProfile then
-            self:PrintF(L.PROFILE_CHANGED, profileKey)
-        end
+		self:PrintF(L.PROFILE_CHANGED, profileKey)
 
 		for name,set in pairs(self.clicksets) do
 			self:RemoveClickSet(set)
@@ -529,6 +503,20 @@ function Clique:DeleteAction(entry)
 	end
 end
 
+local mods = {"Shift", "Ctrl", "Alt"}
+local buttonsraw = {1,2,3,4,5}
+local buttonmods = {"-help", "-harm"}
+
+local buttons = {}
+for idx,button in pairs(buttonsraw) do
+	for k,v in pairs(buttonmods) do
+		table.insert(buttons, v..button)
+	end
+end
+for k,v in pairs(buttonsraw) do
+	table.insert(buttons, v)
+end
+
 function Clique:ShowAttributes()
 	self:Print("Enabled enhanced debugging.")
 	PlayerFrame:SetScript("OnAttributeChanged", function(...) self:Print(...) end)
@@ -714,37 +702,3 @@ function Clique:ShowBindings()
 	CliqueTooltip:Show()
 end
 
-function Clique:ACTIVE_TALENT_GROUP_CHANGED(event, newGroup, prevGroup)
-    if self.db.char.switchSpec then
-        self:Print("Detected a talent spec change, changing profile")
-        if newGroup == 1 and self.db.char.primaryProfile then
-            self.db:SetProfile(self.db.char.primaryProfile)
-        elseif newGroup == 2 and self.db.char.secondaryProfile then
-            self.db:SetProfile(self.db.char.secondaryProfile)
-        end
-        if CliqueFrame then
-            CliqueFrame.title:SetText("Clique v. " .. Clique.version .. " - " .. tostring(Clique.db.keys.profile));
-        end
-    end
-end
-
-function Clique:EnableArenaFrames()
-    local arenaFrames = {
-        ArenaEnemyFrame1,
-        ArenaEnemyFrame2,
-        ArenaEnemyFrame3,
-        ArenaEnemyFrame4,
-        ArenaEnemyFrame5,
-    }
-
-    for idx,frame in ipairs(arenaFrames) do
-        rawset(self.ccframes, frame, true)
-    end
-end
-
-
-function Clique:ADDON_LOADED(event, addon)
-    if addon == "Blizzard_ArenaUI" then
-        self:EnableArenaFrames()
-    end
-end

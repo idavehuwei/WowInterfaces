@@ -1,0 +1,71 @@
+-- Add by dugu@bigfoot 5/10/2008  
+if (GetLocale() == "zhCN") then
+	MBB_TOOLTIP_TITLE = "小地图按键包";
+	MBB_TOOLTIP1 = "◇左键单击展开小地图按键\n◇右键单击击打开配置面板\n◇Ctrl + 右键依附于小地图.";
+	MBB_TOOLTIP2 = "◇左键单击展开小地图按键\n◇右键单击击打开配置面板\n◇Ctrl + 右键脱离于小地图.";
+	MBB_OPTIONS_HEADER = "配置";
+	MBB_OPTIONS_OKBUTTON = "确认";
+	MBB_OPTIONS_CANCELBUTTON = "取消";
+	MBB_OPTIONS_SLIDEROFF = "关闭";
+	MBB_OPTIONS_SLIDERSEK = "秒";
+	MBB_OPTIONS_SLIDERLABEL = "自动收缩时间:";
+	MBB_OPTIONS_EXPANSIONLABEL = "展开方向:";
+	MBB_OPTIONS_EXPANSIONLEFT = "左";
+	MBB_OPTIONS_EXPANSIONTOP = "上";
+	MBB_OPTIONS_EXPANSIONRIGHT = "右";
+	MBB_OPTIONS_EXPANSIONBOTTOM = "下";
+	MBB_OPTIONS_MAXBUTTONSLABEL = "每行按键数:";
+	MBB_OPTIONS_MAXBUTTONSINFO = "(0=无限制)";
+	MBB_OPTIONS_ALTEXPANSIONLABEL = "扩展展开方向:";
+	MBB_HELP1 = "  格式 \"/mbb <cmd>\" <cmd> 是下列参数之一:";
+	MBB_HELP2 = "  |c00ffffffbuttons|r: 显示MBB收集的小地图按键列表";
+	MBB_HELP3 = "  |c00ffffffreset position|r: 重置MBB小地图按键位置";
+	MBB_HELP4 = "  |c00ffffffreset all|r: 重置为缺省配置";
+	MBB_NOERRORS = "No errors found!";
+elseif (GetLocale() == "zhTW") then
+	MBB_TOOLTIP_TITLE = "小地圖按鍵包";
+	MBB_TOOLTIP1 = "◇左鍵單擊展開小地圖按鍵\n◇右鍵單擊擊打開配置面板\n◇Ctrl + 右鍵依附於小地圖.";
+	MBB_TOOLTIP2 = "◇左鍵按一下展開小地圖按鍵\n◇按右鍵擊打開配置面板\n◇Ctrl + 右鍵脫離於小地圖."
+	MBB_OPTIONS_HEADER = "配置";
+	MBB_OPTIONS_OKBUTTON = "確認";
+	MBB_OPTIONS_CANCELBUTTON = "取消";
+	MBB_OPTIONS_SLIDEROFF = "關閉";
+	MBB_OPTIONS_SLIDERSEK = "秒";
+	MBB_OPTIONS_SLIDERLABEL = "自動收縮時間:";
+	MBB_OPTIONS_EXPANSIONLABEL = "展開方向:";
+	MBB_OPTIONS_EXPANSIONLEFT = "左";
+	MBB_OPTIONS_EXPANSIONTOP = "上";
+	MBB_OPTIONS_EXPANSIONRIGHT = "右";
+	MBB_OPTIONS_EXPANSIONBOTTOM = "下";
+	MBB_OPTIONS_MAXBUTTONSLABEL = "每行按鍵數:";
+	MBB_OPTIONS_MAXBUTTONSINFO = "(0=無限制)";
+	MBB_OPTIONS_ALTEXPANSIONLABEL = "擴展展開方向:";
+	MBB_HELP1 = "  格式 \"/mbb <cmd>\" <cmd> 是下列參數之一:";
+	MBB_HELP2 = "  |c00ffffffbuttons|r: 顯示MBB收集的小地圖按鍵列表";
+	MBB_HELP3 = "  |c00ffffffreset position|r: 重置MBB小地圖按鍵位置";
+	MBB_HELP4 = "  |c00ffffffreset all|r: 重置為缺省配置";
+	MBB_NOERRORS = "No errors found!";
+else
+	MBB_TOOLTIP_TITLE = "Minimap ButtonBag";
+	MBB_TOOLTIP1 = "Ctrl + Right click on a button to attach it to the minimap.";
+	MBB_TOOLTIP2 = "Ctrl + Right click on a button to detach it from the minimap.";
+	MBB_OPTIONS_HEADER = "Options";
+	MBB_OPTIONS_OKBUTTON = "Ok";
+	MBB_OPTIONS_CANCELBUTTON = "Cancel";
+	MBB_OPTIONS_SLIDEROFF = "Off";
+	MBB_OPTIONS_SLIDERSEK = "sec";
+	MBB_OPTIONS_SLIDERLABEL = "Collapse Timeout:";
+	MBB_OPTIONS_EXPANSIONLABEL = "Expand to:";
+	MBB_OPTIONS_EXPANSIONLEFT = "Left";
+	MBB_OPTIONS_EXPANSIONTOP = "Top";
+	MBB_OPTIONS_EXPANSIONRIGHT = "Right";
+	MBB_OPTIONS_EXPANSIONBOTTOM = "Bottom";
+	MBB_OPTIONS_MAXBUTTONSLABEL = "Max. Buttons/Line:";
+	MBB_OPTIONS_MAXBUTTONSINFO = "(0=infinity)";
+	MBB_OPTIONS_ALTEXPANSIONLABEL = "Alt. Expand to:";
+	MBB_HELP1 = "Type \"/mbb <cmd>\" where <cmd> is one of the following:";
+	MBB_HELP2 = "  |c00ffffffbuttons|r: Shows a list of all frames in the MBB bar";
+	MBB_HELP3 = "  |c00ffffffreset position|r: resets the position of the MBB minimap button";
+	MBB_HELP4 = "  |c00ffffffreset all|r: resets all options";
+	MBB_NOERRORS = "No errors found!";
+end

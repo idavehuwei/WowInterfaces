@@ -1,6 +1,5 @@
 ﻿--初始设置
-
-RaidAlerter_SET ={
+RaidAlerter_SET = {
 OnOff = true,						--启用警报
 RAIDMODE_MAX_GROUP = 5,				--团队模式
 Party_Alerter = true,				--5人小队
@@ -54,6 +53,7 @@ RAL = {};
 RaidAlerter_UINameEN = "RaidAlerter";
 RaidAlerter_Version = GetAddOnMetadata("RaidAlerter", "Version");
 RaidAlerter_MainLabel = RaidAlerter_UINameEN.." |cFFDDDDDDv"..RaidAlerter_Version.."|r";
+
 BINDING_HEADER_RaidAlerter_BINDING_TopTitle = RaidAlerter_UINameEN..RaidAlerter_UIName;
 BINDING_NAME_RaidAlerter_BINDING_Title1 = RAL_TEXT_BINDING_1;
 BINDING_NAME_RaidAlerter_BINDING_Title2 = RAL_TEXT_BINDING_2;
@@ -147,8 +147,8 @@ local ImTANK = false;
 local RosterChanged = true;
 
 --事件注册
-
 local RaidAlerter_EVENT_LIST = {
+	"VARIABLES_LOADED",
 	"PLAYER_ENTERING_WORLD",
 	"CHAT_MSG_ADDON",
 	"CHAT_MSG_WHISPER_INFORM",
@@ -173,51 +173,6 @@ local RaidAlerter_EVENT_LIST = {
 	};
 ]]
 
-
-function BF_RaidAlerter_LoadPosition(self)
-	self:SetPoint(unpack(RaidAlerter_SET_AttackFramePosition))
-end
-
-
-function BF_RaidAlerter_SavePosition(self)
-	local _point,rel,relp,xo,yo=self:GetPoint()
-	RaidAlerter_SET_AttackFramePosition={_point,"UIParent",relp,xo,yo}
-end
-
-------------------
--- Duowan Interface
-local RaidAlerter_Enabled = false;
-function RaidAlerter_Toggle(switch)
-	if (switch) then
-		if (not RaidAlerter_Enabled) then
-			RaidAlerter_Enabled = true;
-			for i, e in ipairs(RaidAlerter_EVENT_LIST) do
-				RaidAlerterFrame:RegisterEvent(e);
-			end
-
-			ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", RaidAlerte_MessageFilter);
-			ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", RaidAlerte_MessageFilter);
-			if RaidAlerter_SET.TextMShow_OnOff then
-				RaidAlerter_Attack_Frame:Show();
-				RaidAlerter_SET_FUNC_AF_Scale();
-			else
-				RaidAlerter_Attack_Frame:Hide()
-			end
-		end
-	else
-		if (RaidAlerter_Enabled) then
-			RaidAlerter_Enabled = false;
-			for i, e in ipairs(RaidAlerter_EVENT_LIST) do
-				RaidAlerterFrame:UnregisterEvent(e);
-			end
-			--RaidAlerter:Unhook("ChatFrame_OnEvent");
-			ChatFrame_RemoveMessageEventFilter("CHAT_MSG_WHISPER_INFORM", RaidAlerte_MessageFilter);
-			ChatFrame_RemoveMessageEventFilter("CHAT_MSG_WHISPER", RaidAlerte_MessageFilter);
-			RaidAlerter_Attack_Frame:Hide();
-			RaidAlerter_MainFrame:Hide();
-		end
-	end
-end
 function RaidAlerter_OnEnter(self,action)
 	GameTooltip:SetOwner(RaidAlerter_Attack_Frame, "ANCHOR_NONE");
 	GameTooltip:SetText(RaidAlerter_UINameEN..RaidAlerter_UIName);
@@ -296,19 +251,14 @@ function RaidAlerter_OnEnter(self,action)
 end
 
 function RaidAlerter_OnLoad(self)
---[[
 	for K,valueB in pairs(RaidAlerter_EVENT_LIST) do
 		self:RegisterEvent(valueB);
 	end
-	--]]
-	RaidAlerterFrame:RegisterEvent("ADDON_LOADED");
 	SLASH_RaidAlerter1 = "/raidalerter";
 	SLASH_RaidAlerter2 = "/ral";
 	SlashCmdList["RaidAlerter"] = function(msg)
 		RaidAlerter_SlashCommand(msg);
 	end
-	RaidAlerter_SET_AttackFramePosition= RaidAlerter_SET_AttackFramePosition or {"TOP","UIParent","TOP",20,-22}
-
 end
 
 function RaidAlerter_SlashCommand(msg)
@@ -512,7 +462,7 @@ function RaidAlerter_SET_FUNC_OnOff(checked)
 	else
 		RaidAlerter_SET.OnOff = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_1..RaidAlerter_GetTFVarText(RaidAlerter_SET.OnOff));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_1..RaidAlerter_GetTFVarText(RaidAlerter_SET.OnOff));
 	RaidAlerter_Option_MainFrame_Update();
 	RaidAlerter_SendAddonMessage("RAL_SELECT","startcheck");
 end
@@ -525,7 +475,7 @@ function RaidAlerter_SET_FUNC_Party_Alerter(checked)
 	else
 		RaidAlerter_SET.Party_Alerter = false;
 	end
-	--RaidAlerter.AddMsg("|cFFAAAAFF"..RAL_TEXT_FUNC_2..RaidAlerter_GetTFVarText(RaidAlerter_SET.Party_Alerter));
+	RaidAlerter.AddMsg("|cFFAAAAFF"..RAL_TEXT_FUNC_2..RaidAlerter_GetTFVarText(RaidAlerter_SET.Party_Alerter));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -537,7 +487,7 @@ function RaidAlerter_SET_FUNC_OnlySelfCHAN(checked)
 	else
 		RaidAlerter_SET.OnlySelfCHAN = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_3..RaidAlerter_GetTFVarText(RaidAlerter_SET.OnlySelfCHAN));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_3..RaidAlerter_GetTFVarText(RaidAlerter_SET.OnlySelfCHAN));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -549,7 +499,7 @@ function RaidAlerter_SET_FUNC_OnlySelfSCR(checked)
 	else
 		RaidAlerter_SET.OnlySelfSCR = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_4..RaidAlerter_GetTFVarText(RaidAlerter_SET.OnlySelfSCR));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_4..RaidAlerter_GetTFVarText(RaidAlerter_SET.OnlySelfSCR));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -561,7 +511,7 @@ function RaidAlerter_SET_FUNC_SoundAlert(checked)
 	else
 		RaidAlerter_SET.SoundAlert = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_XML_129..RaidAlerter_GetTFVarText(RaidAlerter_SET.SoundAlert));
+	RaidAlerter.AddMsg(RAL_TEXT_XML_129..RaidAlerter_GetTFVarText(RaidAlerter_SET.SoundAlert));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -573,7 +523,7 @@ function RaidAlerter_SET_FUNC_BossKill(checked)
 	else
 		RaidAlerter_SET.BossKill = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_5..RaidAlerter_GetTFVarText(RaidAlerter_SET.BossKill));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_5..RaidAlerter_GetTFVarText(RaidAlerter_SET.BossKill));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -585,7 +535,7 @@ function RaidAlerter_SET_FUNC_TANK_DangerHealth(checked)
 	else
 		RaidAlerter_SET.TANK_DangerHealth = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_6..RaidAlerter_GetTFVarText(RaidAlerter_SET.TANK_DangerHealth));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_6..RaidAlerter_GetTFVarText(RaidAlerter_SET.TANK_DangerHealth));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -607,7 +557,7 @@ function RaidAlerter_SET_FUNC_TANK_Death(checked)
 	else
 		RaidAlerter_SET.TANK_Death = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_8..RaidAlerter_GetTFVarText(RaidAlerter_SET.TANK_Death));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_8..RaidAlerter_GetTFVarText(RaidAlerter_SET.TANK_Death));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -619,7 +569,7 @@ function RaidAlerter_SET_FUNC_TANK_ShieldWall(checked)
 	else
 		RaidAlerter_SET.TANK_ShieldWall = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_XML_58..RaidAlerter_GetTFVarText(RaidAlerter_SET.TANK_ShieldWall));
+	RaidAlerter.AddMsg(RAL_TEXT_XML_58..RaidAlerter_GetTFVarText(RaidAlerter_SET.TANK_ShieldWall));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -631,7 +581,7 @@ function RaidAlerter_SET_FUNC_TANK_LastStand(checked)
 	else
 		RaidAlerter_SET.TANK_LastStand = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_XML_60..RaidAlerter_GetTFVarText(RaidAlerter_SET.TANK_LastStand));
+	RaidAlerter.AddMsg(RAL_TEXT_XML_60..RaidAlerter_GetTFVarText(RaidAlerter_SET.TANK_LastStand));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -643,7 +593,7 @@ function RaidAlerter_SET_FUNC_TANK_ShieldReflection(checked)
 	else
 		RaidAlerter_SET.TANK_ShieldReflection = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_11..RaidAlerter_GetTFVarText(RaidAlerter_SET.TANK_ShieldReflection));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_11..RaidAlerter_GetTFVarText(RaidAlerter_SET.TANK_ShieldReflection));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -655,7 +605,7 @@ function RaidAlerter_SET_FUNC_TANK_Taunt(checked)
 	else
 		RaidAlerter_SET.TANK_Taunt = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_12..RaidAlerter_GetTFVarText(RaidAlerter_SET.TANK_Taunt));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_12..RaidAlerter_GetTFVarText(RaidAlerter_SET.TANK_Taunt));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -667,7 +617,7 @@ function RaidAlerter_SET_FUNC_RES_DispelMagic(checked)
 	else
 		RaidAlerter_SET.RES_DispelMagic = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_13..RaidAlerter_GetTFVarText(RaidAlerter_SET.RES_DispelMagic));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_13..RaidAlerter_GetTFVarText(RaidAlerter_SET.RES_DispelMagic));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -679,7 +629,7 @@ function RaidAlerter_SET_FUNC_RES_Polymorph(checked)
 	else
 		RaidAlerter_SET.RES_Polymorph = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_14..RaidAlerter_GetTFVarText(RaidAlerter_SET.RES_Polymorph));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_14..RaidAlerter_GetTFVarText(RaidAlerter_SET.RES_Polymorph));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -691,7 +641,7 @@ function RaidAlerter_SET_FUNC_RES_MagicBreak(checked)
 	else
 		RaidAlerter_SET.RES_MagicBreak = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_15..RaidAlerter_GetTFVarText(RaidAlerter_SET.RES_MagicBreak));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_15..RaidAlerter_GetTFVarText(RaidAlerter_SET.RES_MagicBreak));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -703,7 +653,7 @@ function RaidAlerter_SET_FUNC_RES_BuffStolen(checked)
 	else
 		RaidAlerter_SET.RES_BuffStolen = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_16..RaidAlerter_GetTFVarText(RaidAlerter_SET.RES_BuffStolen));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_16..RaidAlerter_GetTFVarText(RaidAlerter_SET.RES_BuffStolen));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -715,7 +665,7 @@ function RaidAlerter_SET_FUNC_Hunter_Shot(checked)
 	else
 		RaidAlerter_SET.Hunter_Shot = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_17..RaidAlerter_GetTFVarText(RaidAlerter_SET.Hunter_Shot));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_17..RaidAlerter_GetTFVarText(RaidAlerter_SET.Hunter_Shot));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -727,7 +677,7 @@ function RaidAlerter_SET_FUNC_Hunter_Mark(checked)
 	else
 		RaidAlerter_SET.Hunter_Mark = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_18..RaidAlerter_GetTFVarText(RaidAlerter_SET.Hunter_Mark));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_18..RaidAlerter_GetTFVarText(RaidAlerter_SET.Hunter_Mark));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -739,7 +689,7 @@ function RaidAlerter_SET_FUNC_Hunter_Misdirection(checked)
 	else
 		RaidAlerter_SET.Hunter_Misdirection = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_19..RaidAlerter_GetTFVarText(RaidAlerter_SET.Hunter_Misdirection));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_19..RaidAlerter_GetTFVarText(RaidAlerter_SET.Hunter_Misdirection));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -751,7 +701,7 @@ function RaidAlerter_SET_FUNC_Check_Poly(checked)
 	else
 		RaidAlerter_SET.Check_Poly = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_20..RaidAlerter_GetTFVarText(RaidAlerter_SET.Check_Poly));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_20..RaidAlerter_GetTFVarText(RaidAlerter_SET.Check_Poly));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -763,7 +713,7 @@ function RaidAlerter_SET_FUNC_PolyDispel(checked)
 	else
 		RaidAlerter_SET.PolyDispel = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_21..RaidAlerter_GetTFVarText(RaidAlerter_SET.PolyDispel));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_21..RaidAlerter_GetTFVarText(RaidAlerter_SET.PolyDispel));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -775,7 +725,7 @@ function RaidAlerter_SET_FUNC_Break_Poly(checked)
 	else
 		RaidAlerter_SET.Break_Poly = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_22..RaidAlerter_GetTFVarText(RaidAlerter_SET.Break_Poly));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_22..RaidAlerter_GetTFVarText(RaidAlerter_SET.Break_Poly));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -787,7 +737,7 @@ function RaidAlerter_SET_FUNC_Check_Gem(checked)
 	else
 		RaidAlerter_SET.Check_Gem = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_23..RaidAlerter_GetTFVarText(RaidAlerter_SET.Check_Gem));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_23..RaidAlerter_GetTFVarText(RaidAlerter_SET.Check_Gem));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -799,7 +749,7 @@ function RaidAlerter_SET_FUNC_Check_Death_AtCombatEnd(checked)
 	else
 		RaidAlerter_SET.Check_Death_AtCombatEnd = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_24..RaidAlerter_GetTFVarText(RaidAlerter_SET.Check_Death_AtCombatEnd));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_24..RaidAlerter_GetTFVarText(RaidAlerter_SET.Check_Death_AtCombatEnd));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -811,7 +761,7 @@ function RaidAlerter_SET_FUNC_TAQ_Twin_AOEAdd(checked)
 	else
 		RaidAlerter_SET.TAQ_Twin_AOEAdd = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_25..RaidAlerter_GetTFVarText(RaidAlerter_SET.TAQ_Twin_AOEAdd));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_25..RaidAlerter_GetTFVarText(RaidAlerter_SET.TAQ_Twin_AOEAdd));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -823,7 +773,7 @@ function RaidAlerter_SET_FUNC_BossHealthPecentOnOff(checked)
 	else
 		RaidAlerter_SET.BossHealthPecentOnOff = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_26..RaidAlerter_GetTFVarText(RaidAlerter_SET.BossHealthPecentOnOff)..", "..string.format(RAL_TEXT_FUNC_27,"|cFFFF5555"..RaidAlerter_SET.BossHealthPecent));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_26..RaidAlerter_GetTFVarText(RaidAlerter_SET.BossHealthPecentOnOff)..", "..string.format(RAL_TEXT_FUNC_27,"|cFFFF5555"..RaidAlerter_SET.BossHealthPecent));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -852,7 +802,7 @@ function RaidAlerter_SET_FUNC_TextMShow_OnOff(checked)
 	else
 		RaidAlerter_Attack_Frame:Hide();
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_28..RaidAlerter_GetTFVarText(RaidAlerter_SET.TextMShow_OnOff));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_28..RaidAlerter_GetTFVarText(RaidAlerter_SET.TextMShow_OnOff));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -864,7 +814,7 @@ function RaidAlerter_SET_FUNC_ScrMsg(checked)
 	else
 		RaidAlerter_SET.ScrMsg = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_XML_134..RaidAlerter_GetTFVarText(RaidAlerter_SET.ScrMsg));
+	RaidAlerter.AddMsg(RAL_TEXT_XML_134..RaidAlerter_GetTFVarText(RaidAlerter_SET.ScrMsg));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -876,7 +826,7 @@ function RaidAlerter_SET_FUNC_THREATCheck(checked)
 	else
 		RaidAlerter_SET.THREATCheck = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_XML_126..RaidAlerter_GetTFVarText(RaidAlerter_SET.THREATCheck));
+	RaidAlerter.AddMsg(RAL_TEXT_XML_126..RaidAlerter_GetTFVarText(RaidAlerter_SET.THREATCheck));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -888,7 +838,7 @@ function RaidAlerter_SET_FUNC_ToTCheck(checked)
 	else
 		RaidAlerter_SET.ToTCheck = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_XML_136..RaidAlerter_GetTFVarText(RaidAlerter_SET.ToTCheck));
+	RaidAlerter.AddMsg(RAL_TEXT_XML_136..RaidAlerter_GetTFVarText(RaidAlerter_SET.ToTCheck));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -900,7 +850,7 @@ function RaidAlerter_SET_FUNC_OT_OnOff(checked)
 	else
 		RaidAlerter_SET.OT_OnOff = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_29..RaidAlerter_GetTFVarText(RaidAlerter_SET.OT_OnOff));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_29..RaidAlerter_GetTFVarText(RaidAlerter_SET.OT_OnOff));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -912,7 +862,7 @@ function RaidAlerter_SET_FUNC_OTM_OnOff(checked)
 	else
 		RaidAlerter_SET.OTM_OnOff = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_30..RaidAlerter_GetTFVarText(RaidAlerter_SET.OTM_OnOff));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_30..RaidAlerter_GetTFVarText(RaidAlerter_SET.OTM_OnOff));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -924,7 +874,7 @@ function RaidAlerter_SET_FUNC_OTMShow_OnOff(checked)
 	else
 		RaidAlerter_SET.OTMShow_OnOff = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_31..RaidAlerter_GetTFVarText(RaidAlerter_SET.OTMShow_OnOff));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_31..RaidAlerter_GetTFVarText(RaidAlerter_SET.OTMShow_OnOff));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -936,7 +886,7 @@ function RaidAlerter_SET_FUNC_Nef_PriestDown(checked)
 	else
 		RaidAlerter_SET.Nef_PriestDown = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_32..RaidAlerter_GetTFVarText(RaidAlerter_SET.Nef_PriestDown));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_32..RaidAlerter_GetTFVarText(RaidAlerter_SET.Nef_PriestDown));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -948,7 +898,7 @@ function RaidAlerter_SET_FUNC_Nef_TANKPoly(checked)
 	else
 		RaidAlerter_SET.Nef_TANKPoly = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_33..RaidAlerter_GetTFVarText(RaidAlerter_SET.Nef_TANKPoly));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_33..RaidAlerter_GetTFVarText(RaidAlerter_SET.Nef_TANKPoly));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -960,7 +910,7 @@ function RaidAlerter_SET_FUNC_Dispel_Magic(checked)
 	else
 		RaidAlerter_SET.Dispel_Magic = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_34..RaidAlerter_GetTFVarText(RaidAlerter_SET.Dispel_Magic));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_34..RaidAlerter_GetTFVarText(RaidAlerter_SET.Dispel_Magic));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -972,7 +922,7 @@ function RaidAlerter_SET_FUNC_BuffStolen(checked)
 	else
 		RaidAlerter_SET.BuffStolen = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_35..RaidAlerter_GetTFVarText(RaidAlerter_SET.BuffStolen));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_35..RaidAlerter_GetTFVarText(RaidAlerter_SET.BuffStolen));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -984,7 +934,7 @@ function RaidAlerter_SET_FUNC_Break_Magic(checked)
 	else
 		RaidAlerter_SET.Break_Magic = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_36..RaidAlerter_GetTFVarText(RaidAlerter_SET.Break_Magic));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_36..RaidAlerter_GetTFVarText(RaidAlerter_SET.Break_Magic));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -996,7 +946,7 @@ function RaidAlerter_SET_FUNC_Paladin_Intervention(checked)
 	else
 		RaidAlerter_SET.Paladin_Intervention = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_37..RaidAlerter_GetTFVarText(RaidAlerter_SET.Paladin_Intervention));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_37..RaidAlerter_GetTFVarText(RaidAlerter_SET.Paladin_Intervention));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -1027,7 +977,7 @@ function RaidAlerter_SET_FUNC_CHK_MY_HP(param)
 		if RaidAlerter_MyDangerHP<1 then RaidAlerter_MyDangerHP=1; end
 		if RaidAlerter_MyDangerHP>99 then RaidAlerter_MyDangerHP=99; end
 	end
-	--RaidAlerter.AddMsg(string.format(RAL_TEXT_FUNC_42,RaidAlerter_GetTFVarText(RaidAlerter_ChkMyHP),"|cFFFF5555"..RaidAlerter_MyDangerHP));
+	RaidAlerter.AddMsg(string.format(RAL_TEXT_FUNC_42,RaidAlerter_GetTFVarText(RaidAlerter_ChkMyHP),"|cFFFF5555"..RaidAlerter_MyDangerHP));
 end
 
 function RaidAlerter_SET_FUNC_AF_Scale()
@@ -1052,7 +1002,7 @@ function RaidAlerter_SET_FUNC_ShowSysInfo(checked)
 	else
 		RRaidAlerter_SET.ShowSysInfo = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_44..RaidAlerter_GetTFVarText(RaidAlerter_SET.ShowSysInfo));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_44..RaidAlerter_GetTFVarText(RaidAlerter_SET.ShowSysInfo));
 	RaidAlerter_Option_MainFrame_Update();
 end
 
@@ -1064,7 +1014,7 @@ function RaidAlerter_SET_FUNC_cameraMax(checked)
 	else
 		RaidAlerter_SET.cameraMax = false;
 	end
-	--RaidAlerter.AddMsg(RAL_TEXT_XML_131..RaidAlerter_GetTFVarText(RaidAlerter_SET.cameraMax));
+	RaidAlerter.AddMsg(RAL_TEXT_XML_131..RaidAlerter_GetTFVarText(RaidAlerter_SET.cameraMax));
 	if RaidAlerter_SET.cameraMax then
 		RaidAlerter_SetCameraMaxToMax();
 	else
@@ -1089,7 +1039,7 @@ StaticPopupDialogs["RaidAlerter_RELOADUI"] = {
 
 function RaidAlerter_SET_FUNC_GTT_cpustart()
 	if (GetCVar("scriptProfile") == "1") then
-		--RaidAlerter.AddMsg(RAL_TEXT_FUNC_45.."|cFF20FF20"..RAL_TEXT_ON);
+		RaidAlerter.AddMsg(RAL_TEXT_FUNC_45.."|cFF20FF20"..RAL_TEXT_ON);
 	else
 		SetCVar("scriptProfile", "1");
 		StaticPopup_Show("RaidAlerter_RELOADUI");
@@ -1327,7 +1277,7 @@ function RaidAlerter_ListStatus()
 	RaidAlerter.AddMsg(RAL_TEXT_FUNC_50..": "..RaidAlerter_Version);
 	RaidAlerter.AddMsg(RAL_TEXT_FUNC_51..": ".."|cFFFFFFFF"..format("%.1f",RaidAlerter_Check_RAM_DATA).."|r".."K");
 	RaidAlerter.AddMsg(string.format(RAL_TEXT_FUNC_52,"|cFF20FF20"..(RaidAlerter_SET.RAIDMODE_MAX_GROUP*5).."|r"));
-	--RaidAlerter.AddMsg(RAL_TEXT_FUNC_1..RaidAlerter_GetTFVarText(RaidAlerter_SET.OnOff));
+	RaidAlerter.AddMsg(RAL_TEXT_FUNC_1..RaidAlerter_GetTFVarText(RaidAlerter_SET.OnOff));
 end
 
 --增加最大镜头距离
@@ -2300,8 +2250,7 @@ function RaidAlerter_Check_CTRAORA_LA_TANKS()
 end
 
 function RaidAlerter_OnEvent(self, event, ...)
-	if( event == "ADDON_LOADED" and arg1 == "RaidAlerter") then
-		self:UnregisterEvent("ADDON_LOADED");
+	if( event == "VARIABLES_LOADED" ) then
 		if RaidAlerter_SET.TextMShow_OnOff then
 			RaidAlerter_Attack_Frame:Show();
 			RaidAlerter_SET_FUNC_AF_Scale();
@@ -2310,11 +2259,9 @@ function RaidAlerter_OnEvent(self, event, ...)
 		end
 		RaidAlerter_Check_Variables();
 		RaidAlerter_ChatFrame_Filter(self);
-		RaidAlerter_SET_AttackFramePosition= RaidAlerter_SET_AttackFramePosition or {"TOP","UIParent","TOP",20,-12}
-		BF_RaidAlerter_LoadPosition(RaidAlerter_Attack_Frame);
 	elseif (event=="PLAYER_ENTERING_WORLD") then
 		if UnitInRaid("player") or UnitInParty("player") then
-			--RaidAlerter.AddMsg(RAL_TEXT_MINDMSG.."|cFF5588FF/ral help|r");
+			RaidAlerter.AddMsg(RAL_TEXT_MINDMSG.."|cFF5588FF/ral help|r");
 		end
 		RaidAlerter_SetCameraMaxToMax();
 		RaidAlerter_Option_MainFrame_Update();
@@ -3867,7 +3814,6 @@ end
 
 --3.1：GetCurrentDungeonDifficulty() --> 3.2
 function RaidAlerter_GetCurrentDifficulty()
-	--[[
 	local SysDif = 1;	--小队：1=普通 2=英雄		团队：1=10人  2=25人  3=10人(英雄)  4=25人(英雄)
 	local EQDif = 0;	--返回值：1=普通  2=英雄  0=未知
 	if UnitInRaid("player") then
@@ -3888,8 +3834,6 @@ function RaidAlerter_GetCurrentDifficulty()
 		end
 	end
 	return EQDif;
-	]]
-	return GetCurrentDungeonDifficulty();
 end
 
 function RaidAlerter_IsBossUnit(unit)
@@ -3912,7 +3856,7 @@ function RaidAlerter_IsBossUnit(unit)
 			end
 			TeamLevel = TeamLevel/(GetNumPartyMembers()+1);
 		end
-		if RaidAlerter_GetCurrentDifficulty() >= 2 then
+		if GetCurrentDungeonDifficulty() >= 2 then
 			BossHPMin = BossHPMin*1.35;
 		end
 		if TeamLevel > 72 then
@@ -3942,7 +3886,7 @@ function RaidAlerter_IsDangerUnit(unit)
 			elseif GetNumPartyMembers() > 0 then
 				DangerUnitHPMin = 30000;			--PARTY
 			end
-			if RaidAlerter_GetCurrentDifficulty() >= 2 then
+			if GetCurrentDungeonDifficulty() >= 2 then
 				DangerUnitHPMin = DangerUnitHPMin*1.35;
 			end
 			if TeamLevel > 72 then
@@ -4182,66 +4126,61 @@ function RaidAlerter_Check_P_BeControled_Party()
 	local unit = "";
 	local BC_count = 0;
 	local DEP_count = 0;
-
-	if (BC_count >= 3) or (DEP_count >= 3) then
-		return;
-	end			--一次最多只报3人，防刷屏
-	if id==0 then
-		unit="player"
-	else
-		unit="party"..id
-	end
-	if (unit) then
-		if (UnitIsFriend("player", unit) and UnitIsEnemy("player", unit)) then
-			if RaidAlerter_Check_P_BeControled_ButIsPolyUp(unit) then
-				RaidAlerter_Alerter_BeControled[unit] = 0;
-			else
-				RaidAlerter_Alerter_BeControled[unit] = RaidAlerter_Alerter_BeControled[unit] + 1;
-			end
-			if ( RaidAlerter_Alerter_BeControled[unit] > 40) then
-				RaidAlerter_Alerter_BeControled[unit] = 0;
-			elseif ( RaidAlerter_Alerter_BeControled[unit] == 1)then
-				if RaidAlerter_SET.Check_Poly then
-					if RaidAlerter_TestEnemyIsMe_Party() then
-						if RaidAlerter_GetTimer("BC"..UnitName("player"))>5 then		--同一人5秒内只报一次
-							RAL.SendMSG(string.format(RAL_TEXT_ALERT_7,UnitName("player")),"PARTY_RW");
-							RaidAlerter_StartTimer("BC"..UnitName("player"));
-							if BC_count == 0 then
-								RAL.SOUND(5);
-							end
-							BC_count = BC_count + 1;
-						end
-					else
-						if RaidAlerter_GetTimer("BC"..UnitName(unit))>5 then		--同一人5秒内只报一次
-							RAL.SendMSG(string.format(RAL_TEXT_ALERT_7,UnitName(unit)),"PARTY_RW");
-							RaidAlerter_StartTimer("BC"..UnitName(unit));
-							if BC_count == 0 then
-								RAL.SOUND(5);
-							end
-							BC_count = BC_count + 1;
-						end
-					end
-				end
-			end
---				return;
-		else
-			if ( RaidAlerter_Check_P_BeControled_ButIsPolyUp(unit) and RaidAlerter_TestIsMtList(unit) and UnitIsFriend("player", unit) ) then
-				RaidAlerter_Alerter_BeControled[unit] = RaidAlerter_Alerter_BeControled[unit] + 1000;
-				if ( RaidAlerter_Alerter_BeControled[unit] > 40000) then
+	for id=0, GetNumPartyMembers() do
+		if (BC_count >= 3) or (DEP_count >= 3) then return; end			--一次最多只报3人，防刷屏
+		if id==0 then unit="player" else unit="party"..id end
+		if (unit) then
+			if (UnitIsFriend("player", unit) and UnitIsEnemy("player", unit)) then
+				if RaidAlerter_Check_P_BeControled_ButIsPolyUp(unit) then
 					RaidAlerter_Alerter_BeControled[unit] = 0;
-				elseif ( RaidAlerter_Alerter_BeControled[unit] == 1000)then
-					if RaidAlerter_SET.PolyDispel then
-						if RaidAlerter_GetTimer("DEP"..UnitName(unit))>5 then		--同一人5秒内只报一次
-							RAL.SendMSG(string.format(RAL_TEXT_ALERT_8,UnitName(unit)),"PARTY");
---							SetRaidTargetIcon(unit, 8);
---							RaidAlerter_Alerter_System["lasticon"] = UnitName(unit);
-							RaidAlerter_StartTimer("DEP"..UnitName(unit));
-							DEP_count = DEP_count + 1;
+				else
+					RaidAlerter_Alerter_BeControled[unit] = RaidAlerter_Alerter_BeControled[unit] + 1;
+				end
+				if ( RaidAlerter_Alerter_BeControled[unit] > 40) then
+					RaidAlerter_Alerter_BeControled[unit] = 0;
+				elseif ( RaidAlerter_Alerter_BeControled[unit] == 1)then
+					if RaidAlerter_SET.Check_Poly then
+						if RaidAlerter_TestEnemyIsMe_Party() then
+							if RaidAlerter_GetTimer("BC"..UnitName("player"))>5 then		--同一人5秒内只报一次
+								RAL.SendMSG(string.format(RAL_TEXT_ALERT_7,UnitName("player")),"PARTY_RW");
+								RaidAlerter_StartTimer("BC"..UnitName("player"));
+								if BC_count == 0 then
+									RAL.SOUND(5);
+								end
+								BC_count = BC_count + 1;
+							end
+						else
+							if RaidAlerter_GetTimer("BC"..UnitName(unit))>5 then		--同一人5秒内只报一次
+								RAL.SendMSG(string.format(RAL_TEXT_ALERT_7,UnitName(unit)),"PARTY_RW");
+								RaidAlerter_StartTimer("BC"..UnitName(unit));
+								if BC_count == 0 then
+									RAL.SOUND(5);
+								end
+								BC_count = BC_count + 1;
+							end
 						end
 					end
 				end
+--				return;
 			else
-				RaidAlerter_Alerter_BeControled[unit] = 0;
+				if ( RaidAlerter_Check_P_BeControled_ButIsPolyUp(unit) and RaidAlerter_TestIsMtList(unit) and UnitIsFriend("player", unit) ) then
+					RaidAlerter_Alerter_BeControled[unit] = RaidAlerter_Alerter_BeControled[unit] + 1000;
+					if ( RaidAlerter_Alerter_BeControled[unit] > 40000) then
+						RaidAlerter_Alerter_BeControled[unit] = 0;
+					elseif ( RaidAlerter_Alerter_BeControled[unit] == 1000)then
+						if RaidAlerter_SET.PolyDispel then
+							if RaidAlerter_GetTimer("DEP"..UnitName(unit))>5 then		--同一人5秒内只报一次
+								RAL.SendMSG(string.format(RAL_TEXT_ALERT_8,UnitName(unit)),"PARTY");
+--								SetRaidTargetIcon(unit, 8);
+--								RaidAlerter_Alerter_System["lasticon"] = UnitName(unit);
+								RaidAlerter_StartTimer("DEP"..UnitName(unit));
+								DEP_count = DEP_count + 1;
+							end
+						end
+					end
+				else
+					RaidAlerter_Alerter_BeControled[unit] = 0;
+				end
 			end
 		end
 	end
@@ -4805,42 +4744,4 @@ function RAL.GG(unit)
 		end
 	end
 	return "";
-end
---[[
-function RaidAlerter:ChatFrame_OnEvent(frame, event, ...)
-	local HideWhispers = false;
-	if not RaidAlerter_SET.OTMShow_OnOff then
-		if ((event == "CHAT_MSG_WHISPER_INFORM") and (string.find( arg1, "<RaidAlerter> "))) then
-			HideWhispers = true;
-		end
-		if ((event == "CHAT_MSG_WHISPER") and (string.find( arg1, "<BWS>")) and UnitAffectingCombat("player")==1) then
-			HideWhispers = true;
-		end
-	end
-	if (not HideWhispers) then
-		self.hooks.ChatFrame_OnEvent(frame, event, ...);
-	end
-end
-]]
--- modify by dugu@bigfoot
--- 以上方法断掉了hook链, 导致别的插件出问题
-function RaidAlerte_MessageFilter(frame, event, ...)
-	if ( not RaidAlerter_SET.OTMShow_OnOff) then
-		if ((event == "CHAT_MSG_WHISPER_INFORM") and (string.find( arg1, "<RaidAlerter> "))) then
-			return true;
-		end
-		if ((event == "CHAT_MSG_WHISPER") and (string.find( arg1, "<BWS>")) and UnitAffectingCombat("player")==1) then
-			return true;
-		end
-	end
-	return false, ...;
-end
-
-
-function RaidAlerte_LockPosition(switch)
-	if (switch) then
-		RaidAlerter_Attack_Frame.locked = true;
-	else
-		RaidAlerter_Attack_Frame.locked = false;
-	end
 end

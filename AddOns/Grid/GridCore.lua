@@ -268,11 +268,36 @@ function Grid:OnEnable()
 	check_libraries()
 
 	self:RegisterEvent("ADDON_LOADED")
-	self:EnableModules()
+	-- Removed by Sharak@BigFoot
+	-- self:EnableModules()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+	-- Removed by Sharak@BigFoot
+	-- self:TriggerEvent("Grid_Enabled")
+
+	-- Added by Sharak@BigFoot
+	Grid:Disable();
+end
+
+-- Added by Sharak@BigFoot
+function Grid:Enable()
+	self:Debug("Enable")
+	self:EnableModules()
 	self:TriggerEvent("Grid_Enabled")
+
+	self:PLAYER_ENTERING_WORLD()
+
+	local unit
+	for unit in GridRoster:IterateRoster(false) do
+		GridStatus:TriggerEvent("Grid_UnitChanged", unit.name, unit.unitid)
+	end
+end
+
+function Grid:Disable()
+	self:Debug("Disable")
+	self:TriggerEvent("Grid_Disabled")
+	self:DisableModules()
 end
 
 StaticPopupDialogs["GRID_DISABLED"] = {

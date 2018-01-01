@@ -1,7 +1,7 @@
 -- (c) 2007 Nymbia.  see LGPLv2.1.txt for full details.
 --DO NOT MAKE CHANGES TO THIS FILE BEFORE READING THE WIKI PAGE REGARDING CHANGING THESE FILES
 if not LibStub("LibPeriodicTable-3.1", true) then error("PT3 must be loaded before data") end
-LibStub("LibPeriodicTable-3.1"):AddData("InstanceLootHeroic", gsub("$Rev: 2424 $", "(%d+)", function(n) return n+90000 end), {
+LibStub("LibPeriodicTable-3.1"):AddData("InstanceLootHeroic", gsub("$Rev: 203 $", "(%d+)", function(n) return n+90000 end), {
 	["InstanceLootHeroic.Auchindoun"]="m,InstanceLootHeroic.Auchenai Crypts,InstanceLootHeroic.Mana-Tombs,InstanceLootHeroic.Shadow Labyrinth,InstanceLootHeroic.Sethekk Halls",
 	["InstanceLootHeroic.Auchenai Crypts.Exarch Maladaar"]="27523:130,27867:103,27869:125,27870:97,27871:129,27872:99,29244:217,29257:246,29354:104,30586:80,30587:75,30588:71",
 	["InstanceLootHeroic.Auchenai Crypts.Shirrak the Dead Watcher"]="27493:124,27845:133,27846:131,27847:103,27865:99,27866:144,30586:50,30587:42,30588:46",

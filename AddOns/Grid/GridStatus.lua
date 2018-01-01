@@ -10,6 +10,11 @@ local L = AceLibrary("AceLocale-2.2"):new("Grid")
 GridStatus = Grid:NewModule("GridStatus", "AceModuleCore-2.0")
 GridStatus:SetModuleMixins("AceDebug-2.0", "AceEvent-2.0")
 
+-- Added by Sharak@BigFoot
+GridStatus.registry = {}
+GridStatus.registryDescriptions = {}
+GridStatus.cache = {}
+
 --{{{ Module prototype
 
 GridStatus.modulePrototype.core = GridStatus
@@ -336,19 +341,6 @@ function GridStatus:FillColorOptions(options)
 			end,
 		}
 	end
-	
-	options.args.class.args["Header"] = {
-		type = "header",
-		order = 110,
-	}
-	options.args.class.args["resetclasscolors"] = {
-		type = "execute",
-		name = L["Reset class colors"],
-		desc = L["Reset class colors to defaults."],
-		order = 111,
-		func = function() GridStatus:ResetClassColors() end,
-	}
-	
 	-- wtf, this is ugly... refactor!
 	for _, class in ipairs{L["Beast"],L["Demon"],L["Humanoid"],L["Undead"],L["Dragonkin"],L["Elemental"],L["Not specified"]} do
 		options.args.creaturetype.args[class] = {
@@ -368,20 +360,14 @@ function GridStatus:FillColorOptions(options)
 	end
 end
 
-function GridStatus:ResetClassColors()
-	local colors = self.db.profile.colors
-	for class, class_color in pairs(RAID_CLASS_COLORS) do
-		local c = colors[class]
-		c.r, c.g, c.b = class_color.r, class_color.g, class_color.b
-	end
-	GridStatus:TriggerEvent("Grid_ColorsChanged")
-end
-
 function GridStatus:OnInitialize()
 	self.super.OnInitialize(self)
-	self.registry = {}
-	self.registryDescriptions = {}
-	self.cache = {}
+
+	-- Removed by Sharak@BigFoot
+	-- self.registry = {}
+	-- self.registryDescriptions = {}
+	-- self.cache = {}
+
 	self:FillColorOptions(self.options.args.color)
 end
 

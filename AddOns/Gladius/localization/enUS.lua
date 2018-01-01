@@ -1,7 +1,7 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("Gladius", "enUS", true)
 
 if not L then return end
-L["Gladius"] = true;
+
 --Welcome message
 L["Welcome to Gladius!"] = "Welcome to Gladius!"
 L["First run has been detected, displaying test frame."] = "First run has been detected, displaying test frame."

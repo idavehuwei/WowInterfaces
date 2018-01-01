@@ -1,0 +1,4846 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Frame name="MiDKPFrame">
+		<Scripts>
+			<OnLoad>
+				MiDKP_UI.Frame.OnFrameLoad(self);
+			</OnLoad>
+			<OnEvent>
+				MiDKP_UI.Frame.OnFrameEvent(self, event, ...);
+			</OnEvent>
+			<OnUpdate>
+				MiDKP_UI.Frame.OnFrameUpdate(self, elapsed);
+			</OnUpdate>
+		</Scripts>
+	</Frame>
+
+	<Font name="MiDKPFontNormal" inherits="NumberFont_Shadow_Med" virtual="true">
+		<Color r="1.0" g="0.82" b="0.0"/>
+	</Font>
+
+	<Font name="MiDKPFontNormalHilight" inherits="NumberFont_Shadow_Med" virtual="true">
+		<Color r="1.0" g="1.0" b="1.0"/>
+	</Font>
+
+	<Font name="MiDKPFontSmall" inherits="NumberFont_Shadow_Small" virtual="true">
+		<Color r="1.0" g="0.82" b="0.0"/>
+	</Font>
+
+	<Font name="MiDKPFontSmallHilight" inherits="NumberFont_Shadow_Small" virtual="true">
+		<Color r="1.0" g="1.0" b="1.0"/>
+	</Font>
+
+	<Font name="MiDKPFontSmallDisable" inherits="NumberFont_Shadow_Small" virtual="true">
+		<Color r="0.62" g="0.62" b="0.62"/>
+	</Font>
+
+	<Font name="MiDKPFontLarge" inherits="QuestFont_Large" virtual="true">
+		<FontHeight>
+			<AbsValue val="34"/>
+		</FontHeight>
+	</Font>
+
+	<FontString name="MiDKPPageFont" inherits="MiDKPFontNormal" virtual="true">
+		<FontHeight>
+			<AbsValue val="14"/>
+		</FontHeight>
+		<Color r="1.0" g="0.82" b="0"/>
+		<Shadow>
+			<Offset>
+				<AbsDimension x="1" y="-1"/>
+			</Offset>
+			<Color r="0" g="0" b="0"/>
+		</Shadow>
+	</FontString>
+
+	<Button name="MiDKPFrameColumnHeaderTemplate" virtual="true">
+
+		<Size>
+			<AbsDimension x="10" y="24"/>
+		</Size>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentLeft" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+					<Size>
+						<AbsDimension x="5" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
+					<TexCoords left="0" right="0.078125" top="0" bottom="0.75"/>
+				</Texture>
+				<Texture name="$parentMiddle" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+					<Size>
+						<AbsDimension x="53" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords left="0.078125" right="0.90625" top="0" bottom="0.75"/>
+				</Texture>
+				<Texture name="$parentRight" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+					<Size>
+						<AbsDimension x="4" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords left="0.90625" right="0.96875" top="0" bottom="0.75"/>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentName" justifyH="LEFT" inherits="MiDKPFontSmall" text="">
+					<Size>
+						<AbsDimension x="360" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="30" y="-5"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+
+		</Layers>
+		<ButtonText>
+			<Anchors>
+				<Anchor point="LEFT">
+					<Offset>
+						<AbsDimension x="8" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</ButtonText>
+		<NormalFont inherits="GameFontNormal"/>
+		<HighlightFont inherits="GameFontHighlight"/>
+		<HighlightTexture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight" alphaMode="ADD">
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentLeft">
+					<Offset>
+						<AbsDimension x="-2" y="5"/>
+					</Offset>
+				</Anchor>
+				<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight">
+					<Offset>
+						<AbsDimension x="2" y="-7"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</HighlightTexture>
+		<Scripts>
+			<OnMouseUp>
+				if ( this.sortType and this.func ) then
+					this.func(this.sortType);
+				end
+			</OnMouseUp>
+		</Scripts>
+	</Button>
+
+	<Button name="MiDKPFrameTemplate"  movable="true" virtual="true">
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parentBackgroundTopLeft" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="120" y="57"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.46484375" top="0" bottom="0.21875"/>
+				</Texture>
+				<Texture name="$parentBackgroundTopRight" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="43" y="57"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.83203125" right="0.99609375" top="0" bottom="0.21875"/>
+				</Texture>
+				<Texture name="$parentBackgroundBottomLeft" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="31" y="32"/>
+					</Size>
+					<TexCoords left="0" right="30" top="184" bottom="215"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.1171875" top="0.71875" bottom="0.83984375"/>
+				</Texture>
+				<Texture name="$parentBackgroundBottomRight" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="110" y="63"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.5703125" right="0.99609375" top="0.59765625" bottom="0.83984375"/>
+				</Texture>
+				<Texture name="$parentBackgroundTop" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="28" y="41"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentBackgroundTopLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="TOPRIGHT" relativeTo="$parentBackgroundTopRight" relativePoint="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.46484375" right="0.5703125" top="0" bottom="0.15625"/>
+				</Texture>
+				<Texture name="$parentBackgroundBottom" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="28" y="32"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentBackgroundBottomLeft" relativePoint="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBackgroundBottomRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.46484375" right="0.5703125" top="0.71875" bottom="0.83984375"/>
+				</Texture>
+				<Texture name="$parentBackgroundLeft" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="31" y="14"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentBackgroundTopLeft" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBackgroundBottomLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.1171875" top="0.22265625" bottom="0.2734375"/>
+				</Texture>
+				<Texture name="$parentBackgroundRight" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="43" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentBackgroundTopRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBackgroundBottomRight" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.83203125" right="0.99609375" top="0.16015625" bottom="0.21875"/>
+				</Texture>
+			</Layer>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentBackgroundCenter" file="Interface\AddOns\MiDKP\background">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentBackgroundTopLeft" relativePoint="TOPLEFT">
+							<Offset>
+								<AbsDimension x="15" y="-10"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="TOPRIGHT" relativeTo="$parentBackgroundTopRight" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="-5" y="-10"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentBackgroundBottomLeft" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="15" y="10"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBackgroundBottomRight" relativePoint="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="-5" y="10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="1" top="0" bottom="1"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+            <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="CENTER" relativePoint="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-14" y="-17"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self:SetFrameLevel(self:GetFrameLevel() + 4);
+                    </OnLoad>
+                </Scripts>
+            </Button>
+		</Frames>
+		<Scripts>
+			<OnMouseDown>
+				self:StartMoving();
+			</OnMouseDown>
+			<OnMouseUp>
+				self:StopMovingOrSizing();
+			</OnMouseUp>
+		</Scripts>
+	</Button>
+
+	<Button name="MiDKPNotifyButtonTemplate" virtual="true" topLevel="true" frameStrata="HIGH" movable="true">
+		<Size>
+			<AbsDimension x="64" y="64"/>
+		</Size>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentGlow"/>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				MiDKP_UI.Notify.OnNotifyLoad(self);
+			</OnLoad>
+			<OnEnter>
+				MiDKP_UI.Notify.OnNotifyEnter(self);
+			</OnEnter>
+			<OnLeave>
+				MiDKP_UI.Notify.OnNotifyLeave(self);
+			</OnLeave>
+			<OnClick>
+				MiDKP_UI.Notify.OnNotifyClick(self, button);
+			</OnClick>
+		</Scripts>
+	</Button>	
+
+	<Button name="MiDKPButtonTemplate" virtual="true">
+		<ButtonText name="$parentText">
+			<Anchors>
+				<Anchor point="CENTER">
+					<Offset>
+						<AbsDimension x="0" y="1"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="MiDKPFont"/>
+		<HighlightFont style="MiDKPFontSmallHilight"/>
+		<DisabledFont style="MiDKPFontSmallDisable"/>
+		<NormalTexture inherits="UIPanelButtonUpTexture"/>
+		<PushedTexture inherits="UIPanelButtonDownTexture"/>
+		<DisabledTexture inherits="UIPanelButtonDisabledTexture"/>
+		<HighlightTexture inherits="UIPanelButtonHighlightTexture"/>
+	</Button>
+
+	<Button name="MiDKPPrevButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="32" y="32"/>
+		</Size>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString name="$parentText" inherits="MiDKPPageFont" justifyH="LEFT" text="MIDKP_TEXT_PREV_PAGE">
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick>
+				MiDKP_Widget.Button(self,self.update).PrevButton().OnClick();
+			</OnClick>
+		</Scripts>
+		<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Up"/>
+		<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Down"/>
+		<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Disabled"/>
+		<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+	</Button>
+	
+	<Button name="MiDKPNextButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="32" y="32"/>
+		</Size>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString  name="$parentText" inherits="MiDKPPageFont" justifyH="RIGHT" text="MIDKP_TEXT_NEXT_PAGE">
+					<Anchors>
+						<Anchor point="RIGHT" relativePoint="LEFT">
+							<Offset>
+								<AbsDimension x="0" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick>
+				MiDKP_Widget.Button(self,self.update).NextButton(self.pagecount,self.count).OnClick();
+			</OnClick>
+		</Scripts>
+		<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
+		<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
+		<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
+		<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+	</Button>
+	
+	<Button name="MiDKPSmallButtonTemplate" virtual="true">
+		<ButtonText name="$parentText">
+			<Anchors>
+				<Anchor point="CENTER">
+					<Offset>
+						<AbsDimension x="0" y="1"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="MiDKPFontSmall"/>
+		<HighlightFont style="MiDKPFontSmallHilight"/>
+		<DisabledFont style="MiDKPFontSmallDisable"/>
+		<NormalTexture inherits="UIPanelButtonUpTexture"/>
+		<PushedTexture inherits="UIPanelButtonDownTexture"/>
+		<DisabledTexture inherits="UIPanelButtonDisabledTexture"/>
+		<HighlightTexture inherits="UIPanelButtonHighlightTexture"/>
+	</Button>
+	
+	<CheckButton name="MiDKPRaidButtonTemplate"  virtual="true">
+		<Size>
+			<AbsDimension x="460" y="50"/>
+		</Size>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentName" justifyH="LEFT" inherits="MiDKPFontNormal" text="=">
+					<Size>
+						<AbsDimension x="360" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="10" y="-10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentDKP" justifyH="RIGHT" inherits="MiDKPFontSmallDisable">
+					<Size>
+						<AbsDimension x="120" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parentName" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-80" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentPlaces" justifyH="LEFT" inherits="MiDKPFontSmallDisable">
+					<Size>
+						<AbsDimension x="360" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentStatus" justifyH="RIGHT" inherits="MiDKPFontSmallDisable" hidden="true">
+					<Size>
+						<AbsDimension x="60" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parentName" relativePoint="BOTTOM">
+							<Offset>
+								<AbsDimension x="0" y="1"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-10" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentInfo" justifyH="LEFT" inherits="MiDKPFontSmallDisable" hidden="true">
+					<Size>
+						<AbsDimension x="360" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentPlaces" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture name="$parentHighlightTopLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.03515625" top="0" bottom="0.140625"/>
+				</Texture>
+				<Texture name="$parentHighlightTopRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.4375" bottom="0.578125"/>
+				</Texture>
+				<Texture name="$parentHighlightBottomLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<TexCoords left="0" right="0.03515625" top="0.265625" bottom="0.40625"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentHighlightBottomRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.703125" bottom="0.84375"/>
+				</Texture>
+				<Texture name="$parentHighlightTop" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightTopRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.046875" right="0.08203125" top="0" bottom="0.140625"/>
+				</Texture>
+				<Texture name="$parentHighlightBottom" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightBottomLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.046875" right="0.08203125" top="0.265625" bottom="0.40625"/>
+				</Texture>
+				<Texture name="$parentHighlightLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="4"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopLeft" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.03515625" top="0.1875" bottom="0.234375"/>
+				</Texture>
+				<Texture name="$parentHighlightRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="4"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomRight" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.625" bottom="0.671875"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentActiveButton" inherits="MiDKPSmallButtonTemplate">
+				<Size>
+					<AbsDimension x="40" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-14" y="-6"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Raid.ActiveButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnMouseUp>
+				MiDKP_UI.Raid.RaidButton_OnClick(self, button);
+			</OnMouseUp>
+			<OnEnter>
+				MiDKP_UI.Raid.RaidButton_OnEnter(self);
+			</OnEnter>
+			<OnLeave>
+				MiDKP_UI.Raid.RaidButton_OnLeave(self);
+			</OnLeave>
+		</Scripts>
+	</CheckButton>
+	
+	<CheckButton name="MiDKPEventButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="460" y="28"/>
+		</Size>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentName" justifyH="LEFT" inherits="MiDKPFontNormal" text="=">
+					<Size>
+						<AbsDimension x="360" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="10" y="-5"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTip" justifyH="LEFT" inherits="MiDKPFontSmallDisable">
+					<Size>
+						<AbsDimension x="360" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentBonus" justifyH="RIGHT" inherits="MiDKPFontSmallDisable">
+					<Size>
+						<AbsDimension x="120" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parentName" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-10" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentMemberCount" justifyH="RIGHT" inherits="MiDKPFontSmallDisable">
+					<Size>
+						<AbsDimension x="120" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parentTip" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-10" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture name="$parentHighlightTopLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.03515625" top="0" bottom="0.140625"/>
+				</Texture>
+				<Texture name="$parentHighlightTopRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.4375" bottom="0.578125"/>
+				</Texture>
+				<Texture name="$parentHighlightBottomLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<TexCoords left="0" right="0.03515625" top="0.265625" bottom="0.40625"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentHighlightBottomRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.703125" bottom="0.84375"/>
+				</Texture>
+				<Texture name="$parentHighlightTop" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightTopRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.046875" right="0.08203125" top="0" bottom="0.140625"/>
+				</Texture>
+				<Texture name="$parentHighlightBottom" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightBottomLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.046875" right="0.08203125" top="0.265625" bottom="0.40625"/>
+				</Texture>
+				<Texture name="$parentHighlightLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="4"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopLeft" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.03515625" top="0.1875" bottom="0.234375"/>
+				</Texture>
+				<Texture name="$parentHighlightRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="4"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomRight" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.625" bottom="0.671875"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnShow>
+				self.widget=MiDKP_Widget.Button(self,MiDKP_UIHelp.Event.DoUpdate).ListButton(MIDKP_EVENT_PAGE_COUNT,28,44,"Tip","MemberCount")
+			</OnShow>
+
+			<OnEnter>
+				self.widget.OnEnter()
+			</OnEnter>
+			<OnLeave>
+				self.widget.OnLeave()
+			</OnLeave>
+			<OnMouseUp>
+				self.widget.OnClick()
+				if button~="RightButton" then return end
+				MiDKP_UIHelp.Util.RightButtonUp(self, button,"event");
+			</OnMouseUp>
+		</Scripts>
+	</CheckButton>
+	
+	<CheckButton name="MiDKPItemButtonTemplate" text="=" virtual="true">
+		<Size>
+			<AbsDimension x="460" y="28"/>
+		</Size>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentName" justifyH="LEFT" inherits="MiDKPFontNormal" text="=">
+					<Size>
+						<AbsDimension x="360" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="10" y="-5"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTip" justifyH="LEFT" inherits="MiDKPFontSmallDisable">
+					<Size>
+						<AbsDimension x="360" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentBonus" justifyH="RIGHT" inherits="MiDKPFontSmallDisable">
+					<Size>
+						<AbsDimension x="60" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parentName" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-10" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentLooter" justifyH="RIGHT" inherits="MiDKPFontSmallDisable">
+					<Size>
+						<AbsDimension x="240" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parentTip" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-10" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture name="$parentHighlightTopLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.03515625" top="0" bottom="0.140625"/>
+				</Texture>
+				<Texture name="$parentHighlightTopRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.4375" bottom="0.578125"/>
+				</Texture>
+				<Texture name="$parentHighlightBottomLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<TexCoords left="0" right="0.03515625" top="0.265625" bottom="0.40625"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentHighlightBottomRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.703125" bottom="0.84375"/>
+				</Texture>
+				<Texture name="$parentHighlightTop" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightTopRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.046875" right="0.08203125" top="0" bottom="0.140625"/>
+				</Texture>
+				<Texture name="$parentHighlightBottom" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightBottomLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.046875" right="0.08203125" top="0.265625" bottom="0.40625"/>
+				</Texture>
+				<Texture name="$parentHighlightLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="4"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopLeft" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.03515625" top="0.1875" bottom="0.234375"/>
+				</Texture>
+				<Texture name="$parentHighlightRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="4"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomRight" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.625" bottom="0.671875"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnShow>
+				self.widget=MiDKP_Widget.Button(self,MiDKP_UIHelp.Item.DoUpdate).ListButton(MIDKP_ITEM_PAGE_COUNT,28,44,"Tip","Looter")
+			</OnShow>
+
+			<OnEnter>
+				self.widget.OnEnter()
+			</OnEnter>
+			<OnLeave>
+				self.widget.OnLeave()
+			</OnLeave>
+			<OnMouseUp>
+				self.widget.OnClick()
+				if button~="RightButton" then return end
+				MiDKP_UIHelp.Util.RightButtonUp(self, button,"item");
+			</OnMouseUp>
+		</Scripts>
+	</CheckButton>
+	
+	<CheckButton name="MiDKPMemberButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="460" y="28"/>
+		</Size>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentName" justifyH="LEFT" inherits="MiDKPFontNormal" text="=">
+					<Size>
+						<AbsDimension x="140" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="10" y="-5"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentClass" justifyH="LEFT" inherits="MiDKPFontNormal" text="=">
+					<Size>
+						<AbsDimension x="86" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentName" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTip" justifyH="LEFT" inherits="MiDKPFontSmallDisable">
+					<Size>
+						<AbsDimension x="360" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTotalBonus" justifyH="RIGHT" inherits="MiDKPFontSmallDisable">
+					<Size>
+						<AbsDimension x="130" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parentName" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-10" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentBonus" justifyH="RIGHT" inherits="MiDKPFontSmallDisable">
+					<Size>
+						<AbsDimension x="120" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="RIGHT" relativeTo="$parentTotalBonus" relativePoint="LEFT"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture name="$parentHighlightTopLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.03515625" top="0" bottom="0.140625"/>
+				</Texture>
+				<Texture name="$parentHighlightTopRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.4375" bottom="0.578125"/>
+				</Texture>
+				<Texture name="$parentHighlightBottomLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<TexCoords left="0" right="0.03515625" top="0.265625" bottom="0.40625"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentHighlightBottomRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.703125" bottom="0.84375"/>
+				</Texture>
+				<Texture name="$parentHighlightTop" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightTopRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.046875" right="0.08203125" top="0" bottom="0.140625"/>
+				</Texture>
+				<Texture name="$parentHighlightBottom" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightBottomLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.046875" right="0.08203125" top="0.265625" bottom="0.40625"/>
+				</Texture>
+				<Texture name="$parentHighlightLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="4"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopLeft" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.03515625" top="0.1875" bottom="0.234375"/>
+				</Texture>
+				<Texture name="$parentHighlightRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="4"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomRight" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.625" bottom="0.671875"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnShow>
+				self.widget=MiDKP_Widget.Button(self,MiDKP_UIHelp.Member.DoUpdate).ListButton(MIDKP_MEMBER_PAGE_COUNT,28,44,"Tip")
+			</OnShow>
+
+			<OnEnter>
+				self.widget.OnEnter()
+			</OnEnter>
+			<OnLeave>
+				self.widget.OnLeave()
+			</OnLeave>
+			<OnMouseUp>
+				self.widget.OnClick()
+				if button~="RightButton" then return end
+				MiDKP_UIHelp.Util.RightButtonUp(self, button,"member");
+			</OnMouseUp>
+		</Scripts>
+	</CheckButton>
+	
+	<CheckButton name="MiDKPDKPButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="460" y="28"/>
+		</Size>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentName" justifyH="LEFT" inherits="MiDKPFontNormal" text="=">
+					<Size>
+						<AbsDimension x="200" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="10" y="-5"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentClass" justifyH="LEFT" inherits="MiDKPFontNormal" text="=">
+					<Size>
+						<AbsDimension x="86" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentName" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTip" justifyH="LEFT" inherits="MiDKPFontSmallDisable">
+					<Size>
+						<AbsDimension x="360" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentBonus" justifyH="LEFT" inherits="MiDKPFontSmallDisable">
+					<Size>
+						<AbsDimension x="250" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parentClass" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="148" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTotalBonus" justifyH="LEFT" inherits="MiDKPFontSmallDisable">
+					<Size>
+						<AbsDimension x="120" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parentTip" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="30" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture name="$parentHighlightTopLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.03515625" top="0" bottom="0.140625"/>
+				</Texture>
+				<Texture name="$parentHighlightTopRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.4375" bottom="0.578125"/>
+				</Texture>
+				<Texture name="$parentHighlightBottomLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<TexCoords left="0" right="0.03515625" top="0.265625" bottom="0.40625"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentHighlightBottomRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.703125" bottom="0.84375"/>
+				</Texture>
+				<Texture name="$parentHighlightTop" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightTopRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.046875" right="0.08203125" top="0" bottom="0.140625"/>
+				</Texture>
+				<Texture name="$parentHighlightBottom" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightBottomLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.046875" right="0.08203125" top="0.265625" bottom="0.40625"/>
+				</Texture>
+				<Texture name="$parentHighlightLeft" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="4"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopLeft" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.03515625" top="0.1875" bottom="0.234375"/>
+				</Texture>
+				<Texture name="$parentHighlightRight" file="Interface\PaperDollInfoFrame\UI-Character-ReputationBar-Highlight" alphaMode="ADD" hidden="true">
+					<Size>
+						<AbsDimension x="10" y="4"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentHighlightTopRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentHighlightBottomRight" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.02734375" right="0.0625" top="0.625" bottom="0.671875"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnShow>
+				self.widget=MiDKP_Widget.Button(self,MiDKP_UIHelp.DKP.DoUpdate).ListButton(MIDKP_DKP_PAGE_COUNT,28,44,"Tip","TotalBonus")
+			</OnShow>
+
+			<OnEnter>
+				self.widget.OnEnter()
+			</OnEnter>
+			<OnLeave>
+				self.widget.OnLeave()
+			</OnLeave>
+			<OnMouseUp>
+				
+				self.widget.OnClick()
+				if button~="RightButton" then return end
+				MiDKP_UIHelp.Util.RightButtonUp(self, button,"dkp");
+			</OnMouseUp>	
+		</Scripts>
+	</CheckButton>
+
+	<Frame name="MiDKPInnerFrameTemplate" virtual="true">
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parentTopLeft" file="Interface\AddOns\MiDKP\iframe">
+					<Size>
+						<AbsDimension x="16" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.05859375" top="0" bottom="0.05859375"/>
+				</Texture>
+				<Texture name="$parentTopRight" file="Interface\AddOns\MiDKP\iframe">
+					<Size>
+						<AbsDimension x="16" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.9375" right="1" top="0" bottom="0.05859375"/>
+				</Texture>
+				<Texture name="$parentBottomLeft" file="Interface\AddOns\MiDKP\iframe">
+					<Size>
+						<AbsDimension x="16" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.05859375" top="0.82421875" bottom="0.8828125"/>
+				</Texture>
+				<Texture name="$parentBottomRight" file="Interface\AddOns\MiDKP\iframe">
+					<Size>
+						<AbsDimension x="16" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.9375" right="1" top="0.82421875" bottom="0.8828125"/>
+				</Texture>
+				<Texture name="$parentTop" file="Interface\AddOns\MiDKP\iframe">
+					<Size>
+						<AbsDimension x="224" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTopLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="TOPRIGHT" relativeTo="$parentTopRight" relativePoint="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.0625" right="0.93359375" top="0" bottom="0.05859375"/>
+				</Texture>
+				<Texture name="$parentBottom" file="Interface\AddOns\MiDKP\iframe">
+					<Size>
+						<AbsDimension x="224" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentBottomLeft" relativePoint="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBottomRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.0625" right="0.93359375" top="0.82421875" bottom="0.8828125"/>
+				</Texture>
+				<Texture name="$parentLeft" file="Interface\AddOns\MiDKP\iframe">
+					<Size>
+						<AbsDimension x="31" y="14"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTopLeft" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBottomLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.05859375" top="0.0625" bottom="0.8203125"/>
+				</Texture>
+				<Texture name="$parentRight" file="Interface\AddOns\MiDKP\iframe">
+					<Size>
+						<AbsDimension x="43" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTopRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBottomRight" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.9375" right="1" top="0.0625" bottom="0.8203125"/>
+				</Texture>
+			</Layer>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentCenter" file="Interface\AddOns\MiDKP\iframe">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTopLeft" relativePoint="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="TOPRIGHT" relativeTo="$parentTopRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentBottomLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBottomRight" relativePoint="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.0625" right="0.93359375" top="0.0625" bottom="0.8203125"/>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+	
+	<CheckButton name="MiDKPCheckButtonTemplate" virtual="true">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentText" inherits="MiDKPFontNormal">
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="LEFT">
+							<Offset>
+								<AbsDimension x="28" y="2"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter>
+				if (not self.disabled) then
+					local textOb = getglobal(self:GetName().."Text");
+					textOb:SetTextColor(1.0, 1.0, 1.0);
+				end
+			</OnEnter>
+			<OnLeave>
+				if (not self.disabled) then
+					local textOb = getglobal(self:GetName().."Text");
+
+					if (textOb.color) then
+						textOb:SetTextColor(textOb.color.r, textOb.color.g, textOb.color.b, textOb.color.a);
+					else
+						textOb:SetTextColor(1.0, 0.82, 0);
+					end
+				end
+			</OnLeave>
+		</Scripts>
+		<NormalTexture file="Interface\Buttons\UI-CheckBox-Up">
+			<Size>
+				<AbsDimension x="24" y="24"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT">
+					<Offset>
+						<AbsDimension x="3" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</NormalTexture>
+		<PushedTexture file="Interface\Buttons\UI-CheckBox-Down">
+			<Size>
+				<AbsDimension x="24" y="24"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT">
+					<Offset>
+						<AbsDimension x="3" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</PushedTexture>
+		<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD">
+			<Size>
+				<AbsDimension x="24" y="24"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT">
+					<Offset>
+						<AbsDimension x="3" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</HighlightTexture>
+		<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check">
+			<Size>
+				<AbsDimension x="24" y="24"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT">
+					<Offset>
+						<AbsDimension x="3" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</CheckedTexture>
+		<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled">
+			<Size>
+				<AbsDimension x="24" y="24"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT">
+					<Offset>
+						<AbsDimension x="3" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</DisabledCheckedTexture>
+	</CheckButton>
+
+	<Button name="MiDKPEventFrameTemplate" virtual="true" movable="true" >
+		<Size>
+			<AbsDimension x="10" y="10"/>
+		</Size>
+
+		<Backdrop  edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<EdgeSize>
+				<AbsValue val="7"/>
+			</EdgeSize>
+			<BackgroundInsets>
+				<AbsInset left="4" right="4" top="4" bottom="4"/>
+			</BackgroundInsets>
+		</Backdrop>
+		<Scripts>
+			<OnShow>
+				this:RegisterForDrag("LeftButton");
+			</OnShow>
+			<OnDragStart>
+				this:StartMoving();
+				this.isMoving = true;
+			</OnDragStart>
+			<OnDragStop>
+				this:StopMovingOrSizing();
+				this.isMoving = false;
+			</OnDragStop>
+		</Scripts>
+
+	
+	</Button>
+	
+	<Frame name="MiDKPRaidPage" parent="MiDKPMainFrame" hidden="true">
+		<Frames>
+
+			<Button name="$parentAction" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_RAID_EXPORT">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-35" y="-26"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Raid.ActionButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentDelete" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_DELETE">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentAction" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Raid.DeleteButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentModify" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_MODIFY">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentDelete" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-2" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Raid.ModifyButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentCreate" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_CREATE">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentModify" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-2" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Raid.CreateButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			
+			<Button name="$parentSave" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_SAVE">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentCreate" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_Util:SafePopup_Show(MiDKP_DIALOG_CONFIRM_SAVE_RAID)
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentPrevButton" inherits="MiDKPPrevButtonTemplate">
+				<Anchors>
+					<Anchor point="CENTER" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="155" y="40"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self.update=MiDKP_UIHelp.Raid.DoUpdate
+					</OnLoad>
+				</Scripts>
+			</Button>
+			<Button name="$parentNextButton" inherits="MiDKPNextButtonTemplate">
+				<Anchors>
+					<Anchor point="CENTER" relativeTo="$parentPrevButton" relativePoint="CENTER">
+						<Offset>
+							<AbsDimension x="190" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self.update=MiDKP_UIHelp.Raid.DoUpdate
+						self.pagecount=MIDKP_RAID_PAGE_COUNT
+						self.count=MiDKP_Core.Util.GetRaidCount
+					</OnLoad>
+				</Scripts>
+			</Button>
+		
+			
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				MiDKP_Widget.Panel(self).ListPanel("Raid",MIDKP_RAID_PAGE_COUNT).AddButtons()
+			</OnLoad>
+			<OnShow>
+				MiDKP_UI.Raid.OnRaidShow();
+			</OnShow>
+		</Scripts>
+	</Frame>
+
+	<Frame name="MiDKPMemberPage" parent="MiDKPMainFrame" hidden="true">
+		<Frames>
+			<Button name="$parentDelete" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_DELETE">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-35" y="-26"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Member.DeleteButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			
+			<Button name="$parentCreate" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_ADD_EVENT">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentDelete" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-2" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Member.CreateButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			
+			<Button name="$parentCreateMember" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_ADD_MEMBER">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentCreate" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-2" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Member.CreateMemberButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentColumnHeader1" inherits="MiDKPFrameColumnHeaderTemplate" >
+				<Anchors>
+					<Anchor point="TOPLEFT" >
+						<Offset>
+							<AbsDimension x="24" y="-62"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						WhoFrameColumn_SetWidth(this,120);
+						this.sortType = "name";
+						this.func=MiDKP_UI.Member.ColumnHeader_OnClick
+
+					</OnLoad>
+				</Scripts>
+			</Button>
+			<Frame name="$parentColumnHeader2" inherits="UIDropDownMenuTemplate" id="2" >
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentColumnHeader1" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="-18" y="-3"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<Texture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight" alphaMode="ADD" hidden="true">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="15" y="3"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMRIGHT">
+									<Offset>
+										<AbsDimension x="-30" y="-2"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>
+						UIDropDownMenu_Initialize(this, MiDKP_UIHelp.Member.DropDownClassInit)
+						UIDropDownMenu_SetWidth(this,100);
+						UIDropDownMenu_SetButtonWidth(this,22);
+						this.sortType = "class";
+					</OnLoad>
+					<OnEnter>
+						getglobal(this:GetName() .. "HighlightTexture"):Show();
+					</OnEnter>
+					<OnLeave>
+						getglobal(this:GetName() .. "HighlightTexture"):Hide();
+					</OnLeave>
+					<OnMouseUp>
+						MiDKP_UI.Member.ColumnHeader_OnClick(this.sortType);
+					</OnMouseUp>
+				</Scripts>
+			</Frame>
+			<Button name="$parentColumnHeader3" inherits="MiDKPFrameColumnHeaderTemplate" id="1" >
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentColumnHeader2" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="-18" y="3"/>
+						</Offset>
+					</Anchor>
+				</Anchors>					
+				<Scripts>
+					<OnLoad>
+						WhoFrameColumn_SetWidth(this,114.5);
+						this.sortType = "dkp";
+						this.func=MiDKP_UI.Member.ColumnHeader_OnClick
+					</OnLoad>
+					<OnMouseDown>						
+						this.sortType="dkp";
+					</OnMouseDown>
+				</Scripts>
+			</Button>	
+			<Button name="$parentColumnHeader4" inherits="MiDKPFrameColumnHeaderTemplate" id="3" >
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentColumnHeader3" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="-1" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>					
+				<Scripts>
+					<OnLoad>
+						WhoFrameColumn_SetWidth(this,114.5);
+						this.sortType = "totaldkp";
+						this.func=MiDKP_UI.Member.ColumnHeader_OnClick
+					</OnLoad>
+					<OnMouseDown>						
+						this.sortType="totaldkp";
+					</OnMouseDown>
+				</Scripts>
+			</Button>
+			<Button name="$parentPrevButton" inherits="MiDKPPrevButtonTemplate">
+				<Anchors>
+					<Anchor point="CENTER" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="155" y="40"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self.update=MiDKP_UIHelp.Member.DoUpdate
+					</OnLoad>
+				</Scripts>
+			</Button>
+			<Button name="$parentNextButton" inherits="MiDKPNextButtonTemplate">
+				<Anchors>
+					<Anchor point="CENTER" relativeTo="$parentPrevButton" relativePoint="CENTER">
+						<Offset>
+							<AbsDimension x="190" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self.update=MiDKP_UIHelp.Member.DoUpdate
+						self.pagecount=MIDKP_MEMBER_PAGE_COUNT
+						self.count=MiDKP_Core.Raid.GetCurrentRaidSize
+					</OnLoad>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				MiDKP_Widget.Panel(self).ListPanel("Member",MIDKP_MEMBER_PAGE_COUNT).AddButtons(25,-85)
+			</OnLoad>
+			<OnShow>
+				MiDKP_UI.Member.OnMemberShow(self);
+			</OnShow>
+		</Scripts>
+	</Frame>
+
+	<Frame name="MiDKPEventPage" parent="MiDKPMainFrame" hidden="true">
+		<Frames>
+			<Button name="$parentDelete" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_DELETE">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-35" y="-26"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Event.DeleteButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentModify" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_MODIFY">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentDelete" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-2" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Event.ModifyButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentCreate" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_CREATE">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentModify" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-2" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Event.CreateButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentPrevButton" inherits="MiDKPPrevButtonTemplate">
+				<Anchors>
+					<Anchor point="CENTER" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="155" y="40"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self.update=MiDKP_UIHelp.Event.DoUpdate
+					</OnLoad>
+				</Scripts>
+			</Button>
+			<Button name="$parentNextButton" inherits="MiDKPNextButtonTemplate">
+				<Anchors>
+					<Anchor point="CENTER" relativeTo="$parentPrevButton" relativePoint="CENTER">
+						<Offset>
+							<AbsDimension x="190" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self.update=MiDKP_UIHelp.Event.DoUpdate
+						self.pagecount=MIDKP_EVENT_PAGE_COUNT
+						self.count=MiDKP_Core.Util.GetEventCount
+					</OnLoad>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				MiDKP_Widget.Panel(self).ListPanel("Event",MIDKP_EVENT_PAGE_COUNT).AddButtons()
+			</OnLoad>
+			<OnShow>
+				MiDKP_UI.Event.OnEventShow(self);
+			</OnShow>
+		</Scripts>
+	</Frame>
+
+	<Frame name="MiDKPItemPage" parent="MiDKPMainFrame" hidden="true">
+		<Frames>
+			<Button name="$parentDelete" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_DELETE">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-35" y="-26"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Item.DeleteButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentModify" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_MODIFY">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentDelete" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-2" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Item.ModifyButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentCreate" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_CREATE">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentModify" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-2" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Item.CreateButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			
+			<Button name="$parentPrevButton" inherits="MiDKPPrevButtonTemplate">
+				<Anchors>
+					<Anchor point="CENTER" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="155" y="40"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self.update=MiDKP_UIHelp.Item.DoUpdate
+					</OnLoad>
+				</Scripts>
+			</Button>
+			<Button name="$parentNextButton" inherits="MiDKPNextButtonTemplate">
+				<Anchors>
+					<Anchor point="CENTER" relativeTo="$parentPrevButton" relativePoint="CENTER">
+						<Offset>
+							<AbsDimension x="190" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self.update=MiDKP_UIHelp.Item.DoUpdate
+						self.pagecount=MIDKP_ITEM_PAGE_COUNT
+						self.count=MiDKP_Core.Util.GetItemCount
+					</OnLoad>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				MiDKP_Widget.Panel(self).ListPanel("Item",MIDKP_ITEM_PAGE_COUNT).AddButtons()
+			</OnLoad>
+			<OnShow>
+				MiDKP_UI.Item.OnItemShow(self);
+			</OnShow>
+		</Scripts>
+	</Frame>
+
+	<Frame name="MiDKPOptionPage" parent="MiDKPMainFrame" hidden="true">
+		<Frames>
+			<Frame setAllPoints="true">
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString justifyH="LEFT" inherits="MiDKPFontNormal" text="MIDKP_TEXT_OPTION_1">
+							<Color r="0.8" g="0.8" b="0.8" a="0.8"/>
+							<Size>
+								<AbsDimension x="300" y="36"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="35" y="-60"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString justifyH="LEFT" inherits="MiDKPFontNormal" text="MIDKP_TEXT_OPTION_2">
+							<Color r="0.8" g="0.8" b="0.8" a="0.8"/>
+							<Size>
+								<AbsDimension x="300" y="36"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="35" y="-115"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString justifyH="LEFT" inherits="MiDKPFontNormal" text="MIDKP_TEXT_OPTION_3">
+							<Color r="0.8" g="0.8" b="0.8" a="0.8"/>
+							<Size>
+								<AbsDimension x="300" y="36"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="35" y="-195"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString justifyH="LEFT" inherits="MiDKPFontNormal" text="MIDKP_TEXT_OPTION_4">
+							<Color r="0.8" g="0.8" b="0.8" a="0.8"/>
+							<Size>
+								<AbsDimension x="300" y="36"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="35" y="-250"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString justifyH="LEFT" inherits="MiDKPFontNormal" text="MIDKP_TEXT_OPTION_POINTS_DIST">
+							<Color r="0.8" g="0.8" b="0.8" a="0.8"/>
+							<Size>
+								<AbsDimension x="300" y="36"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="35" y="-325"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Button name="$parentIgnoreItems" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_OPTION_5">
+				<Size>
+					<AbsDimension x="100" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-35" y="-26"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Option.IgnoreItemsButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<CheckButton name="$parentQualityUncommon" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="50" y="-90"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_6);
+						getglobal(self:GetName().."Text"):SetTextColor(MIDKP_ITEM_COLOR[2].r, MIDKP_ITEM_COLOR[2].g, MIDKP_ITEM_COLOR[2].b, MIDKP_ITEM_COLOR[2].a);
+						getglobal(self:GetName().."Text").color = MIDKP_ITEM_COLOR[2];
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Option.QualityUncommon_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentQualityRare" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentQualityUncommon" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="20" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_7);
+						getglobal(self:GetName().."Text"):SetTextColor(MIDKP_ITEM_COLOR[3].r, MIDKP_ITEM_COLOR[3].g, MIDKP_ITEM_COLOR[3].b, MIDKP_ITEM_COLOR[3].a);
+						getglobal(self:GetName().."Text").color = MIDKP_ITEM_COLOR[3];
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Option.QualityRare_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentQualityEpic" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentQualityRare" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="20" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_8);
+						getglobal(self:GetName().."Text"):SetTextColor(MIDKP_ITEM_COLOR[4].r, MIDKP_ITEM_COLOR[4].g, MIDKP_ITEM_COLOR[4].b, MIDKP_ITEM_COLOR[4].a);
+						getglobal(self:GetName().."Text").color = MIDKP_ITEM_COLOR[4];
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Option.QualityEpic_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentQualityLegendary" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentQualityEpic" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="20" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_9);
+						getglobal(self:GetName().."Text"):SetTextColor(MIDKP_ITEM_COLOR[5].r, MIDKP_ITEM_COLOR[5].g, MIDKP_ITEM_COLOR[5].b, MIDKP_ITEM_COLOR[5].a);
+						getglobal(self:GetName().."Text").color = MIDKP_ITEM_COLOR[5];
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Option.QualityLegendary_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentWhisper" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="150" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="50" y="-145"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_10);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Option.Whisper_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<Frame name="$parentWhisperFrame" inherits="MiDKPInnerFrameTemplate">
+				<Size>
+					<AbsDimension x="150" y="34"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="170" y="-138"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<EditBox name="$parentWhisperEditBox" autoFocus="false" toplevel="true" letters="24">
+				<Size>
+					<AbsDimension x="150" y="34"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="185" y="-138"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<FontString inherits="ChatFontNormal" bytes="256"/>
+				<Scripts>
+					<OnTextChanged>
+						MiDKP_UI.Option.WhisperEditBox_OnTextChanged(self);
+					</OnTextChanged>
+				</Scripts>
+			</EditBox>
+			<CheckButton name="$parentHideWhisper" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="250" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="50" y="-170"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_11);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Option.HideWhisper_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentEventActionNoAction" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="100" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="50" y="-225"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_12);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Option.EventActionNoAction_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentEventActionTipOnly" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="100" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentEventActionNoAction" relativePoint="LEFT">
+						<Offset>
+							<AbsDimension x="120" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_13);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Option.EventActionTipOnly_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentEventActionShowEdit" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="150" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentEventActionTipOnly" relativePoint="LEFT">
+						<Offset>
+							<AbsDimension x="120" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_14);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Option.EventActionShowEdit_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentEventMemberFirst5" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="100" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="50" y="-280"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_15);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Option.EventMemberFirst5_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentEventMemberRaid" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="100" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentEventMemberFirst5" relativePoint="LEFT">
+						<Offset>
+							<AbsDimension x="120" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_16);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Option.EventMemberRaid_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentEventMemberAll" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="100" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentEventMemberRaid" relativePoint="LEFT">
+						<Offset>
+							<AbsDimension x="120" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_17);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Option.EventMemberAll_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentEventMemberDisconnected" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="200" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="50" y="-305"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_18);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Option.EventMemberDisconnected_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentPointsSplit" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="200" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="50" y="-354"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_19);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Option.PointsSplit_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+		</Frames>
+		<Scripts>
+			<OnShow>
+				MiDKP_UI.Option.OnOptionUpdate();
+			</OnShow>
+		</Scripts>
+	</Frame>
+
+	<Frame name="MiDKPDKPPage" parent="MiDKPMainFrame" hidden="true">
+		<Frames>
+			<Button name="$parentAnnounce" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_ANNOUNCE_TEXT">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-35" y="-26"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.DKP.AnnounceButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+		
+			<Button name="$parentConfig" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_ANNOUNCE_CONFIG">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentAnnounce" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-2" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.DKP.ConfigButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			
+			<CheckButton name="$parentOnlyRaid" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="150" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentConfig" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-20" y="-2"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						if MiDKP_Options["show_raid_only"] then
+							self:SetChecked(1)
+						else
+							self:SetChecked(0)
+						end
+
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_ONLY_RAID);
+					</OnLoad>
+					<OnClick>
+						MiDKP_Options["show_raid_only"]=self:GetChecked()
+						MiDKP_UIHelp.DKP.DoUpdate()
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			
+			<Button name="$parentColumnHeader1" inherits="MiDKPFrameColumnHeaderTemplate" >
+				<Anchors>
+					<Anchor point="TOPLEFT" >
+						<Offset>
+							<AbsDimension x="24" y="-62"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						WhoFrameColumn_SetWidth(this,180);
+						this.sortType = "name";
+						this.func=MiDKP_UI.DKP.ColumnHeader_OnClick
+					</OnLoad>
+				</Scripts>
+			</Button>
+			<Frame name="$parentColumnHeader2" inherits="UIDropDownMenuTemplate" id="2" >
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentColumnHeader1" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="-18" y="-3"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<Texture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight" alphaMode="ADD" hidden="true">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="15" y="3"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMRIGHT">
+									<Offset>
+										<AbsDimension x="-30" y="-2"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>
+						UIDropDownMenu_Initialize(this, MiDKP_UIHelp.DKP.DropDownClassInit)
+						UIDropDownMenu_SetWidth(this,120);
+						UIDropDownMenu_SetButtonWidth(this,22);
+						this.sortType = "class";
+					</OnLoad>
+					<OnEnter>
+						getglobal(this:GetName() .. "HighlightTexture"):Show();
+					</OnEnter>
+					<OnLeave>
+						getglobal(this:GetName() .. "HighlightTexture"):Hide();
+					</OnLeave>
+					<OnMouseUp>
+						MiDKP_UI.DKP.ColumnHeader_OnClick(this.sortType);
+					</OnMouseUp>
+				</Scripts>
+			</Frame>
+			<Frame name="$parentColumnHeader3" inherits="UIDropDownMenuTemplate" id="3" >
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentColumnHeader2" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="-32" y="-0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<Texture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight" alphaMode="ADD" hidden="true">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="15" y="3"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMRIGHT">
+									<Offset>
+										<AbsDimension x="-30" y="-2"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>
+						UIDropDownMenu_Initialize(this, MiDKP_UIHelp.DKP.DropDownDKPInit)
+						UIDropDownMenu_SetWidth(this,127);
+						UIDropDownMenu_SetButtonWidth(this,22);
+						this.sortType = "dkp";
+					</OnLoad>
+					<OnEnter>
+						getglobal(this:GetName() .. "HighlightTexture"):Show();
+					</OnEnter>
+					<OnLeave>
+						getglobal(this:GetName() .. "HighlightTexture"):Hide();
+					</OnLeave>
+					<OnMouseUp>
+						this.sortType="totaldkp";
+						MiDKP_UI.DKP.ColumnHeader_OnClick(this.sortType);
+					</OnMouseUp>
+				</Scripts>
+			</Frame>
+			
+			<Button name="$parentPrevButton" inherits="MiDKPPrevButtonTemplate">
+				<Anchors>
+					<Anchor point="CENTER" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="155" y="40"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self.update=MiDKP_UIHelp.DKP.DoUpdate
+					</OnLoad>
+				</Scripts>
+			</Button>
+			<Button name="$parentNextButton" inherits="MiDKPNextButtonTemplate">
+				<Anchors>
+					<Anchor point="CENTER" relativeTo="$parentPrevButton" relativePoint="CENTER">
+						<Offset>
+							<AbsDimension x="190" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self.update=MiDKP_UIHelp.DKP.DoUpdate
+						self.pagecount=MIDKP_DKP_PAGE_COUNT
+						self.count=MiDKP_Core.DKP.GetCurrentDataSize
+					</OnLoad>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				MiDKP_Widget.Panel(self).ListPanel("DKP",MIDKP_MEMBER_PAGE_COUNT).AddButtons(25,-85)
+			</OnLoad>
+			<OnShow>
+				MiDKP_UI.DKP.OnDKPShow(self);
+			</OnShow>
+		</Scripts>
+	</Frame>
+	
+	<Button name="MiDKPTabTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="75" y="50"/>
+		</Size>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parentLeft" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="18" y="50"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.25390625" right="0.3203125" top="0.28515625" bottom="0.4765625"/>
+				</Texture>
+				<Texture name="$parentRight" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="13" y="50"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.49609375" right="0.54296875" top="0.28515625" bottom="0.4765625"/>
+				</Texture>
+				<Texture name="$parentCenter" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="44" y="50"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="TOPRIGHT" relativeTo="$parentRight" relativePoint="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.32421875" right="0.4921875" top="0.28515625" bottom="0.4765625"/>
+				</Texture>
+			</Layer>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentBackground" file="Interface\AddOns\MiDKP\background">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="TOPLEFT">
+							<Offset>
+								<AbsDimension x="9" y="5"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight" relativePoint="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="-4" y="4"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.08203125" right="0.234375" top="0.80078125" bottom="0.953125"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<ButtonText name="$parentText">
+			<Anchors>
+				<Anchor point="CENTER">
+					<Offset>
+						<AbsDimension x="2" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="MiDKPFontSmall"/>
+		<HighlightFont style="MiDKPFontSmallHilight"/>
+		<DisabledFont style="MiDKPFontSmallDisable"/>
+		<Scripts>
+			<OnClick>
+				MiDKP_UI.Util.Tab_OnClick(self);
+			</OnClick>
+		</Scripts>
+	</Button>
+	
+	<Button name="MiDKPMainFrame" inherits="MiDKPFrameTemplate" parent="UIParent" frameStrata="MEDIUM"  enableMouse="true" movable="true" hidden="true">
+		<Size>
+			<AbsDimension x="500" y="550"/>
+		</Size>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture name="$parentBackgroundTitle" file="Interface\AddOns\MiDKP\logo">
+					<Size>
+						<AbsDimension x="128" y="32"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="15" y="-23"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentDisableMask" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="0" y="-40"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetFrameLevel(9);
+					</OnLoad>
+				</Scripts>
+			</Button>
+			<Button name="$parentTab1" inherits="MiDKPTabTemplate" id="1"/>
+			<Button name="$parentTab2" inherits="MiDKPTabTemplate" id="2"/>
+			<Button name="$parentTab3" inherits="MiDKPTabTemplate" id="3"/>
+			<Button name="$parentTab4" inherits="MiDKPTabTemplate" id="4"/>
+			<Button name="$parentTab5" inherits="MiDKPTabTemplate" id="5"/>
+			<Button name="$parentTab6" inherits="MiDKPTabTemplate" id="6"/>
+			<Frame name="$parentInnerFrame" inherits="MiDKPInnerFrameTemplate">
+				<Size>
+					<AbsDimension x="470" y="440"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="20" y="-55"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+		</Frames>
+		<Anchors>
+			<Anchor point="CENTER" relativeTo="UIParent">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				self:SetAttribute("UIPanelLayout-defined", true);
+				self:SetAttribute("UIPanelLayout-area", "center");
+				self:SetAttribute("UIPanelLayout-pushable", 0);
+				self:SetAttribute("UIPanelLayout-enabled", true);
+
+
+				self:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b);
+				self:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b);
+				MiDKPRaidPage:ClearAllPoints();
+				MiDKPRaidPage:SetParent(self);
+				MiDKPRaidPage:SetPoint("TOPLEFT", MiDKPMainFrame, "TOPLEFT", 0, 0);
+				MiDKPRaidPage:SetPoint("BOTTOMRIGHT", MiDKPMainFrame, "BOTTOMRIGHT", 0, 0);
+
+				MiDKPMemberPage:ClearAllPoints();
+				MiDKPMemberPage:SetParent(self);
+				MiDKPMemberPage:SetPoint("TOPLEFT", MiDKPMainFrame, "TOPLEFT", 0, 0);
+				MiDKPMemberPage:SetPoint("BOTTOMRIGHT", MiDKPMainFrame, "BOTTOMRIGHT", 0, 0);
+
+				MiDKPEventPage:ClearAllPoints();
+				MiDKPEventPage:SetParent(self);
+				MiDKPEventPage:SetPoint("TOPLEFT", MiDKPMainFrame, "TOPLEFT", 0, 0);
+				MiDKPEventPage:SetPoint("BOTTOMRIGHT", MiDKPMainFrame, "BOTTOMRIGHT", 0, 0);
+
+				MiDKPItemPage:ClearAllPoints();
+				MiDKPItemPage:SetParent(self);
+				MiDKPItemPage:SetPoint("TOPLEFT", MiDKPMainFrame, "TOPLEFT", 0, 0);
+				MiDKPItemPage:SetPoint("BOTTOMRIGHT", MiDKPMainFrame, "BOTTOMRIGHT", 0, 0);
+
+				MiDKPOptionPage:ClearAllPoints();
+				MiDKPOptionPage:SetParent(self);
+				MiDKPOptionPage:SetPoint("TOPLEFT", MiDKPMainFrame, "TOPLEFT", 0, 0);
+				MiDKPOptionPage:SetPoint("BOTTOMRIGHT", MiDKPMainFrame, "BOTTOMRIGHT", 0, 0);
+
+				MiDKPDKPPage:ClearAllPoints();
+				MiDKPDKPPage:SetParent(self);
+				MiDKPDKPPage:SetPoint("TOPLEFT", MiDKPMainFrame, "TOPLEFT", 0, 0);
+				MiDKPDKPPage:SetPoint("BOTTOMRIGHT", MiDKPMainFrame, "BOTTOMRIGHT", 0, 0);
+				
+				MiDKP_UI.Frame.TabInit();
+				MiDKP_UIHelp.General.TabSelectTab(1);
+
+			</OnLoad>
+			<OnShow>
+			
+				UIDROPDOWNMENU_SHOW_TIME=0.2
+			</OnShow>
+			<OnHide>
+			
+				UIDROPDOWNMENU_SHOW_TIME=2
+			</OnHide>
+
+		</Scripts>
+	</Button>
+
+	<Button name="MiDKPAnnounceFrame" inherits="MiDKPFrameTemplate" parent="UIParent" frameStrata="HIGH" enableMouse="true" movable="true" hidden="true">
+		<Size>
+			<AbsDimension x="600" y="500"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentHeader" justifyH="CENTER" inherits="SystemFont_Shadow_Huge1" text="MIDKP_TEXT_ANNOUCNE_INFO">
+					<Color r="0.8" g="0.8" b="0.8"/>
+					<Size>
+						<AbsDimension x="300" y="36"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="$parentInnerFrame" inherits="MiDKPInnerFrameTemplate">
+				<Size>
+					<AbsDimension x="565" y="400"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="20" y="-40"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Frame setAllPoints="true">
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="$parentAnnouncePlace" justifyH="LEFT" inherits="MiDKPFontNormalHilight" text="MIDKP_TEXT_ANNOUCNE_CHANNEL">
+							<Color r="0.8" g="0.8" b="0.8"/>
+							<Size>
+								<AbsDimension x="300" y="36"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="35" y="-45"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentAnnounceInfo" justifyH="LEFT" inherits="MiDKPFontNormalHilight" text="MIDKP_TEXT_INFORMATION">
+							<Color r="0.8" g="0.8" b="0.8"/>
+							<Size>
+								<AbsDimension x="300" y="36"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="35" y="-105"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentSuiteReturned" justifyH="LEFT" inherits="MiDKPFontNormalHilight" text="MIDKP_TEXT_SUITE_RETURNED">
+							<Color r="0.8" g="0.8" b="0.8"/>
+							<Size>
+								<AbsDimension x="300" y="36"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="35" y="-227"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+			<CheckButton name="$parentRaidChannel" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="130" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="30" y="-80"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_RAID_CHANNEL);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Announce.RaidChannel_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentGuildChannel" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="130" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentRaidChannel" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="20" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_GUILD_CHANNEL);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Announce.GuildChannel_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentOfficerChannel" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="130" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentGuildChannel" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="20" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OFFICER_CHANNEL);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Announce.OfficerChannel_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentPartyChannel" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="130" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentOfficerChannel" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="20" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_PARTY_CHANNEL);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Announce.PartyChannel_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentEvent" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="125" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="30" y="-140"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_ANNOUNCE_EVENT);
+					</OnLoad>
+					<OnClick>
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentItem" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="125" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOP" relativeTo="$parentEvent" relativePoint="BOTTOM">
+						<Offset>
+							<AbsDimension x="0" y="-6"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_ANNOUNCE_ITEM);
+					</OnLoad>
+					<OnClick>
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentMembers" inherits="MiDKPCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="125" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOP" relativeTo="$parentItem" relativePoint="BOTTOM">
+						<Offset>
+							<AbsDimension x="0" y="-6"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_ANNOUNCE_MEMBER);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.Announce.Members_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<Button name="$parentOK" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_OK">
+				<Size>
+					<AbsDimension x="90" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM">
+						<Offset>
+							<AbsDimension x="-50" y="25"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.DKP.ConfigOK_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentCancel" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_CANCEL">
+				<Size>
+					<AbsDimension x="90" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentOK" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				this.raidchannel=1
+				this.guildchannel=nil
+				this.officerchannel=nil
+				this.partychannel=nil
+				this.event=nil
+				this.item=nil
+				this.members=1
+				self.button_count = 0;
+				self.selectedSuite = {}
+				MiDKP_UIHelp.Util.InitSuiteCheckButtons()
+			</OnLoad>
+			<OnShow>
+				MiDKP_UIHelp.Util.MainFrame_Enable(false);
+				MiDKP_UI.Announce.OnAnnounceShow(self);
+			</OnShow>
+			<OnHide>
+				MiDKP_UIHelp.Util.MainFrame_Enable(true);
+			</OnHide>
+			<OnKeyDown>
+				if key =="ESCAPE" then
+					self:Hide()
+				end
+			</OnKeyDown>
+
+		</Scripts>
+	</Button>
+	
+	<Button name="MiDKPMemberPickerFrame" inherits="MiDKPFrameTemplate" parent="UIParent" frameStrata="HIGH" topLevel="true" enableMouse="true" movable="true" hidden="true">
+		<Size>
+			<AbsDimension x="600" y="500"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentHeader" justifyH="CENTER" inherits="SystemFont_Shadow_Huge1" text="">
+					<Color r="0.8" g="0.8" b="0.8"/>
+					<Size>
+						<AbsDimension x="300" y="36"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTextHeader" justifyH="LEFT" inherits="MiDKPFontNormal" text="MIDKP_TEXT_NAME">
+					<Size>
+						<AbsDimension x="500" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="30" y="-45"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentPointHeader" justifyH="LEFT" inherits="MiDKPFontNormal" text="MIDKP_TEXT_POINT">
+					<Size>
+						<AbsDimension x="500" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="30" y="-100"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="$parentTextFrame" inherits="MiDKPInnerFrameTemplate">
+				<Size>
+					<AbsDimension x="565" y="36"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="20" y="-60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<EditBox name = "$parentText" letters="255" >
+				<Size>
+					<AbsDimension x="565" y="40"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="30" y="-60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<FontString inherits="ChatFontNormal" bytes="256"/>
+				<Scripts>
+					<OnLoad>
+						self:EnableKeyboard(true)
+					</OnLoad>
+					<OnEnter>
+						MiDKP_UI.MemberPick.EditBox_OnEnter(self)
+					</OnEnter>
+					<OnLeave>
+						MiDKP_UI.MemberPick.EditBox_OnLeave(self)
+					</OnLeave>
+
+					<OnTabPressed>
+						MiDKPMemberPickerFrameText:HighlightText(0, 0);
+						MiDKPMemberPickerFramePoint:SetFocus();
+						MiDKPMemberPickerFramePoint:HighlightText();
+					</OnTabPressed>
+				<OnEscapePressed>
+					self:GetParent():Hide()
+				</OnEscapePressed>
+				<OnEnterPressed>
+					MiDKP_UI.MemberPick.OK_OnClick(self);
+				</OnEnterPressed>
+				</Scripts>
+			</EditBox>
+			<CheckButton name = "$parentBossEvent" inherits="MiDKPCheckButtonTemplate" hidden="true">
+				<Size>
+					<AbsDimension x="80" y="36"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentTextHeader" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="50" y="7"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnHide>
+						getglobal(self:GetName().."Text"):SetText("");
+					</OnHide>
+					<OnShow>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_EVENT_BOSS);
+					</OnShow>
+					<OnClick>
+						MiDKP_UIHelp.Member.ToggleBoss(self)
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name = "$parentSplitPoints" inherits="MiDKPCheckButtonTemplate" hidden="true">
+				<Size>
+					<AbsDimension x="80" y="36"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentPointHeader" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="50" y="7"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnHide>
+						getglobal(self:GetName().."Text"):SetText("");
+					</OnHide>
+					<OnShow>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_OPTION_19);
+					</OnShow>
+					<OnClick>
+					--	MiDKP_UIHelp.Member.ToggleBoss(self)
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<Frame name="$parentPointFrame" inherits="MiDKPInnerFrameTemplate" >
+				<Size>
+					<AbsDimension x="565" y="36"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="20" y="-115"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+
+			</Frame>
+			<EditBox name = "$parentPoint" toplevel="true" letters="255" >
+				<Size>
+					<AbsDimension x="565" y="40"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="30" y="-115"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<FontString inherits="ChatFontNormal" bytes="256"/>
+				<Scripts>
+					<OnTabPressed>
+						MiDKPMemberPickerFramePoint:HighlightText(0, 0);
+						MiDKPMemberPickerFrameText:SetFocus();
+						MiDKPMemberPickerFrameText:HighlightText();
+					</OnTabPressed>
+				<OnEscapePressed>
+					self:GetParent():Hide()
+				</OnEscapePressed>
+				<OnEnterPressed>
+					MiDKP_UI.MemberPick.OK_OnClick(self);
+				</OnEnterPressed>
+
+				</Scripts>
+			</EditBox>
+			
+
+			<CheckButton name="$parentFirst5" inherits="MiDKPCheckButtonTemplate" hidden="false">
+				<Size>
+					<AbsDimension x="115" y="36"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="30" y="-155"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_FIRST5);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.MemberPick.First5_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentRaid" inherits="MiDKPCheckButtonTemplate" hidden="false">
+				<Size>
+					<AbsDimension x="115" y="36"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentFirst5" relativePoint="LEFT">
+						<Offset>
+							<AbsDimension x="180" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_RAID_ALL);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.MemberPick.Raid_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentAll" inherits="MiDKPCheckButtonTemplate" hidden="false">
+				<Size>
+					<AbsDimension x="115" y="36"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentRaid" relativePoint="LEFT">
+						<Offset>
+							<AbsDimension x="180" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Text"):SetText(MIDKP_TEXT_ALL);
+					</OnLoad>
+					<OnClick>
+						MiDKP_UI.MemberPick.All_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<Button name="$parentOK" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_OK">
+				<Size>
+					<AbsDimension x="90" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM">
+						<Offset>
+							<AbsDimension x="-50" y="25"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.MemberPick.OK_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentCancel" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_CANCEL">
+				<Size>
+					<AbsDimension x="90" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentOK" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.MemberPick.Cancel_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Frame name="$parentInnerFrame" inherits="MiDKPInnerFrameTemplate">
+				<Size>
+					<AbsDimension x="565" y="390"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="20" y="60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				self.used_buttons = {};
+				self.unused_buttons = {};
+				self.button_count = 0;
+				self:EnableKeyboard(true)
+			</OnLoad>
+			<OnShow>
+				MiDKP_UIHelp.Util.MainFrame_Enable(false);
+			</OnShow>
+			<OnHide>
+				MiDKP_UIHelp.Util.MainFrame_Enable(true);
+			</OnHide>
+			<OnKeyDown>
+				if key =="ESCAPE" then
+					self:Hide()
+				end
+				if key =="ENTER" then
+					MiDKP_UI.MemberPick.OK_OnClick(self);
+				end
+			</OnKeyDown>
+		</Scripts>
+	</Button>
+
+	<Button name="MiDKPIgnoreItemButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="298" y="18"/>
+		</Size>
+		<Layers>
+			<Layer level="BORDER">
+				<FontString name="$parentName" inherits="MiDKPFontNormal" justifyH="LEFT" text="">
+					<Size>
+						<AbsDimension x="298" y="14"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="14" y="-3"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+			</OnLoad>
+			<OnClick>
+				MiDKP_UI.IgnoreItem.Button_OnClick(self, button);
+			</OnClick>
+		</Scripts>
+		<HighlightTexture file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar" alphaMode="ADD">
+			<Size>
+				<AbsDimension x="298" y="18"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOP">
+					<Offset>
+						<AbsDimension x="5" y="-2"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</HighlightTexture>
+	</Button>
+	
+	<Button name="MiDKPIgnoreItemsFrame" parent="UIParent" enableMouse="true" topLevel="true" inherits="MiDKPFrameTemplate" frameStrata="HIGH" hidden="true">
+		<Size>
+			<AbsDimension x="375" y="400"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Frames>
+			<Frame name="$parentInnerFrame" inherits="MiDKPInnerFrameTemplate">
+				<Size>
+					<AbsDimension x="345" y="290"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="20" y="60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Button name="$parentAdd" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_ADD">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="24" y="35"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.IgnoreItem.FrameAdd_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentDelete" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_DELETE">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentAdd" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.IgnoreItem.FrameDelete_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentDefault" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_DEFAULT">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentDelete" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.IgnoreItem.FrameDefault_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentClose" inherits="MiDKPSmallButtonTemplate" text="CLOSE">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="-15" y="35"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Frame setAllPoints="true">
+				<Frames>
+					<Button name="$parentItem1" inherits="MiDKPIgnoreItemButtonTemplate" id="1">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="24" y="-65"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItem2" inherits="MiDKPIgnoreItemButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItem1" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItem3" inherits="MiDKPIgnoreItemButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItem2" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItem4" inherits="MiDKPIgnoreItemButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItem3" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItem5" inherits="MiDKPIgnoreItemButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItem4" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItem6" inherits="MiDKPIgnoreItemButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItem5" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItem7" inherits="MiDKPIgnoreItemButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItem6" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItem8" inherits="MiDKPIgnoreItemButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItem7" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItem9" inherits="MiDKPIgnoreItemButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItem8" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItem10" inherits="MiDKPIgnoreItemButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItem9" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItem11" inherits="MiDKPIgnoreItemButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItem10" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItem12" inherits="MiDKPIgnoreItemButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItem11" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItem13" inherits="MiDKPIgnoreItemButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItem12" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<ScrollFrame name="$parentScrollFrame" inherits="FauxScrollFrameTemplate">
+						<Size>
+							<AbsDimension x="300" y="270"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPRIGHT">
+								<Offset>
+									<AbsDimension x="-42" y="-60"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnVerticalScroll>
+								FauxScrollFrame_OnVerticalScroll(self, offset, 13, MiDKP_UIHelp.IgnoreItem.DoUpdate);
+							</OnVerticalScroll>
+						</Scripts>
+					</ScrollFrame>
+				</Frames>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnShow>
+				MiDKP_UIHelp.Util.MainFrame_Enable(false);
+				MiDKP_UI.IgnoreItem.OnIgnoreItemShow();
+			</OnShow>
+			<OnHide>
+				MiDKP_UIHelp.Util.MainFrame_Enable(true);
+			</OnHide>
+			<OnKeyDown>
+			if key =="ESCAPE" then
+				self:Hide()
+			end
+			</OnKeyDown>
+		</Scripts>
+	</Button>
+
+	<Button name="MiDKPRaidEditFrame" inherits="MiDKPFrameTemplate" parent="UIParent" frameStrata="HIGH" topLevel="true" enableMouse="true" movable="true" hidden="true">
+		<Size>
+			<AbsDimension x="600" y="500"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentHeader" justifyH="CENTER" inherits="SystemFont_Shadow_Huge1" text="">
+					<Color r="0.8" g="0.8" b="0.8"/>
+					<Size>
+						<AbsDimension x="300" y="36"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTextHeader" justifyH="LEFT" inherits="MiDKPFontNormal" text="MIDKP_TEXT_NAME">
+					<Size>
+						<AbsDimension x="500" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="30" y="-45"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentSetHeader" justifyH="LEFT" inherits="MiDKPFontNormal" text="MIDKP_TEXT_DKP">
+					<Size>
+						<AbsDimension x="500" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="30" y="-100"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="$parentTextFrame" inherits="MiDKPInnerFrameTemplate">
+				<Size>
+					<AbsDimension x="565" y="36"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="20" y="-60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<EditBox name = "$parentText" toplevel="true" letters="255" >
+				<Size>
+					<AbsDimension x="565" y="40"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="30" y="-60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<FontString inherits="ChatFontNormal" bytes="256"/>
+				<Scripts>
+					<OnTabPressed>
+						MiDKPMemberPickerFrameText:HighlightText(0, 0);
+						MiDKPMemberPickerFramePoint:SetFocus();
+						MiDKPMemberPickerFramePoint:HighlightText();
+					</OnTabPressed>
+			<OnEscapePressed>
+					self:GetParent():Hide()
+				</OnEscapePressed>
+				<OnEnterPressed>
+					MiDKP_UI.Raid.RaidEditFrameOK_OnClick(self);
+				</OnEnterPressed>
+				</Scripts>
+			</EditBox>
+			<Button name="$parentOK" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_OK">
+				<Size>
+					<AbsDimension x="90" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM">
+						<Offset>
+							<AbsDimension x="-50" y="25"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MiDKP_UI.Raid.RaidEditFrameOK_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentCancel" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_CANCEL">
+				<Size>
+					<AbsDimension x="90" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentOK" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Frame name="$parentInnerFrame" inherits="MiDKPInnerFrameTemplate">
+				<Size>
+					<AbsDimension x="565" y="390"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="20" y="60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				self.used_buttons = {};
+				self.unused_buttons = {};
+				self.button_count = 0;
+				self.single = true;
+			</OnLoad>
+			<OnShow>
+				MiDKP_UIHelp.Util.MainFrame_Enable(false);
+			</OnShow>
+			<OnHide>
+				MiDKP_UIHelp.Util.MainFrame_Enable(true);
+			</OnHide>
+			<OnKeyDown>
+			if key =="ESCAPE" then
+				self:Hide()
+			end
+			if key =="ENTER" then
+				MiDKP_UI.Raid.RaidEditFrameOK_OnClick(self);
+			end
+			</OnKeyDown>
+		</Scripts>
+	</Button>
+
+	<Button name="MiDKPAddMemberFrame" inherits="MiDKPFrameTemplate" parent="UIParent"   frameStrata="HIGH" topLevel="true" enableMouse="true" movable="true" hidden="true">
+	<Size>
+		<AbsDimension x="600" y="280"/>
+	</Size>
+	<Anchors>
+		<Anchor point="CENTER"/>
+	</Anchors>
+	<Layers>
+		<Layer level="OVERLAY">
+			<FontString name="$parentHeader" justifyH="CENTER" inherits="SystemFont_Shadow_Huge1" text="MIDKP_TEXT_CREATEMEMBER">
+				<Color r="0.8" g="0.8" b="0.8"/>
+				<Size>
+					<AbsDimension x="300" y="36"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOP">
+						<Offset>
+							<AbsDimension x="0" y="-10"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</FontString>
+			<FontString name="$parentTextHeader" justifyH="LEFT" inherits="MiDKPFontNormal" text="MIDKP_TEXT_NAME">
+				<Size>
+					<AbsDimension x="500" y="16"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="30" y="-45"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</FontString>
+			<FontString name="$parentSetHeader" justifyH="LEFT" inherits="MiDKPFontNormal" text="MIDKP_TEXT_CLASS">
+				<Size>
+					<AbsDimension x="500" y="16"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="30" y="-100"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</FontString>
+		</Layer>
+	</Layers>
+	<Frames>
+		<Frame name="$parentTextFrame" inherits="MiDKPInnerFrameTemplate">
+			<Size>
+				<AbsDimension x="565" y="36"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="20" y="-60"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</Frame>
+		<EditBox name = "$parentText" toplevel="true" letters="255">
+			<Size>
+				<AbsDimension x="565" y="40"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="30" y="-60"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<FontString inherits="ChatFontNormal" bytes="256"/>
+			<Scripts>
+			<OnEscapePressed>
+				self:GetParent():Hide()
+			</OnEscapePressed>
+			<OnEnterPressed>
+				MiDKP_UI.Member.AddMemberButton_OnClick(self);
+			</OnEnterPressed>
+			</Scripts>
+		</EditBox>
+		<Button name="$parentOK" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_OK">
+			<Size>
+				<AbsDimension x="90" y="24"/>
+			</Size>
+			<Anchors>
+				<Anchor point="BOTTOM">
+					<Offset>
+						<AbsDimension x="-50" y="25"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					MiDKP_UI.Member.AddMemberButton_OnClick(self);
+				</OnClick>
+			</Scripts>
+		</Button>
+		<Button name="$parentCancel" inherits="MiDKPSmallButtonTemplate" text="MIDKP_TEXT_CANCEL">
+			<Size>
+				<AbsDimension x="90" y="24"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT" relativeTo="$parentOK" relativePoint="RIGHT">
+					<Offset>
+						<AbsDimension x="10" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					self:GetParent():Hide();
+				</OnClick>
+			</Scripts>
+		</Button>
+		<Frame name="$parentInnerFrame" inherits="MiDKPInnerFrameTemplate">
+			<Size>
+				<AbsDimension x="565" y="100"/>
+			</Size>
+			<Anchors>
+				<Anchor point="BOTTOMLEFT">
+					<Offset>
+						<AbsDimension x="20" y="60"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</Frame>
+	</Frames>
+	<Scripts>
+		<OnLoad>
+			self.used_buttons = {};
+			self.unused_buttons = {};
+			self.button_count = 0;
+			self.class="";
+			self.single = true;
+		</OnLoad>
+		<OnShow>
+			MiDKP_UIHelp.Util.MainFrame_Enable(false);
+		</OnShow>
+		<OnHide>
+			MiDKP_UIHelp.Util.MainFrame_Enable(true);
+		</OnHide>
+		<OnKeyDown>
+			if key =="ESCAPE" then
+				self:Hide()
+			end
+			if key =="ENTER" then
+				MiDKP_UI.Member.AddMemberButton_OnClick(self);
+			end
+		</OnKeyDown>
+	</Scripts>
+	</Button>
+
+	<Button name="MiDKPMiniButton" toplevel="true" frameStrata="LOW" parent="Minimap" enableMouse="true" movable="true" hidden="true">
+		<Size>
+			<AbsDimension x="33" y="33"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT">
+				<Offset>
+					<AbsDimension x="-18" y="-100"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentTexture" file="Interface\AddOns\MiDKP\icon">
+					<Size>
+						<AbsDimension x="21" y="21"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="6" y="-6"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.075" right="0.925" top="0.075" bottom="0.925"/>
+				</Texture>
+			</Layer>
+		<Layer level="OVERLAY">
+			<Texture file="Interface\Minimap\MiniMap-TrackingBorder">
+				<Size>
+					<AbsDimension x="56" y="56"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+				</Anchors>
+			</Texture>
+		</Layer>
+		</Layers>
+		<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
+		<Scripts>
+			<OnLoad>
+				self:RegisterForClicks("LeftButtonUp","RightButtonUp");
+				self:RegisterForDrag("LeftButton");
+			</OnLoad>
+			<OnMouseDown>
+				MiDKPMiniButtonTexture:SetTexCoord(0,1,0,1);
+			</OnMouseDown>
+			<OnMouseUp>
+				MiDKPMiniButtonTexture:SetTexCoord(.075,.925,.075,.925);
+			</OnMouseUp>
+			<OnClick>
+				MiDKP_UI.Util.MiniButton_OnClick(self, button);
+			</OnClick>
+			<OnDragStart>
+				MiDKPMiniButtonTexture:SetTexCoord(0,1,0,1);
+				MiDKPMiniButton_DragFlag = 1;
+				self:StartMoving();
+			</OnDragStart>
+			<OnDragStop>
+				MiDKPMiniButtonTexture:SetTexCoord(.075,.925,.075,.925);
+				MiDKPMiniButton_DragFlag = 0;
+				self:StopMovingOrSizing();
+				local _,_,_,xpos,ypos = self:GetPoint();
+				MiDKP_Config["minibtn_pos"] = {xpos, ypos};
+			</OnDragStop>
+			<OnUpdate>
+				MiDKP_UI.Util.MiniButton_OnUpdate(self, elapsed);
+			</OnUpdate>
+		</Scripts>
+	</Button>
+
+	<Frame name="MiDKPExportFrame" parent="UIParent" enableKeyboard="true" frameStrata="HIGH" enableMouse="true" movable="true" hidden="true">
+		<Size>
+			<AbsDimension x="600" y="400"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parentBackgroundTopLeft" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="120" y="57"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.46484375" top="0" bottom="0.21875"/>
+				</Texture>
+				<Texture name="$parentBackgroundTopRight" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="43" y="57"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.83203125" right="0.99609375" top="0" bottom="0.21875"/>
+				</Texture>
+				<Texture name="$parentBackgroundBottomLeft" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="31" y="32"/>
+					</Size>
+					<TexCoords left="0" right="30" top="184" bottom="215"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.1171875" top="0.71875" bottom="0.83984375"/>
+				</Texture>
+				<Texture name="$parentBackgroundBottomRight" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="110" y="63"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.5703125" right="0.99609375" top="0.59765625" bottom="0.83984375"/>
+				</Texture>
+				<Texture name="$parentBackgroundTop" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="28" y="41"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentBackgroundTopLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="TOPRIGHT" relativeTo="$parentBackgroundTopRight" relativePoint="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.46484375" right="0.5703125" top="0" bottom="0.15625"/>
+				</Texture>
+				<Texture name="$parentBackgroundBottom" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="28" y="32"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentBackgroundBottomLeft" relativePoint="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBackgroundBottomRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.46484375" right="0.5703125" top="0.71875" bottom="0.83984375"/>
+				</Texture>
+				<Texture name="$parentBackgroundLeft" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="31" y="14"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentBackgroundTopLeft" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBackgroundBottomLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.1171875" top="0.22265625" bottom="0.2734375"/>
+				</Texture>
+				<Texture name="$parentBackgroundRight" file="Interface\AddOns\MiDKP\frame">
+					<Size>
+						<AbsDimension x="43" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentBackgroundTopRight" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBackgroundBottomRight" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.83203125" right="0.99609375" top="0.16015625" bottom="0.21875"/>
+				</Texture>
+			</Layer>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentBackgroundCenter" file="Interface\AddOns\MiDKP\background">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentBackgroundTopLeft" relativePoint="TOPLEFT">
+							<Offset>
+								<AbsDimension x="15" y="-10"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="TOPRIGHT" relativeTo="$parentBackgroundTopRight" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="-5" y="-10"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentBackgroundBottomLeft" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="15" y="10"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBackgroundBottomRight" relativePoint="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="-5" y="10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="1" top="0" bottom="1"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+            <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="CENTER" relativeTo="MiDKPExportFrame" relativePoint="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-14" y="-17"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self:SetFrameLevel(self:GetFrameLevel() + 4);
+                    </OnLoad>
+                </Scripts>
+            </Button>
+			<Frame name="MiDKPExportFrameInnerFrame">
+				<Size>
+					<AbsDimension x="565" y="300"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="20" y="-55"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture name="$parentTopLeft" file="Interface\AddOns\MiDKP\iframe">
+							<Size>
+								<AbsDimension x="16" y="16"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0" right="0.05859375" top="0" bottom="0.05859375"/>
+						</Texture>
+						<Texture name="$parentTopRight" file="Interface\AddOns\MiDKP\iframe">
+							<Size>
+								<AbsDimension x="16" y="16"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.9375" right="1" top="0" bottom="0.05859375"/>
+						</Texture>
+						<Texture name="$parentBottomLeft" file="Interface\AddOns\MiDKP\iframe">
+							<Size>
+								<AbsDimension x="16" y="16"/>
+							</Size>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0" right="0.05859375" top="0.82421875" bottom="0.8828125"/>
+						</Texture>
+						<Texture name="$parentBottomRight" file="Interface\AddOns\MiDKP\iframe">
+							<Size>
+								<AbsDimension x="16" y="16"/>
+							</Size>
+							<Anchors>
+								<Anchor point="BOTTOMRIGHT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.9375" right="1" top="0.82421875" bottom="0.8828125"/>
+						</Texture>
+						<Texture name="$parentTop" file="Interface\AddOns\MiDKP\iframe">
+							<Size>
+								<AbsDimension x="224" y="16"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentTopLeft" relativePoint="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="TOPRIGHT" relativeTo="$parentTopRight" relativePoint="TOPLEFT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.0625" right="0.93359375" top="0" bottom="0.05859375"/>
+						</Texture>
+						<Texture name="$parentBottom" file="Interface\AddOns\MiDKP\iframe">
+							<Size>
+								<AbsDimension x="224" y="16"/>
+							</Size>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativeTo="$parentBottomLeft" relativePoint="BOTTOMRIGHT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMRIGHT" relativeTo="$parentBottomRight" relativePoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.0625" right="0.93359375" top="0.82421875" bottom="0.8828125"/>
+						</Texture>
+						<Texture name="$parentLeft" file="Interface\AddOns\MiDKP\iframe">
+							<Size>
+								<AbsDimension x="31" y="14"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentTopLeft" relativePoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMRIGHT" relativeTo="$parentBottomLeft" relativePoint="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0" right="0.05859375" top="0.0625" bottom="0.8203125"/>
+						</Texture>
+						<Texture name="$parentRight" file="Interface\AddOns\MiDKP\iframe">
+							<Size>
+								<AbsDimension x="43" y="16"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentTopRight" relativePoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMRIGHT" relativeTo="$parentBottomRight" relativePoint="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.9375" right="1" top="0.0625" bottom="0.8203125"/>
+						</Texture>
+					</Layer>
+					<Layer level="BACKGROUND">
+						<Texture name="$parentCenter" file="Interface\AddOns\MiDKP\iframe">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentTopLeft" relativePoint="BOTTOMRIGHT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="TOPRIGHT" relativeTo="$parentTopRight" relativePoint="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMLEFT" relativeTo="$parentBottomLeft" relativePoint="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMRIGHT" relativeTo="$parentBottomRight" relativePoint="TOPLEFT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.0625" right="0.93359375" top="0.0625" bottom="0.8203125"/>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
+			<ScrollFrame name="MiDKPExportScrollFrame" enableKeyboard="true" inherits="UIPanelScrollFrameTemplate">
+				<Size>
+					<AbsDimension x="286" y="85"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="MiDKPExportFrameInnerFrame" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="10" y="-8"/>
+						</Offset>
+					</Anchor>
+					<Anchor point="BOTTOMRIGHT" relativeTo="MiDKPExportFrameInnerFrame" relativePoint="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="-29" y="8"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<ScrollChild>
+					<EditBox name="MiDKPExportFrameText" multiLine="true" autoFocus="false">
+						<Size>
+							<AbsDimension x="286" y="85"/>
+						</Size>
+						<Scripts>
+							<OnTextChanged>
+								if (self.text) then
+									self:SetText(self.text);
+								end
+								self:SetFocus();
+								self:HighlightText();
+							</OnTextChanged>
+							<OnCursorChanged>
+								if (self.text) then
+									self:SetText(self.text);
+								end
+								self:SetFocus();
+								self:HighlightText();
+							</OnCursorChanged>
+							<OnUpdate>
+								ScrollingEdit_OnUpdate(self, elapsed, self:GetParent());
+							</OnUpdate>
+							<OnShow>
+								if (self.text) then
+									self:SetText(self.text);
+								end
+								self:SetFocus();
+								self:HighlightText();
+							</OnShow>
+							<OnEscapePressed>
+								self:GetParent():GetParent():Hide()
+							</OnEscapePressed>
+						</Scripts>
+						<FontString inherits="GameFontHighlightSmall"/>
+					</EditBox>
+				</ScrollChild>
+			</ScrollFrame>
+		</Frames>
+		<Scripts>
+			<OnShow>
+				MiDKP_UIHelp.Util.MainFrame_Enable(false);
+			</OnShow>
+			<OnHide>
+				MiDKP_UIHelp.Util.MainFrame_Enable(true);
+			</OnHide>
+			
+		</Scripts>
+	</Frame>
+	<Frame name="MiDKPRightMouseMenuFrame" inherits="UIDropDownMenuTemplate" parent="UIParent" hidden="true"/>
+	
+</Ui>
+

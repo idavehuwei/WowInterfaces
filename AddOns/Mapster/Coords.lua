@@ -13,7 +13,7 @@ local GetCursorPosition = GetCursorPosition
 local GetPlayerMapPosition = GetPlayerMapPosition
 local WorldMapDetailFrame = WorldMapDetailFrame
 local display, cursortext, playertext
-local texttemplate, text = "%%s: |cffffffff%%.%df, %%.%df|r"
+local texttemplate, text = "%%s: %%.%df, %%.%df"
 
 local MouseXY, OnUpdate
 
@@ -92,9 +92,10 @@ function Coords:OnEnable()
 		display = CreateFrame("Frame", "Mapster_CoordsFrame", WorldMapFrame)
 		
 		cursortext = display:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-		cursortext:SetPoint("LEFT", WorldMapFrame, "CENTER", -50, -367)	
+		cursortext:SetPoint("RIGHT", WorldMapFrame, "CENTER", -50, -367)
+		
 		playertext = display:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-		playertext:SetPoint("LEFT", WorldMapFrame, "CENTER", 150, -367)	
+		playertext:SetPoint("LEFT", WorldMapFrame, "CENTER", 50, -367)
 	end
 	display:SetScript("OnUpdate", OnUpdate)
 	display:Show()

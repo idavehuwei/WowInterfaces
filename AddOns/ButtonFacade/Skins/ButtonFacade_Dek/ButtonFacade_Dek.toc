@@ -1,0 +1,17 @@
+## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: 给动作条加上各种个性化的边框和皮肤。
+## Title: ButtonFacade: |cffff8000Dek|r
+## Version: 3.0.47
+## Notes: Dek skin for Button Facade.
+## Author: Dekthro
+## X-eMail: dhighet@gmail.com
+## X-Category: Action Bars
+## X-Credits: StormFX, JJ Sheets, Zeal, Caith
+## OptionalDeps: LibButtonFacade, ButtonFacade
+## X-Curse-Packaged-Version: 3.1.47
+## X-Curse-Project-Name: ButtonFacade_Dek
+## X-Curse-Project-ID: buttonfacade_dek
+## X-Curse-Repository-ID: wow/buttonfacade_dek/mainline
+
+Skins.lua

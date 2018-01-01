@@ -7,8 +7,7 @@
 ## Title-zhTW: |CFFFF8000輔助|R 材料購買助手
 ## Notes-zhTW: Shift點擊購買物品時的,可以成組購買物品
 ## X-Repple: 辅助
-## Dependencies: Duowan
-## X-Revision: Duowan
+## Dependencies: !!UserDefaultSettings
 
 CogsBagSpace.lua
 Localization.enUS.lua

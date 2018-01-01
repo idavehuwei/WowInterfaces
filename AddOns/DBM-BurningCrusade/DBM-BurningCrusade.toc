@@ -1,0 +1,13 @@
+## Interface: 30100
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Burning Crusade|r
+## SavedVariablesPerCharacter: DBMBurningCrusade_SavedModOptions
+## LoadOnDemand: 1
+## X-Revision: BigFoot
+## RequiredDeps: DBM-Core
+## DefaultState: enabled
+## Author: Tandanu and Nitram
+## X-Website: http://www.deadlybossmods.com
+localization.en.lua
+localization.cn.lua
+localization.tw.lua
+DBMv3-Compatibility.lua

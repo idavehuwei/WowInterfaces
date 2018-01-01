@@ -1,13 +1,13 @@
 ## Interface: 30100
-## Title: [Duowan] Recount
+## Title: Recount
 ## Notes: Records Damage and Healing for Graph Based Display
-## Title-zhCN: [多玩] 伤害统计 Recount
+## Title-zhCN: 伤害统计 Recount
 ## Notes-zhCN: 伤害/治疗技能的统计插件,可以统计个人和团队.|N|CFF0099FF需要基础函数库|R
-## Title-zhTW: [多玩] 傷害統計 Recount
+## Title-zhTW: 傷害統計 Recount
 ## Notes-zhTW: 傷害/治療技能的統計插件,可以統計個人和團隊.|N|CFF0099FF需要基礎函式庫|R
 ## X-Repple: 团队
 ## Author: Cryect, ported to 2.4 by Elsia
-## OptionalDeps:  Ace3, LibSharedMedia-3.0, LibBabble-Class-3.0, LibBossIDs-1.0, LibGraph-2.0, !ClassColors
+## OptionalDeps:  !!Corelibs, Ace3, LibSharedMedia-3.0, LibBabble-Class-3.0, LibBossIDs-1.0, LibGraph-2.0, !ClassColors
 ## SavedVariables: DuowanAddon_RecountDB
 ## SavedVariablesPerCharacter: DuowanAddon_RecountPerCharDB
 ## X-Category: Combat
@@ -16,9 +16,6 @@
 ## X-Curse-Project-Name: Recount
 ## X-Curse-Project-ID: recount
 ## X-Curse-Repository-ID: wow/recount/mainline
-## Dependencies: Duowan
-## X-Revision: Duowan
-## LoadOnDemand: 1
 
 locales\Recount-enUS.lua
 locales\Recount-zhTW.lua
@@ -50,4 +47,3 @@ GUI_Config.lua
 GUI_Realtime.lua
 
 GuessedAbsorbs_Mode.lua
-

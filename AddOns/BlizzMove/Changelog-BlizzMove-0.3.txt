@@ -1,0 +1,22 @@
+------------------------------------------------------------------------
+r9 | yess | 2009-05-09 07:00:07 +0000 (Sat, 09 May 2009) | 1 line
+Changed paths:
+   A /tags/0.3 (from /trunk:8)
+
+Tagging as 0.3
+------------------------------------------------------------------------
+r8 | yess | 2009-05-09 06:59:11 +0000 (Sat, 09 May 2009) | 1 line
+Changed paths:
+   M /trunk/BlizzMove.lua
+   M /trunk/BlizzMove.toc
+
+fixed auction frame not movable
+------------------------------------------------------------------------
+r7 | yess | 2009-03-23 21:21:55 +0000 (Mon, 23 Mar 2009) | 2 lines
+Changed paths:
+   M /trunk/BlizzMove.lua
+   M /trunk/BlizzMove.toc
+
+added: option to reset the frames
+fixed an error with SetPoint() maybe
+------------------------------------------------------------------------

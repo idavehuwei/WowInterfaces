@@ -1,4 +1,4 @@
-local Gladius = Gladius
+﻿local Gladius = Gladius
 local self = Gladius
 local LSM = LibStub("LibSharedMedia-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Gladius", true)
@@ -13,8 +13,6 @@ local defaults = {
 		barHeight=25,
 		manaBarHeight=15,
 		castBarHeight=12,
-		petBarHeight=15,
-		petBarWidth=150,
 		padding=5,
 		frameColor = {r = 0, g = 0, b = 0, a = .3},
 		manaColor = {r = .18, g = .44, b = .75, a = 1},
@@ -22,24 +20,19 @@ local defaults = {
 		rageColor = {r = 1, g = 0, b = 0, a = 1},
 		rpColor = {r = 0, g = 0.82, b = 1, a = 1},
 		selectedFrameColor = {r = 1, g = .7, b = 0, a = 1},
-		focusBorderColor = {r = 1, g = 0, b = 0, a = 1},
 		castBarColor = {r = 1, g = 1, b = 0, a = 1},
 		manaFontColor = {r = 2.55, g = 2.55, b = 2.55, a = 1},
 		healthFontColor = {r = 2.55, g = 2.55, b = 2.55, a = 1},
 		castBarFontColor = {r = 2.55, g = 2.55, b = 2.55, a = 1},
-		petBarFontColor = {r = 2.55, g = 2.55, b = 2.55, a = 1},
 		auraFontColor = {r = 0, g = 1, b = 0, a = 1},
-		healthColor = {r = 0.20, g = 0.90, b = 0.20, a = 1},
-		healthFontSize = 11,
+		healthFontSize = 12,
 		manaFontSize = 10,
 		castBarFontSize = 9,
-		petFontSize = 9,
 		auraFontSize = 16,
 		barTexture = "Minimalist",
 		barBottomMargin = 8,
 		highlight = true,
 		selectedBorder = true,
-		focusBorder = true,
 		manaDefault = false,
 		energyDefault = false,
 		rageDefualt = false,
@@ -49,10 +42,6 @@ local defaults = {
 		manaPercentage=false,
 		manaActual=true,
 		manaMax=true,
-		healthPercentage=true,
-		healthActual=false,
-		healthMax=false,
-		shortHpMana=true,
 		frameResize=true,
 		classText=false,
 		raceText=true,
@@ -61,72 +50,38 @@ local defaults = {
 		classIcon=true,
 		targetIcon=false,
 		trinketStatus=true,
-		prodSpecial=false,
-		displayAuras=true,
+		auras=true,
 		frameResize=true,
 		enemyAnnounce=false,
 		trinketUpAnnounce=false,
 		trinketUsedAnnounce=false,
 		lowHealthAnnounce=false,
 		lowHealthPercentage=30,
-		drinkAnnounce=false,
 		growUp=false,
-		cliqueSupport=false,
-		showPets=false,
-		showPetType=true,
-		showPetHealth=true,
+		leftClick="target",
+		rightClick="focus",
+		middleClick="disabled",
+		mouse4="disabled",
+		mouse5="disabled",
+		leftSpell="",
+		rightSpell="",
+		middleSpell="",
+		mouse4spell="",
+		mouse5spell="",
 		trinketDisplay="nameIcon",
 		bigTrinketScale=1,
-		announceType="party",
-		attributes = {
-			{ name = "Target", button = "1", modifier = "", action = "target", spell = ""},
-			{ name = "Focus", button = "2", modifier = "", action = "focus", spell = ""},
-		},
-		auras = {},
+		announceType="party"
 	}
 }
 
--- insert the auralist to the defaults
-for k, v in pairs(Gladius:GetAuraList()) do
-	table.insert(defaults.profile.auras, { name = k, priority = v, deleted = false })
-end
-
--- setup  the default attributes 3-10
-for i=3, 10 do
-	table.insert(defaults.profile.attributes, {name = string.format(L["Action #%d"], i), modifier = "", button = "", action = "disabled", spell = ""})
-end
-
 --LSM statusbars
-local statusbars = {}
+statusbars = {}
 
 for _, name in pairs(LSM:List(LSM.MediaType.STATUSBAR)) do
-	statusbars[name] = name
+		statusbars[name] = name
 end
-function GladiusslashHandler(option)
-	if option == "ui" or option == "config" or option == "options" then
-		Gladius:ShowOptions()
-	elseif option == "test1" then
-		self:ToggleFrame(1)
-	elseif option == "test2" then
-		self:ToggleFrame(2)
-	elseif option == "test3" then
-		self:ToggleFrame(3)
-	elseif option == "test4" then
-		self:ToggleFrame(4)
-	elseif option == "test5" or option == "test" then
-		self:ToggleFrame(5)
-	elseif option == "hide" then
-		self:HideFrame()
-	elseif option == "trinket" then
-		Gladius:TrinketUsed("arena1")
-	else
-		self:Print("Valid slash commands:")
-		self:Print("/gladius ui")
-		self:Print("/gladius test1-5")	
-		self:Print("/gladius hide")
-	end
-end
-local function slashHandler(option)
+
+local slashHandler = function(option)
 	if option == "ui" or option == "config" or option == "options" then
 		Gladius:ShowOptions()
 	elseif option == "test1" then
@@ -154,21 +109,20 @@ end
 function Gladius:ToggleFrame(i)
 	self:ClearAllUnits()
 	if (self.frame and self.frame:IsShown() and i == self.currentBracket) then
+		self.frame:Hide()
 		self:UnregisterAllEvents()
 		self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", "ZONE_CHANGED_NEW_AREA")
-		self.frame:Hide()
+		self:ClearAllUnits()
+		self.currentBracket = nil
 		self.frame.testing = false
 	else
 		self.currentBracket = i
-		if ( not self.frame ) then
+		if (self.frame == nil) then
 			self:CreateFrame()
 		end
 		self:RegisterEvent("PLAYER_TARGET_CHANGED")
-		self:RegisterEvent("PLAYER_FOCUS_CHANGED")
-		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-		self:RegisterEvent("UNIT_PET")
-		self:RegisterEvent("UNIT_NAME_UPDATE")
+		self:RegisterEvent("UNIT_TARGET")
 		self.frame:Show()
 		self.frame.testing = true
 		self:Test()
@@ -188,7 +142,6 @@ function Gladius:HideFrame()
 	self.currentBracket = nil
 end
 
--- General Get/Set etc
 local function getOption(info)
   return (info.arg and Gladius.db.profile[info.arg] or Gladius.db.profile[info[#info]])
 end
@@ -214,166 +167,29 @@ function Gladius:getDefaults()
 	return defaults
 end
 
--- Get/set for auras
-local function setAura(info, value)
-	Gladius.db.profile.auras[tonumber(info[#(info) - 1])][info[(#info)]] = value
-
-	if ( info[#(info)] == "name" ) then
-		self.options.args.auras.args.list.args[info[#(info) - 1]].name = value 
-	end
-
-	Gladius:ConvertAuraList()
-	Gladius:UpdateFrame()
-end
-
-local function getAura(info)
-	return Gladius.db.profile.auras[tonumber(info[#(info) - 1])][info[(#info)]]
-end
-
--- Get/set for attributes, credits to Shadowed (SSAF)
-local function setAttribute(info, value)
-	Gladius.db.profile.attributes[tonumber(info[#(info) - 1])][info[(#info)]] = value
-
-	if ( info[#(info)] == "name" ) then 
-		self.options.args.clicks.args[info[#(info) - 1]].name = value 
-	end
-
-	Gladius:UpdateFrame()
-end
-
-local function getAttribute(info)
-	return Gladius.db.profile.attributes[tonumber(info[#(info) - 1])][info[(#info)]]
-end
-
--- Value tables for attributes
-local modifiers = {[""] = L["None"], ["ctrl-"] = L["CTRL"], ["shift-"] = L["SHIFT"], ["alt-"] = L["ALT"]}
-local buttons = {["1"] = L["Left button"], ["2"] = L["Right button"], ["3"] = L["Middle button"], ["4"] = L["Button 4"], ["5"] = L["Button 5"]}
-local clickValues = {["macro"] = MACRO, ["target"] = TARGET, ["focus"] = FOCUS, ["spell"] = L["Cast Spell"], ["disabled"] = ADDON_DISABLED}
-
--- Setup an attribute in the options
-local function SetupAttributeOption(number)
-	local attribute = {
-		order = number,
-		type = "group",
-		name = self.db.profile.attributes[number].name,
-		desc = self.db.profile.attributes[number].name,
-		get = getAttribute,
-		set = setAttribute,
-		args = {
-			name = {
-				type = "input",
-				name = L["Name"],
-				desc = L["Select the name of the click option"],
-				order=1,
-			},
-			button = {
-				type = "select",
-				name = L["Button"],
-				desc = L["Select which mouse button to use"],
-				values=buttons,
-				order=2,
-			},
-			modifier = {
-				type = "select",
-				name = L["Modifier"],
-				desc = L["Select which modifier to use"],
-				values = modifiers,
-				order=3,
-			},
-			action = {
-				type = "select",
-				name = L["Action"],
-				desc = L["Select what action this mouse button does"],
-				values=clickValues,
-				order=4,
-			},
-			spell = {
-				type = "input",
-				multiline = true,
-				name = L["Spell name / Macro text"],
-				desc = L["Spell name / Macro text"],
-				disabled = function() return Gladius.db.profile.attributes[number].action ~= "spell" and Gladius.db.profile.attributes[number].action ~= "macro" end,
-				order=5,
-			},
-		},
-	}
-	
-	return attribute
-end
-
-local function SetupAuraOption(number)
-	local aura = {
-		type = "group",
-		name = self.db.profile.auras[number].name,
-		desc = self.db.profile.auras[number].name,
-		get = getAura,
-		set = setAura,
-		args = {
-			name = {
-				type = "input",
-				name = L["Name"],
-				desc = L["Name of the aura"],
-				order=1,
-			},
-			priority = {
-				type= "range",
-				name = L["Priority"],
-				desc = L["Select what priority the aura should have - higher equals more priority"],
-				min=1,
-				max=5,
-				step=1,
-				order=2,
-			},
-			delete = {
-				type = "execute",
-				name = L["Delete"],
-				func = function(info)
-				
-					local defaultAuras = Gladius:GetAuraList()
-					local name = self.db.profile.auras[tonumber(info[#(info) - 1])].name
-					
-					-- check if it's a default aura, thus it can't really get deleted and it'll just set the deleted variable to true instead
-					if ( defaultAuras[name] ) then
-						self.db.profile.auras[tonumber(info[#(info) - 1])].deleted = true
-					else
-						table.remove(self.db.profile.auras, tonumber(info[#(info) - 1]))
-					end
-					
-					self.options.args.auras.args.list.args = {}
-					for i=#(self.db.profile.auras), 1, -1 do
-						if ( not self.db.profile.auras[i].deleted ) then
-							self.options.args.auras.args.list.args[tostring(i)] = SetupAuraOption(i)
-						end
-					end
-					
-					Gladius:ConvertAuraList()
-				end,
-			},
-		},
-	}
-	return aura
-end
-
 function Gladius:SetupOptions()
-
-	local newAuraPrio = 3
-	local newAuraName = "Aura name"
+	local clickValues = {
+		["target"] = TARGET,
+		["focus"] = L["focus"],
+		["spell"] = L["Cast Spell"],
+		["disabled"] = ADDON_DISABLED,
+	}
 	
 	local trinketValues = {
-		["nameText"] = L["Name text"],
-		["nameIcon"] = L["Name icon"],
-		["bigIcon"] = L["Big icon"],
-		["overrideIcon"] = L["Override class/aura icon"],
-		["smallIcon"] = L["Small icon"],
-		["gridIcon"] = L["Grid-style icon"],
+		["nameText"] = L["trinketNameText"],
+		["nameIcon"] = L["trinketNameIcon"],
+		["bigIcon"] = L["trinketBigIcon"],
+		["overrideIcon"] = L["trinketOverrideIcon"],
+		["smallIcon"] = L["trinketSmallIcon"],
+		["gridIcon"] = L["trinketGridIcon"],
 	}
 	
 	local announceValues = {
-		["party"] = L["Party"],
-		["rw"] = L["Raid Warning"],
-		["sct"] = L["Scrolling Combat Text"],
-		["msbt"] = L["MikScrollingBattleText"],
-		["fct"] = L["Blizzard's Floating Combat Text"],
+		["party"] = L["announceParty"],
+		["rw"] = L["announceRw"],
+		["sct"] = L["announceSct"],
+		["msbt"] = L["announceMsbt"],
+		["fct"] = L["announceFct"],
 	}
 	
 	self.options = {
@@ -433,7 +249,8 @@ function Gladius:SetupOptions()
 						order=35,
 						get=getColorOption,
 						set=setColorOption,
-					},			
+					},
+						
 					highlight = {
 						type="toggle",
 						name=L["Highlight target"],
@@ -445,12 +262,6 @@ function Gladius:SetupOptions()
 						name=L["Show border around target"],
 						desc=L["Toggle if a border should be shown around the selected target"],
 						order=90,
-					},
-					focusBorder = {
-						type="toggle",
-						name=L["Show border around focus"],
-						desc=L["Toggle if a border should be shown around your current focus"],
-						order=91,
 					},
 					classIcon = {
 						type="toggle",
@@ -464,18 +275,12 @@ function Gladius:SetupOptions()
 						desc=L["Show target icon"],
 						order=97,
 					},
-					displayAuras = {
+					auras = {
 						type="toggle",
 						name=L["Show auras"],
 						desc=L["Show important auras over the class icon with a timer. You can select which auras to show and their respective priorites in the auralist.lua file"],
 						disabled = function() return not self.db.profile.classIcon end,						
 						order=96,
-					},
-					cliqueSupport = {
-						type="toggle",
-						name=L["Clique support"],
-						desc=L["Toggles the Clique support, requires UI reload to take effect"],					
-						order=100,
 					},
 					announcements = {
 						type="group",
@@ -485,45 +290,39 @@ function Gladius:SetupOptions()
 						args = {
 							announceType = {
 								type = "select",
-								name = L["Announcement type"],
-								desc = L["Where to display the announcement messages"],
+								name = L["announceType"],
+								desc = L["announceTypeDesc"],
 								values=announceValues,
 								order=5,
 							},
 							enemyAnnounce = {
 								type="toggle",
-								name=L["New enemies"],
-								desc=L["Announce new enemies found"],
+								name=L["enemyAnnounce"],
+								desc=L["enemyAnnounceDesc"],
 								order=10,
-							},
-							drinkAnnounce = {
-								type="toggle",
-								name=L["Drinking"],
-								desc=L["Announces enemies that start to drink"],
-								order=11,
 							},
 							trinketUsedAnnounce = {
 								type="toggle",
-								name=L["Trinket used"],
-								desc=L["Announce when an enemy's trinket is used"],
+								name=L["trinketUsedAnnounce"],
+								desc=L["trinketUsedAnnounceDesc"],
 								order=20,
 							},
 							trinketUpAnnounce = {
 								type="toggle",
-								name=L["Trinket ready"],
-								desc=L["Announce when an enemy's trinket is ready again"],
+								name=L["trinketUpAnnounce"],
+								desc=L["trinketUpAnnounceDesc"],
 								order=30,
 							},
 							lowHealthAnnounce = {
 								type="toggle",
-								name=L["Enemies on low health"],
-								desc=L["Announce enemies that go below a certain percentage of health"],
+								name=L["lowHealthAnnounce"],
+								desc=L["lowHealthAnnounceDesc"],
 								order=40,
 							},
 							lowHealthPercentage = {
 								type="range",
-								name=L["Low health percentage"],
-								desc=L["The percentage when enemies are counted as having low health"],
+								name=L["lowHealthPercentage"],
+								desc=L["lowHealthPercentageDesc"],
 								min=1,
 								max=100,
 								step=1,
@@ -540,14 +339,14 @@ function Gladius:SetupOptions()
 						args = {
 							trinketStatus = {
 								type="toggle",
-								name=L["Show PvP trinket status"],
-								desc=L["Show PvP trinket status to the right of the enemy name"],
+								name=L["Trinket"],
+								desc=L["TrinketDesc"],
 								order=10,
 							},
 							trinketDisplay = {
 								type = "select",
-								name = L["Trinket display"],
-								desc = L["Choose how to display the trinket status"],
+								name = L["TrinketDisplay"],
+								desc = L["TrinketDisplayDesc"],
 								values=trinketValues,
 								disabled = function() return not self.db.profile.trinketStatus end,
 								order=20,
@@ -555,12 +354,92 @@ function Gladius:SetupOptions()
 							bigTrinketScale = {
 								type="range",
 								name=L["Big icon scale"],
-								desc=L["The scale of the big trinket icon"],
+								desc=L["BigIconScaleDesc"],
 								min=.1,
 								max=2,
 								step=.1,
 								disabled = function() return not self.db.profile.trinketStatus or self.db.profile.trinketDisplay ~= "bigIcon" end,						
 								order=30,
+							},
+						},
+					},
+					clicks = {
+						type="group",
+						name=L["Clicks"],
+						order=3,
+						desc=L["Set options for mouse clicks on the arena targets"],
+						args = {
+							leftClick = {
+								type = "select",
+								name = L["Left Click"],
+								desc = L["Left Click"],
+								values=clickValues,
+								order=1,
+							},
+							leftSpell = {
+								type = "input",
+								name = L["Spell Name"],
+								desc = L["Spell Name"],
+								disabled = function() return self.db.profile.leftClick ~= "spell" end,
+								order=2,
+							},
+							rightClick = {
+								type = "select",
+								name = L["Right Click"],
+								desc = L["Right Click"],
+								values=clickValues,
+								order=3,
+							},
+							rightSpell = {
+								type = "input",
+								name = L["Spell Name"],
+								desc = L["Spell Name"],
+								get=getOption,
+								set=setOption,
+								disabled = function() return self.db.profile.rightClick ~= "spell" end,
+								order=4,
+							},
+							middleClick = {
+								type = "select",
+								name = L["Middle Mouse Click"],
+								desc = L["Middle Mouse Click"],
+								values=clickValues,
+								order=5,
+							},
+							middleSpell = {
+								type = "input",
+								name = L["Spell Name"],
+								desc = L["Spell Name"],
+								disabled = function() return self.db.profile.middleClick ~= "spell" end,
+								order=6,
+							},
+							mouse4 = {
+								type = "select",
+								name = L["Mouse 4 Click"],
+								desc = L["Mouse 4 Click"],
+								values=clickValues,
+								order=7,
+							},
+							mouse4spell = {
+								type = "input",
+								name = L["Spell Name"],
+								desc = L["Spell Name"],
+								disabled = function() return self.db.profile.mouse4 ~= "spell" end,
+								order=8,
+							},
+							mouse5 = {
+								type = "select",
+								name = L["Mouse 5 Click"],
+								desc = L["Mouse 5 Click"],
+								values=clickValues,
+								order=9,
+							},
+							mouse5spell = {
+								type = "input",
+								name = L["Spell Name"],
+								desc = L["Spell Name"],
+								disabled = function() return self.db.profile.mouse5 ~= "spell" end,
+								order=10,
 							},
 						},
 					},
@@ -572,12 +451,6 @@ function Gladius:SetupOptions()
 				desc=L["Bar settings"],
 				order=2,
 				args = {
-					showPets = {
-						type="toggle",
-						name=L["Show pet bars"],
-						desc=L["Show pet bars"],
-						order=5,
-					},
 					castBar = {
 						type="toggle",
 						name=L["Show cast bars"],
@@ -594,7 +467,6 @@ function Gladius:SetupOptions()
 						type="group",
 						name=L["Size and margin"],
 						desc=L["Size and margin settings"],
-						order=1,
 						args = {
 							barWidth = {
 								type="range",
@@ -613,26 +485,6 @@ function Gladius:SetupOptions()
 								max=50,
 								step=1,
 								order=3,
-							},
-							petBarWidth = {
-								type="range",
-								name=L["Pet bar width"],
-								desc=L["Width of the pet bars"],
-								disabled = function() return not self.db.profile.showPets end,
-								min=50,
-								max=500,
-								step=1,
-								order=4,
-							},
-							petBarHeight = {
-								type="range",
-								name=L["Pet bar height"],
-								desc=L["Height of the pet bars"],
-								disabled = function() return not self.db.profile.showPets end,
-								min=10,
-								max=50,
-								step=1,
-								order=4,
 							},
 							manaBarHeight = {
 								type="range",
@@ -669,7 +521,6 @@ function Gladius:SetupOptions()
 						type="group",
 						name=L["Colors"],
 						desc=L["Color settings"],
-						order=2,
 						args = {
 							barTexture = {
 								type="select",
@@ -690,26 +541,6 @@ function Gladius:SetupOptions()
 								name=L["Selected border color"],
 								desc=L["Color of the selected targets border"],
 								disabled = function() return not self.db.profile.selectedBorder end,
-								get=getColorOption,
-								set=setColorOption,
-								hasAlpha=true,
-								order=0,
-							},
-							focusBorderColor = {
-								type="color",
-								name=L["Focus border color"],
-								desc=L["Color of the focus border"],
-								disabled = function() return not self.db.profile.focusBorder end,
-								get=getColorOption,
-								set=setColorOption,
-								hasAlpha=true,
-								order=1,
-							},
-							healthColor = {
-								type="color",
-								name=L["Pet bar color"],
-								desc=L["Color of the pet bar"],
-								disabled = function() return not self.db.profile.showPets end,
 								get=getColorOption,
 								set=setColorOption,
 								hasAlpha=true,
@@ -796,33 +627,9 @@ function Gladius:SetupOptions()
 			text = {
 				type="group",
 				name=L["Text"],
-				desc=L["Text settings"],
+				desc=L["TextDesc"],
 				order=3,
 				args = {
-					shortHpMana = {
-						type="toggle",
-						name=L["Shorten Health/Power text"],
-						desc=L["Shorten the formatting of the health and power text to e.g. 20.0/25.3 when the amount is over 9999"],
-						order=5,
-					},
-					healthPercentage = {
-						type="toggle",
-						name=L["Show health percentage"],
-						desc=L["Show health percentage on the health bar"],
-						order=10,
-					},
-					healthActual = {
-						type="toggle",
-						name=L["Show the actual health"],
-						desc=L["Show the actual health on the health bar"],
-						order=15,
-					},
-					healthMax = {
-						type="toggle",
-						name=L["Show max health"],
-						desc=L["Show maximum health on the health bar"],
-						order=20,
-					},					
 					manaText = {
 						type="toggle",
 						name=L["Show power text"],
@@ -865,24 +672,10 @@ function Gladius:SetupOptions()
 						disabled = function() return not self.db.profile.powerBar end,
 						order=75,
 					},
-					showPetType = {
-						type="toggle",
-						name=L["Show pet type text"],
-						desc=L["Show pet type on the pet bar"],
-						disabled = function() return not self.db.profile.showPets end,
-						order=80,
-					},
-					showPetHealth = {
-						type="toggle",
-						name=L["Show pet health text"],
-						desc=L["Show pet health on the pet bar (formatted the same as the ordinary health text)"],
-						disabled = function() return not self.db.profile.showPets end,
-						order=85,
-					},	
 					sizes = {
 						type="group",
 						name=L["Sizes"],
-						desc=L["Size settings for the text"],
+						desc=L["SizesDesc"],
 						order=1,
 						args = {
 							healthFontSize = {
@@ -913,15 +706,6 @@ function Gladius:SetupOptions()
 								max=20,
 								step=1,
 								order=5,
-							},
-							petFontSize = {
-								type="range",
-								name=L["Pet bar text size"],
-								desc=L["Size of the pet bar text"],
-								min=1,
-								max=20,
-								step=1,
-								order=6,
 							},
 							auraFontSize = {
 								type="range",
@@ -970,16 +754,6 @@ function Gladius:SetupOptions()
 								hasAlpha=true,
 								order=6,
 							},
-							petBarFontColor = {
-								type="color",
-								name=L["Pet bar text color"],
-								desc=L["Color of the text on the pet bar"],
-								disabled = function() return not self.db.profile.showPets end,
-								get=getColorOption,
-								set=setColorOption,
-								hasAlpha=true,
-								order=7,
-							},
 							auraFontColor = {
 								type="color",
 								name=L["Aura text color"],
@@ -997,96 +771,13 @@ function Gladius:SetupOptions()
 		}
 	}
 	
-	self.options.args.auras = {
-		type = "group",
-		order = 9,
-		name = L["Auras"],
-		args = {
-			new = {
-				type = "group",
-				name = L["Add new aura"],
-				args = {
-					name = {
-						type = "input",
-						name = L["Name"],
-						desc = L["Name of the aura"],
-						get = function() return newAuraName end,
-						set = function(info, value) newAuraName = value end,
-						order=2,
-					},
-					priority = {
-						type= "range",
-						name = L["Priority"],
-						desc = L["Select what priority the aura should have - higher equals more priority"],
-						min=1,
-						max=5,
-						step=1,
-						get = function() return newAuraPrio end,
-						set = function(info, value) newAuraPrio = value end,
-						order=3,
-					},
-					Add = {
-						type = "execute",
-						name = L["Add"],
-						order = 4,
-						func = function()
-							if ( newAuraName ~= "") then
-								table.insert(self.db.profile.auras, { name = newAuraName, priority = newAuraPrio })
-								newAuraName = ""
-								self.options.args.auras.args.list.args = {}
-								for i=#(self.db.profile.auras), 1, -1 do
-									if ( not self.db.profile.auras[i].deleted ) then
-										self.options.args.auras.args.list.args[tostring(i)] = SetupAuraOption(i)
-									end
-								end
-								Gladius:ConvertAuraList()
-							end
-						end,
-					},
-				},
-			},
-			list = {
-				type = "group",
-				name = L["Aura list"],
-				args = {},
-			},
-		},
-	}
-	
-	
-	-- fix for aura variable that i managed to fuck up in r20
-	if ( type(self.db.profile.auras) == "boolean" ) then
-		self.db.profile.displayAuras = self.db.profile.auras
-		self.db.profile.auras = defaults.profile.auras
-	end
-	
-	for i=#(self.db.profile.auras), 1, -1 do
-		if ( not self.db.profile.auras[i].deleted ) then
-			self.options.args.auras.args.list.args[tostring(i)] = SetupAuraOption(i)
-		end
-	end
-	
-	Gladius:ConvertAuraList()
-	
-	self.options.args.clicks = {
-		type = "group",
-		order = 10,
-		name = L["Click actions"],
-		args = {},
-	}
-	
-	for i=1, 10 do
-		self.options.args.clicks.args[tostring(i)] = SetupAttributeOption(i)
-	end
-	
 	self.options.plugins.profiles = { profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db) }
-	LibStub("AceConfig-3.0"):RegisterOptionsTable(L["Gladius"], self.options)
-	--LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Gladius", "Gladius")
+	LibStub("AceConfig-3.0"):RegisterOptionsTable("Gladius", self.options)
+	LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Gladius", "Gladius")
 	self:RegisterChatCommand("gladius", slashHandler)
 	
 end
 
 function Gladius:ShowOptions()
-	LibStub("AceConfigDialog-3.0"):Open(L["Gladius"]);
-  --InterfaceOptionsFrame_OpenToCategory("Gladius")
+  InterfaceOptionsFrame_OpenToCategory("Gladius")
 end

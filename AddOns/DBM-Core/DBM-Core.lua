@@ -25,21 +25,21 @@
 --
 --
 --  You are free:
---    * to Share - to copy, distribute, display, and perform the work
---    * to Remix - to make derivative works
+--    * to Share ?to copy, distribute, display, and perform the work
+--    * to Remix ?to make derivative works
 --  Under the following conditions:
 --    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).
 --    * Noncommercial. You may not use this work for commercial purposes.
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
---
+
 
 -------------------------------
 --  Globals/Default Options  --
 -------------------------------
 DBM = {
-	Revision = ("$Revision: 1202 $"):sub(12, -3),
-	Version = "4.16",
-	DisplayVersion = "4.16"
+	Revision = ("$Revision: 1057 $"):sub(12, -3),
+	Version = "4.14",
+	DisplayVersion = "4.14"
 }
 
 DBM_SavedOptions = {}
@@ -69,8 +69,6 @@ DBM.DefaultOptions = {
 	SpamBlockRaidWarning = true,
 	SpamBlockBossWhispers = false,
 	ShowMinimapButton = true,
-	ShowVersionUpdateAsPopup = true,
-	ShowBigBrotherOnCombatStart = false,
 	RangeFramePoint = "CENTER",
 	RangeFrameX = 50,
 	RangeFrameY = -50,
@@ -621,8 +619,6 @@ do
 			cancel = link:match("DBM:ignore:(.+):[^%s:]+$")
 			ignore = link:match(":([^:]+)$")
 			StaticPopup_Show("DBM_CONFIRM_IGNORE", ignore)
-		elseif linkType == "DBM" and arg1 == "update" then
-			DBM:ShowUpdateReminder(arg2, arg3) -- displayVersion, revision			
 		end
 	end)
 end
@@ -865,7 +861,7 @@ do
 			if t1[i] == nil then
 				t1[i] = v
 			elseif type(v) == "table" then
-				addDefaultOptions(v, t2[i])
+				return addDefaultOptions(v, t2[i])
 			end
 		end
 	end
@@ -1098,13 +1094,9 @@ do
 						end
 					end
 					if found then
-						if DBM.Options.ShowVersionUpdateAsPopup then
-							DBM:ShowUpdateReminder(displayVersion, revision)
-						else 
-							DBM:AddMsg( (DBM_CORE_UPDATEREMINDER_HEADER:match('([^\n]*)')) )
-							DBM:AddMsg( (DBM_CORE_UPDATEREMINDER_HEADER:match('\n(.*)')):format(displayVersion, revision) )
-							DBM:AddMsg( ("|HDBM:update:%s:%s|h|cff3588ff[http://deadlybossmods.com]"):format(displayVersion, revision) )
-						end
+					
+--Terry@bf 09-08-13 disable update reminder, we are using an old version 
+--	DBM:ShowUpdateReminder(displayVersion, revision)
 					end
 				end
 			end
@@ -1163,11 +1155,10 @@ end
 -----------------------
 function DBM:ShowUpdateReminder(newVersion, newRevision)
 	showedUpdateReminder = true
-
 	local frame = CreateFrame("Frame", nil, UIParent)
 	frame:SetFrameStrata("DIALOG")
 	frame:SetWidth(430)
-	frame:SetHeight(155)
+	frame:SetHeight(130)
 	frame:SetPoint("TOP", 0, -230)
 	frame:SetBackdrop({
 		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
@@ -1236,16 +1227,8 @@ function DBM:ShowUpdateReminder(newVersion, newRevision)
 	button:SetScript("OnClick", function(self)
 		frame:Hide()
 	end)
-
-	--[[
-	-- /print DBM:ShowUpdateReminder(5, 10)
-	local nevershow = CreateFrame('CheckButton', "VersionPopUpCheckBox", frame, 'OptionsCheckButtonTemplate')
-	getglobal(nevershow:GetName() .. 'Text'):SetText(DBM_CORE_UPDATEREMINDER_NOTAGAIN)
-	nevershow:SetPoint("BOTTOM", -125, 36)
-	nevershow:SetScript("OnShow",  function(self) nevershow:SetChecked(DBM.Options.ShowVersionUpdateAsPopup) end)
-	nevershow:SetScript("OnClick", function(self) DBM.Options.ShowVersionUpdateAsPopup = not DBM.Options.ShowVersionUpdateAsPopup end)
-	--]]
 end
+
 
 ----------------------
 --  Pull Detection  --
@@ -1393,10 +1376,6 @@ function DBM:StartCombat(mod, delay, synced)
 			sendSync("DBMv4-Pull", (delay or 0).."\t"..mod.id)
 		end
 		fireEvent("pull", mod, delay, synced)
-		-- http://www.deadlybossmods.com/forum/viewtopic.php?t=1464
-		if DBM.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
-			BigBrother:ConsumableCheck("SELF")
-		end		
 	end
 end
 
@@ -2045,10 +2024,10 @@ do
 		return unschedule(self.Show, self.mod, self, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound, runSound)
+	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound)
 		local obj = setmetatable(
 			{
-				text = self.localization.warnings[text], 
+				text = self.localization.warnings[text],
 				option = optionName or text,
 				mod = self,
 				sound = not noSound,
@@ -2058,7 +2037,7 @@ do
 		if optionName == false then
 			obj.option = nil
 		else
-			self:AddBoolOption(optionName or text, optionDefault, "announce")		
+			self:AddBoolOption(optionName or text, optionDefault, "announce")
 		end
 		return obj
 	end
@@ -2090,7 +2069,7 @@ do
 			if not bar then
 				return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 			end
-			if self.type and not self.text then
+			if self.type then
 				bar:SetText(pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId), ...))
 			else				
 				bar:SetText(pformat(self.text, ...))
@@ -2220,32 +2199,12 @@ do
 	end
 	
 	-- new constructor for the new auto-localized timer types
-	-- note that the function might look unclear because it needs to handle different timer types, especially achievement timers need special treatment
-	-- todo: disable the timer if the player already has the achievement and when the ACHIEVEMENT_EARNED event is fired
-	-- problem: heroic/normal achievements :[
-	-- local achievementTimers = {}
-	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, texture, r, g, b)
-		-- new argument timerText is optional (usually only required for achievement timers as they have looooong names)
-		if type(timerText) == "boolean" or type(optionDefault) == "string" then -- check if the argument was skipped
-			return newTimer(self, timerType, timer, spellId, nil, timerText, optionDefault, optionName, texture, r, g, b)
-		end
-		local spellName, icon
-		if timerType == "achievement" then
-			spellName = select(2, GetAchievementInfo(spellId))
-			icon = type(texture) == "number" and select(10, GetAchievementInfo(texture)) or texture or spellId and select(10, GetAchievementInfo(spellId))
---			if optionDefault == nil then
---				local completed = select(4, GetAchievementInfo(spellId))
---				optionDefault = not completed
---			end
-		else
-			spellName = GetSpellInfo(spellId)
-			icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or spellId and select(3, GetSpellInfo(spellId))
-		end
-		spellName = spellName or tostring(spellId)
+	local function newTimer(self, timerType, timer, spellId, optionDefault, optionName, texture, r, g, b)
+		local spellName = GetSpellInfo(spellId) or tostring(spellId)
 		local id = "Timer"..spellId..self.id..#self.timers
+		local icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or spellId and select(3, GetSpellInfo(spellId))
 		local obj = setmetatable(
 			{
-				text = self.localization.timers[timerText],
 				type = timerType,
 				spellId = spellId,
 				timer = timer,
@@ -2262,11 +2221,7 @@ do
 		obj:AddOption(optionDefault, optionName)
 		table.insert(self.timers, obj)
 		-- todo: move the string creation to the GUI with SetFormattedString...
-		if timerType == "achievement" then
-			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(GetAchievementLink(spellId):gsub("%[(.+)%]", "%1"))
-		else
-			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(spellId, spellName)
-		end
+		self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(spellId, spellName)
 		return obj
 	end
 
@@ -2297,17 +2252,8 @@ do
 		return newTimer(self, "next", ...)
 	end
 	
-	function bossModPrototype:NewAchievementTimer(...)
-		return newTimer(self, "achievement", ...)
-	end
-	
 	function bossModPrototype:GetLocalizedTimerText(timerType, spellId)
-		local spellName
-		if timerType == "achievement" then
-			spellName = select(2, GetAchievementInfo(spellId))
-		else
-			spellName = GetSpellInfo(spellId)
-		end
+		local spellName = GetSpellInfo(spellId)
 		return pformat(DBM_CORE_AUTO_TIMER_TEXTS[timerType], spellName)
 	end
 end
@@ -2660,8 +2606,7 @@ do
 	}
 	local defaultTimerLocalization = {
 		__index = setmetatable({
-			timer_enrage = DBM_CORE_GENERIC_TIMER_ENRAGE,
-			TimerSpeedKill = DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL
+			timer_enrage = DBM_CORE_GENERIC_TIMER_ENRAGE
 		}, returnKey)
 	}
 	local defaultAnnounceLocalization = {

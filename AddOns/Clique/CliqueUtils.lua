@@ -1,12 +1,15 @@
-local buttonMap = setmetatable({
+local buttonMap = {
     [1] = "LeftButton",
     [2] = "RightButton",
     [3] = "MiddleButton",
-}, {
-    __index = function(t, k)
-        return "Button" .. k
-    end
-})
+    [4] = "Button4",
+    [5] = "Button5",
+    LeftButton = 1,
+    RightButton = 2,
+    MiddleButton = 3, 
+    Button4 = 4, 
+    Button5 = 5,
+}
 
 function Clique:GetModifierText()
     local modifier = ""
@@ -25,7 +28,8 @@ function Clique:GetModifierText()
 end
 
 function Clique:GetButtonNumber(button)
-    return SecureButton_GetButtonSuffix(button)
+    if not button then return "" end
+    return buttonMap[arg1] or ""
 end
 
 function Clique:GetButtonText(num)

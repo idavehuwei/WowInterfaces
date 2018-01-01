@@ -1,14 +1,9 @@
-local addon = LibStub("AceAddon-3.0"):NewAddon("InstanceMaps", "AceConsole-3.0", 
-"AceHook-3.0", "AceEvent-3.0", "AceTimer-3.0")
+local addon = LibStub("AceAddon-3.0"):NewAddon("InstanceMaps", "AceConsole-3.0", "AceHook-3.0", "AceEvent-3.0", "AceTimer-3.0")
 _G["InstanceMaps"] = addon
-local BB = LibStub("LibBabble-Boss-3.0")
-local BBL = BB:GetLookupTable()
-local BBR = BB:GetReverseLookupTable()
 local BZ = LibStub("LibBabble-Zone-3.0")
-local BZL = BZ:GetUnstrictLookupTable()
+local BZL = BZ:GetLookupTable()
 local BZR = BZ:GetReverseLookupTable()
-local Tourist = LibStub("LibTourist-3.0");
-local pt = LibStub("LibPeriodicTable-3.1");
+local Tourist = LibStub("LibTourist-3.0")
 
 local MapData, Rotations, Floors, instanceMapFrame
 
@@ -18,8 +13,6 @@ function addon:OnInitialize()
 	instanceMapFrame = CreateFrame("Button", "instanceMapFrame", WorldMapFrame)
 	addon.instanceMapFrame = instanceMapFrame
 	instanceMapFrame:Hide()
-
-	self.bosses = {};
 end
 
 function addon:OnEnable()
@@ -67,18 +60,6 @@ function addon:ShowInstanceFrame()
 		bg:SetWidth(instanceMapFrame:GetWidth())
 		bg:SetHeight(instanceMapFrame:GetHeight())
 	end
-	--[[
-	local hid;
-	for i=1,100 do
---	if WorldMapFrame then
-		hid = getglobal("WorldMapOverlay"..i);
-		if hid then
-			hid:Hide();
-		end
-		--CartographerLookNFeelNonOverlayHolder:Hide();
-	end
-	--instanceMapFrame:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() + 2);
-	--]]
 	if instanceMapFrame:IsShown() then
 		return
 	end
@@ -101,30 +82,6 @@ function addon:HideInstanceFrame()
 	ShowWorldMapArrowFrame(1)
 	
 	self:SendMessage("InstanceMap_Hide")
-end
-
-function addon:HasBosses(zone)
-	if self.bosses[zone] ~= nil then return self.bosses[zone] ~= false end
-	if pt("InstanceLoot"..zone) or pt("InstanceLootHeroic"..zone) then
-		self:ExtractBossesFromPT("InstanceLoot", zone)
-		self:ExtractBossesFromPT("InstanceLootHeroic", zone)
-	else
-		self.bosses[zone] = false
-	end
-	if self.bosses[zone] then return true end;
-end
-
-function addon:GetBossList(zone)
-	local sets = pt("InstanceLoot".."."..zone)
-	if not sets then return end
-	local pattern = "^InstanceLoot%."..zone.."%.([^.]+)$"
-	for _, set in pairs(sets) do
-		local boss = set.set:match(pattern)
-		if boss then
-			if not self.bosses[zone] then self.bosses[zone] = {} end
-			self.bosses[zone][boss] = true
-		end
-	end
 end
 
 local cos, sin, abs = cos, sin, math.abs
@@ -226,13 +183,11 @@ function initializeMapData(zone)
 			tex = s[i][1]
 		else
 			local offset = 28*(i-1)
-			tex = 
-			("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"):format(s:byte(offset + 1, offset + 16))
+			tex = ("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"):format(s:byte(offset + 1, offset + 16))
 		end
 		if num_tiles < i then
 			num_tiles = i
-			instanceMapFrame[i] = 
-			instanceMapFrame:CreateTexture("instanceMapFrameTexture" .. i, "ARTWORK")
+			instanceMapFrame[i] = instanceMapFrame:CreateTexture("instanceMapFrameTexture" .. i, "ARTWORK")
 		end
 		instanceMapFrame[i]:SetTexture("textures\\Minimap\\" .. tex)
 	end
@@ -280,8 +235,7 @@ function realInitializeMapData(zone)
 			tex, x, y, z = v[1], v[2], v[3], v[4]
 		else
 			local offset = 28*(i-1)
-			tex = 
-			("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"):format( s:byte(offset + 1, offset + 16))
+			tex = ("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"):format(s:byte(offset + 1, offset + 16))
 			x = unpackfloat(s:byte(offset + 17, offset + 20))
 			y = unpackfloat(s:byte(offset + 21, offset + 24))
 			z = unpackfloat(s:byte(offset + 25, offset + 28))

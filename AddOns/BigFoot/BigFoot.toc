@@ -1,0 +1,68 @@
+## Interface: 30100
+## Title: BigFoot Base Library
+## Notes: The base library of BigFoot. Do not disable this mod please.
+## Title-zhCN: 大脚基本库
+## Notes-zhCN: 这是大脚的基本运行库，所有插件是依赖于该基本库的。请不要禁止该插件。
+## Title-zhTW: 大腳基本庫
+## Notes-zhTW: 這是大腳的基本運行庫，所有插件是依賴于該基本庫的。請不要禁止該插件。
+## SavedVariables: BigFoot_Config, BigFoot_Error
+## SavedVariablesPerCharacter: BigFoot_Frames
+## X-Revision: BigFoot
+## Dependencies: !!Corelibs
+
+Library\BigFootLibrary.lua
+Library\BigFootDS.lua
+Library\BigFootOO.lua
+Library\BigFootHook.lua
+Library\BigFootHash.lua
+Library\BigFootDebug.lua
+Library\BigFootInfo.lua
+Library\BigFootBag.lua
+Library\BigFootGUI.xml
+Library\BigFootGUI.lua
+Library\BigFootEvent.lua
+Library\BigFootScale.lua
+Library\BigFootUtils.lua
+Library\BDropDown\BDropDownMenu.xml
+Library\BigFootMath.lua
+Library\BigFootLocal.lua
+Library\BigFootSecureHook.lua
+
+ModManagement.xml
+BigFoot.xml
+BigFootSpells.lua
+BigFootReader.xml
+BigFootVersion.lua
+BigFootError.xml
+
+Config\ConfigGlobals.lua
+Config\BagIntegration.lua
+Config\ChatEnhance.lua
+Config\BFTooltip.lua
+Config\SpellTimer.lua
+Config\InfoEnhance.lua
+Config\MailMod.lua
+Config\ClassMod.lua
+Config\BigFootQuest.lua
+Config\RaidToolkit.lua
+Config\MerInspect.lua
+Config\MobInfo.lua
+Config\ActionButton.lua
+Config\AutoEquip.lua
+Config\TrinketMenu.lua
+Config\PartyMod.lua
+Config\TalentViewer.lua
+Config\ItemInfo.lua
+Config\BigFootGather.lua
+Config\ArenaMod.lua
+Config\CombatIndicator.lua
+Config\BUnitFrame.lua
+Config\BigFootGadget.lua
+Config\InfoBox.lua
+Config\MapToolkit.lua
+Config\PowerWatch.lua
+Config\QuestEnhance.lua
+Config\DKP.lua
+
+BigFootPatch.lua
+..\Blizzard_InspectUI\InspectHonorFrame.xml

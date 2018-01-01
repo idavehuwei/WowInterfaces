@@ -1,0 +1,66 @@
+------------------------------------------------------------------------
+r207 | Azethoth | 2009-08-11 03:30:55 +0000 (Tue, 11 Aug 2009) | 1 line
+Changed paths:
+   M /trunk/LibPeriodicTable-3.1-ClassSpell/LibPeriodicTable-3.1-ClassSpell.lua
+   M /trunk/LibPeriodicTable-3.1-Gear/LibPeriodicTable-3.1-Gear.lua
+   M /trunk/LibPeriodicTable-3.1-GearSet/LibPeriodicTable-3.1-GearSet.lua
+   M /trunk/LibPeriodicTable-3.1-Misc/LibPeriodicTable-3.1-Misc.lua
+   M /trunk/LibPeriodicTable-3.1-Tradeskill/LibPeriodicTable-3.1-Tradeskill.lua
+   M /trunk/LibPeriodicTable-3.1-TradeskillLevels/LibPeriodicTable-3.1-TradeskillLevels.lua
+   M /trunk/LibPeriodicTable-3.1-TradeskillResultMats/LibPeriodicTable-3.1-TradeskillResultMats.lua
+   M /trunk/data.lua
+
+-- 3.2 mining run
+------------------------------------------------------------------------
+r206 | ddumont | 2009-08-05 23:23:01 +0000 (Wed, 05 Aug 2009) | 1 line
+Changed paths:
+   M /trunk
+   M /trunk/data.lua
+
+properly adding new tokens.
+------------------------------------------------------------------------
+r205 | ddumont | 2009-08-04 19:04:33 +0000 (Tue, 04 Aug 2009) | 1 line
+Changed paths:
+   M /trunk/LibPeriodicTable-3.1-Misc/LibPeriodicTable-3.1-Misc.lua
+
+New gear tokens for 3.2
+------------------------------------------------------------------------
+r204 | elkano | 2009-07-29 06:34:18 +0000 (Wed, 29 Jul 2009) | 2 lines
+Changed paths:
+   M /trunk/LibPeriodicTable-3.1-Misc/LibPeriodicTable-3.1-Misc.lua
+   M /trunk/data.lua
+
+[data] updated the Darkmoon Faire decks
+see: http://forums.wowace.com/showpost.php?p=284134&postcount=155
+------------------------------------------------------------------------
+r203 | elkano | 2009-07-23 09:49:35 +0000 (Thu, 23 Jul 2009) | 3 lines
+Changed paths:
+   M /trunk/LibPeriodicTable-3.1-CurrencyItems/LibPeriodicTable-3.1-CurrencyItems.lua
+   M /trunk/LibPeriodicTable-3.1-Gear/LibPeriodicTable-3.1-Gear.lua
+   M /trunk/LibPeriodicTable-3.1-InstanceLoot/LibPeriodicTable-3.1-InstanceLoot.lua
+   M /trunk/LibPeriodicTable-3.1-InstanceLootHeroic/LibPeriodicTable-3.1-InstanceLootHeroic.lua
+   M /trunk/LibPeriodicTable-3.1-Misc/LibPeriodicTable-3.1-Misc.lua
+   M /trunk/LibPeriodicTable-3.1-Tradeskill/LibPeriodicTable-3.1-Tradeskill.lua
+   M /trunk/LibPeriodicTable-3.1-TradeskillLevels/LibPeriodicTable-3.1-TradeskillLevels.lua
+   M /trunk/LibPeriodicTable-3.1-TradeskillResultMats/LibPeriodicTable-3.1-TradeskillResultMats.lua
+   M /trunk/data.lua
+   M /trunk/dataminer.lua
+
+[dataminer] fixed mining of Misc.Openable
+[InstanceLoot] linked "Algalon the Observer" to "Gift of the Observer"
+non-instance mining run
+------------------------------------------------------------------------
+r202 | mikk | 2009-07-18 17:18:14 +0000 (Sat, 18 Jul 2009) | 1 line
+Changed paths:
+   M /trunk/LibPeriodicTable-3.1-Tradeskill/LibPeriodicTable-3.1-Tradeskill.lua
+   M /trunk/data.lua
+
+Add some more buyable tradeskill mats
+------------------------------------------------------------------------
+r201 | Azethoth | 2009-06-23 01:01:43 +0000 (Tue, 23 Jun 2009) | 1 line
+Changed paths:
+   M /trunk/LibPeriodicTable-3.1-Misc/LibPeriodicTable-3.1-Misc.lua
+   M /trunk/data.lua
+
+-- 34599 Juggling torch
+------------------------------------------------------------------------

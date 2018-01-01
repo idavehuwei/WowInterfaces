@@ -3,7 +3,7 @@
 --
 local L = LibStub("AceLocale-3.0"):NewLocale("Mapster", "zhTW")
 if not L then return end
-L["Mapster"] = "增強地圖"
+
 L["Accuracy"] = "精准"
 L["Adjust the size of the Player Arrow on the Map for better visibility."] = "調校在地圖上玩家箭頭的大小以便更容易被看見"
 L["Alpha"] = "透明度"
@@ -96,4 +96,4 @@ L["Right-Click on map to zoom out"] = "右鍵點擊世界地圖放大"
 L["Left-Click on map to zoom in"] = "左鍵點擊世界地圖縮小"
 L["Ctrl-Right-Click on map to add a note"] = "ctrl-右鍵點擊世界地圖創建一個標記"
 
-L["Map enchant"] = "增強地圖"
+L["Map enchant"] = "地圖增強"

@@ -1,0 +1,17 @@
+## Interface: 30100
+## X-Curse-Packaged-Version: 1.0.2-release
+## X-Curse-Project-Name: SharedMediaAdditionalFonts
+## X-Curse-Project-ID: shared-media-additional-fonts
+## X-Curse-Repository-ID: wow/shared-media-additional-fonts/mainline
+
+## Title: SharedMedia Additional Fonts
+## Notes: Inserts additionnal fonts into SharedMediaLib's storage.
+## Version: 1.0
+## Author: Lots of people, maintained by pb_ee1.
+## X-Category: Miscellaneous
+## X-Credits: elsia
+
+## OptionalDeps: LibSharedMedia-3.0, LibSharedMedia-2.0, SharedMediaLib
+
+Core.lua
+SharedMediaAdditionalFonts.lua

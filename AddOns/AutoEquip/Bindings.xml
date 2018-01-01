@@ -1,0 +1,32 @@
+<Bindings>
+	<Binding name="AUTOEQUIP_SET1" runOnUp="true" header="AUTOEQUIP_TITLE">
+		AutoEquipSetButton_OnClick(nil, 1);
+	</Binding>
+	<Binding name="AUTOEQUIP_SET2" runOnUp="true">
+		AutoEquipSetButton_OnClick(nil, 2);
+	</Binding>
+	<Binding name="AUTOEQUIP_SET3" runOnUp="true">
+		AutoEquipSetButton_OnClick(nil, 3);
+	</Binding>
+	<Binding name="AUTOEQUIP_SET4" runOnUp="true">
+		AutoEquipSetButton_OnClick(nil, 4);
+	</Binding>
+	<Binding name="AUTOEQUIP_SET5" runOnUp="true">
+		AutoEquipSetButton_OnClick(nil, 5);
+	</Binding>
+	<Binding name="AUTOEQUIP_SET6" runOnUp="true">
+		AutoEquipSetButton_OnClick(nil, 6);
+	</Binding>
+	<Binding name="AUTOEQUIP_SET7" runOnUp="true">
+		AutoEquipSetButton_OnClick(nil, 7);
+	</Binding>
+	<Binding name="AUTOEQUIP_SET8" runOnUp="true">
+		AutoEquipSetButton_OnClick(nil, 8);
+	</Binding>
+	<Binding name="AUTOEQUIP_PREV" runOnUp="true">
+		AutoEquip_SwitchToPrev();
+	</Binding>
+	<Binding name="AUTOEQUIP_NEXT" runOnUp="true">
+		AutoEquip_SwitchToNext();
+	</Binding>
+</Bindings>

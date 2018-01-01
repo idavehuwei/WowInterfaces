@@ -1,6 +1,6 @@
 --[[
 Name: RatingBuster zhTW locale
-Revision: $Revision: 228 $
+Revision: $Revision: 240 $
 Translated by:
 - Whitetooth@Cenarius (hotdogee@bahamut.twbbs.org)
 - CuteMiyu
@@ -29,9 +29,11 @@ L["Suspend/resume this addon"] = "暫停/繼續使用這個插件"
 --L["General Settings"] = true
 --L["Profiles"] = true
 -- /rb win
-L["RatingBuster"] = "裝備屬性分析";
 L["Options Window"] = "選項視窗"
 L["Shows the Options Window"] = "顯示選項視窗"
+-- /rb hidebzcomp
+L["Hide Blizzard Item Comparisons"] = "隱藏內建的物品比較"
+L["Disable Blizzard stat change summary when using the built-in comparison tooltip"] = "觀看內建的已裝備物品提示時不顯示內建的物品比較功能"
 -- /rb statmod
 L["Enable Stat Mods"] = "屬性加成"
 L["Enable support for Stat Mods"] = "啟用屬性加成計算"
@@ -492,6 +494,7 @@ L["Red Socket"] = EMPTY_SOCKET_RED
 L["ItemID or Link of the gem you would like to auto fill"] = "預設寶石的物品編號或連結"
 L["<ItemID|Link>"] = "<物品編號|連結>"
 L["|cffffff7f%s|r is now set to |cffffff7f[%s]|r"] = "|cffffff7f%s|r 已設定為 |cffffff7f[%s]|r"
+L["Invalid input: %s. ItemID or ItemLink required."] = "輸入錯誤：%s，請輸入物品編號或物品連結。"
 L["Queried server for Gem: %s. Try again in 5 secs."] = "嘗試查詢編號：%s，請5秒後再試一次。"
 -- /rb sum gem yellow
 L["Yellow Socket"] = EMPTY_SOCKET_YELLOW

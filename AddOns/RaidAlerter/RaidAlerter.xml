@@ -122,13 +122,13 @@
 		<Size>
 			<AbsDimension x="210" y="27"/>
 		</Size>
-		<!--<Anchors>
+		<Anchors>
 			<Anchor point="TOP" relativeTo="UIParent" relativePoint="TOP">
 				<Offset>
 					<AbsDimension x="20" y="-12"/>
 				</Offset>
 			</Anchor>
-		</Anchors>-->
+		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString name="RaidAlerter_Attack_Frame_Text"  font="Fonts\ZYHei.TTF" inherits="NumberFont_Shadow_Med" justifyH="CENTER" text="" virtual="true">
@@ -158,21 +158,14 @@
 
 		<Scripts>
 			<OnLoad>
-				self:RegisterForDrag("LeftButton");
+				self:RegisterForDrag("RightButton");
 				self:RegisterForClicks("LeftButtonUp","RightButtonUp");
 			</OnLoad>
 			<OnDragStart>
-				if (not self.locked) then
-					self.isMoving = true;
-					self:StartMoving();
-				end				
+				self:StartMoving();
 			</OnDragStart>
 			<OnDragStop>
-				if (self.isMoving) then
-					self.isMoving = false;
-					self:StopMovingOrSizing();
-					BF_RaidAlerter_SavePosition(self);
-				end				
+				self:StopMovingOrSizing();
 			</OnDragStop>
 			<OnClick>
 				RaidAlerter_RaidState(self,arg1);

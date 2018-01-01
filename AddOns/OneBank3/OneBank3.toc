@@ -15,7 +15,6 @@
 ## X-Curse-Project-Name: OneBank3
 ## X-Curse-Project-ID: onebank3
 ## X-Curse-Repository-ID: wow/onebank3/mainline
-## Dependencies: Duowan
-## X-Revision: Duowan
+## Dependencies: !!UserDefaultSettings
 
 OneBank3.xml

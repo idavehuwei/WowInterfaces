@@ -1,0 +1,22 @@
+## Interface: 30100
+## Title: MerInspect
+## Notes: Calculate stat points of equipments, talents and buffs then make a statistics.
+## Title-zhCN: 装备属性统计(MerInspect) 
+## Notes-zhCN: 统计装备、天赋以及BUFF等的属性加成值。
+## Title-zhTW: 裝備屬性統計(MerInspect) 
+## Notes-zhTW: 統計裝備、天賦以及BUFF等的屬性加成值。
+## Author: Mermaid 
+## Version: 2.2.0
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+
+core.lua
+frame.lua
+localization.lua
+Statlogic.lua
+Equipment.lua
+PVP.lua
+Talent.lua
+Buff.lua
+BigFoot.lua

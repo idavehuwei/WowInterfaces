@@ -1,9 +1,10 @@
-﻿## Interface: 30100
+## Interface: 30100
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ulduar|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ульдуар|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0울두아르|r
 ## Title-zhtw:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奧杜亞|r
 ## LoadOnDemand: 1
+## X-Revision: BigFoot
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMUlduar_SavedVars, DBMUlduar_SavedStats
 ## X-DBM-Mod: 1
@@ -32,10 +33,8 @@ Kologarn.lua
 Auriaya.lua
 Mimiron.lua
 Freya.lua
-Freya_Elders.lua
 Thorim.lua
 Hodir.lua
 GeneralVezax.lua
 YoggSaron.lua
 Algalon.lua
-

@@ -6,9 +6,11 @@
 ## Author: Zensunim of Malygos
 ## Version: 3.4.2
 ## DefaultState: Enabled
+## Dependencies: !!UserDefaultSettings
 ## OptionalDeps: PowerAuras
 ## SavedVariables: GTFOData
 ## X-Compatible-With: 40000
+
 Localization\enUS.lua
 Localization\deDE.lua
 Localization\ruRU.lua

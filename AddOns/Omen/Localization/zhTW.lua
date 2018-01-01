@@ -6,7 +6,7 @@
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("Omen", "zhTW")
 if not L then return end
-L["Omen"] = "仇恨統計"
+
 L["A collection of help pages"] = "幫助頁匯集"
 L["Alpha"] = "透明度"
 L["Always Show Self"] = "總是顯示自己"

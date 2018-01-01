@@ -56,12 +56,7 @@ end
 
 
 function GridStatusVehicle:UpdateUnit(unitid)
-	local pet_unitid = GridRoster:GetPetUnitidByUnitid(unitid)
-	if not pet_unitid then
-		return
-	end
-		
-	local guid = UnitGUID(pet_unitid)
+	local guid = UnitGUID(unitid)
 
 	if UnitHasVehicleUI(unitid) then
 		local settings = self.db.profile.alert_vehicleui

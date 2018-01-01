@@ -3,7 +3,7 @@ Copyright (c) 2008, Hendrik "Nevcairiel" Leppkes < h.leppkes@gmail.com >
 All rights reserved.
 ]]
 
-Mapster = LibStub("AceAddon-3.0"):NewAddon("Mapster", "AceEvent-3.0", "AceHook-3.0")
+local Mapster = LibStub("AceAddon-3.0"):NewAddon("Mapster", "AceEvent-3.0")
 
 local db
 local defaults = {
@@ -78,21 +78,22 @@ function Mapster:OnEnable()
 	tinsert(UISpecialFrames, "WorldMapFrame")
 	
 	self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-
-	self:SetAlpha()
+	
 	self:SetArrow()
-		
+	
 	if vis then
 		ShowUIPanel(WorldMapFrame)
 	end
 end
 
+--[[
 function Mapster:OnDisable()
-	--UIPanelWindows["WorldMapFrame"] = oldUIPanel
-	--WorldMapFrame:SetAttribute("UIPanelLayout-enabled", true)
-	--WorldMapFrame:SetScript("OnKeyDown", oldwmfOnKeyDown)
-	--BlackoutWorld:Show()
+	UIPanelWindows["WorldMapFrame"] = oldUIPanel
+	WorldMapFrame:SetAttribute("UIPanelLayout-enabled", true)
+	WorldMapFrame:SetScript("OnKeyDown", oldwmfOnKeyDown)
+	BlackoutWorld:Show()
 end
+]]
 
 function Mapster:Refresh()
 	db = self.db.profile
@@ -114,8 +115,13 @@ function Mapster:Refresh()
 			v:Refresh()
 		end
 	end
-
-	if self.optionsButton then	
+	--terry@bf
+	if self.optionsButton then
+		--[[if db.hideMapButton or (QuestHelperWorldMapButton and QuestHelperWorldMapButton:IsShown()) then
+			self.optionsButton:Hide()
+		else
+			self.optionsButton:Show()
+		end]]
 		self.optionsButton:Show()
 	end
 end
@@ -200,12 +206,4 @@ function Mapster:SetModuleEnabled(module, value)
 			self:DisableModule(module)
 		end
 	end
-end
-
-function Mapster:SetAlpha()
-	WorldMapFrame:SetAlpha(db.alpha)
-end
-
-function Mapster:SetPosition()
-	--LibWindow.RestorePosition(WorldMapFrame)
 end

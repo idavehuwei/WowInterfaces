@@ -4,8 +4,6 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
-L.TranslationBy 	= "Nitram & Tandanu"
-
 L.TabCategory_Options 	= "General Options"
 L.TabCategory_WOTLK 	= "Wrath of the Lich King"
 L.TabCategory_BC 	= "The Burning Crusade"
@@ -99,9 +97,7 @@ L.FillUpBars		= "Fill up Bars"
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "Spam Filter"
 L.Area_SpamFilter		= "General Spam Filter Options"
-L.HideBossEmoteFrame		= "Hide raid boss emote frame"
-L.SpamBlockRaidWarning		= "Filter announces from other boss mods" 
-L.SpamBlockBossWhispers		= "Filter <DBM> warning whispers while fighting"
-L.ShowVersionUpadeAsPopup	= "Show Version Popup when your Version is Outdated"
-L.ShowBigBrotherOnCombatStart	= "Show BigBrother on Combat Start"
+L.HideBossEmoteFrame	= "Hide raid boss emote frame"
+L.SpamBlockRaidWarning	= "Filter announces from other boss mods" 
+L.SpamBlockBossWhispers	= "Filter <DBM> warning whispers while fighting"
 

@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("Razorscale", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1143 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 1046 $"):sub(12, -3))
 mod:SetCreatureID(33186)
 mod:SetZone()
 
@@ -28,10 +28,10 @@ local timerTurret3			= mod:NewTimer(95, "timerTurret3")
 local timerTurret4			= mod:NewTimer(115, "timerTurret4")
 local timerGroundedTemp			= mod:NewTimer(45, "timerGroundedTemp")
 
-local enrageTimer			= mod:NewEnrageTimer(900) -- uhm?
+local enrageTimer			= mod:NewEnrageTimer(600)
 
 local specWarnDevouringFlameCast	= mod:NewSpecialWarning("SpecWarnDevouringFlameCast")
-local warnDevouringFlameCast		= mod:NewAnnounce("WarnDevouringFlameCast", 2, 64733, false, "OptionDevouringFlame") -- new option is just a work-around...the saved variable handling will be updated to allow changing and updating default values soon
+local warnDevouringFlameCast		= mod:NewAnnounce("WarnDevouringFlameCast", 2, 64733) 
 
 mod:AddBoolOption("PlaySoundOnDevouringFlame", false, "announce")
 

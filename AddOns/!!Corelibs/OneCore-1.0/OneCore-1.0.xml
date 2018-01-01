@@ -1,10 +1,20 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
-    <Include file="localization\load.xml" />
+    <Script file="localization\enUS.lua" />
+    <Script file="localization\zhCN.lua" />
+    <Script file="localization\zhTW.lua" />
 
     <Script file="OneCore-1.0.lua" />
     <Script file="OneFrame-1.0.lua" />
-    <Script file="OneConfig-1.0.lua" />                           
+    <Script file="OneConfig-1.0.lua" />
     <Script file="OnePlugin-1.0.lua" />
-    
+
     <Script file="SimpleSort-1.0.lua" />
+
+    <GameTooltip name="OneCoreTooltip" frameStrata="TOOLTIP" hidden="false" inherits="GameTooltipTemplate">
+        <Scripts>
+            <OnLoad>
+                self:SetOwner(UIParent, "ANCHOR_NONE");
+            </OnLoad>
+        </Scripts>
+    </GameTooltip>
 </Ui>

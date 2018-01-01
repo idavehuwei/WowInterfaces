@@ -1,0 +1,27 @@
+## Interface: 30300
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 ButtonFacade 主模块|r  为ButtonFacade Apathy皮肤。。
+## Title: ButtonFacade: |cffff8000Apathy|r
+## Version: 3.3.78
+## Notes: Apathy skin for ButtonFacade.
+## Notes-deDE: Apathy Skins für ButtonFacade.
+## Notes-esMX: Apathy texturas para ButtonFacade.
+## Notes-esES: Apathy texturas para ButtonFacade.
+## Notes-frFR: Skin Apathy pour ButtonFacade.
+## Notes-koKR: ButtonFacade에 대한 Apathy 스킨.
+## Notes-ruRU: Apathy Шкурки для ButtonFacade.
+## Notes-zhCN: 为ButtonFacade Apathy皮肤。
+## Notes-zhTW: Apathy皮膚的ButtonFacade。
+## Author: StormFX
+## X-eMail: stormfx@gmail.com
+## X-Website: http://www.wowace.com/projects/buttonfacade_apathy
+## X-Category: Interface Enhancements
+## X-Credits: Zeal
+## X-WoWI-ID: 8870
+## Dependencies: ButtonFacade
+## X-Curse-Packaged-Version: r78
+## X-Curse-Project-Name: ButtonFacade: Apathy
+## X-Curse-Project-ID: buttonfacade_apathy
+## X-Curse-Repository-ID: wow/buttonfacade_apathy/mainline
+
+Skins.lua

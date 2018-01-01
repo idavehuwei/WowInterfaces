@@ -1,26 +1,27 @@
-## Interface: 30100
-## Title: [Duowan] Mapster
+﻿## Interface: 30100
+## Title: Mapster
+## Title-zhCN: 地图专家
+## Title-zhTW: 地圖專家
 ## Notes: Simple Map Mod
-## Title-zhCN: [多玩] 地图增强
 ## Notes-zhCN: 简单实用的地图模块
-## Title-zhTW: [多玩] 地圖增強
-## Notes-zhTW: 簡單實用的地圖模塊
-## Author: Nevcairiel
+## Notes-zhTW: 簡單實用的地圖增強
+## Author: Nevcairiel, Funkydude (Coords Module)
 ## SavedVariables: MapsterDB
+## X-Revision: BigFoot
 ## X-Category: Map
-## Version: 1.3.8
+## Version: 1.2.1
 ## X-License: All rights reserved.
-## X-Curse-Packaged-Version: 1.3.8
-## X-Curse-Project-Name: Mapster
-## X-Curse-Project-ID: mapster
-## X-Curse-Repository-ID: wow/mapster/mainline
-## X-DuowanAddon: 地图
-## OptionalDeps: Ace3, LibBabble-Zone-3.0, LibWindow-1.1
-## Dependencies: Duowan
-## X-Revision: Duowan
-## LoadOnDemand: 1
 
-Locale\locale.xml
+## LoadManagers: AddonLoader
+## X-LoadOn-Hooks: ToggleFrame
+## X-LoadOn-ToggleFrame: if ... == WorldMapFrame and not IsAddOnLoaded("Mapster") then AddonLoader:LoadAddOn("Mapster") end
+## LoadWith: Blizzard_BattlefieldMinimap
+
+## OptionalDeps: BigFoot, Ace3
+
+Locale\enUS.lua
+Locale\zhCN.lua
+Locale\zhTW.lua
 
 Mapster.lua
 Config.lua
@@ -29,6 +30,10 @@ Coords.lua
 GroupIcons.lua
 BattleMap.lua
 FogClear.lua
+#Minimap.lua
 InstanceMaps.lua
-#Scaling.lua
-ZoneInfo.lua
+
+Notes.lua
+WayPoint.lua
+WayPoints.lua
+NotePoint.lua

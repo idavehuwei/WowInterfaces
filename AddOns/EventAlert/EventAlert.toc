@@ -1,16 +1,15 @@
 ## Interface: 30100
-## Title: [Duowan] EventAlert
+## Title: EventAlert
 ## Notes: 当各职业的法术特效触发时，以图标、声音和全屏闪烁来提醒报警
-## Title-zhCN: [多玩] 技能特效报警 EventAlert
+## Title-zhCN: 技能特效报警 EventAlert
 ## Notes-zhCN: 当各职业的法术特效触发时，以图标、声音和全屏闪烁来提醒报警
-## Title-zhTW: [多玩] 技能特效報警 EventAlert
+## Title-zhTW: 技能特效報警 EventAlert
 ## Notes-zhTW: 當各職業的法術特效觸發時，以圖示、聲音和全屏閃爍來提醒報警
 ## Author: CurtisTheGreat(AIM) (Special thanks: WoW UI Forums, Crast of the Pub)
 ## Version: 4.2.26
 ## SavedVariables: EA_Config, EA_Position, EA_Items, EA_AltItems
 ## X-DuowanAddon: 战斗
-## Dependencies: Duowan
-## X-Revision: Duowan
+## Dependencies: !!Corelibs
 ## LoadOnDemand: 1
 
 localization\embed.xml

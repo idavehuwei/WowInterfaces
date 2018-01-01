@@ -11,7 +11,6 @@
 ## URL: http://bbs.game.mop.com/viewthread.php?tid=1503056
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
-## Dependencies: Duowan
-## X-Revision: Duowan
+## Dependencies: !!UserDefaultSettings
 
 ClearFont.lua

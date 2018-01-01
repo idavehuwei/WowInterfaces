@@ -24,8 +24,7 @@
 ## X-Curse-Project-Name: Skillet
 ## X-Curse-Project-ID: skillet
 ## X-Curse-Repository-ID: wow/skillet/mainline
-## Dependencies: Duowan
-## X-Revision: Duowan
+## Dependencies: !!UserDefaultSettings
 
 #### Localization files
 Locale\Locale-enUS.lua

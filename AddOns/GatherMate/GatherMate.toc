@@ -11,6 +11,7 @@
 ## X-Category: Map
 ## Version: r671
 ## X-License: GPL v2
+## Dependencies: !!UserDefaultSettings
 ## OptionalDeps: Ace3, LibDataBroker-1.1
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Always: delayed

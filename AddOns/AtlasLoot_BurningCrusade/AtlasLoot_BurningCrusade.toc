@@ -16,7 +16,6 @@
 ## X-Website: http://www.atlasloot.net
 ## Dependencies: AtlasLoot
 ## LoadOnDemand: 1
-## X-Revision: Duowan
 
 burningcrusade.lua
 localization.lua

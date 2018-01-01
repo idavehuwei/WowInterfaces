@@ -1,7 +1,7 @@
 ## Interface: 30100
 ## Title: [Duowan] Mendeleev
-## Title-zhCN: [多玩] 物品制造助手 Mendeleev
-## Title-zhTW: [多玩] 物品制造助手 Mendeleev
+## Title-zhCN: 物品制造助手 Mendeleev
+## Title-zhTW: 物品制造助手 Mendeleev
 ## Version: 3.0
 ## Notes: Adds various information based on PeriodicTable to item tooltips.
 ## Notes-zhCN: 在提示中显示物品的详细信息，包括掉落位置、声望要求、用途等。基于 PeriodicTable。
@@ -18,9 +18,7 @@
 ## X-Curse-Repository-ID: wow/mendeleev/mainline
 ## X-DuowanAddon: 商业物品
 ## X-Date: 2009-01-02T20:26:50Z
-## Dependencies: Duowan
-## X-Revision: Duowan
-## LoadOnDemand:
+## Dependencies: !!Corelibs
 
 locales\enUS.lua
 locales\zhCN.lua

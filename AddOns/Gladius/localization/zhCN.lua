@@ -1,7 +1,7 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("Gladius", "zhCN", false)
 
 if not L then return end
-L["Gladius"] = "竞技助手";
+
 L["Action"] = "动作"
 L["Action #%d"] = "Action #%d"
 L["Add"] = "添加"

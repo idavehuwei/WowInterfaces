@@ -1,7 +1,7 @@
 ## Interface: 30100
 ## Name: oRA3
-## Title-zhCN: [多玩] 团队助手
-## Title-zhTW: [多玩] 團隊助手
+## Title-zhCN: 团队助手
+## Title-zhTW: 團隊助手
 ## Notes: Raid and Party Assist
 ## Notes-zhCN: CT_RaidAssist 外的另一个选择。
 ## Notes-zhTW: CT_RaidAssist 以外的另一個選擇。
@@ -14,9 +14,7 @@
 ## X-Credits: Cladhaire for the sliding/detaching panel
 ## X-DuowanAddon: 团队副本
 ## SavedVariables: oRA3DB
-## Dependencies: Duowan
-## X-Revision: Duowan
-## LoadOnDemand: 1
+## Dependencies: BigFoot
 
 locales\enUS.lua
 locales\zhCN.lua

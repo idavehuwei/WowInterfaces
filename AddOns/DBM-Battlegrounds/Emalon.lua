@@ -10,29 +10,22 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_HEAL",
-	"RAID_TARGET_UPDATE",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"RAID_TARGET_UPDATE"
 )
 
 mod:AddBoolOption("NovaSound")
 
 local timerNova			= mod:NewCastTimer(64216)
-local timerOvercharge		= mod:NewNextTimer(45, 64218)
-local timerMobOvercharge	= mod:NewTimer(24, "timerMobOvercharge", 64217)
+local timerOvercharge	= mod:NewNextTimer(45, 64218)
 
 local specWarnNova		= mod:NewSpecialWarning("specWarnNova")
 local warnNova			= mod:NewAnnounce("warnNova", 3)
-local warnOverCharge		= mod:NewAnnounce("warnOverCharge", 2)
-
---local enrageTimer		= mod:NewEnrageTimer(360)
-
+local warnOverCharge	= mod:NewAnnounce("warnOverCharge", 2)
 
 local overchargedMob
 function mod:OnCombatStart(delay)
 	overchargedMob = nil
 	timerOvercharge:Start(-delay)
-	--enrageTimer:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -76,18 +69,6 @@ function mod:SPELL_HEAL(args)
 		warnOverCharge:Show()
 		timerOvercharge:Start()
 		self:TrySetTarget(args.destGUID)
-	end
-end
-
-function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 64217 then	-- 1 of 12 stacks (+1 each 2 seconds)
-		timerMobOvercharge:Start()
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 64217 then
-		timerMobOvercharge:Stop()
 	end
 end
 

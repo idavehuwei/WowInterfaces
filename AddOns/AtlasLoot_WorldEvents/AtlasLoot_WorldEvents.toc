@@ -15,7 +15,6 @@
 ## X-Website: http://www.atlasloot.net
 ## Dependencies: AtlasLoot
 ## LoadOnDemand: 1
-## X-Revision: Duowan
 
 worldevents.lua
 localization.lua

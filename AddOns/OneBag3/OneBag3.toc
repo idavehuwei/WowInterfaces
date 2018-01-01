@@ -18,7 +18,6 @@
 ## X-Curse-Project-Name: OneBag3
 ## X-Curse-Project-ID: onebag3
 ## X-Curse-Repository-ID: wow/onebag3/mainline
-## Dependencies: Duowan
-## X-Revision: Duowan
+## Dependencies: !!UserDefaultSettings
 
 OneBag3.xml

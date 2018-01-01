@@ -1,25 +1,21 @@
 ## Interface: 30100
-## Title: [Duowan] RangeDisplay
-## Title-zhCN: [多玩] 距离显示 RangeDisplay
-## Title-zhTW: [多玩] 距離顯示 RangeDisplay
+## Title: RangeDisplay
+## Title-zhCN: 距离显示 RangeDisplay
+## Title-zhTW: 距離顯示 RangeDisplay
 ## Author: mitch0
 ## Version: 3.1
 ## Notes: Estimated range display. type /rangedisplay for help
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Always: true
 ## SavedVariables: DuowanAddon_RangeDisplayDB3
-## OptionalDeps: !!!CWDGLibsPack, LibStub, CallbackHandler-1.0, LibRangeCheck-2.0, Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, LibDBIcon-1.0
+## OptionalDeps: !!UserDefaultSettings, !!!CWDGLibsPack, LibStub, CallbackHandler-1.0, LibRangeCheck-2.0, Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, LibDBIcon-1.0
 ## X-Category: Combat
-## X-DuowanAddon: 界面聊天
 ## X-License: Public Domain
 ## X-RelSite-WoWI: 7297
 ## X-Credits: sayclub (koKR), lcncg (zhCN, zhTW), Carylon (deDE), Pixel (frFR), Argonavt (ruRU), Swix (ruRU), StingerSoft (ruRU)
 
 ## X-Localizations: enUS, enGB, deDE, zhCN, zhTW, koKR, ruRU, frFR, esES
 ## X-CompatibleLocales: enUS, enGB, deDE, frFR, esES, zhCN, zhTW, koKR, ruRU
-## Dependencies: Duowan
-## X-Revision: Duowan
-## LoadOnDemand: 1
 
 localizations\localizations.xml
 

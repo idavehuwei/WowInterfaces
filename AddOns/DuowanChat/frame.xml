@@ -136,7 +136,7 @@
 				DWCChatFrame.endx=DWCChatFrame:GetLeft()
 				if DWCChatFrame:IsMovable() then
 					DWCChatFrame:StopMovingOrSizing();
-					dwRegisterForSaveFrame(DWCChatFrame);
+					--dwRegisterForSaveFrame(DWCChatFrame);
 				end
 			</OnDragStop>
 		</Scripts>
@@ -159,7 +159,7 @@
 		</Size>
 		<Scripts>
 			<OnLoad>
-				dwRegisterForSaveFrame(self);
+				--dwRegisterForSaveFrame(self);
 				self:SetClampedToScreen(true)
 			</OnLoad>
 		</Scripts>

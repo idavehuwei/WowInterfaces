@@ -39,7 +39,6 @@ DBM_CORE_VERSIONCHECK_FOOTER		= "%d 명의 플레이어가 설치되어 있는 �
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "당신의 죽이는 보스 모드 버전이 옛날 버전입니다.\n Version %s (r%d) 가 새로운 버전이며, 최신 버전 위치:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Ctrl-C 를 누르면 클립보드에 복사가 됩니다."
-DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "새로운 버전이 검색되면 관련 창을 띄웁니다."
 
 DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"
 
@@ -82,7 +81,6 @@ DBM_CORE_ANNOUNCE_PULL_NOW			= "풀링했습니다. 긴장하세요.!"
 -- Generic Warnings
 DBM_CORE_GENERIC_TARGET_WARN = ">%%s< 에게 %s!"
 DBM_CORE_GENERIC_TARGET_OPTION = "%s 의 대상 알리기"
-DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill(업적 타이머)"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
@@ -91,7 +89,6 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	active = "%s",	
 	cd = "%s 쿨다운",
 	next = "다음 %s",
-	achievement = "%s",	
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -100,6 +97,5 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	active = "|cff71d5ff|H주문:%d|h%s|h|r 유지 타이머 보기",
 	cd = "|cff71d5ff|H주문:%d|h%s|h|r 쿨다운 타이머 보기",
 	next = "다음 |cff71d5ff|H주문:%d|h%s|h|r 타이머 보기",
-	achievement = "%s 위한 타이머 보기", -- translate	
 }
 end

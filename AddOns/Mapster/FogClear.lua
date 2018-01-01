@@ -1034,9 +1034,9 @@ local errata = {
 local db
 local defaults = {
 	profile = {
-		colorR = 0.5,
-		colorG = 0.5,
-		colorB = 0.5,
+		colorR = 1,
+		colorG = 1,
+		colorB = 1,
 		colorA = 1,
 		debug = false
 	},

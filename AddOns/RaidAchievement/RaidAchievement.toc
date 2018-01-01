@@ -9,8 +9,7 @@
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariablesPerCharacter: thisaddonworkea, wherereportraidach, wherereportpartyach
-## Dependencies: Duowan
-## X-Revision: Duowan
+## Dependencies: !!UserDefaultSettings
 
 Localization\localization-enEN.lua
 Localization\localization-ruRU.lua

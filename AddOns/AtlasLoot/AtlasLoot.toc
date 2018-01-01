@@ -20,8 +20,7 @@
 ## SavedVariables: AtlasLootOptions, AtlasLootDB, AtlasLootWishList
 ## SavedVariablesPerCharacter: AtlasLootCharDB, AtlasLootFilterDB
 ## X-DuowanAddon: 地图
-## Dependencies: Duowan
-## X-Revision: Duowan
+## Dependencies: !!UserDefaultSettings
 ## LoadOnDemand: 1
 
 Locales\Locales.xml

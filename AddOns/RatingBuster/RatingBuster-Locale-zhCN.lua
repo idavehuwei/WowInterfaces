@@ -27,7 +27,6 @@ L["Suspend/resume this addon"] = "\230\154\130\229\129\156/\230\129\162\229\164\
 --L["General Settings"] = true
 --L["Profiles"] = true
 -- /rb win
-L["RatingBuster"] = "装备属性分析";
 L["Options Window"] = "选项窗口"
 L["Shows the Options Window"] = "打开选项窗口"
 -- /rb statmod
@@ -633,20 +632,20 @@ L["statList"] = {
 	{pattern = "护甲穿透等级", id = CR_ARMOR_PENETRATION},
 	{pattern = string.lower(ARMOR), id = ARMOR},
 	--[[
-	{pattern = "匕首技能等级", id = CR_WEAPON_SKILL},
-	{pattern = "单手剑技能等级", id = CR_WEAPON_SKILL},
-	{pattern = "双手剑技能等级", id = CR_WEAPON_SKILL},
-	{pattern = "单手斧技能等级", id = CR_WEAPON_SKILL},
-	{pattern = "弓技能等级", id = CR_WEAPON_SKILL},
-	{pattern = "弩技能等级", id = CR_WEAPON_SKILL},
-	{pattern = "枪技能等级", id = CR_WEAPON_SKILL},
-	{pattern = "野性战斗技能等级", id = CR_WEAPON_SKILL},
-	{pattern = "单手锤技能等级", id = CR_WEAPON_SKILL},
-	{pattern = "长柄武器技能等级", id = CR_WEAPON_SKILL},
-	{pattern = "法杖技能等级", id = CR_WEAPON_SKILL},
-	{pattern = "双手斧技能等级", id = CR_WEAPON_SKILL},
-	{pattern = "双手锤技能等级", id = CR_WEAPON_SKILL},
-	{pattern = "拳套技能等级", id = CR_WEAPON_SKILL},
+	{pattern = "dagger skill rating", id = CR_WEAPON_SKILL},
+	{pattern = "sword skill rating", id = CR_WEAPON_SKILL},
+	{pattern = "two%-handed swords skill rating", id = CR_WEAPON_SKILL},
+	{pattern = "axe skill rating", id = CR_WEAPON_SKILL},
+	{pattern = "bow skill rating", id = CR_WEAPON_SKILL},
+	{pattern = "crossbow skill rating", id = CR_WEAPON_SKILL},
+	{pattern = "gun skill rating", id = CR_WEAPON_SKILL},
+	{pattern = "feral combat skill rating", id = CR_WEAPON_SKILL},
+	{pattern = "mace skill rating", id = CR_WEAPON_SKILL},
+	{pattern = "polearm skill rating", id = CR_WEAPON_SKILL},
+	{pattern = "staff skill rating", id = CR_WEAPON_SKILL},
+	{pattern = "two%-handed axes skill rating", id = CR_WEAPON_SKILL},
+	{pattern = "two%-handed maces skill rating", id = CR_WEAPON_SKILL},
+	{pattern = "fist weapons skill rating", id = CR_WEAPON_SKILL},
 	--]]
 }
 -------------------------

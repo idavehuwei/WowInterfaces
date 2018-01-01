@@ -1,10 +1,10 @@
 --[[
 Name: RatingBuster
 Description: Converts combat ratings in tooltips into normal percentages.
-Revision: $Revision: 226 $
+Revision: $Revision: 242 $
 Author: Whitetooth
 Email: hotdogee [at] gmail [dot] com
-LastUpdate: $Date: 2009-04-14 18:00:11 +0000 (Tue, 14 Apr 2009) $
+LastUpdate: $Date: 2009-08-21 04:21:12 +0000 (Fri, 21 Aug 2009) $
 ]]
 
 ---------------
@@ -24,8 +24,8 @@ local BI = LibStub("LibBabble-Inventory-3.0"):GetLookupTable()
 --------------------
 -- AceAddon Initialization
 RatingBuster = LibStub("AceAddon-3.0"):NewAddon("RatingBuster", "AceConsole-3.0", "AceEvent-3.0")
-RatingBuster.version = "1.4.4 (r"..gsub("$Revision: 226 $", "(%d+)", "%1")..")"
-RatingBuster.date = gsub("$Date: 2009-04-14 18:00:11 +0000 (Tue, 14 Apr 2009) $", "^.-(%d%d%d%d%-%d%d%-%d%d).-$", "%1")
+RatingBuster.version = "1.4.6 (r"..gsub("$Revision: 242 $", "(%d+)", "%1")..")"
+RatingBuster.date = gsub("$Date: 2009-08-21 04:21:12 +0000 (Fri, 21 Aug 2009) $", "^.-(%d%d%d%d%-%d%d%-%d%d).-$", "%1")
 
 
 -----------
@@ -82,6 +82,7 @@ local ARMOR = ARMOR
 -- DB Defaults --
 -----------------
 local profileDefault = {
+	hideBlizzardComparisons = false,
 	showItemLevel = false,
 	showItemID = false,
 	useRequiredLevel = true,
@@ -122,13 +123,13 @@ Spi -> MP5, MP5NC, HP5, SpellDmg, Healing
 --]]
 	-- Base stat conversions
 	showAPFromStr = false,
-	showBlockValueFromStr = false,
+	showBlockValueFromStr = true,
 	
 	showCritFromAgi = true,
 	showDodgeFromAgi = true,
 	showAPFromAgi = false,
 	showRAPFromAgi = false,
-	showArmorFromAgi = false,
+	showArmorFromAgi = true, --Druid, Warrior,Paladin
 	showHealingFromAgi = false, -- Druid - Nurturing Instinct
 	
 	showHealthFromSta = false,
@@ -136,8 +137,8 @@ Spi -> MP5, MP5NC, HP5, SpellDmg, Healing
 	
 	showManaFromInt = false,
 	showSpellCritFromInt = true,
-	showSpellDmgFromInt = false, -- Druid, Mage, Paladin, Shaman, Warlock
-	showHealingFromInt = false, -- Druid, Paladin, Shaman
+	showSpellDmgFromInt = true, -- Druid, Mage, Paladin, Shaman, Warlock
+	showHealingFromInt = true, -- Druid, Paladin, Shaman
 	showMP5FromInt = false, 
 	showMP5NCFromInt = false,
 	showRAPFromInt = false, -- Hunter
@@ -289,6 +290,7 @@ if class == "DRUID" then
 	profileDefault.showSpellDmgFromSpi = true
 	profileDefault.showHealingFromSpi = true
 elseif class == "HUNTER" then
+	profileDefault.showArmorFromAgi=false
 	profileDefault.ratingPhysical = true
 	profileDefault.sumHP = true
 	profileDefault.sumMP = true
@@ -367,6 +369,7 @@ elseif class == "PRIEST" then
 	profileDefault.showSpellDmgFromSpi = true
 	profileDefault.showHealingFromSpi = true
 elseif class == "ROGUE" then
+	profileDefault.showArmorFromAgi=false
 	profileDefault.ratingPhysical = true
 	profileDefault.sumHP = true
 	profileDefault.sumResilience = true
@@ -378,6 +381,7 @@ elseif class == "ROGUE" then
 	profileDefault.sumArmorPenetration = true
 	profileDefault.showSpellCritFromInt = false
 elseif class == "SHAMAN" then
+	profileDefault.showArmorFromAgi=false
 	profileDefault.ratingSpell = true
 	profileDefault.ratingPhysical = true
 	profileDefault.sumHP = true
@@ -503,7 +507,9 @@ local function setGem(info, value)
 		--if not debugstack():find("AceConfigCmd") then
 			RatingBuster:Print(L["|cffffff7f%s|r is now set to |cffffff7f[%s]|r"]:format(L[socket], link))
 		--end
-	else
+	elseif gemID == false then -- invalid input
+		RatingBuster:Print(L["Invalid input: %s. ItemID or ItemLink required."]:format(value))
+	else -- query sent
 		RatingBuster:Print(L["Queried server for Gem: %s. Try again in 5 secs."]:format(value))
 	end
 end
@@ -541,9 +547,19 @@ local options = {
 						end
 					end,
 				},
-				statmod = {
+				hidebzcomp = {
 					type = 'toggle',
 					order = 2,
+					width = "double",
+					name = L["Hide Blizzard Item Comparisons"],
+					desc = L["Disable Blizzard stat change summary when using the built-in comparison tooltip"],
+					arg = "hideBlizzardComparisons",
+					get = getProfileOption,
+					set = setProfileOptionAndClearCache,
+				},
+				statmod = {
+					type = 'toggle',
+					order = 3,
 					width = "double",
 					name = L["Enable Stat Mods"],
 					desc = L["Enable support for Stat Mods"],
@@ -553,7 +569,7 @@ local options = {
 				},
 				avoidancedr = {
 					type = 'toggle',
-					order = 3,
+					order = 4,
 					width = "double",
 					name = L["Enable avoidance diminishing returns"],
 					desc = L["Dodge, Parry, Hit Avoidance values will be calculated using the avoidance deminishing return formula with your current stats"],
@@ -563,7 +579,7 @@ local options = {
 				},
 				itemid = {
 					type = 'toggle',
-					order = 4,
+					order = 5,
 					width = "double",
 					name = L["Show ItemID"],
 					desc = L["Show the ItemID in tooltips"],
@@ -573,7 +589,7 @@ local options = {
 				},
 				itemlevel = {
 					type = 'toggle',
-					order = 5,
+					order = 6,
 					width = "double",
 					name = L["Show ItemLevel"],
 					desc = L["Show the ItemLevel in tooltips"],
@@ -583,7 +599,7 @@ local options = {
 				},
 				usereqlv = {
 					type = 'toggle',
-					order = 6,
+					order = 7,
 					width = "double",
 					name = L["Use required level"],
 					desc = L["Calculate using the required level if you are below the required level"],
@@ -593,7 +609,7 @@ local options = {
 				},
 				level = {
 					type = 'range',
-					order = 7,
+					order = 8,
 					width = "double",
 					name = L["Set level"],
 					desc = L["Set the level used in calculations (0 = your level)"],
@@ -2091,9 +2107,14 @@ function RatingBuster:SetupOptions()
 	options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 	options.args.profile.order = -2
 	
+	-- Add dual-spec support
+	local LibDualSpec = LibStub('LibDualSpec-1.0')
+	LibDualSpec:EnhanceDatabase(self.db, "RatingBuster")
+	LibDualSpec:EnhanceOptions(options.args.profile, self.db)
+	
 	-- Register options table
-	AceConfig:RegisterOptionsTable(L["RatingBuster"], options, {"rb", "ratingbuster"})
-	--[[
+	AceConfig:RegisterOptionsTable("RatingBuster", options, {"rb", "ratingbuster"})
+	
 	-- Setup Blizzard option frames
 	self.optionsFrames = {}
 	-- The ordering here matters, it determines the order in the Blizzard Interface Options
@@ -2103,15 +2124,12 @@ function RatingBuster:SetupOptions()
 	self.optionsFrames.sum = AceConfigDialog:AddToBlizOptions("RatingBuster", L["Stat Summary"], "RatingBuster", "sum")
 	self.optionsFrames.profile = AceConfigDialog:AddToBlizOptions("RatingBuster", L["Profiles"], "RatingBuster", "profile")
 	--self.optionsFrames.Help = AceConfigDialog:AddToBlizOptions("RatingBuster", L["Help File"], "RatingBuster", "Help")
-	]]
 end
 
 function RatingBuster:ShowConfig()
 	-- Open the profiles tab before, so the menu expands
-	--InterfaceOptionsFrame_OpenToCategory(self.optionsFrames.profile)
-	--InterfaceOptionsFrame_OpenToCategory(self.optionsFrames.general)	
-	
-	 LibStub("AceConfigDialog-3.0"):Open(L["RatingBuster"]);
+	InterfaceOptionsFrame_OpenToCategory(self.optionsFrames.profile)
+	InterfaceOptionsFrame_OpenToCategory(self.optionsFrames.general)
 end
 
 -----------
@@ -2140,6 +2158,18 @@ local function copyTable(to, from)
 	return to
 end
 
+------------------------------------
+-- Hide Blizzard Item Comparisons --
+------------------------------------
+local function HookSetHyperlinkCompareItem(shoppingtip)
+	local old = shoppingtip.SetHyperlinkCompareItem
+	shoppingtip.SetHyperlinkCompareItem = function(self, link, level, shift, main, ...)
+		if profileDB.hideBlizzardComparisons then
+			main = nil
+		end
+		return old(self, link, level, shift, main, ...)
+	end
+end
 
 ---------------------
 -- Initializations --
@@ -2151,16 +2181,16 @@ VARIABLES_LOADED - When all addons are loaded
 PLAYER_LOGIN - Most information about the game world should now be available to the UI
 }
 --]]
--- OnInitialize(name) called at ADDON_LOADED
 function RatingBuster:OnProfileChanged(event, database, newProfileKey)
 	-- this is called every time our profile changes (after the change)
 	profileDB = database.profile
 	clearCache()
 end
 
+-- OnInitialize(name) called at ADDON_LOADED
 function RatingBuster:OnInitialize()
 	-- Create DB
-	self.db = AceDB:New("DuowanAddon_RatingBusterDB", defaults)
+	self.db = AceDB:New("RatingBusterDB", defaults)
 	self.db.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
 	self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
 	self.db.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
@@ -2168,6 +2198,11 @@ function RatingBuster:OnInitialize()
 	profileDB = self.db.profile
 
 	self:SetupOptions()
+	
+	-- Hook ShoppingTooltips to enable options to Hide Blizzard Item Comparisons
+	HookSetHyperlinkCompareItem(ShoppingTooltip1)
+	HookSetHyperlinkCompareItem(ShoppingTooltip2)
+	HookSetHyperlinkCompareItem(ShoppingTooltip3)
 end
 
 -- OnEnable() called at PLAYER_LOGIN
@@ -2227,7 +2262,7 @@ local summaryFunc = {}
 local equippedSum = {}
 local equippedDodge, equippedParry, equippedMissed
 local processedDodge, processedParry, processedMissed
-function RatingBuster.ProcessTooltip(tooltip, name, link)
+function RatingBuster.ProcessTooltip(tooltip, name, link, ...)
 	-- Check if we're in standby mode
 	if not RatingBuster:IsEnabled() then return end
 	---------------------------
@@ -2388,7 +2423,7 @@ function RatingBuster.ProcessTooltip(tooltip, name, link)
 	-- Expertise - EXPERTISE_RATING
 	--]]
 	if profileDB.showSum then
-		RatingBuster:StatSummary(tooltip, name, link)
+		RatingBuster:StatSummary(tooltip, name, link, ...)
 	end
 	---------------------
 	-- Repaint tooltip --
@@ -2476,7 +2511,7 @@ function RatingBuster:ProcessText(text, tooltip)
 							effect = effect * 0.04
 							infoString = format("%+.2f%% x5", effect)
 						elseif strID == "EXPERTISE" and profileDB.expBreakDown then
-							effect = floor(effect) * -0.25
+							effect = effect * -0.25
 							if profileDB.detailedConversionText then
 								infoString = gsub(L["$value to be Dodged/Parried"], "$value", format("%+.2f%%%%", effect))
 							else
@@ -3276,7 +3311,7 @@ local summaryCalcData = {
 					s = StatLogic:GetEffectFromRating(v, CR_WEAPON_SKILL, calcLevel) * 0.04
 				end
 			end
-			s = s + floor(StatLogic:GetEffectFromRating((sum["EXPERTISE_RATING"] or 0), "EXPERTISE_RATING", calcLevel)) * 0.25
+			s = s + StatLogic:GetEffectFromRating((sum["EXPERTISE_RATING"] or 0), "EXPERTISE_RATING", calcLevel) * 0.25
 			return s
 		end,
 		ispercent = true,
@@ -3292,7 +3327,7 @@ local summaryCalcData = {
 					s = StatLogic:GetEffectFromRating(v, CR_WEAPON_SKILL, calcLevel) * 0.04
 				end
 			end
-			s = s + floor(StatLogic:GetEffectFromRating((sum["EXPERTISE_RATING"] or 0), "EXPERTISE_RATING", calcLevel)) * 0.25
+			s = s + StatLogic:GetEffectFromRating((sum["EXPERTISE_RATING"] or 0), "EXPERTISE_RATING", calcLevel) * 0.25
 			return s
 		end,
 		ispercent = true,
@@ -3886,7 +3921,7 @@ function sumSortAlphaComp(a, b)
 	return a[1] < b[1]
 end
 
-function RatingBuster:StatSummary(tooltip, name, link)
+function RatingBuster:StatSummary(tooltip, name, link, ...)
 	-- Hide stat summary for equipped items
 	if profileDB.sumIgnoreEquipped and IsEquippedItem(link) then return end
 	
@@ -3898,6 +3933,11 @@ function RatingBuster:StatSummary(tooltip, name, link)
 		if not itemRarity or itemRarity < 2 then
 			return
 		end
+		
+		-- IsUsableItem
+		if not IsEquippableItem(link) then
+			return
+		end
 
 		-- Check armor type
 		if armorTypes[itemSubType] and (not classArmorTypes[class][itemSubType]) and itemEquipLoc ~= "INVTYPE_CLOAK" then
@@ -3906,6 +3946,7 @@ function RatingBuster:StatSummary(tooltip, name, link)
 		end
 		
 		-- Check for Red item types
+		--[[
 		local tName = tooltip:GetName()
 		if _G[tName.."TextRight3"]:GetText() and select(2, _G[tName.."TextRight3"]:GetTextColor()) < 0.2 then
 			--self:Print("TextRight3", select(2, _G[tName.."TextRight3"]:GetTextColor()))
@@ -3923,6 +3964,7 @@ function RatingBuster:StatSummary(tooltip, name, link)
 			--self:Print("TextLeft4", select(2, _G[tName.."TextLeft4"]:GetTextColor()))
 			return
 		end
+		--]]
 	end
 	
 	-- Ignore enchants and gems on items when calculating the stat summary
@@ -3950,27 +3992,25 @@ function RatingBuster:StatSummary(tooltip, name, link)
 	-- Determine tooltipLevel and id
 	if profileDB.calcDiff and (profileDB.sumDiffStyle == "comp") then
 		-- Obtain main tooltip
-		for _, t in pairs(TipHooker.SupportedTooltips) do
-			if mainTooltip:IsOwned(t) then
-				mainTooltip = t
-				break
-			end
-		end
-		for _, t in pairs(TipHooker.SupportedTooltips) do
-			if mainTooltip:IsOwned(t) then
-				mainTooltip = t
-				break
-			end
-		end
 		-- Detemine tooltip level
-		local _, mainlink, difflink1, difflink2 = StatLogic:GetDiffID(mainTooltip, profileDB.sumIgnoreEnchant, profileDB.sumIgnoreGems, red, yellow, blue, meta)
-		if link == mainlink then
-			tooltipLevel = 0
-		elseif link == difflink1 then
-			tooltipLevel = 1
-		elseif link == difflink2 then
-			tooltipLevel = 2
+		if mainTooltip:GetOwner():GetObjectType() == "GameTooltip" then
+			mainTooltip = mainTooltip:GetOwner()
+			-- This is a comparison tooltip
+			local _, level = ...
+			if type(level) == "number" then
+				tooltipLevel = level
+			else
+				tooltipLevel = 1
+			end
+			if mainTooltip:GetOwner():GetObjectType() == "GameTooltip" then
+				mainTooltip = mainTooltip:GetOwner()
+				if type(level) ~= "number" then
+					tooltipLevel = 2
+				end
+			end
 		end
+		local _, mainlink = StatLogic:GetDiffID(mainTooltip, profileDB.sumIgnoreEnchant, profileDB.sumIgnoreGems, red, yellow, blue, meta)
+		if not mainlink then return end
 		-- Construct id
 		if tooltipLevel > 0 then
 			id = link..mainlink
@@ -3979,11 +4019,12 @@ function RatingBuster:StatSummary(tooltip, name, link)
 		end
 	else
 		id = StatLogic:GetDiffID(link, profileDB.sumIgnoreEnchant, profileDB.sumIgnoreGems, red, yellow, blue, meta)
+		if not id then return end
 	end
 	
 	-- Check Cache
 	if cache[id] then
-		if table.maxn(cache[id]) == 0 then return end
+		if #cache[id] == 0 then return end
 		-- Write Tooltip
 		if profileDB.sumBlankLine then
 			tooltip:AddLine(" ")
@@ -3994,6 +4035,14 @@ function RatingBuster:StatSummary(tooltip, name, link)
 				tooltip:AddTexture("Interface\\AddOns\\RatingBuster\\images\\Sigma")
 			end
 		end
+		-- local left, right = "", ""
+		-- for _, o in ipairs(cache[id]) do
+			-- left = left..o[1].."\n"
+			-- right = right..o[2].."\n"
+		-- end
+		-- left = strsub(left, 1, -3)
+		-- right = strsub(right, 1, -3)
+		-- tooltip:AddDoubleLine(left, right)
 		for _, o in ipairs(cache[id]) do
 			tooltip:AddDoubleLine(o[1], o[2])
 		end
@@ -4266,7 +4315,7 @@ function RatingBuster:StatSummary(tooltip, name, link)
 	end
 	-- Write cache
 	cache[id] = output
-	if table.maxn(output) == 0 then return end
+	if #output == 0 then return end
 	-------------------
 	-- Write Tooltip --
 	if profileDB.sumBlankLine then

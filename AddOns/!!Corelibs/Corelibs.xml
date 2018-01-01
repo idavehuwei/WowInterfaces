@@ -17,7 +17,9 @@
 	<Script file="Waterfall-1.0\Waterfall-1.0.lua" />
 	<Script file="Dewdrop-2.0\Dewdrop-2.0.lua" />
 	<Script file="Tablet-2.0\Tablet-2.0.lua" />
+	<Script file="LibRock-1.0\LibRock-1.0.lua" />
 	<Script file="FuBarPlugin-2.0\FuBarPlugin-2.0.lua"/>
+	<Script file="LibFuBarPlugin-3.0\LibFuBarPlugin-3.0.lua"/>
 	<Script file="CandyBar-2.0\CandyBar-2.0.lua"/>
 	<Script file="Gratuity-2.0\Gratuity-2.0.lua"/>
 	<Script file="Window-1.0\Window-1.0.lua"/>
@@ -33,10 +35,11 @@
 	<Script file="LibCrayon-3.0\LibCrayon-3.0.lua" />
 	<Script file="LibStatLogic-1.1\LibStatLogic-1.1.lua"/>
 	<Script file="LibTipHooker-1.1\LibTipHooker-1.1.lua" />
+	<Script file="LibQTip-1.0\LibQTip-1.0.lua" />
 	<Script file="LibGratuity-3.0\LibGratuity-3.0.lua" />
 	<Script file="LibGraph-2.0\LibGraph-2.0.lua" />
 	<Script file="LibTalentQuery-1.0\LibTalentQuery-1.0.lua" />
-	<Script file="LibButtonFacade\LibButtonFacade.lua" />
+	<Include file="TalentGuess-1.0\TalentGuess-1.0.xml" />
 	<Script file="LibDataBroker-1.1\LibDataBroker-1.1.lua"/>
 	<Script file="LibDBIcon-1.0\LibDBIcon-1.0.lua" />
 	<Script file="LibAlts-1.0\LibAlts-1.0.lua"/>
@@ -44,7 +47,8 @@
 	<Include file="ChatThrottleLib\ChatThrottleLib.xml" />
 	<Include file="LibBabble-3.0\LibBabble-3.0.xml" />
 	<!-- <Include file="LibQuestInfo\LibQuestInfo.xml"/> -->
-	<Script file="LibQuixote-2.0\LibQuixote-2.0.lua"/>
+	<Include file="LibQuixote-2.0\LibQuixote-2.0.xml"/>
+	<Script file="Quixote-1.0\Quixote-1.0.lua"/>
 	<Script file="LibGuild-1.0\LibGuild-1.0.lua"/>
 	<Script file="LibGuildPositions-1.0\LibGuildPositions-1.0.lua"/>
 	<Script file="LibBanzai-2.0-GUID\LibBanzai-2.0-GUID.lua"/>
@@ -59,4 +63,9 @@
 	<Include file="OneCore-1.0\OneCore-1.0.xml" />
 	<Include file="LibDebugLog-1.0\LibDebugLog-1.0.xml" />
 	<Script file="LibTourist-3.0\LibTourist-3.0.lua" />
+	<Script file="LibDualSpec-1.0\LibDualSpec-1.0.lua" />
+	<Script file="SpecialEvents-Aura-2.0\SpecialEvents-Aura-2.0.lua" />
+	<!-- Skin -->
+	<!-- <Script file="SharedMedia\SharedMedia.lua" /> -->
+	<!-- <Include file="SharedMediaAdditionalFonts\SharedMediaAdditionalFonts.xml" /> -->
 </Ui>

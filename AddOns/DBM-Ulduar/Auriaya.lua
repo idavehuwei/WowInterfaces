@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("Auriaya", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1162 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 1030 $"):sub(12, -3))
 
 mod:SetZone()
 
@@ -30,7 +30,7 @@ mod:AddBoolOption("HealthFrame", true)
 
 local warnSwarm 	= mod:NewAnnounce("WarnSwarm", 2, 64396)
 
-local specWarnBlast	= mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
+local specWarnBlast = mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
 local specWarnVoid 	= mod:NewSpecialWarning("SpecWarnVoid")
 local warnFear 		= mod:NewAnnounce("WarnFear", 3, 64386)
 local warnFearSoon 	= mod:NewAnnounce("WarnFearSoon", 1, 64386)

@@ -1,0 +1,27 @@
+## Interface: 30300
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 ButtonFacade 主模块|r  为ButtonFacade LiteStep皮肤。。
+## Title: ButtonFacade: |cffff8000LiteStep|r
+## Version: 3.3.51
+## Notes: LiteStep skin for ButtonFacade.
+## Notes-deDE: LiteStep Skins für ButtonFacade.
+## Notes-esMX: LiteStep texturas para ButtonFacade.
+## Notes-esES: LiteStep texturas para ButtonFacade.
+## Notes-frFR: Skin LiteStep pour ButtonFacade.
+## Notes-koKR: ButtonFacade에 대한 LiteStep 스킨.
+## Notes-ruRU: LiteStep Шкурки для ButtonFacade.
+## Notes-zhCN: 为ButtonFacade LiteStep皮肤。
+## Notes-zhTW: LiteStep皮膚的ButtonFacade。
+## Author: StormFX
+## X-eMail: stormfx@gmail.com
+## X-Website: http://www.wowace.com/projects/buttonfacade_litestep
+## X-Category: Interface Enhancements
+## X-Credits: Saynt
+## X-WoWI-ID: 8882
+## Dependencies: ButtonFacade
+## X-Curse-Packaged-Version: r51
+## X-Curse-Project-Name: ButtonFacade: LiteStep
+## X-Curse-Project-ID: buttonfacade_litestep
+## X-Curse-Repository-ID: wow/buttonfacade_litestep/mainline
+
+Skins.lua

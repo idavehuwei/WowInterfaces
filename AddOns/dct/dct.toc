@@ -1,0 +1,30 @@
+## Interface: 30100
+## Title: DCT
+## Notes: Adds Combat Text above you character
+## Title-zhCN: 战斗指示器(DCT)
+## Notes-zhCN: 战斗指示器(DCT)核心模块，提供受到的伤害效果显示。
+## Title-zhTW: 戰鬥指示器(DCT) 
+## Notes-zhTW: 戰鬥指示器(DCT)核心模組，提供受到的傷害效果顯示。
+## Author: Dennie
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+## SavedVariables: DCT_SAVE,DCT_FONT_SAVE
+## SavedVariablesPerCharacter: DCT_SAVE_PERCHAR
+
+#  Thanks for: MagicDragoon,Dove,水沐森林,神恋歌(繁体化)
+
+DCT_ui_patch.lua
+DCT_font.lua
+DCT_default_config.Lua
+locals\cn_DCT_default_config.Lua
+locals\tw_DCT_default_config.Lua
+locals\en_DCT_default_config.Lua
+DCT_anibase.lua
+DCT_aniframe.lua
+DCT_cd.lua
+DCT.lua
+DCT.xml
+DCT_castbar.lua
+DCT_castbar.xml
+DCT_patch.lua

@@ -102,10 +102,7 @@ end
 
 local function optFunc() 
 	-- open the profiles tab before, so the menu expands
-	if (not LibStub("AceConfigDialog-3.0"):Close("Mapster")) then
-		LibStub("AceConfigDialog-3.0"):Open("Mapster");
-	end
-	
+	LibStub("AceConfigDialog-3.0"):Open("Mapster");
 --	InterfaceOptionsFrame_OpenToCategory(Mapster.optionsFrames.Profiles)
 --	InterfaceOptionsFrame_OpenToCategory(Mapster.optionsFrames.Mapster)
 end
@@ -130,10 +127,17 @@ end
 function Mapster:SetupMapButton()
 	-- create button on the worldmap to toggle the options
 	self.optionsButton = CreateFrame("Button", "MapsterOptionsButton", WorldMapFrame, "UIPanelButtonTemplate")
-	self.optionsButton:SetWidth(95)
-	self.optionsButton:SetHeight(18)
+	self.optionsButton:SetWidth(110)
+	self.optionsButton:SetHeight(27)
 	self.optionsButton:SetText(L["Mapster"])
 	self.optionsButton:ClearAllPoints()
-	self.optionsButton:SetPoint("TOPRIGHT", WorldMapPositioningGuide, "TOPRIGHT", -36, -2)
+	self.optionsButton:SetPoint("TOPRIGHT", "WorldMapPositioningGuide", "TOPRIGHT", -150, -35)
+--terry@bf we do not need this option to show or hide ,do we?	
+--	if self.db.profile.hideMapButton or (QuestHelperWorldMapButton and QuestHelperWorldMapButton:IsShown()) then
+--		self.optionsButton:Hide()
+--	else
+	self.optionsButton:Show()
+--	end
+	
 	self.optionsButton:SetScript("OnClick", optFunc)
 end

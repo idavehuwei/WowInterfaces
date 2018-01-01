@@ -3,4 +3,5 @@
     <Script file="locale\localization.lua" />
     <Script file="locale\localization-cn.lua" />
     <Script file="UserDefaultSettings.lua" />
+    <Script file="Patch.lua" />
 </Ui>
