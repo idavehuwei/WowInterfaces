@@ -11,7 +11,7 @@
 ## X-Category: Miscellaneous
 ## X-Credits: elsia
 
-## OptionalDeps: LibSharedMedia-3.0, LibSharedMedia-2.0, SharedMediaLib
+## OptionalDeps: !!Corelibs, LibSharedMedia-3.0, LibSharedMedia-2.0, SharedMediaLib
 
 Core.lua
 SharedMediaAdditionalFonts.lua

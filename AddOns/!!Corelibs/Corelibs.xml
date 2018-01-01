@@ -65,7 +65,4 @@
 	<Script file="LibTourist-3.0\LibTourist-3.0.lua" />
 	<Script file="LibDualSpec-1.0\LibDualSpec-1.0.lua" />
 	<Script file="SpecialEvents-Aura-2.0\SpecialEvents-Aura-2.0.lua" />
-	<!-- Skin -->
-	<!-- <Script file="SharedMedia\SharedMedia.lua" /> -->
-	<!-- <Include file="SharedMediaAdditionalFonts\SharedMediaAdditionalFonts.xml" /> -->
 </Ui>
