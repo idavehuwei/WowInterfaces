@@ -77,7 +77,7 @@ DCT_DEFAULT_CFG = {
 		{active = true,name = "",aniType = 1,speed = 100,angle = 0,alpha = 100,x = 20,y = 0,param1 = 5,param2 = 150,param3 = 330,param4 = 50,param5 = 5,param6 = 30,param7 = 1,fEn = 2,fCh = 1,fSizeEn = 20,fSizeCh = 18,fEff = 1},
 		{active = true,name = "",aniType = 3,speed = 100,angle = 0,alpha = 100,x = 0,y = -130,param1 = 3,param2 = 3,param3 = 1,param4 = 2,param5 = 1,fEn = 1,fCh = 1,fSizeEn = 24,fSizeCh = 24,fEff = 2},
 		{active = true,name = "",aniType = 3,speed = 100,angle = 0,alpha = 100,x = 0,y = -200,param1 = 3,param2 = 3,param3 = 1,param4 = 1,param5 = 1,fEn = 1,fCh = 1,fSizeEn = 18,fSizeCh = 18,fEff = 2},
-		{active = true,name = "",aniType = 3,speed = 100,angle = 0,alpha = 100,x = 0,y = 200,param1 = 3,param2 = 4.5,param3 = 1,param4 = 1,param5 = 1,fEn = 1,fCh = 1,fSizeEn = 15,fSizeCh = 15,fEff = 1},
+		{active = true,name = "",aniType = 3,speed = 100,angle = 0,alpha = 100,x = 0,y = 350,param1 = 3,param2 = 4.5,param3 = 1,param4 = 1,param5 = 1,fEn = 1,fCh = 1,fSizeEn = 15,fSizeCh = 15,fEff = 1},
 		{active = true,name = "",aniType = 6,speed = 100,angle = 0,alpha = 100,x = 0,y = 60,param1 = 200,param2 = 2.5,param3 = 1,param4 = 0,param5 = 0,param6 = 0,fEn = 1,fCh = 1,fSizeEn = 18,fSizeCh = 16,fEff = 1},
 		{active = true,name = "",aniType = 7,speed = 100,angle = 0,alpha = 100,x = 0,y = 80,param1 = 1.5,param2 = 1,param3 = 1,param4 = 0,param5 = 2,param6 = 0,fEn = 2,fCh = 2,fSizeEn = 26,fSizeCh = 26,fEff = 1},
 		{active = true,name = "",aniType = 6,speed = 100,angle = 0,alpha = 100,x = -80,y = 80,param1 = 100,param2 = 2,param3 = 1,param4 = -40,param5 = 0,param6 = 0,fEn = 1,fCh = 1,fSizeEn = 18,fSizeCh = 16,fEff = 1},
