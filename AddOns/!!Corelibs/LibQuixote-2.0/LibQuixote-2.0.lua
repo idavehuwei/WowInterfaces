@@ -8,7 +8,10 @@ SVN: http://svn.wowace.com/wowace/trunk/LibQuixote-2.0/
 Description: Abstracts out questlog handling.
 License: LGPL v2.1
 ]]
-
+QuestInfoPerDB = {
+	quest = {},
+	abandon = {},
+};
 local MAJOR_VERSION = "LibQuixote-2.0"
 local MINOR_VERSION = 90000 + tonumber(("$Revision: 83 $"):match("%d+")) or 0
 
@@ -115,6 +118,18 @@ frame:SetScript("OnEvent", function(this, event, ...)
 	this[event](lib, ...)
 end)
 
+-- Added By dugu@bigfoot
+local function lib_SetAbandonQuest()
+	local name = GetAbandonQuestName();
+	if (not QuestInfoPerDB.abandon) then
+		QuestInfoPerDB.abandon = {};
+	end
+	if (name) then
+		QuestInfoPerDB.abandon[name] = true;
+	end	
+end
+
+hooksecurefunc("SetAbandonQuest", lib_SetAbandonQuest);
 -- this is just a throttler for QUEST_LOG_UPDATE
 local timeSoFar = 0
 frame:SetScript("OnUpdate", function(this, timeSinceLast)
@@ -344,6 +359,11 @@ function frame:QUEST_LOG_UPDATE()
 	local changed = false
 	if lib.firstDone then
 		for uid, quest in pairs(quests) do
+			-- Added by dugu@bigfoot 2010-08-15
+			QuestInfoPerDB.quest[uid] = true;
+			if (QuestInfoPerDB.abandon[quest.title]) then
+				QuestInfoPerDB.abandon[quest.title] = nil;
+			end
 			if not old_quests[uid] then
 				-- Gained a quest
 				lib.callbacks:Fire("Quest_Gained", quest.title, uid, GetNumQuestLeaderBoards(quest.id), quest.zone, lib.npc, lib.npc_is_player)
@@ -428,7 +448,8 @@ function frame:PARTY_MEMBERS_CHANGED()
 	for i=1, GetNumPartyMembers() do
 		local name = UnitName('party'..i)
 		p[name] = true
-		if lib.party[name] == nil and name ~= UNKNOWN then
+		--Terry@BF: add a check here to see if the unit is connected
+		if lib.party[name] == nil and name ~= UNKNOWN and UnitIsConnected(name) and UnitIsSameServer("player",name) then
 			lib:SendAddonMessage("v"..MINOR_VERSION, "WHISPER", name)
 			lib.party[name] = false -- to prevent spamming with pointless version data
 			lib.party_quests[name] = new()

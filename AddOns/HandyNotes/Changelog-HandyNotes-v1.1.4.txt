@@ -1,0 +1,528 @@
+------------------------------------------------------------------------
+r204 | xinhuan | 2009-04-15 05:30:17 +0000 (Wed, 15 Apr 2009) | 1 line
+Changed paths:
+   A /tags/v1.1.4 (from /trunk:203)
+
+Tag v1.1.4 for release. Updates Astrolabe library, and fixes the world map right click to add notes.
+------------------------------------------------------------------------
+r203 | xinhuan | 2009-04-15 05:25:03 +0000 (Wed, 15 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/HandyNotes.toc
+
+Update version to 1.1.4, Interface to 30100.
+------------------------------------------------------------------------
+r202 | xinhuan | 2009-04-15 05:23:45 +0000 (Wed, 15 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/Locales/Locale-zhTW.lua
+
+Update zhTW from andy52005.
+------------------------------------------------------------------------
+r201 | xinhuan | 2009-04-15 05:18:57 +0000 (Wed, 15 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/HandyNotes_HandyNotes.lua
+
+Fix WorldMapButton hook so that alt-rightclick will work to add notes.
+------------------------------------------------------------------------
+r200 | kunda | 2008-12-08 17:38:36 +0000 (Mon, 08 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/Locales/Locale-deDE.lua
+
+deDE update
+------------------------------------------------------------------------
+r199 | pettigrow | 2008-12-03 21:44:32 +0000 (Wed, 03 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/Locales/Locale-frFR.lua
+
+frFR Update
+------------------------------------------------------------------------
+r198 | xinhuan | 2008-12-01 07:44:01 +0000 (Mon, 01 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/HandyNotes_HandyNotes.lua
+   M /trunk/Locales/Locale-deDE.lua
+   M /trunk/Locales/Locale-enUS.lua
+   M /trunk/Locales/Locale-frFR.lua
+   M /trunk/Locales/Locale-koKR.lua
+   M /trunk/Locales/Locale-zhCN.lua
+
+Localize the word "Syntax:"
+------------------------------------------------------------------------
+r197 | xinhuan | 2008-11-30 03:07:33 +0000 (Sun, 30 Nov 2008) | 3 lines
+Changed paths:
+   M /trunk/HandyNotes_EditFrame.lua
+   M /trunk/HandyNotes_HandyNotes.lua
+
+- Add optional x,y coordinates to /hnnew command. That is: /hnnew [x, y]
+- Make ESC key close the new note frame (this required the frame to be named).
+- Make HandyNotes tooltips wrap.
+------------------------------------------------------------------------
+r195 | xinhuan | 2008-11-23 08:00:13 +0000 (Sun, 23 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/HandyNotes.toc
+
+Update version to 1.1.3
+------------------------------------------------------------------------
+r194 | xinhuan | 2008-11-17 10:55:03 +0000 (Mon, 17 Nov 2008) | 2 lines
+Changed paths:
+   M /trunk/HandyNotes_HandyNotes.lua
+   M /trunk/Locales/Locale-deDE.lua
+   M /trunk/Locales/Locale-enUS.lua
+   M /trunk/Locales/Locale-esES.lua
+   M /trunk/Locales/Locale-frFR.lua
+   M /trunk/Locales/Locale-koKR.lua
+   M /trunk/Locales/Locale-zhCN.lua
+
+Add slash command /hnnew which creates a new note where you are located.
+Continent-enabled notes will now show on Northrend.
+------------------------------------------------------------------------
+r192 | xinhuan | 2008-11-15 04:50:59 +0000 (Sat, 15 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/HandyNotes.toc
+
+Update TOC to v1.1.2
+------------------------------------------------------------------------
+r191 | xinhuan | 2008-11-15 04:48:31 +0000 (Sat, 15 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/HandyNotes.lua
+
+Add special code for Scarlet Enclave map. This should fix the C nil errors.
+------------------------------------------------------------------------
+r189 | xinhuan | 2008-11-14 02:16:54 +0000 (Fri, 14 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/HandyNotes.toc
+
+Update version to v1.1.1
+------------------------------------------------------------------------
+r188 | xinhuan | 2008-11-14 02:12:01 +0000 (Fri, 14 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/HandyNotes.lua
+
+Add continent level map "Northrend".
+------------------------------------------------------------------------
+r187 | xinhuan | 2008-10-22 13:06:02 +0000 (Wed, 22 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/HandyNotes_HandyNotes.lua
+
+Fix close menu error.
+------------------------------------------------------------------------
+r185 | xinhuan | 2008-10-14 21:17:24 +0000 (Tue, 14 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/Libs
+
+Update Astrolabe path from wotlk branch to trunk (Esamynn has merged the changes).
+------------------------------------------------------------------------
+r184 | xinhuan | 2008-10-14 20:56:48 +0000 (Tue, 14 Oct 2008) | 1 line
+Changed paths:
+   M /trunk
+   M /trunk/.pkgmeta
+   M /trunk/HandyNotes.lua
+   M /trunk/HandyNotes.toc
+   M /trunk/HandyNotes_HandyNotes.lua
+   M /trunk/Libs
+   D /trunk/Locales.xml
+   D /trunk/embeds.xml
+
+Remove tsvn:logtemplate. Update TOC to 30000 and version to 1.1. Delete embeds.xml and Locales.xml. Change Astrolabe to wrath compatible version. Update svn:externals.
+------------------------------------------------------------------------
+r183 | kagaro | 2008-10-04 14:35:40 +0000 (Sat, 04 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/HandyNotes_EditFrame.lua
+   M /trunk/HandyNotes_HandyNotes.lua
+
+HandyNotes: made compatable with Wrath api changes
+------------------------------------------------------------------------
+r182 | root | 2008-09-30 15:58:50 +0000 (Tue, 30 Sep 2008) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+
+Hopefully fix .pkgmeta
+------------------------------------------------------------------------
+r181 | root | 2008-09-30 14:54:48 +0000 (Tue, 30 Sep 2008) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+
+Hopefully fix .pkgmeta
+------------------------------------------------------------------------
+r180 | root | 2008-09-29 21:54:04 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   A /trunk/.pkgmeta
+   M /trunk/Libs
+
+Facilitate WowAce-on-CurseForge transition
+------------------------------------------------------------------------
+r178 | root | 2008-09-29 20:58:10 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   D /tmp/trunk/HandyNotes
+   A /trunk (from /tmp/trunk/HandyNotes:177)
+
+Importing old repo data under /trunk
+------------------------------------------------------------------------
+r175 | pettigrow | 2008-08-07 16:16:51 +0000 (Thu, 07 Aug 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/HandyNotes/Locales/Locale-frFR.lua
+
+HandyNotes: frFR Update
+------------------------------------------------------------------------
+r165 | nevcairiel | 2008-05-05 08:37:59 +0000 (Mon, 05 May 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/HandyNotes/Libs
+
+HandyNotes: touch embeds
+------------------------------------------------------------------------
+r159 | xinhuan | 2008-04-28 00:35:15 +0000 (Mon, 28 Apr 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/HandyNotes/HandyNotes.lua
+
+HandyNotes: ClearAllPoints and SetAllPoints of the icon textures at the end, in an attempt to fix silly texture size bugs.
+------------------------------------------------------------------------
+r158 | xinhuan | 2008-04-27 21:04:27 +0000 (Sun, 27 Apr 2008) | 4 lines
+Changed paths:
+   M /tmp/trunk/HandyNotes/HandyNotes.lua
+
+HandyNotes: 
+- Make minimap icons update twice as often
+- Force icon textures to re-anchor to stop weird sizing problems
+- Add optional RGBA vertex coloring options for icons
+------------------------------------------------------------------------
+r153 | xinhuan | 2008-04-21 02:35:49 +0000 (Mon, 21 Apr 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/HandyNotes/HandyNotes_HandyNotes.lua
+
+HandyNotes: Fix a dumb cut and paste mistake. Thanks nuoHep.
+------------------------------------------------------------------------
+r148 | next96 | 2008-04-20 02:52:00 +0000 (Sun, 20 Apr 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/HandyNotes/Locales/Locale-koKR.lua
+
+HandyNotes: 
+- Update locale koKR
+------------------------------------------------------------------------
+r145 | kunda | 2008-04-19 03:45:34 +0000 (Sat, 19 Apr 2008) | 3 lines
+Changed paths:
+   M /tmp/trunk/HandyNotes/HandyNotes_EditFrame.lua
+   M /tmp/trunk/HandyNotes/Locales/Locale-deDE.lua
+
+HandyNotes:
+- EditFrame: moved OK Button to the left side and CANCEL Button to the right side (de facto standard)
+- deDE update
+------------------------------------------------------------------------
+r142 | xinhuan | 2008-04-12 12:31:12 +0000 (Sat, 12 Apr 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/HandyNotes/HandyNotes.toc
+   M /tmp/trunk/HandyNotes/embeds.xml
+
+HandyNotes: Move "Libs\Astrolabe\Load.xml" to be loaded in the HandyNotes.toc file instead of in embeds.xml since this library is _always_ embedded, even in the disembedded version.
+------------------------------------------------------------------------
+r131 | xinhuan | 2008-04-08 09:06:25 +0000 (Tue, 08 Apr 2008) | 1 line
+Changed paths:
+   A /tmp/trunk/HandyNotes (from /tmp/branches/HandyNotes/Ace3:130)
+
+HandyNotes: Tag the Ace3 branch to trunk.
+------------------------------------------------------------------------
+r130 | xinhuan | 2008-04-06 08:15:50 +0000 (Sun, 06 Apr 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.toc
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/Locales/Locale-enUS.lua
+
+HandyNotes: Change note adding hook to Alt-Right Click to avoid conflicting with TomTom. Add a note saying so below the magnifying glass on the World Map. OptDep TomTom so it loads first because it overwrites the whole note instead of appending.
+------------------------------------------------------------------------
+r124 | xinhuan | 2008-04-06 06:08:56 +0000 (Sun, 06 Apr 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/Libs
+
+HandyNotes: Update to use Astrolabe-0.4-NC instead of Astrolabe-0.4.
+------------------------------------------------------------------------
+r123 | xinhuan | 2008-04-06 05:53:34 +0000 (Sun, 06 Apr 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/Locales/Locale-enUS.lua
+
+HandyNotes: Add TomTom waypoints to the right click menu.
+------------------------------------------------------------------------
+r116 | xinhuan | 2008-03-27 06:52:53 +0000 (Thu, 27 Mar 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.toc
+
+HandyNotes: Update TOC to 20400
+------------------------------------------------------------------------
+r115 | kurax | 2008-03-27 03:48:09 +0000 (Thu, 27 Mar 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/Locales/Locale-zhCN.lua
+
+HandyNotes: Add zhCN localizations
+------------------------------------------------------------------------
+r104 | next96 | 2008-03-18 17:14:27 +0000 (Tue, 18 Mar 2008) | 2 lines
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/Locales/Locale-koKR.lua
+
+HandyNotes: 
+- Uodate locale koKR
+------------------------------------------------------------------------
+r102 | next96 | 2008-03-18 17:06:17 +0000 (Tue, 18 Mar 2008) | 2 lines
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/Locales/Locale-koKR.lua
+
+HandyNotes: 
+- Add locale koKR
+------------------------------------------------------------------------
+r94 | pettigrow | 2008-03-05 14:54:11 +0000 (Wed, 05 Mar 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.toc
+   M /tmp/branches/HandyNotes/Ace3/Locales/Locale-frFR.lua
+
+HandyNotes: added french translation
+------------------------------------------------------------------------
+r93 | ensabahnur | 2008-03-03 11:07:06 +0000 (Mon, 03 Mar 2008) | 2 lines
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/Locales/Locale-deDE.lua
+
+HandyNotes: 
+- add deDE Locale
+------------------------------------------------------------------------
+r92 | xinhuan | 2008-03-02 14:04:35 +0000 (Sun, 02 Mar 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+
+HandyNotes: Add icon to context menu
+------------------------------------------------------------------------
+r91 | xinhuan | 2008-03-02 13:52:53 +0000 (Sun, 02 Mar 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_EditFrame.lua
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/Locales/Locale-enUS.lua
+
+HandyNotes: Localize all localizable strings
+------------------------------------------------------------------------
+r90 | xinhuan | 2008-03-01 00:28:10 +0000 (Sat, 01 Mar 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+
+HandyNotes: Add Cartographer_Waypoints to right click menu if it is loaded and active.
+------------------------------------------------------------------------
+r88 | xinhuan | 2008-02-29 22:36:09 +0000 (Fri, 29 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+
+HandyNotes: Update code so that it works in battlegrounds.
+------------------------------------------------------------------------
+r85 | break19 | 2008-02-25 07:19:03 +0000 (Mon, 25 Feb 2008) | 2 lines
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/Libs
+
+HandyNotes: Point externals to proper locations.
+
+------------------------------------------------------------------------
+r84 | xinhuan | 2008-02-24 02:38:04 +0000 (Sun, 24 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+
+HandyNotes: Fix tooltips to show on the Minimap. Code cleanup. Add 2 new public APIs. Use an OnUpdate with GetRealZoneText() to avoid using SetMapToCurrentZone()/ZONE_CHANGED_NEW_AREA because it fires WORLD_MAP_UPDATE and because there is a race condition between GetRealZoneText() and ZONE_CHANGED_NEW_AREA.
+------------------------------------------------------------------------
+r83 | xinhuan | 2008-02-24 00:24:52 +0000 (Sun, 24 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+
+HandyNotes: Localize some globals. Add safecall implementation from Ace3. Move set/get functions from root table to sub args table so they don't get inherited by module plugins. Fix OnEnable to update correctly.
+------------------------------------------------------------------------
+r78 | xinhuan | 2008-02-22 23:36:45 +0000 (Fri, 22 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/embeds.xml
+
+HandyNotes: Add AceHook-3.0 to embeds.xml
+------------------------------------------------------------------------
+r76 | xinhuan | 2008-02-22 18:11:16 +0000 (Fri, 22 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_EditFrame.lua
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+
+HandyNotes: - Remove note edit frame from globals. Update comments. Update code to allow notes on World and Cosmic maps. Cleanup continent iterator logic.
+------------------------------------------------------------------------
+r73 | xinhuan | 2008-02-21 02:10:18 +0000 (Thu, 21 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+
+HandyNotes: Set the framestata of our icons too, since the Minimap and the World Map could be on different stratas when we switch their parents.
+------------------------------------------------------------------------
+r71 | xinhuan | 2008-02-20 09:33:26 +0000 (Wed, 20 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+
+HandyNotes: Set the frame level if our icons too, since reusing them between the world map and minimap changes them arbitrarily when re-parenting them.
+------------------------------------------------------------------------
+r66 | xinhuan | 2008-02-20 08:04:37 +0000 (Wed, 20 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+
+HandyNotes: Should no longer display notes from every zone of the same continent while in an instance on the minimap.
+------------------------------------------------------------------------
+r65 | xinhuan | 2008-02-20 06:50:49 +0000 (Wed, 20 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/Libs
+
+HandyNotes: Change externals to branches/Ace3/RC1 instead of trunk/Ace3, as we need some of the latest branch changes or it errors.
+------------------------------------------------------------------------
+r64 | xinhuan | 2008-02-19 21:09:34 +0000 (Tue, 19 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+
+HandyNotes: Add Astrolabe callback function to show/hide notes on minimap edge. Remove OnClick handler for minimap notes.
+------------------------------------------------------------------------
+r63 | xinhuan | 2008-02-19 19:22:55 +0000 (Tue, 19 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/Libs
+
+HandyNotes: Initial minimap stuff (needs optimizing). Also update Astrolabe external to the copy on the branches.
+------------------------------------------------------------------------
+r62 | xinhuan | 2008-02-19 04:45:29 +0000 (Tue, 19 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/Libs
+
+HandyNotes: Add AceHook to externals
+------------------------------------------------------------------------
+r61 | xinhuan | 2008-02-17 19:56:32 +0000 (Sun, 17 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+
+HandyNotes: Continent iterator now iterates over the continent itself as well as all its subzones.
+------------------------------------------------------------------------
+r59 | xinhuan | 2008-02-17 19:42:24 +0000 (Sun, 17 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+
+HandyNotes: You can now move notes by dragging. Slight API change to allow note dragging -- plugins supply code to do updates.
+------------------------------------------------------------------------
+r58 | xinhuan | 2008-02-17 17:40:37 +0000 (Sun, 17 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+
+HandyNotes: Hide the edit frame if we delete the same note we are editing.
+------------------------------------------------------------------------
+r57 | xinhuan | 2008-02-17 06:06:47 +0000 (Sun, 17 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+
+HandyNotes: Add ability to edit and delete notes.
+------------------------------------------------------------------------
+r56 | xinhuan | 2008-02-16 19:33:50 +0000 (Sat, 16 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_EditFrame.lua
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+
+HandyNotes: You can create notes now.
+------------------------------------------------------------------------
+r54 | xinhuan | 2008-02-16 10:29:15 +0000 (Sat, 16 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_EditFrame.lua
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+
+HandyNotes: Complete the note editing frame creation code
+------------------------------------------------------------------------
+r52 | xinhuan | 2008-02-15 21:45:07 +0000 (Fri, 15 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.toc
+   A /tmp/branches/HandyNotes/Ace3/HandyNotes_EditFrame.lua
+
+HandyNotes: Add partially completed edit frame. Change internal coordinate format slightly.
+------------------------------------------------------------------------
+r51 | xinhuan | 2008-02-15 13:49:25 +0000 (Fri, 15 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+
+HandyNotes: Internal code rearrangement for safecalling and faster updates
+------------------------------------------------------------------------
+r50 | xinhuan | 2008-02-15 13:00:24 +0000 (Fri, 15 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+
+HandyNotes: Bugfix
+------------------------------------------------------------------------
+r46 | xinhuan | 2008-02-15 12:25:58 +0000 (Fri, 15 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+
+HandyNotes: Collapse API.
+------------------------------------------------------------------------
+r45 | xinhuan | 2008-02-15 07:15:28 +0000 (Fri, 15 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.toc
+   A /tmp/branches/HandyNotes/Ace3/HandyNotes_HandyNotes.lua
+
+HandyNotes: Convert files to UTF8, add a HandyNotes core stub plugin, update icon code.
+------------------------------------------------------------------------
+r40 | xinhuan | 2008-02-14 05:30:43 +0000 (Thu, 14 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+
+HandyNotes: Change OnClick function callback argument ordering
+------------------------------------------------------------------------
+r38 | kagaro | 2008-02-14 00:50:38 +0000 (Thu, 14 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+
+HandyNotes: added button to OnClick callback
+------------------------------------------------------------------------
+r26 | xinhuan | 2008-02-13 19:29:13 +0000 (Wed, 13 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+
+HandyNotes: Add some comments, reduce default icon size
+------------------------------------------------------------------------
+r22 | kagaro | 2008-02-13 19:09:16 +0000 (Wed, 13 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+
+HandyNotes: added 2 functions for plugins to call to keep a consistent coordinate generation
+------------------------------------------------------------------------
+r21 | xinhuan | 2008-02-13 19:03:46 +0000 (Wed, 13 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+
+HandyNotes: Update for continent level nodes.
+------------------------------------------------------------------------
+r20 | xinhuan | 2008-02-13 17:22:25 +0000 (Wed, 13 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+
+HandyNotes: Update code to working status.
+------------------------------------------------------------------------
+r18 | xinhuan | 2008-02-13 14:32:03 +0000 (Wed, 13 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/branches/HandyNotes/Ace3
+   M /tmp/branches/HandyNotes/Ace3/Libs
+
+HandyNotes: Setup folder properties and externals.
+------------------------------------------------------------------------
+r17 | xinhuan | 2008-02-13 14:27:59 +0000 (Wed, 13 Feb 2008) | 1 line
+Changed paths:
+   A /tmp/branches/HandyNotes/Ace3
+   A /tmp/branches/HandyNotes/Ace3/HandyNotes.lua
+   A /tmp/branches/HandyNotes/Ace3/HandyNotes.toc
+   A /tmp/branches/HandyNotes/Ace3/Libs
+   A /tmp/branches/HandyNotes/Ace3/Locales
+   A /tmp/branches/HandyNotes/Ace3/Locales/Locale-deDE.lua
+   A /tmp/branches/HandyNotes/Ace3/Locales/Locale-enUS.lua
+   A /tmp/branches/HandyNotes/Ace3/Locales/Locale-esES.lua
+   A /tmp/branches/HandyNotes/Ace3/Locales/Locale-frFR.lua
+   A /tmp/branches/HandyNotes/Ace3/Locales/Locale-koKR.lua
+   A /tmp/branches/HandyNotes/Ace3/Locales/Locale-ruRU.lua
+   A /tmp/branches/HandyNotes/Ace3/Locales/Locale-zhCN.lua
+   A /tmp/branches/HandyNotes/Ace3/Locales/Locale-zhTW.lua
+   A /tmp/branches/HandyNotes/Ace3/Locales.xml
+   A /tmp/branches/HandyNotes/Ace3/embeds.xml
+
+HandyNotes: Drycode import of core stub functions
+------------------------------------------------------------------------

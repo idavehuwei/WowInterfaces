@@ -1,0 +1,41 @@
+## Interface: 30100
+## Title: QuestInfo
+## Title-zhCN: 任务查询
+## Title-zhTW: 任务查询
+## Notes: Quest library for mob location and other information
+## Notes-zhCN: 提供任务资料库
+## Notes-zhTW: 提供任務資料庫功能
+## Author: lahow (aka purple@bahamut)
+## SavedVariables: DuowanAddon_Cartographer_QuestInfoDB
+## X-Category: Map
+## X-eMail: lahow DOT studio AT gmail DOT com
+## X-Embeds: LibQuixote-2.0, LibGratuity-3.0
+## X-Name: QuestInfo
+## X-Name-zhTW: 任務資訊
+## X-Name-zhCN: 任务资料
+## X-ModuleName: QuestInfo
+## X-DuowanAddon: 地图
+## Dependencies: !!Corelibs
+
+embeds.xml
+
+Data\Quest.lua
+Data\NPC.lua
+Data\Zone.lua
+Data\Name-zhTW.lua
+Data\Name-zhCN.lua
+
+Locale\Locale-enUS.lua
+Locale\Locale-zhTW.lua
+Locale\Locale-zhCN.lua
+
+Core.lua
+Notes.lua
+Map.lua
+LocationFrame.lua
+SeriesFrame.lua
+QuestFuPatch.lua
+QuestLogPatch.lua
+QuestPOI.xml
+Buttons.xml
+#WatchButton.lua
