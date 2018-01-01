@@ -163,8 +163,6 @@ function CQI:OnEnable()
 
 	self:AutoUpdateQuest()
 	self:ScanQuestsCompleted()
-
-	CQI_ToggleMinimapIcons(true)
 end
 
 function CQI:OnDisable()

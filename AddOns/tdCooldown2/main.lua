@@ -27,7 +27,7 @@ function tCD:GetDefault()
 	return {
 		ACTION = {
 			config = true, hidecooldown = false, long = false, shine = true, alpha = 0.8, size = 24,
-			scale = 4, style = 0, font = font, min = 2.99,
+			scale = 4, style = 2, font = font, min = 2.99,
 		},
 		BUFF = {
 			config = true, hidecooldown = false, max = 0, long = false, alpha = 0.8, size = 30,
