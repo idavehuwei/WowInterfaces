@@ -1,10 +1,10 @@
 DCTD_DEFAULT_CONFIG = {
 	["DCTD_ENABLE"] = 0,
-	["DCTD_CritScale"] = 0,
+	["DCTD_CritScale"] = 1,
 	["DCTD_AvgMulitHit"] = 0,
-	["DCTD_SSC_Number"] = 0,
-	["DCTD_SSC_SpellSchool"] = 0,
-	["DCTD_SSC_Spell"] = 0,
+	["DCTD_SSC_Number"] = 1,
+	["DCTD_SSC_SpellSchool"] = 1,
+	["DCTD_SSC_Spell"] = 1,
 	
 	["DCTD_SHOWHIT"] = {show = {"#am","#am {#bt}"},per = 0,frame = 7,color = {1,1,1},colorEx = {{1,1,0},{1,1,1}},},
 	["DCTD_SHOWHITCRIT"] = {show = {"#am","#am {#bt}"},per = 0,frame = 7,color = {1,1,1},colorEx = {{1,1,0},{1,1,1}},fEff = 2},
