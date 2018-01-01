@@ -63,7 +63,7 @@ if (IsConfigurableAddOn("CooldownHelper")) then
 		COOLDOWN_HELPER_COOLDOWN_COUNT,
 		nil,
 		"EnableCooldownCount",
-		1,
+		0,
 		function (arg)
 			if (arg == 1) then
 				if (BigFoot_LoadAddOn("CooldownHelper")) then

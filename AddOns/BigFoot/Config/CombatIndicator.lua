@@ -45,7 +45,7 @@ if (IsConfigurableAddOn("CombatIndicator")) then
 		COMBAT_INDICATOR_ENABLE_TEXT,
 		nil,
 		"EnableCombatIndicator",
-		1,
+		0,
 		function (arg)
 			if (arg == 1) then
 				if (not BigFoot_IsAddOnLoaded("CombatIndicator")) then
