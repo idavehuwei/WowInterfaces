@@ -1,0 +1,34 @@
+## Interface: 30100
+## Title: TradeskillInfo UI
+## Title-zhCN: 商业技能信息库 设置 TradeskillInfoUI
+## Title-zhTW: 商業技能資訊庫 設置 TradeskillInfoUI
+## Author: wmrojer
+## Notes: Complete Tradeskill Info UI
+## Notes-zhCN: 商业技能资料库设置窗口 TradeskillInfoUI
+## Notes-zhTW: 商業技能資料庫設置窗口 TradeskillInfoUI
+## X-DuowanAddon: 商业物品
+## Version: 1.6.0
+## SavedVariables: DuowanAddon_TradeskillInfoUIDB
+## Dependencies: TradeskillInfo
+## OptionalDeps:
+## X-Category: Tradeskill
+## X-eMail: evenue.wow@gmail.com
+## X-Credits Evenue (updates), Fieroivan (updates)
+## LoadOnDemand: 1
+## X-Curse-Packaged-Version: r346
+## X-Curse-Project-Name: TradeskillInfo
+## X-Curse-Project-ID: tradeskill-info
+## X-Curse-Repository-ID: wow/tradeskill-info/mainline
+
+locale-enUS.lua
+locale-ruRU.lua
+locale-esES.lua
+locale-frFR.lua
+locale-zhCN.lua
+locale-zhTW.lua
+locale-koKR.lua
+locale-deDE.lua
+
+TradeskillInfoUI.lua
+TradeskillInfoUI.xml
+TradeskillInfoOptions.lua

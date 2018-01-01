@@ -162,6 +162,8 @@ function Mendeleev:OnInitialize()
 	--LibStub("AceConfig-3.0"):RegisterOptionsTable("Mendeleev-Sets", t)
 	--LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Mendeleev", "Mendeleev")
 	--LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Mendeleev-Sets", "Sets", "Mendeleev")
+	
+	Mendeleev_Toggle(true)
 end
 
 function Mendeleev:Open()
@@ -197,6 +199,12 @@ function Mendeleev:OnEnable()
 
 	self:RegisterEvent("TRADE_SKILL_SHOW", "ScanTradeSkill")
 	self:RegisterEvent("TRADE_SKILL_CLOSE", "ScanTradeSkill")
+	
+	Mendeleev_ShowItemLevel(true);
+	Mendeleev_ShowTradeskill(true);
+	Mendeleev_ShowItemCount(true);
+	Mendeleev_ShowStackSize(true);
+	Mendeleev_ShowUsedInTree(true);
 end
 
 -- function Mendeleev:OnDisable()
