@@ -39,6 +39,8 @@ function EventAlert_OnLoad(self)
     EA_TempBuffsTable = { };
     EA_PreLoadAlts = { };
     EA_PreLoadComplete = 0;
+	
+	EventAlert_Toggle(true);
 end
 
 function EventAlert_OnEvent(self, event, arg1, arg2)

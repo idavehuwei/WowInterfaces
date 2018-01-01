@@ -10,7 +10,6 @@
 ## SavedVariables: EA_Config, EA_Position, EA_Items, EA_AltItems
 ## X-DuowanAddon: 战斗
 ## Dependencies: !!Corelibs
-## LoadOnDemand: 1
 
 localization\embed.xml
 EventAlert.xml
