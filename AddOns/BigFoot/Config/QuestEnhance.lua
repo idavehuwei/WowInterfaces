@@ -3,9 +3,6 @@ if (GetLocale() == "zhCN") then
 	MOD_QUEST_ENHANCEMENT_TITLE = {"任务增强", "renwuzengqiang"};
 	BF_ENABLE_BEQL = "开启增强任务日志(bEQL)";
 	BF_DISABLE_BEQL_TIP = "|cff00c0c0<任务增强>|r 你已经关闭增强任务日子(bEQL)模块，该设置将在下次插件载入时生效。";
-	QUEST_INFO_ENABLE				= "开启任务查询";
-	QUEST_INFO_AUTOUPDATE			= "自动更新任务标记";
-	QUEST_INFO_MINIMAP_ICONS		= "显示小地图任务标记";
 elseif (GetLocale() == "zhTW") then
 	MOD_QUEST_ENHANCEMENT_TITLE = {"任務增強", "renwuzengqiang"};
 	BF_ENABLE_BEQL = "開啟增強任務日誌(bEQL)";
