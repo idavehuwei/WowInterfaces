@@ -1,4 +1,4 @@
-## Interface: 30100
+﻿## Interface: 30100
 ## Title: QuestInfo
 ## Title-zhCN: 任务查询
 ## Title-zhTW: 任务查询
@@ -16,8 +16,6 @@
 ## X-ModuleName: QuestInfo
 ## X-DuowanAddon: 地图
 ## Dependencies: !!Corelibs
-
-embeds.xml
 
 Data\Quest.lua
 Data\NPC.lua

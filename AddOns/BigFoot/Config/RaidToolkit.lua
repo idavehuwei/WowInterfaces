@@ -73,7 +73,7 @@ if (IsConfigurableAddOn("Recount")) then
 		RECOUNT_ENABLE_TEXT,
 		nil,
 		"EnableRecount",
-		1,
+		0,
 		function (arg)
 			if (arg == 1) then
 				if (not BigFoot_IsAddOnLoaded("Recount")) then
