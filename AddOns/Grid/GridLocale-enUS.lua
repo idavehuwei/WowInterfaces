@@ -57,6 +57,8 @@ local strings_enUS = {
 	["Adjust the height of each unit's frame."] = true,
 	["Frame Texture"] = true,
 	["Adjust the texture of each unit's frame."] = true,
+	["Border Size"] = true,
+	["Adjust the size of the border indicators."] = true,
 	["Corner Size"] = true,
 	["Adjust the size of the corner indicators."] = true,
 	["Enable Mouseover Highlight"] = true,
@@ -75,6 +77,10 @@ local strings_enUS = {
 	["Adjust the size of the center icon."] = true,
 	["Icon Border Size"] = true,
 	["Adjust the size of the center icon's border."] = true,
+	["Icon X offset"] = true,
+	["Adjust the offset of the X-axis for center icon."] = true,
+	["Icon Y offset"] = true,
+	["Adjust the offset of the Y-axis for center icon."] = true,
 	["Icon Stack Text"] = true,
 	["Toggle center icon's stack count text."] = true,
 	["Icon Cooldown Frame"] = true,
@@ -203,6 +209,8 @@ local strings_enUS = {
 	--{{{ GridStatus
 	["Status"] = true,
 	["Options for %s."] = true,
+	["Reset class colors"] = true,
+	["Reset class colors to defaults."] = true,
 
 	-- module prototype
 	["Status: %s"] = true,

@@ -1,0 +1,18 @@
+﻿## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 Grid|r 小巧的轻量级模块化队伍框架。
+## Title: GridCooldownText
+## Notes: Displays the remaining time on grid icon's cooldown animation.
+## Dependencies: Grid
+## Author: Whitetooth
+## X-eMail: hotdogee [at] gmail [dot] com
+## X-Credits: CooldownTimerText
+## X-Category: UnitFrame
+
+GridCooldownText-enUS.lua
+GridCooldownText-deDE.lua
+GridCooldownText-koKR.lua
+GridCooldownText-zhTW.lua
+GridCooldownText-zhCN.lua
+
+GridCooldownText.lua

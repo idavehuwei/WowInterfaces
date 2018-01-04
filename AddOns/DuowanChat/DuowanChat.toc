@@ -8,7 +8,7 @@
 ## Author: Terry, dugu@bigfoot
 ## Version: 0.1
 ## X-DuowanAddon: 界面聊天
-## Dependencies: !!Corelibs
+## Dependencies: !!UserDefaultSettings
 ## SavedVariables: DuowanChatDB
 
 locale\locale.en.lua

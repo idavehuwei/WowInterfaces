@@ -1,0 +1,15 @@
+## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 Grid|r [Grid] 在 Grid 添加团队减益状态提示。。
+## Title: GridStatusTwins
+## Notes: Adds a stack count for Eredar Twins Flame Touch or Dark Touch in Grid Raidframe
+## Author: James@藏宝海湾
+## Version: 0.1
+## Grid Author: Pastamancer & Maia
+## Dependencies: Grid
+## X-Category: Raid
+## X-AceForum: 12464
+## X-GridStatusModule: GridStatusTwins
+
+
+GridStatusTwins.lua

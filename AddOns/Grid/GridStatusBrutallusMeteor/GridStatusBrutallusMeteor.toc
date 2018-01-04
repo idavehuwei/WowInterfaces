@@ -1,0 +1,15 @@
+## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 Grid|r [Grid] 在 Grid 框体内设置法力条。。
+## Title: GridStatusBrutallusMeteor
+## Notes: Adds a stack count for Brutallus Meteor Slash in Grid Raidframe
+## Author: James@回音山
+## Version: 0.1
+## Grid Author: Pastamancer & Maia
+## Dependencies: Grid
+## X-Category: Raid
+## X-AceForum: 12464
+## X-GridStatusModule: GridStatusBrutallusMeteor
+
+
+GridStatusBrutallusMeteor.lua

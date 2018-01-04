@@ -11,7 +11,8 @@ AtlasLoot_FilterEnableButton()
 AtlasLoote_CreateFilterOptions()
 
 ]]
-local BabbleInventory = AtlasLoot_GetLocaleLibBabble("LibBabble-Inventory-3.0")
+
+local BabbleInventory = LibStub("LibBabble-Inventory-3.0"):GetLookupTable();
 local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
 
 local OptionsLoadet = false
@@ -21,13 +22,11 @@ AtlasLootFilterDB = {};
 local FilterTableNames = {
 	["Armor"] = AL["Armor:"],
 	["WeaponsMeele"] = AL["Melee weapons:"],
-	["WeaponsMeeleTwoHand"] = BabbleInventory["Two-Hand"]..":",--.." "..AL["Melee weapons:"],
 	["WeaponsRanged"] = AL["Ranged weapons:"],
 	["Relics"] = AL["Relics:"],
 	["Other"] = AL["Other:"],
 }
 
-local FilterSort = {"Armor","WeaponsMeele","WeaponsMeeleTwoHand","WeaponsRanged","Relics","Other"}
 local FilterTable = {
 	["Armor"] = {
 		"Cloth",		--1
@@ -37,29 +36,24 @@ local FilterTable = {
 		},
 		
 	["WeaponsMeele"] = {
-		"Held in Off-Hand",	--1
-		"Dagger",			--2
-		"Mace",				--3
-		"Staff",			--4		
-		"Axe",				--5
-		"Polearm",			--6
-		"Shield",			--7
-		"Sword",			--8
-		"Fist Weapon",		--9
-		},
-		
-	["WeaponsMeeleTwoHand"] = {
-		"Mace",				--1
-		"Axe",				--2
-		"Sword",			--3	
+		"Two-Hand",			--1
+		"Held in Off-Hand",	--2
+		"Dagger",			--3
+		"Mace",				--4
+		"Staff",			--5		
+		"Axe",				--6
+		"Polearm",			--7
+		"Shield",			--8
+		"Sword",			--9
+		"Fist Weapon",		--10
 		},
 		
 	["WeaponsRanged"] = {
-		"Wand",			--1
-		"Bow",			--2
-		"Crossbow",		--3
-		"Gun",			--4
-		"Thrown",		--5
+		"Wand",			--5
+		"Bow",			--7
+		"Crossbow",		--8
+		"Gun",			--9
+		"Thrown",		--13
 		},
 		
 	["Relics"] = {
@@ -78,16 +72,16 @@ local FilterTable = {
 }
 
 local ClassHides = {
-	["DRUID"] = {["Armor"] = {true,true,false,false},["WeaponsMeele"] = {true,true,true,true,false,true,false,false,false},["WeaponsMeeleTwoHand"] = {true,false,false},["WeaponsRanged"] = {false,false,false,false,false},["Relics"] = {true,false,false,false},["Other"] = {true,true,true,true}},
-	["MAGE"] = {["Armor"] = {true,false,false,false},["WeaponsMeele"] = {true,true,false,true,false,false,false,true,false},["WeaponsMeeleTwoHand"] = {false,false,false},["WeaponsRanged"] = {true,false,false,false,false},["Relics"] = {false,false,false,false},["Other"] = {true,true,true,true}},
-	["PALADIN"] = {["Armor"] = {true,true,true,true},["WeaponsMeele"] = {true,false,true,false,true,true,true,true,false},["WeaponsMeeleTwoHand"] = {true,false,true},["WeaponsRanged"] = {false,false,false,false,false},["Relics"] = {false,false,true,false},["Other"] = {true,true,true,true}},
-	["PRIEST"] = {["Armor"] = {true,false,false,false},["WeaponsMeele"] = {true,true,true,true,false,false,false,false,false},["WeaponsMeeleTwoHand"] = {false,false,false},["WeaponsRanged"] = {true,false,false,false,false},["Relics"] = {false,false,false,false},["Other"] = {true,true,true,true}},
-	["ROGUE"] = {["Armor"] = {true,true,false,false},["WeaponsMeele"] = {true,true,true,false,true,false,false,true,true},["WeaponsMeeleTwoHand"] = {false,false,false},["WeaponsRanged"] = {false,true,true,true,true},["Relics"] = {false,false,false,false},["Other"] = {true,true,true,true}},
-	["HUNTER"] = {["Armor"] = {false,true,true,false},["WeaponsMeele"] = {false,true,false,true,true,true,false,true,true},["WeaponsMeeleTwoHand"] = {false,true,true},["WeaponsRanged"] = {false,true,true,true,false},["Relics"] = {false,false,false,false},["Other"] = {true,true,true,true}},
-	["SHAMAN"] = {["Armor"] = {true,true,true,false},["WeaponsMeele"] = {true,true,true,true,true,false,true,false,true},["WeaponsMeeleTwoHand"] = {true,true,false},["WeaponsRanged"] = {false,false,false,false,false},["Relics"] = {false,true,false,false},["Other"] = {true,true,true,true}},
-	["WARLOCK"] = {["Armor"] = {true,false,false,false},["WeaponsMeele"] = {true,true,false,true,false,false,false,true,false},["WeaponsMeeleTwoHand"] = {false,false,false},["WeaponsRanged"] = {true,false,false,false,false},["Relics"] = {false,false,false,false},["Other"] = {true,true,true,true}},
-	["WARRIOR"] = {["Armor"] = {true,true,true,true},["WeaponsMeele"] = {true,true,true,true,true,true,true,true,true},["WeaponsMeeleTwoHand"] = {true,true,true},["WeaponsRanged"] = {false,true,true,true,true},["Relics"] = {false,false,false,false},["Other"] = {true,true,true,true}},
-	["DEATHKNIGHT"] = {["Armor"] = {true,true,true,true},["WeaponsMeele"] = {true,false,true,false,true,true,false,true,false},["WeaponsMeeleTwoHand"] = {true,false,true},["WeaponsRanged"] = {false,false,false,false,false},["Relics"] = {false,false,false,true},["Other"] = {true,true,true,true}}
+	["DRUID"] = {["Armor"] = {true,true,false,false},["WeaponsMeele"] = {true,true,true,true,true,false,false,false,false,false},["WeaponsRanged"] = {false,false,false,false,false},["Relics"] = {true,false,false,false},["Other"] = {true,true,true,true}},
+	["MAGE"] = {["Armor"] = {true,false,false,false},["WeaponsMeele"] = {false,true,true,false,true,false,false,false,true,false},["WeaponsRanged"] = {true,false,false,false,false},["Relics"] = {false,false,false,false},["Other"] = {true,true,true,true}},
+	["PALADIN"] = {["Armor"] = {true,true,true,true},["WeaponsMeele"] = {true,true,false,true,false,true,true,true,true,false},["WeaponsRanged"] = {false,false,false,false,false},["Relics"] = {false,false,true,false},["Other"] = {true,true,true,true}},
+	["PRIEST"] = {["Armor"] = {true,false,false,false},["WeaponsMeele"] = {false,true,true,true,true,false,false,false,false,false},["WeaponsRanged"] = {true,false,false,false,false},["Relics"] = {false,false,false,false},["Other"] = {true,true,true,true}},
+	["ROGUE"] = {["Armor"] = {true,true,false,false},["WeaponsMeele"] = {false,true,true,true,false,false,false,false,true,true},["WeaponsRanged"] = {false,true,true,true,true},["Relics"] = {false,false,false,false},["Other"] = {true,true,true,true}},
+	["HUNTER"] = {["Armor"] = {true,true,true,false},["WeaponsMeele"] = {true,true,true,false,true,true,true,false,true,true},["WeaponsRanged"] = {false,true,true,true,true},["Relics"] = {false,false,false,false},["Other"] = {true,true,true,true}},
+	["SHAMAN"] = {["Armor"] = {true,true,true,false},["WeaponsMeele"] = {true,true,true,true,true,true,false,true,false,true},["WeaponsRanged"] = {false,false,false,false,false},["Relics"] = {false,true,false,false},["Other"] = {true,true,true,true}},
+	["WARLOCK"] = {["Armor"] = {true,false,false,false},["WeaponsMeele"] = {false,true,true,false,true,false,false,false,true,false},["WeaponsRanged"] = {true,false,false,false,false},["Relics"] = {false,false,false,false},["Other"] = {true,true,true,true}},
+	["WARRIOR"] = {["Armor"] = {true,true,true,true},["WeaponsMeele"] = {true,true,true,true,true,true,true,true,true,true},["WeaponsRanged"] = {false,true,true,true,true},["Relics"] = {false,false,false,false},["Other"] = {true,true,true,true}},
+	["DEATHKNIGHT"] = {["Armor"] = {true,true,true,true},["WeaponsMeele"] = {true,true,false,true,false,true,true,true,true,false},["WeaponsRanged"] = {false,false,false,false,false},["Relics"] = {false,false,false,true},["Other"] = {true,true,true,true}}
 }
 
 -- **********************************************************************
@@ -98,13 +92,9 @@ local ClassHides = {
 
 AtlasLoot_Data["FilterList"] = {
 };
-
-function AtlasLoot_Testabc()
-		print(BabbleInventory["Two-Hand"])
-end	
 	
-	
-function AtlasLoot_HideNoUsableItems()
+function AtlasLoot_HideNoUsableItems()	
+	local _,playerClass = UnitClass("player")
 	local dataID = AtlasLootItemsFrame.refreshOri[1] 
 	local dataSource = AtlasLootItemsFrame.refreshOri[2] 
 	local boss = AtlasLootItemsFrame.refreshOri[3] 
@@ -114,8 +104,6 @@ function AtlasLoot_HideNoUsableItems()
 	local itemCount = 0
 	local countAll = 1
 	local count = 0
-	local leatherworking = GetSpellInfo(2108)
-
 	AtlasLoot_Data["FilterList"] = {}
 	for i=1,30 do
 		local info = getglobal("AtlasLootItem_"..i.."_Extra"):GetText()
@@ -128,60 +116,39 @@ function AtlasLoot_HideNoUsableItems()
 			local xitemID = getglobal("AtlasLootItem_"..i).itemID
 			local xspellitemID = getglobal("AtlasLootItem_"..i).spellitemID
 			local xitemTexture = tablebase[itemCount][3]
-			local xitemExtraText = AtlasLoot_FixText(tablebase[itemCount][5])
-			local xitemExtraTextSave = xitemExtraText
-			-- remove the "-"
-			xitemExtraText = gsub(xitemExtraText, "-", "") 
+			local xitemExtraText = getglobal("AtlasLootItem_"..i.."_Extra"):GetText()
 			local xitemNameText = getglobal("AtlasLootItem_"..i.."_Name"):GetText()
 			
 			if xitemExtraText and xitemExtraText ~= "" then
-				for k = 1,#FilterSort do
-					k = FilterSort[k]
-					if type(FilterTable[k]) == "table" then
+				for k,v in pairs(FilterTable) do
+					if type(v) == "table" then
 						for i,j in pairs(FilterTable[k]) do
-							local Slotname = ""
-							-- Bugfix with Sigils
-							if j == "Sigils" then
-								Slotname = AL["Sigil"]
-							else
-								Slotname = BabbleInventory[j]
-							end
-
-							if (k ~= "WeaponsMeeleTwoHand" and not strfind(xitemExtraText, BabbleInventory["Two-Hand"]) and strfind(xitemExtraText, Slotname) and AtlasLootFilterDB[k][j] == false) then
+							if strfind(xitemExtraText, BabbleInventory[j]) and AtlasLootFilterDB[k][j] == false then
 								xgo = false
 								-- German fix
 								if j == "Shield" and not strfind(xitemExtraText, BabbleInventory["Held in Off-Hand"]) and not strfind(xitemExtraText, BabbleInventory["Off Hand"]) then
 									xgo = false
-								elseif j == "Shield" and strfind(xitemExtraText, BabbleInventory["Held in Off-Hand"]) and AtlasLootFilterDB["WeaponsMeele"]["Held in Off-Hand"] == true then
+								elseif j == "Shield" and strfind(xitemExtraText, BabbleInventory["Held in Off-Hand"]) or j == "Shield" and strfind(xitemExtraText, BabbleInventory["Off Hand"]) then
 									xgo = true
 								end
-							elseif k == "WeaponsMeeleTwoHand" and strfind(xitemExtraText, BabbleInventory["Two-Hand"]) and strfind(xitemExtraText, Slotname) and AtlasLootFilterDB[k][j] == false then
-								xgo = false
-							-- Fix bug with Leatherworking Patterns
-							elseif strfind(xitemExtraText, leatherworking) then
-								xgo = true
 							end
 						end
 					end
 				end
 			end
 			
-			-- Sort the items
 			if xgo == true then
 				if i==16 and countOld > 0 then
-					AtlasLoot_Data["FilterList"][16] = { 16, xitemID, xitemTexture, xitemNameText, xitemExtraTextSave}	
+					AtlasLoot_Data["FilterList"][16] = { 16, xitemID, xitemTexture, xitemNameText, xitemExtraText}	
 					countAll = 16
 				elseif i==16 and xitemExtraText and strfind(xitemExtraText, AL["Token"]) then
-					AtlasLoot_Data["FilterList"][16] = { 16, xitemID, xitemTexture, xitemNameText, xitemExtraTextSave}	
+					AtlasLoot_Data["FilterList"][16] = { 16, xitemID, xitemTexture, xitemNameText, xitemExtraText}	
 					countAll = 16
 				elseif countAll < 16 and xitemNameText and strfind(xitemNameText, AL["Hard Mode"]) then
-					AtlasLoot_Data["FilterList"][16] = { 16, xitemID, xitemTexture, xitemNameText, xitemExtraTextSave}	
-					countAll = 16
-				elseif i==16 and xitemTexture == "INV_Box_01" then
-					AtlasLoot_Data["FilterList"][16] = { 16, xitemID, xitemTexture, xitemNameText, xitemExtraTextSave}	
-					countAll = 16
+					AtlasLoot_Data["FilterList"][16] = { 16, xitemID, xitemTexture, xitemNameText, xitemExtraText}	
+					countAll = 16					
 				else
-					AtlasLoot_Data["FilterList"][countAll] = { countAll, xitemID, xitemTexture, xitemNameText, xitemExtraTextSave}					
+					AtlasLoot_Data["FilterList"][countAll] = { countAll, xitemID, xitemTexture, xitemNameText, xitemExtraText}					
 				end
 				
 				if tablebase[itemCount][6] and countAll==16 then
@@ -208,7 +175,6 @@ function AtlasLoot_HideNoUsableItems()
 		end		
 	end
 
-	-- Set the Next, Prev and Back button.
 	if tablebase.Next then
 		AtlasLoot_Data["FilterList"].Next = tablebase.Next
 	end
@@ -246,7 +212,7 @@ local lastframewidht,lastframeheight = 0,0
 
 local function CreateCheckButton(parrent, text, num)
 	local framewidht = InterfaceOptionsFramePanelContainer:GetWidth()
-	local Check = CreateFrame("CheckButton", "AtlasLootOptionsCheck"..text..num, parrent, "OptionsCheckButtonTemplate")
+	local Check = CreateFrame("CheckButton", "AtlasLootOptionsCheck"..text, parrent, "OptionsCheckButtonTemplate")
 		Check:SetPoint("LEFT", parrent, "TOPLEFT", xpos, ypos)
 		Check:SetWidth(25)
 		Check:SetHeight(25)
@@ -379,7 +345,6 @@ function AtlasLoot_CreateFilterOptions()
 	
 	CreateCat(scc, "Armor")
 	CreateCat(scc, "WeaponsMeele")
-	CreateCat(scc, "WeaponsMeeleTwoHand")
 	CreateCat(scc, "WeaponsRanged")
 	CreateCat(scc, "Relics")
 	CreateCat(scc, "Other")
@@ -387,3 +352,12 @@ function AtlasLoot_CreateFilterOptions()
 	InterfaceOptions_AddCategory(FilterOptionsFrame)
 	OptionsLoadet = true
 end
+
+
+
+
+
+
+
+
+

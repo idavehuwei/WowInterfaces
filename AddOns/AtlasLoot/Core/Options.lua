@@ -280,32 +280,6 @@ function AtlasLoot_CraftingLink_OnClick()
     local thisID = this:GetID();
 	UIDropDownMenu_SetSelectedID(AtlasLoot_CraftingLink, thisID);
     AtlasLoot.db.profile.CraftingLink = thisID;
-    if AtlasLootItemsFrame:IsVisible() and AtlasLootItemsFrame.refresh then
-        AtlasLoot_ShowItemsFrame(AtlasLootItemsFrame.refresh[1], AtlasLootItemsFrame.refresh[2], AtlasLootItemsFrame.refresh[3], AtlasLootItemsFrame.refresh[4]);
-    end
+    AtlasLoot_ShowItemsFrame(AtlasLootItemsFrame.refresh[1], AtlasLootItemsFrame.refresh[2], AtlasLootItemsFrame.refresh[3], AtlasLootItemsFrame.refresh[4]);
     AtlasLoot_OptionsOnShow();
 end
-
-local Authors = {
-	["Calî"] = "Arthas",
-	["Lâg"] = "Arthas",
-	--["Daviesh"] = "Thaurissan",
-	["Hegarol"] = "Dun Morogh",
-	
-}
-
-function AtlasLoot_UnitTarget()
-	local name = GameTooltip:GetUnit()
-	if UnitName("mouseover") == name then 
-		local _, realm = UnitName("mouseover")
-		if not realm then 
-			realm = GetRealmName()
-		end; 
-		if name and Authors[name] then
-			if Authors[name] == realm then
-				GameTooltip:AddLine("AtlasLoot Author |TInterface\\AddOns\\AtlasLoot\\Images\\gold:0|t", 0, 1, 0 )
-			end
-		end
-	end
-end
-GameTooltip:HookScript("OnTooltipSetUnit", AtlasLoot_UnitTarget)

@@ -1,0 +1,13 @@
+﻿## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 Grid|r [Grid] 在 Grid 框体内设置法力条。。
+## Title: GridStatusBanzai
+## Notes: The former GridStatusAggro in 2.4
+## Dependencies: Grid
+## OptionalDeps: Ace2
+## X-Curse-Packaged-Version: 1.0
+## X-Curse-Project-Name: GridStatusBanzai
+## X-Curse-Project-ID: gridstatusbanzai
+## X-Curse-Repository-ID: wow/gridstatusbanzai/mainline
+
+GridStatusBanzai.lua

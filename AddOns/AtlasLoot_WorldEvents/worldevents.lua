@@ -1,7 +1,5 @@
-﻿local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-local BabbleFaction = AtlasLoot_GetLocaleLibBabble("LibBabble-Faction-3.0")
-local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
-
+local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
+local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
 
 -- Index
 --- Permanent Events
@@ -9,7 +7,6 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 --- Seasonal Events
 ---- Brewfest
 ---- Children's Week
----- Day of the Dead
 ---- Feast of Winter Veil
 ---- Hallow's End
 ---- Harvest Festival
@@ -17,7 +14,6 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 ---- Lunar Festival
 ---- Midsummer Fire Festival
 ---- Noblegarden
----- Pilgrim's Bounty
 --- Reaccouring Events
 ---- Bash'ir Landing Skyguard Raid
 ---- Darkmoon Faire
@@ -55,41 +51,36 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 20, 45720, "", "=q2=Sen'jin Commendation Badge", "=ds=", "1 #champwrit#"};
 		{ 21, 45721, "", "=q2=Silvermoon Commendation Badge", "=ds=", "1 #champwrit#"};
 		Next = "ArgentTournament2";
-		Back = "ARGENTMENU";
+		Back = "WORLDEVENTMENU";
 	};
 
 	AtlasLoot_Data["ArgentTournament2"] = {
 		{ 1, 0, "INV_BannerPVP_02", "=q6=#m7#", ""};
-		{ 2, 45021, "", "=q1=Darnassus Banner", "=ds=#e14#", "15 #champseal#"};
-		{ 3, 45020, "", "=q1=Exodar Banner", "=ds=#e14#", "15 #champseal#"};
-		{ 4, 45019, "", "=q1=Gnomeregan Banner", "=ds=#e14#", "15 #champseal#"};
-		{ 5, 45018, "", "=q1=Ironforge Banner", "=ds=#e14#", "15 #champseal#"};
-		{ 6, 45011, "", "=q1=Stormwind Banner", "=ds=#e14#", "15 #champseal#"};
+		{ 2, 45021, "", "=q1=Darnassus Banner", "=ds=", "15 #champseal#"};
+		{ 3, 45020, "", "=q1=Exodar Banner", "=ds=", "15 #champseal#"};
+		{ 4, 45019, "", "=q1=Gnomeregan Banner", "=ds=", "15 #champseal#"};
+		{ 5, 45018, "", "=q1=Ironforge Banner", "=ds=", "15 #champseal#"};
+		{ 6, 45011, "", "=q1=Stormwind Banner", "=ds=", "15 #champseal#"};
 		{ 7, 45579, "", "=q1=Darnassus Tabard", "=ds=#s7#", "50 #champseal#"};
 		{ 8, 45580, "", "=q1=Exodar Tabard", "=ds=#s7#", "50 #champseal#"};
 		{ 9, 45578, "", "=q1=Gnomeregan Tabard", "=ds=#s7#", "50 #champseal#"};
 		{ 10, 45577, "", "=q1=Ironforge Tabard", "=ds=#s7#", "50 #champseal#"};
 		{ 11, 45574, "", "=q1=Stormwind Tabard", "=ds=#s7#", "50 #champseal#"};
-		{ 12, 46817, "", "=q1=Silver Covenant Tabard", "=ds=#s7#", "50 #champseal#"};
 		{ 15, 44990, "", "=q2=Champion's Seal", "=ds=#m17#"};
 		{ 16, 0, "INV_BannerPVP_01", "=q6=#m6#", ""};
-		{ 17, 45014, "", "=q1=Orgrimmar Banner", "=ds=#e14#", "15 #champseal#"};
-		{ 18, 45016, "", "=q1=Undercity Banner", "=ds=#e14#", "15 #champseal#"};
-		{ 19, 45013, "", "=q1=Thunder Bluff Banner", "=ds=#e14#", "15 #champseal#"};
-		{ 20, 45015, "", "=q1=Sen'jin Banner", "=ds=#e14#", "15 #champseal#"};
-		{ 21, 45017, "", "=q1=Silvermoon City Banner", "=ds=#e14#", "15 #champseal#"};
+		{ 17, 45014, "", "=q1=Orgrimmar Banner", "=ds=", "15 #champseal#"};
+		{ 18, 45016, "", "=q1=Undercity Banner", "=ds=", "15 #champseal#"};
+		{ 19, 45013, "", "=q1=Thunder Bluff Banner", "=ds=", "15 #champseal#"};
+		{ 20, 45015, "", "=q1=Sen'jin Banner", "=ds=", "15 #champseal#"};
+		{ 21, 45017, "", "=q1=Silvermoon City Banner", "=ds=", "15 #champseal#"};
 		{ 22, 45581, "", "=q1=Orgrimmar Tabard", "=ds=#s7#", "50 #champseal#"};
 		{ 23, 45583, "", "=q1=Undercity Tabard", "=ds=#s7#", "50 #champseal#"};
 		{ 24, 45584, "", "=q1=Thunder Bluff Tabard", "=ds=#s7#", "50 #champseal#"};
 		{ 25, 45582, "", "=q1=Sen'jin Tabard", "=ds=#s7#", "50 #champseal#"};
 		{ 26, 45585, "", "=q1=Silvermoon City Tabard", "=ds=#s7#", "50 #champseal#"};
-		{ 27, 46818, "", "=q1=Sunreaver Tabard", "=ds=#s7#", "50 #champseal#"};
-		{ 28, 0, "INV_Jewelry_Talisman_08", "=q6="..BabbleFaction["Argent Crusade"], "" };
-		{ 29, 46843, "", "=q1=Argent Crusade Banner", "=ds=#e14#", "15 #champseal#"};
-		{ 30, 46874, "", "=q2=Argent Crusader's Tabard", "=ds=#s7#", "50 #champseal#"};
 		Prev = "ArgentTournament1";
 		Next = "ArgentTournament3";
-		Back = "ARGENTMENU";
+		Back = "WORLDEVENTMENU";
 	};
 
 	AtlasLoot_Data["ArgentTournament3"] = {
@@ -124,57 +115,51 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 29, 45219, "", "=q3=Jouster's Fury", "=ds=#s14#", "10 #champseal#" };
 		Prev = "ArgentTournament2";
 		Next = "ArgentTournament4";
-		Back = "ARGENTMENU";
+		Back = "WORLDEVENTMENU";
 	};
 
 	AtlasLoot_Data["ArgentTournament4"] = {
 		{ 1, 0, "INV_BannerPVP_02", "=q6=#m7#", ""};
-		{ 2, 45078, "", "=q4=Dagger of Lunar Purity", "=ds=#h3#, #w4#", "25 #champseal#" };
-		{ 3, 45077, "", "=q4=Dagger of the Rising Moon", "=ds=#h1#, #w4#", "25 #champseal#" };
-		{ 4, 45129, "", "=q4=Gnomeregan Bonechopper", "=ds=#h3#, #w10#", "25 #champseal#" };
-		{ 5, 45074, "", "=q4=Claymore of the Prophet", "=ds=#h2#, #w10#", "25 #champseal#" };
-		{ 6, 45076, "", "=q4=Teldrassil Protector", "=ds=#h1#, #w1#", "25 #champseal#" };
-		{ 7, 45075, "", "=q4=Ironforge Smasher", "=ds=#h1#, #w6#", "25 #champseal#" };
-		{ 8, 45128, "", "=q4=Silvery Sylvan Stave", "=ds=#w9#", "25 #champseal#" };
-		{ 9, 45130, "", "=q4=Blunderbuss of Khaz Modan", "=ds=#w5#", "25 #champseal#" };
+		{ 2, 44984, "", "=q3=Ammen Vale Lashling", "=ds=#e13#", "40 #champseal#"};
+		{ 3, 44965, "", "=q3=Teldrassil Sproutling", "=ds=#e13#", "40 #champseal#"};
+		{ 4, 44970, "", "=q3=Dun Morogh Cub", "=ds=#e13#", "40 #champseal#"};
+		{ 5, 44974, "", "=q3=Elwynn Lamb", "=ds=#e13#", "40 #champseal#"};
+		{ 6, 45002, "", "=q3=Mechanopeep", "=ds=#e13#", "40 #champseal#"};
 		{ 15, 44990, "", "=q2=Champion's Seal", "=ds=#m17#"};
 		{ 16, 0, "INV_BannerPVP_01", "=q6=#m6#", ""};
-		{ 17, 45214, "", "=q4=Scalpel of the Royal Apothecary", "=ds=#h3#, #w4#", "25 #champseal#" };
-		{ 18, 45222, "", "=q4=Spinal Destroyer", "=ds=#h1#, #w4#", "25 #champseal#" };
-		{ 19, 45208, "", "=q4=Blade of the Keening Banshee", "=ds=#h3#, #w10#", "25 #champseal#" };
-		{ 20, 45205, "", "=q4=Greatsword of the Sin'dorei", "=ds=#h2#, #w10#", "25 #champseal#" };
-		{ 21, 45204, "", "=q4=Axe of the Sen'jin Protector", "=ds=#h1#, #w1#", "25 #champseal#" };
-		{ 22, 45203, "", "=q4=Grimhorn Crusher", "=ds=#h1#, #w6#", "25 #champseal#" };
-		{ 23, 45212, "", "=q4=Staff of Feral Furies", "=ds=#w9#", "25 #champseal#" };
-		{ 24, 45210, "", "=q4=Sen'jin Beakblade Longrifle", "=ds=#w5#", "25 #champseal#" };
+		{ 17, 44980, "", "=q3=Mulgore Hatchling", "=ds=#e13#", "40 #champseal#"};
+		{ 18, 45606, "", "=q3=Sen'jin Fetish", "=ds=#e13#", "40 #champseal#"};
+		{ 19, 44971, "", "=q3=Tirisfal Batling", "=ds=#e13#", "40 #champseal#"};
+		{ 20, 44973, "", "=q3=Durotar Scorpion", "=ds=#e13#", "40 #champseal#"};
+		{ 21, 44982, "", "=q3=Enchanted Broom", "=ds=#e13#", "40 #champseal#"};
 		Prev = "ArgentTournament3";
 		Next = "ArgentTournament5";
-		Back = "ARGENTMENU";
+		Back = "WORLDEVENTMENU";
 	};
 
 	AtlasLoot_Data["ArgentTournament5"] = {
 		{ 1, 0, "INV_BannerPVP_02", "=q6=#m7#", ""};
-		{ 2, 44998, "", "=q3=Argent Squire", "=ds=#m4#"};
-		{ 4, 44984, "", "=q3=Ammen Vale Lashling", "=ds=#e13#", "40 #champseal#"};
-		{ 5, 44965, "", "=q3=Teldrassil Sproutling", "=ds=#e13#", "40 #champseal#"};
-		{ 6, 44970, "", "=q3=Dun Morogh Cub", "=ds=#e13#", "40 #champseal#"};
-		{ 7, 44974, "", "=q3=Elwynn Lamb", "=ds=#e13#", "40 #champseal#"};
-		{ 8, 45002, "", "=q3=Mechanopeep", "=ds=#e13#", "40 #champseal#"};
-		{ 9, 46820, "", "=q3=Shimmering Wyrmling", "=ds=#e13#", "40 #champseal#"};
-		{ 11, 0, "INV_Jewelry_Talisman_08", "=q6="..BabbleFaction["Argent Crusade"], "" };
-		{ 12, 47541, "", "=q3=Argent Pony Bridle", "=ds=", "150 #champseal#"};
+		{ 2, 45078, "", "=q4=Dagger of Lunar Purity", "=ds=#h3# #w4#", "25 #champseal#" };
+		{ 3, 45129, "", "=q4=Gnomeregan Bonechopper", "=ds=#h3# #w10#", "25 #champseal#" };
+		{ 4, 45076, "", "=q4=Teldrassil Protector", "=ds=#h1# #w1#", "25 #champseal#" };
+		{ 5, 45077, "", "=q4=Dagger of the Rising Moon", "=ds=#h1# #w4#", "25 #champseal#" };
+		{ 6, 45075, "", "=q4=Ironforge Smasher", "=ds=#h1# #w6#", "25 #champseal#" };
+		{ 7, 45128, "", "=q4=Silvery Sylvan Stave", "=ds=#w9#", "25 #champseal#" };
+		{ 8, 45074, "", "=q4=Claymore of the Prophet", "=ds=#h2# #w10#", "25 #champseal#" };
+		{ 9, 45130, "", "=q4=Blunderbuss of Khaz Modan", "=ds=#w5#", "25 #champseal#" };
 		{ 15, 44990, "", "=q2=Champion's Seal", "=ds=#m17#"};
 		{ 16, 0, "INV_BannerPVP_01", "=q6=#m6#", ""};
-		{ 17, 45022, "", "=q3=Argent Gruntling", "=ds=#m4#"};
-		{ 19, 44980, "", "=q3=Mulgore Hatchling", "=ds=#e13#", "40 #champseal#"};
-		{ 20, 45606, "", "=q3=Sen'jin Fetish", "=ds=#e13#", "40 #champseal#"};
-		{ 21, 44971, "", "=q3=Tirisfal Batling", "=ds=#e13#", "40 #champseal#"};
-		{ 22, 44973, "", "=q3=Durotar Scorpion", "=ds=#e13#", "40 #champseal#"};
-		{ 23, 44982, "", "=q3=Enchanted Broom", "=ds=#e13#", "40 #champseal#"};
-		{ 24, 46821, "", "=q3=Shimmering Wyrmling", "=ds=#e13#", "40 #champseal#"};
+		{ 17, 45214, "", "=q4=Scalpel of the Royal Apothecary", "=ds=#h3# #w4#", "25 #champseal#" };
+		{ 18, 45208, "", "=q4=Blade of the Keening Banshee", "=ds=#h3# #w10#", "25 #champseal#" };
+		{ 19, 45204, "", "=q4=Axe of the Sen'jin Protector", "=ds=#h1# #w1#", "25 #champseal#" };
+		{ 20, 45222, "", "=q4=Spinal Destroyer", "=ds=#h1# #w4#", "25 #champseal#" };
+		{ 21, 45203, "", "=q4=Grimhorn Crusher", "=ds=#h1# #w6#", "25 #champseal#" };
+		{ 22, 45212, "", "=q4=Staff of Feral Furies", "=ds=#w9#", "25 #champseal#" };
+		{ 23, 45205, "", "=q4=Greatsword of the Sin'dorei", "=ds=#h2# #w10#", "25 #champseal#" };
+		{ 24, 45210, "", "=q4=Sen'jin Beakblade Longrifle", "=ds=#w5#", "25 #champseal#" };
 		Prev = "ArgentTournament4";
 		Next = "ArgentTournament6";
-		Back = "ARGENTMENU";
+		Back = "WORLDEVENTMENU";
 	};
 
 	AtlasLoot_Data["ArgentTournament6"] = {
@@ -189,6 +174,7 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 10, 46744, "", "=q4=Swift Moonsaber", "=ds=#e12#", "500 #gold# 5 #champseal#"};
 		{ 11, 46748, "", "=q4=Swift Violet Ram", "=ds=#e12#", "500 #gold# 5 #champseal#"};
 		{ 12, 46747, "", "=q4=Turbostrider", "=ds=#e12#", "500 #gold# 5 #champseal#"};
+		{ 14, 45725, "", "=q4=Argent Hippogryph", "=ds=#e12#", "150 #champseal#"};
 		{ 15, 44990, "", "=q2=Champion's Seal", "=ds=#m17#"};
 		{ 16, 0, "INV_BannerPVP_01", "=q6=#m6#", ""};
 		{ 17, 45593, "", "=q4=Darkspear Raptor", "=ds=#e12#", "100 #champseal#"};
@@ -202,54 +188,9 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 26, 46751, "", "=q4=Swift Red Hawkstrider", "=ds=#e12#", "500 #gold# 5 #champseal#"};
 		{ 27, 46746, "", "=q4=White Skeletal Warhorse", "=ds=#e12#", "500 #gold# 5 #champseal#"};
 		Prev = "ArgentTournament5";
-		Next = "ArgentTournament7";
-		Back = "ARGENTMENU";
+		Back = "WORLDEVENTMENU";
 	};
 
-	AtlasLoot_Data["ArgentTournament7"] = {
-		{ 1, 0, "inv_misc_tabardpvp_01", "=q6="..BabbleFaction["The Silver Covenant"], "=ec1=#m7#"};
-		{ 2, 46815, "", "=q4=Quel'dorei Steed", "=ds=#e12#", "100 #champseal#"};
-		{ 3, 46813, "", "=q4=Silver Covenant Hippogryph", "=ds=#e12#", "150 #champseal#"};
-		{ 5, 0, "INV_Jewelry_Talisman_08", "=q6="..BabbleFaction["Argent Crusade"], "" };
-		{ 6, 47179, "", "=q4=Argent Charger", "=ds=#e12#", "100 #champseal#"};
-		{ 7, 47180, "", "=q4=Argent Warhorse", "=ds=#e12#", "100 #champseal#"};
-		{ 8, 45725, "", "=q4=Argent Hippogryph", "=ds=#e12#", "150 #champseal#"};
-		{ 15, 44990, "", "=q2=Champion's Seal", "=ds=#m17#"};
-		{ 16, 0, "inv_misc_tabardpvp_02", "=q6="..BabbleFaction["The Sunreavers"], "=ec1=#m6#"};
-		{ 17, 46816, "", "=q4=Sunreaver Hawkstrider", "=ds=#e12#", "100 #champseal#"};
-		{ 18, 46814, "", "=q4=Sunreaver Dragonhawk", "=ds=#e12#", "150 #champseal#"};
-		Prev = "ArgentTournament6";
-		Next = "ArgentTournament8";
-		Back = "ARGENTMENU";
-	};
-
-	AtlasLoot_Data["ArgentTournament8"] = {
-		{ 1, 42985, "", "=q7=Tattered Dreadmist Mantle", "=ds=#s3#, #a1#",  "60 #champseal#"};
-		{ 2, 42984, "", "=q7=Preened Ironfeather Shoulders", "=ds=#s3#, #a2#", "60 #champseal#"};
-		{ 3, 42952, "", "=q7=Stained Shadowcraft Spaulders", "=ds=#s3#, #a2#", "60 #champseal#"};
-		{ 4, 42950, "", "=q7=Champion Herod's Shoulder", "=ds=#s3#, #a3#", "60 #champseal#"};
-		{ 5, 42951, "", "=q7=Mystical Pauldrons of Elements", "=ds=#s3#, #a3#", "60 #champseal#"};
-		{ 6, 42949, "", "=q7=Polished Spaulders of Valor", "=ds=#s3#, #a4#", "60 #champseal#"};
-		{ 8, 42992, "", "=q7=Discerning Eye of the Beast", "=ds=#s14#", "75 #champseal#"};
-		{ 9, 42991, "", "=q7=Swift Hand of Justice", "=ds=#s14#", "75 #champseal#"};
-		{ 11, 44990, "", "=q2=Champion's Seal", "=ds=#m17#"};
-		{ 16, 48691, "", "=q7=Tattered Dreadmist Robe", "=ds=#s5#, #a1#", "60 #champseal#"};
-		{ 17, 48687, "", "=q7=Preened Ironfeather Breastplate", "=ds=#s5#, #a2#", "60 #champseal#"};
-		{ 18, 48689, "", "=q7=Stained Shadowcraft Tunic", "=ds=#s5#, #a2#", "60 #champseal#"};
-		{ 19, 48677, "", "=q7=Champion's Deathdealer Breastplate", "=ds=#s5#, #a3#", "60 #champseal#"};
-		{ 20, 48683, "", "=q7=Mystical Vest of Elements", "=ds=#s5#, #a3#", "60 #champseal#"};
-		{ 21, 48685, "", "=q7=Polished Breastplate of Valor", "=ds=#s5#, #a4#", "60 #champseal#"};
-		{ 23, 42944, "", "=q7=Balanced Heartseeker", "=ds=#h1#, #w4#", "60 #champseal#"};
-		{ 24, 42945, "", "=q7=Venerable Dal'Rend's Sacred Charge", "=ds=#h3#, #w10#", "60 #champseal#"};
-		{ 25, 42943, "", "=q7=Bloodied Arcanite Reaper", "=ds=#h2#, #w1#", "95 #champseal#"};
-		{ 26, 42948, "", "=q7=Devout Aurastone Hammer", "=ds=#h3#, #w6#", "75 #champseal#"};
-		{ 27, 48716, "", "=q7=Venerable Mass of McGowan", "=ds=#h1#, #w6#", "75 #champseal#"};
-		{ 28, 48718, "", "=q7=Repurposed Lava Dredger", "=ds=#h2#, #w6#", "95 #champseal#"};
-		{ 29, 42947, "", "=q7=Dignified Headmaster's Charge", "=ds=#w9#", "95 #champseal#"};
-		{ 30, 42946, "", "=q7=Charmed Ancient Bone Bow", "=ds=#w2#", "95 #champseal#"};
-		Prev = "ArgentTournament7";
-		Back = "ARGENTMENU";
-	};
 
 	-----------------------
 	--- Seasonal Events ---
@@ -260,51 +201,38 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		----------------
 
 	AtlasLoot_Data["Brewfest1"] = {
-		{ 1, 33047, "", "=q1=Belbi's Eyesight Enhancing Romance Goggles", "=ds=#s1#, 100 #brewfest#"};
-		{ 2, 34008, "", "=q1=Blix's Eyesight Enhancing Romance Goggles", "=ds=#s1#, 100 #brewfest#"};
-		{ 3, 33968, "", "=q1=Blue Brewfest Hat", "=ds=#s1#, 50 #brewfest#"};
-		{ 4, 33864, "", "=q1=Brown Brewfest Hat", "=ds=#s1#, 50 #brewfest#"};
-		{ 5, 33967, "", "=q1=Green Brewfest Hat", "=ds=#s1#, 50 #brewfest#"};
-		{ 6, 33969, "", "=q1=Purple Brewfest Hat", "=ds=#s1#, 50 #brewfest#"};
-		{ 7, 33863, "", "=q1=Brewfest Dress", "=ds=#s5#, 200 #brewfest#"};
-		{ 8, 33862, "", "=q1=Brewfest Regalia", "=ds=#s5#, 200 #brewfest#"};
-		{ 9, 33868, "", "=q1=Brewfest Boots", "=ds=#s12#, 100 #brewfest#"};
-		{ 10, 33966, "", "=q1=Brewfest Slippers", "=ds=#s12#, 100 #brewfest#"};
-		{ 16, 33927, "", "=q3=Brewfest Pony Keg", "=ds=#m20#, 100 #brewfest#"};
-		{ 17, 46707, "", "=q3=Pint-Sized Pink Pachyderm", "=ds=#e13#, 100 #brewfest#"};
-		{ 18, 32233, "", "=q3=Wolpertinger's Tankard", "=ds=#e13#, 40 #silver#"};
-		{ 19, 37599, "", "=q1=\"Brew of the Month\" Club Membership Form", "=ds=#m2#, 200 #brewfest#"};
-		{ 21, 37816, "", "=q2=Preserved Brewfest Hops", "=ds=#m20#, 20 #brewfest#"};
-		{ 22, 37750, "", "=q1=Fresh Brewfest Hops", "=ds=#m20#, 2 #brewfest#"};
-		{ 23, 39477, "", "=q1=Fresh Dwarven Brewfest Hops", "=ec1=#m6# =ds=#m20#, 5 #brewfest#"};
-		{ 24, 39476, "", "=q1=Fresh Goblin Brewfest Hops", "=ec1=#m7# =ds=#m20#, 5 #brewfest#"};
-		{ 27, 37829, "", "=q2=Brewfest Prize Token", "=ds=#m17#"};
+		{ 1, 33927, "", "=q3=Brewfest Pony Keg", "=ds=#m20#"};
+		{ 2, 37816, "", "=q2=Preserved Brewfest Hops", "=ds="};
+		{ 3, 33047, "", "=q1=Belbi's Eyesight Enhancing Romance Goggles", "=ds=#s1#"};
+		{ 4, 33968, "", "=q1=Blue Brewfest Hat", "=ds=#s1#"};
+		{ 5, 33864, "", "=q1=Brown Brewfest Hat", "=ds=#s1#"};
+		{ 6, 33967, "", "=q1=Green Brewfest Hat", "=ds=#s1#"};
+		{ 7, 33969, "", "=q1=Purple Brewfest Hat", "=ds=#s1#"};
+		{ 8, 33862, "", "=q1=Brewfest Regalia", "=ds=#s5#"};
+		{ 9, 33863, "", "=q1=Brewfest Dress", "=ds=#s5#"};
+		{ 10, 33868, "", "=q1=Brewfest Boots", "=ds=#s12#"};
+		{ 11, 33966, "", "=q1=Brewfest Slippers", "=ds=#s12#"};
+		{ 12, 32233, "", "=q3=Wolpertinger's Tankard", "=q1=#m4#: =ds=#e13#"};
+		{ 13, 37571, "", "=q1=\"Brew of the Month\" Club Membership Form", "=ds=#m2#"};
+		{ 14, 37599, "", "=q1=\"Brew of the Month\" Club Membership Form", "=ds=#m2#"};
+		{ 16, 37750, "", "=q1=Fresh Brewfest Hops", "=ds="};
+		{ 17, 39477, "", "=q1=Fresh Dwarven Brewfest Hops", "=ds="};
+		{ 18, 39476, "", "=q1=Fresh Goblin Brewfest Hops", "=ds="};
+		{ 20, 37829, "", "=q2=Brewfest Prize Token", "=ds=#m17#"};
+		{ 22, 34063, "", "=q1=Dried Sausage", "=ds=#e3#"};
+		{ 23, 34064, "", "=q1=Succulent Sausage", "=ds=#e3#"};
+		{ 24, 33023, "", "=q1=Savory Sausage", "=ds=#e3#"};
+		{ 25, 33024, "", "=q1=Pickled Sausage", "=ds=#e3#"};
+		{ 26, 33025, "", "=q1=Spicy Smoked Sausage", "=ds=#e3#"};
+		{ 27, 33026, "", "=q1=The Golden Link", "=ds=#e3#"};
+		{ 28, 38428, "", "=q1=Rock-Salted Pretzel", "=ds=#e3#"};
+		{ 29, 33043, "", "=q1=The Essential Brewfest Pretzel", "=ds=#e3#"};
+		{ 30, 33929, "", "=q1=Brewfest Brew", "=ds=#e4#"};
 		Next = "Brewfest2";
 		Back = "WORLDEVENTMENU";
 	};
 
 	AtlasLoot_Data["Brewfest2"] = {
-		{ 1, 37892, "", "=q3=Green Brewfest Stein", "=ec1=2009 =q1=#m34#: =ds=#h1#"};
-		{ 2, 33016, "", "=q3=Blue Brewfest Stein", "=ec1=2008 =q1=#m34#: =ds=#h1#"};
-		{ 3, 32912, "", "=q3=Yellow Brewfest Stein", "=ec1=2007 =q1=#m34#: =ds=#h3#"};
-		{ 4, 34140, "", "=q3=Dark Iron Tankard", "=ec1=2007 =q1=#m34#: =ds=#s15#"};
-		{ 6, 33976, "", "=q3=Brewfest Ram", "=ec1=2007 =q1=#m34#: =ds=#e12#"};
-		{ 16, 33929, "", "=q1=Brewfest Brew", "=ds=#e4#"};
-		{ 17, 34063, "", "=q1=Dried Sausage", "=ds=#e3#"};
-		{ 18, 33024, "", "=q1=Pickled Sausage", "=ds=#e3#"};
-		{ 19, 38428, "", "=q1=Rock-Salted Pretzel", "=ds=#e3#"};
-		{ 20, 33023, "", "=q1=Savory Sausage", "=ds=#e3#"};
-		{ 21, 34065, "", "=q1=Spiced Onion Cheese", "=ds=#e3#"};
-		{ 22, 33025, "", "=q1=Spicy Smoked Sausage", "=ds=#e3#"};
-		{ 23, 34064, "", "=q1=Succulent Sausage", "=ds=#e3#"};
-		{ 24, 33043, "", "=q1=The Essential Brewfest Pretzel", "=ds=#e3#"};
-		{ 25, 33026, "", "=q1=The Golden Link", "=ds=#e3#"};
-		Prev = "Brewfest1";
-		Next = "Brewfest3";
-		Back = "WORLDEVENTMENU";
-	};
-
-	AtlasLoot_Data["Brewfest3"] = {
 		{ 1, 0, "INV_Cask_04", "=q6=#n131#", ""};
 		{ 2, 33030, "", "=q1=Barleybrew Clear", "=ds=#e4#"};
 		{ 3, 33028, "", "=q1=Barleybrew Light", "=ds=#e4#"};
@@ -325,43 +253,28 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 22, 34020, "", "=q1=Jungle River Water", "=ds=#e4#"};
 		{ 23, 34021, "", "=q1=Brewdoo Magic", "=ds=#e4#"};
 		{ 24, 34022, "", "=q1=Stout Shrunken Head", "=ds=#e4#"};
-		Prev = "Brewfest2";
-		Next = "BrewoftheMonthClub";
-		Back = "WORLDEVENTMENU";
-	};
-
-	AtlasLoot_Data["BrewoftheMonthClub"] = {
-		{ 1, 37488, "", "=q1=Wild Winter Pilsner", "=ds=#month1#"};
-		{ 2, 37489, "", "=q1=Izzard's Ever Flavor", "=ds=#month2#"};
-		{ 3, 37490, "", "=q1=Aromatic Honey Brew", "=ds=#month3#"};
-		{ 4, 37491, "", "=q1=Metok's Bubble Bock", "=ds=#month4#"};
-		{ 5, 37492, "", "=q1=Springtime Stout", "=ds=#month5#"};
-		{ 6, 37493, "", "=q1=Blackrock Lager", "=ds=#month6#"};
-		{ 16, 37494, "", "=q1=Stranglethorn Brew", "=ds=#month7#"};
-		{ 17, 37495, "", "=q1=Draenic Pale Ale", "=ds=#month8#"};
-		{ 18, 37496, "", "=q1=Binary Brew", "=ds=#month9#"};
-		{ 19, 37497, "", "=q1=Autumnal Acorn Ale", "=ds=#month10#"};
-		{ 20, 37498, "", "=q1=Bartlett's Bitter Brew", "=ds=#month11#"};
-		{ 21, 37499, "", "=q1=Lord of Frost's Private Label", "=ds=#month12#"};
-		Prev = "Brewfest3";
+		{ 26, 33016, "", "=q3=Blue Brewfest Stein", "=q1=#m4#: =ds=#h1#"};
+		{ 27, 33976, "", "=q3=Brewfest Ram", "=q1=Old #m4#: =ds=#e12#"};
+		{ 28, 34140, "", "=q3=Dark Iron Tankard", "=q1=Old #m4#: =ds=#s15#"};
+		{ 29, 32912, "", "=q3=Yellow Brewfest Stein", "=q1=Old #m4#: =ds=#h3#"};
 		Next = "CorenDirebrew";
+		Prev = "Brewfest1";
 		Back = "WORLDEVENTMENU";
 	};
 
 	AtlasLoot_Data["CorenDirebrew"] = {
-		{ 1, 49078, "", "=q4=Ancient Pickled Egg", "=ds=#s14#"};
-		{ 2, 49118, "", "=q4=Bubbling Balebrew Charm", "=ds=#s14#"};
-		{ 3, 49116, "", "=q4=Bitter Brightbrew Charm", "=ds=#s14#"};
-		{ 4, 49080, "", "=q4=Brawler's Souvenir", "=ds=#s14#"};
-		{ 5, 49074, "", "=q4=Coren's Chromium Coaster", "=ds=#s14#"};
-		{ 6, 49076, "", "=q4=Mithril Pocketwatch", "=ds=#s14#"};
-		{ 7, 49120, "", "=q4=Direbrew's Shanker 2.0", "=ds=#h1#, #w4#"};
-		{ 8, 48663, "", "=q4=Tankard O' Terror", "=ds=#h1#, #w6#"};
+		{ 1, 37128, "", "=q4=Balebrew Charm", "=ds=#s14#"};
+		{ 2, 37127, "", "=q4=Brightbrew Charm", "=ds=#s14#"};
+		{ 3, 38289, "", "=q4=Coren's Lucky Coin", "=ds=#s14#"};
+		{ 4, 38290, "", "=q4=Dark Iron Smoking Pipe", "=ds=#s14#"};
+		{ 5, 38288, "", "=q4=Direbrew Hops", "=ds=#s14#"};
+		{ 6, 38287, "", "=q4=Empty Mug Of Direbrew", "=ds=#s14#"};
+		{ 7, 37597, "", "=q4=Direbrew's Shanker", "=ds=#h1#, #w4#"};
 		{ 16, 37828, "", "=q4=Great Brewfest Kodo", "=ds=#e12#"};
 		{ 17, 33977, "", "=q4=Swift Brewfest Ram", "=ds=#e12#"};
 		{ 19, 37863, "", "=q3=Direbrew's Remote", "=ds="};
 		{ 21, 38281, "", "=q1=Direbrew's Dire Brew", "=ds=#m2#"};
-		Prev = "BrewoftheMonthClub";
+		Prev = "Brewfest2";
 		Back = "WORLDEVENTMENU";
 	};
 
@@ -382,22 +295,6 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 16, 0, "INV_Box_01", "=q6=#z40#", ""};
 		{ 17, 46545, "", "=q3=Curious Oracle Hatchling", "=ds=#e13#"};
 		{ 18, 46544, "", "=q3=Curious Wolvar Pup", "=ds=#e13#"};
-		Back = "WORLDEVENTMENU";
-	};
-
-		-----------------------
-		--- Day of the Dead ---
-		-----------------------
-
-	AtlasLoot_Data["DayoftheDead"] = {
-		{ 1, 46831, "", "=q1=Macabre Marionette", "=q1=#m4#: =ds=#m20#"};
-		{ 3, 46860, "", "=q1=Whimsical Skull Mask", "=ds=#s1#, 5 #copper#"};
-		{ 4, 46861, "", "=q1=Bouquet of Orange Marigolds", "=ds=#s15#, 1 #gold#"};
-		{ 5, 46690, "", "=q1=Candy Skull", "=ds=#m20#, 5 #copper#"};
-		{ 6, 46711, "", "=q1=Spirit Candle", "=ds=#m20#, 30 #copper#"};
-		{ 7, 46718, "", "=q1=Orange Marigold", "=ds=#m20#, 10 #copper#"};
-		{ 9, 46710, "", "=q1=Recipe: Bread of the Dead", "=ds=#p3# (1), 20 #silver#"};
-		{ 10, 46691, "", "=q1=Bread of the Dead", "=ds=#e3#"};
 		Back = "WORLDEVENTMENU";
 	};
 
@@ -481,25 +378,18 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 7, 18632, "", "=q1=Moonbrook Riot Taffy", "=ds=#e3#"};
 		{ 8, 18635, "", "=q1=Bellara's Nutterbar", "=ds=#e3#"};
 		{ 9, 20557, "", "=q1=Hallow's End Pumpkin Treat", "=ds=#m20#"};
-		{ 11, 0, "inv_gauntlets_06", "=q6=#x40#", ""};
-		{ 12, 37585, "", "=q3=Chewy Fel Taffy", "=ds=#m20#"};
-		{ 13, 37583, "", "=q3=G.N.E.R.D.S.", "=ds=#m20#"};
-		{ 14, 37582, "", "=q1=Pyroblast Cinnamon Ball", "=ds=#m20#"};
-		{ 15, 37584, "", "=q1=Soothing Spearmint Candy", "=ds=#m20#"};
 		{ 16, 0, "INV_Misc_Bag_11", "=q6=#x18#", ""};
-		{ 17, 33292, "", "=q3=Hallowed Helm", "=ds=#s1#, #a1#"};
-		{ 18, 33154, "", "=q3=Sinister Squashling", "=ds=#e13#"};
-		{ 19, 20410, "", "=q1=Hallowed Wand - Bat", "=ds=#m20#"};
-		{ 20, 20409, "", "=q1=Hallowed Wand - Ghost", "=ds=#m20#"};
-		{ 21, 20399, "", "=q1=Hallowed Wand - Leper Gnome", "=ds=#m20#"};
-		{ 22, 20398, "", "=q1=Hallowed Wand - Ninja", "=ds=#m20#"};
-		{ 23, 20397, "", "=q1=Hallowed Wand - Pirate", "=ds=#m20#"};
-		{ 24, 20413, "", "=q1=Hallowed Wand - Random", "=ds=#m20#"};
-		{ 25, 20411, "", "=q1=Hallowed Wand - Skeleton", "=ds=#m20#"};
-		{ 26, 20414, "", "=q1=Hallowed Wand - Wisp", "=ds=#m20#"};
-		{ 27, 20389, "", "=q1=Candy Corn", "=ds=#e3#"};
-		{ 28, 20388, "", "=q1=Lollipop", "=ds=#e3#"};
-		{ 29, 20390, "", "=q1=Candy Bar", "=ds=#e3#"};
+		{ 17, 20410, "", "=q1=Hallowed Wand - Bat", "=ds=#m20#"};
+		{ 18, 20409, "", "=q1=Hallowed Wand - Ghost", "=ds=#m20#"};
+		{ 19, 20399, "", "=q1=Hallowed Wand - Leper Gnome", "=ds=#m20#"};
+		{ 20, 20398, "", "=q1=Hallowed Wand - Ninja", "=ds=#m20#"};
+		{ 21, 20397, "", "=q1=Hallowed Wand - Pirate", "=ds=#m20#"};
+		{ 22, 20413, "", "=q1=Hallowed Wand - Random", "=ds=#m20#"};
+		{ 23, 20411, "", "=q1=Hallowed Wand - Skeleton", "=ds=#m20#"};
+		{ 24, 20414, "", "=q1=Hallowed Wand - Wisp", "=ds=#m20#"};
+		{ 26, 20389, "", "=q1=Candy Corn", "=ds=#e3#"};
+		{ 27, 20388, "", "=q1=Lollipop", "=ds=#e3#"};
+		{ 28, 20390, "", "=q1=Candy Bar", "=ds=#e3#"};
 		Next = "Halloween2";
 		Back = "WORLDEVENTMENU";
 	};
@@ -532,17 +422,17 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 	};
 
 	AtlasLoot_Data["HeadlessHorseman"] = {
-		{ 1, 49126, "", "=q4=The Horseman's Horrific Helm", "=ds=#s1#, #a4#"};
-		{ 2, 49121, "", "=q4=Ring of Ghoulish Glee", "=ds=#s13#"};
-		{ 3, 49123, "", "=q4=The Horseman's Seal", "=ds=#s13#"};
-		{ 4, 49124, "", "=q4=Wicked Witch's Band", "=ds=#s13#"};
-		{ 5, 49128, "", "=q4=The Horseman's Baleful Blade", "=ds=#h3#, #w10#"};
-		{ 7, 34068, "", "=q1=Weighted Jack-o'-Lantern", "=ds=#m20#", "", "100%"};
-		{ 8, 33226, "", "=q1=Tricky Treat", "=ds=#m20#"};
-		{ 16, 37012, "", "=q4=The Horseman's Reins", "=ds=#e12#"};
-		{ 17, 37011, "", "=q3=Magic Broom", "=ds=#e12#"};
-		{ 18, 33292, "", "=q3=Hallowed Helm", "=ds=#s1#, #a1#"};
-		{ 19, 33154, "", "=q3=Sinister Squashling", "=ds=#e13#"};
+		{ 1, 33808, "", "=q4=The Horseman's Helm", "=ds=#s1#, #a4#", "", ""};
+		{ 2, 34075, "", "=q4=Ring of Ghoulish Delight", "=ds=#s13#", "", ""};
+		{ 3, 34073, "", "=q4=The Horseman's Signet Ring", "=ds=#s13#", "", ""};
+		{ 4, 34074, "", "=q4=Witching Band", "=ds=#s13#", "", ""};
+		{ 5, 38175, "", "=q4=The Horseman's Blade", "=ds=#h3#, #w10#"};
+		{ 7, 34068, "", "=q1=Weighted Jack-o'-Lantern", "=ds=", "", "100%"};
+		{ 8, 33226, "", "=q1=Tricky Treat", ""};
+		{ 16, 37012, "", "=q4=The Horseman's Reins", "=ds=#e12#", "", ""};
+		{ 17, 37011, "", "=q3=Magic Broom", "=ds=#e12#", "", ""};
+		{ 19, 33292, "", "=q3=Hallowed Helm", "=ds=#s1#, #a1#", "", ""};
+		{ 20, 33154, "", "=q3=Sinister Squashling", "=ds=#e13#", "", ""};
 		Prev = "Halloween2";
 		Back = "WORLDEVENTMENU";
 	};
@@ -565,73 +455,30 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		--------------------------
 		--- Love is in the Air ---
 		--------------------------
-		
+
 	AtlasLoot_Data["Valentineday"] = {
-		{ 1, 34480, "", "=q3=Romantic Picnic Basket", "=ds=#m20#, 10 #valentineday#"};
-		{ 2, 21815, "", "=q1=Love Token", "=ds=", "=ds=#m20#, 1 #valentineday2#"};
-		{ 3, 50163, "", "=q1=Lovely Rose", "=ds=", "=ds=#m20#, 5 #valentineday#"};
-		{ 4, 22218, "", "=q1=Handful of Rose Petals", "=ds=#m20#, 2 #valentineday#"};
-		{ 5, 22200, "", "=q1=Silver Shafted Arrow", "=ds=#e13#, 5 #valentineday#"};
-		{ 6, 22235, "", "=q1=Truesilver Shafted Arrow", "=ds=#e13#, 40 #valentineday#"};
-		{ 7, 21813, "", "=q1=Bag of Heart Candies", "=ds=#m20#, 2 #valentineday#"};
-		{ 8, 21812, "", "=q1=Box of Chocolates", "=ds=#m20#, 10 #valentineday#"};
-		{ 9, 50160, "", "=q1=Lovely Dress Box", "=ds=#m20#, 20 #valentineday#"};
-		{ 10, 50161, "", "=q1=Dinner Suit Box", "=ds=#m20#, 20 #valentineday#"};
-		{ 11, 34258, "", "=q1=Love Rocket", "=ds=#e23#, 5 #valentineday#"};
-		{ 12, 22261, "", "=q1=Love Fool", "=ds=#e22#, 10 #valentineday#"};
-		{ 16, 49859, "", "=q1=\"Bravado\" Cologne", "=ds=#m20#, 1 #valentineday#"};
-		{ 17, 49861, "", "=q1=\"STALWART\" Cologne", "=ds=#m20#, 1 #valentineday#"};
-		{ 18, 49860, "", "=q1=\"Wizardry\" Cologne", "=ds=#m20#, 1 #valentineday#"};
-		{ 19, 49856, "", "=q1=\"VICTORY\" Perfume", "=ds=#m20#, 1 #valentineday#"};
-		{ 20, 49858, "", "=q1=\"Forever\" Perfume", "=ds=#m20#, 1 #valentineday#"};
-		{ 21, 49857, "", "=q1=\"Enchantress\" Perfume", "=ds=#m20#, 1 #valentineday#"};
-		{ 23, 21815, "", "=q1=Love Token", "=ds=#m17#"};
-		{ 24, 49916, "", "=q1=Lovely Charm Bracelet", "=ds=#m17#"};
-		Next = "Valentineday2";
-		Back = "WORLDEVENTMENU";
-	};
-	
-	AtlasLoot_Data["Valentineday2"] = {	
-		{ 1, 0, "INV_Box_02", "=q6="..AL["Lovely Dress Box"], ""};
-		{ 2, 22279, "", "=q1=Lovely Black Dress", "=ds=#s5#"};
-		{ 3, 22276, "", "=q1=Lovely Red Dress", "=ds=#s5#"};
-		{ 4, 22278, "", "=q1=Lovely Blue Dress", "=ds=#s5#"};
-		{ 5, 22280, "", "=q1=Lovely Purple Dress", "=ds=#s5#"};	
-		{ 7, 0, "INV_Box_01", "=q6="..AL["Dinner Suit Box"], ""};
-		{ 8, 22277, "", "=q1=Red Dinner Suit", "=q1=#m4#: =ds=#s5#"};
-		{ 9, 22281, "", "=q1=Blue Dinner Suit", "=q1=#m4#: =ds=#s5#"};
-		{ 10, 22282, "", "=q1=Purple Dinner Suit", "=q1=#m4#: =ds=#s5#"};	
-		{ 16, 0, "INV_ValentinesBoxOfChocolates02", "=q6=#x17#", ""};
+		{ 1, 44731, "", "=q2=Bouquet of Ebon Roses", "=ds=#s15# =q2=#z7#", "", "0.43%"};
+		{ 2, 22206, "", "=q2=Bouquet of Red Roses", "=ds=#s15# =q2=#z7#", "", "0.43%"};
+		{ 4, 0, "INV_ValentinesBoxOfChocolates02", "=q6=#x16#", ""};
+		{ 5, 34480, "", "=q3=Romantic Picnic Basket", "=ds=#m20#"};
+		{ 6, 22279, "", "=q1=Lovely Black Dress", "=ds=#s5#"};
+		{ 7, 22235, "", "=q1=Truesilver Shafted Arrow", "=ds=#e13#"};
+		{ 8, 22200, "", "=q1=Silver Shafted Arrow", "=ds=#e13#"};
+		{ 9, 22261, "", "=q1=Love Fool", "=ds=#e22#"};
+		{ 10, 22218, "", "=q1=Handful of Rose Petals", "=ds=#m20#"};
+		{ 11, 21813, "", "=q1=Bag of Candies", "=ds=#m20#"};
+		{ 12, 34258, "", "=q1=Love Rocket", "=ds=#e23#"};
+		{ 16, 0, "INV_Box_02", "=q6=#x17#", ""};
 		{ 17, 22237, "", "=q1=Dark Desire", "=ds=#e3#"};
 		{ 18, 22238, "", "=q1=Very Berry Cream", "=ds=#e3#"};
 		{ 19, 22236, "", "=q1=Buttermilk Deligh", "=ds=#e3#"};
-		{ 20, 22239, "", "=q1=Sweet Surprise ", "=ds=#e3#"};		
-		{ 22, 0, "inv_valentinescandysack", "=q6="..AL["Bag of Heart Candies"], ""};
-		{ 23, 21816, "", "=q1=Heart Candy", "=ds=#m20#"};
-		{ 24, 21817, "", "=q1=Heart Candy", "=ds=#m20#"};
-		{ 25, 21818, "", "=q1=Heart Candy", "=ds=#m20#"};
-		{ 26, 21819, "", "=q1=Heart Candy", "=ds=#m20#"};
-		{ 27, 21820, "", "=q1=Heart Candy", "=ds=#m20#"};
-		{ 28, 21821, "", "=q1=Heart Candy", "=ds=#m20#"};
-		{ 29, 21822, "", "=q1=Heart Candy", "=ds=#m20#"};
-		{ 30, 21823, "", "=q1=Heart Candy", "=ds=#m20#"};
-		Prev = "Valentineday";
-		Next = "Valentineday3";
-		Back = "WORLDEVENTMENU";
-	};
-	
-	AtlasLoot_Data["Valentineday3"] = {
-		{ 1, 51804, "", "=q4=Winking Eye of Love", "=ds=#s2#"};
-		{ 2, 51805, "", "=q4=Heartbreak Charm", "=ds=#s2#"};
-		{ 3, 51806, "", "=q4=Shard of Pirouetting Happiness", "=ds=#s2#"};
-		{ 4, 51807, "", "=q4=Sweet Perfume Broach", "=ds=#s2#"};
-		{ 5, 51808, "", "=q4=Choker of the Pure Heart", "=ds=#s2#"};
-		{ 7, 49715, "", "=q3=Forever-Lovely Rose", "=ds=#s1#"};
-		{ 8, 50741, "", "=q3=Vile Fumigator's Mask", "=ds=#s1#"};
-		{ 16, 50446, "", "=q3=Toxic Wasteling", "=ds=#e13#"};
-		{ 17, 50471, "", "=q3=The Heartbreaker", "=ds=#m20#"};
-		{ 19, 50250, "", "=q4=Big Love Rocket", "=ds=#e12#"};
-		Prev = "Valentineday2";
+		{ 20, 22239, "", "=q1=Sweet Surprise ", "=ds=#e3#"};
+		{ 22, 22276, "", "=q1=Lovely Red Dress", "=q1=#m4#: =ds=#s5#"};
+		{ 23, 22278, "", "=q1=Lovely Blue Dress", "=q1=#m4#: =ds=#s5#"};
+		{ 24, 22280, "", "=q1=Lovely Purple Dress", "=q1=#m4#: =ds=#s5#"};
+		{ 25, 22277, "", "=q1=Red Dinner Suit", "=q1=#m4#: =ds=#s5#"};
+		{ 26, 22281, "", "=q1=Blue Dinner Suit", "=q1=#m4#: =ds=#s5#"};
+		{ 27, 22282, "", "=q1=Purple Dinner Suit", "=q1=#m4#: =ds=#s5#"};
 		Back = "WORLDEVENTMENU";
 	};
 
@@ -709,7 +556,7 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 11, 34684, "", "=q1=Handful of Summer Petals", "2 #fireflower#"};
 		{ 12, 23215, "", "=q1=Bag of Smorc Ingredients", "5 #fireflower#"};
 		{ 13, 34599, "", "=q1=Juggling Torch", "5 #fireflower#"};
-		{ 15, 23247, "", "=q1=Burning Blossom", "=ds=#m17#"};
+		{ 15, 23247, "", "=q2=Burning Blossom", "=ds=#m17#"};
 		{ 16, 23323, "", "=q1=Crown of the Fire Festival", "=ds=#s1#, #a1#, #m4#"};
 		{ 17, 23324, "", "=q1=Mantle of the Fire Festival", "=ds=#s3#, 100 #fireflower#"};
 		{ 18, 34685, "", "=q1=Vestment of Summer", "=ds=#s5#, 100 #fireflower#"};
@@ -719,17 +566,16 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 	};
 
 	AtlasLoot_Data["LordAhune"] = {
-		{ 1, 54805, "", "=q4=Cloak of the Frigid Winds", "=ds=#s4#"};
-		{ 2, 54801, "", "=q4=Icebound Cloak", "=ds=#s4#"};
-		{ 3, 54804, "", "=q4=Shroud of Winter's Chill", "=ds=#s4#"};
-		{ 4, 54803, "", "=q4=The Frost Lord's Battle Shroud", "=ds=#s4#"};
-		{ 5, 54802, "", "=q4=The Frost Lord's War Cloak", "=ds=#s4#"};
-		{ 6, 35514, "", "=q4=Frostscythe of Lord Ahune", "=ds=#w9#"};
-		{ 8, 35498, "", "=q3=Formula: Enchant Weapon - Deathfrost", "=ds=#p4# (350)"};
-		{ 9, 34955, "", "=q3=Scorched Stone", "=ds=#e13#"};
-		{ 11, 35723, "", "=q1=Shards of Ahune", "=ds=#m2#"};
-		{ 12, 35279, "", "=q3=Tabard of Summer Skies", "=q1=#m4#: =ds=#s7#"};
-		{ 13, 35280, "", "=q3=Tabard of Summer Flames", "=q1=#m4#: =ds=#s7#"};
+		{ 1, 35497, "", "=q4=Cloak of the Frigid Winds", "=ds=#s4#"};
+		{ 2, 35496, "", "=q4=Icebound Cloak", "=ds=#s4#"};
+		{ 3, 35494, "", "=q4=Shroud of Winter's Chill", "=ds=#s4#"};
+		{ 4, 35495, "", "=q4=The Frost Lord's War Cloak", "=ds=#s4#"};
+		{ 5, 35514, "", "=q4=Frostscythe of Lord Ahune", "=ds=#w9#"};
+		{ 7, 35498, "", "=q3=Formula: Enchant Weapon - Deathfrost", "=ds=#p4# (350)"};
+		{ 8, 34955, "", "=q3=Scorched Stone", "=ds=#e13#"};
+		{ 10, 35723, "", "=q1=Shards of Ahune", "=ds=#m2#"};
+		{ 11, 35279, "", "=q3=Tabard of Summer Skies", "=q1=#m4#: =ds=#s7#"};
+		{ 12, 35280, "", "=q3=Tabard of Summer Flames", "=q1=#m4#: =ds=#s7#"};
 		{ 16, 0, "INV_Box_01", "=q6=#j27#", ""};
 		{ 17, 35507, "", "=q4=Amulet of Bitter Hatred", "=ds=#s2#"};
 		{ 18, 35509, "", "=q4=Amulet of Glacial Tranquility", "=ds=#s2#"};
@@ -757,57 +603,6 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 13, 45067, "", "=q1=Egg Basket", "=q1=#m4#: =ds=#s15#"};
 		{ 14, 44791, "", "=q1=Noblegarden Chocolate", "=ds=#e3#"};
 		Back = "WORLDEVENTMENU";
-	};
-		------------------------
-		--- Pilgrim's Bounty ---
-		------------------------
-
-	AtlasLoot_Data["PilgrimsBounty_A"] = {
-		{ 1, 46809, "", "=q2=Bountiful Cookbook", "=ds=#p3# #e10# (1)"};
-		{ 2, 44860, "", "=q1=Recipe: Spice Bread Stuffing", "=ds=#p3# (1)"};
-		{ 3, 44862, "", "=q1=Recipe: Pumpkin Pie", "=ds=#p3# (100)"};
-		{ 4, 44858, "", "=q1=Recipe: Cranberry Chutney", "=ds=#p3# (160)"};
-		{ 5, 44859, "", "=q1=Recipe: Candied Sweet Potato", "=ds=#p3# (220)"};
-		{ 6, 44861, "", "=q1=Recipe: Slow-Roasted Turkey", "=ds=#p3# (280)"};
-		{ 7, 46888, "", "=q1=Bountiful Basket", "=ds=#e3#, #p3# (350)"};
-		{ 8, 44855, "", "=q1=Teldrassil Sweet Potato", "=ds=#e3#"};
-		{ 9, 44854, "", "=q1=Tangy Wetland Cranberries", "=ds=#e3#"};
-		{ 10, 46784, "", "=q1=Ripe Elwynn Pumpkin", "=ds=#e3#"};
-		{ 11, 44835, "", "=q1=Autumnal Herbs", "=ds=#e6#"};
-		{ 12, 44853, "", "=q1=Honey", "=ds=#e6#"};
-		{ 16, 44810, "", "=q3=Turkey Cage", "=q1=#m32#: =ds=#e13#"};
-		{ 17, 46723, "", "=q1=Pilgrim's Hat", "=q1=#m4#: =ds=#s1#"};
-		{ 18, 46800, "", "=q1=Pilgrim's Attire", "=q1=#m4#: =ds=#s5#"};
-		{ 19, 44785, "", "=q1=Pilgrim's Dress", "=q1=#m4#: =ds=#s5#"};
-		{ 20, 46824, "", "=q1=Pilgrim's Robe", "=q1=#m4#: =ds=#s5#"};
-		{ 21, 44788, "", "=q1=Pilgrim's Boots", "=q1=#m4#: =ds=#s12#"};
-		{ 22, 44844, "", "=q1=Turkey Caller", "=q1=#m4#: =ds="};
-		{ 23, 44812, "", "=q1=Turkey Shooter", "=q1=#m4#: =ds="};
-		Back = "PILGRIMSBOUNTYMENU";
-	};
-
-	AtlasLoot_Data["PilgrimsBounty_H"] = {
-		{ 1, 46810, "", "=q2=Bountiful Cookbook", "=ds=#p3# #e10# (1)"};
-		{ 2, 46803, "", "=q1=Recipe: Spice Bread Stuffing", "=ds=#p3# (1)"};
-		{ 3, 46804, "", "=q1=Recipe: Pumpkin Pie", "=ds=#p3# (100)"};
-		{ 4, 46805, "", "=q1=Recipe: Cranberry Chutney", "=ds=#p3# (160)"};
-		{ 5, 46806, "", "=q1=Recipe: Candied Sweet Potato", "=ds=#p3# (220)"};
-		{ 6, 46807, "", "=q1=Recipe: Slow-Roasted Turkey", "=ds=#p3# (280)"};
-		{ 7, 46888, "", "=q1=Bountiful Basket", "=ds=#e3#, #p3# (350)"};
-		{ 8, 46797, "", "=q1=Mulgore Sweet Potato", "=ds=#e3#"};
-		{ 9, 46793, "", "=q1=Tangy Southfury Cranberries ", "=ds=#e3#"};
-		{ 10, 46796, "", "=q1=Ripe Tirisfal Pumpkin ", "=ds=#e3#"};
-		{ 11, 44835, "", "=q1=Autumnal Herbs", "=ds=#e6#"};
-		{ 12, 44853, "", "=q1=Honey", "=ds=#e6#"};
-		{ 16, 44810, "", "=q3=Turkey Cage", "=q1=#m32#: =ds=#e13#"};
-		{ 17, 46723, "", "=q1=Pilgrim's Hat", "=q1=#m4#: =ds=#s1#"};
-		{ 18, 46800, "", "=q1=Pilgrim's Attire", "=q1=#m4#: =ds=#s5#"};
-		{ 19, 44785, "", "=q1=Pilgrim's Dress", "=q1=#m4#: =ds=#s5#"};
-		{ 20, 46824, "", "=q1=Pilgrim's Robe", "=q1=#m4#: =ds=#s5#"};
-		{ 21, 44788, "", "=q1=Pilgrim's Boots", "=q1=#m4#: =ds=#s12#"};
-		{ 22, 44844, "", "=q1=Turkey Caller", "=q1=#m4#: =ds="};
-		{ 23, 44812, "", "=q1=Turkey Shooter", "=q1=#m4#: =ds="};
-		Back = "PILGRIMSBOUNTYMENU";
 	};
 
 	--------------------------
@@ -862,8 +657,8 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 9, 19292, "", "=q1=Last Month's Mutton", "=ds=#h1#, #w6#", "10 #darkmoon#", ""};
 		{ 10, 19295, "", "=q1=Darkmoon Flower", "=ds=#s15#", "5 #darkmoon#", ""};
 		{ 12, 19182, "", "=q1=Darkmoon Faire Prize Ticket", "=ds=#m17#"};
-		{ 16, 19302, "", "=q3=Darkmoon Ring", "=ds=#s13#"};
-		{ 17, 19303, "", "=q2=Darkmoon Necklace", "=ds=#s2#"};
+		{ 16, 19303, "", "=q3=Darkmoon Necklace", "=ds=#s2#"};
+		{ 17, 19302, "", "=q3=Darkmoon Ring", "=ds=#s13#"};
 		{ 19, 11026, "", "=q1=Tree Frog Box", "=ds=#e13#"};
 		{ 20, 11027, "", "=q1=Wood Frog Box", "=ds=#e13#"};
 		{ 21, 19450, "", "=q1=A Jubling's Tiny Home", "=q1=#m4#: =ds=#e13#"};
@@ -1357,7 +1152,7 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 4, 43073, "", "=q4=Blessed Gloves of Undead Cleansing", "=ds=#s9#, #a1#"};
 		{ 5, 43075, "", "=q4=Blessed Trousers of Undead Cleansing", "=ds=#s11#, #a1#"};
 		{ 7, 0, "INV_Box_01", "=q6="..AL["Undead Slayer's Blessed Armor"], "=q1=#a2#"};
-		{ 8, 43077, "", "=q4=Blessed Shoulderpads of Undead Slaying", "=ds=#s3#, #a1#"};
+		{ 8, 43077, "", "=q3=Blessed Shoulderpads of Undead Slaying", "=ds=#s3#, #a1#"};
 		{ 9, 43076, "", "=q4=Blessed Tunic of Undead Slaying", "=ds=#s5#, #a1#"};
 		{ 10, 43078, "", "=q4=Blessed Grips of Undead Slaying", "=ds=#s9#, #a1#"};
 		{ 11, 43079, "", "=q4=Blessed Leggings of Undead Slaying", "=ds=#s11#, #a1#"};
@@ -1367,7 +1162,7 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 19, 43082, "", "=q4=Blessed Handguards of Undead Slaying", "=ds=#s9#, #a1#"};
 		{ 20, 43083, "", "=q4=Blessed Greaves of Undead Slaying", "=ds=#s11#, #a1#"};
 		{ 22, 0, "INV_Box_01", "=q6="..AL["Blessed Battlegear of Undead Slaying"], "=q1=#a4#"};
-		{ 23, 43068, "", "=q4=Blessed Spaulders of Undead Slaying", "=ds=#s3#, #a1#"};
+		{ 23, 43068, "", "=q3=Blessed Spaulders of Undead Slaying", "=ds=#s3#, #a1#"};
 		{ 24, 43069, "", "=q4=Blessed Breastplate of Undead Slaying", "=ds=#s5#, #a1#"};
 		{ 25, 43070, "", "=q4=Blessed Gauntlets of Undead Slaying", "=ds=#s9#, #a1#"};
 		{ 26, 43071, "", "=q4=Blessed Legplates of Undead Slaying", "=ds=#s11#, #a1#"};

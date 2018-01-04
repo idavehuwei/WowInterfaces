@@ -71,3 +71,81 @@ function NukeTable(t)
 		end
 	end
 end
+
+------------------------
+-- 战斗状态调用栈(队列)
+
+local stack = {};
+local frame = CreateFrame("Frame");
+local index = 0;
+local sequence = {};
+frame:RegisterEvent("PLAYER_REGEN_ENABLED");
+function Push(func, ...)
+    assert(type(func) == "function", "First argument must be a function value.");
+
+    index = index + 1;
+    stack[func] = {...};
+    sequence[func] = index;
+end
+
+function RunCallStack()
+    local tmp = {};
+    local tmp2= {};
+    for k, v in pairs(sequence) do
+        tmp[v] = k;
+    end
+
+    for k, v in pairs(tmp) do
+        tinsert(tmp2, k);
+    end
+    table.sort(tmp2);
+    local func;
+    for i=1, #(tmp2) do
+        func = tmp[tmp2[i]];
+        if (func and type(func) == "function"  and stack[func]) then
+            pcall(unpack(stack[func]));
+        end
+    end
+
+    table.wipe(stack);
+    table.wipe(sequence);
+    index = 0;
+end
+
+frame:SetScript("OnEvent", function(self)
+    RunCallStack();
+end);
+
+function SecureCall(...)
+    local func = select(1, ...);
+    if (type(func) == "function") then
+        if (InCombatLockdown()) then
+            Push(func, ...);
+            return;
+        end
+
+        pcall(...);
+    end
+end
+
+-- [-[--------------------------------------------
+-- 常用函数
+
+function ShowKeyBindingFrame(arg)
+    KeyBindingFrame_LoadUI();
+
+    if (not arg) then
+        ShowUIPanel(KeyBindingFrame);
+        return;
+    else
+        local numBindings = GetNumBindings();
+        for i = 1, numBindings do
+            local commandName = GetBinding(i);
+            if ( commandName == arg ) then
+                ShowUIPanel(KeyBindingFrame);
+                KeyBindingFrameScrollFrameScrollBar:SetValue((i-1)*KEY_BINDING_HEIGHT);
+                return;
+            end
+        end
+    end
+end

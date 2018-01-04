@@ -15,8 +15,8 @@ GridStatusAggro.defaultDB = {
 	alert_aggro = {
 		text =  L["Aggro"],
 		enable = true,
-		color = { r = 1, g = 0, b = 0, a = 1 },
-		priority = 99,
+		color = { r = 0.055, g = 0.973, b = 1, a = 1 },
+		priority = 90,
 		range = false,
 		threat = false,
 		threatcolors = {

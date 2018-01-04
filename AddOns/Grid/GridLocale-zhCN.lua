@@ -57,6 +57,8 @@ local strings_zhCN = {
 	["Adjust the height of each unit's frame."] = "调整个体框架的高度。",
 	["Frame Texture"] = "框架材质",
 	["Adjust the texture of each unit's frame."] = "调整个体框架的材质。",
+	["Border Size"] = "边框大小",
+	["Adjust the size of the border indicators."] = "调整边框指示的大小",
 	["Corner Size"] = "边角指示大小",
 	["Adjust the size of the corner indicators."] = "调整边角指示的大小。",
 	["Enable Mouseover Highlight"] = "启用鼠标悬停高亮",
@@ -75,6 +77,10 @@ local strings_zhCN = {
 	["Adjust the size of the center icon."] = "调整中心图标的尺寸。",
 	["Icon Border Size"] = "图标边框大小",
 	["Adjust the size of the center icon's border."] = "调整屏幕中心图标边框的大小。",
+	["Icon X offset"] = "中心图标X轴偏移",
+	["Adjust the offset of the X-axis for center icon."] = "调整中心图标X轴方向的偏移值。",
+	["Icon Y offset"] = "中心图标Y轴偏移",
+	["Adjust the offset of the Y-axis for center icon."] = "调整中心图标Y轴方向的偏移值。",
 	["Icon Stack Text"] = "图标堆叠文字",
 	["Toggle center icon's stack count text."] = "打开/关闭中心图标的堆叠计数文字。",
 	["Icon Cooldown Frame"] = "图标冷却时间框架",
@@ -203,7 +209,9 @@ local strings_zhCN = {
 	--{{{ GridStatus
 	["Status"] = "状态",
 	["Options for %s."] = "%s状态的选项。",
-
+	["Reset class colors"] = "重置职业颜色",
+	["Reset class colors to defaults."] = "重置职业颜色为默认设定",
+	
 	-- module prototype
 	["Status: %s"] = "状态：%s",
 	["Color"] = "颜色",

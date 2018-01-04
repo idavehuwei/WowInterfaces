@@ -10,10 +10,11 @@ AtlasLoot_SetNewStyle(style)
 ]]
 
 --Include all needed libraries
+local BabbleBoss = LibStub("LibBabble-Boss-3.0"):GetLookupTable();
+local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
+local BabbleFaction = LibStub("LibBabble-Faction-3.0"):GetLookupTable();
+local BabbleClass = LibStub("LibBabble-Class-3.0"):GetLookupTable();
 local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-local BabbleBoss = AtlasLoot_GetLocaleLibBabble("LibBabble-Boss-3.0")
-local BabbleFaction = AtlasLoot_GetLocaleLibBabble("LibBabble-Faction-3.0")
-local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 
 --Load the 2 dewdrop menus
 AtlasLoot_Dewdrop = AceLibrary("Dewdrop-2.0");
@@ -112,7 +113,7 @@ function AtlasLootDefaultFrame_OnShow()
     if AtlasLoot_IsLootTableAvailable(AtlasLoot.db.profile.LastBoss) then
         AtlasLoot_ShowBossLoot(AtlasLoot.db.profile.LastBoss, "", pFrame);
     else
-        AtlasLoot_ShowBossLoot("EmptyTable", AL["Select a Loot Table..."], pFrame);
+        AtlasLoot_ShowBossLoot("EmptyInstance", AL["AtlasLoot"], pFrame);
     end
 end
 
@@ -191,18 +192,6 @@ function AtlasLoot_DewdropRegister()
                         if (type(v[1]) == "table") and (type(v[1][1]) == "string") then
                             local checked = false;
                             if v[1][3] == "Submenu" then
-                                AtlasLoot_Dewdrop:AddLine(
-                                    'text', v[1][1],
-                                    'textR', 1,
-                                    'textG', 0.82,
-                                    'textB', 0,
-                                    'func', AtlasLoot_DewDropClick,
-                                    'arg1', v[1][2],
-                                    'arg2', v[1][1],
-                                    'arg3', v[1][3],
-                                    'notCheckable', true
-                                )
-                            elseif v[1][3] == "Table" and v[1][1] ~= "" then
                                 AtlasLoot_Dewdrop:AddLine(
                                     'text', v[1][1],
                                     'textR', 1,

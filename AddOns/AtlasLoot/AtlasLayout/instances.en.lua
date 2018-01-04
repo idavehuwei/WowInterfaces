@@ -1,7 +1,7 @@
-------------------------------------------------
+--------------------------------------------------------------------------------
 -- AtlasLootNewBossButtons
 -- This layout is loaded for BETA Atlas versions
-------------------------------------------------
+--------------------------------------------------------------------------------
 
 AtlasLootNewBossButtons = {
 
@@ -67,52 +67,10 @@ AtlasLootNewBossButtons = {
         "";
         "DrakTharonKeepTrash";
         };
-		
-    IcecrownStart = {
-		"";
-		"ICCLadyDeathwhisper";
-		"ICCLordMarrowgar";
-		"ICCGunshipBattle";
-		"ICCSaurfang";
-		"";
-		"";
-		"ICCTrash25Man";
-		};
 
     TheEyeOfEternity = {
         "WrathKeys";
         "Malygos";
-        };
-
-    FHTheForgeOfSouls = {
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "FoSBronjahm";
-        "FoSDevourer";
-        "";
-        "FHTrashMobs";
-        };
-
-    FHHallsOfReflection = {
-    	"";
-  		"";
-    	"";
-    	"";
-    	"";
-      	"";
-    	"";
-    	"HoRFalric";
-    	"HoRMarwyn";
-        "";
-    	"HoRLichKing";
-        "";
-        "FHTrashMobs";
         };
 
     Gundrak = {
@@ -126,53 +84,6 @@ AtlasLootNewBossButtons = {
         "";
         "GundrakTrash";
         };
-		
-    IcecrownCitadelA = {
-		"AshenVerdict";
-		"";
-		"";
-		"";
-		"ICCLordMarrowgar";
-		"ICCLadyDeathwhisper";
-		"ICCGunshipBattle";
-		"ICCGunshipBattle";
-		"ICCSaurfang";
-		"";
-		"";
-		"";
-		"";
-		"";
-		"ICCTrash25Man";
-		};
-
-    IcecrownCitadelB = {
-		"AshenVerdict";
-		"";
-		"";
-		"";
-		"ICCFestergut";
-		"ICCRotface";
-		"ICCPutricide";
-		"ICCCouncil";
-		"";
-		"";
-		"";
-		"ICCLanathel";
-		"ICCValithria";
-		"ICCSindragosa";
-		"";
-		"";
-		"";
-		"ICCTrash25Man";
-	};
-		
-    IcecrownCitadelC = {
-		"AshenVerdict";
-		"";
-		"ICCLichKing";
-		"";
-		"ICCTrash25Man";
-	};
 
     Naxxramas = {
         "";
@@ -231,66 +142,6 @@ AtlasLootNewBossButtons = {
         "OcuTrash";
         };
 
-    FHPitOfSaron = {
-		"";
-		"";
-		"";
-		"";
-		"";
-		"";
-		"";
-		"";
-		"";
-		"PoSGarfrost";
-		"";
-		"";
-		"PoSKrickIck";
-		"PoSTyrannus";
-        "";
-        "";
-        "FHTrashMobs";
-	};
-
-    TrialOfTheChampion = {
-        "";
-        "TrialoftheChampionChampions";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "TrialoftheChampionEadricthePure";
-        "TrialoftheChampionConfessorPaletress";
-        "TrialoftheChampionBlackKnight";
-        };
-
-    TrialOfTheCrusader = {
-        "";
-        "";
-        "";
-        "TrialoftheCrusaderNorthrendBeasts_A";
-        "";
-        "";
-        "";
-        "";
-        "TrialoftheCrusaderLordJaraxxus_A";
-        "TrialoftheCrusaderFactionChampions_A";
-        "TrialoftheCrusaderTwinValkyrs_A";
-        "";
-        "";
-        "TrialoftheCrusaderAnubarak_A";
-        "";
-        "TrialoftheCrusaderTributeHEROIC_A";
-        "TrialoftheCrusaderPatterns_A";
-        };
-
     ObsidianSanctum = {
         "";
         "";
@@ -298,15 +149,6 @@ AtlasLootNewBossButtons = {
         "";
         "";
         "Sartharion";
-        };
-
-    RubySanctum = {
-        "";
-        "";
-        "Halion";
-        "";
-        "";
-        "";
         };
 
     UlduarA = {
@@ -335,8 +177,6 @@ AtlasLootNewBossButtons = {
         "";
         "";
         "UlduarIronCouncil";
-        "";
-        "";
         "";
         "";
         "";
@@ -410,7 +250,6 @@ AtlasLootNewBossButtons = {
     UtgardeKeep = {
         "";
         "";
-        "";
         "UtgardeKeepKeleseth";
         "UtgardeKeepSkarvald";
         "UtgardeKeepSkarvald";
@@ -432,10 +271,8 @@ AtlasLootNewBossButtons = {
 
     VaultOfArchavon = {
         "";
-        "VaultofArchavonArchavon1";
-        "VaultofArchavonEmalon1";
-        "VaultofArchavonKoralon1_A";
-		"VaultofArchavonToravon1";
+        "VoAArchavon1";
+        "Emalon";
         };
 
     VioletHold = {
@@ -682,7 +519,6 @@ AtlasLootNewBossButtons = {
         "CoTTrash";
         "CoTTrash";
         "CoTTrash";
-        "CoTTrash";
         };
 
     GruulsLair = {
@@ -903,7 +739,6 @@ AtlasLootNewBossButtons = {
     TempestKeepBotanica = {
         "Shatar1";
         "BCKeys";
-        "";
         "";
         "TKBotSarannis";
         "TKBotFreywinn";
@@ -1175,7 +1010,7 @@ AtlasLootNewBossButtons = {
         "BWLEbonroc";
         "BWLFlamegor";
         "BWLChromaggus";
-        "BWLNefarian1";
+        "BWLNefarian";
         "";
         "BWLTrashMobs";
         "T1T2T3SET";
@@ -1301,6 +1136,7 @@ AtlasLootNewBossButtons = {
         "";
         "";
         "";
+        "";
         "Maraudon2";
         "Maraudon1";
         "Maraudon1";
@@ -1351,7 +1187,8 @@ AtlasLootNewBossButtons = {
         "";
         "";
         "";
-        "Onyxia_1";
+        "";
+        "Onyxia";
         };
 
     RagefireChasm = {
@@ -1440,11 +1277,6 @@ AtlasLootNewBossButtons = {
         "";
         "ShadowfangKeep1";
         "";
-        "";
-        "";
-        "";
-        "";
-        "Valentineday3";
         "";
         "";
         "";
@@ -1807,10 +1639,10 @@ AtlasLootNewBossButtons = {
         };
 };
 
---------------------------------------------------
+------------------------------------------------
 -- AtlasLootBossButtons
--- This layout is loaded for CURRENT Atlas version
---------------------------------------------------
+-- This layout is loaded for BETA Atlas versions
+------------------------------------------------
 
 AtlasLootBossButtons = {
 
@@ -1876,17 +1708,6 @@ AtlasLootBossButtons = {
         "";
         "DrakTharonKeepTrash";
         };
-		
-	IcecrownStart = {
-		"";
-		"ICCLadyDeathwhisper";
-		"ICCLordMarrowgar";
-		"ICCGunshipBattle";
-		"ICCSaurfang";
-		"";
-		"";
-		"ICCTrash25Man";
-		};
 
     TheEyeOfEternity = {
         "WrathKeys";
@@ -1962,46 +1783,6 @@ AtlasLootBossButtons = {
         "OcuTrash";
         };
 
-    TrialOfTheChampion = {
-        "";
-        "TrialoftheChampionChampions";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "";
-        "TrialoftheChampionEadricthePure";
-        "TrialoftheChampionConfessorPaletress";
-        "TrialoftheChampionBlackKnight";
-        };
-
-    TrialOfTheCrusader = {
-        "";
-        "";
-        "";
-        "TrialoftheCrusaderNorthrendBeasts_A";
-        "";
-        "";
-        "";
-        "";
-        "TrialoftheCrusaderLordJaraxxus_A";
-        "TrialoftheCrusaderFactionChampions_A";
-        "TrialoftheCrusaderTwinValkyrs_A";
-        "";
-        "";
-        "TrialoftheCrusaderAnubarak_A";
-        "";
-        "TrialoftheCrusaderTributeHEROIC_A";
-        "TrialoftheCrusaderPatterns_A";
-        };
-
     ObsidianSanctum = {
         "";
         "";
@@ -2037,8 +1818,6 @@ AtlasLootBossButtons = {
         "";
         "";
         "UlduarIronCouncil";
-        "";
-        "";
         "";
         "";
         "";
@@ -2112,7 +1891,6 @@ AtlasLootBossButtons = {
     UtgardeKeep = {
         "";
         "";
-        "";
         "UtgardeKeepKeleseth";
         "UtgardeKeepSkarvald";
         "UtgardeKeepSkarvald";
@@ -2134,9 +1912,8 @@ AtlasLootBossButtons = {
 
     VaultOfArchavon = {
         "";
-        "VaultofArchavonArchavon1";
-        "VaultofArchavonEmalon1";
-        "VaultofArchavonKoralon1_A";
+        "VoAArchavon1";
+        "Emalon";
         };
 
     VioletHold = {
@@ -2383,7 +2160,6 @@ AtlasLootBossButtons = {
         "CoTTrash";
         "CoTTrash";
         "CoTTrash";
-        "CoTTrash";
         };
 
     GruulsLair = {
@@ -2604,7 +2380,6 @@ AtlasLootBossButtons = {
     TempestKeepBotanica = {
         "Shatar1";
         "BCKeys";
-        "";
         "";
         "TKBotSarannis";
         "TKBotFreywinn";
@@ -2876,7 +2651,7 @@ AtlasLootBossButtons = {
         "BWLEbonroc";
         "BWLFlamegor";
         "BWLChromaggus";
-        "BWLNefarian1";
+        "BWLNefarian";
         "";
         "BWLTrashMobs";
         "T1T2T3SET";
@@ -2999,6 +2774,7 @@ AtlasLootBossButtons = {
         };
         
     Maraudon = {
+        "OldKeys";
         "";
         "";
         "";
@@ -3053,7 +2829,7 @@ AtlasLootBossButtons = {
         "";
         "";
         "";
-        "Onyxia_1";
+        "Onyxia";
         };
 
     RagefireChasm = {

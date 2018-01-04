@@ -9,7 +9,7 @@ AtlasLoot_SetupForAtlas:
 This function sets up the Atlas specific XML objects
 ]]
 function AtlasLoot_SetupForAtlas()
-    --Position the frame with the AtlasLoot version details in the Atlas frame
+    --Poisition the frame with the AtlasLoot version details in the Atlas frame
     AtlasLootInfo:ClearAllPoints();
     AtlasLootInfo:SetParent(AtlasFrame);
     AtlasLootInfo:SetPoint("TOPLEFT", "AtlasFrame", "TOPLEFT", 546, -3);

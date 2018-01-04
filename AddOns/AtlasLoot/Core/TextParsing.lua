@@ -1,8 +1,9 @@
+local BabbleClass = LibStub("LibBabble-Class-3.0"):GetLookupTable();
+local BabbleBoss = LibStub("LibBabble-Boss-3.0"):GetLookupTable();
+local BabbleInventory = LibStub("LibBabble-Inventory-3.0"):GetLookupTable();
+local BabbleFaction = LibStub("LibBabble-Faction-3.0"):GetLookupTable();
+local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-local BabbleBoss = AtlasLoot_GetLocaleLibBabble("LibBabble-Boss-3.0")
-local BabbleInventory = AtlasLoot_GetLocaleLibBabble("LibBabble-Inventory-3.0")
-local BabbleFaction = AtlasLoot_GetLocaleLibBabble("LibBabble-Faction-3.0")
-local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 
 --------------------------------------------------------------------------------
 -- Text replacement function
@@ -10,16 +11,16 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 function AtlasLoot_FixText(text)
 
     -- Classes
-    text = gsub(text, "#c1#", LOCALIZED_CLASS_NAMES_MALE["DRUID"]);
-    text = gsub(text, "#c2#", LOCALIZED_CLASS_NAMES_MALE["HUNTER"]);
-    text = gsub(text, "#c3#", LOCALIZED_CLASS_NAMES_MALE["MAGE"]);
-    text = gsub(text, "#c4#", LOCALIZED_CLASS_NAMES_MALE["PALADIN"]);
-    text = gsub(text, "#c5#", LOCALIZED_CLASS_NAMES_MALE["PRIEST"]);
-    text = gsub(text, "#c6#", LOCALIZED_CLASS_NAMES_MALE["ROGUE"]);
-    text = gsub(text, "#c7#", LOCALIZED_CLASS_NAMES_MALE["SHAMAN"]);
-    text = gsub(text, "#c8#", LOCALIZED_CLASS_NAMES_MALE["WARLOCK"]);
-    text = gsub(text, "#c9#", LOCALIZED_CLASS_NAMES_MALE["WARRIOR"]);
-    text = gsub(text, "#c10#", LOCALIZED_CLASS_NAMES_MALE["DEATHKNIGHT"]);
+    text = gsub(text, "#c1#", BabbleClass["Druid"]);
+    text = gsub(text, "#c2#", BabbleClass["Hunter"]);
+    text = gsub(text, "#c3#", BabbleClass["Mage"]);
+    text = gsub(text, "#c4#", BabbleClass["Paladin"]);
+    text = gsub(text, "#c5#", BabbleClass["Priest"]);
+    text = gsub(text, "#c6#", BabbleClass["Rogue"]);
+    text = gsub(text, "#c7#", BabbleClass["Shaman"]);
+    text = gsub(text, "#c8#", BabbleClass["Warlock"]);
+    text = gsub(text, "#c9#", BabbleClass["Warrior"]);
+    text = gsub(text, "#c10#", BabbleClass["Deathknight"]);
 
     -- Professions
     text = gsub(text, "#p1#", (GetSpellInfo(2259)));	-- Alchemy
@@ -45,8 +46,8 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#p21#", (GetSpellInfo(26797)));	-- Spellfire Tailoring
     text = gsub(text, "#p22#", (GetSpellInfo(17040)));	-- Master Hammersmith
     text = gsub(text, "#p23#", (GetSpellInfo(2575)));	-- Mining
-    text = gsub(text, "#p24#", (GetSpellInfo(63275)));	-- Fishing
-
+	text = gsub(text, "#p24#", (GetSpellInfo(63275)));	-- Fishing
+	
     -- Reputation
     text = gsub(text, "#r1#", BabbleFaction["Neutral"]);
     text = gsub(text, "#r2#", BabbleFaction["Friendly"]);
@@ -131,7 +132,6 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#e21#", AL["Fish"]);
     text = gsub(text, "#e22#", AL["Combat Pet"]);
     text = gsub(text, "#e23#", AL["Fireworks"]);
-    text = gsub(text, "#e24#", AL["Fishing Lure"]);
 
     -- Labels for Loot Descriptions
     text = gsub(text, "#m1#", AL["Classes:"]);
@@ -150,9 +150,9 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#m14#", AL["18 Slot"]);
     text = gsub(text, "#m15#", AL["20 Slot"]);
     text = gsub(text, "#m16#", AL["(has random enchantment)"]);
-    text = gsub(text, "#m17#", AL["Currency"]);
-    text = gsub(text, "#m18#", AL["Currency (Alliance)"]);
-    text = gsub(text, "#m19#", AL["Currency (Horde)"]);
+    text = gsub(text, "#m17#", AL["Use to purchase rewards"]);
+    text = gsub(text, "#m18#", AL["Use to purchase rewards (Alliance)"]);
+    text = gsub(text, "#m19#", AL["Use to purchase rewards (Horde)"]);
     text = gsub(text, "#m20#", AL["Misc"]);
     text = gsub(text, "#m21#", AL["Tier 4"]);
     text = gsub(text, "#m22#", AL["Tier 5"]);
@@ -165,11 +165,7 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#m29#", AL["Tradable against sunmote + item above"]);
     text = gsub(text, "#m30#", AL["Tier 1"]);
     text = gsub(text, "#m31#", AL["Tier 2"]);
-    text = gsub(text, "#m32#", AL["Achievement Reward"]);
-    text = gsub(text, "#m33#", AL["Old Quest Item"]);
-    text = gsub(text, "#m34#", AL["Old Quest Reward"]);
-    text = gsub(text, "#m35#", AL["Tier 3"]);
-    text = gsub(text, "#m36#", AL["NOT AVAILABLE ANYMORE"]);
+    text = gsub(text, "#m32#",  AL["Achievement Reward"]);
 
     -- Misc
     text = gsub(text, "#j1#", AL["Normal Mode"]);
@@ -178,7 +174,6 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#j5#", AL["Dungeon Set 2 Summonable"]);
     text = gsub(text, "#j6#", AL["Dungeon Set 1"]);
     text = gsub(text, "#j7#", AL["Dungeon Set 2"]);
-    text = gsub(text, "#j8#", AL["Token Hand-Ins"]);
     text = gsub(text, "#j9#", AL["Level 60"]);
     text = gsub(text, "#j10#", AL["Level 70"]);
     text = gsub(text, "#j11#", AL["Fire Resistance Gear"]);
@@ -214,7 +209,6 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#j51#", AL["Accessories"]);
     text = gsub(text, "#j52#", AL["Heirloom"]);
     text = gsub(text, "#j53#", AL["Hard Mode"]);
-    text = gsub(text, "#j54#", AL["Level 80"]);
 
     -- Upper Deck Card Game
     text = gsub(text, "#ud1#", AL["Heroes of Azeroth"]);
@@ -252,18 +246,6 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#ud33#", AL["Foam Sword Rack"]);
     text = gsub(text, "#ud34#", AL["Sandbox Tiger"]);
     text = gsub(text, "#ud35#", AL["Fields of Honor"]);
-    text = gsub(text, "#ud36#", AL["Path of Cenarius"]);
-    text = gsub(text, "#ud37#", AL["Pinata"]);
-    text = gsub(text, "#ud38#", AL["El Pollo Grande"]);
-    text = gsub(text, "#ud39#", AL["Scourgewar"]);
-    text = gsub(text, "#ud40#", AL["Tiny"]);
-    text = gsub(text, "#ud41#", AL["Tuskarr Kite"]);
-    text = gsub(text, "#ud42#", AL["Spectral Kitten"]);
-    text = gsub(text, "#ud39#", AL["Scourgewar"]);
-    text = gsub(text, "#ud43#", AL["Wrathgate"]);
-    text = gsub(text, "#ud44#", AL["Landro's Gift"]);
-	text = gsub(text, "#ud45#", AL["Statue Generator"]);
-	text = gsub(text, "#ud46#", AL["Blazing Hippogryph"]);
 
     -- ZG Tokens
     text = gsub(text, "#zgt1#", AL["Primal Hakkari Kossack"]);
@@ -358,7 +340,6 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#x37#", AL["The Talon King's Coffer"]);
     text = gsub(text, "#x38#", AL["Mysterious Egg"]);
     text = gsub(text, "#x39#", AL["Hyldnir Spoils"]);
-    text = gsub(text, "#x40#", AL["Handful of Candy"]);
 
     -- NPC Names
     text = gsub(text, "#n1#", BabbleBoss["Lord Cobrahn"]);
@@ -562,11 +543,7 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#f8#", BabbleFaction["The Wyrmrest Accord"]);
     text = gsub(text, "#f9#", AL["Argent Tournament"]);
 
-    -- Blacksmithing Crafted Mail Sets
-    text = gsub(text, "#craftbm1#", AL["Bloodsoul Embrace"]);
-    text = gsub(text, "#craftbm2#", AL["Fel Iron Chain"]);
-
-    -- Blacksmithing Crafted Plate Sets
+    -- Blacksmithing Crafted Sets
     text = gsub(text, "#craftbp1#", AL["Imperial Plate"]);
     text = gsub(text, "#craftbp2#", AL["The Darksoul"]);
     text = gsub(text, "#craftbp3#", AL["Fel Iron Plate"]);
@@ -576,41 +553,8 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#craftbp7#", AL["Khorium Ward"]);
     text = gsub(text, "#craftbp8#", AL["Faith in Felsteel"]);
     text = gsub(text, "#craftbp9#", AL["Burning Rage"]);
-    text = gsub(text, "#craftbp10#", AL["Ornate Saronite Battlegear"]);
-    text = gsub(text, "#craftbp11#", AL["Savage Saronite Battlegear"]);
-
-    -- Leatherworking Crafted Leather Sets
-    text = gsub(text, "#craftlwl1#", AL["Volcanic Armor"]);
-    text = gsub(text, "#craftlwl2#", AL["Ironfeather Armor"]);
-    text = gsub(text, "#craftlwl3#", AL["Stormshroud Armor"]);
-    text = gsub(text, "#craftlwl4#", AL["Devilsaur Armor"]);
-    text = gsub(text, "#craftlwl5#", AL["Blood Tiger Harness"]);
-    text = gsub(text, "#craftlwl6#", AL["Primal Batskin"]);
-    text = gsub(text, "#craftlwl7#", AL["Wild Draenish Armor"]);
-    text = gsub(text, "#craftlwl8#", AL["Thick Draenic Armor"]);
-    text = gsub(text, "#craftlwl9#", AL["Fel Skin"]);
-    text = gsub(text, "#craftlwl10#", AL["Strength of the Clefthoof"]);
-    text = gsub(text, "#craftlwe1#", AL["Primal Intent"]);
-    text = gsub(text, "#craftlwt1#", AL["Windhawk Armor"]);
-    text = gsub(text, "#craftlwl11#", AL["Borean Embrace"]);
-    text = gsub(text, "#craftlwl12#", AL["Iceborne Embrace"]);
-    text = gsub(text, "#craftlwl13#", AL["Eviscerator's Battlegear"]);
-    text = gsub(text, "#craftlwl14#", AL["Overcaster Battlegear"]);
-
-    -- Leatherworking Crafted Mail Sets
-    text = gsub(text, "#craftlwm1#", AL["Green Dragon Mail"]);
-    text = gsub(text, "#craftlwm2#", AL["Blue Dragon Mail"]);
-    text = gsub(text, "#craftlwm3#", AL["Black Dragon Mail"]);
-    text = gsub(text, "#craftlwm4#", AL["Scaled Draenic Armor"]);
-    text = gsub(text, "#craftlwm5#", AL["Felscale Armor"]);
-    text = gsub(text, "#craftlwm6#", AL["Felstalker Armor"]);
-    text = gsub(text, "#craftlwm7#", AL["Fury of the Nether"]);
-    text = gsub(text, "#craftlwd1#", AL["Netherscale Armor"]);
-    text = gsub(text, "#craftlwd2#", AL["Netherstrike Armor"]);
-    text = gsub(text, "#craftlwm8#", AL["Frostscale Binding"]);
-    text = gsub(text, "#craftlwm9#", AL["Nerubian Hive"]);
-    text = gsub(text, "#craftlwm10#", AL["Stormhide Battlegear"]);
-    text = gsub(text, "#craftlwm11#", AL["Swiftarrow Battlefear"]);
+    text = gsub(text, "#craftbm1#", AL["Bloodsoul Embrace"]);
+    text = gsub(text, "#craftbm2#", AL["Fel Iron Chain"]);
 
     -- Tailoring Crafted Sets
     text = gsub(text, "#craftt1#", AL["Bloodvine Garb"]);
@@ -625,9 +569,29 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#crafttm1#", AL["Primal Mooncloth"]);
     text = gsub(text, "#crafttsh1#", AL["Shadow's Embrace"]);
     text = gsub(text, "#crafttsf1#", AL["Wrath of Spellfire"]);
-    text = gsub(text, "#craftt10#", AL["Frostwoven Power"]);
-    text = gsub(text, "#craftt11#", AL["Duskweaver"]);
-    text = gsub(text, "#craftt12#", AL["Frostsavage Battlegear"]);
+
+    -- Leatherworking Crafted Sets
+    text = gsub(text, "#craftlwl1#", AL["Volcanic Armor"]);
+    text = gsub(text, "#craftlwl2#", AL["Ironfeather Armor"]);
+    text = gsub(text, "#craftlwl3#", AL["Stormshroud Armor"]);
+    text = gsub(text, "#craftlwl4#", AL["Devilsaur Armor"]);
+    text = gsub(text, "#craftlwl5#", AL["Blood Tiger Harness"]);
+    text = gsub(text, "#craftlwl6#", AL["Primal Batskin"]);
+    text = gsub(text, "#craftlwl7#", AL["Wild Draenish Armor"]);
+    text = gsub(text, "#craftlwl8#", AL["Thick Draenic Armor"]);
+    text = gsub(text, "#craftlwl9#", AL["Fel Skin"]);
+    text = gsub(text, "#craftlwl10#", AL["Strength of the Clefthoof"]);
+    text = gsub(text, "#craftlwm1#", AL["Green Dragon Mail"]);
+    text = gsub(text, "#craftlwm2#", AL["Blue Dragon Mail"]);
+    text = gsub(text, "#craftlwm3#", AL["Black Dragon Mail"]);
+    text = gsub(text, "#craftlwm4#", AL["Scaled Draenic Armor"]);
+    text = gsub(text, "#craftlwm5#", AL["Felscale Armor"]);
+    text = gsub(text, "#craftlwm6#", AL["Felstalker Armor"]);
+    text = gsub(text, "#craftlwm7#", AL["Fury of the Nether"]);
+    text = gsub(text, "#craftlwe1#", AL["Primal Intent"]);
+    text = gsub(text, "#craftlwt1#", AL["Windhawk Armor"]);
+    text = gsub(text, "#craftlwd1#", AL["Netherscale Armor"]);
+    text = gsub(text, "#craftlwd2#", AL["Netherstrike Armor"]);
 
     -- Vanilla WoW Sets
     text = gsub(text, "#pre60s1#", AL["Defias Leather"]);
@@ -658,9 +622,7 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#bcs4#", AL["The Fists of Fury"]);
 
     -- Wrath Of The Lich King Sets
-    text = gsub(text, "#wotlk1#", AL["Raine's Revenge"]);
-    text = gsub(text, "#wotlk2#", AL["Purified Shard of the Gods"]);
-    text = gsub(text, "#wotlk3#", AL["Shiny Shard of the Gods"]);
+   text = gsub(text, "#wotlk1#", AL["Raine's Revenge"]);
 
     -- ZG Sets
     text = gsub(text, "#zgs1#", AL["Haruspex's Garb"]);
@@ -842,13 +804,13 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#t7s9_2#", AL["Dreadnaught Plate"]);
     text = gsub(text, "#t7s10_1#", AL["Scourgeborne Battlegear"]);
     text = gsub(text, "#t7s10_2#", AL["Scourgeborne Plate"]);
-
+    
     -- Tier 8 Sets
     text = gsub(text, "#t8s1_1#", AL["Nightsong Garb"]);
     text = gsub(text, "#t8s1_2#", AL["Nightsong Battlegear"]);
     text = gsub(text, "#t8s1_3#", AL["Nightsong Regalia"]);
     text = gsub(text, "#t8s2#", AL["Scourgestalker Battlegear"]);
-    text = gsub(text, "#t8s3#", AL["Kirin Tor Garb"]);
+    text = gsub(text, "#t8s3#", AL["Kirin'dor Garb"]);
     text = gsub(text, "#t8s4_1#", AL["Aegis Regalia"]);
     text = gsub(text, "#t8s4_2#", AL["Aegis Battlegear"]);
     text = gsub(text, "#t8s4_3#", AL["Aegis Plate"]);
@@ -865,65 +827,10 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#t8s10_2#", AL["Darkruned Plate"]);
 
     -- Tier 9 Sets
-    text = gsub(text, "#t9s1_1a#", AL["Malfurion's Garb"]);
-    text = gsub(text, "#t9s1_1h#", AL["Runetotem's Garb"]);
-    text = gsub(text, "#t9s1_2a#", AL["Malfurion's Battlegear"]);
-    text = gsub(text, "#t9s1_2h#", AL["Runetotem's Battlegear"]);
-    text = gsub(text, "#t9s1_3a#", AL["Malfurion's Regalia"]);
-    text = gsub(text, "#t9s1_3h#", AL["Runetotem's Regalia"]);
-    text = gsub(text, "#t9s2_a#", AL["Windrunner's Battlegear"]);
-    text = gsub(text, "#t9s2_h#", AL["Windrunner's Pursuit"]);
-    text = gsub(text, "#t9s3_a#", AL["Khadgar's Regalia"]);
-    text = gsub(text, "#t9s3_h#", AL["Sunstrider's Regalia"]);
-    text = gsub(text, "#t9s4_1a#", AL["Turalyon's Garb"]);
-    text = gsub(text, "#t9s4_1h#", AL["Liadrin's Garb"]);
-    text = gsub(text, "#t9s4_2a#", AL["Turalyon's Battlegear"]);
-    text = gsub(text, "#t9s4_2h#", AL["Liadrin's Battlegear"]);
-    text = gsub(text, "#t9s4_3a#", AL["Turalyon's Plate"]);
-    text = gsub(text, "#t9s4_3h#", AL["Liadrin's Plate"]);
-    text = gsub(text, "#t9s5_1a#", AL["Velen's Regalia"]);
-    text = gsub(text, "#t9s5_1h#", AL["Zabra's Regalia"]);
-    text = gsub(text, "#t9s5_2a#", AL["Velen's Raiment"]);
-    text = gsub(text, "#t9s5_2h#", AL["Zabra's Raiment"]);
-    text = gsub(text, "#t9s6_a#", AL["VanCleef's Battlegear"]);
-    text = gsub(text, "#t9s6_h#", AL["Garona's Battlegear"]);
-    text = gsub(text, "#t9s7_1a#", AL["Nobundo's Garb"]);
-    text = gsub(text, "#t9s7_1h#", AL["Thrall's Garb"]);
-    text = gsub(text, "#t9s7_2a#", AL["Nobundo's Battlegear"]);
-    text = gsub(text, "#t9s7_2h#", AL["Thrall's Battlegear"]);
-    text = gsub(text, "#t9s7_3a#", AL["Nobundo's Regalia"]);
-    text = gsub(text, "#t9s7_3h#", AL["Thrall's Regalia"]);
-    text = gsub(text, "#t9s8_a#", AL["Kel'Thuzad's Regalia"]);
-    text = gsub(text, "#t9s8_h#", AL["Gul'dan's Regalia"]);
-    text = gsub(text, "#t9s9_1a#", AL["Wrynn's Battlegear"]);
-    text = gsub(text, "#t9s9_1h#", AL["Hellscream's Battlegear"]);
-    text = gsub(text, "#t9s9_2a#", AL["Wrynn's Plate"]);
-    text = gsub(text, "#t9s9_2h#", AL["Hellscream's Plate"]);
-    text = gsub(text, "#t9s10_1a#", AL["Thassarian's Plate"]);
-    text = gsub(text, "#t9s10_1h#", AL["Koltira's Plate"]);
-    text = gsub(text, "#t9s10_2a#", AL["Thassarian's Battlegear"]);
-    text = gsub(text, "#t9s10_2h#", AL["Koltira's Battlegear"]);
-
-    -- Tier 10 Sets
-    text = gsub(text, "#t10s1_1#", AL["Lasherweave's Garb"]);
-    text = gsub(text, "#t10s1_2#", AL["Lasherweave's Battlegear"]);
-    text = gsub(text, "#t10s1_3#", AL["Lasherweave's Regalia"]);
-    text = gsub(text, "#t10s2#", AL["Ahn'Kahar Blood Hunter's Battlegear"]);
-    text = gsub(text, "#t10s3#", AL["Bloodmage's Regalia"]);
-    text = gsub(text, "#t10s4_1#", AL["Lightsworn Garb"]);
-    text = gsub(text, "#t10s4_2#", AL["Lightsworn Battlegear"]);
-    text = gsub(text, "#t10s4_3#", AL["Lightsworn Plate"]);
-    text = gsub(text, "#t10s5_1#", AL["Crimson Acolyte's Regalia"]);
-    text = gsub(text, "#t10s5_2#", AL["Crimson Acolyte's Raiment"]);
-    text = gsub(text, "#t10s6#", AL["Shadowblade's Battlegear"]);
-    text = gsub(text, "#t10s7_1#", AL["Frost Witch's Garb"]);
-    text = gsub(text, "#t10s7_2#", AL["Frost Witch's Battlegear"]);
-    text = gsub(text, "#t10s7_3#", AL["Frost Witch's Regalia"]);
-    text = gsub(text, "#t10s8#", AL["Dark Coven's Garb"]);
-    text = gsub(text, "#t10s9_1#", AL["Ymirjar Lord's Battlegear"]);
-    text = gsub(text, "#t10s9_2#", AL["Ymirjar Lord's Plate"]);
-    text = gsub(text, "#t10s10_1#", AL["Scourgelord's Battlegear"]);
-    text = gsub(text, "#t10s10_2#", AL["Scourgelord's Plate"]);
+    text = gsub(text, "#t8s10_1a#", AL["Thassarian's Plate"]);
+    text = gsub(text, "#t8s10_1h#", AL["Koltira's Plate"]);
+    text = gsub(text, "#t8s10_2a#", AL["Thassarian's Battlegear"]);
+    text = gsub(text, "#t8s10_2h#", AL["Koltira's Battlegear"]);
 
     -- Arathi Basin Sets - Alliance
     text = gsub(text, "#absa1#", AL["The Highlander's Intent"]);
@@ -1024,7 +931,7 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#arenas9#", AL["Gladiator's Battlegear"]);
     text = gsub(text, "#arenas10#", AL["Gladiator's Desecration"]);
 
-    -- Crafting
+    --Crafting
     text = gsub(text, "#sr#", AL["Skill Required:"]);
 
     -- Misc PvP Set Text
@@ -1043,20 +950,6 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "=ec1=", "|cffFF8400");
     text = gsub(text, "=ds=", "|cffFFd200");
 
-    -- Months
-    text = gsub(text, "#month1#", AL["January"]);
-    text = gsub(text, "#month2#", AL["February"]);
-    text = gsub(text, "#month3#", AL["March"]);
-    text = gsub(text, "#month4#", AL["April"]);
-    text = gsub(text, "#month5#", AL["May"]);
-    text = gsub(text, "#month6#", AL["June"]);
-    text = gsub(text, "#month7#", AL["July"]);
-    text = gsub(text, "#month8#", AL["August"]);
-    text = gsub(text, "#month9#", AL["September"]);
-    text = gsub(text, "#month10#", AL["October"]);
-    text = gsub(text, "#month11#", AL["November"]);
-    text = gsub(text, "#month12#", AL["December"]);
-
     -- Currency Icons
     text = gsub(text, "#gold#", "|TInterface\\AddOns\\AtlasLoot\\Images\\gold:0|t");
     text = gsub(text, "#silver#", "|TInterface\\AddOns\\AtlasLoot\\Images\\silver:0|t");
@@ -1065,7 +958,7 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#ab#", "|TInterface\\Icons\\INV_Jewelry_Amulet_07:0|t");
     text = gsub(text, "#av#", "|TInterface\\Icons\\INV_Jewelry_Necklace_21:0|t");
     text = gsub(text, "#eos#", "|TInterface\\Icons\\Spell_Nature_EyeOfTheStorm:0|t");
-    text = gsub(text, "#arena#", "|TInterface\\PVPFrame\\PVP-ArenaPoints-Icon:14:14:2:-1|t");
+    text = gsub(text, "#arena#", "|TInterface\\PVPFrame\\PVP-ArenaPoints-Icon:0|t");
     text = gsub(text, "#markthrallmar#", "|TInterface\\Icons\\INV_Misc_Token_Thrallmar:0|t");
     text = gsub(text, "#markhhold#", "|TInterface\\Icons\\INV_Misc_Token_HonorHold:0|t");
     text = gsub(text, "#halaabattle#", "|TInterface\\Icons\\INV_Misc_Rune_08:0|t");
@@ -1078,9 +971,7 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#eofvalor#", "|TInterface\\Icons\\Spell_Holy_ProclaimChampion_02:0|t");
     text = gsub(text, "#eofheroism#", "|TInterface\\Icons\\Spell_Holy_ProclaimChampion:0|t");
     text = gsub(text, "#eofconquest#", "|TInterface\\Icons\\Spell_Holy_ChampionsGrace:0|t");
-    text = gsub(text, "#eoftriumph#", "|TInterface\\Icons\\spell_holy_summonchampion:0|t");
-    text = gsub(text, "#eoffrost#", "|TInterface\\Icons\\inv_misc_frostemblem_01:0|t");
-    text = gsub(text, "#trophyofthecrusade#", "|TInterface\\Icons\\INV_Misc_Trophy_Argent:0|t");
+    text = gsub(text, "#eoftriumph#", "|TInterface\\Icons\\Spell_Holy_EmpowerChampion:0|t");
     text = gsub(text, "#darkmoon#", "|TInterface\\Icons\\INV_Misc_Ticket_Darkmoon_01:0|t");
     text = gsub(text, "#noblegarden#", "|TInterface\\Icons\\Achievement_Noblegarden_Chocolate_Egg:0|t");
     text = gsub(text, "#brewfest#", "|TInterface\\Icons\\INV_Misc_Coin_01:0|t");
@@ -1096,20 +987,17 @@ function AtlasLoot_FixText(text)
     text = gsub(text, "#ogrilashard#", "|TInterface\\Icons\\INV_Misc_Apexis_Shard:0|t");
     text = gsub(text, "#ogrilacrystal#", "|TInterface\\Icons\\INV_Misc_Apexis_Crystal:0|t");
     text = gsub(text, "#winterfinclam#", "|TInterface\\Icons\\INV_Misc_Shell_03:0|t");
-    text = gsub(text, "#horde#", "|TInterface\\AddOns\\AtlasLoot\\Images\\Horde:14:14:0:-1|t");
-    text = gsub(text, "#alliance#", "|TInterface\\AddOns\\AtlasLoot\\Images\\Alliance:16:16:0:-2|t");
-    text = gsub(text, "#fireflower#", "|TInterface\\Icons\\INV_SummerFest_FireFlower:0|t");
-    text = gsub(text, "#t10mark#", "|TInterface\\Icons\\ability_paladin_shieldofthetemplar:0|t");
-	text = gsub(text, "#valentineday#", "|TInterface\\Icons\\inv_valentinescard01:0|t");
-	text = gsub(text, "#valentineday2#", "|TInterface\\Icons\\inv_jewelry_necklace_43:0|t");
+    text = gsub(text, "#horde#", "|TInterface\\AddOns\\AtlasLoot\\Images\\Horde:0|t");
+    text = gsub(text, "#alliance#", "|TInterface\\AddOns\\AtlasLoot\\Images\\Alliance:0|t");
+	text = gsub(text, "#fireflower#", "|TInterface\\Icons\\INV_SummerFest_FireFlower:0|t");
 
     englishFaction, _ = UnitFactionGroup("player")
     if englishFaction == "Horde" then
-        text = gsub(text, "#faction#", "|TInterface\\AddOns\\AtlasLoot\\Images\\Horde:14:14:0:-1|t");
+        text = gsub(text, "#faction#", "|TInterface\\AddOns\\AtlasLoot\\Images\\Horde:0|t");
         text = gsub(text, "#factionoutlandPvP#", "|TInterface\\AddOns\\AtlasLoot\\Images\\Horde:0|t");
         text = gsub(text, "#markthrallmarhhold#", "|TInterface\\Icons\\INV_Misc_Token_Thrallmar:0|t");
     else
-        text = gsub(text, "#faction#", "|TInterface\\AddOns\\AtlasLoot\\Images\\Alliance:16:16:0:-2|t");
+        text = gsub(text, "#faction#", "|TInterface\\AddOns\\AtlasLoot\\Images\\Alliance:0|t");
         text = gsub(text, "#factionoutlandPvP#", "|TInterface\\AddOns\\AtlasLoot\\Images\\Alliance:0|t");
         text = gsub(text, "#markthrallmarhhold#", "|TInterface\\Icons\\INV_Misc_Token_HonorHold:0|t");
     end

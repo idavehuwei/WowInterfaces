@@ -1,20 +1,23 @@
 ﻿## Interface: 30100
 ## Title: AtlasLoot_Crafting
-## Title-zhCN: 副本掉落 |cFF0099FF[交易技能]|r
+## Title-zhCN: AtlasLoot |cFF0099FF[交易技能]|r
 ## Title-zhTW: |r|cFF0099FF[地圖]|rAL 商業技能
 ## Notes: AtlasLoot loot tables of Crafting Items
 ## Notes-deDE: AtlasLoot loot tables of Crafting Items
 ## Notes-zhCN: AtlasLoot 交易技能制造出的物品表
 ## Notes-zhTW: AtlasLoot 商業技能物品資料庫
 ## Author: Daviesh
-## Version: v5.11.01
+## Version: v5.06.02
 ## X-eMail: oma_daviesh@hotmail.com
 ## X-Category: Map
 ## X-License: GPL v2
-## X-DuowanAddon: 地图
 ## X-Website: http://www.atlasloot.net
 ## Dependencies: AtlasLoot
 ## LoadOnDemand: 1
+## X-Curse-Packaged-Version: v5.06.02
+## X-Curse-Project-Name: Atlasloot Enhanced
+## X-Curse-Project-ID: atlasloot-enhanced
+## X-Curse-Repository-ID: wow/atlasloot-enhanced/mainline
 
 crafting.lua
 localization.lua

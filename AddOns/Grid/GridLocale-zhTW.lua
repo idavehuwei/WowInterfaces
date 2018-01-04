@@ -57,6 +57,8 @@ local strings_zhTW = {
 	["Adjust the height of each unit's frame."] = "為每一個單位框架調整高度。",
 	["Frame Texture"] = "框架材質",
 	["Adjust the texture of each unit's frame."] = "調整每一個單位框架的材質。",
+	["Border Size"] = "邊框大小",
+	["Adjust the size of the border indicators."] = "調整邊框指示的大小",
 	["Corner Size"] = "角落提示器大小",
 	["Adjust the size of the corner indicators."] = "調整角落提示器的大小。",
 	["Enable Mouseover Highlight"] = "啟用滑鼠懸停高亮",
@@ -75,6 +77,10 @@ local strings_zhTW = {
 	["Adjust the size of the center icon."] = "調整中央圖示大小。",
 	["Icon Border Size"] = "圖示邊框大小",
 	["Adjust the size of the center icon's border."] = "調整中央圖示的邊框大小",
+	["Icon X offset"] = "中央圖示水平偏移",
+	["Adjust the offset of the X-axis for center icon."] = "調整中央圖示的水平偏移值。",
+	["Icon Y offset"] = "中央圖示垂直偏移",
+	["Adjust the offset of the Y-axis for center icon."] = "調整中央圖示的垂直偏移值。",
 	["Icon Stack Text"] = "圖示堆疊文字",
 	["Toggle center icon's stack count text."] = "啟用/禁用圖示的堆疊計數文字。",
 	["Icon Cooldown Frame"] = "圖示冷卻時間框架",
@@ -203,7 +209,9 @@ local strings_zhTW = {
 	--{{{ GridStatus
 	["Status"] = "狀態",
 	["Options for %s."] = "%s 設定選項。",
-
+	["Reset class colors"] = "重置職業顏色",
+	["Reset class colors to defaults."] = "重置職業顏色為默認設定",
+	
 	-- module prototype
 	["Status: %s"] = "狀態: %s",
 	["Color"] = "顏色",

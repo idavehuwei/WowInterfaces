@@ -25,21 +25,8 @@ if (GetLocale() == "zhTW") then
   -- Naxxramas Level 80
   -- Obsidian Sanctum
   -- The Eye of Eternity
+  -- Vault of Archavon
   -- Ulduar
-  -- Trial of the Champion
-  -- Trial of the Crusader
-  -- Trial of the Grand Crusader
-  -- Onyxia (Level 80)
-  -- The Forge of Souls
-  -- Pit of Saron
-  -- Halls of Reflection
-  -- Icecrown Citadel
-  -- Icecrown Citadel HEROIC
-  -- Ruby Sanctum
-  	AtlasLoot_TableNames["Halion"][1] = "海萊恩";
-  	AtlasLoot_TableNames["HalionHEROIC"][1] = "海萊恩";
-  	AtlasLoot_TableNames["Halion25Man"][1] = "海萊恩";
-  	AtlasLoot_TableNames["Halion25ManHEROIC"][1] = "海萊恩";
 
 --------------------
 --- BC Instances ---
@@ -73,7 +60,6 @@ if (GetLocale() == "zhTW") then
     AtlasLoot_TableNames["KaraOperaEvent"][1] = "歌劇事件";
   -- Sunwell Isle: Magister's Terrace
   -- Sunwell Isle: Sunwell Plateau
-	AtlasLoot_TableNames["SPPatterns"][1] = "太陽之井高地卷軸";
   -- TK: The Arcatraz
   -- TK: The Botanica
   --TK: The Eye
@@ -106,6 +92,7 @@ if (GetLocale() == "zhTW") then
   -- Maraudon
   -- Molten Core
     AtlasLoot_TableNames["MCRANDOMBOSSDROPPS"][1] = "首領隨機掉落";
+  -- Onyxia's Lair
   -- Ragefire Chasm
   -- Razorfen Downs
   -- Razorfen Kraul
@@ -195,8 +182,5 @@ if (GetLocale() == "zhTW") then
 --- Other ---
 -------------
 
-  -- Menus, the entry does nothing, but makes the generalised loot table code less complex
-
-  -- If all else fails!
 
 end

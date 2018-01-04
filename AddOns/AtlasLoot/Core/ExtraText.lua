@@ -1,8 +1,4 @@
 local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-local BabbleBoss = AtlasLoot_GetLocaleLibBabble("LibBabble-Boss-3.0")
-local BabbleInventory = AtlasLoot_GetLocaleLibBabble("LibBabble-Inventory-3.0")
-local BabbleFaction = AtlasLoot_GetLocaleLibBabble("LibBabble-Faction-3.0")
-local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 
 -- Colours stored for code readability
 local GREY = "|cff999999";
@@ -89,6 +85,7 @@ AtlasLoot_ExtraText = {
         GREY..INDENT..AL["Trash Mobs"];
         GREY..INDENT..AL["Tier 1/2 Sets"];
     };
+
     CFRTheSteamvault = {
         "";
         GREY..INDENT..AL["Trash Mobs"];
@@ -138,18 +135,6 @@ AtlasLoot_ExtraText = {
         "";
         GREY..INDENT..AL["Trash Mobs"];
     };
-	FHTheForgeOfSouls = {
-        "";
-        GREY..INDENT..AL["Trash Mobs"];
-    };
-	FHPitOfSaron = {
-        "";
-        GREY..INDENT..AL["Trash Mobs"];
-    };
-	FHHallsOfReflection = {
-        "";
-        GREY..INDENT..AL["Trash Mobs"];
-    };
     Gnomeregan = {
         "";
         GREY..INDENT..AL["Trash Mobs"];
@@ -159,22 +144,6 @@ AtlasLoot_ExtraText = {
         GREY..INDENT..AL["Trash Mobs"];
     };
     HCTheShatteredHalls = {
-        "";
-        GREY..INDENT..AL["Trash Mobs"];
-    };
-    IcecrownStart = {
-        "";
-        GREY..INDENT..AL["Trash Mobs"];
-    };
-    IcecrownCitadelA = {
-        "";
-        GREY..INDENT..AL["Trash Mobs"];
-    };
-    IcecrownCitadelB = {
-        "";
-        GREY..INDENT..AL["Trash Mobs"];
-    };
-    IcecrownCitadelC = {
         "";
         GREY..INDENT..AL["Trash Mobs"];
     };
@@ -297,11 +266,6 @@ AtlasLoot_ExtraText = {
         GREY..INDENT..AL["AQ40 Class Sets"];
         GREY..INDENT..AL["AQ Opening Quest Chain"];
     };
-    TrialOfTheCrusader = {
-        "";
-        GREY..INDENT..AL["Tribute Run"];
-        GREY..INDENT..AL["Trial of the Crusader Patterns/Plans"];
-    };
     Uldaman = {
         "";
         GREY..INDENT..AL["Trash Mobs"];
@@ -310,36 +274,36 @@ AtlasLoot_ExtraText = {
         "";
         GREY..INDENT..AL["Trash Mobs"];
     };
-    UlduarA = {
+	UlduarA = {
         "";
         GREY..INDENT..AL["Trash Mobs"];
-        GREY..INDENT..AL["Ulduar Formula/Patterns/Plans"];
-        GREY..INDENT..AL["Tier 7/8 Sets"];
-    };
-    UlduarB = {
+		GREY..INDENT..AL["Ulduar Formula/Patterns/Plans"];
+		GREY..INDENT..AL["Tier 7/8 Sets"];
+	};
+	UlduarB = {
         "";
         GREY..INDENT..AL["Trash Mobs"];
-        GREY..INDENT..AL["Ulduar Formula/Patterns/Plans"];
-        GREY..INDENT..AL["Tier 7/8 Sets"];
-    };
-    UlduarC = {
+		GREY..INDENT..AL["Ulduar Formula/Patterns/Plans"];
+		GREY..INDENT..AL["Tier 7/8 Sets"];
+	};
+	UlduarC = {
         "";
         GREY..INDENT..AL["Trash Mobs"];
-        GREY..INDENT..AL["Ulduar Formula/Patterns/Plans"];
-        GREY..INDENT..AL["Tier 7/8 Sets"];
-    };
-    UlduarD = {
+		GREY..INDENT..AL["Ulduar Formula/Patterns/Plans"];
+		GREY..INDENT..AL["Tier 7/8 Sets"];
+	};
+	UlduarD = {
         "";
         GREY..INDENT..AL["Trash Mobs"];
-        GREY..INDENT..AL["Ulduar Formula/Patterns/Plans"];
-        GREY..INDENT..AL["Tier 7/8 Sets"];
-    };
-    UlduarE = {
+		GREY..INDENT..AL["Ulduar Formula/Patterns/Plans"];
+		GREY..INDENT..AL["Tier 7/8 Sets"];
+	};
+	UlduarE = {
         "";
         GREY..INDENT..AL["Trash Mobs"];
-        GREY..INDENT..AL["Ulduar Formula/Patterns/Plans"];
-        GREY..INDENT..AL["Tier 7/8 Sets"];
-    };
+		GREY..INDENT..AL["Ulduar Formula/Patterns/Plans"];
+		GREY..INDENT..AL["Tier 7/8 Sets"];
+	};
     UlduarHallsofStone = {
         "";
         GREY..INDENT..AL["Trash Mobs"];
@@ -380,26 +344,36 @@ AtlasLoot_ExtraText = {
     AlteracValleyNorth = {
         "";
         GREEN..AL["Misc. Rewards"];
-        GREEN..BabbleInventory["Armor"];
+        GREEN..AL["Superior Rewards"];
+        GREEN..AL["Epic Rewards"];
     };
     AlteracValleySouth = {
         "";
         GREEN..AL["Misc. Rewards"];
-        GREEN..BabbleInventory["Armor"];
+        GREEN..AL["Superior Rewards"];
+        GREEN..AL["Epic Rewards"];
     };
     ArathiBasin = {
         "";
         GREEN..AL["Misc. Rewards"];
+        GREEN..AL["Level 20-29 Rewards"];
+        GREEN..AL["Level 20-29 Rewards"];
+        GREEN..AL["Level 30-39 Rewards"];
         GREEN..AL["Level 40-49 Rewards"];
-        GREEN..AL["Level 20-39 Rewards"];
+        GREEN..AL["Level 40-49 Rewards"];
+        GREEN..AL["Level 50-59 Rewards"];
+        GREEN..AL["Level 60 Rewards"];
         "";
         GREEN..AL["Arathi Basin Sets"];
     };
     WarsongGulch = {
         "";
         GREEN..AL["Misc. Rewards"];
-        GREEN..AL["Accessories"];
-        GREEN..AL["Weapons"];
-        GREEN..BabbleInventory["Armor"];
+        GREEN..AL["Level 10-19 Rewards"];
+        GREEN..AL["Level 20-29 Rewards"];
+        GREEN..AL["Level 30-39 Rewards"];
+        GREEN..AL["Level 40-49 Rewards"];
+        GREEN..AL["Level 50-59 Rewards"];
+        GREEN..AL["Level 60 Rewards"];
     };    
 };

@@ -1,5 +1,5 @@
 ﻿-- AtlasLoot zhCN constants file
--- $Id: constants.cn.lua 2598 2010-03-17 08:19:03Z hegarol $
+-- $Id: constants.cn.lua 2116 2009-06-23 18:41:12Z Celellach $
 
 --Create the library instance
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
@@ -8,8 +8,7 @@ local AL = AceLocale:NewLocale("AtlasLoot", "zhCN", false);
 
 if AL then
 	--Text strings for UI objects
-	AL["AtlasLoot"] = "副本掉落";
-	AL["|cffFF8400AtlasLoot Enhanced v"] = "|cffFF8400副本掉落 v";
+	--AL["AtlasLoot"] = true;
 	AL["No match found for"] = "未找到物品";
 	AL["Search"] = "搜索";
 	AL["Clear"] = "重置";
@@ -176,7 +175,7 @@ if AL then
 	AL["Collections"] = "套装/收藏";
 	AL["Factions"] = "阵营";
 	AL["World Events"] = "世界事件";
-	AL["Load Modules"] = "全部加载";
+	AL["Load Modules"] = "载入所有数据";
 	AL["Crafting"] = "制造的物品";
 	AL["Crafting Daily Quests"] = "交易技能日常任务";
 	
@@ -224,50 +223,6 @@ if AL then
 	AL["Transmutes"] = "转化";
 	AL["Flasks"] = "药剂";
 
-	-- Filter
-	AL["Filter"] = "筛选";
-	AL["Select All Loot"] = "选择所有掉落物品";
-	AL["Apply Filter:"] = "套用筛选条件";
-	AL["Armor:"] = "护甲种类:";
-	AL["Melee weapons:"] = "近战武器:";
-	AL["Ranged weapons:"] = "远程武器:";
-	AL["Relics:"] = "圣物";
-	AL["Other:"] = "其他:";
-
-	-- Wishlist
-	AL["Close"] = "关闭";
-	AL["Wishlist"] = "装备愿望清单";
-	AL["Own Wishlists"] = "自己的愿望清单";
-	AL["Other Wishlists"] = "其他的愿望清单";
-	AL["Shared Wishlists"] = "分享的愿望清单";
-	AL["Mark items in loot tables"] = "在物品表标记物品";
-	AL["Mark items from own Wishlist"] = "从自己的愿望清单标记物品";
-	AL["Mark items from all Wishlists"] = "从所有的愿望清单标记物品";
-	AL["Enable Wishlist Sharing"] = "允许愿望清单分享";
-	AL["Auto reject in combat"] = "战斗中自动拒绝";
-	AL["Always use default Wishlist"] = "永远使用预设的愿望清单";
-	AL["Add Wishlist"] = "新增愿望清单";
-	AL["Edit Wishlist"] = "编辑愿望清单";
-	AL["Show More Icons"] = "显示更多图示";
-	AL["Wishlist name:"] = "愿望清单名称:";
-	AL["Delete"] = "删除";
-	AL["Edit"] = "编辑";
-	AL["Share"] = "分享";
-	AL["Show all Wishlists"] = "显示所有的愿望清单";
-	AL["Show own Wishlists"] = "显示自己的愿望清单";
-	AL["Show shared Wishlists"] = "显示分享的愿望清单";
-	AL["You must wait "] = "你必须等候 ";
-	AL[" seconds before you can send a new Wishlist to "] = " 秒后才可以将愿望清单传送给";
-	AL["Send Wishlist (%s) to"] = "传送 '%s' 愿望清单给";
-	AL["Send"] = "传送";
-	AL["Cancel"] = "取消";
-	AL["Delete Wishlist %s?"] = "是否删除 '%s' 愿望清单?";
-	AL["%s sends you a Wishlist. Accept?"] = "%s传送了一个愿望清单给你，是否接受?";
-	AL[" tried to send you a Wishlist. Rejected because you are in combat."] = "尝试传送一个愿望清单给你，因你正在战斗中而系统自动拒绝了。";
-	AL[" rejects your Wishlist."] = "拒绝了你的愿望清单";
-	AL["You can't send Wishlists to yourself"] = "你不能将愿望清单传送给自己。";
-	AL["Please set a default Wishlist."] = "请设定一个预设的愿望清单。";
-	AL["Set as default Wishlist"] = "设为预设的愿望清单";
 	--Enchanting
 	AL["Enchant Boots"] = "附魔脚部";
 	AL["Enchant Bracer"] = "附魔护腕";
@@ -318,9 +273,9 @@ if AL then
 	AL["16 Slot"] = "16格";
 	AL["10 Slot"] = "10格";
 	AL["(has random enchantment)"] = "(随机附魔)";
-	AL["Currency"] = "用以购买奖励";
-	AL["Currency (Horde)"] = "用以购买奖励 (部落)";
-	AL["Currency (Alliance)"] = "用以购买奖励 (联盟)";
+	AL["Use to purchase rewards"] = "用以购买奖励";
+	AL["Use to purchase rewards (Horde)"] = "用以购买奖励 (部落)";
+	AL["Use to purchase rewards (Alliance)"] = "用以购买奖励 (联盟)";
 	AL["World Bosses"] = "世界首领";
 	AL["Reputation Factions"] = "声望阵营";
 	AL["Sets/Collections"] = "套装/收藏";
@@ -420,10 +375,13 @@ if AL then
 	
 	--Battleground Brackets
 	AL["Misc. Rewards"] = "其他奖励";
+	AL["Superior Rewards"] = "精良级别奖励";
+	AL["Epic Rewards"] = "史诗级别奖励";
+	AL["Level 10-19 Rewards"] = "等级10-19奖励";
 	AL["Level 20-29 Rewards"] = "等级20-29奖励";
 	AL["Level 30-39 Rewards"] = "等级30-39奖励";
-	AL["Level 20-39 Rewards"] = "等级20-39奖励";
 	AL["Level 40-49 Rewards"] = "等级40-49奖励";
+	AL["Level 50-59 Rewards"] = "等级50-59奖励";
 	AL["Level 60 Rewards"] = "等级60奖励";
 
 	--Brood of Nozdormu Paths
@@ -919,7 +877,7 @@ if AL then
 	AL["PvP Accessories - Alliance (Level 60)"] = "PvP奖励杂物 - 联盟 (等级 60)";
 	AL["PvP Accessories - Horde (Level 60)"] = "PvP奖励杂物 - 部落 (等级 60)";
 	AL["PvP Accessories (Level 70)"] = "PvP奖励杂物 (等级 70)";
-	AL["PvP Misc"] = "PvP珠宝设计图";
+	AL["PvP Jewelcrafting Designs and Gems"] = "PvP珠宝设计图";
 	AL["PvP Rewards"] = "PvP奖励";
 	AL["PvP Armor Sets"] = "PvP奖励套装";
 	AL["PvP Weapons"] = "PvP奖励武器";
@@ -967,7 +925,7 @@ if AL then
 
 	--Pets
 	AL["Pets"] = "宠物";
-	AL["Vanity Pets"] = "非战斗宠物";
+	AL["Non-Combat Pets"] = "非战斗宠物";
 
 	--Mounts
 	AL["Mounts"] = "坐骑";
