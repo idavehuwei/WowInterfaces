@@ -1097,17 +1097,35 @@ function GTFO_CheckTankMode()
 				local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, itemSellPrice = GetItemInfo(GetInventoryItemID("PLAYER",17));
 				local itemStats = {};
 				if (not itemLink) then
-						GTFO_DebugPrint("Item found, but unable to scan it - Tank mode off for now");
-						return nil;
+					GTFO_DebugPrint("Item found, but unable to scan it - Tank mode off for now");
+					return nil;
 				end
-				itemStats = GetItemStats(itemLink, itemStats);
-				for statType, statValue in pairs(itemStats) do
-					if (statType == "ITEM_MOD_INTELLECT_SHORT" or statType == "ITEM_MOD_SPIRIT_SHORT") then
-						GTFO_DebugPrint("Healing Shield found - Tank mode off");
-						return nil;
+				
+				--itemStats = GetItemStats(itemLink, itemStats);
+				--for statType, statValue in pairs(itemStats) do
+				--	if (statType == "ITEM_MOD_INTELLECT_SHORT" or statType == "ITEM_MOD_SPIRIT_SHORT") then
+				--		GTFO_DebugPrint("Healing Shield found - Tank mode off");
+				--		return nil;
+				--	end
+				--end
+				--GTFO_DebugPrint("Tanking Shield found - tank mode activated");
+				
+				local current = {};
+				local isInspect = false;
+				local group = GetActiveTalentGroup(isInspect);
+				local maxTree, _ = 1;
+				for i = 1, GetNumTalentTabs() do
+					_, _, current[i] = GetTalentTabInfo(i,isInspect,nil,group);
+					if (current[i] > current[maxTree]) then
+						maxTree = i;
 					end
 				end
-				GTFO_DebugPrint("Tanking Shield found - tank mode activated");
+				
+				if(maxTree ~= 2) then
+					print("current_telent: "..tostring(GetTalentTabInfo(maxTree,isInspect,nil,group)))
+					return nil;
+				end
+				
 				return true;
 			end
 		else
