@@ -1122,7 +1122,6 @@ function GTFO_CheckTankMode()
 				end
 				
 				if(maxTree ~= 2) then
-					print("current_telent: "..tostring(GetTalentTabInfo(maxTree,isInspect,nil,group)))
 					return nil;
 				end
 				
