@@ -3,12 +3,15 @@
 <Script file="EventAlertOptions.lua"/>
 
     <Frame name="EA_Options_Frame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent" enableKeyboard="true">
+
         <Size>
             <AbsDimension x="300" y="450"/>
         </Size>
+
         <Anchors>
             <Anchor point="CENTER"/>
         </Anchors>
+
         <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
             <BackgroundInsets>
                 <AbsInset left="11" right="12" top="12" bottom="11"/>
@@ -20,8 +23,11 @@
                 <AbsValue val="32"/>
             </EdgeSize>
         </Backdrop>
+
         <Layers>
+
             <Layer level="ARTWORK">
+
                 <Texture name="$parent_Header" file="Interface\DialogFrame\UI-DialogBox-Header">
                     <Size>
                         <AbsDimension x="300" y="64"/>
@@ -44,8 +50,11 @@
                         </Anchor>
                     </Anchors>
                 </FontString>
+
             </Layer>
+
         </Layers>
+
         <Frames>
 
             <Button name="$parent_ToggleIconOptions" inherits="OptionsButtonTemplate" text="EA_ICON_POSIZION_OPTION">

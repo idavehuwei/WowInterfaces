@@ -191,86 +191,85 @@ function EventAlert_CreateFrames()
 			end
 		end
 
-    		local EA_name, EA_rank = GetSpellInfo(index);
-		if (EA_name) then
-        --[[
-        	Blizzard isn't consistent with the names and ranks of the procs in relation to the names/ranks of the talents.
-	        So, we have to add the code below to make the options menu understandable for certain items.
-            And because of localization, I have to go back and re-call the original talent ID.
-            Which is, honestly, damned annoying.  But... oh well!  QQ, right?
-        --]]
-	
-			if (EA_name == "Death Trance!") then
-				local EA_name2 = GetSpellInfo(49018);
-				EA_name = EA_name2;
-			end
-			if (EA_name == "Fireball!") then
-				local EA_name2 = GetSpellInfo(44549);
-				EA_name = EA_name2;
-			end
-			if (index == 12536) then
-				local EA_name3 = GetSpellInfo(11213);
-				EA_name = EA_name3;
-			end
-			if (index == 16870) then
-					local EA_name4 = GetSpellInfo(16864);
-				EA_name = EA_name4;
-			end
-			if (index == 48517) then
-				local EA_name5 = GetSpellInfo(5176);
-				EA_rank = EA_name5;
-			end
-			if (index == 48518) then
-				local EA_name6 = GetSpellInfo(2912);
-				EA_rank = EA_name6;
-			end
-			if (index == 34754) then
-				local EA_name7 = GetSpellInfo(34753);
-			    EA_name = EA_name7;
-			end
-			if (index == 14743 or index == 27828) then
-				local EA_name8 = GetSpellInfo(14531);
-				EA_name = EA_name8;
-			end
-			if (index == 33151) then EA_rank = "" end;
-			if (index == 16246) then
-					local EA_name9 = GetSpellInfo(16164);
-				EA_name = EA_name9;
-			end
-			if (index == 17941) then
-				local EA_name10 = GetSpellInfo(18094);
-				EA_name = EA_name10;
-			end
-			if (index == 46916) then
-				local EA_name11 = GetSpellInfo(46913);
-				EA_name = EA_name11;
-			end
+		local EA_name, EA_rank = GetSpellInfo(index);
 
+		--[[
+			Blizzard isn't consistent with the names and ranks of the procs in relation to the names/ranks of the talents.
+			So, we have to add the code below to make the options menu understandable for certain items.
+			And because of localization, I have to go back and re-call the original talent ID.
+			Which is, honestly, damned annoying.  But... oh well!  QQ, right?
+		--]]
 
-			local ClassEventCheckButton = CreateFrame("CheckButton", index, Class_Events_Frame, "OptionsCheckButtonTemplate");
-				ClassEventCheckButton:SetPoint("TOPLEFT",20,buttonPositionY);
-
-			if (EA_rank == "" or not EA_rank) then
-				getglobal(ClassEventCheckButton:GetName().."Text"):SetText(EA_name.."   ["..index.."]");
-			else
-				getglobal(ClassEventCheckButton:GetName().."Text"):SetText(EA_name.." ("..EA_rank..")   ["..index.."]");
-			end
-
-			ClassEventCheckButton:SetChecked(EA_Items[EA_playerClass][index]);
-			ClassEventCheckButton:SetChecked(EA_Items[EA_playerClass][index]);
-
-			local function ClassEventButtonGetChecked()
-				if (ClassEventCheckButton:GetChecked()) then
-					EA_Items[EA_playerClass][index] = true
-				else
-					EA_Items[EA_playerClass][index] = false
-				end
-			end
-			ClassEventCheckButton:RegisterForClicks("AnyUp");
-			ClassEventCheckButton:SetScript("OnClick", ClassEventButtonGetChecked)
-
-			buttonPositionY = buttonPositionY - 25;
+		if (EA_name == "Death Trance!") then
+			local EA_name2 = GetSpellInfo(49018);
+			EA_name = EA_name2;
 		end
+		if (EA_name == "Fireball!") then
+			local EA_name2 = GetSpellInfo(44549);
+			EA_name = EA_name2;
+		end
+		if (index == 12536) then
+			local EA_name3 = GetSpellInfo(11213);
+			EA_name = EA_name3;
+		end
+		if (index == 16870) then
+			local EA_name4 = GetSpellInfo(16864);
+			EA_name = EA_name4;
+		end
+		if (index == 48517) then
+			local EA_name5 = GetSpellInfo(5176);
+			EA_rank = EA_name5;
+		end
+		if (index == 48518) then
+			local EA_name6 = GetSpellInfo(2912);
+			EA_rank = EA_name6;
+		end
+		if (index == 34754) then
+			local EA_name7 = GetSpellInfo(34753);
+			EA_name = EA_name7;
+		end
+		if (index == 14743 or index == 27828) then
+			local EA_name8 = GetSpellInfo(14531);
+			EA_name = EA_name8;
+		end
+		if (index == 33151) then EA_rank = "" end;
+		if (index == 16246) then
+			local EA_name9 = GetSpellInfo(16164);
+			EA_name = EA_name9;
+		end
+		if (index == 17941) then
+			local EA_name10 = GetSpellInfo(18094);
+			EA_name = EA_name10;
+		end
+		if (index == 46916) then
+			local EA_name11 = GetSpellInfo(46913);
+			EA_name = EA_name11;
+		end
+
+
+		local ClassEventCheckButton = CreateFrame("CheckButton", index, Class_Events_Frame, "OptionsCheckButtonTemplate");
+		ClassEventCheckButton:SetPoint("TOPLEFT",20,buttonPositionY);
+
+		if (EA_rank == "") then
+			getglobal(ClassEventCheckButton:GetName().."Text"):SetText(EA_name.."   ["..index.."]");
+		else
+			getglobal(ClassEventCheckButton:GetName().."Text"):SetText(EA_name.." ("..EA_rank..")   ["..index.."]");
+		end
+
+		ClassEventCheckButton:SetChecked(EA_Items[EA_playerClass][index]);
+		ClassEventCheckButton:SetChecked(EA_Items[EA_playerClass][index]);
+
+		local function ClassEventButtonGetChecked()
+			if (ClassEventCheckButton:GetChecked()) then
+				EA_Items[EA_playerClass][index] = true
+			else
+				EA_Items[EA_playerClass][index] = false
+			end
+		end
+		ClassEventCheckButton:RegisterForClicks("AnyUp");
+		ClassEventCheckButton:SetScript("OnClick", ClassEventButtonGetChecked)
+
+		buttonPositionY = buttonPositionY - 25;
 	end
 
 

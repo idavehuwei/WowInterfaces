@@ -11,16 +11,15 @@ function EA_Icon_Options_Init()
     EA_Icon_Options_Frame_LockFrame:SetChecked(EA_Config.LockFrame);
 end
 
-function EventAlert_Options_ToggleAlertFrame(showicon)
+function EventAlert_Options_ToggleAlertFrame()
 local timerFontSize = 0;
 
-	if(showicon==false)then
-	--if EA_Anchor_Frame:IsVisible() then
+	if EA_Anchor_Frame:IsVisible() then
 	   EA_Anchor_Frame:Hide();
 	   EA_Anchor_Frame2:Hide();
 	   EA_Anchor_Frame3:Hide();
-	else
-		if ((EA_Config.ShowFrame == true) and EA_Anchor_Frame)then
+    else
+		if (EA_Config.ShowFrame == true) then
 
 	        EA_Anchor_Frame:ClearAllPoints();
 		    EA_Anchor_Frame:SetPoint(EA_Position.Anchor, EA_Position.xLoc, EA_Position.yLoc);
@@ -92,16 +91,16 @@ local timerFontSize = 0;
         end
 
         if (EA_Config.DoAlertSound == true) then
-	        -- PlaySoundFile(EA_Config.AlertSound);
+	        PlaySoundFile(EA_Config.AlertSound);
 		end
 	end
 end
 
 
 function EventAlert_Options_ResetFrame()
-	--if (EA_Config.LockFrame == true) then
-	    --DEFAULT_CHAT_FRAME:AddMessage(L["EventAlert: You must unlock the alert frame in order to move it or reset it's position."])
-	--else
+	if (EA_Config.LockFrame == true) then
+	    DEFAULT_CHAT_FRAME:AddMessage(L["EventAlert: You must unlock the alert frame in order to move it or reset it's position."])
+	else
 		EA_Position.Anchor = "CENTER";
         EA_Position.relativePoint = "CENTER";
 		EA_Position.xLoc = EA_PositionxLoc;
@@ -114,9 +113,9 @@ function EventAlert_Options_ResetFrame()
 
 		EA_Icon_Options_Frame_IconXOffset:SetValue(EA_Position.xOffset);
 		EA_Icon_Options_Frame_IconYOffset:SetValue(EA_Position.yOffset);
-        EventAlert_Options_ToggleAlertFrame(true);
-
-	--end
+        EventAlert_Options_ToggleAlertFrame();
+        EventAlert_Options_ToggleAlertFrame();
+	end
 end
 
 

@@ -9,7 +9,7 @@
         </Size>
 
         <Anchors>
-			<Anchor point="RIGHT" relativepoint="LEFT"/>
+			<Anchor point="LEFT" relativepoint="RIGHT"/>
         </Anchors>
 
         <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
@@ -41,7 +41,7 @@
                     </Anchors>
                 </Texture>
 
-                <FontString inherits="GameFontNormal" text="图示位置选项">
+                <FontString inherits="GameFontNormal" text="EA_POSITION_OPTION">
                     <Anchors>
                         <Anchor point="TOP" relativeTo="EA_Icon_Options_Frame_Header">
                             <Offset>
@@ -57,7 +57,7 @@
 
         <Frames>
 
-        	<CheckButton name="$parent_LockFrame" inherits="OptionsCheckButtonTemplate" hidden="true">
+        	<CheckButton name="$parent_LockFrame" inherits="OptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT">
                         <Offset>
@@ -67,17 +67,14 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-						EA_Config.LockFrame = false;
-                        getglobal(this:GetName().."Text"):SetText("锁定窗体");
+                        getglobal(this:GetName().."Text"):SetText(EA_LOCK_FRAME);
                     </OnLoad>
                     <OnClick>
---[[
                         if (this:GetChecked()) then
                             EA_Config.LockFrame = true;
                         else
                             EA_Config.LockFrame = false;
                         end
---]]
                     </OnClick>
                     <OnEnter>
                         GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
@@ -100,15 +97,14 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText("图示大小");
-                        getglobal(this:GetName().."High"):SetText("大");
-                        getglobal(this:GetName().."Low"):SetText("小");
+                        getglobal(this:GetName().."Text"):SetText(EA_ICON_SIZE);
+                        getglobal(this:GetName().."High"):SetText(EA_ICON_SIZE_BIG);
+                        getglobal(this:GetName().."Low"):SetText(EA_ICON_SIZE_SMALL);
                         this:SetMinMaxValues(30.0,90.0);
                         this:SetValueStep(5.0);
                     </OnLoad>
                     <OnValueChanged>
                         EA_Config.IconSize = this:GetValue();
-						EventAlert_Options_ToggleAlertFrame(true);
                     </OnValueChanged>
                     <OnEnter>
                         GameTooltip:SetOwner(this, "ANCHOR_CENTER");
@@ -130,15 +126,14 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText("水平间距");
-                        getglobal(this:GetName().."High"):SetText("大");
-                        getglobal(this:GetName().."Low"):SetText("小");
+                        getglobal(this:GetName().."Text"):SetText(EA_HOR_SPACE);
+                        getglobal(this:GetName().."High"):SetText(EA_HOR_SPACE_MORE);
+                        getglobal(this:GetName().."Low"):SetText(EA_HOR_SPACE_LESS);
                         this:SetMinMaxValues(-200.0,200.0);
                         this:SetValueStep(1.0);
                     </OnLoad>
                     <OnValueChanged>
                         EA_Position.xOffset = this:GetValue();
-						EventAlert_Options_ToggleAlertFrame(true);
                     </OnValueChanged>
                     <OnEnter>
                         GameTooltip:SetOwner(this, "ANCHOR_CENTER");
@@ -160,15 +155,14 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText("垂直间距");
-                        getglobal(this:GetName().."High"):SetText("大");
-                        getglobal(this:GetName().."Low"):SetText("小");
+                        getglobal(this:GetName().."Text"):SetText(EA_VER_SPACE);
+                        getglobal(this:GetName().."High"):SetText(EA_VER_SPACE_MORE);
+                        getglobal(this:GetName().."Low"):SetText(EA_VER_SPACE_LESS);
                         this:SetMinMaxValues(-200.0,200.0);
                         this:SetValueStep(1.0);
                     </OnLoad>
                     <OnValueChanged>
                         EA_Position.yOffset = this:GetValue();
-						EventAlert_Options_ToggleAlertFrame(true);
                     </OnValueChanged>
                     <OnEnter>
                         GameTooltip:SetOwner(this, "ANCHOR_CENTER");
@@ -180,7 +174,7 @@
                 </Scripts>
             </Slider>
 
-            <Button name="$parent_ToggleAlertFrame" inherits="OptionsButtonTemplate" text="显示/隐藏警报窗体" hidden="true">
+            <Button name="$parent_ToggleAlertFrame" inherits="OptionsButtonTemplate" text="EA_TOOGLE_VISIBLE">
                 <Anchors>
                     <Anchor point="CENTER" relativePoint="BOTTOM">
                         <Offset>
@@ -194,12 +188,12 @@
                 <Scripts>
                     <OnClick>
                         PlaySound("gsTitleOptionOK");
-                        EventAlert_Options_ToggleAlertFrame(false);
+                        EventAlert_Options_ToggleAlertFrame();
                     </OnClick>
                 </Scripts>
             </Button>
 
-            <Button name="$parent_ResetAlertPosition" inherits="OptionsButtonTemplate" text="重置窗体位置">
+            <Button name="$parent_ResetAlertPosition" inherits="OptionsButtonTemplate" text="EA_RESET_POSITION">
                 <Anchors>
                     <Anchor point="CENTER" relativeTo="$parent_ToggleAlertFrame" relativePoint="BOTTOM">
                         <Offset>
@@ -214,16 +208,12 @@
                     <OnClick>
                         PlaySound("gsTitleOptionOK");
                         EventAlert_Options_ResetFrame();
-						EventAlert_Options_ToggleAlertFrame(true);
                     </OnClick>
                 </Scripts>
             </Button>
         </Frames>
 
         <Scripts>
-			<OnHide>
-				EventAlert_Options_ToggleAlertFrame(false);
-			</OnHide>
             <OnLoad>
 	            this:RegisterForDrag("LeftButton");
                 EA_Icon_Options_OnLoad();

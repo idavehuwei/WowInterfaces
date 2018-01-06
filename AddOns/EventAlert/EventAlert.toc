@@ -1,17 +1,16 @@
 ## Interface: 30100
 ## Title: EventAlert
-## Notes: å½“å„èŒä¸šçš„æ³•æœ¯ç‰¹æ•ˆè§¦å‘æ—¶ï¼Œä»¥å›¾æ ‡ã€å£°éŸ³å’Œå…¨å±é—ªçƒæ¥æé†’æŠ¥è­¦
-## Title-zhCN: æŠ€èƒ½ç‰¹æ•ˆæŠ¥è­¦ EventAlert
-## Notes-zhCN: å½“å„èŒä¸šçš„æ³•æœ¯ç‰¹æ•ˆè§¦å‘æ—¶ï¼Œä»¥å›¾æ ‡ã€å£°éŸ³å’Œå…¨å±é—ªçƒæ¥æé†’æŠ¥è­¦
-## Title-zhTW: æŠ€èƒ½ç‰¹æ•ˆå ±è­¦ EventAlert
-## Notes-zhTW: ç•¶å„è·æ¥­çš„æ³•è¡“ç‰¹æ•ˆè§¸ç™¼æ™‚ï¼Œä»¥åœ–ç¤ºã€è²éŸ³å’Œå…¨å±é–ƒçˆä¾†æé†’å ±è­¦
+## Notes: µ±¸÷Ö°ÒµµÄ·¨ÊõÌØĞ§´¥·¢Ê±£¬ÒÔÍ¼±ê¡¢ÉùÒôºÍÈ«ÆÁÉÁË¸À´ÌáĞÑ±¨¾¯
+## Title-zhCN: ¼¼ÄÜÌØĞ§±¨¾¯ EventAlert
+## Notes-zhCN: µ±¸÷Ö°ÒµµÄ·¨ÊõÌØĞ§´¥·¢Ê±£¬ÒÔÍ¼±ê¡¢ÉùÒôºÍÈ«ÆÁÉÁË¸À´ÌáĞÑ±¨¾¯
+## Title-zhTW: ¼¼ÄÜÌØĞ§ˆó¾¯ EventAlert
+## Notes-zhTW: ®”¸÷Âš˜IµÄ·¨ĞgÌØĞ§Ó|°l•r£¬ÒÔˆDÊ¾¡¢Â•ÒôºÍÈ«ÆÁéW qíÌáĞÑˆó¾¯
 ## Author: CurtisTheGreat(AIM) (Special thanks: WoW UI Forums, Crast of the Pub)
 ## Version: 4.2.26
 ## SavedVariables: EA_Config, EA_Position, EA_Items, EA_AltItems
-## X-DuowanAddon: æˆ˜æ–—
 ## Dependencies: !!Corelibs
 
-localization\embed.xml
+localization\localization.xml
 EventAlert.xml
 EventAlertOptions.xml
 EventAlertClassAlerts.xml

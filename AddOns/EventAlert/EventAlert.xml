@@ -14,11 +14,8 @@
 			EventAlert_OnLoad(self);
 		</OnLoad>
 		<OnEvent>
-			EventAlert_OnEvent(self, event, arg1, arg2);
+			EventAlert_OnEvent(event);
 		</OnEvent>
-		<OnUpdate>
-			EventAlert_OnUpdate(self, elapsed);
-		</OnUpdate>
 	</Scripts>
 </Frame>
 

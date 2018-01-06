@@ -196,7 +196,7 @@ if EA_Items[EA_CLASS_OTHER] == nil then EA_Items[EA_CLASS_OTHER] = {} end;
 	-- Healing Trance
 	if EA_Items[EA_CLASS_OTHER][37706] == nil then EA_Items[EA_CLASS_OTHER][37706] = true end;
 	if EA_Items[EA_CLASS_OTHER][37721] == nil then EA_Items[EA_CLASS_OTHER][37721] = true end;
-   	if EA_Items[EA_CLASS_OTHER][37722] == nil then EA_Items[EA_CLASS_OTHER][37722] = true end;
+	if EA_Items[EA_CLASS_OTHER][37722] == nil then EA_Items[EA_CLASS_OTHER][37722] = true end;
 	if EA_Items[EA_CLASS_OTHER][37723] == nil then EA_Items[EA_CLASS_OTHER][37723] = true end;
 	if EA_Items[EA_CLASS_OTHER][60512] == nil then EA_Items[EA_CLASS_OTHER][60512] = true end;
 	if EA_Items[EA_CLASS_OTHER][60513] == nil then EA_Items[EA_CLASS_OTHER][60513] = true end;
