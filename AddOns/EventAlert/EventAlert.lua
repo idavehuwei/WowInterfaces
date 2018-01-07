@@ -26,9 +26,7 @@ function EventAlert_OnLoad(self)
 
 end
 
-
 function EventAlert_OnEvent(event)
-
     if (event == "ADDON_LOADED") then
         if (arg1 == "EventAlert") then   
    
@@ -84,7 +82,6 @@ function EventAlert_OnEvent(event)
 
             if (EA_playerClass == EA_CLASS_PALADIN) then
                 EA_nameTalent, _, _, _, EA_talentCurrentRank, _, _, _ = GetTalentInfo(2, 9);
-
                 if (EA_talentCurrentRank == 0) then
                     EA_SacredShield.timer = 6;
                 elseif (EA_talentCurrentRank == 1) then
@@ -96,15 +93,13 @@ function EventAlert_OnEvent(event)
            
         end
     end
-    
-    
-    if (event == "COMBAT_LOG_EVENT_UNFILTERED") then
-		local EA_eventType = arg2;
 
+    if (event == "COMBAT_LOG_EVENT_UNFILTERED") then
+        local EA_eventType = arg2;
         -- Code specifically for Sacred Shield
         if (EA_eventType == "SPELL_CAST_SUCCESS") then
             if (arg4 == UnitName("player")) then
-            	if (arg9 == 53601) then
+                if (arg9 == 53601) then
                     EA_SacredShield.ceArg7 = arg7;
                     EA_SacredShield.spellActive = true;
                 end
@@ -112,105 +107,103 @@ function EventAlert_OnEvent(event)
         end
 
         if (EA_eventType == "SPELL_AURA_APPLIED" or EA_eventType == "SPELL_AURA_APPLIED_DOSE") then
-
             if (EA_Items[EA_playerClass][arg9]) then
-	            if (arg9 == 58597) then
-	            	if (EA_SacredShield.spellActive) then
-	            		if (arg7 == EA_SacredShield.ceArg7) then
-
-							EA_SacredShield.expire = GetTime() + EA_SacredShield.timer;
+                if (arg9 == 58597) then
+                    if (EA_SacredShield.spellActive) then
+                        if (arg7 == EA_SacredShield.ceArg7) then
+                            EA_SacredShield.expire = GetTime() + EA_SacredShield.timer;
                             table.insert(EA_TempBuffsTable, arg9);
                             EventAlert_PositionFrames();
-							EventAlert_DoAlert();
+                            EventAlert_DoAlert();
                             
-	                    end
-	                end
-	            end
-            end
-
-        	if (arg7 == UnitName("player")) then
-				if (EA_Items[EA_playerClass][arg9] or EA_Items[EA_CLASS_OTHER][arg9]) then
-                    if (arg9 ~= 58597) then
-	                    if (arg9 ~= 53817) then
-		                    if (EA_Items[EA_CLASS_FUNKY][arg9]) then
-	                            EA_TempBuffCount = EA_TempBuffCount + 1;
-	                            if (EA_TempBuffCount == 3) then
-		                            table.insert(EA_TempBuffsTable, arg9);
-                                    EventAlert_PositionFrames();
-									EventAlert_DoAlert();
-	                            end
-			                else
-	                            table.insert(EA_TempBuffsTable, arg9);
-								EventAlert_PositionFrames();
-								EventAlert_DoAlert();
-	                        end
-						else
-			            	if (arg13 == 5) then
-			                	table.insert(EA_TempBuffsTable, arg9);
-								EventAlert_PositionFrames();
-			                    EventAlert_DoAlert();
-							end
-						end
+                        end
                     end
                 end
-    	   	end
+            end
+
+            if (arg7 == UnitName("player")) then
+                if (EA_Items[EA_playerClass][arg9] or EA_Items[EA_CLASS_OTHER][arg9]) then
+                    if (arg9 ~= 58597) then
+                        if (arg9 ~= 53817) then
+                            if (EA_Items[EA_CLASS_FUNKY][arg9]) then
+                                EA_TempBuffCount = EA_TempBuffCount + 1;
+                                if (EA_TempBuffCount == 3) then
+                                    table.insert(EA_TempBuffsTable, arg9);
+                                    EventAlert_PositionFrames();
+                                    EventAlert_DoAlert();
+                                end
+                            else
+                                table.insert(EA_TempBuffsTable, arg9);
+                                EventAlert_PositionFrames();
+                                EventAlert_DoAlert();
+                            end
+                        else
+                            if (arg13 == 5) then
+                                table.insert(EA_TempBuffsTable, arg9);
+                                EventAlert_PositionFrames();
+                                EventAlert_DoAlert();
+                            end
+                        end
+                    end
+                end
+            end
         end
 
         if (EA_eventType == "SPELL_AURA_REMOVED") then
 
             if (arg9 == 53601) then
-        		if (EA_SacredShield.spellActive) then
-		   			if (arg7 == EA_SacredShield.ceArg7) then
-						EA_SacredShield.spellActive = false;
-    	            end
-		        end
+                if (EA_SacredShield.spellActive) then
+                    if (arg7 == EA_SacredShield.ceArg7) then
+                        EA_SacredShield.spellActive = false;
+                    end
+                end
             end
 
             if (EA_Items[EA_playerClass][arg9]) then
-	            if (arg9 == 58597) then
-	           		if (arg7 == EA_SacredShield.ceArg7) then
-						local v = table.foreach(EA_TempBuffsTable, function(i, v) if v==arg9 then return v end end)
-							if v then
-		                    	local f = _G["EAFrame_"..v];
-			                    f:Hide();
-						    	removeBuffValue(EA_TempBuffsTable, v);
-								EventAlert_PositionFrames();
+                if (arg9 == 58597) then
+                    if (arg7 == EA_SacredShield.ceArg7) then
+                        local v = table.foreach(EA_TempBuffsTable, function(i, v) if v==arg9 then return v end end)
+                            if v then
+                                local f = _G["EAFrame_"..v];
+                                f:Hide();
+                                removeBuffValue(EA_TempBuffsTable, v);
+                                EventAlert_PositionFrames();
                                 f:SetScript("OnUpdate", nil);
-			                end
-					end
-	            end
+                            end
+                    end
+                end
             end
 
-        	if (arg7 == UnitName("player")) then
-	            if (EA_Items[EA_playerClass][arg9] or EA_Items[EA_CLASS_OTHER][arg9]) then
-					local v = table.foreach(EA_TempBuffsTable, function(i, v) if v==arg9 then return v end end)
-						if v then
-	                    	local f = _G["EAFrame_"..v];
-		                    f:Hide();
-					    	removeBuffValue(EA_TempBuffsTable, v);
-							EventAlert_PositionFrames();
+            if (arg7 == UnitName("player")) then
+                if (EA_Items[EA_playerClass][arg9] or EA_Items[EA_CLASS_OTHER][arg9]) then
+                    local v = table.foreach(EA_TempBuffsTable, function(i, v) if v==arg9 then return v end end)
+                        if v then
+                            local f = _G["EAFrame_"..v];
+                            f:Hide();
+                            removeBuffValue(EA_TempBuffsTable, v);
+                            EventAlert_PositionFrames();
                             f:SetScript("OnUpdate", nil);
-		                end
+                        end
 
-	                if (EA_Items[EA_CLASS_FUNKY][arg9]) then
-	                    EA_TempBuffCount = 0;
-	                end
-	            end
+                    if (EA_Items[EA_CLASS_FUNKY][arg9]) then
+                        EA_TempBuffCount = 0;
+                    end
+                end
             end
 
-		end
+        end
     end
 
-	if (event == "PLAYER_DEAD" or event == "PLAYER_ENTERING_WORLD") then
-		local v = table.foreach(EA_TempBuffsTable, function(i, v) if v==arg9 then return v end end)
-			if v then
-	        	local f = _G["EAFrame_"..v];
-	            f:Hide();
-				EA_TempBuffsTable = table.wipe(EA_TempBuffsTable);
-			end
+    if (event == "PLAYER_DEAD" or event == "PLAYER_ENTERING_WORLD") then
+        local v = table.foreach(EA_TempBuffsTable, function(i, v) if v==arg9 then return v end end)
+            if v then
+                local f = _G["EAFrame_"..v];
+                f:Hide();
+                EA_TempBuffsTable = table.wipe(EA_TempBuffsTable);
+            end
         EA_TempBuffCount = 0;
-		EA_SacredShield.ceArg7 = "noPlayerActive";
-		EA_SacredShield.spellActive = false;
+        EA_SacredShield.ceArg7 = "noPlayerActive";
+        EA_SacredShield.spellActive = false;
         
         
         -- I'm annoyed that this code has to be here and not above in the ADDON_LOADED event.  >-(
@@ -233,10 +226,10 @@ function EventAlert_OnEvent(event)
             end
         EA_PreLoadComplete = 1;
         end
-	end
+    end
 
-	if (event == "COMBAT_TEXT_UPDATE") then
-    	if (EA_Config.AllowAltAlerts == true) then
+    if (event == "COMBAT_TEXT_UPDATE") then
+        if (EA_Config.AllowAltAlerts == true) then
             if (arg1 == "SPELL_ACTIVE") then
                  local v = table.foreach(EA_PreLoadAlts, function(i, v) if i==arg2 then return v end end)
                     if v then
@@ -317,67 +310,67 @@ end
 
 function EventAlert_DoAlert()
 
-	if (EA_Config.ShowFlash == true) then
-	   UIFrameFadeIn(LowHealthFrame, 1, 0, 1);
-	   UIFrameFadeOut(LowHealthFrame, 2, 1, 0);
-	end
+    if (EA_Config.ShowFlash == true) then
+       UIFrameFadeIn(LowHealthFrame, 1, 0, 1);
+       UIFrameFadeOut(LowHealthFrame, 2, 1, 0);
+    end
 
-	if (EA_Config.DoAlertSound == true) then
-	   PlaySoundFile(EA_Config.AlertSound);
-	end
+    if (EA_Config.DoAlertSound == true) then
+       PlaySoundFile(EA_Config.AlertSound);
+    end
 end
 
 
 function EventAlert_PositionFrames(event)
 
-	if (EA_Config.ShowFrame == true) then
+    if (EA_Config.ShowFrame == true) then
 
-    	EA_Main_Frame:ClearAllPoints();
-   		EA_Main_Frame:SetPoint(EA_Position.Anchor, UIParent, EA_Position.relativePoint, EA_Position.xLoc, EA_Position.yLoc);
+        EA_Main_Frame:ClearAllPoints();
+        EA_Main_Frame:SetPoint(EA_Position.Anchor, UIParent, EA_Position.relativePoint, EA_Position.xLoc, EA_Position.yLoc);
 
-		local prevFrame = "EA_Main_Frame";
+        local prevFrame = "EA_Main_Frame";
 
         for k,v in ipairs(EA_TempBuffsTable) do
             local eaf = _G["EAFrame_"..v];
 
             if (v == 48517) then
-            	_, _, gsiIcon, _, _, _, _, _, _ = GetSpellInfo(5176);
-				gsiName, _, _, _, _, _, _, _, _ = GetSpellInfo(v);
+                _, _, gsiIcon, _, _, _, _, _, _ = GetSpellInfo(5176);
+                gsiName, _, _, _, _, _, _, _, _ = GetSpellInfo(v);
             elseif (v == 48518) then
-				_, _, gsiIcon, _, _, _, _, _, _ = GetSpellInfo(2912);
-				gsiName, _, _, _, _, _, _, _, _ = GetSpellInfo(v);
+                _, _, gsiIcon, _, _, _, _, _, _ = GetSpellInfo(2912);
+                gsiName, _, _, _, _, _, _, _, _ = GetSpellInfo(v);
             else
-				gsiName, _, gsiIcon, _, _, _, _, _, _ = GetSpellInfo(v);
+                gsiName, _, gsiIcon, _, _, _, _, _, _ = GetSpellInfo(v);
             end
 
-        	eaf:ClearAllPoints();
+            eaf:ClearAllPoints();
 
             if (prevFrame == "EA_Main_Frame") then
                 eaf:SetPoint("CENTER", prevFrame, "CENTER", 0, 0);
-			elseif (prevFrame == eaf) then
-              	prevFrame = "EA_Main_Frame";
-	            eaf:SetPoint("CENTER", prevFrame, "CENTER", 0, 0);
-   			else
-				eaf:SetPoint("CENTER", prevFrame, "CENTER", 100+EA_Position.xOffset, 0+EA_Position.yOffset);
+            elseif (prevFrame == eaf) then
+                prevFrame = "EA_Main_Frame";
+                eaf:SetPoint("CENTER", prevFrame, "CENTER", 0, 0);
+            else
+                eaf:SetPoint("CENTER", prevFrame, "CENTER", 100+EA_Position.xOffset, 0+EA_Position.yOffset);
             end
 
             eaf:SetWidth(EA_Config.IconSize);
-			eaf:SetHeight(EA_Config.IconSize);
+            eaf:SetHeight(EA_Config.IconSize);
 
-			eaf:SetBackdrop({bgFile = gsiIcon});
+            eaf:SetBackdrop({bgFile = gsiIcon});
 
             if (EA_Config.ShowName == true) then
-	    		eaf.spellName:SetText(gsiName);
-		    else
-	    		eaf.spellName:SetText("");
-			end
+                eaf.spellName:SetText(gsiName);
+            else
+                eaf.spellName:SetText("");
+            end
 
             
             eaf:SetScript("OnUpdate", EventAlert_OnUpdate);
             prevFrame = eaf;
-	    	eaf:Show();
+            eaf:Show();
         end
-	end
+    end
 end
 
 
@@ -385,13 +378,13 @@ function EventAlert_SlashHandler(msg)
 
     msg = string.lower(msg);
 
-	if (msg == "options" or msg == "opt") then
+    if (msg == "options" or msg == "opt") then
 
-    	if not EA_Options_Frame:IsVisible() then
+        if not EA_Options_Frame:IsVisible() then
             ShowUIPanel(EA_Options_Frame);
-	    else
-	        HideUIPanel(EA_Options_Frame);
-	    end
+        else
+            HideUIPanel(EA_Options_Frame);
+        end
     elseif (msg == "version" or msg == "ver") then
         DEFAULT_CHAT_FRAME:AddMessage("EventAlert version: "..EA_Config.Version);
     elseif (msg == "print") then
@@ -408,24 +401,24 @@ end
 function EventAlert_VersionCheck()
 local EA_tempVer = "4.2.26";
 
-	if (EA_Config.Version == EA_tempVer) then
-	   -- Do Nothing
+    if (EA_Config.Version == EA_tempVer) then
+       -- Do Nothing
 
-	elseif (EA_Config.Version ~= EA_tempVer and EA_Config.Version ~= nil) then
-	    EA_Config.Version = EA_tempVer;
-		-- EA_Version_Frame_EditBox:SetFontObject(ChatFontNormal);
-		-- EA_Version_Frame_EditBox:SetText("EventAlert new version detected!\n\n\n\n- EventAlert can now track abilities that don't create a buff on the player.\n  ** Please note that these are disabled by default. **\n\nType: /ea opt  to view the options if you wish to change them.\n\n\nAlso note, that I will be cleaning up the sorting of the events that are listed in the options, so they aren't so confusing.  I wanted to get this update out to you all, since it's working, rather than delaying a few more days just to make something you won't look at very often anyhow, a bit more pretty.  :P\n\n\n\n\nEventAlert version "..EA_Config.Version.." loaded.")
-		-- EA_Version_Frame:Show();
+    elseif (EA_Config.Version ~= EA_tempVer and EA_Config.Version ~= nil) then
+        EA_Config.Version = EA_tempVer;
+        -- EA_Version_Frame_EditBox:SetFontObject(ChatFontNormal);
+        -- EA_Version_Frame_EditBox:SetText("EventAlert new version detected!\n\n\n\n- EventAlert can now track abilities that don't create a buff on the player.\n  ** Please note that these are disabled by default. **\n\nType: /ea opt  to view the options if you wish to change them.\n\n\nAlso note, that I will be cleaning up the sorting of the events that are listed in the options, so they aren't so confusing.  I wanted to get this update out to you all, since it's working, rather than delaying a few more days just to make something you won't look at very often anyhow, a bit more pretty.  :P\n\n\n\n\nEventAlert version "..EA_Config.Version.." loaded.")
+        -- EA_Version_Frame:Show();
 
-	elseif (EA_Config.Version == nil) then
-	   	EA_Config.Version = EA_tempVer;
-		EA_Version_Frame_EditBox:SetFontObject(ChatFontNormal);
-		EA_Version_Frame_EditBox:SetText("- EventAlert first load detected.\n- EventAlert is setting all settings to default.\n\nKnown Bugs:\n          * Anchor button has to be pressed twice for it to show.\n\n\nEventAlert version "..EA_Config.Version.." loaded.")
+    elseif (EA_Config.Version == nil) then
+        EA_Config.Version = EA_tempVer;
+        EA_Version_Frame_EditBox:SetFontObject(ChatFontNormal);
+        EA_Version_Frame_EditBox:SetText("- EventAlert first load detected.\n- EventAlert is setting all settings to default.\n\nKnown Bugs:\n          * Anchor button has to be pressed twice for it to show.\n\n\nEventAlert version "..EA_Config.Version.." loaded.")
 
-		--EA_Version_Frame:Show();
+        --EA_Version_Frame:Show();
 
-		EventAlert_FunctionOfDoom();
-	end
+        EventAlert_FunctionOfDoom();
+    end
 end
 
 
@@ -433,13 +426,13 @@ end
 function EventAlert_FunctionOfDoom()
 local EA_tempVer = "4.2.26";
 
-	EA_Config = nil;
-	EA_Config = { DoAlertSound, AlertSound, AlertSoundValue, LockFrame, ShowFrame, ShowFlash, ShowTimer, Version, AllowESC };
+    EA_Config = nil;
+    EA_Config = { DoAlertSound, AlertSound, AlertSoundValue, LockFrame, ShowFrame, ShowFlash, ShowTimer, Version, AllowESC };
 
     EA_Position = nil;
     EA_Position = { Anchor, relativePoint, xLoc, yLoc, xOffset, yOffset };
 
-	EA_Items = nil;
+    EA_Items = nil;
 
     EA_Config.Version = EA_tempVer;
 end
@@ -452,23 +445,23 @@ function EventAlert_PrintTable()
 end
 
 function removeBuffValue(tab, value)
-	for pos, name in ipairs(tab) do
-		if (name == value) then
-			table.remove(tab, pos)
-		end
-	end
+    for pos, name in ipairs(tab) do
+        if (name == value) then
+            table.remove(tab, pos)
+        end
+    end
 end
 
 function pairsByKeys (t, f)
-	local a = {}
-		for n in pairs(t) do table.insert(a, n) end
-		table.sort(a, f)
-		local i = 0      -- iterator variable
-		local iter = function ()   -- iterator function
-			i = i + 1
-			if a[i] == nil then return nil
-			else return a[i], t[a[i]]
-			end
-		end
-	return iter
+    local a = {}
+        for n in pairs(t) do table.insert(a, n) end
+        table.sort(a, f)
+        local i = 0      -- iterator variable
+        local iter = function ()   -- iterator function
+            i = i + 1
+            if a[i] == nil then return nil
+            else return a[i], t[a[i]]
+            end
+        end
+    return iter
 end
