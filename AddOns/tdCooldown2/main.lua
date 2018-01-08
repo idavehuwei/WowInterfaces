@@ -3,21 +3,14 @@ local tostring = tostring;
 local tonumber = tonumber;
 local CreateFrame = CreateFrame;
 local CreateFont = CreateFont;
-local __DEBUG = false;
-local font;
-if (GetLocale() == "zhCN") then
-	font = "Fonts\\ZYKai_T.TTF";
-elseif (GetLocale() == "zhTW") then
-	font = "Fonts\\bLEI00D.TTF";
-else
-	font = "Fonts\\ARIALN.TTF";
-end
 
+
+local font = GameTooltipTextLeft1:GetFont();
 local version = GetAddOnMetadata("tdCooldown2", "Version");
-local limit = "30100.1";
+local limit = "30000.4";
 local L = TDCOOLDOWN2_LACALE;
 
-tdCooldown2 = CreateFrame("Frame", false, UIParent);
+tdCooldown2 = CreateFrame("Frame", nil, UIParent);
 tdCooldown2:Hide();
 
 local tCD = tdCooldown2;
@@ -26,15 +19,15 @@ tCD.methods = {};
 function tCD:GetDefault()
 	return {
 		ACTION = {
-			config = true, hidecooldown = false, long = false, shine = true, alpha = 0.8, size = 24,
-			scale = 4, style = 2, font = font, min = 2.99,
+			config = true, hidecooldown = true, long = nil, shine = true, alpha = 0.8, size = 24,
+			scale = 4, style = 0, font = font, min = 2.99,
 		},
 		BUFF = {
-			config = true, hidecooldown = false, max = 0, long = false, alpha = 0.8, size = 30,
-			point = "CENTER", font = font,
+			config = true, hidecooldown = true, max = 0, long = nil, alpha = 0.8, size = 30,
+			point = "TOPRIGHT", font = font,
 		},
 		bar = {
-			locked = true, hidden = false, sound = false, reverse = false, spacing = 5, config = false,
+			locked = nil, hidden = nil, sound = true, reverse = nil, spacing = 5, config = true,
 			height = 24, width = 100, alpha = 0.9, size = 15, min = 2.99, font = font;
 			position = {p = "CENTER", r = "CENTER", x = 0, y = 0,},
 		},
@@ -47,10 +40,9 @@ function tCD:GetDefault()
 		days  = {r = 0.4, g = 0.4, b = 0.4, s = 0.6},
 		hrs   = {r = 0.6, g = 0.4, b = 0.0, s = 0.6},
 		mins  = {r = 0.8, g = 0.6, b = 0.0, s = 0.7},
-		secs  = {r = 1.0, g = 0.8, b = 0.0, s = 1.0},
-		short = {r = 1.0, g = 0.12, b = 0.12, s = 1.1},
+		secs  = {r = 1.0, g = 0.8, b = 0.0, s = 0.9},
+		short = {r = 1.0, g = 0.1, b = 0.1, s = 1.2},
 		version = version,
-		redout = false,
 	}
 end
 
@@ -69,7 +61,7 @@ function tCD:UpdateSettings(oWow, oUi)
 --[[
 	if oWow < 30000 or oUi < 14 then
 	end
-]]
+]]	
 end
 
 function tCD:UpdateVersion()
@@ -105,10 +97,6 @@ function tCD:TestFont(file)
 end
 
 function tCD:print(msg, iserror)
-	if (not __DEBUG) then
-		return;
-	end
-
 	if msg and tostring(msg) and DEFAULT_CHAT_FRAME then
 		if iserror then
 			DEFAULT_CHAT_FRAME:AddMessage("|cff7fff7ftdCooldown2|r|cffffffff:|r "..tostring(msg), 1, 0, 0);
@@ -120,89 +108,67 @@ end
 
 function tCD:LoadOption()
 		if LoadAddOn("tdCooldown2_Option") then
-			self.option:SetScript('OnShow', false);
+			self.option:SetScript('OnShow', nil);
 			self:print(L["Options loaded !"]);
 		else
 			self:print(L["options load failed!!"])
 		end
 end
 
-function tCD:ADDON_LOADED(addon)
-	if (addon == "tdCooldown2") then
-		self:UnregisterEvent("ADDON_LOADED");
+function tCD:VARIABLES_LOADED()
+	self:UpdateVersion();
+	self.db.ACTION.font = self:TestFont(self.db.ACTION.font);
+	self.db.BUFF.font = self:TestFont(self.db.BUFF.font);
+	self.db.center.font = self:TestFont(self.db.center.font);
 
-		if (not self.db) then
-			tCD:UpdateVersion();
-		end
-		self.db.ACTION.font = self:TestFont(self.db.ACTION.font);
-		self.db.BUFF.font = self:TestFont(self.db.BUFF.font);
-		self.db.center.font = self:TestFont(self.db.center.font);
-
-		if self.methods.cdloaded then
-			self:HookCooldown();
-		end
-
-		if self.methods.barloaded then
-			self:EnableCenter();
-		end
-
-		if self.methods.addons then
-			self:DoAddOns()
-		end
-		--[[
-		self.option = CreateFrame("Frame", false, InterfaceOptionsFrame);
-		self.option:Hide();
-		self.option:SetScript("OnShow", function() tCD:LoadOption() end);
-		self.option.name = "tdCooldown2";
-		InterfaceOptions_AddCategory(self.option);
-
-		local title = self.option:CreateFontString(false, "ARTWORK", "GameFontNormalLarge");
-		title:SetPoint("TOPLEFT", 16, -16);
-		title:SetText(L.Title);
-
-		local subtitle = self.option:CreateFontString(false, "ARTWORK", "GameFontHighlightSmall");
-		subtitle:SetHeight(350);
-		subtitle:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -8);
-		subtitle:SetPoint("RIGHT", self.option, -32, 0);
-		subtitle:SetNonSpaceWrap(true);
-		subtitle:SetJustifyH("LEFT");
-		subtitle:SetJustifyV("TOP");
-		subtitle:SetFormattedText(L.Subtitle, version);
-
-		SlashCmdList["TDCOOLDOWN2"] = function(str)
-			if not tCD.option.loaded then
-				tCD:LoadOption();
-			end
-			InterfaceOptionsFrame_OpenToCategory(tCD.option.name);
-		end
-		SLASH_TDCOOLDOWN21 = "/tcd";
-		SLASH_TDCOOLDOWN22 = "/tcd2";
-		SLASH_TDCOOLDOWN23 = "/tdcooldown2";
-		]]
+	if self.methods.cdloaded then
+		self:HookCooldown();
 	end
+	if self.methods.barloaded then
+		self:EnableCenter();
+	end
+	if self.methods.addons then
+		self:DoAddOns()
+	end
+	
+	self.option = CreateFrame("Frame", nil, InterfaceOptionsFrame);
+	self.option:Hide();
+	self.option:SetScript("OnShow", function() tCD:LoadOption() end);
+	self.option.name = "tdCooldown2";
+	InterfaceOptions_AddCategory(self.option);
+	
+	local title = self.option:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+	title:SetPoint("TOPLEFT", 16, -16);
+	title:SetText(L.Title);
+
+	local subtitle = self.option:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall");
+	subtitle:SetHeight(350);
+	subtitle:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -8);
+	subtitle:SetPoint("RIGHT", self.option, -32, 0);
+	subtitle:SetNonSpaceWrap(true);
+	subtitle:SetJustifyH("LEFT");
+	subtitle:SetJustifyV("TOP");
+	subtitle:SetFormattedText(L.Subtitle, version);
+	
+	SlashCmdList["TDCOOLDOWN2"] = function(str)
+		if not tCD.option.loaded then
+			tCD:LoadOption();
+		end
+		InterfaceOptionsFrame_OpenToCategory(tCD.option.name);
+	end
+	SLASH_TDCOOLDOWN21 = "/tcd";
+	SLASH_TDCOOLDOWN22 = "/tcd2";
+	SLASH_TDCOOLDOWN23 = "/tdcooldown2";
+
 --[[
-	self.UpdateSettings = false;
-	self.FormatVersion = false;
-	self.UpdateVersion = false;
-	self.VARIABLES_LOADED = false;
-	self.HookCooldown = false;
-	self.EnableCenter = false;
+	self.UpdateSettings = nil;
+	self.FormatVersion = nil;
+	self.UpdateVersion = nil;
+	self.VARIABLES_LOADED = nil;
+	self.HookCooldown = nil;
+	self.EnableCenter = nil;
 ]]
 end
 
 tCD:SetScript("OnEvent", function(self, event, ...) if self[event] then self[event](self, ...) end end)
-tCD:RegisterEvent("ADDON_LOADED");
-
----------------------
--- Added by dugu@bigfoot
-function tCD:SetCurVal(key, subkey, value)
-	if (not self.db) then
-		tCD:UpdateVersion();
-	end
-
-	if (self.db[key] and (type(self.db[key]) == "table")) then
-		self.db[key][subkey] = value;
-	else
-		self.db[key] = value;
-	end
-end
+tCD:RegisterEvent("VARIABLES_LOADED");

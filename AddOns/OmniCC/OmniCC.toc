@@ -1,0 +1,12 @@
+## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: 显示法术、技能和物品的冷却时间，并以闪光的形式提醒。
+## Title: OmniCC
+## Notes: Cooldown count for everything
+## Author: Tuller
+## Version: 2.5.5
+## SavedVariables: OmniCCDB
+## OptionalDeps: !!Corelibs, LibSharedMedia-3.0
+
+localization.xml
+full.lua

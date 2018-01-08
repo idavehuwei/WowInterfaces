@@ -4,7 +4,7 @@ local floor = floor;
 local ceil = ceil;
 local next = next;
 local find = string.find;
-local UPDATE_TIME = 0.1;
+
 local CreateFrame = CreateFrame;
 local GetTime = GetTime;
 
@@ -12,10 +12,6 @@ local timers = {};
 local shines = {};
 local actives = {};
 local tCD = tdCooldown2;
-local ABCS = {};
-for i=1, NUM_ACTIONBAR_BUTTONS do
-	ABCS[i] = _G["ActionButton" .. i .. "Cooldown"];
-end
 
 tCD.methods.cdloaded = true;
 
@@ -27,30 +23,6 @@ tCD.style = {
 	"Interface\\Cooldown\\starburst",
 	"Interface\\AddOns\\tdCooldown2\\media\\heart",
 }
-
-local N2T, N2P;
-if (GetLocale() == "zhCN") then
-	N2T = {["图标"] = 0, ["小闪光"] = 1, ["雷达"] = 2, ["大闪光"] = 3}; 
-	N2P = {["左上"] ="TOPLEFT", ["上边"] = "TOP", ["右上"] = "TOPRIGHT", ["左边"] = "LEFT", ["正中"] = "CENTER", ["右边"] = "RIGHT", ["左下"] = "BOTTOMLEFT", ["底部"] = "BOTTOM", ["右下"] = "BOTTOMRIGHT"};
-elseif (GetLocale() == "zhTW") then
-	N2T = {["圖示"] = 0, ["小閃光"] = 1, ["雷達"] = 2, ["大閃光"] = 3};
-	N2P = {["左上"] ="TOPLEFT", ["上邊"] = "TOP", ["右上"] = "TOPRIGHT", ["左邊"] = "LEFT", ["正中"] = "CENTER", ["右邊"] = "RIGHT", ["左下"] = "BOTTOMLEFT", ["底部"] = "BOTTOM", ["右下"] = "BOTTOMRIGHT"};
-else
-	N2T = {["icon"] = 0, ["star"] = 1, ["ping"] = 2, ["starburst"] = 3};
-	N2P = {["Top Left"] ="TOPLEFT", ["Top"] = "TOP", ["Top Right"] = "TOPRIGHT", ["Left"] = "LEFT", ["Center"] = "CENTER", ["Right"] = "RIGHT", ["BottomLeft"] = "BOTTOMLEFT", ["Bottom"] = "BOTTOM", ["Bottom Right"] = "BOTTOMRIGHT"}
-end
-
-function tCD:SetShineType(styp)
-	if (N2T[styp]) then
-		self.db.ACTION.style = N2T[styp];
-	end	
-end
-
-function tCD:SetBuffAchor(name)
-	if (N2P[name]) then
-		self.db.BUFF.point = N2P[name];
-	end
-end
 
 local function Timer_Update(self, elapsed)
 	if not self.cooldown:IsVisible() then
@@ -89,14 +61,6 @@ function tCD:HookCooldown()
 	hooksecurefunc(methods, "SetReverse", function(cooldown, reverse)
 		cooldown.type = reverse and "BUFF" or "ACTION";
 	end)
-	--------------
-	-- 消除主动作条CD重叠
-	--hooksecurefunc("ShowBonusActionBar", function()
-	--	tCD:ShowBonusActionBar();
-	--end);
-	--hooksecurefunc("HideBonusActionBar", function()
-	--	tCD:HideBonusActionBar();
-	--end);
 end
 
 function tCD:SetCooldown(cooldown, start, duration)
@@ -119,7 +83,7 @@ function tCD:CreateTimer(cooldown)
 	
 	timer:SetFrameLevel(cooldown:GetFrameLevel() + 5);
 	timer:SetAllPoints(cooldown);
-	--timer:SetToplevel(true);
+	timer:SetToplevel(true);
 	timer:Hide();
 	timer:SetScript("OnUpdate", Timer_Update);
 	timer:SetScript("OnHide", Timer_Hide);
@@ -146,14 +110,7 @@ function tCD:UpdateTimer(timer)
 	
 	local time = timer.duration - (GetTime() - timer.start);
 	local max = self.db[timer.cooldown.type].max;
-	if (not self.db[timer.cooldown.type].config) then
-		if (timer.text:IsVisible()) then
-			timer.text:Hide();
-		end		
-		return;
-	end
-
-	if ((max and max > 0 and time > max)) then
+	if max and max > 0 and time > max then
 		timer.text:Hide();
 	elseif time > 0 then
 		local str, scale, r, g, b, nextUpdate = self:GetFormattedTime(time, self.db[timer.cooldown.type].long);
@@ -194,13 +151,7 @@ function tCD:GetFormattedTime(t, long)
 	if t < 9 then
 		style = self.db.short;
 		str = ceil(t);
-		nextUpdate = t-floor(t);		
-		-- added by dugu@bigfoot
-		if (nextUpdate > 0.5) then
-			style.g = 0.82;
-		else
-			style.g = 0.12;
-		end
+		nextUpdate = t-floor(t);
 	elseif t < 60 then
 		style = self.db.secs;
 		str = ceil(t);
@@ -223,30 +174,9 @@ function tCD:GetFormattedTime(t, long)
 		str = format("%dd", ceil(t));
 		nextUpdate = t%86400;
 	end
-	return str, style.s, style.r, style.g, style.b, UPDATE_TIME;
+	return str, style.s, style.r, style.g, style.b, nextUpdate;
 end
 
-function tCD:ShowBonusActionBar()
-	if (BonusActionBarFrame:IsVisible()) then
-		for i, cd in ipairs(ABCS) do
-			if (timers[cd]) then
-				timers[cd]:SetAlpha(0);
-			end
-		end
-	end	
-end
-
-function tCD:HideBonusActionBar()
-	for i, cd in ipairs(ABCS) do
-		if (timers[cd]) then
-			timers[cd]:SetAlpha(1);
-		end	
-	end
-end
-
-function TCooldown_ShowActionBarCooldown()
-	tCD:HideBonusActionBar();
-end
 -- shine
 function tCD:CreateShine(button)
 	local frame = CreateFrame("Frame", nil, button);

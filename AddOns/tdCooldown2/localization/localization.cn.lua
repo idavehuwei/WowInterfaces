@@ -1,6 +1,5 @@
 ﻿
 if GetLocale() ~= "zhCN" then return end
-COOLLINE_UNLOCK_TEXT = "线性冷却 - 拖动冷却条改变位置, 拖动红色小点改变大小";
 local L = TDCOOLDOWN2_LACALE
 
 L.Rank = "^等级 (%d+)$"

@@ -1,7 +1,7 @@
-local tCD = tdCooldown2;
+
 local IsActionInRange = IsActionInRange;
 
-local function tdRange_GetColor(id)
+function tdRange_GetColor(id)
 	local isUsable, notEnoughMana = IsUsableAction(id)
 	if notEnoughMana then
 		return 0.5, 0.5, 1.0, 1
@@ -14,22 +14,17 @@ local function tdRange_GetColor(id)
 	end
 end
 
-function tCD:ActionButton_UpdateUsable(self)
+function ActionButton_UpdateUsable(self)
 	local r, g, b, index = tdRange_GetColor(ActionButton_GetPagedID(self))
-	--if not (self.index and self.index == index) then
-	--	self.index = index
-	getglobal(self:GetName().."Icon"):SetVertexColor(r, g, b);
-	--end
+	if not (self.index and self.index == index) then
+		self.index = index
+		getglobal(self:GetName().."Icon"):SetVertexColor(r, g, b);
+	end
 end
 
-hooksecurefunc("ActionButton_UpdateUsable", function(self)
-	if ( tCD.db.redout ) then
-		tCD:ActionButton_UpdateUsable(self);
-	end	
-end);
 
 hooksecurefunc("ActionButton_OnUpdate", function(self, elapsed)
-	if ( tCD.db.redout and self.rangeTimer and self.rangeTimer <= elapsed ) then
-		 tCD:ActionButton_UpdateUsable(self);
+	if ( self.rangeTimer and self.rangeTimer <= elapsed ) then
+		ActionButton_UpdateUsable(self);
 	end
 end)

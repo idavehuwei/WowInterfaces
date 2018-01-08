@@ -1,0 +1,66 @@
+﻿if GetLocale() ~= "zhTW" then return end 
+local L = TDCOOLDOWN2_OPTION_LACALE 
+
+L["Cooldown Count"] = "冷卻計數"; 
+L["Scale & Color"] = "縮放和顏色";
+L["All"] = "全局";
+L["Under 5 s"] = "小於5秒"; 
+L["Count Color"] = "計時顏色"; 
+L["Action Bars"] = "動作條類"; 
+L["Enable"] = "開啟"; 
+L["Hide default Effect"] = "隱藏系統動畫"; 
+L["Show Precise Duration"] = "長格式"; 
+L["Enable Shining"] = "開啟閃光"; 
+L["Font Alpha"] = "字體透明度"; 
+L["Font Size"] = "字號"; 
+L["Shining Scale"] = "閃光大小"; 
+L["Shining Texture"] = "閃光材質"; 
+L["Icon"] = "技能圖標"; 
+L["System"] = "系統"; 
+L["Round"] = "圓形"; 
+L["Explosive"] = "爆炸"; 
+L["Heart"] = "心型"; 
+L["Font"] = "字體";
+L["Min Displayable Cooldown Duration"] = "計時下限"; 
+L["Max Displayable Cooldown Duration"] = "計時上限"; 
+L["Anchor offset"] = "定位"; 
+L["Buff and Debuff"] = "Buff和Debuff"; 
+L["Top Left"] = "左上"; 
+L["Top"] = "上"; 
+L["Top Right"] = "右上" ; 
+L["Left"] = "左"; 
+L["Center"] = "中"; 
+L["Right"] = "右"; 
+L["Bottom Left"] = "左下"; 
+L["Bottom"] = "下"; 
+L["Bottom Right"] = "右下"; 
+L["Spell"] = "技能"; 
+L["Bar and Center"] = "計時條和中部提示"; 
+L["Bar"] = "計時條"; 
+L["Hide Bar"] = "隱藏計時條"; 
+L["Locked"] = "鎖定位置"; 
+L["Reserve sort"] = "反向排列"; 
+L["Sound"] = "聲音提示"; 
+L["Width"] = "寬度"; 
+L["Height"] = "高度";
+L["Spacing"] = "間距";
+L["Alpha"] = "透明度"; 
+L["Test"] = "測試"; 
+L["Center Icon"] = "中部提示"; 
+L["Highlight HoT Icon"] = "中部加亮"; 
+L["Text in center"] = "中部文字"; 
+L["Center Style"] = "中部材質";
+L["Only Icon"] = "僅圖標"; 
+L["Icon no Border"] = "圖標去邊框";
+L["Duration"] = "時長"; 
+L["Color of spell name"] = "技能名稱顏色"; 
+L["Effect Test (on|off)"] = "移動中部"; 
+L["Black List"] = "不計時列表"; 
+L["Page: %d"] = "第%d頁"; 
+--L["Can't do it in combat."] = true;
+--L["Toggle Spell Book & Bags"] = true;
+L["Black Tip"] = [[說明： 
+  將技能或物品拖到這裡可加入不計時列表。 
+   <Ctrl+單擊>可將技能或物品刪除。 
+  不計時列表會自動加入無冷卻技能。 
+]]

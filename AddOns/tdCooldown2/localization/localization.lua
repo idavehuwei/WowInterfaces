@@ -1,5 +1,5 @@
 TDCOOLDOWN2_LACALE = {}
-COOLLINE_UNLOCK_TEXT = "CoolLine - drag frame to reposition or drag red corner to resize"
+
 local L = TDCOOLDOWN2_LACALE;
 
 L.Rank = "^Rank (%d+)$";

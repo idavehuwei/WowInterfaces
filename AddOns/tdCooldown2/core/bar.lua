@@ -45,7 +45,8 @@ local function Center_Update(self, elapsed)
 	if self.finish > tCD.db.center.time / 2 then
 		alpha = (1 - self.finish / tCD.db.center.time) * 2 * alpha;
 	end
-	self:SetAlpha(alpha)	
+	self:SetAlpha(alpha)
+
 	if self.finish >= tCD.db.center.time then
 		tremove(centerData,1)
 		self.finish = 0
@@ -58,7 +59,7 @@ function tCD:TestRank(rank)
 end
 
 function tCD:CreateBar(index)
-	local bar = CreateFrame("StatusBar", nil, self.pf);
+	local bar = CreateFrame("StatusBar", nil, UIParent);
 	local p, r, y;
 	if self.db.bar.reverse then
 		p = "BOTTOMLEFT"; r = "TOPLEFT"; y = self.db.bar.spacing;
@@ -230,10 +231,6 @@ function tCD:UpdateBar()
 				timer:SetValue(time);
 				timer:Show();
 			end
-			-- hide cooldown bars
-			if (self.db.bar.hidden and timers[i]) then
-				timers[i]:Hide();
-			end
 		end
 	end
 	if #(tCDcoolingData) >= #(timers) then
@@ -329,16 +326,12 @@ function tCD:UpdateCenter()
 		end
 		
 		self.center.icon:SetTexture(centerData[1].icon);
-		if (tCD.db.center.text) then
-			self.center.text:SetText(self:FormatCenterText(centerData[1].name or centerData[1].spell));
-		else
-			self.center.text:SetText("");
-		end		
+		self.center.text:SetText(self:FormatCenterText(centerData[1].name or centerData[1].spell));
+		
 		self.center.finish = 0
 		self.center:Show()
 	end
 end
-
 ---- event
 function tCD:ToggleCenter(tog)
 	if tog then
@@ -354,34 +347,18 @@ function tCD:ToggleCenter(tog)
 	end
 end
 
-function tCD:ToggleBar(tog)
-	if (tog) then
-		self:SetCurVal("bar", "config", true);
-		self:SetCurVal("bar", "hidden", false);	
-		self.pf:Show();
-	else
-		self:SetCurVal("bar", "hidden", true);
-		self.pf:Hide();
-	end
-	self:UpdateBars();	
-end
-
 function tCD:EnableCenter()
-	local parentFrame = CreateFrame("Frame", nil, UIParent);
-	parentFrame:SetWidth(60);parentFrame:SetHeight(20);
-	parentFrame:SetPoint(self.db.bar.position.p, UIParent, self.db.bar.position.r, self.db.bar.position.x, self.db.bar.position.y);
-	parentFrame:SetMovable(true)
-	-- parentFrame:EnableMouse(true)
-	self.pf = parentFrame;
-	local pos = CreateFrame("Button", nil, parentFrame, "UIPanelButtonTemplate")	
+	local pos = CreateFrame("Button", nil, UIParent, "UIPanelButtonTemplate")
+	pos:SetWidth(60); pos:SetHeight(20)
 	pos:SetText(L.Move)
-	pos:SetAllPoints(parentFrame);
+	pos:SetPoint(self.db.bar.position.p, UIParent, self.db.bar.position.r, self.db.bar.position.x, self.db.bar.position.y)
+	pos:SetMovable(true)
 	pos:EnableMouse(true)
 	pos:RegisterForDrag("LeftButton")
-	pos:SetScript("OnDragStart",function(self) parentFrame:StartMoving() end)
+	pos:SetScript("OnDragStart",function(self) self:StartMoving() end)
 	pos:SetScript("OnDragStop",function(self)
-		parentFrame:StopMovingOrSizing()
-		local p, _, r, x, y = parentFrame:GetPoint()
+		self:StopMovingOrSizing()
+		local p, _, r, x, y = self:GetPoint()
 		tCD.db.bar.position.p = p; tCD.db.bar.position.r = r; tCD.db.bar.position.x = x; tCD.db.bar.position.y = y
 	end)
 	pos:RegisterForClicks("RightButtonUp")
@@ -411,8 +388,7 @@ function tCD:SPELL_UPDATE_COOLDOWN()
 	local start, duration, enable, name, icon, pos
 	for i, v in ipairs(succeededData) do
 		start, duration, enable, name, icon = self:GetInfo(v.id, v.type)
-		-- 增加持续时间过滤(大于15分钟的不显示)
-		if start and duration and duration <= 9000 and enable and enable > 0 and start > 0 and duration > self.db.bar.min then
+		if start and duration and enable and enable > 0 and start > 0 and duration > self.db.bar.min then
 			if cooldownlist[v.spell] then
 				pos = self:GetTablePos(tCDcoolingData, "spell", v.spell)
 				if pos then
@@ -517,39 +493,4 @@ function tCD:PLAYER_ENTERING_WORLD()
 			end
 		end
 	end
-end
-
-local mode = select(3, GameFontHighlightSmall:GetFont());
-
-function tCD:UpdateBars()
-	local bar, p, r, y
-	if self.db.bar.reverse then
-		p = "BOTTOMLEFT"; r = "TOPLEFT"; y = self.db.bar.spacing
-	else
-		p = "TOPLEFT"; r = "BOTTOMLEFT"; y = - self.db.bar.spacing
-	end
-	if self.db.bar.locked then
-		timers[0]:Hide();
-	else
-		timers[0]:Show();
-	end
-	
-	for i, bar in ipairs(timers) do
-		if self.db.bar.hidden then
-			bar:Hide();
-		else
-			bar:SetAlpha(self.db.bar.alpha);
-			bar:SetWidth(self.db.bar.width);
-			bar:SetHeight(self.db.bar.height);
-			bar.name:SetWidth(self.db.bar.width);
-			bar.name:SetHeight(self.db.bar.height);
-			bar.name:SetFont(self.db.bar.font, self.db.bar.size, mode);
-			bar.timer:SetFont(self.db.bar.font, self.db.bar.size, mode);
-			bar.icon:SetWidth(self.db.bar.height);
-			bar.icon:SetHeight(self.db.bar.height);
-			bar:ClearAllPoints();
-			bar:SetPoint(p, timers[i - 1], r, 0, y);		
-		end
-	end
-	self:TestAllCooling()
 end

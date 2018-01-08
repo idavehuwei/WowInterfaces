@@ -1,0 +1,20 @@
+﻿## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 tdCooldown2|r tdCooldown2's options.。
+## Title: tdCooldown2 Option
+## Notes: tdCooldown2's options.
+## Title-zhCN: |cff7fff7f太多|r冷却2 设置
+## Author: ldz5
+## Version: 30000.4
+## Dependencies: tdCooldown2
+## LoadOnDemand: 1
+
+localization\localization.lua
+localization\localization.cn.lua
+localization\localization.tw.lua
+main.lua
+core\cd.lua
+core\bar.lua
+core\black.lua
+
+

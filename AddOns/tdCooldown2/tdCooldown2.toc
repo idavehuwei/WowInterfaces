@@ -1,21 +1,24 @@
-## Interface: 30100
+﻿## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: 基本的冷却提示和闪光，还有计时条和中部图标提示功能
 ## Title: tdCooldown2
 ## Notes: Cooldown Count for Everything.
-## Title-zhCN: 冷却计时 tdCooldown2
-## Notes-zhCN: 显示动作按键的冷却计时和着色超出距离的动作按键
-## Title-zhTW: 冷卻計時 tdCooldown2
-## Notes-zhTW: 顯示動作按鍵的冷卻計時和著色超出距離的動作按鍵
+## Title-zhCN: |cff7fff7f太多|r冷却2
 ## Author: ldz5
 ## Version: 30000.4
-## SavedVariables: tCD2DB, CoolLineDB
+
+## SavedVariables: tCD2DB
 ## SavedVariablesPerCharacter: tCDblackData, tCDcoolingData
-## X-DuowanAddon: 战斗
-## Dependencies: !!Corelibs
+
+## DefaultState: disabled
 
 localization\localization.lua
 localization\localization.cn.lua
 localization\localization.tw.lua
-
 main.lua
-core\embed.xml
+core\cd.lua
+core\bar.lua
+core\range.lua
 addons\addons.xml
+
+
