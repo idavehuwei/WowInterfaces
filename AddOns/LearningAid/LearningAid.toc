@@ -1,0 +1,21 @@
+## Interface: 30100
+## Title: Learning Aid v1.07.2
+## Notes: Displays a bar of spells, abilities, tradeskills, mounts or mini-pets you've just learned.  By Jamash (Kil'jaeden-US)
+## Notes-deDE: Zeigt eine Leiste mit Zaubersprüchen, Fähigkeiten, Berufsfertigkeiten, Reittieren und Fahrzeugen, oder Begleitern, die du gerade erst gelernt hast. Von Jamash (Kil'jaeden-US)
+## SavedVariables: LearningAid_Saved
+## SavedVariablesPerCharacter: LearningAid_Character
+## Author: Jamash (Kil'jaeden-US)
+## Version: 1.07.2
+## X-Embeds: Ace3
+## X-Category: Interface Enhancements
+
+LearningAid.xml
+LearningAid.lua
+SpellButton.lua
+Companion.lua
+Spell.lua
+ActionBar.lua
+
+Locale\enUS.lua
+Locale\zhCN.lua
+Locale\deDE.lua
