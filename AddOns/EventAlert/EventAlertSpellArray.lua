@@ -69,6 +69,7 @@ if EA_Items[EA_CLASS_MAGE] == nil then EA_Items[EA_CLASS_MAGE] = {} end;
 
    -- Fingers of Frost
 		if EA_Items[EA_CLASS_MAGE][44544] == nil then EA_Items[EA_CLASS_MAGE][44544] = true end;
+		if EA_Items[EA_CLASS_MAGE][74396] == nil then EA_Items[EA_CLASS_MAGE][74396] = true end;
 
    -- Firestarter
 		if EA_Items[EA_CLASS_MAGE][54741] == nil then EA_Items[EA_CLASS_MAGE][54741] = true end;
@@ -78,8 +79,6 @@ if EA_Items[EA_CLASS_MAGE] == nil then EA_Items[EA_CLASS_MAGE] = {} end;
 
    -- Missile Barrage
 		if EA_Items[EA_CLASS_MAGE][44401] == nil then EA_Items[EA_CLASS_MAGE][44401] = true end;
-   -- Fingers of Frost		
-		if (EA_Items[EA_CLASS_MAGE][74396] == nil) then EA_Items[EA_CLASS_MAGE][74396] = true end;
 
 -- Paladin
 if EA_Items[EA_CLASS_PALADIN] == nil then EA_Items[EA_CLASS_PALADIN] = {} end;

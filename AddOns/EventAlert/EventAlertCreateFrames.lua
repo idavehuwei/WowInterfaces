@@ -245,12 +245,16 @@ function EventAlert_CreateFrames()
 			local EA_name11 = GetSpellInfo(46913);
 			EA_name = EA_name11;
 		end
+        if (index == 74396) then
+			local EA_name12 = GetSpellInfo(44544);
+			EA_name = EA_name12;
+		end
 
 
 		local ClassEventCheckButton = CreateFrame("CheckButton", index, Class_Events_Frame, "OptionsCheckButtonTemplate");
 		ClassEventCheckButton:SetPoint("TOPLEFT",20,buttonPositionY);
 
-		if (EA_rank == "") then
+		if (EA_rank == nil or EA_rank == "") then
 			getglobal(ClassEventCheckButton:GetName().."Text"):SetText(EA_name.."   ["..index.."]");
 		else
 			getglobal(ClassEventCheckButton:GetName().."Text"):SetText(EA_name.." ("..EA_rank..")   ["..index.."]");
@@ -292,9 +296,10 @@ function EventAlert_CreateFrames()
         local AltAlertCheckButton = CreateFrame("CheckButton", index, Alt_Alerts_Frame, "OptionsCheckButtonTemplate");
 		AltAlertCheckButton:SetPoint("TOPLEFT",20,buttonPositionY);
 
-        if (EA_rank == "") then
+        if (EA_rank == nil or EA_rank == "") then
             getglobal(AltAlertCheckButton:GetName().."Text"):SetText(EA_name.."   ["..index.."]");
         else
+            print("EA_rank: " .. tostring(EA_rank))
             getglobal(AltAlertCheckButton:GetName().."Text"):SetText(EA_name.." ("..EA_rank..")   ["..index.."]");
         end
 
