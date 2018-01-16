@@ -66,8 +66,8 @@
                     </Anchor>
                 </Anchors>
                 <Size>
-		            <AbsDimension x="165" y="21"/>
-        		</Size>
+                    <AbsDimension x="165" y="21"/>
+                </Size>
                 <Scripts>
                     <OnClick>
                         PlaySound("gsTitleOptionOK");
@@ -76,7 +76,7 @@
                 </Scripts>
             </Button>
 
-        	<CheckButton name="$parent_ShowFrame" inherits="OptionsCheckButtonTemplate">
+            <CheckButton name="$parent_ShowFrame" inherits="OptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT">
                         <Offset>
@@ -105,7 +105,7 @@
                 </Scripts>
             </CheckButton>
 
-        	<CheckButton name="$parent_ShowName" inherits="OptionsCheckButtonTemplate">
+            <CheckButton name="$parent_ShowName" inherits="OptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parent_ShowFrame" relativePoint="BOTTOMLEFT">
                         <Offset>
@@ -193,7 +193,7 @@
             </CheckButton>
 
 
-        	<CheckButton name="$parent_ShowFlash" inherits="OptionsCheckButtonTemplate">
+            <CheckButton name="$parent_ShowFlash" inherits="OptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parent_ShowTimer" relativePoint="BOTTOMLEFT">
                         <Offset>
@@ -261,10 +261,10 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                    	EventAlert_Options_AlertSoundSelect_OnLoad();
+                        EventAlert_Options_AlertSoundSelect_OnLoad();
                     </OnLoad>
-					<OnShow>
-                    	EventAlert_Options_AlertSoundSelect_OnLoad();
+                    <OnShow>
+                        EventAlert_Options_AlertSoundSelect_OnLoad();
                     </OnShow>
                     <OnEnter>
                         GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
@@ -306,7 +306,7 @@
                 </Scripts>
             </CheckButton>
 
-        	<CheckButton name="$parent_AltAlerts" inherits="OptionsCheckButtonTemplate">
+            <CheckButton name="$parent_AltAlerts" inherits="OptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parent_AllowESC" relativePoint="BOTTOMLEFT">
                         <Offset>
@@ -348,8 +348,8 @@
                     </Anchor>
                 </Anchors>
                 <Size>
-		            <AbsDimension x="175" y="21"/>
-        		</Size>
+                    <AbsDimension x="175" y="21"/>
+                </Size>
                 <Scripts>
                     <OnClick>
                         PlaySound("gsTitleOptionOK");
@@ -367,8 +367,8 @@
                     </Anchor>
                 </Anchors>
                 <Size>
-		            <AbsDimension x="75" y="21"/>
-        		</Size>
+                    <AbsDimension x="75" y="21"/>
+                </Size>
                 <Scripts>
                     <OnClick>
                         PlaySound("gsTitleOptionOK");
@@ -384,15 +384,15 @@
 
         <Scripts>
             <OnLoad>
-	            this:RegisterForDrag("LeftButton");
+                this:RegisterForDrag("LeftButton");
                 EventAlert_Options_OnLoad();
             </OnLoad>
-        	<OnMouseDown>
-	        	EventAlert_Options_MouseDown(button);
-	      	</OnMouseDown>
-	      	<OnMouseUp>
-	        	EventAlert_Options_MouseUp(button);
-	      	</OnMouseUp>
+            <OnMouseDown>
+                EventAlert_Options_MouseDown(button);
+            </OnMouseDown>
+            <OnMouseUp>
+                EventAlert_Options_MouseUp(button);
+            </OnMouseUp>
         </Scripts>
 
     </Frame>

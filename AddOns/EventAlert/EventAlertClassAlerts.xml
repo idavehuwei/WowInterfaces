@@ -9,7 +9,7 @@
         </Size>
 
         <Anchors>
-			<Anchor point="LEFT" relativepoint="RIGHT"/>
+            <Anchor point="LEFT" relativepoint="RIGHT"/>
         </Anchors>
 
         <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
@@ -84,32 +84,32 @@
         </Layers>
 
         <Frames>
-		<EditBox name="$parent_EditBox" letters="41" multiLine="false" ignoreArrows="true" autoFocus="false">
-			<Size>
-				<AbsDimension x="290" y="20" />
-			</Size>
-	        <Anchors>
-	        	<Anchor point="BOTTOM" relativeTo="$parent">
-	            	<Offset>
-	                	<AbsDimension x="5" y="15"/>
-	                </Offset>
-	            </Anchor>
-    	    </Anchors>
-			<FontString inherits="ChatFontNormal" />
-		</EditBox>
+        <EditBox name="$parent_EditBox" letters="41" multiLine="false" ignoreArrows="true" autoFocus="false">
+            <Size>
+                <AbsDimension x="290" y="20" />
+            </Size>
+            <Anchors>
+                <Anchor point="BOTTOM" relativeTo="$parent">
+                    <Offset>
+                        <AbsDimension x="5" y="15"/>
+                    </Offset>
+                </Anchor>
+            </Anchors>
+            <FontString inherits="ChatFontNormal" />
+        </EditBox>
         </Frames>
 
         <Scripts>
             <OnLoad>
-	            this:RegisterForDrag("LeftButton");
+                this:RegisterForDrag("LeftButton");
                 Class_Events_OnLoad();
             </OnLoad>
-        	<OnMouseDown>
-	        	Class_Events_Frame_MouseDown(button);
-	      	</OnMouseDown>
-	      	<OnMouseUp>
-	        	Class_Events_Frame_MouseUp(button);
-	      	</OnMouseUp>
+            <OnMouseDown>
+                Class_Events_Frame_MouseDown(button);
+            </OnMouseDown>
+            <OnMouseUp>
+                Class_Events_Frame_MouseUp(button);
+            </OnMouseUp>
         </Scripts>
 </Frame>
 
@@ -121,7 +121,7 @@
         </Size>
 
         <Anchors>
-			<Anchor point="LEFT" relativepoint="RIGHT"/>
+            <Anchor point="LEFT" relativepoint="RIGHT"/>
         </Anchors>
 
         <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">

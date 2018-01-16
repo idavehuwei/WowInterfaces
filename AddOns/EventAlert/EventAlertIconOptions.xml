@@ -9,7 +9,7 @@
         </Size>
 
         <Anchors>
-			<Anchor point="LEFT" relativepoint="RIGHT"/>
+            <Anchor point="LEFT" relativepoint="RIGHT"/>
         </Anchors>
 
         <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
@@ -57,7 +57,7 @@
 
         <Frames>
 
-        	<CheckButton name="$parent_LockFrame" inherits="OptionsCheckButtonTemplate">
+            <CheckButton name="$parent_LockFrame" inherits="OptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT">
                         <Offset>
@@ -87,7 +87,7 @@
             </CheckButton>
 
 
-			<Slider name="$parent_IconSize" inherits="OptionsSliderTemplate">
+            <Slider name="$parent_IconSize" inherits="OptionsSliderTemplate">
                 <Anchors>
                     <Anchor point="TOP" relativePoint="CENTER">
                         <Offset>
@@ -183,8 +183,8 @@
                     </Anchor>
                 </Anchors>
                 <Size>
-		            <AbsDimension x="175" y="21"/>
-        		</Size>
+                    <AbsDimension x="175" y="21"/>
+                </Size>
                 <Scripts>
                     <OnClick>
                         PlaySound("gsTitleOptionOK");
@@ -202,8 +202,8 @@
                     </Anchor>
                 </Anchors>
                 <Size>
-		            <AbsDimension x="150" y="21"/>
-        		</Size>
+                    <AbsDimension x="150" y="21"/>
+                </Size>
                 <Scripts>
                     <OnClick>
                         PlaySound("gsTitleOptionOK");
@@ -215,15 +215,15 @@
 
         <Scripts>
             <OnLoad>
-	            this:RegisterForDrag("LeftButton");
+                this:RegisterForDrag("LeftButton");
                 EA_Icon_Options_OnLoad();
             </OnLoad>
-        	<OnMouseDown>
-	        	EA_Icon_Options_Frame_MouseDown(button);
-	      	</OnMouseDown>
-	      	<OnMouseUp>
-	        	EA_Icon_Options_Frame_MouseUp(button);
-	      	</OnMouseUp>
+            <OnMouseDown>
+                EA_Icon_Options_Frame_MouseDown(button);
+            </OnMouseDown>
+            <OnMouseUp>
+                EA_Icon_Options_Frame_MouseUp(button);
+            </OnMouseUp>
         </Scripts>
 </Frame>
 
