@@ -104,7 +104,7 @@ function zBar3:Hook()
             hotkey:SetText("  ")
         end
     end
-    RANGE_INDICATOR = "  "
+    -- RANGE_INDICATOR = "  "
 
     -- hook scripts for all action buttons
     local name, bar, button
