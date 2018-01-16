@@ -33,7 +33,7 @@ BigFoot.xml
 BigFootSpells.lua
 BigFootReader.xml
 BigFootVersion.lua
-BigFootError.xml
+#BigFootError.xml
 
 Config\ConfigGlobals.lua
 Config\BagIntegration.lua

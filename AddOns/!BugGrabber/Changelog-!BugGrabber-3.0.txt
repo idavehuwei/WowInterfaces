@@ -1,0 +1,808 @@
+------------------------------------------------------------------------
+r140 | rabbit | 2009-04-14 11:20:32 +0000 (Tue, 14 Apr 2009) | 2 lines
+Changed paths:
+   A /tags/3.0 (from /trunk:139)
+
+Tag as 3.0 release.
+
+------------------------------------------------------------------------
+r139 | rabbit | 2009-04-14 11:17:48 +0000 (Tue, 14 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/!BugGrabber.toc
+   M /trunk/License.txt
+
+TOC bump.
+------------------------------------------------------------------------
+r138 | arrowmaster | 2008-12-31 05:09:34 +0000 (Wed, 31 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/BugGrabber.lua
+
+Add support for using Curse's X-Curse-Packaged-Version toc field for version info if no other method is sucessful
+------------------------------------------------------------------------
+r137 | arrowmaster | 2008-11-01 00:07:04 +0000 (Sat, 01 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/BugGrabber.lua
+
+Fix so CBH is setup before an error happens so that its available for other addons to register to
+------------------------------------------------------------------------
+r136 | pr0ff | 2008-10-31 22:06:59 +0000 (Fri, 31 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/!BugGrabber.toc
+   M /trunk/BugGrabber.lua
+
+Add ruRU locale
+------------------------------------------------------------------------
+r135 | arrowmaster | 2008-10-31 21:56:13 +0000 (Fri, 31 Oct 2008) | 2 lines
+Changed paths:
+   M /trunk/!BugGrabber.toc
+   M /trunk/BugGrabber.lua
+
+Convert all AceLibrary and Rock usage to direct LibStub usage, thus pure LibStub libraries without a :GetLibraryVersion() function are now identified as libraries
+Remove silly "Title-koKR:" from toc that just colored the English title
+------------------------------------------------------------------------
+r134 | arrowmaster | 2008-10-31 21:31:55 +0000 (Fri, 31 Oct 2008) | 4 lines
+Changed paths:
+   M /trunk
+   M /trunk/!BugGrabber.toc
+   M /trunk/.pkgmeta
+   M /trunk/BugGrabber.lua
+   M /trunk/License.txt
+   M /trunk/gpl.txt
+   D /trunk/libs
+
+Make calls to LibStub and CallbackHandler-1.0 safe for if either is not found
+Remove LibStub and CallbackHandler-1.0 since BugGrabber is ment to not depend on anything
+Revert Mikk's quick fix now that a proper fix has been made
+Cleanup svn properties
+------------------------------------------------------------------------
+r133 | mikk | 2008-10-31 18:27:47 +0000 (Fri, 31 Oct 2008) | 2 lines
+Changed paths:
+   M /trunk/BugGrabber.lua
+
+Disable an ill-designed safeguard that current suppresses ALL errors that have LibStub or CallBackHandler somewhere in the trace.
+(It checks for if "BugGrabber" is mentioned in the path... but it embeds libstub & CBH!)
+------------------------------------------------------------------------
+r131 | nevcairiel | 2008-10-15 00:12:20 +0000 (Wed, 15 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/!BugGrabber.toc
+
+Update Interface Version to 30000 (per Rabbits request)
+------------------------------------------------------------------------
+r129 | rabbit | 2008-10-09 16:05:54 +0000 (Thu, 09 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/!BugGrabber.toc
+   M /trunk/.pkgmeta
+   A /trunk/libs/CallbackHandler-1.0
+   A /trunk/libs/CallbackHandler-1.0/CallbackHandler-1.0.lua
+   A /trunk/libs/CallbackHandler-1.0/CallbackHandler-1.0.xml
+   A /trunk/libs/LibStub
+   A /trunk/libs/LibStub/LibStub.lua
+
+Hard embed LS+CBH.
+------------------------------------------------------------------------
+r128 | rabbit | 2008-10-07 23:55:06 +0000 (Tue, 07 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/BugGrabber.lua
+
+No reason to check for the existence of LS or CBH anymore since we package it.
+------------------------------------------------------------------------
+r127 | rabbit | 2008-10-07 23:53:27 +0000 (Tue, 07 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/!BugGrabber.toc
+   M /trunk/.pkgmeta
+   A /trunk/libs
+
+Add LS and CBH.
+------------------------------------------------------------------------
+r126 | rabbit | 2008-10-06 08:04:29 +0000 (Mon, 06 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/BugGrabber.lua
+
+Merge Arrowmasters patch to add CBH support.
+------------------------------------------------------------------------
+r125 | rabbit | 2008-10-05 07:56:56 +0000 (Sun, 05 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/BugGrabber.lua
+
+Make sure we create the fake Swatter object.
+------------------------------------------------------------------------
+r124 | root | 2008-09-29 22:14:57 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   A /trunk/.pkgmeta
+
+Facilitate WowAce-on-CurseForge transition
+------------------------------------------------------------------------
+r122 | root | 2008-09-29 20:57:29 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   D /tmp/trunk/!BugGrabber
+   A /trunk (from /tmp/trunk/!BugGrabber:121)
+
+Importing old repo data under /trunk
+------------------------------------------------------------------------
+r121 | rabbit | 2008-09-26 07:51:11 +0000 (Fri, 26 Sep 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+
+.BugGrabber: X-Email.
+------------------------------------------------------------------------
+r117 | rabbit | 2008-04-22 21:31:57 +0000 (Tue, 22 Apr 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Don't invoke any functions when checking the version just scan for properties.
+
+------------------------------------------------------------------------
+r116 | rabbit | 2008-04-22 11:02:17 +0000 (Tue, 22 Apr 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Only notify the user that the slash command was created if noone has registered for handling the events.
+
+------------------------------------------------------------------------
+r115 | rabbit | 2008-04-22 10:54:13 +0000 (Tue, 22 Apr 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Fixed turning throttling on/off.
+
+------------------------------------------------------------------------
+r114 | StiviS | 2008-04-22 06:28:57 +0000 (Tue, 22 Apr 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: esES updated
+------------------------------------------------------------------------
+r113 | rabbit | 2008-04-22 00:11:51 +0000 (Tue, 22 Apr 2008) | 6 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber:
+ * The global BugGrabber object now only contains the proper API.
+ * More thorough version checking.
+ * Removed the load error table. All errors are put directly into the proper database.
+ * Lots of cleanup.
+
+------------------------------------------------------------------------
+r112 | helium | 2008-03-28 08:26:41 +0000 (Fri, 28 Mar 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+
+!BugGrabber: TOC 20400
+------------------------------------------------------------------------
+r110 | kunda | 2008-03-10 15:42:54 +0000 (Mon, 10 Mar 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: deDE update
+------------------------------------------------------------------------
+r109 | rabbit | 2008-03-06 05:34:03 +0000 (Thu, 06 Mar 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Properly catch errors thrown from Stubby.
+------------------------------------------------------------------------
+r108 | rabbit | 2007-11-21 07:51:18 +0000 (Wed, 21 Nov 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Attempt to grab errors handled by Stubby.
+------------------------------------------------------------------------
+r107 | xinhuan | 2007-11-18 04:22:28 +0000 (Sun, 18 Nov 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Add _ variable to local variable declaration so it doesn't generate 100 unnecessary taint.log entries on logging an error.
+------------------------------------------------------------------------
+r106 | funkydude | 2007-11-13 17:19:46 +0000 (Tue, 13 Nov 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+
+.trunk: Bump toc for various addons and libraries working on the PTR
+------------------------------------------------------------------------
+r105 | funkydude | 2007-09-25 16:20:41 +0000 (Tue, 25 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+
+.trunk: various toc updates of ptr working addons
+------------------------------------------------------------------------
+r104 | ckknight | 2007-09-12 03:41:45 +0000 (Wed, 12 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - bugfix, ironically.
+------------------------------------------------------------------------
+r103 | mikk | 2007-08-21 11:03:36 +0000 (Tue, 21 Aug 2007) | 3 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber:
+- Don't error out if GetLibraryVersion() doesn't return a correct minor (replace with "?")
+
+------------------------------------------------------------------------
+r102 | gamefaq | 2007-06-18 16:25:51 +0000 (Mon, 18 Jun 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Typo Fix
+------------------------------------------------------------------------
+r101 | helium | 2007-06-18 15:54:29 +0000 (Mon, 18 Jun 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: updated zhTW localization
+------------------------------------------------------------------------
+r100 | rabbit | 2007-06-18 09:30:28 +0000 (Mon, 18 Jun 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Forcefully kill Swatter again, since installing it is not a conscious choice.
+------------------------------------------------------------------------
+r99 | helium | 2007-06-17 13:30:33 +0000 (Sun, 17 Jun 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: updated zhTW localization
+------------------------------------------------------------------------
+r98 | ckknight | 2007-06-16 22:16:12 +0000 (Sat, 16 Jun 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - when choosing between Swatter and BugGrabber, recommend BugGrabber.
+------------------------------------------------------------------------
+r97 | ckknight | 2007-06-16 20:30:15 +0000 (Sat, 16 Jun 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - change the handling of !Swatter detection.
+- pop up a dialog box asking the user to choose between Swatter and BugGrabber.
+------------------------------------------------------------------------
+r96 | helium | 2007-06-08 11:25:11 +0000 (Fri, 08 Jun 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: zhTW localization updated
+------------------------------------------------------------------------
+r95 | rabbit | 2007-05-23 13:02:29 +0000 (Wed, 23 May 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Bugfix, thanks jerry.
+------------------------------------------------------------------------
+r94 | rabbit | 2007-05-22 06:23:16 +0000 (Tue, 22 May 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+
+.Bump to 20100.
+------------------------------------------------------------------------
+r93 | ckknight | 2007-05-07 07:08:44 +0000 (Mon, 07 May 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - added another mechanism for getting versions, if the addon is a library.
+------------------------------------------------------------------------
+r92 | rabbit | 2007-04-29 02:48:03 +0000 (Sun, 29 Apr 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Don't return anything from :SetLimit, since it confuses older Dewdrops.
+------------------------------------------------------------------------
+r91 | helium | 2007-04-06 11:52:21 +0000 (Fri, 06 Apr 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber:
+- updated zhTW locale
+------------------------------------------------------------------------
+r90 | rabbit | 2007-03-14 15:06:49 +0000 (Wed, 14 Mar 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Note to self: Must remember to enable my brain before committing.
+------------------------------------------------------------------------
+r89 | rabbit | 2007-03-14 12:07:13 +0000 (Wed, 14 Mar 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Bugfix.
+------------------------------------------------------------------------
+r88 | kergoth | 2007-01-23 21:50:43 +0000 (Tue, 23 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/gpl.txt
+
+.Line ending fixups: trunk/
+------------------------------------------------------------------------
+r87 | rabbit | 2007-01-21 22:54:03 +0000 (Sun, 21 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Throttling is now controlled by a SV flag.
+------------------------------------------------------------------------
+r86 | rabbit | 2007-01-21 19:01:05 +0000 (Sun, 21 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Can now do /script BugGrabber.Pause()/Resume() just for testing purposes, also bumped throttle time to 60 seconds.
+------------------------------------------------------------------------
+r85 | rabbit | 2007-01-21 17:28:09 +0000 (Sun, 21 Jan 2007) | 3 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: ckk, these messages are only displayed if BugSack is not installed. In any case, the correct way to fix this is to tweak the values of the other options so that the user doesn't percieve this functionality as spam, but rather as a helpful tool to help them keep their sanity while debugging repeating errors.
+
+So, tweaked the amount of errors needed to pause to 20 and increased the paused time to 30 seconds. Perhaps it should be more.
+------------------------------------------------------------------------
+r84 | ckknight | 2007-01-21 10:16:09 +0000 (Sun, 21 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - throttle chat is now suppressed. It shouldn't spam chat. that was a horrible design decision, users do not like it. It could alert BugSack or something, but don't spam chat.
+------------------------------------------------------------------------
+r83 | rabbit | 2007-01-20 22:38:52 +0000 (Sat, 20 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Reset vars used for debugging.
+------------------------------------------------------------------------
+r82 | rabbit | 2007-01-20 22:37:48 +0000 (Sat, 20 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Fire some events when pausing/resuming and create some variables to control the throttle chat.
+------------------------------------------------------------------------
+r81 | rabbit | 2007-01-19 03:24:29 +0000 (Fri, 19 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Use a print function for all our output.
+------------------------------------------------------------------------
+r80 | rabbit | 2007-01-14 05:23:02 +0000 (Sun, 14 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: If we get more than 10 errors per second, automatically turn off error grabbing and unregister all events for 10 seconds and notify the user of this.
+------------------------------------------------------------------------
+r79 | fritti | 2007-01-11 15:09:28 +0000 (Thu, 11 Jan 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+
+!BugGrabber:
+- Rabbit has been keeping this up, I am MIA
+------------------------------------------------------------------------
+r78 | funkydude | 2007-01-10 09:12:16 +0000 (Wed, 10 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+
+!BugGrabber: toc 20003
+------------------------------------------------------------------------
+r77 | rabbit | 2007-01-09 23:18:49 +0000 (Tue, 09 Jan 2007) | 3 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber:
+ * pcall any outside method calls
+ * Try more properties for version and revision.
+------------------------------------------------------------------------
+r76 | ckknight | 2007-01-05 05:21:19 +0000 (Fri, 05 Jan 2007) | 3 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber:
+- slight cleanup
+- if _G[addon] doesn't exist, get the version from GetAddOnMetadata(addon, "Version")
+------------------------------------------------------------------------
+r75 | rabbit | 2007-01-05 04:25:41 +0000 (Fri, 05 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+   M /tmp/trunk/!BugGrabber/License.txt
+   A /tmp/trunk/!BugGrabber/gpl.txt
+
+!BugGrabber: Relicensed as GPL v2 or later.
+------------------------------------------------------------------------
+r74 | rabbit | 2007-01-04 09:53:08 +0000 (Thu, 04 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Don't swallow errors if the addons version field is a number and not a string.
+------------------------------------------------------------------------
+r73 | rabbit | 2007-01-04 08:06:28 +0000 (Thu, 04 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Fixed bug when disabling other addons.
+------------------------------------------------------------------------
+r72 | rabbit | 2007-01-03 16:41:16 +0000 (Wed, 03 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Drycoded attempt to unregister the addon action events when they're not needed.
+------------------------------------------------------------------------
+r71 | ckknight | 2007-01-01 06:59:11 +0000 (Mon, 01 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - fix order-of-operations for Swatter disabling
+------------------------------------------------------------------------
+r70 | ckknight | 2007-01-01 06:16:24 +0000 (Mon, 01 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - only disable Swatter if the Swatter global variable exists.
+------------------------------------------------------------------------
+r69 | ckknight | 2007-01-01 03:06:34 +0000 (Mon, 01 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - much friendlier when disabling !Swatter. No longer wipes their tables, instead informs the user, disables the addon, unregisters the ADDON_ACTION_(BLOCKED/FORBIDDEN) events, and removes the slash commands.
+------------------------------------------------------------------------
+r67 | rabbit | 2006-12-21 17:27:07 +0000 (Thu, 21 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Gah, this wasn't supposed to get in.
+------------------------------------------------------------------------
+r66 | rabbit | 2006-12-21 10:25:01 +0000 (Thu, 21 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Don't put "r" in front of revision numbers.
+------------------------------------------------------------------------
+r65 | rabbit | 2006-12-21 10:02:59 +0000 (Thu, 21 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Make sure we declare all the variables we use and some general cleanup.
+------------------------------------------------------------------------
+r63 | ckknight | 2006-12-18 05:49:54 +0000 (Mon, 18 Dec 2006) | 3 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - now shows version or revision of an addon if the information is available.
+e.g.
+Cartographer-r21162\Modules\LookNFeel.lua:479: This is a test error
+------------------------------------------------------------------------
+r62 | ckknight | 2006-12-18 05:21:40 +0000 (Mon, 18 Dec 2006) | 6 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - libraries now show their revision number and the addon it is inside.
+e.g.
+Tester\Tester.lua:7: attempt to call global 'monkey' (a nil value)
+<in C code>: ?
+AceEvent-2.0-r21157 (Ace2):226: in function `TriggerEvent'
+AceEvent-2.0-r21157 (Ace2):857: in function <Interface\AddOns\Ace2\AceEvent-2.0\AceEvent-2.0.lua:850>
+------------------------------------------------------------------------
+r61 | ckknight | 2006-12-18 04:57:25 +0000 (Mon, 18 Dec 2006) | 4 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - now shows the full path after Interface\AddOns\ for non-libraries
+e.g. Cartographer\Modules\LookNFeel.lua:479: Test error from LookNFeel\
+AceEvent-2.0\AceEvent-2.0.lua:226: in function `TriggerEvent'
+instead of showing "Modules\LookNFeel.lua:479:"
+------------------------------------------------------------------------
+r60 | rabbit | 2006-12-16 19:19:47 +0000 (Sat, 16 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+   M /tmp/trunk/!BugGrabber/License.txt
+
+!BugGrabber: Set svn properties.
+------------------------------------------------------------------------
+r59 | rabbit | 2006-12-16 05:02:47 +0000 (Sat, 16 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Kill VFL's error handler as well.
+------------------------------------------------------------------------
+r58 | rabbit | 2006-12-16 04:24:38 +0000 (Sat, 16 Dec 2006) | 1 line
+Changed paths:
+   A /tmp/trunk/!BugGrabber/License.txt
+
+!BugGrabber: Add license.txt.
+------------------------------------------------------------------------
+r57 | rabbit | 2006-12-16 04:23:21 +0000 (Sat, 16 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Notify the user when we've captured an error and our event has not been registered for.
+------------------------------------------------------------------------
+r56 | rabbit | 2006-12-14 17:13:30 +0000 (Thu, 14 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: type is nil-safe.
+------------------------------------------------------------------------
+r55 | rabbit | 2006-12-13 05:32:24 +0000 (Wed, 13 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Support more than 100 errors.
+------------------------------------------------------------------------
+r54 | rabbit | 2006-12-13 02:50:50 +0000 (Wed, 13 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+
+!BugGrabber: Set some TOC metadata and bump the version.
+------------------------------------------------------------------------
+r53 | rabbit | 2006-12-13 02:44:44 +0000 (Wed, 13 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Use seterrorhandler() and make it noop when we're done.
+------------------------------------------------------------------------
+r52 | rabbit | 2006-12-13 02:28:39 +0000 (Wed, 13 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Kill SVs as well.
+------------------------------------------------------------------------
+r51 | rabbit | 2006-12-13 02:23:48 +0000 (Wed, 13 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Kill and disable !Swatter if found.
+------------------------------------------------------------------------
+r50 | ckknight | 2006-12-13 01:14:22 +0000 (Wed, 13 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - no longer show <unknown>, instead show the raw error.
+------------------------------------------------------------------------
+r49 | rabbit | 2006-12-12 22:24:37 +0000 (Tue, 12 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Spanish translation, thanks to shiftos. Also try to prevent a stack overflow by exiting the while loop eventually.
+------------------------------------------------------------------------
+r48 | ckknight | 2006-12-08 06:51:35 +0000 (Fri, 08 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - removed vagrant +
+------------------------------------------------------------------------
+r47 | ckknight | 2006-12-08 06:45:12 +0000 (Fri, 08 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - now saves big errors in a multi-string table instead of a chopped string.
+------------------------------------------------------------------------
+r46 | rabbit | 2006-12-05 20:40:23 +0000 (Tue, 05 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Use BugSacks FormatError if available.
+------------------------------------------------------------------------
+r45 | rabbit | 2006-12-05 16:15:10 +0000 (Tue, 05 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: 2.0 updates.
+------------------------------------------------------------------------
+r44 | rabbit | 2006-12-01 06:28:41 +0000 (Fri, 01 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: New DB field: type: error|event.
+------------------------------------------------------------------------
+r43 | gamefaq | 2006-11-14 20:24:00 +0000 (Tue, 14 Nov 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: added deDE Translation
+------------------------------------------------------------------------
+r42 | elkano | 2006-11-13 13:07:43 +0000 (Mon, 13 Nov 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - will now also catch ADDON_ACTION_BLOCKED and ADDON_ACTION_FORBIDDEN events
+------------------------------------------------------------------------
+r41 | rabbit | 2006-11-12 16:23:59 +0000 (Sun, 12 Nov 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Should report Usage correctly.
+------------------------------------------------------------------------
+r40 | rabbit | 2006-11-12 16:03:01 +0000 (Sun, 12 Nov 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Localize properly. Please, can you stop assuming you know what you're doing and join IRC so we can talk?
+------------------------------------------------------------------------
+r39 | damjau | 2006-11-12 14:31:57 +0000 (Sun, 12 Nov 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - Add koKR local
+------------------------------------------------------------------------
+r38 | rabbit | 2006-11-10 04:52:40 +0000 (Fri, 10 Nov 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: If BugSack is not loaded, just print unique errors to the chatframe. Also don't print anything if a loop is detected, and fixed some problems with /buggrabber.
+------------------------------------------------------------------------
+r37 | rabbit | 2006-11-10 04:46:41 +0000 (Fri, 10 Nov 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: If there are more than 4 startup errors, we create a slash command (/buggrabber <index>) that can be used to print them individually.
+------------------------------------------------------------------------
+r36 | fritti | 2006-11-09 14:12:33 +0000 (Thu, 09 Nov 2006) | 2 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+
+!BugGrabber: add version number, in sync with BugSack for now
+
+------------------------------------------------------------------------
+r35 | fritti | 2006-11-09 13:27:49 +0000 (Thu, 09 Nov 2006) | 2 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+
+!BugGrabber: - add ckknight to the credits for porting !BugGrabber to TBC
+
+------------------------------------------------------------------------
+r34 | fritti | 2006-11-09 13:21:58 +0000 (Thu, 09 Nov 2006) | 4 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+
+!BugGrabber:
+- update Author & X-Credits to match BugSack
+
+
+------------------------------------------------------------------------
+r33 | rabbit | 2006-11-05 20:19:36 +0000 (Sun, 05 Nov 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: Saves a counter on messages that are repeated more than one time during the same session, as a result, messages do no longer include the time and session ID, they have to be formatted into the message for display manually, if desired.
+------------------------------------------------------------------------
+r32 | ckknight | 2006-10-15 11:52:54 +0000 (Sun, 15 Oct 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber - upgraded for lua 5.1
+------------------------------------------------------------------------
+r31 | fritti | 2006-08-30 22:13:19 +0000 (Wed, 30 Aug 2006) | 3 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber:
+- Add error throttling by queuing the exact same errors and outputting a count of caught errors after a maximum of 30 seconds. Should help with errors in OnUpdate handlers.
+
+------------------------------------------------------------------------
+r30 | sinaloit | 2006-08-26 08:28:24 +0000 (Sat, 26 Aug 2006) | 2 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+
+!BugGrabber:
+- Updated .toc for 1.12 and also to get on svn files page
+------------------------------------------------------------------------
+r26 | fritti | 2006-08-14 21:11:56 +0000 (Mon, 14 Aug 2006) | 2 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: - guard against a WoW crash on reloadui/logout, by truncating errors to 980 characters. More than 983 characters in one string in an SV.lua would crash WoW. Thanks to Devla for providing me with a faulty SV that pointed out the problem. Note that people suffering from a crash right now will have to deleted their SavedVariables\!BugGrabber.lua.
+
+------------------------------------------------------------------------
+r25 | fritti | 2006-08-13 15:59:50 +0000 (Sun, 13 Aug 2006) | 6 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber:
+- add date in error message
+- fix error translation of [C] errors
+- remove load time error check that could never trigger
+- add type checks to SetLimit
+
+------------------------------------------------------------------------
+r24 | fritti | 2006-08-09 13:08:14 +0000 (Wed, 09 Aug 2006) | 7 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: - Switch to ADDON_LOADED instead of VARIABLES_LOADED to cut down on the time that errors need to be saved during loading
+- Redo the saving of loading errors for BugSack as a result of this switch
+- Remove the FormatError function and instead store messages preformatted
+- Use DEFAULT_CHAT_FRAME instead of ChatFrame1
+- Insert lots more checks for the SavedVariables database in the hope of catching the crash on startup
+
+
+------------------------------------------------------------------------
+r23 | fritti | 2006-08-07 19:19:02 +0000 (Mon, 07 Aug 2006) | 3 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: - add toggle whether to save errors to SV or not
+- make the limit on the nr of errors configurable (between 10 and 100)
+
+------------------------------------------------------------------------
+r22 | fritti | 2006-08-07 18:19:16 +0000 (Mon, 07 Aug 2006) | 2 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: - make sure we keep only the last 100 errors
+
+------------------------------------------------------------------------
+r21 | fritti | 2006-08-06 14:03:30 +0000 (Sun, 06 Aug 2006) | 2 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber: - limit the nr of errors saved to avoid SV explosion
+
+------------------------------------------------------------------------
+r20 | fritti | 2006-08-04 18:08:58 +0000 (Fri, 04 Aug 2006) | 3 lines
+Changed paths:
+   M /tmp/trunk/!BugGrabber
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+   M /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+!BugGrabber:
+- completely rewritten and more robust version that should not discard errors silently anymore, nor mutilate them
+
+------------------------------------------------------------------------
+r19 | fritti | 2006-08-03 22:39:02 +0000 (Thu, 03 Aug 2006) | 2 lines
+Changed paths:
+   A /tmp/trunk/!BugGrabber/!BugGrabber.toc (from /tmp/trunk/!BugGrabber/BugGrabber.toc:18)
+   D /tmp/trunk/!BugGrabber/BugGrabber.toc
+
+!BugGrabber: - Catch up with addon rename
+
+------------------------------------------------------------------------
+r18 | fritti | 2006-08-03 22:38:26 +0000 (Thu, 03 Aug 2006) | 3 lines
+Changed paths:
+   A /tmp/trunk/!BugGrabber (from /tmp/trunk/BugGrabber:17)
+   D /tmp/trunk/BugGrabber
+
+BugGrabber:
+- Rename back to include the !. Although it may not work on all clients, it does on a significant portion of the userbase so let's not make it difficult for them.
+
+------------------------------------------------------------------------
+r17 | fritti | 2006-08-01 19:29:46 +0000 (Tue, 01 Aug 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/BugGrabber/BugGrabber.lua
+
+BugGrabber: - Let's not undo the work of BugSack and thereby revert all of it's functions. Doh.
+------------------------------------------------------------------------
+r16 | fritti | 2006-08-01 19:21:59 +0000 (Tue, 01 Aug 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/BugGrabber/BugGrabber.lua
+
+BugGrabber: - don't error on loading (although I don't see why I get PEW twice?)
+------------------------------------------------------------------------
+r15 | fritti | 2006-08-01 18:31:07 +0000 (Tue, 01 Aug 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/BugGrabber/BugGrabber.lua
+   M /tmp/trunk/BugGrabber/BugGrabber.toc
+
+BugGrabber, BugSack: - "Merge" in my branch (not really a merge, I didn't copy them over to start with *shame*)
+------------------------------------------------------------------------
+r14 | fritti | 2006-08-01 18:21:50 +0000 (Tue, 01 Aug 2006) | 1 line
+Changed paths:
+   D /tmp/trunk/!BugGrabber
+   A /tmp/trunk/BugGrabber (from /tmp/trunk/!BugGrabber:13)
+   D /tmp/trunk/BugGrabber/!BugGrabber.toc
+   A /tmp/trunk/BugGrabber/BugGrabber.toc (from /tmp/trunk/!BugGrabber/!BugGrabber.toc:13)
+
+BugGrabber: - rename the folder; due to the fact that load order is not alphabetical it doesn't make sense to have ! in the name. Use LoadWith to force it to load early.
+------------------------------------------------------------------------
+r9 | ramble | 2006-04-21 13:51:31 +0000 (Fri, 21 Apr 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/!BugGrabber/!BugGrabber.toc
+
+BugGrabber: Update TOC
+------------------------------------------------------------------------
+r8 | ramble | 2006-04-21 13:28:36 +0000 (Fri, 21 Apr 2006) | 1 line
+Changed paths:
+   A /tmp/trunk/!BugGrabber
+   A /tmp/trunk/!BugGrabber/!BugGrabber.toc
+   A /tmp/trunk/!BugGrabber/BugGrabber.lua
+
+BugGrabber:  Initial Import from Rowne's last version.  12/5/05.
+------------------------------------------------------------------------

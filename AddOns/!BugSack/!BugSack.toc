@@ -1,0 +1,35 @@
+﻿## Interface: 30100
+## Title: BugSack
+## Version: 3.0
+## Notes: Toss those bugs inna sack.
+## Notes-zhCN: 错误信息收集器。
+## Notes-esES: Mete esos errores en un saco.
+## Notes-zhTW: 集中顯示錯誤訊息，避免中斷遊戲。
+## Notes-ruRU: Аддон ловит текущие ошибки в мешок.
+## Author: Rabbit
+## X-Credits: Rowne, Ramble, kergoth, ckknight, Gamefaq, thomasmo, damjau, Fritti
+## SavedVariables: BugSackDB
+## RequiredDeps: !BugGrabber
+## OptionalDeps: Ace3, DewdropLib, LibSharedMedia-3.0, LibDBIcon-1.0
+## X-Category: Development Tools
+## X-RelSite-WoWI: 5995
+## X-License: GPL v2 or later.
+## X-Email: rabbit.magtheridon@gmail.com
+## X-Curse-Packaged-Version: 3.0
+## X-Curse-Project-Name: BugSack
+## X-Curse-Project-ID: bugsack
+## X-Curse-Repository-ID: wow/bugsack/mainline
+
+BugSack.xml
+
+Locales\enUS.lua
+Locales\zhCN.lua
+Locales\deDE.lua
+Locales\koKR.lua
+Locales\esES.lua
+Locales\zhTW.lua
+Locales\ruRU.lua
+
+BugSack.lua
+BugSackLDB.lua
+

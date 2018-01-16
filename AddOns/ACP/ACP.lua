@@ -7,6 +7,12 @@ ACP_LINEHEIGHT = 16
 
 ACP.CheckEvents = 0
 
+local ACP_Protected_Addons ={
+	["ACP"] = true,
+	["!!Corelibs"] = true,
+	["!!UserDefaultSettings"] = true,
+};
+
 --==============
 -- Localization
 --==============
@@ -501,7 +507,7 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
 
 		savedVar = ACP_Data
 
-        savedVar.ProtectedAddons = savedVar.ProtectedAddons or { ["ACP"] = true }
+        savedVar.ProtectedAddons = savedVar.ProtectedAddons or ACP_Protected_Addons
 
 		if not savedVar.collapsed then
 			savedVar.collapsed = {}

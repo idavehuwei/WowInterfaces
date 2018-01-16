@@ -3,4 +3,5 @@
 ## Version: 1.01
 ## Notes: Adds SpellIDs to the various tooltips ingame
 ## Author: Silverwind
-core.lua
+
+SpellID.lua
