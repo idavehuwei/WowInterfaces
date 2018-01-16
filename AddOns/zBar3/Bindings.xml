@@ -1,0 +1,56 @@
+<Bindings>
+	<!-- zExBar bindings -->
+	<Binding name="CLICK zExButton1:LeftButton" runOnUp="true" header="ZEXBUTTON">
+		zExBars:OnBindingKey(1)
+	</Binding>
+	<Binding name="CLICK zExButton2:LeftButton" runOnUp="true">zExBars:OnBindingKey(2)</Binding>
+	<Binding name="CLICK zExButton3:LeftButton" runOnUp="true">zExBars:OnBindingKey(3)</Binding>
+	<Binding name="CLICK zExButton4:LeftButton" runOnUp="true">zExBars:OnBindingKey(4)</Binding>
+	<Binding name="CLICK zExButton5:LeftButton" runOnUp="true">zExBars:OnBindingKey(5)</Binding>
+	<Binding name="CLICK zExButton6:LeftButton" runOnUp="true">zExBars:OnBindingKey(6)</Binding>
+	<Binding name="CLICK zExButton7:LeftButton" runOnUp="true">zExBars:OnBindingKey(7)</Binding>
+	<Binding name="CLICK zExButton8:LeftButton" runOnUp="true">zExBars:OnBindingKey(8)</Binding>
+	<Binding name="CLICK zExButton9:LeftButton" runOnUp="true">zExBars:OnBindingKey(9)</Binding>
+	<Binding name="CLICK zExButton10:LeftButton" runOnUp="true">zExBars:OnBindingKey(10)</Binding>
+	<Binding name="CLICK zExButton11:LeftButton" runOnUp="true">zExBars:OnBindingKey(11)</Binding>
+	<Binding name="CLICK zExButton12:LeftButton" runOnUp="true">zExBars:OnBindingKey(12)</Binding>
+
+	<Binding name="CLICK zExButton13:LeftButton" runOnUp="true">zExBars:OnBindingKey(13)</Binding>
+	<Binding name="CLICK zExButton14:LeftButton" runOnUp="true">zExBars:OnBindingKey(14)</Binding>
+	<Binding name="CLICK zExButton15:LeftButton" runOnUp="true">zExBars:OnBindingKey(15)</Binding>
+	<Binding name="CLICK zExButton16:LeftButton" runOnUp="true">zExBars:OnBindingKey(16)</Binding>
+	<Binding name="CLICK zExButton17:LeftButton" runOnUp="true">zExBars:OnBindingKey(17)</Binding>
+	<Binding name="CLICK zExButton18:LeftButton" runOnUp="true">zExBars:OnBindingKey(18)</Binding>
+	<Binding name="CLICK zExButton19:LeftButton" runOnUp="true">zExBars:OnBindingKey(19)</Binding>
+	<Binding name="CLICK zExButton20:LeftButton" runOnUp="true">zExBars:OnBindingKey(20)</Binding>
+	<Binding name="CLICK zExButton21:LeftButton" runOnUp="true">zExBars:OnBindingKey(21)</Binding>
+	<Binding name="CLICK zExButton22:LeftButton" runOnUp="true">zExBars:OnBindingKey(22)</Binding>
+	<Binding name="CLICK zExButton23:LeftButton" runOnUp="true">zExBars:OnBindingKey(23)</Binding>
+	<Binding name="CLICK zExButton24:LeftButton" runOnUp="true">zExBars:OnBindingKey(24)</Binding>
+
+	<Binding name="CLICK zExButton25:LeftButton" runOnUp="true">zExBars:OnBindingKey(25)</Binding>
+	<Binding name="CLICK zExButton26:LeftButton" runOnUp="true">zExBars:OnBindingKey(26)</Binding>
+	<Binding name="CLICK zExButton27:LeftButton" runOnUp="true">zExBars:OnBindingKey(27)</Binding>
+	<Binding name="CLICK zExButton28:LeftButton" runOnUp="true">zExBars:OnBindingKey(28)</Binding>
+	<Binding name="CLICK zExButton29:LeftButton" runOnUp="true">zExBars:OnBindingKey(29)</Binding>
+	<Binding name="CLICK zExButton30:LeftButton" runOnUp="true">zExBars:OnBindingKey(30)</Binding>
+	<Binding name="CLICK zExButton31:LeftButton" runOnUp="true">zExBars:OnBindingKey(31)</Binding>
+	<Binding name="CLICK zExButton32:LeftButton" runOnUp="true">zExBars:OnBindingKey(32)</Binding>
+	<Binding name="CLICK zExButton33:LeftButton" runOnUp="true">zExBars:OnBindingKey(33)</Binding>
+	<Binding name="CLICK zExButton34:LeftButton" runOnUp="true">zExBars:OnBindingKey(34)</Binding>
+	<Binding name="CLICK zExButton35:LeftButton" runOnUp="true">zExBars:OnBindingKey(35)</Binding>
+	<Binding name="CLICK zExButton36:LeftButton" runOnUp="true">zExBars:OnBindingKey(36)</Binding>
+
+	<Binding name="CLICK zExButton37:LeftButton" runOnUp="true">zExBars:OnBindingKey(37)</Binding>
+	<Binding name="CLICK zExButton38:LeftButton" runOnUp="true">zExBars:OnBindingKey(38)</Binding>
+	<Binding name="CLICK zExButton39:LeftButton" runOnUp="true">zExBars:OnBindingKey(39)</Binding>
+	<Binding name="CLICK zExButton40:LeftButton" runOnUp="true">zExBars:OnBindingKey(40)</Binding>
+	<Binding name="CLICK zExButton41:LeftButton" runOnUp="true">zExBars:OnBindingKey(41)</Binding>
+	<Binding name="CLICK zExButton42:LeftButton" runOnUp="true">zExBars:OnBindingKey(42)</Binding>
+	<Binding name="CLICK zExButton43:LeftButton" runOnUp="true">zExBars:OnBindingKey(43)</Binding>
+	<Binding name="CLICK zExButton44:LeftButton" runOnUp="true">zExBars:OnBindingKey(44)</Binding>
+	<Binding name="CLICK zExButton45:LeftButton" runOnUp="true">zExBars:OnBindingKey(45)</Binding>
+	<Binding name="CLICK zExButton46:LeftButton" runOnUp="true">zExBars:OnBindingKey(46)</Binding>
+	<Binding name="CLICK zExButton47:LeftButton" runOnUp="true">zExBars:OnBindingKey(47)</Binding>
+	<Binding name="CLICK zExButton48:LeftButton" runOnUp="true">zExBars:OnBindingKey(48)</Binding>
+</Bindings>

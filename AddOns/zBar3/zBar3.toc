@@ -1,0 +1,34 @@
+﻿## Interface: 30100
+
+## Title: zBar3
+## Notes: ZeroFire's ActionBar Mod. |n Third Edition.
+## Author: Zero Fire
+
+## Title-zhCN: zBar3 - |cffFF3300炽火|r|cffDD66DD动作条|r
+## Notes-zhCN: 让你感受燃烧的快感！|n作者：炽火 Zero ℃
+## Author-zhCN: 炽火 Zero ℃
+
+## Version: 3.1.0
+## eMail: zero.flamy@gmail.com
+## Url: http://groups.google.com/group/zbar
+
+## SavedVariables: zBar3Data
+
+Templates.xml
+zBarT.lua
+zTab.lua
+
+zBar.lua
+layout.lua
+defaults.lua
+
+locale\cn.lua
+locale\tw.lua
+locale\en.lua
+
+bars\zExBars.lua
+
+#bars\zCastBar.lua
+bars\zChat.lua
+
+skin\zButtonFacade.lua

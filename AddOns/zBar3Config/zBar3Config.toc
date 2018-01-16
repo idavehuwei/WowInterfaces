@@ -1,0 +1,14 @@
+﻿## Interface: 30100
+## Title: zBar3Config
+## Notes: Load the config panel dynamically for zBar3.
+## Title-zhCN: zBar3 |cff33AAFF设置面板|r
+## Notes-zhCN: 动态加载的设置面板
+## RequiredDeps: zBar3
+## LoadOnDemand: 1
+
+locale\cn.lua
+locale\tw.lua
+locale\en.lua
+
+Templates.xml
+zBarOption.lua
