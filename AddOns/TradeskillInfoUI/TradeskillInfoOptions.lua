@@ -92,15 +92,6 @@ local tooltipOptions = {
 					desc = L["Show who can use an item"],
 					type = "toggle",
 					arg = "TooltipUsableBy",
-					order = 800,
-				},
-				colorusableby = {
-					name = L["Color usable by"],
-					desc = L["Color the alt names in tooltip according to maximum combine difficulty"],
-					type = "toggle",
-					arg = "TooltipColorUsableBy",
-					disabled = function() return not TradeskillInfo.db.profile["TooltipUsableBy"] end,
-					order = 801,
 				},
 				sep1 = {
 					name = "",
@@ -361,11 +352,6 @@ local uiOptions = {
 			set = setOption,
 			order = 10
 		},
-		sep1 = {
-			name = "",
-			type = "description",
-			order = 19,
-		},
 		mouse = {
 			name = L["Search Mouse Button"],
 			desc = L["Mouse button that does a quick search"],
@@ -396,11 +382,6 @@ local uiOptions = {
 			get = getOption,
 			set = setOption,
 			order = 40
-		},
-		sep2 = {
-			name = "",
-			type = "description",
-			order = 49,
 		},
 		strata = {
 			name = L["Frame Strata"],
@@ -513,16 +494,11 @@ local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 
 options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(TradeskillInfo.db)
 
-AceConfigRegistry:RegisterOptionsTable(L["TradeskillInfo"], options)
-
-function TradeskillInfo:OpenConfig()
-	AceConfigDialog:Open(L["TradeskillInfo"]);
-end
---[[
+AceConfigRegistry:RegisterOptionsTable("TradeskillInfo", options)
 TradeskillInfo.OptionsPanel =
 	AceConfigDialog:AddToBlizOptions("TradeskillInfo", "TradeskillInfo")
 
-
+--[[
 TradeskillInfo.OptionsPanel =
 	AceConfigDialog:AddToBlizOptions("TradeskillInfo", "TradeskillInfo", nil, "general")
 AceConfigDialog:AddToBlizOptions("TradeskillInfo", L["Tooltip"], "TradeskillInfo", "tooltip")

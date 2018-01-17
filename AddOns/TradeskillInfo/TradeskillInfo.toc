@@ -1,20 +1,21 @@
-## Interface: 30100
+﻿## Interface: 30100
 ## Title: Tradeskill Info
-## Title-zhCN: 专业技能信息库 TradeskillInfo
-## Title-zhTW: 專業技能資訊庫 TradeskillInfo
 ## Notes: Complete Tradeskill Info
-## Notes-zhTW: 完整的商業技能百科 TradeskillInfo
-## Notes-zhCN: 完整的专业技能百科 TradeskillInfo
+## Notes-zhTW: 完整的商業技能百科
+## Notes-zhCN: 完整的商业技能百科
+## Notes-esES: Informarcion Completa de las Habilidades de Comercio
+## Notes-koKR: 전문기술 정보의 모든 것!
 ## Author: wmrojer
-## X-DuowanAddon: 商业物品
 ## eMail: evenue.wow@gmail.com
 ## X-eMail: evenue.wow@gmail.com
-## X-Curse-Packaged-Version: r346
+## X-Curse-Packaged-Version: r298
 ## X-Curse-Project-Name: TradeskillInfo
 ## X-Curse-Project-ID: tradeskill-info
 ## X-Curse-Repository-ID: wow/tradeskill-info/mainline
-## Version: 1.6.0
-## X-Date: $Date: 2009-10-04 07:45:32 +0000 (Sun, 04 Oct 2009) $
+
+## Version: 1.4.5
+## X-Revision: $Rev: 296 $
+## X-Date: $Date: 2009-06-13 15:30:34 +0000 (Sat, 13 Jun 2009) $
 
 ## X-Credits Evenue (updates), Fieroivan (updates), Dys (updates)
 
@@ -23,9 +24,10 @@
 ## X-LoadOn-Always: delayed
 ## X-LoadOn-Slash: /tsi
 
-## OptionalDeps: !!UserDefaultSettings, Ace3, LibStub, CallbackHandler-1.0, LibAbacus-3.0, LibBabble-Zone-3.0, LibBabble-Faction-3.0, LibDataBroker-1.1, Auc-Advanced
+## Dependencies: !!Corelibs
+## OptionalDeps: Ace3, LibStub, CallbackHandler-1.0, LibAbacus-3.0, LibBabble-Zone-3.0, LibBabble-Faction-3.0, LibDataBroker-1.1, Auc-Advanced
 
-## SavedVariables: DuowanAddon_TradeskillInfoDB
+## SavedVariables: TradeskillInfoDB
 
 locale-enUS.lua
 locale-ruRU.lua

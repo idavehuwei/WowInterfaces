@@ -1,4 +1,4 @@
-﻿-- $Revision: 359 $
+﻿-- $Revision: 265 $
 local L = LibStub("AceLocale-3.0"):GetLocale("TradeskillInfo")
 local BZ = LibStub("LibBabble-Zone-3.0"):GetLookupTable()
 local BF = LibStub("LibBabble-Faction-3.0"):GetLookupTable()
@@ -38,8 +38,6 @@ TradeskillInfo.vars.sources = {
 	['Va'] = L["Alliance Vendor"],
 	['Vh'] = L["Horde Vendor"],
 	['D'] = L["Dropped"],
-	['Da'] = L["Dropped for Alliance"],
-	['Dh'] = L["Dropped for Horde"],
 	['C'] = L["Crafted"],
 	['Ca'] = L["Alchemy"],
 	['Cb'] = L["Blacksmithing"],
@@ -155,7 +153,6 @@ TradeskillInfo.vars.zones = {
 	[78] = BZ["Dragonblight"],
 	[79] = BZ["The Storm Peaks"],
 	[80] = BZ["Wintergrasp"],
-	[81] = BZ["Icecrown Citadel"],
 }
 
 TradeskillInfo.vars.factions = {
@@ -196,7 +193,6 @@ TradeskillInfo.vars.factions = {
 	[33] = BF["The Sons of Hodir"],
 	[34] = BF["The Wyrmrest Accord"],
 	[35] = BF["Argent Crusade"],
-	[36] = BF["The Ashen Verdict"],
 }
 -- Kurenai / The Mag'har
 -- Honor Hold / Thrallmar
@@ -553,8 +549,4 @@ TradeskillInfo.vars.vendors = {
 	[344] =  L["Bryan Landers"] .. "|73|25|38.9,25.2",
 	[345] =  L["Captain O'Neal"] .. "|34|1|75.1,66.8",
 	[346] =  L["Lady Palanseer"] .. "|28|2|37.0,64.9",
-	[347] =  L["Timothy Jones"] .. "|73|25|40.5,35.2",
-	[348] =  L["Alchemist Finklestein"] .. "|81|36|36.2,20.4",
-	[349] =  L["Larana Drome"] .. "|73|25|42.3,37.5",
-  [350] =  L["Frozo the Renowned"] .. "|73|25|40.0,28.3",
 }

@@ -188,7 +188,7 @@
 		<!-- Window Title -->
 		<Layers>
 			<Layer level="BORDER">
-				<FontString name="TradeskillInfoFrameTitleText" inherits="GameFontNormal" text="TRADESKILL_INFO">
+				<FontString name="TradeskillInfoFrameTitleText" inherits="GameFontNormal" text="Tradeskill Info">
 					<Anchors>
 						<Anchor point="TOP" relativeTo="TradeskillInfoFrame" relativePoint="TOP">
 							<Offset>
@@ -208,7 +208,7 @@
 				<Anchors>
 					<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT">
 						<Offset>
-							<AbsDimension x="-30" y="-75"/>
+							<AbsDimension x="-30" y="-25"/>
 						</Offset>
 					</Anchor>
 					<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
@@ -500,7 +500,7 @@
 				</ScrollChild>
 			</ScrollFrame>
 
-			<Button name="TradeskillInfoSearchButton" inherits="TradeskillInfoButtonTemplate" text="TRADESKILLINFO_SEARCH">
+			<Button name="TradeskillInfoSearchButton" inherits="TradeskillInfoButtonTemplate" text="Search">
 				<Size>
 					<AbsDimension x="80" y="22"/>
 				</Size>
@@ -519,7 +519,7 @@
 				</Scripts>
 			</Button>
 
-			<Button name="TradeskillInfoResetButton" inherits="TradeskillInfoButtonTemplate" text="TRADESKILLINFO_RESET">
+			<Button name="TradeskillInfoResetButton" inherits="TradeskillInfoButtonTemplate" text="Reset">
 				<Size>
 					<AbsDimension x="80" y="22"/>
 				</Size>
@@ -670,7 +670,7 @@
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="10" y="-50"/>
+							<AbsDimension x="10" y="-25"/>
 						</Offset>
 					</Anchor>
 					<Anchor point="BOTTOM" relativeTo="TradeskillInfoResetButton" relativePoint="TOP">
@@ -715,6 +715,45 @@
 							</OnClick>
 						</Scripts>
 					</Button>
+
+					<!-- Availability DropDown -->
+					<Frame name="TradeskillInfoAvailabilityDropDown" inherits="UIDropDownMenuTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPRIGHT">
+								<Offset>
+		<!--							<AbsDimension x="-25" y="-66"/> -->
+									<AbsDimension x="10" y=""/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								TradeskillInfoUI:AvailabilityDropDown_OnLoad();
+							</OnLoad>
+							<OnShow>
+								TradeskillInfoUI:AvailabilityDropDown_OnShow(self);
+							</OnShow>
+						</Scripts>
+					</Frame>
+
+					<!-- Tradeskill DropDown -->
+					<Frame name="TradeskillInfoTradeskillsDropDown" inherits="UIDropDownMenuTemplate" id="1">
+						<Anchors>
+							<Anchor point="RIGHT" relativeTo="TradeskillInfoAvailabilityDropDown" relativePoint="LEFT">
+								<Offset>
+									<AbsDimension x="35" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								TradeskillInfoUI:TradeskillsDropDown_OnLoad();
+							</OnLoad>
+							<OnShow>
+								TradeskillInfoUI:TradeskillsDropDown_OnShow(self);
+							</OnShow>
+						</Scripts>
+					</Frame>
 
 					<Frame name="TradeskillInfoHighlightFrame" hidden="true">
 						<Size>
@@ -815,63 +854,6 @@
 				</Scripts>
 				<NormalTexture file="Interface\AddOns\TradeskillInfoUI\images\resize"/>
 			</Button>
-
-			<!-- Sort DropDown -->
-			<Frame name="TradeskillInfoSortDropDown" inherits="UIDropDownMenuTemplate" id="3">
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset>
-							<AbsDimension x="10" y="-25"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						TradeskillInfoUI:SortDropDown_OnLoad();
-					</OnLoad>
-					<OnShow>
-						TradeskillInfoUI:SortDropDown_OnShow(self);
-					</OnShow>
-				</Scripts>
-			</Frame>
-
-			<!-- Tradeskill DropDown -->
-			<Frame name="TradeskillInfoTradeskillsDropDown" inherits="UIDropDownMenuTemplate" id="1">
-				<Anchors>
-					<Anchor point="LEFT" relativeTo="TradeskillInfoSortDropDown" relativePoint="RIGHT">
-						<Offset>
-							<AbsDimension x="-20" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						TradeskillInfoUI:TradeskillsDropDown_OnLoad();
-					</OnLoad>
-					<OnShow>
-						TradeskillInfoUI:TradeskillsDropDown_OnShow(self);
-					</OnShow>
-				</Scripts>
-			</Frame>
-
-			<!-- Availability DropDown -->
-			<Frame name="TradeskillInfoAvailabilityDropDown" inherits="UIDropDownMenuTemplate" id="2">
-				<Anchors>
-					<Anchor point="LEFT" relativeTo="TradeskillInfoTradeskillsDropDown" relativePoint="RIGHT">
-						<Offset>
-							<AbsDimension x="-20" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						TradeskillInfoUI:AvailabilityDropDown_OnLoad();
-					</OnLoad>
-					<OnShow>
-						TradeskillInfoUI:AvailabilityDropDown_OnShow(self);
-					</OnShow>
-				</Scripts>
-			</Frame>
 		</Frames>
 		<Scripts>
 			<OnLoad>

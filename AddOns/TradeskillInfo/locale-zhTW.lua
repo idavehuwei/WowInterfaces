@@ -1,8 +1,6 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("TradeskillInfo", "zhTW", false)
 if not L then return end
 -- The translations I pinched from Babble-Tradeskill-2.2
-L["A"] = "拍賣"
-L["V"] = "販賣"
 L["Alchemy"]                    = "鍊金術"
 L["Blacksmithing"]              = "鍛造"
 L["Enchanting"]                 = "附魔"
@@ -295,7 +293,7 @@ L["Spectral Researcher"] = "鬼靈研究員"
 L["Scholomance Dark Summoner"] = "通靈學院黑暗召喚師"
 L["Blackrock Battlemaster"] = "黑石軍官"
 L["Ghoul Ravener"] = "食屍搶奪者"
--- Burning Crusade
+-- 燃燒的遠征
 L["Deynna"] = "笛娜"
 L["Eiin"] = "伊恩"
 L["Neii"] = "奈伊"
@@ -418,16 +416,8 @@ L["Bryan Landers"] = "布萊恩·蘭德森"
 L["Captain O'Neal"] = "奧尼爾上尉"
 L["Lady Palanseer"] = "帕蘭蒂爾女士"
 L["Market Value"] = "市場價值"
+-- TODO
 L["Left Click"] = "左擊"
 L["Right Click"] = "右擊"
 L["Open main window"] = "打開主視窗"
 L["Open configuration window"] = "打開設定視窗"
-L["Timothy Jones"] = "提摩西·瓊斯"
-L["SpellID"] = "法術ID"
-L["Dropped for Alliance"] = "聯盟專屬掉落"
-L["Dropped for Horde"] = "部落專屬掉落"
-L["Skill Level"] = "技能等級"
-L["Alchemist Finklestein"] = "鍊金師芬克斯坦"
-L["Larana Drome"] = "拉蕾娜·德羅姆"
-L["Frozo the Renowned"] = "有名的弗羅佐"
-L["Open Panel"] = "商業技能庫"

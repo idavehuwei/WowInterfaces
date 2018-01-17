@@ -1,9 +1,6 @@
 ﻿local L = LibStub("AceLocale-3.0"):NewLocale("TradeskillInfoUI", "enUS", true)
 if not L then return end
-TRADESKILL_INFO = "Tradeskill Info"
-TRADESKILLINFO_SEARCH = "Search";
-TRADESKILLINFO_RESET = "Reset"
-L["TradeskillInfo"] = true;
+
 L["Opposing"] = true
 L["Include recipes from opposing faction"] = true
 L["Name"] = true
@@ -107,9 +104,3 @@ L["Show the item's stack size"] = true
 L["Show the source of recipes"] = true
 L["Show the price of recipes sold by vendors"] = true
 L["Recipes"] = true
-L["Sort by"] = true
-L["Difficulty"] = true
-L["Auction Profit"] = true
-L["Vendor Profit"] = true
-L["Color usable by"] = true
-L["Color the alt names in tooltip according to maximum combine difficulty"] = true

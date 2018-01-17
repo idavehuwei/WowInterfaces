@@ -1,0 +1,14 @@
+## Interface: 30100
+## Title: TradeskillInfo Fu
+## Notes: Minimap button for TradeskillInfo
+## Notes-zhCN: TradeskillInfo 小地图按钮
+## Notes-zhTW: TradeskillInfo 小地圖按鍵
+## Author: Daviesh
+## Version: v5.06.02
+## X-License: GPL v2
+## SavedVariables: TradeskillInfoFuDB
+## Dependencies: TradeskillInfo
+## OptionalDeps: Ace2, FuBarPlugin-2.0, TabletLib, FuBar
+
+Locales.lua
+TradeskillInfoFu.lua
