@@ -1,6 +1,6 @@
 local L = LibStub("AceLocale-3.0"):GetLocale("Mendeleev")
 local PT = LibStub("LibPeriodicTable-3.1")
-local Mendeleev_Enable = false;
+
 local _G = getfenv(0)
 
 -- We cache the results, so that we don't have to do a PT lookup for every item.
@@ -118,7 +118,7 @@ local options = {
 function Mendeleev:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("MendeleevDB", {
 		profile = {
-			showItemLevel = true,
+			showItemLevel = false,
 			showItemID = false,
 			showItemCount = false,
 			showStackSize = true,
@@ -158,16 +158,10 @@ function Mendeleev:OnInitialize()
 		}
 	end
 	
-	--LibStub("AceConfig-3.0"):RegisterOptionsTable("Mendeleev", options)
-	--LibStub("AceConfig-3.0"):RegisterOptionsTable("Mendeleev-Sets", t)
-	--LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Mendeleev", "Mendeleev")
-	--LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Mendeleev-Sets", "Sets", "Mendeleev")
-	
-	Mendeleev_Toggle(true)
-end
-
-function Mendeleev:Open()
-	--LibStub("AceConfigDialog-3.0"):Open(L["Mendeleev"]);
+	LibStub("AceConfig-3.0"):RegisterOptionsTable("Mendeleev", options)
+	LibStub("AceConfig-3.0"):RegisterOptionsTable("Mendeleev-Sets", t)
+	LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Mendeleev", "Mendeleev")
+	LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Mendeleev-Sets", "Sets", "Mendeleev")
 end
 
 local firstLoad = true
@@ -183,10 +177,10 @@ function Mendeleev:OnEnable()
 	self:SecureHookScript(ShoppingTooltip3, "OnTooltipSetItem")
 	self:SecureHookScript(ShoppingTooltip3, "OnTooltipCleared")
 	
-	--if AtlasLootTooltip then
-	--	self:SecureHookScript(AtlasLootTooltip, "OnTooltipSetItem")
-	--	self:SecureHookScript(AtlasLootTooltip, "OnTooltipCleared")
-	--end
+	if AtlasLootTooltip then
+		self:SecureHookScript(AtlasLootTooltip, "OnTooltipSetItem")
+		self:SecureHookScript(AtlasLootTooltip, "OnTooltipCleared")
+	end
 
 	if firstLoad then
 		-- load our sets into the cache
@@ -199,12 +193,6 @@ function Mendeleev:OnEnable()
 
 	self:RegisterEvent("TRADE_SKILL_SHOW", "ScanTradeSkill")
 	self:RegisterEvent("TRADE_SKILL_CLOSE", "ScanTradeSkill")
-	
-	Mendeleev_ShowItemLevel(true);
-	Mendeleev_ShowTradeskill(true);
-	Mendeleev_ShowItemCount(true);
-	Mendeleev_ShowStackSize(true);
-	Mendeleev_ShowUsedInTree(true);
 end
 
 -- function Mendeleev:OnDisable()
@@ -454,10 +442,6 @@ function Mendeleev:ScanTradeSkill()
 end
 
 function Mendeleev:OnTooltipSetItem(tooltip, ...)
-	if (not Mendeleev_Enable) then
-		return false;
-	end
-
 	local item = select(2, tooltip:GetItem())
 	if tooltip.Mendeleev_data_added or not item or not GetItemInfo(item) then return end
 	local quality,iLevel,_,_,_,stack = select(3, GetItemInfo(item))
@@ -563,53 +547,4 @@ end
 function Mendeleev:OnTooltipCleared(tooltip, ...)
 	tooltip.Mendeleev_data_added = nil
 end
------------------
--- Duowan Interface
-function Mendeleev_Toggle(switch)
-	if (switch) then
-		Mendeleev_Enable = true;
-	else
-		Mendeleev_Enable = false;
-	end
-end
 
-function Mendeleev_ShowItemLevel(switch)
-	if (switch) then
-		Mendeleev.db.profile.showItemLevel = true;
-	else
-		Mendeleev.db.profile.showItemLevel = false;
-	end
-end
-
-function Mendeleev_ShowItemCount(switch)
-	if (switch) then
-		Mendeleev.db.profile.showItemCount = true;
-	else
-		Mendeleev.db.profile.showItemCount = false;
-	end
-end
-
-function Mendeleev_ShowStackSize(switch)
-	if (switch) then
-		Mendeleev.db.profile.showStackSize = true;
-	else
-		Mendeleev.db.profile.showStackSize = false;
-	end
-end
-
-function Mendeleev_ShowUsedInTree(switch)
-	if (switch) then
-		Mendeleev.db.profile.showUsedInTree = true;
-	else
-		Mendeleev.db.profile.showUsedInTree = false;
-	end
-end
-
-function Mendeleev_ShowTradeskill(switch)
-	if (switch) then
-		Mendeleev.db.profile.sets["Tradeskill.Mat.ByProfession"] = false;
-	else
-		Mendeleev.db.profile.sets["Tradeskill.Mat.ByProfession"] = true;
-	end
-	cache = {};
-end

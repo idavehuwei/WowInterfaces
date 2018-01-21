@@ -194,6 +194,7 @@
 			["InstanceLoot.Naxxramas.Patchwerk"] = BB["Patchwerk"],
 			["InstanceLoot.Naxxramas.Sapphiron"] = BB["Sapphiron"],
 			["InstanceLoot.Naxxramas.Thaddius"] = BB["Thaddius"],
+			["InstanceLoot.Naxxramas.Trash Mobs"] = L["Trash Mobs"],
 		},
 	})
 
@@ -220,6 +221,7 @@
 			["InstanceLootHeroic.Naxxramas.Patchwerk"] = BB["Patchwerk"],
 			["InstanceLootHeroic.Naxxramas.Sapphiron"] = BB["Sapphiron"],
 			["InstanceLootHeroic.Naxxramas.Thaddius"] = BB["Thaddius"],
+			["InstanceLootHeroic.Naxxramas.Trash Mobs"] = L["Trash Mobs"],
 		},
 	})
 
@@ -369,6 +371,61 @@
 	})
 
 	table.insert(MENDELEEV_SETS, {
+		name = BZ["Ulduar"],
+		setindex = "InstanceLoot.Ulduar",
+		colour = "|cffB0C4DE",
+		header = BZ["Ulduar"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLoot.Ulduar.Auriaya"] = BB["Auriaya"],
+			["InstanceLoot.Ulduar.Flame Leviathan"] = BB["Flame Leviathan"],
+			["InstanceLoot.Ulduar.Freya"] = BB["Freya"],
+			["InstanceLoot.Ulduar.General Vezax"] = BB["General Vezax"],
+			["InstanceLoot.Ulduar.Hodir"] = BB["Hodir"],
+			["InstanceLoot.Ulduar.Ignis the Furnace Master"] = BB["Ignis the Furnace Master"],
+			["InstanceLoot.Ulduar.Kologarn"] = BB["Kologarn"],
+			["InstanceLoot.Ulduar.Mimiron"] = BB["Mimiron"],
+			["InstanceLoot.Ulduar.Razorscale"] = BB["Razorscale"],
+			["InstanceLoot.Ulduar.Runemaster Molgeim"] = BB["Runemaster Molgeim"],
+			["InstanceLoot.Ulduar.Steelbreaker"] = BB["Steelbreaker"],
+			["InstanceLoot.Ulduar.Stormcaller Brundir"] = BB["Stormcaller Brundir"],
+			["InstanceLoot.Ulduar.Thorim"] = BB["Thorim"],
+			["InstanceLoot.Ulduar.XT-002 Deconstructor"] = BB["XT-002 Deconstructor"],
+			["InstanceLoot.Ulduar.Yogg-Saron"] = BB["Yogg-Saron"],
+			["InstanceLoot.Ulduar.Trash Mobs"] = L["Trash Mobs"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Ulduar"] .. " " .. L["Heroic"],
+		setindex = "InstanceLootHeroic.Ulduar",
+		colour = "|cffB0C4DE",
+		header = BZ["Ulduar"] .. " " .. L["Heroic"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLootHeroic.Ulduar.Algalon the Observer"] = BB["Algalon the Observer"],
+			["InstanceLootHeroic.Ulduar.Auriaya"] = BB["Auriaya"],
+			["InstanceLootHeroic.Ulduar.Flame Leviathan"] = BB["Flame Leviathan"],
+			["InstanceLootHeroic.Ulduar.Freya"] = BB["Freya"],
+			["InstanceLootHeroic.Ulduar.General Vezax"] = BB["General Vezax"],
+			["InstanceLootHeroic.Ulduar.Hodir"] = BB["Hodir"],
+			["InstanceLootHeroic.Ulduar.Ignis the Furnace Master"] = BB["Ignis the Furnace Master"],
+			["InstanceLootHeroic.Ulduar.Kologarn"] = BB["Kologarn"],
+			["InstanceLootHeroic.Ulduar.Mimiron"] = BB["Mimiron"],
+			["InstanceLootHeroic.Ulduar.Razorscale"] = BB["Razorscale"],
+			["InstanceLootHeroic.Ulduar.Runemaster Molgeim"] = BB["Runemaster Molgeim"],
+			["InstanceLootHeroic.Ulduar.Steelbreaker"] = BB["Steelbreaker"],
+			["InstanceLootHeroic.Ulduar.Stormcaller Brundir"] = BB["Stormcaller Brundir"],
+			["InstanceLootHeroic.Ulduar.Thorim"] = BB["Thorim"],
+			["InstanceLootHeroic.Ulduar.XT-002 Deconstructor"] = BB["XT-002 Deconstructor"],
+			["InstanceLootHeroic.Ulduar.Yogg-Saron"] = BB["Yogg-Saron"],
+			["InstanceLootHeroic.Ulduar.Trash Mobs"] = L["Trash Mobs"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
 		name = BZ["Halls of Lightning"],
 		setindex = "InstanceLoot.Halls of Lightning",
 		colour = "|cffB0C4DE",
@@ -497,6 +554,7 @@
 		quality = 3,
 		sets = {
 			["InstanceLoot.Vault of Archavon.Archavon the Stone Watcher"] = BB["Archavon the Stone Watcher"],
+			["InstanceLoot.Vault of Archavon.Emalon the Storm Watcher"] = BB["Emalon the Storm Watcher"],
 		},
 	})
 
@@ -509,5 +567,6 @@
 		quality = 3,
 		sets = {
 			["InstanceLootHeroic.Vault of Archavon.Archavon the Stone Watcher"] = BB["Archavon the Stone Watcher"],
+			["InstanceLootHeroic.Vault of Archavon.Emalon the Storm Watcher"] = BB["Emalon the Storm Watcher"],
 		},
 	})

@@ -1,0 +1,13 @@
+## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: BaudAuction拍卖物品显示增强插件，改进了游戏默认的拍卖行显示界面，使搜索结果在一页中显示。
+## Title: |cFFFFFFFF[A]|rBaudAuction
+## Notes: Modifies Blizzard's auction house display so it can display and sort multiple pages of items at once.
+## Author: Baudzilla
+## Version: 1.111
+## LoadOnDemand: 1
+## LoadWith: Blizzard_AuctionUI
+## RequiredDeps: Blizzard_AuctionUI
+## SavedVariables: BaudAuctionConfig
+
+BaudAuction.xml

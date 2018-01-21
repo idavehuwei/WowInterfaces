@@ -1,0 +1,26 @@
+tag 1.4.0
+1569ea74e7a4fded08c062c0c5b18cc8680761d0
+emelio <emelio.wow@gmail.com>
+2009-06-16 14:58:59 +0200
+
+InspectEquip 1.4.0:
+- New: Option to also attach the InspectEquip panel to the character window
+- New: Option to mark unenchanted items
+- New: Items that drop from hard mode encounters (Ulduar + Obsidian Sanctum) will now have that information in the tooltip
+- Database update with new Algalon-25 items and missing Medallion of the Alliance/Horde items
+
+
+--------------------
+
+emelio:
+	Alexstrasza's Gift => Malygos
+	Added more Algalon-25 items
+	zhCN+zhTW translations updated
+	Added hard mode info to Sartharion hard mode loot
+	Added hard mode information to tooltips for some Ulduar items
+	Added missing Medallion of the Alliance/Horde items (#2), thanks yoshimo
+	zhCN+zhTW translations updated
+	Add unenchanted warning to tooltip + option to enable/disable enchant checks
+	Show a red "*" for unenchanted items
+	Added config option for character window panel
+	Also attach InspectEquip window to character frame

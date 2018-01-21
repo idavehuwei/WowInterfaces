@@ -1,6 +1,6 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("Mendeleev", "zhCN", false)
 if not L then return end
-L["Mendeleev"] = "物品信息";
+
 L["Toggle sets."] = "切换显示类别。"
 L["Toggle sets from showing information in the tooltip."] = "指定是否在提示信息上显示类别信息。"
 L["Toggle sets in the %s category."] = "切换显示 %s 类别。"
@@ -108,6 +108,8 @@ L["Tier 5 Set"] 		= "T5 套装"
 L["Tier 6 Set"] 		= "T6 套装"
 L["Tier 7.10 Set"] = "T7 10人套装"
 L["Tier 7.25 Set"] = "T7 25人套装"
+L["Tier 8.10 Set"] = "T8 10人套装"
+L["Tier 8.25 Set"] = "T8 25人套装"
 	
 -- Arena Sets
 L["Arena - Season 1 Set"] = "竞技场：第1赛季套装"
@@ -138,11 +140,11 @@ L["Fel Iron Deposit"] = "魔铁矿脉"
 L["Khorium Vein"] = "氪金矿脉"
 L["Rich Adamantite Deposit"] = "富精金矿脉"
 -- check below
-L["Cobalt Node"] = "钴矿脉"
-L["Rich Cobalt Node"] = "富钴矿脉"
-L["Saronite Node"] = "萨隆邪铁矿脉"
-L["Rich Saronite Node"] = "富萨隆邪铁矿脉"
-L["Titanium Node"] = "泰坦神铁矿脉"
+L["Cobalt Deposit"] = "钴矿脉"
+L["Rich Cobalt Deposit"] = "富钴矿脉"
+L["Saronite Deposit"] = "萨隆邪铁矿脉"
+L["Rich Saronite Deposit"] = "富萨隆邪铁矿脉"
+L["Titanium Vein"] = "泰坦神铁矿脉"
 
 -- Categories
 L["CurrencyItems"] = "通货物品"

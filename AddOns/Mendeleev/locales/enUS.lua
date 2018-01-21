@@ -1,5 +1,5 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("Mendeleev", "enUS", true)
-L["Mendeleev"] = true;
+
 L["Toggle sets."] = true
 L["Toggle sets from showing information in the tooltip."] = true
 L["Toggle sets in the %s category."] = true
@@ -107,6 +107,8 @@ L["Tier 5 Set"] = true
 L["Tier 6 Set"] = true
 L["Tier 7.10 Set"] = true
 L["Tier 7.25 Set"] = true
+L["Tier 8.10 Set"] = true
+L["Tier 8.25 Set"] = true
 	
 -- Arena Sets
 L["Arena - Season 1 Set"] = true
@@ -136,11 +138,11 @@ L["Adamantite Deposit"] = true
 L["Fel Iron Deposit"] = true
 L["Khorium Vein"] = true
 L["Rich Adamantite Deposit"] = true
-L["Cobalt Node"] = true
-L["Rich Cobalt Node"] = true
-L["Saronite Node"] = true
-L["Rich Saronite Node"] = true
-L["Titanium Node"] = true
+L["Cobalt Deposit"] = true
+L["Rich Cobalt Deposit"] = true
+L["Saronite Deposit"] = true
+L["Rich Saronite Deposit"] = true
+L["Titanium Vein"] = true
 
 -- Categories
 L["CurrencyItems"] = true

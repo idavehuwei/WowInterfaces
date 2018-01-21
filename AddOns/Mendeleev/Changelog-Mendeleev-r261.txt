@@ -1,0 +1,54 @@
+------------------------------------------------------------------------
+r261 | zuz666 | 2009-05-15 17:37:49 +0000 (Fri, 15 May 2009) | 1 line
+Changed paths:
+   M /trunk/Mendeleev.toc
+
+fix @no-lib-strip
+------------------------------------------------------------------------
+r260 | elkano | 2009-04-29 06:48:03 +0000 (Wed, 29 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/Set_Instances_WotLK.lua
+
+added Ulduar, Emalon and Naxxramas trash drops
+------------------------------------------------------------------------
+r259 | a9012456 | 2009-04-29 00:47:16 +0000 (Wed, 29 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/locales/zhTW.lua
+
+zhTW updata
+------------------------------------------------------------------------
+r258 | elkano | 2009-04-22 08:16:40 +0000 (Wed, 22 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/SetsGear.lua
+
+fixed T8 set names
+------------------------------------------------------------------------
+r257 | elkano | 2009-04-22 07:46:18 +0000 (Wed, 22 Apr 2009) | 3 lines
+Changed paths:
+   M /trunk/Mendeleev.toc
+   M /trunk/Sets.lua
+   M /trunk/SetsGear.lua
+   M /trunk/locales/deDE.lua
+   M /trunk/locales/enUS.lua
+   M /trunk/locales/frFR.lua
+   M /trunk/locales/koKR.lua
+   M /trunk/locales/ruRU.lua
+   M /trunk/locales/zhCN.lua
+   M /trunk/locales/zhTW.lua
+
+- fixed WoTLK deposit names
+- removed Babble-2.2 OptDep
+- added Tier 8 sets
+------------------------------------------------------------------------
+r256 | rabbit | 2009-04-14 11:27:43 +0000 (Tue, 14 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/Mendeleev.toc
+
+TOC bump.
+------------------------------------------------------------------------
+r255 | StingerSoft | 2009-03-09 22:26:17 +0000 (Mon, 09 Mar 2009) | 1 line
+Changed paths:
+   M /trunk/locales/ruRU.lua
+
+ruRU fix
+------------------------------------------------------------------------

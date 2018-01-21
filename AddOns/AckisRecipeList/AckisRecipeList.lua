@@ -162,7 +162,7 @@ function addon:OnInitialize()
 			filters = {
 				-- General Filters
 				general = {
-					faction = true,
+					faction = false,
 					specialty = false,
 					skill = true,
 					known = false,
@@ -182,7 +182,7 @@ function addon:OnInitialize()
 					mobdrop = true,
 					originalwow = true,
 					bc = true,
-					wrath = true,
+					wrath = false,
 				},
 				-- Item Filters (Armor/Weapon)
 				item = {
@@ -248,15 +248,15 @@ function addon:OnInitialize()
 					timbermaw = true,
 					violeteye = true,
 					zandalar = true,
-					argentcrusade = true,
-					frenzyheart = true,
-					ebonblade = true,
-					kirintor = true,
-					sonsofhodir = true,
-					kaluak = true,
-					oracles = true,
-					wyrmrest = true,
-					wrathcommon1 = true,
+					argentcrusade = false,
+					frenzyheart = false,
+					ebonblade = false,
+					kirintor = false,
+					sonsofhodir = false,
+					kaluak = false,
+					oracles = false,
+					wyrmrest = false,
+					wrathcommon1 = false,
 					wrathcommon2 = true,
 					wrathcommon3 = true,
 					wrathcommon4 = true,
@@ -264,7 +264,7 @@ function addon:OnInitialize()
 				},
 				-- Classes
 				classes = {
-					deathknight = true,
+					deathknight = false,
 					druid = true,
 					hunter = true,
 					mage = true,
