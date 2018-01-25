@@ -1,4 +1,6 @@
 
+LOCALIZED_CLASS_NAMES_MALE = {}
+
 local function SetTranslations(...)
     local L = {}
     for i=1, select("#",...), 2 do
@@ -16,22 +18,23 @@ end
 
 -------------------
 -- 异步调用(安全的调用别的插件的函数)
-do
-	local AsynCallFuncs = {};
-	function AsynCall(AddOnName, funcName, ...)
-		if (IsAddOnLoaded(AddOnName) and type(_G[funcName]) == "function") then
-			_G[funcName](...);
-		else
-			AsynCallFuncs[AddOnName] = AsynCallFuncs[AddOnName] or {};
-			AsynCallFuncs[AddOnName][funcName] = {...};
-		end
-	end
+local AsynCallFuncs = {};
+function AsynCall(AddOnName, funcName, ...)
+    if (IsAddOnLoaded(AddOnName) and type(_G[funcName]) == "function") then
+        _G[funcName](...);
+    else
+        AsynCallFuncs[AddOnName] = AsynCallFuncs[AddOnName] or {};
+        AsynCallFuncs[AddOnName][funcName] = {...};
+    end
+end
 
-	function AsynUncall(AddOnName, funcName)
-		if (AsynCallFuncs[AddOnName] and AsynCallFuncs[AddOnName][funcName]) then		
-			AsynCallFuncs[AddOnName][funcName] = nil;		
-		end
-	end
+function AsynUncall(AddOnName, funcName)
+    if (AsynCallFuncs[AddOnName] and AsynCallFuncs[AddOnName][funcName]) then
+        AsynCallFuncs[AddOnName][funcName] = nil;
+    end
+end
+
+do
 	local frame = CreateFrame("Frame");
 	frame:RegisterEvent("ADDON_LOADED");
 	frame:SetScript("OnEvent", function(self, event, addon)
