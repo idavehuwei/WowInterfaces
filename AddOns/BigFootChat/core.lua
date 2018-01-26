@@ -750,6 +750,7 @@ function BFChatAddOn.OnEvent(event, message, sender)
 end
 
 function BFChatAddOn:OnEnable()
+    ChatFrameEditBox:SetAltArrowKeyMode(false);
     if self:IsHooked('ChatFrame_MessageEventHandler') then
         self:Unhook('ChatFrame_MessageEventHandler')
     end
@@ -770,6 +771,7 @@ function BFChatAddOn:OnEnable()
 end
 
 function BFChatAddOn:OnDisable()
+    ChatFrameEditBox:SetAltArrowKeyMode(true);
     if self:IsHooked('ChatFrame_MessageEventHandler') then
         self:Unhook('ChatFrame_MessageEventHandler')
     end
