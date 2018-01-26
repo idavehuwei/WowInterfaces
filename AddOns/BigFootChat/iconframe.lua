@@ -183,16 +183,16 @@ end
 local function createIconFrame()
     local callOutButton = _G.BFCIconFrameCalloutButton
     local iconFrame = _G.BFCIconFrame
-    callOutButton:SetScript("OnClick", function()
-        if not iconFrame then
-            return
-        end
-        if iconFrame:IsShown() then
-            iconFrame:Hide()
-        else
-            iconFrame:Show()
-        end
-    end)
+--    callOutButton:SetScript("OnClick", function()
+--        if not iconFrame then
+--            return
+--        end
+--        if iconFrame:IsShown() then
+--            iconFrame:Hide()
+--        else
+--            iconFrame:Show()
+--        end
+--    end)
     callOutButton:SetScript("OnEnter", function() end)
     callOutButton:SetScript("OnLeave", function() end)
     callOutButton:SetAlpha(0.8)
@@ -200,9 +200,9 @@ local function createIconFrame()
     callOutButton:Show()
 
     local i = 0
-    for BigFootChat_63a9ce6f1eeac72ef41293b7d0303335, BigFootChat_8d0644c92128c1ff68223fd74ba63b56 in pairs(BFC_IconTable) do
+    for k, v in pairs(BFC_IconTable) do
         i = i + 1
-        chaticonbuttonlist[i] = createIconButton(BigFootChat_8d0644c92128c1ff68223fd74ba63b56[1], BigFootChat_8d0644c92128c1ff68223fd74ba63b56[2], BigFootChat_63a9ce6f1eeac72ef41293b7d0303335)
+        chaticonbuttonlist[i] = createIconButton(v[1], v[2], k)
     end
     BFC_NUM_TAB = i
     arrangeIcons(iconFrame, chaticonbuttonlist)
@@ -447,7 +447,8 @@ end
 
 function BFCIconFrameReportButton_OnUpdate(self)
     for i = 1, NUM_CHAT_WINDOWS do
-        local CheckEB = _G[format("%s%d%s", "ChatFrame", i, "EditBox")];
+--        local CheckEB = _G[format("%s%d%s", "ChatFrame", i, "EditBox")];
+        local CheckEB = ChatFrameEditBox;
         if CheckEB:GetAlpha() == 1 and CheckEB:IsShown() then
             CurEB = CheckEB;
             return;

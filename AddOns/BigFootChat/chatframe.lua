@@ -111,7 +111,8 @@ function getBigFootChannel()
 end
 
 function BFC_SetChatType(_type)
-    local editBox = ChatEdit_ChooseBoxForSend(SELECTED_CHAT_FRAME);
+--    local editBox = ChatEdit_ChooseBoxForSend(SELECTED_CHAT_FRAME);
+    local editBox = ChatFrameEditBox;
     if _type then
         ChatEdit_HandleChatType(editBox, "", _type)
         editBox:Show();

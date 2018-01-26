@@ -19,7 +19,8 @@
         </Anchors>
         <Scripts>
             <OnClick>
-                    local editBox = ChatEdit_ChooseBoxForSend(SELECTED_CHAT_FRAME)
+--                    local editBox = ChatEdit_ChooseBoxForSend(SELECTED_CHAT_FRAME)
+                    local editBox = ChatFrameEditBox
                     editBox:Show();
                     editBox:SetFocus();
                     local _, font = SELECTED_CHAT_FRAME:GetFont()
@@ -351,8 +352,7 @@
         </Scripts>
     </Button>
 
-    <Button name="BFCChatFrame" frameStrata="LOW" parent="UIParent" enableKeyBoard="true" enableMouse="true"
-            movable="true">
+    <Button name="BFCChatFrame" frameStrata="LOW" parent="UIParent" enableKeyBoard="true" enableMouse="true" movable="true">
         <Size>
             <AbsDimension x="235" y="27"/>
         </Size>
@@ -366,8 +366,7 @@
 
     </Button>
 
-    <Button name="BFCIconFrame" frameStrata="MEDIUM" parent="UIParent" hidden="true" enableKeyBoard="true"
-            enableMouse="true">
+    <Button name="BFCIconFrame" frameStrata="MEDIUM" parent="UIParent" hidden="true" enableKeyBoard="true" enableMouse="true">
         <Size>
             <AbsDimension x="260" y="160"/>
         </Size>

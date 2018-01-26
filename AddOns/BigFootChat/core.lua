@@ -4,7 +4,7 @@ local L = LibStub('AceLocale-3.0'):GetLocale('BigFootChat')
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local BFC_IconTableMap = {}
 local BFC_ReverseIconTableMap = {}
-local BigFootChat_dd5fbfa5a6e2278bea0e15c976f3b6a8 = 10
+local TalkInterval = 10
 local db
 local defaults = {
     profile = {
@@ -12,8 +12,8 @@ local defaults = {
         enableOldChatFrameStyle = true,
         enableclasscolor = true,
         useshortname = true,
-        enablecopy = false,
-        enablechatchannelmove = true,
+        enablecopy = true,
+        enablechatchannelmove = false,
         enableRollButton = true,
         enableReportButton = true,
         enableRaidersButton = true,
@@ -115,11 +115,11 @@ StaticPopupDialogs["BFC_COPYTEXT"] = {
 };
 
 local function generateIconMap()
-    for BigFootChat_63a9ce6f1eeac72ef41293b7d0303335, BigFootChat_8d0644c92128c1ff68223fd74ba63b56 in pairs(BFC_IconTable) do
-        BFC_IconTableMap[BigFootChat_8d0644c92128c1ff68223fd74ba63b56[1]] = BigFootChat_8d0644c92128c1ff68223fd74ba63b56[2]
+    for k, v in pairs(BFC_IconTable) do
+        BFC_IconTableMap[v[1]] = v[2]
     end
-    for BigFootChat_63a9ce6f1eeac72ef41293b7d0303335, BigFootChat_8d0644c92128c1ff68223fd74ba63b56 in pairs(BFC_IconTable) do
-        BFC_ReverseIconTableMap[BigFootChat_8d0644c92128c1ff68223fd74ba63b56[2]] = BigFootChat_8d0644c92128c1ff68223fd74ba63b56[1]
+    for k, v in pairs(BFC_IconTable) do
+        BFC_ReverseIconTableMap[v[2]] = v[1]
     end
 end
 
@@ -178,7 +178,10 @@ local function appendItemLink(text, id)
     return text
 end
 
-local function showCopyTimeStamp(text, id) text = "|cff9de000|Hbfcnamecopyproof:" .. id .. "|h" .. getTimeStamp() .. "|h|r" .. text return text; end
+local function showCopyTimeStamp(text, id)
+    text = "|cff9de000|Hbfcnamecopyproof:" .. id .. "|h" .. getTimeStamp() .. "|h|r" .. text
+    return text;
+end
 
 local function IsBFChannelSysMessage(text)
     if text:find(L["JoinChannel1"]) and text:find(L["BigFootChannel"]) then
@@ -328,18 +331,18 @@ local function BFC_ChatFrameHandler_Recover(self, _event, ...)
 end
 
 local nameCache = {}
-local function BigFootChat_a4682fcd356d68eff3b3831597e07764(userName, frame)
+local function isUserTalkFast(userName, frame)
     local currentTime = time()
     if not nameCache[userName .. frame:GetName()] then
         return false
     end
-    if currentTime - nameCache[userName .. frame:GetName()] > (BigFootChat_dd5fbfa5a6e2278bea0e15c976f3b6a8 - 2) then
+    if currentTime - nameCache[userName .. frame:GetName()] > (TalkInterval - 2) then
         return false
     end
     return true
 end
 
-local function BigFootChat_98052fcaa70c1bf8be2508b716a1faf8(userName, frame)
+local function UpdateUserLastTalkTime(userName, frame)
     nameCache[userName .. frame:GetName()] = time()
 end
 
@@ -353,10 +356,10 @@ local function BFC_ChatFrameHandler(self, _event, ...)
         return nil
     end
     if event == "CHAT_MSG_CHANNEL" and channelName:find(L["BigFootChannel"]) and text ~= "" then
-        if BigFootChat_a4682fcd356d68eff3b3831597e07764(userName, self) then
+        if isUserTalkFast(userName, self) then
             return
         else
-            BigFootChat_98052fcaa70c1bf8be2508b716a1faf8(userName, self)
+            UpdateUserLastTalkTime(userName, self)
         end
     end
     if (not self.ORG_AddMessage) then
@@ -398,6 +401,11 @@ end
 
 function BFChatAddOn:Refresh()
     BFCChatFrame:SetMovable(db.enablechatchannelmove)
+    if (db.enablechatchannelmove) then
+        SetChatFrameEditBoxOffset(0, 23);
+    else
+        SetChatFrameEditBoxOffset(0, -23);
+    end
     BFChatAddOn:MaskSystemColoring(db.enableclasscolor)
     if db and db.frameposition then
         BFCChatFrame:SetPoint(unpack(db.frameposition))
@@ -421,18 +429,23 @@ function BFChatAddOn:OnInitialize()
     generateIconMap()
     playerName = UnitName("player")
 
+    SLASH_BFC1 = "/bfc"
+    SlashCmdList["BFC"] = function()
+        self:ShowOptions()
+    end
+
     self:OnEnable()
 end
 
-local function BigFootChat_84ad48e612a92b69c1b98d3185056f3c(editbox)
+local function EnterWhisperMode(editbox)
     editbox:SetAttribute("bfwhispermode", "true")
 end
 
-local function BigFootChat_3eca70aa558d6bc043280757ebe23e94(editbox)
+local function LeaveWhisperMode(editbox)
     editbox:SetAttribute("bfwhispermode", nil)
 end
 
-local function BigFootChat_8789b1a0b4da92efd2a9bb111a773e4c(editbox, name, val)
+local function RestoreReplyStatus(editbox, name, val)
     if name == "bfwhispermode" then
         if not editbox.bfChatType then
             editbox.bfChatType = "SAY"
@@ -445,18 +458,18 @@ local function BigFootChat_8789b1a0b4da92efd2a9bb111a773e4c(editbox, name, val)
 end
 
 local lastTalkTime
-local function BigFootChat_9475a5cdff4dc46797d47d28084e3a98()
+local function isTalkFast()
     local currentTime = time()
     if not lastTalkTime then
         return false
     end
-    if currentTime - lastTalkTime > BigFootChat_dd5fbfa5a6e2278bea0e15c976f3b6a8 then
+    if currentTime - lastTalkTime > TalkInterval then
         return false
     end
     return true
 end
 
-local function BigFootChat_e5268000b16333be36edc45273ef22a2()
+local function UpdateLastTalkTime()
     lastTalkTime = time()
 end
 
@@ -468,29 +481,29 @@ function BFChatAddOn:EnableOldStyleReply()
             editBox.bfChatType = type;
         end;
         if type == "CHANNEL" and text and text ~= "" and tonumber(editBox:GetAttribute("channelTarget")) == getBigFootChannel() then
-            if BigFootChat_9475a5cdff4dc46797d47d28084e3a98() then
+            if isTalkFast() then
                 BFC_Print(L["Please Do Not Talk Too Fast"])
                 return
             else
-                BigFootChat_e5268000b16333be36edc45273ef22a2()
+                UpdateLastTalkTime()
             end
         end
     end);
     hooksecurefunc("ChatEdit_OnEscapePressed", function(editBox)
-        BigFootChat_3eca70aa558d6bc043280757ebe23e94(editBox)
+        LeaveWhisperMode(editBox)
     end);
     ChatFrame1EditBox:SetScript("OnAttributeChanged", function(...)
         if (db.enableOldChatFrameStyle) then
-            BigFootChat_8789b1a0b4da92efd2a9bb111a773e4c(...)
+            RestoreReplyStatus(...)
         end
     end)
     hooksecurefunc("ChatFrame_ReplyTell", function(chatFrame)
         local editBox = ChatEdit_ChooseBoxForSend(chatFrame);
-        BigFootChat_84ad48e612a92b69c1b98d3185056f3c(editBox)
+        EnterWhisperMode(editBox)
     end);
     hooksecurefunc("ChatFrame_ReplyTell2", function(chatFrame)
         local editBox = ChatEdit_ChooseBoxForSend(chatFrame);
-        BigFootChat_84ad48e612a92b69c1b98d3185056f3c(editBox)
+        EnterWhisperMode(editBox)
     end);
 end
 
@@ -569,7 +582,7 @@ function BFChatAddOn:OnEnable()
         leaveChannelFunc(L["BigFootChannel"])
         db.isTempChannel = true
     end
-     UIParent_ManageFramePositions()
+    UIParent_ManageFramePositions()
 end
 
 function BFChatAddOn:OnDisable()
@@ -613,6 +626,14 @@ function BFChannelMuteButton_OnClick()
         BFC_Print(L["BigFoot Channel has been unblocked"])
     end
     BFChannel_RefreshMuteButton()
+end
+
+function SetChatFrameEditBoxOffset(x, y)
+--    local _point,rel,relp,xo,yo=_G["ChatFrameEditBox"]:GetPoint()
+    if ChatFrameEditBox ~= nil then
+        local _point,rel,relp,xo,yo=ChatFrameEditBox:GetPoint()
+        _G["ChatFrameEditBox"]:SetPoint(_point,rel,relp,xo+x,yo+y)
+    end
 end
 
 function ChangeSet()

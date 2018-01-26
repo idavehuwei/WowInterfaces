@@ -3,6 +3,7 @@
     <Script file="locale\localization-cn.lua" />
     <Script file="UserDefaultSettings.lua" />
     <Script file="Patch.lua" />
+    <Include file="BigFootExtra\UI\Widgets.xml" />
 
     <Frame name="UserDefaultSettingsFrame" toplevel="true" enableMouse="false" parent="UIParent" frameStrata="HIGH">
         <Anchors>

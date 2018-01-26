@@ -152,3 +152,18 @@ function ShowKeyBindingFrame(arg)
         end
     end
 end
+
+-- patch 2.4.2 去掉的Global String
+if (GetLocale() == "zhCN") then
+    GOLD = "金币";
+    SILVER = "银币";
+    COPPER = "铜币";
+elseif (GetLocale() == "zhTW") then
+    GOLD = "金幣";
+    SILVER = "銀幣";
+    COPPER = "銅幣";
+else
+    GOLD = "gold";
+    SILVER = "silver";
+    COPPER = "copper";
+end
