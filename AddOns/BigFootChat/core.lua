@@ -11,6 +11,7 @@ local defaults = {
         enabletimestamp = false,
         enableOldChatFrameStyle = true,
         enableclasscolor = true,
+        enablelevel = true,
         useshortname = true,
         enablecopy = true,
         enablechatchannelmove = false,
@@ -40,7 +41,18 @@ local events = {
     ["CHAT_MSG_DND"] = true,
     ["CHAT_MSG_OFFICER"] = true,
 }
-
+local ClassColorTable = {
+    MAGE="cff69CCF0",
+    DRUID="cffFF7D0A",
+    HUNTER="cffABD473",
+    PALADIN="cffF58CBA",
+    PRIEST="cffFFFFFF",
+    ROGUE="cffFFF569",
+    SHAMAN="cff2459FF",
+    WARLOCK="cff9482C9",
+    WARRIOR="cffC79C6E",
+    DEATHKNIGHT="cffC41F3B",
+}
 SCCN_Chan_Replace = {
     [L["Guild"]] = L["GuildShort"],
     [L["Raid"]] = L["RaidShort"],
@@ -113,6 +125,41 @@ StaticPopupDialogs["BFC_COPYTEXT"] = {
     whileDead = 1,
     hideOnEscape = 1
 };
+
+local function getNameInfo(name)
+    if not db.storedName or not db.storedName[name] then
+        return false
+    end
+    return unpack(db.storedName[name])
+end
+
+local function checkInfo(name)
+    if not db.storedName or not db.storedName[name] then
+        return false
+    end
+    local name,class,level,timestamp= unpack(db.storedName[name]);
+    if not class then
+        return false
+    end
+    if not level or level ==0 then
+        return false
+    end
+    if level ==70 then
+        return true
+    end
+    if level ==80 then
+        return true
+    end
+    if not timestamp or time()>(timestamp+3600) then
+        return false
+    end
+    return true
+end
+
+local function storeName(name, prof, lvl)
+    db.storedName = db.storedName or {}
+    db.storedName[name] = {name,prof,lvl,time()}
+end
 
 local function generateIconMap()
     for k, v in pairs(BFC_IconTable) do
@@ -283,6 +330,26 @@ local function S_AddMessage(self, text, r, g, b, id, addToStart)
         return
     end
     if event and events[event] then
+        if this.solColorChatNicks_Name and string.len(this.solColorChatNicks_Name) > 2 and text ~= nil and arg2 ~= nil then
+            local outputName = this.solColorChatNicks_Name;
+            local level = nil;
+            local name, prof, level=getNameInfo(this.solColorChatNicks_Name)
+            if( level ~= nil) and db.enablelevel then
+                outputName = level..":"..this.solColorChatNicks_Name;
+            end
+            local color=ClassColorTable[prof]
+            if (not color and this.solGUID) then
+                local localizedClass, englishClass, localizedRace, englishRace, sex = GetPlayerInfoByGUID(this.solGUID);
+                color = ClassColorTable[englishClass];
+            end
+            if color and db.enableclasscolor then
+                text = string.gsub(text, "(.-)"..this.solColorChatNicks_Name .. "([%]%s].*)", "%1|"..color..outputName.."|r%2", 1);
+            else
+                text = string.gsub(text, "(.-)"..this.solColorChatNicks_Name .. "([%]%s].*)", "%1"..outputName.."%2", 1);
+            end
+        end
+        this.solColorChatNicks_Name = nil;
+
         if (db.useshortname) then
             local temp = nil;
             if text then
@@ -348,12 +415,16 @@ end
 
 local function BFC_ChatFrameHandler(self, _event, ...)
     event = _event
-    local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 = ...
+    local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12 = ...
     local userName = arg2
     local channelName = arg4
     if (not event or not arg2) then
         BFChatAddOn.hooks['ChatFrame_MessageEventHandler'](self, event, ...)
         return nil
+    end
+    if db.enableclasscolor or db.enablelevel then
+        this.solColorChatNicks_Name = arg2;
+        this.solGUID = arg12;
     end
     if event == "CHAT_MSG_CHANNEL" and channelName:find(L["BigFootChannel"]) and text ~= "" then
         if isUserTalkFast(userName, self) then
@@ -566,12 +637,125 @@ function BFChatAddOn:FCF_FadeOutChatFrame(chatFrame)
     end
 end
 
+function BFChatAddOn:RegisterEvents()
+    self:RegisterEvent("CHAT_MSG_WHISPER",self.OnEvent)
+    self:RegisterEvent("CHAT_MSG_YELL",self.OnEvent)
+    self:RegisterEvent("CHAT_MSG_SAY",self.OnEvent)
+    self:RegisterEvent("PARTY_MEMBERS_CHANGED",self.OnEvent)
+    self:RegisterEvent("RAID_ROSTER_UPDATE",self.OnEvent)
+    self:RegisterEvent("GUILD_ROSTER_UPDATE",self.OnEvent)
+    self:RegisterEvent("FRIENDLIST_UPDATE",self.OnEvent)
+    self:RegisterEvent("UPDATE_MOUSEOVER_UNIT",self.OnEvent)
+    self:RegisterEvent("WHO_LIST_UPDATE",self.WhoListUpdate)
+end
+
+function BFChatAddOn:UnregisterEvents()
+    self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
+    self:UnregisterEvent("RAID_ROSTER_UPDATE")
+    self:UnregisterEvent("GUILD_ROSTER_UPDATE")
+    self:UnregisterEvent("UNIT_FOCUS")
+    self:UnregisterEvent("UNIT_TARGET")
+    self:UnregisterEvent("CHAT_MSG_WHISPER")
+    self:UnregisterEvent("CHAT_MSG_YELL")
+    self:UnregisterEvent("CHAT_MSG_SAY")
+    self:UnregisterEvent("UPDATE_MOUSEOVER_UNIT")
+    self:UnregisterEvent("WHO_LIST_UPDATE")
+    self:UnregisterEvent("FRIENDLIST_UPDATE")
+end
+
+function BFChatAddOn:WhoListUpdate()
+    if GetNumWhoResults()>0 then
+        local name,_,level,_,_,_,filename=GetWhoInfo(1)
+        if not checkInfo(name) then
+            storeName(name,filename,level)
+        end
+    end
+    SetWhoToUI(0)
+    FriendsFrame:RegisterEvent("WHO_LIST_UPDATE")
+end
+
+local function checkMessageSender(message,sender)
+    local sendWhoQuery=function(name)
+        SetWhoToUI(1)
+        FriendsFrame:UnregisterEvent("WHO_LIST_UPDATE")
+        SendWho('n-"'..name..'"')
+    end
+    if (message and sender and strlen(sender)>0) then
+        if checkInfo(sender) then
+        else
+            sendWhoQuery(sender)
+        end
+    end
+end
+
+function BFChatAddOn.OnEvent(event, message, sender)
+    local checkUnitIsStored=function(unit)
+        if UnitIsPlayer(unit) then
+            local _,filename=UnitClass(unit)
+            local name=UnitName(unit)
+            local level=UnitLevel(unit)
+            if filename and not checkInfo(name) then
+                storeName(name,filename,level)
+            end
+        end
+    end
+    if string.find(event,"CHAT_MSG") then
+        checkMessageSender(message, sender)
+    elseif event=="RAID_ROSTER_UPDATE" then
+        local num= GetRealNumRaidMembers()
+        if num>0 then
+            for i=1,num,1 do
+                local name,_,_,level,_,fileName= GetRaidRosterInfo(i)
+                if fileName and not checkInfo(name) then
+                    storeName(name,filename,level)
+                end
+            end
+        end
+    elseif event=="PARTY_MEMBERS_CHANGED" then
+        local num= GetRealNumPartyMembers()
+        if num>0 then
+            local num=GetRealNumPartyMembers()
+            for i=1,num,1 do
+                checkUnitIsStored("party"..i)
+            end
+        end
+    elseif event=="GUILD_ROSTER_UPDATE" then
+        local num= GetNumGuildMembers()
+        if num>0 then
+            for i=1,num,1 do
+                local name,_,_,level,_,_,_,_,_,_,classFileName= GetGuildRosterInfo(i)
+                if not checkInfo(name) then
+                    storeName(name,classFileName,level)
+                end
+            end
+        end
+    elseif event=="FRIENDLIST_UPDATE" then
+        local num= GetNumFriends()
+        if num>0 then
+            for i=1,num,1 do
+                local name,level,class= GetFriendInfo(i)
+                if class and checkInfo(name) then
+                    local classFileName=DWC_FILENAME[class]
+                    storeName(name,classFileName,level)
+                end
+            end
+        end
+    elseif event=="UNIT_FOCUS" then
+        checkUnitIsStored("focus")
+    elseif event=="UNIT_TARGET" then
+        checkUnitIsStored("target")
+    elseif event=="UPDATE_MOUSEOVER_UNIT" then
+        checkUnitIsStored("mouseover")
+    end
+end
+
 function BFChatAddOn:OnEnable()
     if self:IsHooked('ChatFrame_MessageEventHandler') then
         self:Unhook('ChatFrame_MessageEventHandler')
     end
     self:RawHook('ChatFrame_MessageEventHandler', BFC_ChatFrameHandler, true)
     self:RawHook('SetItemRef', true)
+    self:RegisterEvents();
     self:RawHook('IsDisplayChannelOwner', true)
     self:RawHook('GetChannelRosterInfo', true)
     self:SecureHook("FCF_FadeInChatFrame")
@@ -592,6 +776,7 @@ function BFChatAddOn:OnDisable()
     self:RawHook('ChatFrame_MessageEventHandler', BFC_ChatFrameHandler_Recover, true)
     self:Unhook('SetItemRef');
     self:UnhookEvents()
+    self:UnregisterEvents();
 end
 
 function BFChatAddOn:GetModuleEnabled(module)
