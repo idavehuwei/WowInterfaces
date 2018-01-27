@@ -38,7 +38,6 @@
             </OnLoad>
         </Scripts>
     </Frame>
-
     <Frame name="FastQuestFrame" parent="UIParent" hidden="true">
         <Scripts>
             <OnLoad>FastQuest_OnLoad(self);</OnLoad>
@@ -47,9 +46,8 @@
     </Frame>
     <Button name="FastQuest_DragButtonTemplate" virtual="true" movable="true" frameStrata="DIALOG" toplevel="true">
         <Size>
-            <AbsDimension x="15" y="15"/>
+            <AbsDimension x="27" y="27"/>
         </Size>
-        <NormalTexture file="Interface\AddOns\FastQuest_Classic\Images\FastQuest"/>
         <Scripts>
             <OnMouseDown>
                 if ( arg1 == "LeftButton" ) then
@@ -64,6 +62,9 @@
                     self.isMoving = false
                 end
             </OnMouseUp>
+            <OnClick>
+                FastQuest_QuestWatchDragButton_OnClick();
+            </OnClick>
         </Scripts>
     </Button>
     <Frame name="FastQuest_DragFrameTemplate" virtual="true" frameStrata="BACKGROUND" visible="false" parent="UIParent" toplevel="true">
@@ -72,11 +73,11 @@
             <AbsDimension x="36" y="36"/>
         </Size>
     </Frame>
-    <Button name="dQuestWatchDragButton" inherits="FastQuest_DragButtonTemplate" parent="UIParent" visible="true">
+    <Button name="dQuestWatchDragButton" inherits="FastQuest_DragButtonTemplate" parent="MinimapCluster" visible="true">
         <Anchors>
-            <Anchor point="TOPRIGHT">
+            <Anchor point="TOPRIGHT" relativePoint="BOTTOM">
                 <Offset>
-                    <AbsDimension x="-250" y="-250"/>
+                    <AbsDimension x="0" y="-50"/>
                 </Offset>
             </Anchor>
         </Anchors>

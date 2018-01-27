@@ -22,6 +22,8 @@ FQ_server = GetCVar("realmName");
 -- Player character name
 FQ_player = UnitName("player");
 
+local FQ_ShowWatchFrame = true;
+
 -- Hook the original Blizzard QuestLog_Update to run inside the modded QuestLog_Update()
 hQuestLog_Update = QuestLog_Update;
 -- Hook the original Blizzard WatchFrame_Update to run inside the modded WatchFrame_Update()
@@ -127,6 +129,10 @@ function FastQuest_OnEvent(self, event, message)
         FastQuest_Classic_Button_Init();
         FastQuest_Classic_Button_UpdatePosition();
         qOut(FQ_LOADED);
+
+        dQuestWatchDragButton:SetNormalTexture("Interface\\AddOns\\FastQuest_Classic\\Images\\FastQuest_Minimize_Up")
+        dQuestWatchDragButton:SetPushedTexture("Interface\\AddOns\\FastQuest_Classic\\Images\\FastQuest_Minimize_Down")
+        dQuestWatchDragButton:SetHighlightTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Highlight")
 
         FastQuest_LinkFrame(dQuestWatchDragButton:GetName(), WatchFrame:GetName());
         FastQuest_LockMovableParts();
@@ -272,6 +278,27 @@ function FastQuest_SlashCmd(msg)
     end
 end
 
+function FastQuest_ShowWatchFrame()
+    dQuestWatchDragButton:SetNormalTexture("Interface\\AddOns\\FastQuest_Classic\\Images\\FastQuest_Minimize_Up")
+    dQuestWatchDragButton:SetPushedTexture("Interface\\AddOns\\FastQuest_Classic\\Images\\FastQuest_Minimize_Down")
+    WatchFrameLines:Show();
+end
+function FastQuest_HideWatchFrame()
+    dQuestWatchDragButton:SetNormalTexture("Interface\\AddOns\\FastQuest_Classic\\Images\\FastQuest_Restore_Up")
+    dQuestWatchDragButton:SetPushedTexture("Interface\\AddOns\\FastQuest_Classic\\Images\\FastQuest_Restore_Down")
+    WatchFrameLines:Hide();
+end
+
+function FastQuest_QuestWatchDragButton_OnClick()
+    if FQ_ShowWatchFrame then
+        FQ_ShowWatchFrame = false;
+        FastQuest_HideWatchFrame();
+    else
+        FQ_ShowWatchFrame = true;
+        FastQuest_ShowWatchFrame();
+    end
+end
+
 function FastQuest_CheckPatterns(message)
     FQ_Debug_Print("FastQuest_CheckPatterns()");
 
@@ -325,7 +352,7 @@ function QuestLogTitleButton_OnClick(self, button)
         elseif (questTag == RAID) then
             LevelTag = "r";
         elseif (questTag == PVP) then
-            Leveltag = "p";
+            LevelTag = "p";
         else
             LevelTag = "+";
         end
@@ -571,7 +598,8 @@ function WatchFrame_Update()
 
     -- Link WatchFrame to FQ's dragging button so that we can drag the WatchFrame with green ball
     --WatchFrame:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
-    WatchFrameLines:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
+--    WatchFrameLines:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
+    WatchFrameLines:SetPoint("TOPRIGHT", "dQuestWatchDragButton", "BOTTOMLEFT", 0, 0);
     local line, lastLine, questTitle;
     local questIndex = 1;
     local watchItemIndex = 0;
@@ -730,7 +758,6 @@ function WatchFrame_Update()
     FastQuest_LockMovableParts();
 end
 
-
 function FastQuest_Watch(questIndex, auto)
     FQ_Debug_Print("FastQuest_Watch()");
 
@@ -739,7 +766,8 @@ function FastQuest_Watch(questIndex, auto)
             RemoveQuestWatch(questIndex);
             QuestLog_Update();
             WatchFrame_Update();
-            WatchFrameLines:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
+--            WatchFrameLines:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
+            WatchFrameLines:SetPoint("TOPRIGHT", "dQuestWatchDragButton", "BOTTOMLEFT", 0, 0);
         else
             if ((GetNumQuestLeaderBoards(questIndex) == 0) and (auto == false)) then
                 UIErrorsFrame:AddMessage(QUEST_WATCH_NO_OBJECTIVES, 1.0, 0.1, 0.1, 1.0, UIERRORS_HOLD_TIME);
@@ -762,7 +790,7 @@ function FastQuest_Watch(questIndex, auto)
             AddQuestWatch(questIndex);
             QuestLog_Update();
             WatchFrame_Update();
-            --			WatchFrameLines:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
+            -- WatchFrameLines:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
         end
     end
 end
