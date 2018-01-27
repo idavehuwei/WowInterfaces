@@ -5,22 +5,18 @@ if (GetLocale() == "zhCN") then
     BIGFOOTGADGET_ENABLE_MBB = "开启小地图按键包";
     BIGFOOTGADGET_CHANGE_FONT = "修改系统字体";
     BIGFOOTGADGET_CASTING_BAR = "使用大脚施法条"
-
-
 elseif (GetLocale() == "zhTW") then
     BIGFOOTGADGET_TITLE = {"大腳小工具", "dajiaoxiaogongju"};
     BIGFOOTGADGET_ENABLE_GPS = "開啟座標指示";
     BIGFOOTGADGET_ENABLE_MBB = "開啟小地圖按鍵包";
     BIGFOOTGADGET_CHANGE_FONT = "修改系統字體";
     BIGFOOTGADGET_CASTING_BAR = "使用大腳施法條"
-
 else
     BIGFOOTGADGET_TITLE = "BigFoot Gadget";
     BIGFOOTGADGET_ENABLE_GPS = "Enable GPS";
     BIGFOOTGADGET_ENABLE_MBB = "Enable Minimap button bag";
     BIGFOOTGADGET_CHANGE_FONT = "Change Default font";
     BIGFOOTGADGET_CASTING_BAR = "Use BFCastingBar"
-
 end
 
 if (IsConfigurableAddOn("BigFootGadget") or IsConfigurableAddOn("MBB")) then
@@ -88,7 +84,7 @@ ModManagement_RegisterCheckBox(
     BIGFOOTGADGET_CHANGE_FONT,
     nil,
     "ChangeBigFootFont",
-    1,
+    0,
     function (arg)
         if (arg == 1) then
             BFGadget_FontName, BFGadget_FontHeight, BFGadget_FontFlags=NumberFontNormal:GetFont()
