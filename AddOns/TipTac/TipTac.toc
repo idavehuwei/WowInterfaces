@@ -3,10 +3,12 @@
 ## X-BigfootDesc: 强大的鼠标提示信息增强插件，高度多样+自由化
 ## Version: 09.05.26
 ## Title: TipTac
+## Title-zhCN: [辅助] 鼠标提示 TipTac
+## Title-zhTW: [輔助] 鼠标提示 TipTac
 ## Author: Aezay (Earthen Ring EU)
 ## Notes: Highly Customizable Tooltip Enhancement Addon
 ## SavedVariables: TipTac_Config
-## Dependencies: !!UserDefaultSettings
+## Dependencies: !!Corelibs
 
 Localization.lua
 TipTac.lua

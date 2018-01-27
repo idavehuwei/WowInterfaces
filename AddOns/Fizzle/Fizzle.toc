@@ -2,9 +2,9 @@
 ## Title: Fizzle
 ## Author: phyber
 ## Notes: Show item durability and quality in the character frame.
-## Title-zhCN: 装备耐久 Fizzle
+## Title-zhCN: [辅助] 装备耐久 Fizzle
 ## Notes-zhCN: 在人物装备栏中显示物品品质与耐久度。|N|CFF0099FF需要基础函数库|R
-## Title-zhTW: 裝備耐久 Fizzle
+## Title-zhTW: [輔助] 裝備耐久 Fizzle
 ## Notes-zhTW: 在人物裝備欄中顯示物品品質與耐久度。|N|CFF0099FF需要基礎函式庫|R
 ## X-Repple: 辅助
 ## Version: v1.3.2
@@ -14,7 +14,8 @@
 ## X-RelSite-WoWI: 5018
 ## X-Website: http://phyber.wowinterface.com/
 ## X-WoWIPortal: phyber
-## OptionalDeps: !!Corelibs, Ace3, Voyeur
+## Dependencies: !!Corelibs
+## OptionalDeps: Ace3, Voyeur
 ## X-Curse-Packaged-Version: v1.3.2
 ## X-Curse-Project-Name: Fizzle
 ## X-Curse-Project-ID: fizzle

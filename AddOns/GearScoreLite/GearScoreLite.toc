@@ -1,7 +1,7 @@
 ## Interface: 30100
 ## Title: GearScoreLite
-## Title-zhCN: 装备评分 (GearScoreLite)
-## Title-zhTW: 裝備評分 (GearScoreLite)
+## Title-zhCN: [辅助] 装备评分 GearScoreLite
+## Title-zhTW: [輔助] 裝備評分 GearScoreLite
 
 ## Notes: Quickly and easily judge a player's level of Gear.
 ## Notes-zhCN: 快速计算玩家的装备分数
@@ -11,7 +11,7 @@
 ## Version: 3x03
 ## Author: Mirrikat45
 ## SavedVariables: GS_Settings
-## OptionalDeps: !!Corelibs
+## Dependencies: !!Corelibs
 
 informationLite.lua
 GearScoreLite.lua

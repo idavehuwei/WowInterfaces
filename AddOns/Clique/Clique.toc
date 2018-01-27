@@ -1,7 +1,7 @@
 ## Interface: 30100 
 ## Title: Clique
-## Title-zhCN: 一键施法(Clique)
-## Title-zhTW: 一鍵施法(Clique)
+## Title-zhCN: [辅助] 一键施法 Clique
+## Title-zhTW: [輔助] 一鍵施法 Clique
 ## Author: Cladhaire
 ## Version: 108
 ## Notes: Simply powerful click-casting interface
@@ -11,6 +11,7 @@
 ## OptionalDeps: Dongle
 ## LoadOnDemand: 1
 ## X-Revision: BigFoot
+## Dependencies: !!Corelibs
 
 Dongle.lua
 Clique.xml

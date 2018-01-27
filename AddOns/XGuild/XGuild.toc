@@ -1,15 +1,15 @@
 ﻿## Interface: 30100
 ## Title: X-Guild
 ## Notes: Color your Guild/WhoIs/Friends Window
-## Title-zhCN: |CFFFF8000辅助|R 彩色人名列表
+## Title-zhCN: [辅助] 彩色人名列表 X-Guild
 ## Notes-zhCN: 作者：芳芳|n按职业彩色化你的公会、查询、好友列表
-## Title-zhTW: |CFFFF8000輔助|R 彩色人名清單
+## Title-zhTW: [輔助] 彩色人名清單 X-Guild
 ## Notes-zhTW: 按職業彩色化你的公會、查詢、好友列表
 ## X-Repple: 辅助
 ## Version: 1.2.0
 ## Author: Zek、Xgale
 ## OptionalDeps:
 ## SavedVariables:
-## Dependencies: !!UserDefaultSettings
+## Dependencies: !!Corelibs
 
 XGuild.lua

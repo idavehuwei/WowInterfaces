@@ -1,15 +1,9 @@
 #@non-debug@
 ## X-BigfootType: 1
 ## X-BigfootDesc: 全面的商业技能列表查询数据库。
-## Title: Ackis Recipe List 1.0 RC9
-## Title-frFR: Ackis Recipe List 1.0 RC9
-## Title-deDE: Ackis Rezeptliste (1.0 RC9)
-## Title-koKR: Ackis의 제조법 리스트 (1.0 RC9)
-## Title-esMX: Ackis Recipe List 1.0 RC9
-## Title-ruRU: Ackis Recipe List 1.0 RC9
-## Title-zhCN: Ackis Recipe List 1.0 RC9
-## Title-esES: Ackis Recipe List 1.0 RC9
-## Title-zhTW: Ackis Recipe List 1.0 RC9
+## Title: Ackis Recipe List
+## Title-zhCN: [商业] 商业技能查询 Ackis Recipe List
+## Title-zhTW: [商業] 商业技能查询 Ackis Recipe List
 #@end-non-debug@
 #@debug@
 # ## Title: Ackis Recipe List - SVN Version
@@ -21,13 +15,7 @@
 
 #@non-debug@
 ## Notes: Scans your tradeskills and tells you which recipes you are missing, along with information on how to obtain them.
-## Notes-frFR: Analyse vos métiers et vous indique les recettes qui vous manquent, ainsi que des informations sur la façon de les obtenir.
-## Notes-deDE: Durchsucht deine Berufe und teilt dir mit welche Rezepte dir noch fehlen, und mit Information wie du diese erhalten kannst.
-## Notes-koKR: 캐릭터가 배우지 못한 제조법을 표시합니다. 또한 제조법의 획득 정보을 알려줍니다.
-## Notes-esMX: Muestra una lista de recetas inexistentes para sus Habilidades de Comercio. Funciona con todas las habilidades comerciales, incluidas venenos y entrenamiento de bestias del cazador.
-## Notes-ruRU: Сканирует ваши профессии и составляет список отсутствующих рецептов, также отображая информацию о способах их приобретения.
 ## Notes-zhCN: 扫描并告知如何获取缺失配方的详细商业技能信息插件。
-## Notes-esES: Muestra una lista de recetas inexistentes para sus Habilidades de Comercio. Funciona con todas las habilidades comerciales, incluidas venenos y entrenamiento de bestias del cazador.
 ## Notes-zhTW: 掃描並告知如何獲取缺失配方的詳細商業技能訊息插件。
 #@end-non-debug@
 #@debug@
@@ -45,10 +33,11 @@
 
 ## X-Credits: FGWarmonger, Kagaro, Speeddymon, Xinhuan, Aesir, BWMerlin, everyone who translated stuff and more!
 ## X-Category: Tradeskill
-## X-Localizations: enUS, frFR, zhCN, zhTW, deDE, koKR, esES, esMX, ruRU
+## X-Localizations: enUS, zhCN, zhTW
 ## X-Website: http://www.wowwiki.com/AckisRecipeList/
 ## X-Feedback: http://wow.curse.com/downloads/wow-addons/details/arl.aspx
 
+## Dependencies: !!Corelibs
 ## OptionalDeps: Ace3, LibAboutPanel, LibBetterBlizzOptions-1.0, LibBabble-Zone-3.0, LibBabble-Faction-3.0, LibBabble-Boss-3.0, LibBabble-Class-3.0, LibSharedMedia-3.0, LibQTip-1.0, Skillet, ATSW, Manufac, Cauldron, TomTom, TipTac, Carbonite
 ## DefaultState: Enabled
 

@@ -3,6 +3,8 @@
 ## X-BigfootDesc: 强大的鼠标提示信息增强插件，高度多样+自由化
 ## Version: 09.05.25
 ## Title: TipTacItemRef
+## Title-zhCN: [辅助] 鼠标提示 物品信息
+## Title-zhTW: [輔助] 鼠标提示 物品信息
 ## Author: Aezay (Earthen Ring EU)
 ## Notes: Improved ItemRefTooltip
 ## Dependencies: TipTac

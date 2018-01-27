@@ -2,6 +2,8 @@
 ## X-BigfootType: 1
 ## X-BigfootDesc: 和 ATSW（AdvancedTradeSkillWindow）相似的商业技能面板扩展。
 ## Title: Skillet |cff7fff7f -Ace2-|r
+## Title-zhCN: [商业] 商业技能面板 Skillet |cff7fff7f -Ace2-|r
+## Title-zhTW: [商業] 商業技能面板 Skillet |cff7fff7f -Ace2-|r
 ## Notes: A replacement tradeskill window
 ## Notes-zhCN: 和 ATSW（AdvancedTradeSkillWindow）相似的商业技能面板扩展。
 ## Author: nogudnik
@@ -18,13 +20,12 @@
 #### X-RelSite-UI.WoW:
 ## SavedVariables: SkilletDB
 ## SavedVariablesPerCharacter: SkilletDBPC
+## Dependencies: !!Corelibs
 ## OptionalDeps: Ace2, Waterfall-1.0, AbacusLib, Fizzwidget Reagent Cost, LibPeriodicTable-3.1, WindowLib, LibStub, CharacterInfoStorage, Sanity2
-## X-Embeds: Ace2, Waterfall-1.0, AbacusLib, LibPeriodicTable-3.1, WindowLib, LibStub
 ## X-Curse-Packaged-Version: r166
 ## X-Curse-Project-Name: Skillet
 ## X-Curse-Project-ID: skillet
 ## X-Curse-Repository-ID: wow/skillet/mainline
-## Dependencies: !!UserDefaultSettings
 
 #### Localization files
 Locale\Locale-enUS.lua

@@ -2,6 +2,7 @@
 ## X-BigfootType: 1
 ## X-BigfootDesc: 增强试衣间界面
 ## Title: CloseUp
+## Title-zhCN: [界面] 试衣间 CloseUp
 ## Notes: Adds model viewing flexibility
 ## Author: TotalPackage
 ## Version: 3.3.001
@@ -10,5 +11,6 @@
 
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Always: delayed
+## Dependencies: !!Corelibs
 
 core.lua

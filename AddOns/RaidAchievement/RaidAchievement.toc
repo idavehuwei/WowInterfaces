@@ -1,6 +1,6 @@
 ﻿## Interface: 30100
 ## Title: Raid|cff7fff7fAchievement|r   Main
-## Title-ruRU: Raid|cff7fff7fAchievement|r   Основной
+## Title-zhCN: [辅助] 团队成就追踪器 |cff7fff7fRaidAchievement|r 核心
 ## Author: Shurshik
 ## Version: 1.011
 ## Notes: /fena or /rach for more info
@@ -9,7 +9,7 @@
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariablesPerCharacter: thisaddonworkea, wherereportraidach, wherereportpartyach
-## Dependencies: !!UserDefaultSettings
+## Dependencies: !!Corelibs
 
 Localization\localization-enEN.lua
 Localization\localization-ruRU.lua
@@ -18,5 +18,6 @@ Localization\localization-frFR.lua
 Localization\localization-esES.lua
 Localization\localization-koKR.lua
 Localization\localization-zhTW.lua
+
 RaidAchievement.lua
 RaidAchievement.xml

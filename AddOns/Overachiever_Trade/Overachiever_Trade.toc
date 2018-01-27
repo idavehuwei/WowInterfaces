@@ -3,9 +3,9 @@
 ## Version: 0.43
 ## Author: Tuhljin
 ## Notes: Trade Skills module.
-## Title-zhCN: |CFFFF8000辅助|R 成就追踪器 Trade
+## Title-zhCN: [辅助] 成就追踪器 商业 Trade
 ## Notes-zhCN: 作者:芳芳|n成就追踪器的商业模块
-## Title-zhTW: |CFFFF8000輔助|R 成就追蹤器 Trade
+## Title-zhTW: [輔助] 成就追蹤器 商业 Trade
 ## Notes-zhTW: 成就追蹤器的商业模組
 ## X-Repple: 辅助
 ## LoadOnDemand: 1

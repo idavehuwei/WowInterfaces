@@ -1,9 +1,9 @@
 ## Interface: 30100
-## Title: Buff Master
+## Title: [BF] Buff Master
 ## Notes: Provide extra information of buff such as showing time of buff, etc.                                    Runtime: |cff00ff00Low|r                               Memory: |cff00ff00Low|r
-## Title-zhCN: 增益魔法大师
+## Title-zhCN: [大脚] 增益魔法大师 BuffMaster
 ## Notes-zhCN: 提供对增益魔法的额外支持如显示增益魔法的时间剩余等。                                            运行时间占用率：|cff00ff00低|r                        内存占用率：|cff00ff00低|r
-## Title-zhTW: 增益魔法大師
+## Title-zhTW: [大腳] 增益魔法大師 BuffMaster
 ## Notes-zhTW: 提供對增益魔法的額外支持如顯示增益魔法的時間剩余等。                                            運行時間占用率：|cff00ff00低|r                        內存占用率：|cff00ff00低|r
 ## Dependencies: BigFoot
 ## X-Revision: BigFoot

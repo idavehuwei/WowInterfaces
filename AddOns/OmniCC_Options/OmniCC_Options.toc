@@ -2,6 +2,7 @@
 ## X-BigfootType: 1
 ## X-BigfootDesc: |cFF4488FF此模块依赖于 OmniCC|r 模块化施法条。。
 ## Title: OmniCC Options
+## Title-zhCN: [辅助] 冷却计时 设置
 ## Notes: A load on demand option menu for OmniCC
 ## Author: Tuller
 ## Dependencies: OmniCC

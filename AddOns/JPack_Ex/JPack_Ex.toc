@@ -1,7 +1,7 @@
 ## Interface: 30100
 ## X-BigfootType: 1
 ## X-BigfootDesc: |cFF4488FF此模块依赖于 JPack|r 为各种背包整合及系统背包添加JPack整理按键。。
-## Title: JPack Ex
+## Title: [辅助] 背包整理 按钮
 ## Notes: A button on you bag frame!
 ## Notes-zhCN: 为各种背包整合及系统背包添加JPack整理按键。
 ## Dependencies: JPack

@@ -1,8 +1,8 @@
 ﻿## Interface: 30100
 ## Title: Tradeskill Info
+## Title-zhCN: [商业] 商业技能资料库 TradeskillInfo
+## Title-zhTW: [商業] 商業技能資料庫 TradeskillInfo
 ## Notes: Complete Tradeskill Info
-## Notes-zhTW: 完整的商業技能百科
-## Notes-zhCN: 完整的商业技能百科
 ## Notes-esES: Informarcion Completa de las Habilidades de Comercio
 ## Notes-koKR: 전문기술 정보의 모든 것!
 ## Author: wmrojer

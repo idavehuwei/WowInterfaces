@@ -1,13 +1,15 @@
 ## Interface: 30100
 ## Title: Learning Aid v1.07.2
+## Title-zhCN: [辅助] 新增法术助手 LearningAid
 ## Notes: Displays a bar of spells, abilities, tradeskills, mounts or mini-pets you've just learned.  By Jamash (Kil'jaeden-US)
-## Notes-deDE: Zeigt eine Leiste mit Zauberspr�chen, F�higkeiten, Berufsfertigkeiten, Reittieren und Fahrzeugen, oder Begleitern, die du gerade erst gelernt hast. Von Jamash (Kil'jaeden-US)
+## Notes-deDE: Zeigt eine Leiste mit Zauberspr點hen, F鋒igkeiten, Berufsfertigkeiten, Reittieren und Fahrzeugen, oder Begleitern, die du gerade erst gelernt hast. Von Jamash (Kil'jaeden-US)
 ## SavedVariables: LearningAid_Saved
 ## SavedVariablesPerCharacter: LearningAid_Character
 ## Author: Jamash (Kil'jaeden-US)
 ## Version: 1.07.2
 ## X-Embeds: Ace3
 ## X-Category: Interface Enhancements
+## Dependencies: !!Corelibs
 
 LearningAid.xml
 LearningAid.lua

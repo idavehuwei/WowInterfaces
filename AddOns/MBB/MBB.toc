@@ -1,9 +1,9 @@
 ## Interface: 30100
-## Title: MinimapButtonBag (0.500)
+## Title: [GUI] MinimapButtonBag (0.500)
 ## Notes: Reduces minimap buttons and makes them accessible through a menu!
-## Title-zhCN: 小地图按键包(MBB)
+## Title-zhCN: [界面] 小地图按键包 MBB
 ## Notes-zhCN: 将小地图周围多余按键集中到菜单中
-## Title-zhTW: 小地圖按鍵包(MBB)
+## Title-zhTW: [界面] 小地圖按鍵包 MBB
 ## Notes-zhTW: 將小地圖周圍多餘按鍵集中到功能表中
 ## Titile-deDE: MinimapButtonBag (0.500)
 ## Notes-deDE: Reduziert die Minimap Kn?pfe und erlaubt den Zugriff auf diese über ein Menü!

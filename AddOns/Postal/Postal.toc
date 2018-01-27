@@ -1,8 +1,8 @@
 ## Interface: 30100
 ## Version: 3.1.2
 ## Title: Postal
-## Title-zhCN: 邮件助手 Postal
-## Title-zhTW: 郵件助手 Postal
+## Title-zhCN: [辅助] 邮件助手 Postal
+## Title-zhTW: [輔助] 郵件助手 Postal
 ## Author: Xinhuan
 ## X-Credits: Ammo, Rabbit, Grennon
 ## X-Category: Mail
@@ -12,7 +12,7 @@
 ## Notes-esES: Postal: soporte mejorado para el buzon
 ## Notes-zhTW: Postal: 強化信箱功能。
 ## Notes-zhCN: Postal: 增强信箱功能
-## OptionalDeps: !!Corelibs
+## Dependencies: !!Corelibs
 ## SavedVariables: Postal3DB
 ## X-Curse-Packaged-Version: v3.1.2
 ## X-Curse-Project-Name: Postal

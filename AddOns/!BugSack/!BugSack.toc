@@ -1,11 +1,11 @@
 ﻿## Interface: 30100
-## Title: BugSack
+## Title: [|cffFF3300Core|r] BugSack
+## Title-zhCN: [|cffFF3300核心|r] 错误信息显示 BugSack
+## Title-zhTW: [|cffFF3300核心|r] 錯誤訊息顯示 BugSack
 ## Version: 3.0
 ## Notes: Toss those bugs inna sack.
-## Notes-zhCN: 错误信息收集器。
-## Notes-esES: Mete esos errores en un saco.
+## Notes-zhCN: 集中显示错误信息，避免中断游戏。
 ## Notes-zhTW: 集中顯示錯誤訊息，避免中斷遊戲。
-## Notes-ruRU: Аддон ловит текущие ошибки в мешок.
 ## Author: Rabbit
 ## X-Credits: Rowne, Ramble, kergoth, ckknight, Gamefaq, thomasmo, damjau, Fritti
 ## SavedVariables: BugSackDB
@@ -24,11 +24,7 @@ BugSack.xml
 
 Locales\enUS.lua
 Locales\zhCN.lua
-Locales\deDE.lua
-Locales\koKR.lua
-Locales\esES.lua
 Locales\zhTW.lua
-Locales\ruRU.lua
 
 BugSack.lua
 BugSackLDB.lua

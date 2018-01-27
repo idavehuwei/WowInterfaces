@@ -1,7 +1,7 @@
 ﻿## Interface: 30100
-## Title: Mapster
-## Title-zhCN: 地图专家
-## Title-zhTW: 地圖專家
+## Title: [Map] Mapster
+## Title-zhCN: [地图] 地图专家
+## Title-zhTW: [地圖] 地圖專家
 ## Notes: Simple Map Mod
 ## Notes-zhCN: 简单实用的地图模块
 ## Notes-zhTW: 簡單實用的地圖增強
@@ -17,6 +17,7 @@
 ## X-LoadOn-ToggleFrame: if ... == WorldMapFrame and not IsAddOnLoaded("Mapster") then AddonLoader:LoadAddOn("Mapster") end
 ## LoadWith: Blizzard_BattlefieldMinimap
 
+## Dependencies: !!Corelibs
 ## OptionalDeps: BigFoot, Ace3
 
 Locale\enUS.lua

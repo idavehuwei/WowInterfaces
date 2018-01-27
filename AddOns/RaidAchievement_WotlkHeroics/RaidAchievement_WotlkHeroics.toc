@@ -1,18 +1,20 @@
 ﻿## Interface: 30100
 ## Title: Raid|cff7fff7fAchievement|r - Wotlk Dungeons
-## Title-ruRU: Raid|cff7fff7fAchievement|r - Wotlk Подземелья
+## Title-zhCN: [辅助] 团队成就追踪器 |cff7fff7f巫妖王之怒地下城|r
 ## Author: Shurshik
 ## Notes: RaidAchievement Wotlk Dungeons Module
 ## Notes-ruRU: Модуль RaidAchievement - Wotlk Подземелья
 ## Dependencies: RaidAchievement
 ## LoadOnDemand: 1
 ## SavedVariablesPerCharacter: whraspisokon
+
 Localization\localization-enEN.lua
 Localization\localization-ruRU.lua
 Localization\localization-deDE.lua
 Localization\localization-frFR.lua
 Localization\localization-esES.lua
 Localization\localization-zhTW.lua
+
 RaidAchievement_WotlkHeroics.lua
 RaidAchievement_WotlkHeroicsbosses.lua
 RaidAchievement_WotlkHeroics.xml

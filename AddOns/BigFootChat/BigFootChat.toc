@@ -10,6 +10,7 @@
 ## Dependencies: BigFoot
 ## X-Revision: BigFoot
 ## SavedVariables: BFCDB,BFCSystemCacheDB
+## LoadOnDemand: 1
 
 locale\locale.en.lua
 locale\locale.cn.lua

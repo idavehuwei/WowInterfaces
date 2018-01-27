@@ -1,8 +1,11 @@
 ## Interface: 30100
 ## Title: Ludwig
+## Title-zhCN: [物品] 物品数据库 Ludwig
 ## Author: Tuller
 ## Notes: Item Database
 ## Version: 1.8.1
+## Dependencies: !!Corelibs
+
 localization.lua
 db.lua
 slash.lua

@@ -1,7 +1,7 @@
 ﻿## Interface: 30100
 ## Title: QuestInfo
-## Title-zhCN: 任务查询 QuestInfo
-## Title-zhTW: 任务查询
+## Title-zhCN: [辅助] 任务查询 QuestInfo
+## Title-zhTW: [輔助] 任务查询
 ## Notes: Quest library for mob location and other information
 ## Notes-zhCN: 提供任务资料库
 ## Notes-zhTW: 提供任務資料庫功能

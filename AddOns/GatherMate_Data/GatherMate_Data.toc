@@ -1,6 +1,7 @@
 ## Interface: 30100
 ## Notes: Wowhead Data dump for GatherMate 
-## Title: GatherMateData
+## Title: [Map] GatherMateData
+## Title-zhCN: [地图] 采集助手数据库 GatherMateData
 ## Author: kagaro, Xinhuan, Ammo (review and sounding board)
 ## X-Category: Map
 ## X-Email: sal.scotto@gmail.com

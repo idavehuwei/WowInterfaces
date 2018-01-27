@@ -1,7 +1,7 @@
 ## Interface: 30100
-## Name: oRA3
-## Title-zhCN: 团队助手
-## Title-zhTW: 團隊助手
+## Name: [GRID] oRA3
+## Title-zhCN: [团队] 团队助手
+## Title-zhTW: [團隊] 團隊助手
 ## Notes: Raid and Party Assist
 ## Notes-zhCN: CT_RaidAssist 外的另一个选择。
 ## Notes-zhTW: CT_RaidAssist 以外的另一個選擇。

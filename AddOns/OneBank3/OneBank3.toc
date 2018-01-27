@@ -2,6 +2,7 @@
 ## X-BigfootType: 1
 ## X-BigfootDesc: 简洁的整合背包和离线整合银行界面。
 ## Title: OneBank3
+## Title-zhCN: [辅助] 银行整合 OneBank3
 ## Notes: OneBank3 will combine all the bank bags into one frame.
 ## Author: Kaelten
 ## X-eMail: kaelten@gmail.com
@@ -15,6 +16,6 @@
 ## X-Curse-Project-Name: OneBank3
 ## X-Curse-Project-ID: onebank3
 ## X-Curse-Repository-ID: wow/onebank3/mainline
-## Dependencies: !!UserDefaultSettings
+## Dependencies: !!Corelibs
 
 OneBank3.xml

@@ -1,10 +1,10 @@
 ## Interface: 30100
 ## Title: DCT - Damage
 ## Notes: Show damage texts you attacking for DCT.
-## Title-zhCN: 战斗指示器(DCT) 伤害模块
-## Notes-zhCN: 为战斗指示器(DCT )提供你对怪物伤害的显示功能
-## Title-zhTW: 戰鬥指示器(DCT) 傷害模組
-## Notes-zhTW: 為戰鬥指示器(DCT )提供你對怪物傷害的顯示功能
+## Title-zhCN: [战斗] 战斗指示器 伤害模块
+## Notes-zhCN: 为战斗指示器提供你对怪物伤害的显示功能
+## Title-zhTW: [戰鬥] 戰鬥指示器 傷害模組
+## Notes-zhTW: 為戰鬥指示器提供你對怪物傷害的顯示功能
 ## Author: Dennie
 ## Dependencies: dct
 ## X-Revision: BigFoot

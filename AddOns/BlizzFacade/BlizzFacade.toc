@@ -1,11 +1,11 @@
 ﻿## Interface: 30100
 ## X-BigfootType: 1
-## X-BigfootDesc: |cFF4488FF此模块依赖于 ButtonFacade|r 增加 ButtonFacade 支持到默认界面。。
-## Title: BlizzFacade
+## X-BigfootDesc: |cFF4488FF此模块依赖于 ButtonFacade|r 增加 ButtonFacade 支持到默认界面。
+## Title: [GUI] BlizzFacade
+## Title-zhCN: [界面] 暴雪动作条美化 BlizzFacade
 ## Version: 3.2.30
 ## Notes: Adds ButtonFacade support to the default interface.
-## Notes-frFR: Ajoute le support de ButtonFacade à l'interface par défaut.
-## Notes-koKR: 기본 인터페이스에 ButtonFacade 지원을 추가합니다.
+## Notes-zhCN: 增加 ButtonFacade 支持到默认界面。
 ## Author: StormFX
 ## X-eMail: stormfx@gmail.com
 ## X-Website: http://www.wowace.com/projects/blizzfacade

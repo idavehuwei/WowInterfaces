@@ -1,6 +1,8 @@
 ## Interface: 30100
-## Title: _|cffCCCC88NPCScan|r
+## Title: [Map] _|cffCCCC88NPCScan|r
+## Title-zhCN: [地图] 稀有NPC扫描 _|cffCCCC88NPCScan|r
 ## Notes: Scans NPCs around you for rare ones.
+## Notes-zhCN: 扫描你周围的稀有NPC
 ## Author: Saiket
 ## Version: 3.2.0.8
 ## X-Date: 2009-10-04

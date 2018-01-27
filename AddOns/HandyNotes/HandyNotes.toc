@@ -1,5 +1,6 @@
 ﻿## Interface: 30100
-## Title: HandyNotes
+## Title: [Map] HandyNotes
+## Title-zhCN: [地图] 地图标记 HandyNotes
 ## Notes: Handy notes for your maps
 ## Notes-frFR: Notes pratiques pour vos cartes.
 ## Author: Xinhuan
@@ -12,7 +13,7 @@
 ## X-Curse-Project-Name: HandyNotes
 ## X-Curse-Project-ID: handynotes
 ## X-Curse-Repository-ID: wow/handynotes/mainline
-## Dependencies: !!UserDefaultSettings
+## Dependencies: !!Corelibs
 ## SavedVariables: HandyNotesDB, HandyNotes_HandyNotesDB
 
 # Locale files

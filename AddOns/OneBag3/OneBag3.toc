@@ -1,7 +1,8 @@
 ## Interface: 30100
 ## X-BigfootType: 1
 ## X-BigfootDesc: 简洁的整合背包和离线整合银行界面。
-## Title: OneBag3
+## Title: [GUI] OneBag3
+## Title-zhCN: [辅助] 背包整合 OneBag3
 ## Notes: OneBag is a replacement for the default game bags that combines all the bags into one frame.
 ## Notes-zhCN: 整合背包插件，以整合方式显示你的背包。
 ## Notes-zhTW: 整合所有背包在一起。
@@ -18,6 +19,6 @@
 ## X-Curse-Project-Name: OneBag3
 ## X-Curse-Project-ID: onebag3
 ## X-Curse-Repository-ID: wow/onebag3/mainline
-## Dependencies: !!UserDefaultSettings
+## Dependencies: !!Corelibs
 
 OneBag3.xml

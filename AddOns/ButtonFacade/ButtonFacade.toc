@@ -1,13 +1,10 @@
 ﻿## Interface: 30100
 ## X-BigfootType: 1
 ## X-BigfootDesc: 给动作条加上各种个性化的边框和皮肤。
-## Title: ButtonFacade
+## Title: [GUI] ButtonFacade
+## Title-zhCN: [界面] 按钮皮肤 ButtonFacade
 ## Version: 3.1.255
 ## Notes: Allows the dynamic skinning of button-based addons.
-## Notes-esES: Permite el texturizado dinámico de los botones base de los addons.
-## Notes-frFR: Permet de skinner dynamiquement les addons basés sur des boutons.
-## Notes-koKR: 버튼 기반의 애드온에 동적인 스킨을 적용하여 줍니다.
-## Notes-ruRU: Позволяет динамически менять оформление аддонов, использующих кнопки.
 ## Notes-zhCN: 允许动态按钮皮肤插件。
 ## Notes-zhTW: 允許動態按鈕皮膚插件。
 ## Author: JJSheets, StormFX
@@ -15,7 +12,8 @@
 ## X-Website: http://www.wowace.com/projects/buttonfacade/
 ## X-Category: Interface Enhancements
 ## X-WoWI-ID: 12097
-## OptionalDeps: !!UserDefaultSettings, Ace3
+## Dependencies: !!Corelibs
+## OptionalDeps: Ace3
 ## SavedVariables: ButtonFacadeDB
 ## X-Curse-Packaged-Version: 3.1.255
 ## X-Curse-Project-Name: ButtonFacade

@@ -1,9 +1,9 @@
 ## Interface: 30100
 ## Title: TradeskillInfo UI
+## Title-zhCN: [商业] 商业技能资料库 设置
+## Title-zhTW: [商業] 商業技能資料庫 設置
 ## Author: wmrojer
 ## Notes: Complete Tradeskill Info UI
-## Notes-zhCN: 商业技能资料库设置窗口
-## Notes-zhTW: 商業技能資料庫設置窗口
 ## Notes-esES: UI con Info Completa de las Habilidades de Comercio
 ## Notes-koKR: 전문기술 정보 UI
 ## Version: 1.4.5

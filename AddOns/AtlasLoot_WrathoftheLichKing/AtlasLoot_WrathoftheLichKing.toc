@@ -1,7 +1,7 @@
 ﻿## Interface: 30100
 ## Title: AtlasLoot_WrathoftheLichKing
-## Title-zhCN: AtlasLoot |cFF0099FF[巫妖王之怒]|r
-## Title-zhTW: |r|cFF0099FF[地圖]|rAL 巫妖王之怒
+## Title-zhCN: [地图] AtlasLoot |cFF0099FF[巫妖王之怒]|r
+## Title-zhTW: [地圖] AL 巫妖王之怒
 ## Notes: AtlasLoot loot tables from the Wrath of the Lich King
 ## Notes-zhCN: AtlasLoot Enhanced 的《巫妖王之怒》副本掉落信息
 ## Notes-zhTW: AtlasLoot 巫妖王之怒副本掉落物品資料庫

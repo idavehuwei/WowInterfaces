@@ -1,9 +1,9 @@
 ## Interface: 30100
-## Title: [Core] |cFFFF0000 -core libs-|r
+## Title: [|cffFF3300Core|r] |cFFFF0000 -core libs-|r
 ## Notes: The core library
-## Title-zhCN: [核心] |cFFA400FF基本库|r
+## Title-zhCN: [|cffFF3300核心|r] |cFFA400FF基本库|r
 ## Notes-zhCN: 基本库, 所有多玩插件的必须依赖此库, 请不要禁用.
-## Title-zhTW: [核心] |cFFA400FF基本庫|r
+## Title-zhTW: [|cffFF3300核心|r] |cFFA400FF基本庫|r
 ## Notes-zhTW: 基本庫, 所有多玩插件的必須依賴此庫, 請不要禁用.
 ## X-DuowanAddon: 基本库
 ## X-Category: Library

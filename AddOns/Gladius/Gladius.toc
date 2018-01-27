@@ -1,7 +1,7 @@
 ## Interface: 30100
 ## Title: Gladius
-## Title-zhCN: 竞技助手(Gladius)
-## Title-zhTW: 競技助手(Gladius)
+## Title-zhCN: [战斗] 竞技助手 Gladius
+## Title-zhTW: [戰鬥] 競技助手 Gladius
 ## Notes: Arena enemy unit frames
 ## Notes-zhCN: 竞技场敌人的头像插件。
 ## Notes-zhTW: 競技場敵人的頭像插件。
@@ -11,6 +11,7 @@
 ## OptionalDeps: Ace3, LibStub, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets
 ## X-Revision: BigFoot
 ## LoadOnDemand: 1
+## Dependencies: !!Corelibs
 
 localization.enUS.lua
 localization.deDE.lua

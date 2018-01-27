@@ -1,9 +1,7 @@
 ## Interface: 30100
-## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eye of Eternity|r
-## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eye of Eternity|r
-## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Око Вечности|r
-## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0永恆之眼|r
-## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0영원의 눈|r
+## Title: [GRID] |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eye of Eternity|r
+## Title-zhCN: [团队] |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0永恒之眼|r
+## Title-zhTW: [团队] |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0永恆之眼|r
 ## LoadOnDemand: 1
 ## X-Revision: BigFoot
 ## RequiredDeps: DBM-Core
@@ -11,19 +9,15 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Name: Eye of Eternity
-## X-DBM-Mod-Name-deDE: Das Auge der Ewigkeit
-## X-DBM-Mod-Name-ruRU: Око Вечности
+## X-DBM-Mod-Name-zhCN: 永恒之眼
 ## X-DBM-Mod-Name-zhTW: 永恆之眼
-## X-DBM-Mod-Name-koKR: 영원의 눈
 ## X-DBM-Mod-Sort: 3
 ## X-DBM-Mod-LoadZone: The Eye of Eternity
-## X-DBM-Mod-LoadZone-deDE: Das Auge der Ewigkeit
-## X-DBM-Mod-LoadZone-ruRU: Око Вечности
+## X-DBM-Mod-LoadZone-zhCN: 永恒之眼
 ## X-DBM-Mod-LoadZone-zhTW: 永恆之眼
-## X-DBM-Mod-LoadZone-koKR: 영원의 눈
+
 localization.en.lua
-localization.de.lua
-localization.ru.lua
+localization.cn.lua
 localization.tw.lua
-localization.kr.lua
+
 Malygos.lua

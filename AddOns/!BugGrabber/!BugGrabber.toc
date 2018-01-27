@@ -1,10 +1,10 @@
 ﻿## Interface: 30100
-## Title: BugGrabber
-## Title-ruRU:Собиратель ошибок
+## Title: [|cffFF3300Core|r] BugGrabber
+## Title-zhCN: [|cffFF3300核心|r] 错误信息收集 BugGrabber
 ## Version: 2.2
 ## Notes: Grabs bugs for the bug sack.
+## Notes-zhCN: 收集错误信息,提供 BugSack 显示。
 ## Notes-zhTW: 搜集錯誤訊息提供 BugSack 顯示。
-## Notes-esES: Graba errores para BugSack.
 ## Author: Rabbit
 ## X-Credits: Rowne, Ramble, kergoth, ckknight, Fritti
 ## X-License: GPL v2 or later.

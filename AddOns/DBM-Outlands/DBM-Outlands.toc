@@ -1,5 +1,6 @@
 ## Interface: 30100
-## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Outlands|r
+## Title: [GRID] |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Outlands|r
+## Title-zhCN: [团队] |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0外域|r
 ## Author: Tandanu and Nitram
 ## LoadOnDemand: 1
 ## X-Revision: BigFoot
@@ -11,12 +12,11 @@
 ## X-DBM-Tab-Sort: 8
 ## X-DBM-Name: Outlands
 ## X-DBM-Tab-LoadZone: Gruul's Lair,Magtheridon's Lair
+
 localization.en.lua
-localization.de.lua
-localization.fr.lua
 localization.tw.lua
 localization.cn.lua
-localization.ru.lua
+
 Maulgar.lua
 Gruul.lua
 Magtheridon.lua

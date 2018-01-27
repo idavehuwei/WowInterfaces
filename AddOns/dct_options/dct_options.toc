@@ -1,10 +1,10 @@
 ## Interface: 30100
 ## Title: DCT - Options
 ## Notes: Provide graphical interface for DCT.
-## Title-zhCN: 战斗指示器(DCT) 菜单模块
-## Notes-zhCN: 为战斗指示器(DCT)提供图形化设置界面。
-## Title-zhTW: 戰鬥指示器(DCT) 功能表模組
-## Notes-zhTW: 為戰鬥指示器(DCT)提供圖形化設置介面。
+## Title-zhCN: [战斗] 战斗指示器 菜单模块
+## Notes-zhCN: 为战斗指示器提供图形化设置界面。
+## Title-zhTW: [戰鬥] 戰鬥指示器 功能表模組
+## Notes-zhTW: 為戰鬥指示器提供圖形化設置介面。
 ## Author: Dennie
 ## Dependencies: dct
 ## X-Revision: BigFoot

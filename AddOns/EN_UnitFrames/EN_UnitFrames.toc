@@ -1,13 +1,14 @@
 ﻿## Interface: 30100
 ## Title: Enigma Unit Frames
-## Title-zhTW: |r|cFF005672[Euf頭像]|rEnigma Unit Frames
-## Title-zhCN: |r|cFF005672[Euf头像]|rEnigma Unit Frames
+## Title-zhTW: [界面] 頭像框架 EN_UnitFrames
+## Title-zhCN: [界面] 头像框架 EN_UnitFrames
 ## Notes: Enhanced Unit Frames including HP/MP values, class, race, level tag, and more ...
 ## Notes-zhTW: 增強顯示頭像，顯示目標的目標的目標，破甲值，隊員職業等級 生命值及法力值等信息，隊友目標，隊友施法條
 ## Notes-zhCN: 增强显示头像，显示目标的目标的目标，破甲值，队友职业等级 生命值及法力值等信息，队友目标，队友施法条
 ## Version: 3.1.1
 ## Author: Enigma, ported to 3.1 by 誰機@鬼霧峰TW
 ## SavedVariables: EUF_Options,MobHealthDB
+## Dependencies: !!Corelibs
 
 EN_PartyTarget.xml
 EN_UnitFrames.xml

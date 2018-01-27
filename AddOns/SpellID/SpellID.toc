@@ -1,7 +1,9 @@
 ## Interface: 30100
 ## Title: SpellID
+## Title-zhCN: [辅助] 法术ID SpellID
 ## Version: 1.01
 ## Notes: Adds SpellIDs to the various tooltips ingame
 ## Author: Silverwind
+## Dependencies: !!Corelibs
 
 SpellID.lua

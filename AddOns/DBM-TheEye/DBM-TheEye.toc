@@ -1,5 +1,6 @@
 ## Interface: 30100
-## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0The Eye|r
+## Title: [GRID] |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0The Eye|r
+## Title-zhCN: [团队] |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0风暴要塞|r
 ## Author: Tandanu
 ## LoadOnDemand: 1
 ## X-Revision: BigFoot
@@ -10,27 +11,22 @@
 ## X-DBM-Tab-BCTab: 1
 ## X-DBM-Tab-Sort: 4
 ## X-DBM-Name: The Eye
-## X-DBM-Name-ruRU: Крепость Бурь
 ## X-DBM-Name-zhCN: 风暴要塞
 ## X-DBM-Name-zhTW: 風暴要塞
 ## X-DBM-Tab-Text: The Eye
-## X-DBM-Tab-Text-ruRU: Крепость Бурь
 ## X-DBM-Tab-Text-zhCN: 风暴要塞
 ## X-DBM-Tab-Text-zhTW: 風暴要塞
 ## X-DBM-Tab-Title: The Eye Boss Mods
-## X-DBM-Tab-Title-ruRU: Крепость Бурь
 ## X-DBM-Tab-Title-zhCN: 风暴要塞
 ## X-DBM-Tab-Title-zhTW: 風暴要塞
 ## X-DBM-Tab-LoadZone: Tempest Keep
-## X-DBM-Tab-LoadZone-ruRU: Крепость Бурь
-## X-DBM-Tab-LoadZone-deDE: Festung der Stürme
 ## X-DBM-Tab-LoadZone-zhCN: 风暴要塞
 ## X-DBM-Tab-LoadZone-zhTW: 風暴要塞
+
 localization.en.lua
-localization.de.lua
 localization.cn.lua
-localization.ru.lua
 localization.tw.lua
+
 VoidReaver.lua
 Solarian.lua
 Alar.lua

@@ -2,9 +2,9 @@
 ## Title: BuyEmAll 2.8.6
 ## Interface: 30100
 ## Notes: Enhances shift-click interface at vendors
-## Title-zhCN: |CFFFF8000辅助|R 材料购买助手
+## Title-zhCN: [辅助] 材料购买助手 BuyEmAll
 ## Notes-zhCN: Shift点击购买物品时的,可以成组购买物品
-## Title-zhTW: |CFFFF8000輔助|R 材料購買助手
+## Title-zhTW: [輔助] 材料購買助手 BuyEmAll
 ## Notes-zhTW: Shift點擊購買物品時的,可以成組購買物品
 ## X-Repple: 辅助
 ## Dependencies: !!UserDefaultSettings

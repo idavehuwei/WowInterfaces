@@ -4,7 +4,7 @@
 ## Notes: ZeroFire's ActionBar Mod. |n Third Edition.
 ## Author: Zero Fire
 
-## Title-zhCN: zBar3 - |cffFF3300炽火|r|cffDD66DD动作条|r
+## Title-zhCN: [辅助] |cffFF3300炽火|r|cffDD66DD动作条|r zBar3
 ## Notes-zhCN: 让你感受燃烧的快感！|n作者：炽火 Zero ℃
 ## Author-zhCN: 炽火 Zero ℃
 
@@ -13,6 +13,7 @@
 ## Url: http://groups.google.com/group/zbar
 
 ## SavedVariables: zBar3Data
+## Dependencies: !!Corelibs
 
 Templates.xml
 zBarT.lua

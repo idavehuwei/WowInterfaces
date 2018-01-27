@@ -1,9 +1,9 @@
 ## Interface: 30100
-## Title: BigFoot Base Library
+## Title: [BF] BigFoot Base Library
 ## Notes: The base library of BigFoot. Do not disable this mod please.
-## Title-zhCN: 大脚基本库
+## Title-zhCN: [大脚] 基本库
 ## Notes-zhCN: 这是大脚的基本运行库，所有插件是依赖于该基本库的。请不要禁止该插件。
-## Title-zhTW: 大腳基本庫
+## Title-zhTW: [大腳] 基本庫
 ## Notes-zhTW: 這是大腳的基本運行庫，所有插件是依賴于該基本庫的。請不要禁止該插件。
 ## SavedVariables: BigFoot_Config, BigFoot_Error
 ## SavedVariablesPerCharacter: BigFoot_Frames
@@ -29,6 +29,7 @@ Library\BigFootLocal.lua
 Library\BigFootSecureHook.lua
 
 ModManagement.xml
+UI\Widgets.xml
 BigFoot.xml
 BigFootSpells.lua
 BigFootReader.xml

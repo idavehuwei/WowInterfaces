@@ -1,10 +1,10 @@
 ## Interface: 30100
-## Title: MyFocusFrame
+## Title: [GUI] MyFocusFrame
 ## Notes: A movable frame like TargetFrame to show your focus.
-## Title-zhCN: 焦点目标 FocusFrame
-## Notes-zhCN: 显示焦点目标(Focus)的头像|n使用方法:选定目标后/Focus
-## Title-zhTW: 焦點目標 FocusFrame
-## Notes-zhTW: 顯示焦點目標(Focus)的頭像|n使用方法:選定目標後/Focus
+## Title-zhCN: [界面] 焦点目标 FocusFrame
+## Notes-zhCN: 显示焦点目标(Focus)的头像|n使用方法:选定目标后 /Focus
+## Title-zhTW: [界面] 焦點目標 FocusFrame
+## Notes-zhTW: 顯示焦點目標(Focus)的頭像|n使用方法:選定目標後 /Focus
 ## Version: 2.3.6
 ## Author: Tageshi
 ## SavedVariables: MyFocusFrameOptions

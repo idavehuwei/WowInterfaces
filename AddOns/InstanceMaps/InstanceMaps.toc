@@ -1,8 +1,8 @@
 ﻿## Interface: 30100
 ## LoadOnDemand: 1
-## Title: InstanceMaps
-## Title-zhCN: 副本地图
-## Title-zhTW: 副本地圖
+## Title: [Map] InstanceMaps
+## Title-zhCN: [地图] 副本地图 InstanceMaps
+## Title-zhTW: [地圖] 副本地圖 InstanceMaps
 ## Notes: Maps.  Like, for instances.
 ## Notes-zhCN: 在大地图上增加一个副本地图, 显示Boss位置以及掉落物
 ## Notes-zhTW: 在大地圖上增加一個副本地圖, 顯示首領位置以及掉落物

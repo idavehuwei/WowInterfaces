@@ -1,8 +1,7 @@
 ## Interface: 30100
-## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ulduar|r
-## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ульдуар|r
-## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0울두아르|r
-## Title-zhtw:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奧杜亞|r
+## Title: [GRID] |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ulduar|r
+## Title-zhCN: [团队] |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奥杜尔|r
+## Title-zhTW: [团队] |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奧杜亞|r
 ## LoadOnDemand: 1
 ## X-Revision: BigFoot
 ## RequiredDeps: DBM-Core
@@ -10,20 +9,17 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Name: Ulduar
-## X-DBM-Mod-Name-ruRU: Ульдуар
-## X-DBM-Mod-Name-koKR: 울두아르
-## X-DBM-Mod-Name-zhtw: 奧杜亞
+## X-DBM-Mod-Name-zhCN: 奥杜尔
+## X-DBM-Mod-Name-zhTW: 奧杜亞
 ## X-DBM-Mod-Sort: 0
 ## X-DBM-Mod-LoadZone: Ulduar
-## X-DBM-Mod-LoadZone-ruRU: Ульдуар
-## X-DBM-Mod-LoadZone-koKR: 울두아르
-## X-DBM-Mod-LoadZone-zhtw: 奧杜亞
+## X-DBM-Mod-LoadZone-zhCN: 奥杜尔
+## X-DBM-Mod-LoadZone-zhTW: 奧杜亞
+
 localization.en.lua
-localization.de.lua
-localization.ru.lua
+localization.cn.lua
 localization.tw.lua
-localization.kr.lua
-localization.tw.lua
+
 FlameLeviathan.lua
 Ignis.lua
 Razorscale.lua

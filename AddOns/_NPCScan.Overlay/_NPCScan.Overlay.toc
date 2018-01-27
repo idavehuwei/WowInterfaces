@@ -1,6 +1,8 @@
 ## Interface: 30100
-## Title: _|cffCCCC88NPCScan|r.Overlay
+## Title: [Map] _|cffCCCC88NPCScan|r.Overlay
+## Title-zhCN: [地图] 稀有NPC巡逻路径 _|cffCCCC88NPCScan|r.Overlay
 ## Notes: Adds mob patrol paths to your map.
+## Notes-zhCN: 在地图上增加稀有NPC巡逻路径.
 ## Author: Saiket
 ## Version: 3.2.0.4
 ## X-Date: 2009-09-24

@@ -1,0 +1,159 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Frame name="WorldMapUnitTemplate" hidden="true" virtual="true">
+		<Size>
+			<AbsDimension x="16" y="16"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parentIcon" file="Interface\WorldMap\WorldMapPartyIcon" setAllPoints="true" parentKey="icon"/>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				WorldMapUnit_OnLoad(self);
+			</OnLoad>
+			<OnEnter>
+				WorldMapUnit_OnEnter(self, motion);
+			</OnEnter>
+			<OnLeave>
+				WorldMapUnit_OnLeave(self, motion);
+			</OnLeave>
+			<OnEvent>
+				WorldMapUnit_OnEvent(self, event, ...);
+			</OnEvent>
+			<OnMouseUp>
+				WorldMapUnit_OnMouseUp(self, button, "WorldMapRaid", "WorldMapParty");
+			</OnMouseUp>
+			<OnShow>
+				WorldMapUnit_OnShow(self);
+			</OnShow>
+			<OnHide>
+				WorldMapUnit_OnHide(self);
+			</OnHide>
+		</Scripts>
+	</Frame>
+	<Frame name="WorldMapPartyUnitTemplate" inherits="WorldMapUnitTemplate" virtual="true">
+		<Scripts>
+			<OnLoad>
+				WorldMapUnit_OnLoad(self);
+				self.unit = "party"..self:GetID();
+			</OnLoad>
+		</Scripts>
+	</Frame>
+	<Frame name="WorldMapRaidUnitTemplate" inherits="WorldMapUnitTemplate" virtual="true">
+		<Scripts>
+			<OnLoad>
+				WorldMapUnit_OnLoad(self);
+				self.unit = "raid"..self:GetID();
+			</OnLoad>
+		</Scripts>
+	</Frame>
+	<Frame name="WorldMapFlagTemplate" hidden="true" virtual="true">
+		<Size>
+			<AbsDimension x="24" y="24"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parentTexture" setAllPoints="true"/>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				RaiseFrameLevelByTwo(self);
+			</OnLoad>
+		</Scripts>
+	</Frame>
+	<Frame name="WorldMapVehicleTemplate" hidden="true" virtual="true">
+		<Size>
+			<AbsDimension x="45" y="45"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<HitRectInsets>
+			<AbsInset left="10" right="10" top="10" bottom="10"/>
+		</HitRectInsets>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parentTexture" setAllPoints="true"/>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				RaiseFrameLevelByTwo(self);
+			</OnLoad>
+			<OnEnter>
+				WorldMapUnit_OnEnter(self, motion);
+			</OnEnter>
+			<OnLeave>
+				WorldMapTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Frame>
+	<Frame name="WorldMapCorpseTemplate" hidden="true" virtual="true">
+		<Size>
+			<AbsDimension x="16" y="16"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture file="Interface\Minimap\POIIcons" setAllPoints="true">
+					<TexCoords left="0.5" right="0.5625" top="0" bottom="0.0625"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				RaiseFrameLevel(self);
+			</OnLoad>
+			<OnEnter>
+				local x, y = self:GetCenter();
+				local parentX, parentY = self:GetParent():GetCenter();
+				if ( x > parentX ) then
+					WorldMapTooltip:SetOwner(self, "ANCHOR_LEFT");
+				else
+					WorldMapTooltip:SetOwner(self, "ANCHOR_RIGHT");
+				end
+				WorldMapTooltip:SetText(CORPSE_RED);
+				WorldMapTooltip:Show();
+			</OnEnter>
+			<OnLeave>
+				WorldMapTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Frame>
+	<Frame name="WorldMapDebugObjectTemplate" hidden="true" virtual="true">
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture file="Interface\RaidFrame\UI-RaidFrame-Threat" setAllPoints="true"/>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				self.texture = self:GetRegions();
+			</OnLoad>
+			<OnEnter>
+				WorldMapUnit_OnEnter(self, motion);
+			</OnEnter>
+			<OnLeave>
+				WorldMapUnit_OnLeave(self, motion);
+			</OnLeave>
+			<OnMouseUp>
+				if ( IsModifierKeyDown("CTRL") ) then
+					TeleportToDebugObject(self.index);
+				else
+					WorldMapButton_OnClick(WorldMapButton, button);
+				end
+			</OnMouseUp>
+		</Scripts>
+	</Frame>
+</Ui>

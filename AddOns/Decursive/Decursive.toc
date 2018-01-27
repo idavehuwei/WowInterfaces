@@ -5,10 +5,11 @@
 ## X-Curse-Repository-ID: wow/decursive/mainline
 
 ## Title: Decursive |cff7fff7f -Ace2-|r
+## Title-zhCN: [辅助] 一键驱散 Decursive |cff7fff7f -Ace2-|r
+## Title-zhTW: [辅助] 一键驅魔 Decursive |cff7fff7f -Ace2-|r
 ## Notes: Affliction display and cleaning for solo, group and raids with advanced filtering and priority system.
-## Notes-ruRU: Отображение и лечение недугов с расширенной фильтрацией и системой приоритетов.
+## Notes-zhCN: 提供驱散辅助功能，包含进阶的显示及过滤功能
 ## Notes-zhTW: 提供驅魔輔助功能，包含進階的顯示及過濾功能
-## Notes-frFR: Affichage et guérison des afflictions avec un système évolué de filtrage et de priorité.
 
 ## SavedVariablesPerCharacter: DcrCharDB
 ## SavedVariables: DcrDB

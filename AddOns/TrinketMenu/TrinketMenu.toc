@@ -1,6 +1,6 @@
 ## Interface: 30100
 ## Title: TrinketMenu
-## Title-zhCN: 饰品管理
+## Title-zhCN: [辅助] 饰品管理 TrinketMenu
 ## Author: Gello
 ## Notes: AddOn to manage trinkets
 ## Notes-zhCN: 方便地管理饰品。
@@ -9,6 +9,7 @@
 ## LoadOnDemand: 1
 ## Dependencies: BigFoot
 ## X-Revision: BigFoot
+
 ClickBinder.lua
 TrinketMenu.lua
 TrinketMenu.xml

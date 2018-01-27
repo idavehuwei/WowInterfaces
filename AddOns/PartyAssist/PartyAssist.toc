@@ -1,7 +1,7 @@
 ## Interface: 30100
 ## Title: PartyAssist
-## Title-zhCN: 组队施法
-## Title-zhTW: 組隊施法
+## Title-zhCN: [辅助] 组队施法 PartyAssist
+## Title-zhTW: [輔助] 組隊施法 PartyAssist
 ## Note: Help player to cast spell on party member
 ## Note-zhCN: 在队友头像边提供快捷施法的按钮。
 ## Note-zhTW: 在隊友頭像邊提供快捷施法的按鈕。

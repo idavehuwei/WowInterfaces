@@ -17,7 +17,7 @@ local defaults = {
         enablechatchannelmove = false,
         enableRollButton = true,
         enableReportButton = true,
-        enableRaidersButton = true,
+        enableRaidersButton = false,
         modules = {
             ["ICONFRAME"] = true,
             ["CHATFRAME"] = true,
@@ -504,8 +504,6 @@ function BFChatAddOn:OnInitialize()
     SlashCmdList["BFC"] = function()
         self:ShowOptions()
     end
-
-    self:OnEnable()
 end
 
 local function EnterWhisperMode(editbox)
@@ -563,11 +561,13 @@ function BFChatAddOn:EnableOldStyleReply()
     hooksecurefunc("ChatEdit_OnEscapePressed", function(editBox)
         LeaveWhisperMode(editBox)
     end);
-    ChatFrame1EditBox:SetScript("OnAttributeChanged", function(...)
-        if (db.enableOldChatFrameStyle) then
-            RestoreReplyStatus(...)
-        end
-    end)
+    if ChatFrame1EditBox ~= nil then
+        ChatFrame1EditBox:SetScript("OnAttributeChanged", function(...)
+            if (db.enableOldChatFrameStyle) then
+                RestoreReplyStatus(...)
+            end
+        end)
+    end
     hooksecurefunc("ChatFrame_ReplyTell", function(chatFrame)
         local editBox = ChatEdit_ChooseBoxForSend(chatFrame);
         EnterWhisperMode(editBox)
@@ -756,11 +756,11 @@ function BFChatAddOn:OnEnable()
     end
     self:RawHook('ChatFrame_MessageEventHandler', BFC_ChatFrameHandler, true)
     self:RawHook('SetItemRef', true)
-    self:RegisterEvents();
     self:RawHook('IsDisplayChannelOwner', true)
     self:RawHook('GetChannelRosterInfo', true)
-    self:SecureHook("FCF_FadeInChatFrame")
-    self:SecureHook("FCF_FadeOutChatFrame")
+    self:RegisterEvents();
+--    self:SecureHook("FCF_FadeInChatFrame")
+--    self:SecureHook("FCF_FadeOutChatFrame")
     self:EnableOldStyleReply()
     BFChannel_RefreshMuteButton()
     if not db.isTempChannel then

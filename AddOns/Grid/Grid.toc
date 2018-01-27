@@ -1,7 +1,9 @@
 ## Interface: 30100
 ## X-BigfootType: 1
 ## X-BigfootDesc: 整合部分常用模块，并进行了若干修改的Grid免设置单目录带库整合大全包。
-## Title: Grid
+## Title: [GRID] Grid
+## Title-zhCN: [团队] 团队框架 Grid
+## Title-zhTW: [團隊] 團隊框架 Grid
 ## Notes: A modular, lightweight and screen-estate saving grid of party/raid unit frames
 ## Notes-zhCN: 小巧的轻量级模块化队伍框架
 ## Notes-zhTW: 精簡的團隊框架功能

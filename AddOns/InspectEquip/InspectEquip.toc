@@ -2,12 +2,13 @@
 ## X-BigfootType: 1
 ## X-BigfootDesc: 在人物窗口右边栏显示装备的整体物品等级和出处。
 ## Title: InspectEquip
-## Title-zhCN: 装备出处 InspectEquip
+## Title-zhCN: [辅助] 装备出处 InspectEquip
 ## Notes: Shows where the equipment of the inspected user is from.
 ## Notes-deDE: Zeigt Herkunftsinformationen zum Equipment betrachteter Spieler an.
 ## Author: emelio
 ## Version: 1.4.0
-## OptionalDeps: !!Corelibs, Ace3, LibBabble-Zone-3.0, LibBabble-Boss-3.0, Examiner
+## Dependencies: !!Corelibs
+## OptionalDeps: Ace3, LibBabble-Zone-3.0, LibBabble-Boss-3.0, Examiner
 ## SavedVariables: InspectEquipConfig
 ## X-WoWI-ID: 9509
 ## X-Curse-Packaged-Version: 1.4.0

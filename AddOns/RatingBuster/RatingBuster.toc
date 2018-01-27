@@ -1,6 +1,9 @@
 ﻿## Interface: 30100
 ## Title: RatingBuster
+## Title-zhCN: [辅助] 装备数值解析 RatingBuster
+## Title-zhTW: [輔助] 裝備數值解析 RatingBuster
 ## Notes: Item stat breakdown, analysis and comparison
+## Notes-zhCN: 装备数值解析与比较
 ## Notes-zhTW: 裝備數值解析與比較
 ## Author: Whitetooth
 ## X-Revision: BigFoot

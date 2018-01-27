@@ -1,10 +1,10 @@
 ## Interface: 30100
 ## Title: DCT
 ## Notes: Adds Combat Text above you character
-## Title-zhCN: 战斗指示器(DCT)
-## Notes-zhCN: 战斗指示器(DCT)核心模块，提供受到的伤害效果显示。
-## Title-zhTW: 戰鬥指示器(DCT) 
-## Notes-zhTW: 戰鬥指示器(DCT)核心模組，提供受到的傷害效果顯示。
+## Title-zhCN: [战斗] 战斗指示器 DCT
+## Notes-zhCN: 战斗指示器 DCT 核心模块，提供受到的伤害效果显示。
+## Title-zhTW: [戰鬥] 戰鬥指示器 DCT
+## Notes-zhTW: 戰鬥指示器 DCT 核心模組，提供受到的傷害效果顯示。
 ## Author: Dennie
 ## Dependencies: BigFoot
 ## X-Revision: BigFoot

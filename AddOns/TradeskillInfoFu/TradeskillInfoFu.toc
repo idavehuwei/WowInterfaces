@@ -1,8 +1,8 @@
 ## Interface: 30100
 ## Title: TradeskillInfo Fu
+## Title-zhCN: [商业] 商业技能资料库 小地图按钮
+## Title-zhTW: [商業] 商業技能資料庫 小地圖按鍵
 ## Notes: Minimap button for TradeskillInfo
-## Notes-zhCN: TradeskillInfo 小地图按钮
-## Notes-zhTW: TradeskillInfo 小地圖按鍵
 ## Author: Daviesh
 ## Version: v5.06.02
 ## X-License: GPL v2
