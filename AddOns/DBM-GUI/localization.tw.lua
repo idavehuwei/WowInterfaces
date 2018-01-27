@@ -5,6 +5,8 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
+L.TranslationBy 	= "Nightkiller@日落沼澤(kc10577)"
+
 L.TabCategory_Options 	= "綜合設置"
 L.TabCategory_WOTLK 	= "巫妖王之怒"
 L.TabCategory_BC 	= "燃燒的遠征"
@@ -59,8 +61,8 @@ L.PizzaTimer_ButtonStart = "開始計時"
 L.PizzaTimer_BroadCast	= "向團隊廣播"
 
 -- Tab: Raidwarning
-L.Tab_RaidWarning 	= "團隊警報"
-L.RaidWarnColors 	= "團隊警報顏色"
+L.Tab_RaidWarning 	= "團隊警告"
+L.RaidWarnColors 	= "團隊警告顏色"
 L.RaidWarnColor_1 	= "顏色1"
 L.RaidWarnColor_2 	= "顏色2"
 L.RaidWarnColor_3 	= "顏色3"
@@ -69,13 +71,13 @@ L.InfoRaidWarning	= [[你可以對團隊警報的顏色及其位置進行設定�
 在這裡會顯示例如“玩家X受到了Y效果的影響”之類的資訊。]]
 L.ColorResetted 	= "該顏色設置已重置"
 L.ShowWarningsInChat 	= "在聊天視窗中顯示警報"
-L.ShowFakedRaidWarnings = "以偽裝團隊警報資訊的方式顯示警報內容"
+L.ShowFakedRaidWarnings = "以偽裝團隊警告資訊的方式顯示警告內容"
 L.WarningIconLeft 	= "左側顯示圖示"
 L.WarningIconRight 	= "右側顯示圖示"
 L.RaidWarnMessage 	= "感謝您使用Deadly Boss Mods"
-L.BarWhileMove 		= "團隊警報可以移動"
-L.RaidWarnSound		= "發出團隊警報時播放聲音"
-L.SpecialWarnSound	= "發出特殊警報時播放聲音"
+L.BarWhileMove 		= "團隊警告可以移動"
+L.RaidWarnSound		= "發出團隊警告時播放聲音"
+L.SpecialWarnSound	= "發出特別警告時播放聲音"
 
 -- Tab: Barsetup
 L.BarSetup   = "計時條樣式"
@@ -102,3 +104,5 @@ L.Area_SpamFilter		= "基本垃圾過濾設定"
 L.HideBossEmoteFrame	= "隱藏團隊首領表情框"
 L.SpamBlockRaidWarning	= "過濾其他首領模組的通告" 
 L.SpamBlockBossWhispers	= "當戰鬥時過濾 <DBM> 密語警告"
+L.ShowVersionUpadeAsPopup	= "當你的版本過期時顯示彈出提示"
+L.ShowBigBrotherOnCombatStart	= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"

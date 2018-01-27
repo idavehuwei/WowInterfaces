@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("Thorim", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1055 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 1176 $"):sub(12, -3))
 mod:SetCreatureID(32865)
 mod:SetZone()
 
@@ -30,8 +30,9 @@ local warningBomb		= mod:NewAnnounce("WarningBomb", 4)
 
 local specWarnOrb		= mod:NewSpecialWarning("LightningOrb")
 
-
+local lastcharge = {} 
 mod:AddBoolOption("RangeFrame")
+mod:AddBoolOption("AnnounceFails", false, "announce") 
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start()
@@ -39,23 +40,41 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)
 	end
+	table.wipe(lastcharge) 
+end
+
+local sortedFailsC = {}
+local function sortFails1C(e1, e2)
+	return (lastcharge[e1] or 0) > (lastcharge[e2] or 0)
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	if self.Options.AnnounceFails and DBM:GetRaidRank() >= 1 then
+		local lcharge = ""
+		for k, v in pairs(lastcharge) do
+			table.insert(sortedFailsC, k)
+		end
+		table.sort(sortedFailsC, sortFails1C)
+		for i, v in ipairs(sortedFailsC) do
+			lcharge = lcharge.." "..v.."("..(lastcharge[v] or "")..")"
+		end
+		SendChatMessage(L.Charge:format(lcharge), "RAID")
+		table.wipe(sortedFailsC)
+	end
 end
 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62042 then -- Storm Hammer
+	if args.spellId == 62042 then 					-- Storm Hammer
 		warnStormhammer:Show(args.destName)
 
-	elseif args.spellId == 62130 then	-- Unbalancing Strike
+	elseif args.spellId == 62130 then				-- Unbalancing Strike
 		warnUnbalancingStrike:Show(args.destName)
 		
-	elseif args.spellId == 62526 then -- Runic Detonation
+	elseif args.spellId == 62526 or args.spellId == 62527 then	-- Runic Detonation - missing 10ppl ID
 		self:SetIcon(args.destName, 8, 5)
 		warningBomb:Show(args.destName)
 	end
@@ -87,6 +106,9 @@ function mod:SPELL_DAMAGE(args)
 			spam = GetTime()
 			specWarnOrb:Show()
 		end
+	elseif self.Options.AnnounceFails and args.spellId == 62466 and DBM:GetRaidRank() >= 1 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
+		lastcharge[args.destName] = (lastcharge[args.destName] or 0) + 1
+		SendChatMessage(L.ChargeOn:format(args.destName), "RAID")
 	end
 end
 

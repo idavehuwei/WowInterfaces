@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("Freya", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1052 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 1175 $"):sub(12, -3))
 mod:SetZone()
 
 mod:SetCreatureID(32906)
@@ -13,31 +13,52 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_REMOVED",
 	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED"
 )
+
+-- Trash: 33430 Guardian Lasher (so ne blume)
+-- 33355 (nymphe)
+-- 33354 (baum)
+
+--
+-- Elder Stonebark (ground tremor / fist of stone)
+-- Elder Brightleaf (unstable sunbeam)
+
 
 mod:AddBoolOption("HealthFrame", true)
 
-local warnPhase2 = mod:NewAnnounce("WarnPhase2", 3)
-local warnSimulKill = mod:NewAnnounce("WarnSimulKill", 1)
-local warnFury = mod:NewAnnounce("WarnFury", 2, 63571)
+local warnPhase2		= mod:NewAnnounce("WarnPhase2", 3)
+local warnSimulKill		= mod:NewAnnounce("WarnSimulKill", 1)
+local warnFury			= mod:NewAnnounce("WarnFury", 2, 63571)
+local warnRoots			= mod:NewAnnounce("WarnRoots", 2, 63601)
 
-local specWarnFury = mod:NewSpecialWarning("SpecWarnFury")
+local specWarnFury		= mod:NewSpecialWarning("SpecWarnFury")
 
-local enrage = mod:NewEnrageTimer(600)
+local enrage 			= mod:NewEnrageTimer(600)
 
-local timerAlliesOfNature	= mod:NewTimer(60, "TimerAlliesOfNature", 62678)
-local timerSimulKill		= mod:NewTimer(60, "TimerSimulKill")
-local timerFuryYou		= mod:NewTimer(10, "TimerFuryYou", 63571)
-local timerTremorCD 	= mod:NewCDTimer(28, 62859) 
-local warnTremor		= mod:NewSpecialWarning("WarningTremor")
+local timerAlliesOfNature	= mod:NewNextTimer(60, 62678)
+local timerSimulKill		= mod:NewTimer(12, "TimerSimulKill")
+local timerFury			= mod:NewTargetTimer(10, 63571)
+local timerTremorCD 		= mod:NewCDTimer(28, 62859) 
+local warnTremor		= mod:NewSpecialWarning("WarningTremor")	-- Hardmode
+local specWarnBeam		= mod:NewSpecialWarning("UnstableEnergy")		-- Hardmode
+
+mod:AddBoolOption("PlaySoundOnFury")
 
 local adds = {}
+
 
 function mod:OnCombatStart(delay)
 	enrage:Start()
 	table.wipe(adds)
 end
+
+function mod:OnCombatEnd()
+	DBM.BossHealth:Hide()
+end
+
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 62519 then
@@ -62,9 +83,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self:SetIcon(args.destName, altIcon and 7 or 8, 10)
 		warnFury:Show(args.destName)
 		if args.destName == UnitName("player") then -- only cast on players; no need to check destFlags
+			if self.Options.PlaySoundOnFury then
+				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+			end
 			specWarnFury:Show()
-			timerFuryYou:Start()
 		end
+		timerFury:Start(args.destName)
 	end
 end
 
@@ -81,13 +105,15 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
+local killTime = 0
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 33202 or cid == 32916 or cid == 32919 then
 		if self.Options.HealthFrame then
 			DBM.BossHealth:RemoveBoss(cid)
 		end
-		if not timerSimulKill:IsStarted() then
+		if (GetTime() - killTime) > 20 then
+			killTime = GetTime()
 			timerSimulKill:Start()
 			warnSimulKill:Show()
 		end
@@ -100,6 +126,40 @@ function mod:UNIT_DIED(args)
 			timerSimulKill:Stop()
 		end
 	end
+
 end
+
+
+local rootedPlayers = {}
+local function showRootWarning()
+	warnRoots:Show(table.concat(rootedPlayers, "< >"))
+	table.wipe(rootedPlayers)
+end
+
+local iconId = 6
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 62861 or args.spellId == 62438 then
+		iconId = iconId - 1
+		self:SetIcon(args.destName, iconId, 15)
+		table.insert(rootedPlayers, args.destName)
+		self:Unschedule(showRootWarning)
+		if #rootedPlayers >= 3 then
+			showRootWarning()
+		else
+			self:Schedule(0.5, showRootWarning)
+		end
+
+	elseif (args.spellId == 62451 or args.spellId == 62865) and args.destName == UnitName("player")  then
+		specWarnBeam:Show()
+	end 
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args.spellId == 62861 or args.spellId == 62438 then
+		self:RemoveIcon(args.destName)
+		iconId = iconId + 1
+	end
+end
+
 
 

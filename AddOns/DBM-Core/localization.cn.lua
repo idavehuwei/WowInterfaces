@@ -79,3 +79,27 @@ DBM_CORE_UNKNOWN					= "未知"
 DBM_CORE_TIMER_PULL					= "开怪倒计时"
 DBM_CORE_ANNOUNCE_PULL				= "%d 秒后开怪"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "开怪！"
+
+
+-- Generic Warnings (deprecated)
+DBM_CORE_GENERIC_TARGET_WARN = "%s 在 >%%s<!"
+DBM_CORE_GENERIC_TARGET_OPTION = "提示目标 %s"
+
+-- Auto-generated Timer Localizations
+DBM_CORE_AUTO_TIMER_TEXTS = {
+	target = "%s: %%s",
+	cast = "%s",
+	active = "%s",
+	cd = "%s 冷却",
+	next = "下一次 %s",
+	achievement = "%s",
+}
+
+DBM_CORE_AUTO_TIMER_OPTIONS = {
+	target = "显示|cff71d5ff|Hspell:%d|h%s|h|r的减益计时器",
+	cast = "显示|cff71d5ff|Hspell:%d|h%s|h|r的施法计时器",
+	active = "显示|cff71d5ff|Hspell:%d|h%s|h|r的持续时间计时器",
+	cd = "显示|cff71d5ff|Hspell:%d|h%s|h|r的冷却计时器",
+	next = "显示下一次 |cff71d5ff|Hspell:%d|h%s|h|r的计时器",
+	achievement = "为成就:%s显示计时器",
+}

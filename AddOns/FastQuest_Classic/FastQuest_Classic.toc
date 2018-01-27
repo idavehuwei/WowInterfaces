@@ -1,0 +1,20 @@
+﻿## Interface: 30100
+## Author: Arith Hsu
+## Title: |cFF00FF00[Quest]|rFastQuest Classic v2.15.05
+## Title-zhTW: [輔助] 任務通報 FastQuest Classic
+## Title-zhCN: [辅助] 任务通报 FastQuest Classic
+## Notes: |cff00CC33Displays quest levels, loads active quests into Questtracker and removes then upon completion, Notifies your party/raid members about your progress, allows to do most turn quests with a single click! |r
+## Notes-zhTW: |cff00CC33自動通知隊友任務進度、自動追蹤任務、完成任務自動清除於任務追蹤視窗、在任務日志和任務跟蹤上增加任務級別顯示.|r
+## Notes-zhCN: |cff00CC33自动通知队友任务进度、自动追踪任务、完成任务自动清除于任务追踪视窗、在任务日志和任务跟踪上增加任务级别显示.|r
+## UIType: Quest
+## UIType-zhTW: 任務相關
+## UIType-zhCN: 任务相关
+## Version: 2.15.06
+## X-OptionsFrame: FastQuestOptionsFrame
+## SavedVariables: FQD
+## Dependencies: !!Corelibs
+## OptionalDeps: EarthFeatureFrame
+
+FastQuest.xml
+FastQuestOptions.xml
+FastQuest_Classic_Button.xml

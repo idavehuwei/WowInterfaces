@@ -9,6 +9,7 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
+L.TranslationBy 	= "Nightkiller@日落沼澤(kc10577)"
 L.TabCategory_Options 	= "综合设置"
 L.TabCategory_WOTLK 	= "巫妖王之怒"
 L.TabCategory_BC 	= "燃烧的远征"
@@ -47,6 +48,7 @@ L.Statistic_Heroic	= "英雄模式"
 L.General 		= "DBM综合设置"
 L.EnableDBM 		= "启用DBM"
 L.EnableStatus 		= "回复“status”密语"
+L.EnableSpamBlock	= "过滤<DBM>BossWhispers"
 L.AutoRespond 		= "开启战斗中自动密语回复"
 L.EnableMiniMapIcon	= "显示小地图图标"
 
@@ -105,4 +107,5 @@ L.Area_SpamFilter		= "常规设置"
 L.HideBossEmoteFrame	= "隐藏BOSS表情"
 L.SpamBlockRaidWarning	= "过滤其他首领预警插件警报" 
 L.SpamBlockBossWhispers	= "战斗中过滤DBM密语警报"
-
+L.ShowVersionUpadeAsPopup	= "当你的版本过期时弹出提示"
+L.ShowBigBrotherOnCombatStart	= "战斗开始时显示BigBrother(检查团队 增益/精炼UI)"

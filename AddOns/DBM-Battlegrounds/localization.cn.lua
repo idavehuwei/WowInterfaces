@@ -24,6 +24,10 @@ L:SetOptionLocalization({
 	AutoSpirit	= "自动释放灵魂"
 })
 
+L:SetMiscLocalization({
+	ArenaInvite		= "竞技场邀请"
+})
+
 
 --------------
 --  Arenas  --
@@ -41,6 +45,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart = "显示开始计时"
+	TimerShadow = "显示暗影水晶计时器"
 })
 
 L:SetMiscLocalization({
@@ -214,3 +219,31 @@ L:SetOptionLocalization({
 	WarningShards = "Show Rock Shards warning",
 	WarningGrab = "Show Tank Grab warning"
 })
+
+--------------
+--  Emalon  --
+--------------
+
+L = DBM:GetModLocalization("Emalon")
+
+L:SetGeneralLocalization{
+	name = "『风暴看守者』埃玛尔隆"
+}
+
+L:SetWarningLocalization{
+	specWarnNova 		= "闪电新星",
+	warnNova 		= "闪电新星",
+	warnOverCharge		= "超载"
+}
+
+L:SetTimerLocalization{
+	timerMobOvercharge	= "超载爆炸"
+}
+
+L:SetOptionLocalization{
+	specWarnNova 		= ("为|cff71d5ff|Hspell:%d|h%s|h|r显示特别警告"):format(64216, "闪电新星"),
+	warnNova 		= ("为|cff71d5ff|Hspell:%d|h%s|h|r显示警告"):format(64216, "闪电新星"),
+	NovaSound		= "当施放闪电新星时播放音效",
+	warnOverCharge 		= ("为|cff71d5ff|Hspell:%d|h%s|h|r显示警告"):format(64218, "超载"),
+	timerMobOvercharge	= "为超载的小怪显示计时器(减益叠加)"
+}

@@ -1,0 +1,150 @@
+﻿FastQuest Classic
+
+Know Issue / To Do
+============================
+- Better enhance WatchFrame dragging feature
+
+Revision History:
+=================
+- 2.15.06 (2009/06/05)
+  * Fix watched-quest's left-clicking not working properly
+  * Tuning FQ Option Frame layout
+
+- 2.15.05 (2009/05/23)
+  * Support WoW 3.1.2
+  
+- 2.15.04 (2009/05/21)
+  * French translation update. (Thanks for Ksys)
+  * Fix the error in the first time addon loaded
+  * Fix the first quest being watched in a fresh login that WatchFrame is not 
+    properly link to dragable green button
+  * Fix the auto removal problem that when there is at least one watched-quest 
+    which has quest item, then the auto removal won't work properly
+  
+- 2.15.03 (2009/05/11)
+  * Fix the issue that watched-quests not displayed quite proper
+  * Quest WatchFrame now is dragable, this includes the Achivement lines
+
+- 2.15.02 (2009/05/04)
+  * Fix the WatchFrame's quest tracker support
+  * Fix the quest completion's auto removal from WatchFrame
+
+- 2.15.01 (2009/05/02)
+  * Support WoW 3.1.1
+  * Temporary remove the enhancement to WatchFrame (previously called Quest 
+    Watch Frame)
+  
+- 2.14.04 (2008/12/18)
+  * Fix the AutoNotify toggle issue
+  * Quest level info format now can also apply to QuestLog frame and 
+    QuestWatch frame.
+
+- 2.14.03 (2008/12/16)
+  * Fix option toggle issues
+  
+- 2.14.02 (2008/12/14)
+  * Fix option toggle issue
+  
+- 2.14.01 (2008/12/14)
+  * Very minor enhancement to QuestWatchFrame's draged position.
+  
+- 2.14.00 (2008/12/07)
+  * Fixed the the Quest Watch frame dragging issue, now with a workaround to 
+    link Quest Watch frame to the dragable green ball. Note that once the 
+	Achievement frame is updated, you will need to click on the Quest Watch 
+	frame's green ball to restore the position back.
+  * Minimap icon now is dragable (Mouse right button) for easy to set the position.
+  * Minimap icon's left buton clicking will open Quest Log window, middle-button 
+    to open the option window.
+  
+- 2.13.b112401 (2008/11/24)
+  * QuestLog Frame not can be configured to be double width or not in Options frame.
+    (Disable double-width will require to reload UI)
+
+- 2.13.b111001 (2008/11/10)
+  * Fix the option frame sub-title display issue
+
+- 2.13.b110901 (2008/11/09)
+  * Added Minimap icon to toggle option frame
+  * Added codes to move minimap icon position
+  * Adopted codes from Double Wide to enlarge quest log window
+  * Added button to QuestLog frame to toggle option frame
+  * Supported WoW 3.0.3
+  * Added support to Earch feature frame
+
+- 2.12.06 (2008/04/19)
+  * Support QuestLink in chat frame
+
+- 2.12.05 (2008/03/31)
+  * Update TOC to support WoW 2.4.0
+
+- 2.12.04 (2007/09/30)
+  * Update TOC to support WoW 2.2
+  * Remove FQ_NODRAG message
+
+- 2.12.03 (2007/07/20)
+  * Fix /fq format missing option
+  * Disable NoDrag since it's not quite useful and have brought too much confusion
+  * Added French translation - oXid_FoX 
+  
+- 2.12.02 (2007/06/23)
+  * Remove "FastQuest Classic" leading text when a quest is completed.
+
+- 2.12.01 (2007/05/28)
+  * Updated TOC number to support WoW 2.1.0
+  * Revised zhTW event message to meet the translation changed in WoW 2.1.0
+  * Modified the Ctrl-Left/Right click quest info notification message to use ChatFrameEditBox:Insert() instead of SendChatMessage
+  * Add support to show "daily quest" information in QuestTracker
+
+- 2.12.00 (2007/05/18)
+  * Options window now is supported to configure most of FastQuest options, type '/fq options' to open the option frame.
+  * New Level-Up notification added.
+  * Rewrote the notification channel logic, now you could notify in multiple channels.
+  * Fixed the Ctrl-RightKey will cause the program to exit problem.
+  * Fixed German pasring strings
+  * Added Korean parsing strings and translation (gygabyte)
+  * Added French pasring strings
+  * Renamed GetDifficultyColor() into FQ_GetDifficultyColor()
+
+- 2.11.207 (2007/04/14)
+  * Experience gained and discovered notification are now can be turned on or turned off
+  * Renamed the addon name to "FastQuest Classic"
+  * Added quest's suggested member info and can be toggled
+  * Enhanced quest level information. Raid, Dungeon, Elite, PvP, and Group quests will have additional mark.
+  * Enhanced the /fq tag command and now can toggle the quest's extra information
+
+- 2.11.206 (2007/02/21)
+  * Fixed for quest collapsing issue
+
+- 2.11.205 (2007/01/17)
+  * Fixed to support WoW 2.0.5 due to the GetQuestLogTitle() is changed.
+
+- 2.11.7 (2006/12/21)
+  * Fixed the improper key-binding settings. Now user can bind a key to trigger quest tag, quest display format, auto-notify, auto-complete, auto-add, and QuestTracker unlock.
+  * Corrected the English parsing strings. Now experience gained, quest accepted, new zone discovered will be notified.
+
+- 2.11.6 (2006/12/11)
+  * Updated TOC file to support WOW version 2.0
+  * Code changes for the for loop statement (Justice)
+
+- 2.11.5 (2006/12/05)
+  * Codes change to improve the AutoNotify and AlwaysNotify logic
+
+- 2.11.4 (2006/09/24)
+  * Fix the AutoAdd not working properly in non-Chinese clients.
+  * Fix the the problem that when "Trade complete" will always notify.
+
+- 2.11.3 (2006/09/05)
+  * Quest title in the QuestTracker window now can be configured to be displayed in the same color or base on the quest difficulty
+  * Fixed the problem that notification will change the default chattype 
+  * Added codes to restrict the notification of quest progress when AutoNotify is disable
+  * Added the default option value for AllowRaid and set to false
+  
+- 2.11.2 (2006/08/03)
+  * Fixed the "/fq format"' bug
+  * Added a new slash command "/fq status"' to display all the configuration status
+  * Revised the slash command usage description
+  * Added some color control to the message
+  
+- 2.11.1 (2006/07/31)
+  * Externalized the strings from Alred's modded version

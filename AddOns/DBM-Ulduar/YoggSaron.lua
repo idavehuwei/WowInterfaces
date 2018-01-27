@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("YoggSaron", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1037 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 1177 $"):sub(12, -3))
 mod:SetCreatureID(33288)
 mod:SetZone()
 
@@ -9,18 +9,19 @@ mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON",
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_AURA_REMOVED_DOSE",
 	"UNIT_HEALTH",
-	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL"
+	"UNIT_DIED"
 )
 
 
 local warnGuardianSpawned 		= mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
+local warnCrusherTentacleSpawned	= mod:NewAnnounce("WarningCrusherTentacleSpawned", 2)
 local warnP2 				= mod:NewAnnounce("WarningP2", 2)
 local warnP3 				= mod:NewAnnounce("WarningP3", 2)
 local warnSanity 			= mod:NewAnnounce("WarningSanity", 3)
@@ -32,13 +33,25 @@ local warnMadness 			= mod:NewAnnounce("WarnMadness", 1)
 local timerMadness 			= mod:NewCastTimer(60, 64059)
 local specWarnMadnessOutNow		= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
 local warnBrainPortalSoon		= mod:NewAnnounce("WarnBrainPortalSoon", 1)
+local specWarnBrainPortalSoon		= mod:NewSpecialWarning("specWarnBrainPortalSoon", false)
 local warnSqueeze			= mod:NewAnnounce("WarnSqueeze", 1)
 local brainportal			= mod:NewTimer(27, "NextPortal")
+local warnFavor				= mod:NewAnnounce("WarnFavor", 1)
+local specWarnFavor			= mod:NewSpecialWarning("SpecWarnFavor")
+local timerLunaricGaze			= mod:NewCastTimer(4, 64163)
+local timerNextLunaricGaze		= mod:NewCDTimer(9, 64163)
+
+
+local timerAchieve	= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
 
 mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("WhisperBrainLink", false)
 mod:AddBoolOption("WarningSqueeze", false, "announce")
 mod:AddBoolOption("SetIconOnFearTarget")
+mod:AddBoolOption("SetIconOnFavorTarget")
+mod:AddBoolOption("SetIconOnMCTarget")
+--mod:AddBoolOption("RaidRageSpam", false)
+
 
 local enrageTimer	= mod:NewEnrageTimer(900)
 
@@ -50,6 +63,7 @@ function mod:OnCombatStart(delay)
 	phase = 1
 	brainLink1 = nil
 	enrageTimer:Start()
+	timerAchieve:Start()
 	if self.Options.ShowSaraHealth and not self.Options.HealthFrame then
 		DBM.BossHealth:Show(L.name)
 	end
@@ -64,10 +78,26 @@ function mod:SPELL_CAST_START(args)
 		timerMadness:Start()
 		warnMadness:Show()
 		brainportal:Schedule(60)
-		warnBrainPortalSoon:Schedule(85)
-		specWarnMadnessOutNow:Schedule(56)
+		warnBrainPortalSoon:Schedule(80)
+		specWarnBrainPortalSoon:Schedule(80)
+		specWarnMadnessOutNow:Schedule(55)
 	end
 end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg, sender)
+	if msg == L.YellRage then
+		if self.Options.RaidRageSpam then
+--			SendChatMessage(L.RaidRage, "RAID")
+		end
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 64144 and self:GetUnitCreatureId(args.sourceGUID) == 33966 then 
+		warnCrusherTentacleSpawned:Show()
+	end
+end
+
 
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 62979 then
@@ -93,16 +123,29 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 63830 and self.Options.SetIconOnFearTarget then	-- Malady of the Mind (Fear)
 		self:SetIcon(args.destName, 8, 30)
 
-	elseif args.spellId == 64126 then	-- Squeeze		
+	elseif args.spellId == 63042 and self.Options.SetIconOnMCTarget then	-- MC
+		self:SetIcon(args.destName, 4, 30)
+
+	elseif args.spellId == 64126 or args.spellId == 64125 then	-- Squeeze		
 		warnSqueeze:Show(args.destName)		
 		if args.destName == UnitName("player") and self.Options.WarningSqueeze then			
 			SendChatMessage(L.WarningYellSqueeze, "YELL")			
 		end	
 
+	elseif args.spellId == 63138 then	-- Sara's Favor
+		warnFavor:Show(args.destName)
+		if self.Options.SetIconOnFavorTarget then
+			self:SetIcon(args.destName, 4, 30)
+		end
+		if args.destName == UnitName("player") then 
+			specWarnFavor:Show()
+		end
+
 	elseif args.spellId == 63894 then	-- Shadowy Barrier of Yogg-Saron (this is happening when p2 starts)
 		phase = 2
 		brainportal:Start(60)
 		warnBrainPortalSoon:Schedule(57)
+		specWarnBrainPortalSoon:Schedule(57)
 		warnP2:Show()
 		if self.Options.ShowSaraHealth then
 			DBM.BossHealth:RemoveBoss(33134)
@@ -110,6 +153,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.BossHealth:Hide()
 			end
 		end
+	elseif args.spellId == 64167 or args.spellId == 64163 then	-- Lunatic Gaze (reduces sanity)
+		timerLunaricGaze:Start()
 	end
 end
 
@@ -118,6 +163,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnP3:Show()
 		phase = 3
 		brainportal:Stop()
+
+	elseif args.spellId == 64167 or args.spellId == 64163 then	-- Lunatic Gaze
+		timerNextLunaricGaze:Start()
 	end
 end
 
@@ -149,32 +197,5 @@ function mod:UNIT_HEALTH(uId)
 	end
 end
 
---[[
-function mod:UNIT_DIED(args)
-	if self:GetCIDFromGUID(args.srcGUID) == 33983 then
-		timerMadness:Stop()
-	end
-end
-function mod:CHAT_MSG_MONSTER_YELL(msg, sender)
-	if msg == L.YellPhase2 then
-		self:SendSync("Phase2")
-	end
-end
-function mod:OnSync(event, args)
-	if event == "Phase2" and phase == 1 then
-		phase = 2
-		brainportal:Start(70)
-		warnBrainPortalSoon:Schedule(70)
-		warnP2:Show()
-		--if self.Options.ShowSaraHealth and self:GetCIDFromGUID(args.destGUID) == 33134 then
-		if self.Options.ShowSaraHealth then
-			DBM.BossHealth:RemoveBoss(33134)
-			if not self.Options.HealthFrame then
-				DBM.BossHealth:Hide()
-			end
-		end
-	end
-end
---]]
 
 

@@ -29,6 +29,7 @@ Kologarn.lua
 Auriaya.lua
 Mimiron.lua
 Freya.lua
+Freya_Elders.lua
 Thorim.lua
 Hodir.lua
 GeneralVezax.lua

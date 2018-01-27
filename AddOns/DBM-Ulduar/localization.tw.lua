@@ -55,7 +55,8 @@ L:SetTimerLocalization{
 	TimerFlameJetsCooldown		= "下一次 烈焰噴洩",
 	TimerScorch			= "下一次 灼燒",
 	TimerScorchCast			= "灼燒",
-	TimerSlagPot			= "熔渣之盆: %s"
+	TimerSlagPot			= "熔渣之盆: %s",
+	TimerSpeedKill			= "快速擊殺"
 }
 
 L:SetWarningLocalization{
@@ -90,29 +91,29 @@ L:SetWarningLocalization{
 	SpecWarnDevouringFlameCast	= "你中了吞噬烈焰",
 	WarnDevouringFlameCast		= "吞噬烈焰: >%s<", 
 }
+
 L:SetTimerLocalization{
-	timerDeepBreathCooldown		= "下一次 火息術",
-	timerDeepBreathCast		= "火息術",
 	timerAllTurretsReady		= "砲塔",
 	timerTurret1			= "砲塔1",
 	timerTurret2			= "砲塔2",
 	timerTurret3			= "砲塔3",
-	timerTurret4			= "砲塔4"
+	timerTurret4			= "砲塔4",
+	timerGroundedTemp		= "地上階段",
 }
+
 L:SetOptionLocalization{
-	timerDeepBreathCooldown		= "為下一次火息術顯示計時器",
-	timerDeepBreathCast		= "顯示火息術的施法計時器",
 	SpecWarnDevouringFlame		= "當你在吞噬烈焰的攻擊範圍時顯示特別警告",
 	PlaySoundOnDevouringFlame	= "當受到吞噬烈焰時播放音效",
 	timerAllTurretsReady		= "為砲塔顯示計時器",
 	warnTurretsReadySoon		= "顯示砲塔的預先警告",
 	warnTurretsReady		= "顯示砲塔的警告",
 	SpecWarnDevouringFlameCast    	= "當你中了吞噬烈焰時顯示特別警告",
-	WarnDevouringFlameCast       	= "當施放吞噬烈焰時顯示警告",
-	timerTurret1			= "顯示砲塔1的計时器",
-	timerTurret2			= "顯示砲塔2的計时器",
-	timerTurret3			= "顯示砲塔3的計时器 (英雄)",
-	timerTurret4			= "顯示砲塔4的計时器 (英雄)",
+	timerTurret1			= "顯示砲塔1的計時器",
+	timerTurret2			= "顯示砲塔2的計時器",
+	timerTurret3			= "顯示砲塔3的計時器 (英雄)",
+	timerTurret4			= "顯示砲塔4的計時器 (英雄)",
+	OptionDevouringFlame		= "提示吞噬烈焰的目標(不可靠)",
+	timerGroundedTemp		= "顯示地上階段計時器"
 }
 
 L:SetMiscLocalization{
@@ -133,6 +134,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
+	TimerSpeedKill			= "快速擊殺"
 }
 
 L:SetWarningLocalization{
@@ -171,34 +173,31 @@ L:SetWarningLocalization{
 	WarningRuneofDeath		= "死亡符文",
 	RuneofDeath			= "死亡符文 - 移動",
 	LightningTendrils		= "閃電觸鬚 - 跑開!",
-	WarningRuneofSummoning			= "召喚符文"
+	WarningRuneofSummoning		= "召喚符文",
+	WarningStaticDisruption		= "靜電崩裂: >%s<",
+	Overload			= "超載 - 跑開!"
 }
 
 L:SetTimerLocalization{
 	TimerSupercharge		= "超級充能",
-	TimerOverload			= "超載",
 	TimerLightningWhirl		= "閃電旋風",
 	TimerLightningTendrils		= "閃電觸鬚",
-	timerFusionPunchCast		= "熔能拳擊施放",
 	timerFusionPunchActive		= "熔能拳擊: %s",
 	timerOverwhelmingPower		= "極限威能: %s",
 	timerRunicBarrier		= "符刻屏障",
-	timerRuneofDeath		= "死亡符文",
 }
 
 L:SetOptionLocalization{
 	TimerSupercharge		= "顯示超級充能計時器",
 	WarningSupercharge		= "當超級充能施放時顯示警告",
 	WarningChainlight		= "提示閃電鏈",
-	TimerOverload			= "顯示超載的施法計時器",
 	PlaySoundOnOverload		= "當超載施放時播放音效",
 	TimerLightningWhirl		= "顯示閃電旋風的施法計時器",
 	LightningTendrils		= "為閃電觸鬚顯示特別警告",
-	TimerLightningTendrils		= "顯示閃電旋風的持續時間計時器",
+	TimerLightningTendrils		= "顯示閃電觸鬚的持續時間計時器",
 	PlaySoundLightningTendrils	= "閃電觸鬚時播放音效",
 	WarningFusionPunch		= "提示熔能拳擊",
-	timerFusionPunchCast		= "為熔能拳擊顯示施法計時條",
-	timerFusionPunchActive		= "顯示熔能拳擊計時器",
+	timerFusionPunchActive		= "顯示熔能拳擊DEBUFF計時器",
 	WarningOverwhelmingPower	= "提示極限威能",
 	timerOverwhelmingPower		= "顯示極限威能計時器",
 	SetIconOnOverwhelmingPower	= "設置標記在極限威能的目標",
@@ -206,9 +205,12 @@ L:SetOptionLocalization{
 	WarningRuneofPower		= "提示力之符文",
 	WarningRuneofDeath		= "提示死亡符文",
 	RuneofDeath			= "為死亡符文顯示特別警告",
-	timerRuneofDeath		= "顯示死亡符文的持續時間計時器",
 	PlaySoundDeathRune		= "當死亡符文施放時播放音效",
-	WarningRuneofSummoning 		= "提示召喚符文"
+	WarningRuneofSummoning 		= "提示召喚符文",
+	WarningStaticDisruption		= "提示靜電崩裂",
+	SetIconOnStaticDisruption	= "設置標記在靜電崩裂的目標",
+	Overload			= "為超載顯示特別警告",
+	AllwaysWarnOnOverload		= "總是對超載顯示警告(否則只有當目標是風暴召喚者的時候顯示)"
 }
 
 L:SetMiscLocalization{
@@ -254,26 +256,24 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecialWarningEyebeam		= "集束目光看著你 - 跑開",
-	WarningEyebeam			= "集束目光: >%s<",
+	WarnEyeBeam			= "集束目光: >%s<",
 	WarnGrip			= "堅石之握: >%s<"
 }
 
 L:SetTimerLocalization{
 	timerEyebeam			= "集束目光: %s",
 	timerPetrifyingBreath		= "石化之息",
-	timerNextShockwave		= "下一個 震攝波",
 	timerLeftArm			= "左臂 重生",
 	timerRightArm			= "右臂 重生",
-	achievementDisarmed		= "卸除手臂 計时器"
+	achievementDisarmed		= "卸除手臂 計時器"
 }
 
 L:SetOptionLocalization{
 	SpecialWarningEyebeam		= "當集束目光看著你顯示特別警告",
-	WarningEyebeam			= "提示集束目光的目標",
+	WarnEyeBeam			= "提示集束目光的目標",
 	timerEyebeam			= "顯示集束目光的計時器",
 	SetIconOnEyebeamTarget		= "設置標記在集束目光的目標",
 	timerPetrifyingBreath		= "顯示石化之息的計時器",
-	timerNextShockwave		= "顯示震攝波的計時器",
 	timerLeftArm			= "顯示手臂重生(左) 的計時器",
 	timerRightArm			= "顯示手臂重生(右) 的計時器",
 	WarnGrip			= "提示堅石之握的目標",
@@ -286,7 +286,8 @@ L:SetMiscLocalization{
 	Yell_Trigger_arm_right		= "只是皮肉之傷!",
 	Health_Body			= "柯洛剛恩身體",
 	Health_Right_Arm		= "右臂",
-	Health_Left_Arm			= "左臂"
+	Health_Left_Arm			= "左臂",
+	FocusedEyebeam			= "%s正在注視著你!"
 }
 
 ---------------
@@ -335,23 +336,27 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningFlashFreeze		= "閃霜",
+	WarningFlashFreeze		= "閃霜",	
+	WarningStormCloud		= "風暴雷雲: %s", 
 	WarningBitingCold		= "刺骨之寒 - 移動"
 }
 
 L:SetTimerLocalization{
-	TimerFlashFreeze		= "閃霜 即將到來",  -- all ppl have to move on the rock patches
+	TimerSpeedKill			= "快速擊殺"
 }
 
 L:SetOptionLocalization{
-	TimerFlashFreeze		= "顯示閃霜的施放計時器",
 	WarningFlashFreeze		= "為閃霜顯示警告",
 	WarningBitingCold		= "為刺骨之寒顯示警告",
-	PlaySoundOnFlashFreeze		= "當閃霜施放時播放音效"
+	PlaySoundOnFlashFreeze		= "當閃霜施放時播放音效",
+	WarningStormCloud		= "提示中了風暴雷雲的玩家",
+	YellOnStormCloud		= "當風暴雷雲生效時大喊",
+	SetIconOnStormCloud		= "設置標記在風暴雷雲的目標"
 }
 
 L:SetMiscLocalization{
-	YellKill			= "我…我終於從他的掌控中…解脫了。"
+	YellKill			= "我…我終於從他的掌控中…解脫了。",
+	YellCloud			= "我中了風暴雷雲 快接近我",
 }
 
 
@@ -385,13 +390,16 @@ L:SetOptionLocalization{
 	WarningPhase2			= "提示第二階段",
 	RangeFrame			= "顯示距離框",
 	WarningBomb			= "提示引爆符文",
-	LightningOrb 			= "當你中了閃電充能時顯示特別警告"
+	LightningOrb 			= "當你中了閃電充能時顯示特別警告",
+	AnnounceFails			= "公布中了閃電充能的玩家到團隊頻道(需要開啟團隊廣播及團長/隊長權限)" 
 }
 
 L:SetMiscLocalization{
 	YellPhase1			= "擅闖者!像你們這種膽敢干涉我好事的凡人將付出…等等--你……",
 	YellPhase2			= "無禮的小輩，你竟敢在我的王座之上挑戰我?我會親手碾碎你們!",
-	YellKill			= "住手!我認輸了!"
+	YellKill			= "住手!我認輸了!",
+	ChargeOn			= "閃電充能: %s",
+	Charge				= "中了閃電充能 (這一次): %s" 
 }
 
 
@@ -414,10 +422,12 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	WarnPhase2 			= "第二階段",
-	WarnSimulKill			= "第一支小怪死亡 - 1分鐘後復活",
+	WarnSimulKill			= "第一支小怪死亡 - 大約12秒後復活",
 	WarnFury 			= "自然烈怒: >%s<",
 	SpecWarnFury 			= "你中了自然烈怒!",
-	WarningTremor   		= "地面震顫 - 停止施法"
+	WarningTremor   		= "地面震顫 - 停止施法",
+	WarnRoots 			= "鐵之根鬚: >%s<",
+	UnstableEnergy			= "不穩定的能量 - 移動"
 }
 
 L:SetTimerLocalization{
@@ -428,15 +438,42 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerAlliesOfNature 		= "顯示自然和諧冷卻時間",
-	TimerSimulKill 			= "顯示小怪復活計時器",
-	TimerFuryYou 			= "顯示自然烈怒計時器",
 	WarnPhase2 			= "提示第二階段",
-	WarnSimulKill			= "提示小怪復活",
+	WarnSimulKill			= "提示第一支小怪死亡",
 	WarnFury 			= "提示自然烈怒",
+	WarnRoots 			= "提示鐵之根鬚",
 	SpecWarnFury 			= "當你中了自然烈怒時顯示特別警告",
-	WarningTremor   		= "當王施放地面震顫時顯示特別警告"
+	WarningTremor   		= "當王施放地面震顫時(困難模式)顯示特別警告",
+	TimerAlliesOfNature 		= "顯示自然和諧冷卻時間",
+	TimerFuryYou 			= "顯示自然烈怒計時器",
+	TimerSimulKill 			= "顯示小怪復活計時器",
+	PlaySoundOnFury			= "當你中了自然烈怒時播放音效",
+	UnstableEnergy			= "為不穩定的能量顯示特別警告"
 }
+
+-- Elders
+L = DBM:GetModLocalization("Freya_Elders")
+
+L:SetGeneralLocalization{
+	name = "芙蕾雅的長者們"
+}
+
+L:SetWarningLocalization{
+	SpecWarnFistOfStone 		= "石拳連擊",
+	SpecWarnGroundTremor   		= "地面震顫 - 停止施法"
+}
+
+L:SetMiscLocalization{
+	TrashRespawnTimer 		= "小怪重生",
+}
+
+L:SetOptionLocalization{
+	SpecWarnFistOfStone		= "為石拳連擊顯示特別警告",
+	PlaySoundOnFistOfStone		= "當石拳連擊施放時播放音效",
+	SpecWarnGroundTremor		= "施放地面震顫時顯示特別警告",
+	TrashRespawnTimer		= "顯示小怪重生時間條"
+}
+
 
 -------------------
 --  Mimiron  --
@@ -449,46 +486,50 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	DarkGlare 			= "雷射彈幕",
-	WarningPlasmaBlast		= "離子衝擊: %s - 治療", --unusable?
-	Phase2Engaged			= "第二階段即將到來 - 現在重組",
-	Phase3Engaged			= "第三階段即將到來 - 現在重組",
 	WarnShell			= "凝汽彈: >%s<",
 	WarnBlast			= "離子衝擊: >%s<",
 	MagneticCore			= ">%s< 拿到了磁能之核",
-	WarningShockBlast		= "震爆 - 跑開!"
+	WarningShockBlast		= "震爆 - 跑開!",
+	WarnBombSpawn			= "炸彈機械人出現了"
 }
 
 L:SetTimerLocalization{
-	ProximityMines			= "新的環罩地雷",
+	TimerHardmode			= "困難模式 - 自毀程序",
 	TimeToPhase2			= "第二階段開始",
 	TimeToPhase3			= "第三階段開始",
+	TimeToPhase4			= "第四階段開始"
 }
 
 L:SetOptionLocalization{
+	DarkGlare 			= "提示雷射彈幕",
 	WarningShockBlast		= "顯示震爆警告",
 	WarningPlasmaBlast		= "顯示離子衝擊",
-	ProximityMines			= "顯示環罩地雷計時器",
+	WarnShell			= "提示凝汽彈的目標",
+	WarnBlast			= "提示離子衝擊的目標",
 	PlaySoundOnShockBlast 		= "當震爆施放時播放音效",
-	DarkGlare 			= "提示雷射彈幕",
 	PlaySoundOnDarkGlare 		= "雷射彈幕施放前播放音效",
-	NextDarkGlare 			= "下一次 雷射彈幕的計时器",
-	TimeToPhase2			= "顯示第二階段開始計时器", --第二階段開始
-	TimeToPhase3			= "顯示第三階段開始計时器", --第三階段開始
+	NextDarkGlare 			= "下一次 雷射彈幕的計時器",
+	TimeToPhase2			= "顯示第二階段開始計時器",
+	TimeToPhase3			= "顯示第三階段開始計時器",
+	TimeToPhase4			= "顯示第四階段開始計時器",
 	SpinUp 				= "顯示暖機(雷射彈幕施放前的技能)計時器",
 	MagneticCore			= "提示磁能之核的拾取者",
 	HealthFramePhase4		= "顯示第4階段的首領血量框架",
-	WarnShell			= "提示凝汽彈的目標",
-	WarnBlast			= "提示離子衝擊的目標"
+	AutoChangeLootToFFA		= "第三階段自動轉換拾取方式為自由拾取",
+	WarnBombSpawn			= "提示炸彈機械人",
+	TimerHardmode			= "顯示困難模式計時器"
 }
 
 L:SetMiscLocalization{
-	YellPull			= "我們沒有太多時間，朋友們!你們要幫我測試我最新也是最偉大的創作。在你們改變心意之前，別忘了就是你們把XT-002搞得一團糟，你們欠我一次。",	
+	YellPull			= "我們沒有太多時間，朋友們!你們要幫我測試我最新也是最偉大的創作。在你們改變心意之前，別忘了就是你們把XT-002搞得一團糟，你們欠我一次。",
+	YellHardPull			= "為什麼你要做出這種事?難道你沒看見標示上寫著「請勿觸碰這個按鈕!」嗎?現在自爆裝置已經啟動了，我們要怎麼完成測試呢?",
 	YellPhase2			= "太好了!絕妙的良好結果!外殼完整度98.9%!幾乎只有一點擦痕!繼續下去。",
 	YellPhase3			= "感謝你，朋友們!我們的努力讓我獲得了一些絕佳的資料!現在，我把東西放在哪兒了--噢，在這裡。",
+	YellPhase4			= "初步測試階段完成。現在要玩真的啦!",
 	LootMsg				= "(.+)拾取了物品:.*Hitem:(%d+)",
-	MobPhase1 			= "空中指揮裝置",
+	MobPhase1 			= "戰輪MK II",
 	MobPhase2 			= "VX-001",
-	MobPhase3 			= "戰輪MK II"
+	MobPhase3 			= "空中指揮裝置"
 }
 
 
@@ -501,10 +542,16 @@ L:SetGeneralLocalization{
 	name = "威札斯將軍"
 }
 
+L:SetTimerLocalization{
+	hardmodeSpawn 			= "薩倫聚惡體 出現"
+}
+
 L:SetWarningLocalization{
 	SpecialWarningShadowCrash	= "你中了暗影暴擊",
 	SpecialWarningSurgeDarkness	= "暗鬱奔騰",
 	WarningShadowCrash		= "暗影暴擊: >%s<",
+	SpecialWarningShadowCrashNear	= "暗影暴擊很接近你!",
+	WarningLeechLife		= "無面者印記: >%s<",
 	SpecialWarningLLYou		= "你中了無面者印記!",
 	SpecialWarningLLNear		= "接近你的%s中了無面者印記!"
 }
@@ -515,14 +562,21 @@ L:SetOptionLocalization{
 	SetIconOnLifeLeach		= "為無面者印記的目標設置標記(十字)",
 	SpecialWarningSurgeDarkness	= "為暗鬱奔騰顯示特別警告",
 	SpecialWarningShadowCrash	= "為暗影暴擊顯示特別警告",
+	WarningLeechLife		= "提示無面者印記",
 	SpecialWarningLLYou		= "當你中了無面者印記時顯示特別警告",
 	SpecialWarningLLNear		= "當你附近的人中了無面者印記時顯示特別警告",
-	CrashWhisper 			= "密語提示中了暗影暴擊的人"
+	CrashWhisper 			= "密語提示中了暗影暴擊的人",
+	YellOnLifeLeech			= "當中了無面者印記時大喊",
+	YellOnShadowCrash		= "當中了暗影暴擊時大喊",
+	SpecialWarningShadowCrashNear	= "當你附近的人中了暗影暴擊時顯示特別警告",
+	hardmodeSpawn 			= "顯然薩倫聚惡體出現(困難模式)計時器"
 }
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors		= "一片薩倫煙霧在附近聚合!",
-	CrashWhisper			= "你中了暗影暴擊! 跑開!"
+	CrashWhisper			= "你中了暗影暴擊! 跑開!",
+	YellLeech			= "我中了無面者印記!",
+	YellCrash			= "我中了暗影暴擊!"
 }
 
 
@@ -540,12 +594,14 @@ L:SetMiscLocalization{
 	YellPhase2 			= "我是清醒的夢境。",
 	Sara 				= "薩拉",
 	WhisperBrainLink 		= "你中了腦波連結! 跑向 %s!",
-	WarningYellSqueeze		= "我給觸手綁了! 快救命!"
+	WarningYellSqueeze		= "我給觸手綁了! 快救命!",
+	YellRage			= "在我的真身面前顫抖吧。" --unknow message, will change later
 }
 
 L:SetWarningLocalization{
 	WarningWellSpawned 		= "理智之井 出現了",
 	WarningGuardianSpawned 		= "尤格薩倫守護者 出現了",
+	WarningCrusherTentacleSpawned	= "粉碎大觸手 出現了",
 	WarningP2 			= "第二階段",
 	WarningP3 			= "第三階段",
 	WarningBrainLink 		= "腦波連結: >%s< 和 >%s<",
@@ -556,16 +612,21 @@ L:SetWarningLocalization{
 	WarnMadness 			= "正在施放 瘋狂誘陷",
 	SpecWarnMadnessOutNow		= "瘋狂誘陷即將完結 - 快傳送出去",
 	WarnBrainPortalSoon		= "3秒後 傳送門出現",
-	WarnSqueeze 			= "壓榨(觸手綁人): >%s<"
+	WarnSqueeze 			= "壓榨(觸手綁人): >%s<",
+	WarnFavor			= "薩拉的熱誠: >%s<",
+	SpecWarnFavor			= "你中了薩拉的熱誠",
+	specWarnBrainPortalSoon		= "傳送門 即將出現",
+	RaidRage			= "薩拉生氣了 快吻她囉"
 }
 
 L:SetTimerLocalization{
 	NextPortal			= "下一次 傳送門",
+	TimerSpeedKill			= "快速擊殺"
 }
 
 L:SetOptionLocalization{
-	WarningWellSpawned 		= "提示理智之井的出現",
 	WarningGuardianSpawned 		= "提示尤格薩倫守護者的出現",
+	WarningCrusherTentacleSpawned	= "提示粉碎大觸手的出現",
 	WarningP2 			= "提示第二階段",
 	WarningP3			= "提示第三階段",
 	WarningBrainLink		= "提示腦波連結",
@@ -581,5 +642,11 @@ L:SetOptionLocalization{
 	WarnSqueeze			= "提示壓榨 (觸手綁人)",
 	WarningSqueeze			= "當你中了壓榨 (觸手綁人)時大喊",
 	SetIconOnFearTarget		= "設置標記在恐懼的目標",
-	ShowSaraHealth			= "顯示薩拉的血量"
+	ShowSaraHealth			= "顯示薩拉的血量",
+	WarnFavor			= "提示薩拉的熱誠的目標",
+	SpecWarnFavor			= "為薩拉的熱誠顯示特別警告",
+	SetIconOnFavorTarget		= "設置標記在薩拉的熱誠的目標",
+	specWarnBrainPortalSoon		= "當傳送門即將出現時顯示特別警告",
+	SetIconOnMCTarget		= "設置標記在心控的目標",
+	RaidRageSpam			= "提示 成就:接吻和好 的時機"
 }

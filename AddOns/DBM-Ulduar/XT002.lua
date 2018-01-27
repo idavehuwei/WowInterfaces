@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("XT002", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1024 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 1125 $"):sub(12, -3))
 mod:SetCreatureID(33293)
 mod:SetZone()
 
@@ -26,19 +26,26 @@ local specWarnLightBomb			= mod:NewSpecialWarning("SpecialWarningLightBomb")
 local warnGravityBomb			= mod:NewAnnounce("WarningGravityBomb", 3, 64234)
 local specWarnGravityBomb		= mod:NewSpecialWarning("SpecialWarningGravityBomb")
 
-local enrageTimer			= mod:NewEnrageTimer(480)
+local enrageTimer			= mod:NewEnrageTimer(600)
+local timerAchieve			= mod:NewAchievementTimer(205, 2937, "TimerSpeedKill")
 
 mod:AddBoolOption("SetIconOnLightBombTarget", true)
 mod:AddBoolOption("SetIconOnGravityBombTarget", true)
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
-	timerTympanicTantrumCD:Start(65-delay)
+	timerAchieve:Start()
+	if GetInstanceDifficulty() == 1 then
+		timerTympanicTantrumCD:Start(35-delay)
+	else
+		timerTympanicTantrumCD:Start(50-delay)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 62776 then					-- Tympanic Tantrum (aoe damge + daze)
 		timerTympanicTantrumCast:Start()
+		timerTympanicTantrumCD:Stop()
 	end
 end
 

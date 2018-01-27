@@ -37,6 +37,7 @@ DBM_CORE_VERSIONCHECK_FOOTER		= "Found %d players with Deadly Boss Mods"
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "Your version of Deadly Boss Mods is outdated.\n Version %s (r%d) is available for download here:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Press Ctrl-C to copy the download link to your clipboard."
+DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Show popup when a new version is available"
 
 DBM_CORE_MOVABLE_BAR				= "Drag me!"
 
@@ -81,6 +82,8 @@ DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull now!"
 DBM_CORE_GENERIC_TARGET_WARN = "%s on >%%s<!"
 DBM_CORE_GENERIC_TARGET_OPTION = "Announce target of %s"
 
+DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill"
+
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
 	target = "%s: %%s",
@@ -88,6 +91,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	active = "%s",
 	cd = "%s CD",
 	next = "Next %s",
+	achievement = "%s",
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -96,4 +100,5 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	active = "Show |cff71d5ff|Hspell:%d|h%s|h|r duration timer",
 	cd = "Show |cff71d5ff|Hspell:%d|h%s|h|r cooldown timer",
 	next = "Show timer for next |cff71d5ff|Hspell:%d|h%s|h|r",
+	achievement = "Show timer for %s",
 }
