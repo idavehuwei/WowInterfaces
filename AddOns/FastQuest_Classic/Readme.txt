@@ -51,46 +51,46 @@ you should see below structure once you have correctly unzip the addon:
  Features
 ==========
     * Enhances Blizzard's Quest WatchFrame! Automatically add current quests 
-	  to WatchFrame and removes them when they are completed. This option 
-	  is ON by default and can be toggled by /fq autoadd.
+      to WatchFrame and removes them when they are completed. This option
+      is ON by default and can be toggled by /fq autoadd.
     * Easy quest tracking. You can use RightClick or Shift+click quest names 
-	  in QuestLog window to Add/Remove quests manually. (/fq clear will 
-	  remove all quest from the tracker)
+      in QuestLog window to Add/Remove quests manually. (/fq clear will
+      remove all quest from the tracker)
     * Adds formatting options for Shift+LeftClick / Crtl+LeftClick / 
-	  Ctrl+RightClick into chat use /fq format to cycle through them. Allows 
-	  "[10+] QuestName", "[10] QuestName (Elite)", etc.
+      Ctrl+RightClick into chat use /fq format to cycle through them. Allows
+      "[10+] QuestName", "[10] QuestName (Elite)", etc.
     * Use Ctrl+RightClick on the quest to send not only quest title but also 
-	  quest objective to chat frame, it makes things easier when you are going 
-	  to tell people what quest you are investigating without typing quest 
-	  detail by your self.
+      quest objective to chat frame, it makes things easier when you are going
+      to tell people what quest you are investigating without typing quest
+      detail by your self.
     * Quests in WatchFrame are displayed in color that is based on difficulty. 
-	  There are now over 20 shades of colors from bright green to bright red 
-	  that are used to denote quest and monster difficulty. Quest that would 
-	  be come trivial next level is highlighted giving you chance to complete 
-	  it while it still yields exp.
+      There are now over 20 shades of colors from bright green to bright red
+      that are used to denote quest and monster difficulty. Quest that would
+      be come trivial next level is highlighted giving you chance to complete
+      it while it still yields exp.
     * Automatically notify your party/guild/raid/near-by people of your quest 
-	  progress (example: Thistle Boar Slain 5/7), this option is off by 
-	  default and can be toggled by /fq autonotify
+      progress (example: Thistle Boar Slain 5/7), this option is off by
+      default and can be toggled by /fq autonotify
     * Notify your party/guild/raid or near-by people for your level-up or new 
-	  area/zone discovered is configurable. Sometimes you may want to enable 
-	  this feature so that your partners may now your recent status when you 
-	  all are looking for some place together or s/he is farming together with 
-	  you for your leveling-up.
+      area/zone discovered is configurable. Sometimes you may want to enable
+      this feature so that your partners may now your recent status when you
+      all are looking for some place together or s/he is farming together with
+      you for your leveling-up.
     * Allows you to insert quest objectives of the selected quest into the 
-	  chat. Open the chatbox and right click on the quest name. (check the 
-	  screenshot above.) Control click on the quest name also lists objectives 
-	  but in the shorter form, the way they are displayed in quest tracker.
+      chat. Open the chatbox and right click on the quest name. (check the
+      screenshot above.) Control click on the quest name also lists objectives
+      but in the shorter form, the way they are displayed in quest tracker.
     * Allows WatchFrame to be draged anywhere on the screen (use "/fq unlock" 
-	  to enable draging and you can "/fq lock" to lock it in place).
+      to enable draging and you can "/fq lock" to lock it in place).
     * Automatically complete turn-in quests such as the once in AV that you 
-	  have to turn in one by one. When you right click on the NPC to turn in 
-	  quest, FQ will click "Continue" and "Complete Quest" buttons for you, 
-	  but will stop to let you pick reward if choice is given. The down side 
-	  is that you will not be able to read what NPC's replies to you when you 
-	  turn in your quest, but that's only to those who actually read it :) 
-	  This feature is off by default and can be toggled by /fq autocomplete
+      have to turn in one by one. When you right click on the NPC to turn in
+      quest, FQ will click "Continue" and "Complete Quest" buttons for you,
+      but will stop to let you pick reward if choice is given. The down side
+      is that you will not be able to read what NPC's replies to you when you
+      turn in your quest, but that's only to those who actually read it :)
+      This feature is off by default and can be toggled by /fq autocomplete
     * Configurable options are now supported with slash command "/fq options", 
-	  or simply click on the minimap icon or Quest Log's "FQ" button. 
+      or simply click on the minimap icon or Quest Log's "FQ" button.
 
 ================
  Slash Commands

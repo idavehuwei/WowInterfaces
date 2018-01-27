@@ -1,5 +1,5 @@
-		    GNU GENERAL PUBLIC LICENSE
-		       Version 2, June 1991
+            GNU GENERAL PUBLIC LICENSE
+               Version 2, June 1991
 
 GNU 通用公共許可證
 一九九一年六月 第二版

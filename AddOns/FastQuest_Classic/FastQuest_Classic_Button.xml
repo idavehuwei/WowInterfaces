@@ -1,73 +1,73 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 <!-- $Id: FastQuest_Classic_Button.xml 86 2009-06-04 18:23:45Z arithmandar $ -->
-	<Script file="FastQuest_Classic_Button.lua"/>
-	<Frame name="FastQuest_Classic_ButtonFrame" parent="Minimap" enableMouse="true" hidden="false" frameStrata="LOW">
-		<Size>
-			<AbsDimension x="26" y="26"/>
-		</Size>
-		<Anchors>
-			<Anchor point="TOPLEFT" relativeTo="Minimap" relativePoint="RIGHT">
-				<Offset>
-					<AbsDimension x="2" y="0"/>
-				</Offset>
-			</Anchor>
-		</Anchors>
-		<Frames>
-			<Button name="FastQuest_Classic_Button">
-				<Size>
-					<AbsDimension x="26" y="26"/>
-				</Size>
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<NormalTexture file="Interface\AddOns\FastQuest_Classic\Images\FastQuest_Classic_Button-Up"/>
-				<PushedTexture file="Interface\AddOns\FastQuest_Classic\Images\FastQuest_Classic_Button-Down"/>
-				<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
-				<Scripts>
-					<OnLoad>
-						this:RegisterForDrag("RightButton");
-						this.dragme = false;
-					</OnLoad>
-					<OnDragStart> 
-						this.dragme = true;
-					</OnDragStart> 
-					<OnDragStop>
-						this.dragme = false;
-					</OnDragStop>
-					<OnUpdate>
-						if(this.dragme == true) then
-							FastQuest_Classic_BeingDragged();
-						end
-					</OnUpdate>
-					<OnClick>
-						if(QuestLogFrame:IsVisible()) then
-							QuestLogFrame:Hide();
-						else
-							QuestLogFrame:Show();
-						end
-						--FastQuest_Classic_Button_OnClick();
-					</OnClick>
-					<OnMouseUp>
-						if ( arg1 == "MiddleButton" ) then
-							FastQuest_Classic_Button_OnClick();
-						end
-					</OnMouseUp>
-					<OnEnter>
-						GameTooltip:SetOwner(this, "ANCHOR_LEFT");
-						GameTooltip:SetText("FastQuest Classic");
-						GameTooltipTextLeft1:SetTextColor(1, 1, 1);
-						GameTooltip:AddLine(FQ_BUTTON_TOOLTIP);
-						GameTooltip:Show();
-					</OnEnter>
-					<OnLeave>
-						GameTooltip:Hide();
-					</OnLeave>
-				</Scripts>
-			</Button>
-		</Frames>
-	</Frame>
+    <Script file="FastQuest_Classic_Button.lua"/>
+    <Frame name="FastQuest_Classic_ButtonFrame" parent="Minimap" enableMouse="true" hidden="false" frameStrata="LOW">
+        <Size>
+            <AbsDimension x="26" y="26"/>
+        </Size>
+        <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="Minimap" relativePoint="RIGHT">
+                <Offset>
+                    <AbsDimension x="2" y="0"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Frames>
+            <Button name="FastQuest_Classic_Button">
+                <Size>
+                    <AbsDimension x="26" y="26"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="0" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <NormalTexture file="Interface\AddOns\FastQuest_Classic\Images\FastQuest_Classic_Button-Up"/>
+                <PushedTexture file="Interface\AddOns\FastQuest_Classic\Images\FastQuest_Classic_Button-Down"/>
+                <HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
+                <Scripts>
+                    <OnLoad>
+                        this:RegisterForDrag("RightButton");
+                        this.dragme = false;
+                    </OnLoad>
+                    <OnDragStart>
+                        this.dragme = true;
+                    </OnDragStart>
+                    <OnDragStop>
+                        this.dragme = false;
+                    </OnDragStop>
+                    <OnUpdate>
+                        if(this.dragme == true) then
+                            FastQuest_Classic_BeingDragged();
+                        end
+                    </OnUpdate>
+                    <OnClick>
+                        if(QuestLogFrame:IsVisible()) then
+                            QuestLogFrame:Hide();
+                        else
+                            QuestLogFrame:Show();
+                        end
+                        --FastQuest_Classic_Button_OnClick();
+                    </OnClick>
+                    <OnMouseUp>
+                        if ( arg1 == "MiddleButton" ) then
+                            FastQuest_Classic_Button_OnClick();
+                        end
+                    </OnMouseUp>
+                    <OnEnter>
+                        GameTooltip:SetOwner(this, "ANCHOR_LEFT");
+                        GameTooltip:SetText("FastQuest Classic");
+                        GameTooltipTextLeft1:SetTextColor(1, 1, 1);
+                        GameTooltip:AddLine(FQ_BUTTON_TOOLTIP);
+                        GameTooltip:Show();
+                    </OnEnter>
+                    <OnLeave>
+                        GameTooltip:Hide();
+                    </OnLeave>
+                </Scripts>
+            </Button>
+        </Frames>
+    </Frame>
 </Ui>

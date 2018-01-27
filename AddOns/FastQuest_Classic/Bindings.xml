@@ -1,23 +1,23 @@
 <Bindings>
-	<Binding name="FASTQUEST_OPTIONS" header="FASTQUEST_CLASSIC">
-		FastQuest_Options_Toggle();
-	</Binding>
-	<Binding name="FQ_TAG">
-		FastQuest_Toggle_Tag();
-	</Binding>
-	<Binding name="FQ_FORMAT">
-		FastQuest_Toggle_Format();
-	</Binding>
-	<Binding name="FQ_AOUTNOTIFY">
-		 FastQuest_Toggle_AutoNotify();
-	</Binding>
-	<Binding name="FQ_AOUTCOMPLETE">
-		FastQuest_Toggle_AutoComplete();
-	</Binding>
-	<Binding name="FQ_AOUTADD">
-		FastQuest_Toggle_AutoAdd();
-	</Binding>
-	<Binding name="FQ_LOCK">
-		FastQuest_Toggle_Unlock();
-	</Binding>
+    <Binding name="FASTQUEST_OPTIONS" header="FASTQUEST_CLASSIC">
+        FastQuest_Options_Toggle();
+    </Binding>
+    <Binding name="FQ_TAG">
+        FastQuest_Toggle_Tag();
+    </Binding>
+    <Binding name="FQ_FORMAT">
+        FastQuest_Toggle_Format();
+    </Binding>
+    <Binding name="FQ_AOUTNOTIFY">
+         FastQuest_Toggle_AutoNotify();
+    </Binding>
+    <Binding name="FQ_AOUTCOMPLETE">
+        FastQuest_Toggle_AutoComplete();
+    </Binding>
+    <Binding name="FQ_AOUTADD">
+        FastQuest_Toggle_AutoAdd();
+    </Binding>
+    <Binding name="FQ_LOCK">
+        FastQuest_Toggle_Unlock();
+    </Binding>
 </Bindings>

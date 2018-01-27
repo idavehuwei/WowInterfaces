@@ -51,8 +51,8 @@ Revision History:
 - 2.14.00 (2008/12/07)
   * Fixed the the Quest Watch frame dragging issue, now with a workaround to 
     link Quest Watch frame to the dragable green ball. Note that once the 
-	Achievement frame is updated, you will need to click on the Quest Watch 
-	frame's green ball to restore the position back.
+    Achievement frame is updated, you will need to click on the Quest Watch
+    frame's green ball to restore the position back.
   * Minimap icon now is dragable (Mouse right button) for easy to set the position.
   * Minimap icon's left buton clicking will open Quest Log window, middle-button 
     to open the option window.
