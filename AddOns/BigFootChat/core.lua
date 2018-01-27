@@ -819,7 +819,8 @@ function SetChatFrameEditBoxOffset(x, y)
 --    local _point,rel,relp,xo,yo=_G["ChatFrameEditBox"]:GetPoint()
     if ChatFrameEditBox ~= nil then
         local _point,rel,relp,xo,yo=ChatFrameEditBox:GetPoint()
-        _G["ChatFrameEditBox"]:SetPoint(_point,rel,relp,xo+x,yo+y)
+--        _G["ChatFrameEditBox"]:SetPoint(_point,rel,relp,xo+x,yo+y)
+        ChatFrameEditBox:SetPoint(_point,rel,relp,xo+x,yo+y)
     end
 end
 

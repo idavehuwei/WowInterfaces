@@ -131,12 +131,12 @@ function BFC_SetChatType(_type)
     ChatEdit_OnSpacePressed(editBox)
 end
 
-local function createChatTab(BigFootChat_e6955c64cf39bdb23dc86de1a9ec2117, BigFootChat_6d5e7d83d8358745ae4dcf61d16bd1f3, BigFootChat_9248008bbb6d0ee7ce13f6ee45680051, BigFootChat_6c162b1123a1eb57c1827271b32b6959, index)
+local function createChatTab(text, tabtype, texture, tooltip, index)
     local chatTab = _G["BFCChatTab" .. index]
     if not chatTab then
         chatTab = CreateFrame("Button", "BFCChatTab" .. index, UIParent, "BFCChatTabTemplate")
-        chatTab.type = BigFootChat_6d5e7d83d8358745ae4dcf61d16bd1f3
-        chatTab.text = BigFootChat_e6955c64cf39bdb23dc86de1a9ec2117
+        chatTab.type = tabtype
+        chatTab.text = text
         _G[chatTab:GetName() .. "Text"]:SetText(chatTab.text)
     end
     if (index == 1) then
@@ -145,9 +145,9 @@ local function createChatTab(BigFootChat_e6955c64cf39bdb23dc86de1a9ec2117, BigFo
         chatTab:SetPoint("LEFT", _G["BFCChatTab" .. (index - 1)], "RIGHT", 1, 0)
     end
     chatTab:Show()
-    if BigFootChat_6c162b1123a1eb57c1827271b32b6959 then
+    if tooltip then
         chatTab:SetScript("OnEnter", function()
-            BigFoot_ShowNewbieTooltip(BigFootChat_6c162b1123a1eb57c1827271b32b6959)
+            BigFoot_ShowNewbieTooltip(tooltip)
         end)
         chatTab:SetScript("OnLeave", function()
             BigFoot_HideNewbieTooltip()
@@ -163,7 +163,7 @@ function BFChatFrame:OnInitialize()
     BFChat:RegisterModuleOptions(MODNAME, getOptions, L["ChatFrame"])
 end
 
-local function BigFootChat_845d97ef2e392a3ba2b82c5a35958f77()
+local function MoveChatFrameEditBoxDown()
     for i = 1, 10 do
         local editBox = _G["ChatFrame" .. i .. "EditBox"]
         if editBox then
@@ -173,7 +173,7 @@ local function BigFootChat_845d97ef2e392a3ba2b82c5a35958f77()
     end
 end
 
-local function BigFootChat_6a1df3ac0d785e473180af9abe6758ca()
+local function MoveChatFrameEditBoxUp()
     for i = 1, 10 do
         local editBox = _G["ChatFrame" .. i .. "EditBox"]
         if editBox then
@@ -189,20 +189,20 @@ end
 function BFChatFrame:OnEnable()
     chatchannelframe = {}
     local i = 0
-    for k, v in pairs(BFC_TABS) do
+    for k, tab in pairs(BFC_TABS) do
         i = i + 1
-        tinsert(chatchannelframe, createChatTab(v.text, v.tabtype, v.texture, v.tooltip, i))
+        tinsert(chatchannelframe, createChatTab(tab.text, tab.tabtype, tab.texture, tab.tooltip, i))
     end
-    BigFootChat_845d97ef2e392a3ba2b82c5a35958f77()
+    MoveChatFrameEditBoxDown()
     BFCChatFrame:Show()
     self:Refresh()
 end
 
 function BFChatFrame:OnDisable()
-    BigFootChat_6a1df3ac0d785e473180af9abe6758ca()
-    for BigFootChat_63a9ce6f1eeac72ef41293b7d0303335, BigFootChat_8d0644c92128c1ff68223fd74ba63b56 in pairs(chatchannelframe) do
-        BigFootChat_8d0644c92128c1ff68223fd74ba63b56:ClearAllPoints()
-        BigFootChat_8d0644c92128c1ff68223fd74ba63b56:Hide()
+    MoveChatFrameEditBoxUp()
+    for k, chatchannel in pairs(chatchannelframe) do
+        chatchannel:ClearAllPoints()
+        chatchannel:Hide()
     end
     self:Refresh()
 end

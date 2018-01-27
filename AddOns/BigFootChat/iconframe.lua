@@ -247,21 +247,21 @@ end
 function BFChatIconFrame:Refresh()
 end
 
-local function BigFootChat_c07a6f7e7a6437b52d37b86a592291d1(self)
+local function StartParseInputText(self)
     local text, tag = BFChat:ParseLocalText(self:GetText())
     if tag then
         self:SetText(text)
     end
 end
 
-local function BigFootChat_18a8e7c500e52ac19067d62bf63e8ee7()
+local function StopParseInputText()
 end
 
 function BFChatIconFrame:OnEnable()
     for i = 1, 10 do
         local editBox = _G["ChatFrame" .. i .. "EditBox"]
         if editBox then
-            editBox:SetScript("OnTextChanged", BigFootChat_c07a6f7e7a6437b52d37b86a592291d1)
+            editBox:SetScript("OnTextChanged", StartParseInputText)
         end
     end
     createIconFrame()
@@ -277,7 +277,7 @@ function BFChatIconFrame:OnDisable()
     for i = 1, 10 do
         local editBox = _G["ChatFrame" .. i .. "EditBox"]
         if editBox then
-            editBox:SetScript("OnTextChanged", BigFootChat_18a8e7c500e52ac19067d62bf63e8ee7)
+            editBox:SetScript("OnTextChanged", StopParseInputText)
         end
     end
     _G.BFCIconFrameCalloutButton:Hide()
