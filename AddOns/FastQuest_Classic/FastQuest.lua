@@ -88,6 +88,36 @@ function FQ_ShowQuestComplete(qIndex)
     WatchFrame_Update();
 end
 
+function FQ_BuildLevelTag(qTag)
+    if (qTag == LFG_TYPE_DUNGEON) then
+        return "D";
+    elseif (qTag == RAID) then
+        return "R";
+    elseif (qTag == PVP) then
+        return "P";
+    else
+        return "+";
+    end
+end
+
+function FQ_BuildLevelString(qLevel, qLevelTag)
+    local tag = qLevelTag;
+    if (qLevel == nil or qLevel == "") then
+        return "";
+    end
+    if (tag == nil or tag == "") then
+        tag = "";
+    end
+    if (FQD.Format == 1) then
+        return "";
+    elseif (FQD.Format == 2) then
+        return "[" .. qLevel .. "] ";
+    elseif (FQD.Format == 3) then
+        return "[" .. qLevel .. tag .. "] ";
+    elseif (FQD.Format == 4) then
+        return "[" .. qLevel .. tag .. "] ";
+    end
+end
 
 function FastQuest_FreshOptions()
     FQ_Debug_Print("FastQuest_FreshOptions()");
@@ -376,31 +406,13 @@ function FastQuest_QuestLogTitleButton_OnClick(self, button)
         local questLogTitleText, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete = GetQuestLogTitle(qIndex);
         local LevelTag = "";
 
-        if (questTag) then
-            if (questTag == LFG_TYPE_DUNGEON) then
-                LevelTag = "D";
-            elseif (questTag == RAID) then
-                LevelTag = "R";
-            elseif (questTag == PVP) then
-                LevelTag = "P";
-            else
-                LevelTag = "+";
-            end
-        end
+        LevelTag = FQ_BuildLevelTag(questTag);
 
-        local insertString = ""
-        if (FQD.Format == 1) then
-            insertString = GetQuestLink(qIndex);
-        elseif (FQD.Format == 2) then
-            insertString = "[" .. level .. "]" .. GetQuestLink(qIndex);
-        elseif (FQD.Format == 3) then
-            insertString = "[" .. level .. LevelTag .. "]" .. GetQuestLink(qIndex);
-        elseif (FQD.Format == 4) then
+        local insertString = FQ_BuildLevelString(level, LevelTag) .. GetQuestLink(qIndex);
+        if (FQD.Format == 4) then
             if (questTag) then questTag = ("(" .. questTag .. ")"); else questTag = ""; end
             if (suggestedGroup == 0) then suggestedGroup = ""; else suggestedGroup = ":" .. suggestedGroup; end
-            insertString = "[" .. level .. LevelTag .. "]" .. GetQuestLink(qIndex) .. questTag .. suggestedGroup;
-        else
-            FQD.Format = 2;
+            insertString = insertString .. questTag .. suggestedGroup;
         end
         if (insertString and insertString ~= "") then
             if (n_qObjectives) then
@@ -633,27 +645,14 @@ function FastQuest_ChangeTitle(questLogTitle, questLogTitleText, level, questTag
                     questTag = format(DAILY_QUEST_TAG_TEMPLATE, questTag);
                 end
                 DifTag = (" (" .. questTag .. ") ");
-
-                if (questTag == LFG_TYPE_DUNGEON) then LevelTag = "d";
-                elseif (questTag == RAID) then LevelTag = "r";
-                elseif (questTag == PVP) then LevelTag = "p";
-                else LevelTag = "+";
-                end
+                LevelTag = FQ_BuildLevelTag(questTag)
 
             elseif (isDaily) then
                 DifTag = (" (" .. DAILY .. ") ");
             end
         end
 
-        if (FQD.Format == 1) then
-            LevelString = "";
-        elseif (FQD.Format == 2) then
-            LevelString = "[" .. level .. "] ";
-        elseif (FQD.Format == 3) then
-            LevelString = "[" .. level .. LevelTag .. "] ";
-        elseif (FQD.Format == 4) then
-            LevelString = "[" .. level .. LevelTag .. "] ";
-        end
+        LevelString = FQ_BuildLevelString(level, LevelTag)
 
         if (Watch) then
             questLogTitle:SetText(ColorTag .. LevelString .. questLogTitleText .. DifTag);
