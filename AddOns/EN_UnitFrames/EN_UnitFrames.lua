@@ -1,3 +1,4 @@
+
 EN_RealmName = GetCVar("realmName");
 if not EN_RealmName then
     EN_RealmName = "Enigma";
@@ -45,7 +46,7 @@ local EUF_DefaultOptions = {
     ["TARGETINFOCLASS"] = 1,
     ["COMPATIBLEVERSION"] = "3.1.1",
     ["PARTYCLASSICONSMALL"] = 1,
-    ["PLAYERMPPERCENT"] = 1,
+    ["PLAYERMPPERCENT"] = 0,
     ["PLAYER3DPORTRAIT"] = 0,
     ["TARGETINFOTARGET"] = 0,
     ["TARGET3DPORTRAIT"] = 0,
@@ -60,9 +61,9 @@ local EUF_DefaultOptions = {
     ["TARGETTARGETHPPERCENTCOLOR"] = 1,
     ["TARGETOTWARNING"] = 1,
     ["PARTYCLASSABRV"] = 0,
-    ["PLAYEREXTBAR"] = 0,
+    ["PLAYEREXTBAR"] = 1,
     ["TARGETTARGETFRAME"] = 1,
-    ["PLAYERHPPERCENT"] = 1,
+    ["PLAYERHPPERCENT"] = 0,
     ["PLAYERPOSITIONAUTO"] = 1,
     ["TARGETINFOELITE"] = 1,
     ["TARGETPERCENTBOSS"] = 1,
@@ -72,7 +73,7 @@ local EUF_DefaultOptions = {
     ["TARGETMPPERCENT"] = 1,
     ["PLAYERFRM"] = 1,
     ["PARTYHP"] = 1,
-    ["PLAYERPOSITIONMANA"] = 0,
+    ["PLAYERPOSITIONMANA"] = 1,
     ["PARTYCLASS"] = 1,
 };
 

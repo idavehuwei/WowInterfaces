@@ -1,3 +1,4 @@
+
 function EUF_OptionFrame_OnShow()
     for index, value in pairs(EUF_CurrentOptions) do
         local unitOption = getglobal("EUF_OptionFrame" .. index);
@@ -32,9 +33,6 @@ function EUF_OptionSlider_OnChange(arg1, value)
     EUF_Options_Update(optionId, value)
 end
 
-;
-
-
 function EUF_OptionButton_OnClick(arg1)
     local optionId;
     _, _, optionId = string.find(arg1, "EUF_OptionFrame(.+)");
@@ -48,8 +46,6 @@ function EUF_OptionButton_OnClick(arg1)
         end;
     end;
 end
-
-;
 
 local f = nil
 function EUF_Options_DisablePartyFrame()
