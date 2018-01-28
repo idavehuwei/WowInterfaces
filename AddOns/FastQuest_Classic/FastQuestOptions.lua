@@ -26,7 +26,7 @@ function FastQuest_Options_Init()
     FQOptionsEnableColor:SetChecked(FQD.Color);
     FQOptionsMemberInfo:SetChecked(FQD.MemberInfo);
 
-    --	FQOptionsNoDrag:SetChecked(FQD.NoDrag);
+    -- FQOptionsNoDrag:SetChecked(FQD.NoDrag);
     FQOptionsLock:SetChecked(FQD.Lock);
     FQOptionsAutoAdd:SetChecked(FQD.AutoAdd);
     FQOptionsAutoComplete:SetChecked(FQD.AutoComplete);

@@ -22,6 +22,7 @@ FQ_server = GetCVar("realmName");
 -- Player character name
 FQ_player = UnitName("player");
 
+local FQ_LoadTrackedQuest = true;
 local FQ_ShowWatchFrame = true;
 
 -- Hook the original Blizzard QuestLog_Update to run inside the modded QuestLog_Update()
@@ -158,6 +159,7 @@ function FastQuest_OnEvent(self, event, message)
                 test = nil;
             });
         end
+
     elseif ((event == "QUEST_PROGRESS") and (FQD.AutoComplete == true)) then
         FQ_Debug_Print("QUEST_PROGRESS");
         CompleteQuest();
@@ -278,11 +280,24 @@ function FastQuest_SlashCmd(msg)
     end
 end
 
+function FastQuest_LoadTrackedQuest()
+    for i = 1, FQD[FQ_server][FQ_player].nQuests do
+        local uQuestText = FQD[FQ_server][FQ_player].tQuests[i];
+        local questIndex = FastQuest_GetQuestID(uQuestText);
+        if (questIndex) then
+            if (not IsQuestWatched(questIndex)) then
+                FastQuest_Watch(questIndex, false);
+            end
+        end
+    end
+end
+
 function FastQuest_ShowWatchFrame()
     dQuestWatchDragButton:SetNormalTexture("Interface\\AddOns\\FastQuest_Classic\\Images\\FastQuest_Minimize_Up")
     dQuestWatchDragButton:SetPushedTexture("Interface\\AddOns\\FastQuest_Classic\\Images\\FastQuest_Minimize_Down")
     WatchFrameLines:Show();
 end
+
 function FastQuest_HideWatchFrame()
     dQuestWatchDragButton:SetNormalTexture("Interface\\AddOns\\FastQuest_Classic\\Images\\FastQuest_Restore_Up")
     dQuestWatchDragButton:SetPushedTexture("Interface\\AddOns\\FastQuest_Classic\\Images\\FastQuest_Restore_Down")
@@ -431,8 +446,13 @@ function QuestLog_Update()
     FQ_Debug_Print("QuestLog_Update()");
 
     if (FQ_player == "DEFAULT" or FQD[FQ_server][FQ_player].tQuests == nil) then FastQuest_UpdatePlayer(); end;
-    --	FastQuest_LockMovableParts();
+    -- FastQuest_LockMovableParts();
     local numEntries, numQuests = GetNumQuestLogEntries();
+
+    if numQuests ~= 0 and FQ_LoadTrackedQuest then
+        FastQuest_LoadTrackedQuest();
+        FQ_LoadTrackedQuest = false;
+    end
 
     -- Below codes to be disabled since now we disabled the WtachFrame hookup.
     --[[
@@ -530,7 +550,8 @@ function FastQuest_LinkFrame(dButton, pFrame)
     FQ_Debug_Print("FastQuest_LinkFrame()");
     if (FQD.NoDrag == false) then
         getglobal(pFrame):ClearAllPoints();
-        getglobal(pFrame):SetPoint("TOPLEFT", dButton, "TOPRIGHT", -30, 0);
+        --        getglobal(pFrame):SetPoint("TOPLEFT", dButton, "TOPRIGHT", -30, 0);
+        getglobal(pFrame):SetPoint("BOTTOMLEFT", dButton, "BOTTOMLEFT", 0, 0);
     else
         qOut(FQ_DRAG_DISABLED);
         FQD.Lock = true;
@@ -598,7 +619,7 @@ function WatchFrame_Update()
 
     -- Link WatchFrame to FQ's dragging button so that we can drag the WatchFrame with green ball
     --WatchFrame:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
---    WatchFrameLines:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
+    -- WatchFrameLines:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
     WatchFrameLines:SetPoint("TOPRIGHT", "dQuestWatchDragButton", "BOTTOMLEFT", 0, 0);
     local line, lastLine, questTitle;
     local questIndex = 1;
@@ -766,7 +787,7 @@ function FastQuest_Watch(questIndex, auto)
             RemoveQuestWatch(questIndex);
             QuestLog_Update();
             WatchFrame_Update();
---            WatchFrameLines:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
+            -- WatchFrameLines:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
             WatchFrameLines:SetPoint("TOPRIGHT", "dQuestWatchDragButton", "BOTTOMLEFT", 0, 0);
         else
             if ((GetNumQuestLeaderBoards(questIndex) == 0) and (auto == false)) then
@@ -775,7 +796,6 @@ function FastQuest_Watch(questIndex, auto)
             end
 
             -- Set an error message if trying to show too many quests
-
             if ((not WatchFrame:IsUserPlaced()) and ArenaEnemyFrames and ArenaEnemyFrames:IsShown()) then
                 UIErrorsFrame:AddMessage(OBJECTIVES_WATCH_QUESTS_ARENA, 1.0, 0.1, 0.1, 1.0);
                 return;
