@@ -26,9 +26,23 @@ local FQ_LoadTrackedQuest = true;
 local FQ_ShowWatchFrame = true;
 
 -- Hook the original Blizzard QuestLog_Update to run inside the modded QuestLog_Update()
-hQuestLog_Update = QuestLog_Update;
+--hQuestLog_Update = QuestLog_Update;
+function Hook_QuestLog_Update()
+    FastQuest_QuestLog_Update()
+end
+hooksecurefunc("QuestLog_Update", Hook_QuestLog_Update)
+
 -- Hook the original Blizzard WatchFrame_Update to run inside the modded WatchFrame_Update()
-hWatchFrame_Update = WatchFrame_Update;
+function Hook_WatchFrame_Update()
+    FastQuest_WatchFrame_Update()
+end
+hooksecurefunc("WatchFrame_Update", Hook_WatchFrame_Update)
+
+-- Replace the original Blizzard QuestLogTitleButton_OnClick to run inside the modded QuestLogTitleButton_OnClick()
+function QuestLogTitleButton_OnClick(self, mousebutton)
+    FastQuest_QuestLogTitleButton_OnClick(self, mousebutton)
+end
+
 -- Hook the original Blizzard UpdateUIPanelPositions
 --hUpdateUIPanelPositions = UpdateUIPanelPositions;
 
@@ -63,6 +77,18 @@ local DefaultFQDOptions = {
     ["Tag"] = true,
 };
 ---------------------------------------------------------------------
+function FQ_ShowQuestComplete(qIndex)
+    PlaySoundFile("Sound/Interface/igplayerBind.wav");
+    UIErrorsFrame:AddMessage("|cff00ffff" .. GetQuestLogTitle(qIndex) .. FQ_QUEST_COMPLETED, 1.0, 1.0, 1.0, 1.0, 2);
+    if (FQD.AutoNotify == true) then
+        FastQuest_SendNotification("[" .. GetQuestLogTitle(qIndex) .. "] " .. FQ_QUEST_ISDONE);
+    end
+    RemoveQuestWatch(questDoneID);
+    QuestLog_Update();
+    WatchFrame_Update();
+end
+
+
 function FastQuest_FreshOptions()
     FQ_Debug_Print("FastQuest_FreshOptions()");
     FQD = FQ_CloneTable(DefaultFQDOptions);
@@ -159,7 +185,6 @@ function FastQuest_OnEvent(self, event, message)
                 test = nil;
             });
         end
-
     elseif ((event == "QUEST_PROGRESS") and (FQD.AutoComplete == true)) then
         FQ_Debug_Print("QUEST_PROGRESS");
         CompleteQuest();
@@ -341,108 +366,206 @@ function FastQuest_CheckPatterns(message)
     end
 end
 
-function QuestLogTitleButton_OnClick(self, button)
+function FastQuest_QuestLogTitleButton_OnClick(self, button)
     FQ_Debug_Print("QuestLogTitleButton_OnClick()");
 
+    local questName = self:GetText()
     local qIndex = self:GetID() + FauxScrollFrame_GetOffset(QuestLogListScrollFrame);
-    local questLogTitleText, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete = GetQuestLogTitle(qIndex);
-    local LevelTag = "";
-    if (suggestedGroup == 0) then
-        suggestedGroup = "";
-    else
-        suggestedGroup = ":" .. suggestedGroup;
-    end
-    if (self.isHeader) then
-        if (isCollapsed) then
-            ExpandQuestHeader(qIndex);
-        else
-            CollapseQuestHeader(qIndex);
+
+    local function SendQuestToChatFrame(qIndex, n_qObjectives)
+        local questLogTitleText, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete = GetQuestLogTitle(qIndex);
+        local LevelTag = "";
+
+        if (questTag) then
+            if (questTag == LFG_TYPE_DUNGEON) then
+                LevelTag = "D";
+            elseif (questTag == RAID) then
+                LevelTag = "R";
+            elseif (questTag == PVP) then
+                LevelTag = "P";
+            else
+                LevelTag = "+";
+            end
         end
-        return;
+
+        local insertString = ""
+        if (FQD.Format == 1) then
+            insertString = GetQuestLink(qIndex);
+        elseif (FQD.Format == 2) then
+            insertString = "[" .. level .. "]" .. GetQuestLink(qIndex);
+        elseif (FQD.Format == 3) then
+            insertString = "[" .. level .. LevelTag .. "]" .. GetQuestLink(qIndex);
+        elseif (FQD.Format == 4) then
+            if (questTag) then questTag = ("(" .. questTag .. ")"); else questTag = ""; end
+            if (suggestedGroup == 0) then suggestedGroup = ""; else suggestedGroup = ":" .. suggestedGroup; end
+            insertString = "[" .. level .. LevelTag .. "]" .. GetQuestLink(qIndex) .. questTag .. suggestedGroup;
+        else
+            FQD.Format = 2;
+        end
+        if (insertString and insertString ~= "") then
+            if (n_qObjectives) then
+                insertString = insertString .. ": " .. n_qObjectives;
+            end
+            ChatFrameEditBox:Insert(insertString);
+        end
     end
 
-    if (questTag) then
-        if (questTag == LFG_TYPE_DUNGEON) then
-            LevelTag = "d";
-        elseif (questTag == RAID) then
-            LevelTag = "r";
-        elseif (questTag == PVP) then
-            LevelTag = "p";
+    local function SendHeadEntriesQuestToChatFrame(questName)
+        local questLogTitleText, isHeader, isCollapsed, firstTrackable, lastTrackable, numTracked, numUntracked
+        lastTrackable = -1
+        numTracked = 0
+        numUntracked = 0
+        local track = false
+
+        for i=1, GetNumQuestLogEntries(), 1 do
+            questLogTitleText, _, _, _, isHeader, isCollapsed = GetQuestLogTitle(i)
+            if questLogTitleText == questName  then
+                track = true
+                firstTrackable = i+1
+            elseif ( track ) then
+                if isHeader and questLogTitleText ~= questName  then
+                    lastTrackable = i-1
+                    break
+                end
+            end
+        end
+        if lastTrackable == -1  then
+            lastTrackable = GetNumQuestLogEntries()
+        end
+        for i=firstTrackable, lastTrackable do
+            ChatFrameEditBox:Insert(GetQuestLink(i))
+        end
+    end
+
+    local function TrackHeadEntriesQuest(questName)
+        local qTitle, isHeader, isCollapsed, isComplete, firstTrackable, lastTrackable, numTracked, numUntracked
+        lastTrackable = -1
+        numTracked = 0
+        numUntracked = 0
+        local track = false
+        local tracktable = {}
+        local completetable = {}
+
+        for i=1, GetNumQuestLogEntries(), 1 do
+            qTitle, _, _, _, isHeader, isCollapsed, isComplete = GetQuestLogTitle(i)
+            if qTitle == questName then
+                track = true
+                firstTrackable = i+1
+            elseif ( track ) then
+                if not isHeader  then
+                    if IsQuestWatched(i) then
+                        numTracked = numTracked+1
+                        RemoveQuestWatch(i)
+                    else
+                        if (isComplete) then
+                            table.insert(completetable, i)
+                        else
+                            table.insert(tracktable, i)
+                        end
+                        numUntracked = numUntracked+1
+                    end
+                end
+                if isHeader and qTitle ~= questName then
+                    lastTrackable = i-1
+                    break
+                end
+            end
+        end
+        if lastTrackable == -1 then
+            lastTrackable = GetNumQuestLogEntries()
+        end
+        if numUntracked == 0 then
+            -- Untrack all
+            for i=firstTrackable, lastTrackable do
+                if IsQuestWatched(i) then
+                    RemoveQuestWatch(i)
+                end
+            end
+            WatchFrame_Update()
         else
-            LevelTag = "+";
+            -- Track all
+            if (numTracked == 0) then
+                for k,v in pairs(completetable) do
+                    FQ_ShowQuestComplete(v)
+                end
+            end
+            for k,v in pairs(tracktable) do
+                AddQuestWatch(v)
+                -- Set an error message if trying to show too many quests
+                if ( GetNumQuestWatches() >= MAX_WATCHABLE_QUESTS ) then
+                    UIErrorsFrame:AddMessage(format(QUEST_WATCH_TOO_MANY, MAX_WATCHABLE_QUESTS), 1.0, 0.1, 0.1, 1.0)
+                    break
+                end
+            end
+            WatchFrame_Update()
+        end
+        QuestLog_Update()
+    end
+
+    if (not IsModifiedClick()) then
+        if (self.isHeader) then
+            local _, _, _, _, _, isCollapsed = GetQuestLogTitle(qIndex);
+            if ( isCollapsed ) then
+                ExpandQuestHeader(qIndex);
+            else
+                CollapseQuestHeader(qIndex);
+            end
+            return;
+        else
+            QuestLog_SetSelection(qIndex);
         end
     end
 
     if (button == "LeftButton") then
-        QuestLog_SetSelection(qIndex);
-        if (IsShiftKeyDown() and ChatFrameEditBox:IsVisible()) then
-            if (FQD.Format == 2) then
-                ChatFrameEditBox:Insert("[" .. level .. "]" .. GetQuestLink(qIndex));
-            elseif (FQD.Format == 1) then
-                ChatFrameEditBox:Insert(GetQuestLink(qIndex));
-            elseif (FQD.Format == 3) then
-                ChatFrameEditBox:Insert("[" .. level .. LevelTag .. "]" .. GetQuestLink(qIndex));
-            elseif (FQD.Format == 4) then
-                if (questTag) then questTag = ("(" .. questTag .. ")") else questTag = ""; end
-                ChatFrameEditBox:Insert("[" .. level .. LevelTag .. "]" .. GetQuestLink(qIndex) .. questTag .. suggestedGroup);
-            else FQD.Format = 2;
+        if (IsShiftKeyDown()) then
+            if (self.isHeader)  then
+                if (ChatFrameEditBox:IsVisible()) then
+                    SendHeadEntriesQuestToChatFrame(questName)
+                else
+                    TrackHeadEntriesQuest(questName)
+                end
+            else
+                if (ChatFrameEditBox:IsVisible()) then
+                    SendQuestToChatFrame(qIndex, nil);
+                else
+                    FastQuest_Watch(qIndex, false);
+                end
             end
-            -- Add quest to quest watch frame
-        elseif (IsShiftKeyDown()) then
-            FastQuest_Watch(qIndex, false);
-        elseif (IsControlKeyDown() and ChatFrameEditBox:IsVisible()) then
-            if (FQD.Format == 2) then
-                ChatFrameEditBox:Insert("[" .. level .. "]" .. GetQuestLink(qIndex));
-            elseif (FQD.Format == 1) then
-                ChatFrameEditBox:Insert(GetQuestLink(qIndex));
-            elseif (FQD.Format == 3) then
-                ChatFrameEditBox:Insert("[" .. level .. LevelTag .. "]" .. GetQuestLink(qIndex));
-            elseif (FQD.Format == 4) then
-                if (questTag) then questTag = ("(" .. questTag .. ")") else questTag = ""; end
-                ChatFrameEditBox:Insert("[" .. level .. LevelTag .. "]" .. GetQuestLink(qIndex) .. questTag .. suggestedGroup);
-            else FQD.Format = 2;
-            end
-            local nObjectives = GetNumQuestLeaderBoards(qIndex);
-            if (nObjectives > 0) then
-                ChatFrameEditBox:Insert(":");
-                for i = 1, nObjectives do
-                    oText, oType, finished = GetQuestLogLeaderBoard(i, qIndex);
-                    if (not oText or strlen(oText) == 0 or oText == "") then oText = oType; end
-                    if (finished) then
-                        ChatFrameEditBox:Insert("(X " .. oText .. ")");
-                    else
-                        ChatFrameEditBox:Insert("(- " .. oText .. ")");
+        elseif (IsControlKeyDown()) then
+            if (ChatFrameEditBox:IsVisible()) then
+                SendQuestToChatFrame(qIndex, nil);
+                local nObjectives = GetNumQuestLeaderBoards(qIndex);
+                if (nObjectives > 0) then
+                    ChatFrameEditBox:Insert(":");
+                    for i = 1, nObjectives do
+                        oText, oType, finished = GetQuestLogLeaderBoard(i, qIndex);
+                        if (not oText or strlen(oText) == 0 or oText == "") then oText = oType; end
+                        if (finished) then
+                            ChatFrameEditBox:Insert("(X " .. oText .. ")");
+                        else
+                            ChatFrameEditBox:Insert("(- " .. oText .. ")");
+                        end
                     end
                 end
             end
         end
-        QuestLog_Update();
     elseif (button == "RightButton") then
         if (IsControlKeyDown() and ChatFrameEditBox:IsVisible()) then
-            QuestLog_SetSelection(qIndex);
             local qDescription, qObjectives = GetQuestLogQuestText();
             local n_qObjectives = string.gsub(qObjectives, "\n", "");
             FastQuest_CheckDefaultChat(true);
             if (qObjectives) then
-                if (FQD.Format == 2) then
-                    ChatFrameEditBox:Insert("[" .. level .. "]" .. GetQuestLink(qIndex) .. ": " .. n_qObjectives);
-                elseif (FQD.Format == 1) then
-                    ChatFrameEditBox:Insert(GetQuestLink(qIndex) .. " " .. ": " .. n_qObjectives);
-                elseif (FQD.Format == 3) then
-                    ChatFrameEditBox:Insert("[" .. level .. LevelTag .. "]" .. GetQuestLink(qIndex) .. ": " .. n_qObjectives);
-                elseif (FQD.Format == 4) then
-                    if (questTag) then questTag = ("(" .. questTag .. ")") else questTag = ""; end
-                    ChatFrameEditBox:Insert("[" .. level .. LevelTag .. "]" .. GetQuestLink(qIndex) .. questTag .. suggestedGroup .. ": " .. n_qObjectives);
-                else FQD.Format = 2;
-                end
+                SendQuestToChatFrame(qIndex, n_qObjectives);
             end
             return;
         end
-        FastQuest_Watch(qIndex, false);
+        if (not self.isHeader) then
+            FastQuest_Watch(qIndex, false);
+        end
     end
 end
 
-function QuestLog_Update()
+function FastQuest_QuestLog_Update()
     FQ_Debug_Print("QuestLog_Update()");
 
     if (FQ_player == "DEFAULT" or FQD[FQ_server][FQ_player].tQuests == nil) then FastQuest_UpdatePlayer(); end;
@@ -469,8 +592,6 @@ function QuestLog_Update()
             end
         end
     ]]
-    FQ_Debug_Print("hQuestLog_Update()");
-    hQuestLog_Update();
 
     for i = 1, QUESTS_DISPLAYED, 1 do
         if (i <= numEntries) then
@@ -612,14 +733,10 @@ function FastQuest_GetDiffColor(level)
     return color;
 end
 
-function WatchFrame_Update()
+function FastQuest_WatchFrame_Update()
     FQ_Debug_Print("WatchFrame_DisplayTrackedQuests()");
-    -- Run the original WatchFrame_Update first
-    hWatchFrame_Update();
 
     -- Link WatchFrame to FQ's dragging button so that we can drag the WatchFrame with green ball
-    --WatchFrame:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
-    -- WatchFrameLines:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
     WatchFrameLines:SetPoint("TOPRIGHT", "dQuestWatchDragButton", "BOTTOMLEFT", 0, 0);
     local line, lastLine, questTitle;
     local questIndex = 1;
@@ -764,13 +881,7 @@ function WatchFrame_Update()
     end
     if (questDoneID > 0) then
         FQ_Debug_Print("questDoneID = " .. questDoneID);
-        PlaySoundFile("Sound/Interface/igplayerBind.wav");
-        UIErrorsFrame:AddMessage("|cff00ffff" .. GetQuestLogTitle(questDoneID) .. FQ_QUEST_COMPLETED, 1.0, 1.0, 1.0, 1.0, 2);
-        if (FQD.AutoNotify == true) then
-            FastQuest_SendNotification("[" .. GetQuestLogTitle(questDoneID) .. "] " .. FQ_QUEST_ISDONE);
-        end
-        RemoveQuestWatch(questDoneID);
-        WatchFrame_Update();
+        FQ_ShowQuestComplete(questDoneID);
     end
     FQ_Debug_Print("End of QuestQatch_Update, nQuests = " .. GetNumQuestWatches());
     if (numQuestWatches > 0) then
@@ -810,7 +921,6 @@ function FastQuest_Watch(questIndex, auto)
             AddQuestWatch(questIndex);
             QuestLog_Update();
             WatchFrame_Update();
-            -- WatchFrameLines:SetPoint("TOPLEFT", "dQuestWatchDragButton", "BOTTOMRIGHT", 0, 0);
         end
     end
 end
