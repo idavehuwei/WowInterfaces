@@ -78,7 +78,7 @@ local DefaultFQDOptions = {
 };
 ---------------------------------------------------------------------
 function FQ_ShowQuestComplete(qIndex)
-    PlaySoundFile("Sound/Interface/igplayerBind.wav");
+--    PlaySoundFile("Sound/Interface/igplayerBind.wav");
     UIErrorsFrame:AddMessage("|cff00ffff" .. GetQuestLogTitle(qIndex) .. FQ_QUEST_COMPLETED, 1.0, 1.0, 1.0, 1.0, 2);
     if (FQD.AutoNotify == true) then
         FastQuest_SendNotification("[" .. GetQuestLogTitle(qIndex) .. "] " .. FQ_QUEST_ISDONE);
@@ -466,6 +466,11 @@ function FastQuest_QuestLogTitleButton_OnClick(self, button)
             elseif ( track ) then
                 if not isHeader  then
                     if IsQuestWatched(i) then
+                        if (isComplete) then
+                            table.insert(completetable, i)
+                        else
+                            table.insert(tracktable, i)
+                        end
                         numTracked = numTracked+1
                         RemoveQuestWatch(i)
                     else
@@ -486,7 +491,7 @@ function FastQuest_QuestLogTitleButton_OnClick(self, button)
         if lastTrackable == -1 then
             lastTrackable = GetNumQuestLogEntries()
         end
-        if numUntracked == 0 then
+        if numUntracked - #completetable == 0 then
             -- Untrack all
             for i=firstTrackable, lastTrackable do
                 if IsQuestWatched(i) then
@@ -514,6 +519,10 @@ function FastQuest_QuestLogTitleButton_OnClick(self, button)
         QuestLog_Update()
     end
 
+    if (not self.isHeader) then
+        QuestLog_SetSelection(qIndex);
+    end
+
     if (not IsModifiedClick()) then
         if (self.isHeader) then
             local _, _, _, _, _, isCollapsed = GetQuestLogTitle(qIndex);
@@ -523,8 +532,6 @@ function FastQuest_QuestLogTitleButton_OnClick(self, button)
                 CollapseQuestHeader(qIndex);
             end
             return;
-        else
-            QuestLog_SetSelection(qIndex);
         end
     end
 
