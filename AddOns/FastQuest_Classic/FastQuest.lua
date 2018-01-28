@@ -55,7 +55,7 @@ end
 
 local DefaultFQDOptions = {
     ["AutoAdd"] = true,
-    ["AutoComplete"] = true,
+    ["AutoComplete"] = false,
     ["AutoNotify"] = true,
     ["ButtonPos"] = 60,
     ["Color"] = true,
