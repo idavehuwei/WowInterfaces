@@ -3,24 +3,4 @@
     <Script file="locale\localization-cn.lua" />
     <Script file="UserDefaultSettings.lua" />
     <Script file="Patch.lua" />
-
-    <Frame name="UserDefaultSettingsFrame" toplevel="true" enableMouse="false" parent="UIParent" frameStrata="HIGH">
-        <Anchors>
-            <Anchor point="CENTER">
-                <Offset>
-                    <AbsDimension x="0" y="0"/>
-                </Offset>
-            </Anchor>
-        </Anchors>
-        <Scripts>
-            <OnLoad>
-                UserDefaultSettings_OnLoad()
-            </OnLoad>
-            <OnEvent>
-                UserDefaultSettings_OnEvent(event, ...)
-            </OnEvent>
-            <OnUpdate>
-            </OnUpdate>
-        </Scripts>
-    </Frame>
 </Ui>

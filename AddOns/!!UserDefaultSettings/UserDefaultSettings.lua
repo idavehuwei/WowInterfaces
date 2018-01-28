@@ -88,57 +88,6 @@ local OptionsTable = {
 
 OptionsFrames = {}
 
-local COMBATLOG_EVENT_LIST = {
-    ["ENVIRONMENTAL_DAMAGE"] = true,
-    ["SWING_DAMAGE"] = true,
-    ["SWING_MISSED"] = true,
-    ["RANGE_DAMAGE"] = true,
-    ["RANGE_MISSED"] = true,
-    ["SPELL_CAST_START"] = false,
-    ["SPELL_CAST_SUCCESS"] = false,
-    ["SPELL_CAST_FAILED"] = false,
-    ["SPELL_MISSED"] = true,
-    ["SPELL_DAMAGE"] = true,
-    ["SPELL_HEAL"] = true,
-    ["SPELL_ENERGIZE"] = true,
-    ["SPELL_DRAIN"] = true,
-    ["SPELL_LEECH"] = true,
-    ["SPELL_SUMMON"] = true,
-    ["SPELL_RESURRECT"] = true,
-    ["SPELL_CREATE"] = true,
-    ["SPELL_INSTAKILL"] = true,
-    ["SPELL_INTERRUPT"] = true,
-    ["SPELL_EXTRA_ATTACKS"] = true,
-    ["SPELL_DURABILITY_DAMAGE"] = false,
-    ["SPELL_DURABILITY_DAMAGE_ALL"] = false,
-    ["SPELL_AURA_APPLIED"] = false,
-    ["SPELL_AURA_APPLIED_DOSE"] = false,
-    ["SPELL_AURA_REMOVED"] = false,
-    ["SPELL_AURA_REMOVED_DOSE"] = false,
-    ["SPELL_AURA_BROKEN"] = false,
-    ["SPELL_AURA_BROKEN_SPELL"] = false,
-    ["SPELL_AURA_REFRESH"] = false,
-    ["SPELL_DISPEL"] = true,
-    ["SPELL_STOLEN"] = true,
-    ["ENCHANT_APPLIED"] = true,
-    ["ENCHANT_REMOVED"] = true,
-    ["SPELL_PERIODIC_MISSED"] = true,
-    ["SPELL_PERIODIC_DAMAGE"] = true,
-    ["SPELL_PERIODIC_HEAL"] = true,
-    ["SPELL_PERIODIC_ENERGIZE"] = true,
-    ["SPELL_PERIODIC_DRAIN"] = true,
-    ["SPELL_PERIODIC_LEECH"] = true,
-    ["SPELL_DISPEL_FAILED"] = true,
-    ["DAMAGE_SHIELD"] = false,
-    ["DAMAGE_SHIELD_MISSED"] = false,
-    ["DAMAGE_SPLIT"] = false,
-    ["PARTY_KILL"] = true,
-    ["UNIT_DIED"] = true,
-    ["UNIT_DESTROYED"] = true,
-    ["SPELL_BUILDING_DAMAGE"] = true,
-    ["SPELL_BUILDING_HEAL"] = true,
-};
-
 function UserDefaultSettings:SetUIScale(enable, scale)
     if(GetCVar("useUiScale") ~= nil) then
         if(enable == true or enable == 1) then
@@ -173,10 +122,18 @@ function UserDefaultSettings:SetupActionBar(cfg)
     MultiActionBar_Update();
 
     if(cfg.always == true or cfg.always == 1) then
-        SetCVar("alwaysShowActionBars", "1");
+--        SetCVar("alwaysShowActionBars", "1");
+        BlizzardOptionsPanel_SetCVarSafe("alwaysShowActionBars", "1", self.event);
+        setglobal("ALWAYS_SHOW_MULTIBARS", "1");
     else
-        SetCVar("alwaysShowActionBars", "0");
+--        SetCVar("alwaysShowActionBars", "0");
+        BlizzardOptionsPanel_SetCVarSafe("alwaysShowActionBars", "0", self.event);
+        setglobal("ALWAYS_SHOW_MULTIBARS", "0");
     end
+    MultiActionBar_UpdateGridVisibility();
+    InterfaceOptions_UpdateMultiActionBars();
+
+    MultiActionBar_Update();
 end
 
 function UserDefaultSettings:SetupMiniMapZoom(zoom)
@@ -226,51 +183,5 @@ function UserDefaultSettings:OnInitialize()
     -- self.db.RegisterCallback(self, "OnProfileReset", "HandleProfileChanges");
 
     self:RegisterEvent("PLAYER_ENTERING_WORLD", "ApplaySettings", true);
-end
-
-local ProcEnterCombe = false
-function UserDefaultSettings_OnLoad()
---    UserDefaultSettings:RegisterEvent("SPELL_CAST_START")
---    UserDefaultSettings:RegisterEvent("PLAYER_REGEN_DISABLED")
---    UserDefaultSettings:RegisterEvent("PLAYER_ENTER_COMBAT")
---
---    UserDefaultSettings:RegisterEvent("PLAYER_REGEN_ENABLED")
---    UserDefaultSettings:RegisterEvent("PLAYER_LEAVE_COMBAT")
-end
-
-function UserDefaultSettings_OnEvent(event, ...)
-    print("UserDefaultSettings_OnEvent: "..tostring(event))
-end
-
-function UserDefaultSettings:SPELL_CAST_START()
-    if (ProcEnterCombe == false) then
-        print("SPELL_CAST_START")
-        CombatLogClearEntries()
-        ProcEnterCombe = true;
-    end
-end
-
-function UserDefaultSettings:PLAYER_REGEN_DISABLED()
-    if (ProcEnterCombe == false) then
-        print("PLAYER_REGEN_DISABLED")
-        CombatLogClearEntries()
-        ProcEnterCombe = true;
-    end
-end
-
-function UserDefaultSettings:PLAYER_ENTER_COMBAT()
-    if (ProcEnterCombe == false) then
-        print("PLAYER_ENTER_COMBAT")
-        CombatLogClearEntries()
-        ProcEnterCombe = true;
-    end
-end
-
-function UserDefaultSettings:PLAYER_REGEN_ENABLED()
-    ProcEnterCombe = false;
-end
-
-function UserDefaultSettings:PLAYER_LEAVE_COMBAT()
-    ProcEnterCombe = false;
 end
 
