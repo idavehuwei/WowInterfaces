@@ -78,12 +78,14 @@ local DefaultFQDOptions = {
 };
 ---------------------------------------------------------------------
 function FQ_ShowQuestComplete(qIndex)
---    PlaySoundFile("Sound/Interface/igplayerBind.wav");
+    FQ_Debug_Print("FQ_ShowQuestComplete = "..tostring(qIndex))
+
+    PlaySoundFile("Sound/Interface/igplayerBind.wav");
     UIErrorsFrame:AddMessage("|cff00ffff" .. GetQuestLogTitle(qIndex) .. FQ_QUEST_COMPLETED, 1.0, 1.0, 1.0, 1.0, 2);
     if (FQD.AutoNotify == true) then
         FastQuest_SendNotification("[" .. GetQuestLogTitle(qIndex) .. "] " .. FQ_QUEST_ISDONE);
     end
-    RemoveQuestWatch(questDoneID);
+    RemoveQuestWatch(qIndex);
     QuestLog_Update();
     WatchFrame_Update();
 end
