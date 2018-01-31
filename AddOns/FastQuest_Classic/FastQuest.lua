@@ -24,6 +24,7 @@ FQ_player = UnitName("player");
 
 local FQ_LoadTrackedQuest = true;
 local FQ_ShowWatchFrame = true;
+local FQ_LastCompleteQuest;
 
 -- Hook the original Blizzard QuestLog_Update to run inside the modded QuestLog_Update()
 --hQuestLog_Update = QuestLog_Update;
@@ -80,7 +81,13 @@ local DefaultFQDOptions = {
 function FQ_ShowQuestComplete(qIndex)
     FQ_Debug_Print("FQ_ShowQuestComplete = "..tostring(qIndex))
 
-    PlaySoundFile("Sound/Interface/igplayerBind.wav");
+    if (FQ_LastCompleteQuest == qIndex) then
+        return;
+    else
+        FQ_LastCompleteQuest = qIndex;
+    end
+
+--    PlaySoundFile("Sound/Interface/igplayerBind.wav");
     UIErrorsFrame:AddMessage("|cff00ffff" .. GetQuestLogTitle(qIndex) .. FQ_QUEST_COMPLETED, 1.0, 1.0, 1.0, 1.0, 2);
     if (FQD.AutoNotify == true) then
         FastQuest_SendNotification("[" .. GetQuestLogTitle(qIndex) .. "] " .. FQ_QUEST_ISDONE);
