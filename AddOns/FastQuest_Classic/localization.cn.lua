@@ -115,7 +115,7 @@ if (GetLocale() == "zhCN") then
     FQ_USAGE_FORMAT = "(按 Ctrl 点选任务) 在聊天框中显示任务名称格式共4种每输入一次切换一种, 如:[10+]任务名称,[10]任务名称(精英)";
     FQ_USAGE_LOCK = "锁定/解锁任务追踪窗口位置";
     FQ_USAGE_MEMBERINFO = "设定是否显示任务建议的队伍人数信息";
-    --FQ_USAGE_NODRAG =		"是否强制任务追踪窗口不可被移动, 重新登入或输入 /console reloadui 才有作用";
+    --FQ_USAGE_NODRAG = "是否强制任务追踪窗口不可被移动, 重新登入或输入 /console reloadui 才有作用";
     FQ_USAGE_NOTIFYDISCOVER = "切换是否通报所发现的新区域";
     FQ_USAGE_NOTIFYEXP = "切换是否通报从一个完成的任务中所获得的经验奖励";
     FQ_USAGE_NOTIFYLEVELUP = "切换是否通报升级的讯息";
@@ -124,7 +124,7 @@ if (GetLocale() == "zhCN") then
     FQ_USAGE_OPTIONS = "开启选项设定窗口";
     FQ_USAGE_TAG = "在任务追踪清单显示任务类型 (菁英, 团队, PvP 等) ";
     --
-    --BINDING_CATEGORY_FASTQUEST_CLASSIC		= "任务增强";
+    --BINDING_CATEGORY_FASTQUEST_CLASSIC = "任务增强";
     BINDING_HEADER_FASTQUEST_CLASSIC = "FastQuest Classic";
     BINDING_NAME_FASTQUEST_OPTIONS = "FastQuest Classic 选项设定";
     BINDING_NAME_FQ_TAG = "任务追踪窗口困难度";
