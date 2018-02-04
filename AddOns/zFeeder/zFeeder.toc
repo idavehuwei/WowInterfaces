@@ -1,0 +1,14 @@
+## Interface: 30100
+## Title: Hunter zFeeder
+## Notes: Hunter feeding helper.
+## Title-zhCN: [职业] 猎人一键喂养
+## Notes-zhCN: 猎人一键喂养宝宝助手.
+## Title-zhTW: [職業] 獵人一鍵餵養
+## Notes-zhTW: 獵人一鍵餵養寶寶助手.
+## Author: 独孤傲雪, 炽火
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+## SavedVariables: zFeeder
+
+zFeeder.xml

@@ -74,187 +74,193 @@ else
     CLASS_MOD_PATH = "Interface\\ICONS\\Ability_Hunter_SniperShot.blp";
 end
 
-if (playerclass == "HUNTER" and IsConfigurableAddOn("HunterAssist")) then
-    ModManagement_RegisterMod(
-        "BigFootClassMod",
-        CLASS_MOD_PATH,
-        BIGFOOT_CLASS_MOD,
-        "",
-        nil
-    );
-    ModManagement_RegisterCheckBox(
-        "BigFootClassMod",
-        ENABLE_AIMED_SHOT,
-        nil,
-        "EnableAimedShot",
-        0,
-        function (arg)
-            if (arg == 1) then
-                if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    BigFoot_LoadAddOn("HunterAssist");
+if (playerclass == "HUNTER") then
+    if (IsConfigurableAddOn("HunterAssist") or IsConfigurableAddOn("zFeeder")) then
+        ModManagement_RegisterMod(
+            "BigFootClassMod",
+            CLASS_MOD_PATH,
+            BIGFOOT_CLASS_MOD,
+            "",
+            nil
+        );
+        if (IsConfigurableAddOn("zFeeder")) then
+            ModManagement_RegisterCheckBox(
+                "BigFootClassMod",
+                ENABLE_ZERO_FEED,
+                nil,
+                "EnableZeroFeed",
+                1,
+                function (arg)
+                    if (arg == 1) then
+                        if (not BigFoot_IsAddOnLoaded("zFeeder")) then
+                            BigFoot_LoadAddOn("zFeeder");
+                        end
+                        if (BigFoot_IsAddOnLoaded("zFeeder")) then
+                            ZFeed_Toggle(true);
+                        end
+                    else
+                        if (BigFoot_IsAddOnLoaded("zFeeder")) then
+                            ZFeed_Toggle(false);
+                        end
+                    end
                 end
-                if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    HunterAssistBar_Toggle(true);
-                end
-            else
-                if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    HunterAssistBar_Toggle(false);
-                end
-            end
+            );
+            ModManagement_RegisterSpinBox(
+                "BigFootClassMod",
+                Z_HAPPINESS_POINT,
+                Z_HAPPINESS_TOOLTIP,
+                "HappIness",
+                "list",
+                ZERO_FEED_HAPPINESS,
+                PET_HAPPINESS1,
+                function(arg1)
+                    if (BigFoot_IsAddOnLoaded("zFeeder")) then
+                        ZFeed_CHappiness(arg1);
+                    end
+                end,
+                1
+            );
         end
-    );
-    ModManagement_RegisterButton(
-        "BigFootClassMod",
-        AJUST_CAST_POSITION,
-        function ()
-            if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                HunterAssistCasteBar_AjustPosition();
-            end
-        end,
-        nil,
-        1
-    );
-    ModManagement_RegisterCheckBox(
-        "BigFootClassMod",
-        ENABLE_ANTI_DAZE,
-        nil,
-        "EnableAntiDaze",
-        1,
-        function (arg)
-            if (arg == 1) then
-                if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    BigFoot_LoadAddOn("HunterAssist");
+        if (IsConfigurableAddOn("HunterAssist")) then
+            ModManagement_RegisterCheckBox(
+                "BigFootClassMod",
+                ENABLE_AIMED_SHOT,
+                nil,
+                "EnableAimedShot",
+                0,
+                function (arg)
+                    if (arg == 1) then
+                        if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            BigFoot_LoadAddOn("HunterAssist");
+                        end
+                        if (BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            HunterAssistBar_Toggle(true);
+                        end
+                    else
+                        if (BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            HunterAssistBar_Toggle(false);
+                        end
+                    end
                 end
-                if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    HunterAssistDaze_Toggle(true);
+            );
+            ModManagement_RegisterButton(
+                "BigFootClassMod",
+                AJUST_CAST_POSITION,
+                function ()
+                    if (BigFoot_IsAddOnLoaded("HunterAssist")) then
+                        HunterAssistCasteBar_AjustPosition();
+                    end
+                end,
+                nil,
+                1
+            );
+            ModManagement_RegisterCheckBox(
+                "BigFootClassMod",
+                ENABLE_ANTI_DAZE,
+                nil,
+                "EnableAntiDaze",
+                1,
+                function (arg)
+                    if (arg == 1) then
+                        if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            BigFoot_LoadAddOn("HunterAssist");
+                        end
+                        if (BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            HunterAssistDaze_Toggle(true);
+                        end
+                    else
+                        if (BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            HunterAssistDaze_Toggle(false);
+                        end
+                    end
                 end
-            else
-                if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    HunterAssistDaze_Toggle(false);
+            );
+            ModManagement_RegisterCheckBox(
+                "BigFootClassMod",
+                ENABLE_AUTO_TRACKING,
+                nil,
+                "EnableAutoTracking",
+                0,
+                function (arg)
+                    if (arg == 1) then
+                        if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            BigFoot_LoadAddOn("HunterAssist");
+                        end
+                        if (BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            HunterAssistTracking_Toogle(true);
+                        end
+                    else
+                        if (BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            HunterAssistTracking_Toogle(false);
+                        end
+                    end
                 end
-            end
+            );
+            ModManagement_RegisterCheckBox(
+                "BigFootClassMod",
+                ENABLE_ASPECT_BAR,
+                nil,
+                "EnableAspectBar",
+                1,
+                function (arg)
+                    if (arg == 1) then
+                        if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            BigFoot_LoadAddOn("HunterAssist");
+                        end
+                        if (BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            HunterAssistAspect_Toggle(true);
+                        end
+                    else
+                        if (BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            HunterAssistAspect_Toggle(false);
+                        end
+                    end
+                end
+            );
+            ModManagement_RegisterCheckBox(
+                "BigFootClassMod",
+                ENABLE_MISDIRECT,
+                nil,
+                "EnablemisDirect",
+                0,
+                function (arg)
+                    if (arg == 1) then
+                        if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            BigFoot_LoadAddOn("HunterAssist");
+                        end
+                        if (BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            HunterAssistMisdirect_Toggle(true);
+                        end
+                    else
+                        if (BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            HunterAssistMisdirect_Toggle(false);
+                        end
+                    end
+                end
+            );
+            ModManagement_RegisterCheckBox(
+                "BigFootClassMod",
+                ENABLE_DISTANCE,
+                nil,
+                "EnableDistance",
+                0,
+                function (arg)
+                    if (arg == 1) then
+                        if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            BigFoot_LoadAddOn("HunterAssist");
+                        end
+                        if (BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            HunterAssistDistance_Toggle(true);
+                        end
+                    else
+                        if (BigFoot_IsAddOnLoaded("HunterAssist")) then
+                            HunterAssistDistance_Toggle(false);
+                        end
+                    end
+                end
+            );
         end
-    );
-    ModManagement_RegisterCheckBox(
-        "BigFootClassMod",
-        ENABLE_AUTO_TRACKING,
-        nil,
-        "EnableAutoTracking",
-        0,
-        function (arg)
-            if (arg == 1) then
-                if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    BigFoot_LoadAddOn("HunterAssist");
-                end
-                if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    HunterAssistTracking_Toogle(true);
-                end
-            else
-                if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    HunterAssistTracking_Toogle(false);
-                end
-            end
-        end
-    );
-    ModManagement_RegisterCheckBox(
-        "BigFootClassMod",
-        ENABLE_ASPECT_BAR,
-        nil,
-        "EnableAspectBar",
-        1,
-        function (arg)
-            if (arg == 1) then
-                if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    BigFoot_LoadAddOn("HunterAssist");
-                end
-                if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    HunterAssistAspect_Toggle(true);
-                end
-            else
-                if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    HunterAssistAspect_Toggle(false);
-                end
-            end
-        end
-    );
-    ModManagement_RegisterCheckBox(
-        "BigFootClassMod",
-        ENABLE_MISDIRECT,
-        nil,
-        "EnablemisDirect",
-        0,
-        function (arg)
-            if (arg == 1) then
-                if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    BigFoot_LoadAddOn("HunterAssist");
-                end
-                if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    HunterAssistMisdirect_Toggle(true);
-                end
-            else
-                if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    HunterAssistMisdirect_Toggle(false);
-                end
-            end
-        end
-    );
-    ModManagement_RegisterCheckBox(
-        "BigFootClassMod",
-        ENABLE_DISTANCE,
-        nil,
-        "EnableDistance",
-        0,
-        function (arg)
-            if (arg == 1) then
-                if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    BigFoot_LoadAddOn("HunterAssist");
-                end
-                if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    HunterAssistDistance_Toggle(true);
-                end
-            else
-                if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    HunterAssistDistance_Toggle(false);
-                end
-            end
-        end
-    );
-    ModManagement_RegisterCheckBox(
-        "BigFootClassMod",
-        ENABLE_ZERO_FEED,
-        nil,
-        "EnableZeroFeed",
-        1,
-        function (arg)
-            if (arg == 1) then
-                if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    BigFoot_LoadAddOn("HunterAssist");
-                end
-                if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    ZFeed_Toggle(true);
-                end
-            else
-                if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                    ZFeed_Toggle(false);
-                end
-            end
-        end
-    );
-    ModManagement_RegisterSpinBox(
-        "BigFootClassMod",
-        Z_HAPPINESS_POINT,
-        Z_HAPPINESS_TOOLTIP,
-        "HappIness",
-        "list",
-        ZERO_FEED_HAPPINESS,
-        PET_HAPPINESS1,
-        function(arg1)
-            if (BigFoot_IsAddOnLoaded("HunterAssist")) then
-                ZFeed_CHappiness(arg1);
-            end
-        end,
-        1
-    );
+    end
 end
 
 if ((playerclass == "WARRIOR" or playerclass == "PALADIN") and IsConfigurableAddOn("AttackTimer")) then
