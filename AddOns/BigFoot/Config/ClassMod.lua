@@ -3,7 +3,7 @@ local ENABLE_HUNTER_ASSIST, ENABLE_ANTI_DAZE, ENABLE_AUTO_TRACKING, ENABLE_ASPEC
 local ENABLE_ATTACK_TIMER, Z_HAPPINESS_POINT, Z_HAPPINESS_TOOLTIP, CLASS_MOD_PATH;
 local ENABLE_SHAMAN_ASSIST, SHAMAN_ASSIST_TOOLTIP, SHOW_TOTEM_TITLE, ENABLE_TOTOEM_TIMER;
 if (GetLocale() == "zhCN") then
-    BIGFOOT_CLASS_MOD = {"职业助手", "zhiyezhushou"};
+    BIGFOOT_CLASS_MOD = { "职业助手", "zhiyezhushou" };
     ENABLE_HUNTER_ASSIST = "启用猎人助手";
     ENABLE_ANTI_DAZE = "自动取消猎豹守护";
     ENABLE_AUTO_TRACKING = "自动切换追踪技能";
@@ -21,7 +21,7 @@ if (GetLocale() == "zhCN") then
     SHOW_TOTEM_TITLE = "显示图腾条标题头";
     ENABLE_TOTOEM_TIMER = "开启系统图腾计时器";
 elseif (GetLocale() == "zhTW") then
-    BIGFOOT_CLASS_MOD = {"職業助手", "zhiyezhushou"};
+    BIGFOOT_CLASS_MOD = { "職業助手", "zhiyezhushou" };
     ENABLE_HUNTER_ASSIST = "啟用獵人助手";
     ENABLE_ANTI_DAZE = "自動取消獵豹守護";
     ENABLE_AUTO_TRACKING = "自動切換追蹤技能";
@@ -76,21 +76,18 @@ end
 
 if (playerclass == "HUNTER") then
     if (IsConfigurableAddOn("HunterAssist") or IsConfigurableAddOn("zFeeder")) then
-        ModManagement_RegisterMod(
-            "BigFootClassMod",
+        ModManagement_RegisterMod("BigFootClassMod",
             CLASS_MOD_PATH,
             BIGFOOT_CLASS_MOD,
             "",
-            nil
-        );
+            nil);
         if (IsConfigurableAddOn("zFeeder")) then
-            ModManagement_RegisterCheckBox(
-                "BigFootClassMod",
+            ModManagement_RegisterCheckBox("BigFootClassMod",
                 ENABLE_ZERO_FEED,
                 nil,
                 "EnableZeroFeed",
                 1,
-                function (arg)
+                function(arg)
                     if (arg == 1) then
                         if (not BigFoot_IsAddOnLoaded("zFeeder")) then
                             BigFoot_LoadAddOn("zFeeder");
@@ -103,10 +100,8 @@ if (playerclass == "HUNTER") then
                             ZFeed_Toggle(false);
                         end
                     end
-                end
-            );
-            ModManagement_RegisterSpinBox(
-                "BigFootClassMod",
+                end);
+            ModManagement_RegisterSpinBox("BigFootClassMod",
                 Z_HAPPINESS_POINT,
                 Z_HAPPINESS_TOOLTIP,
                 "HappIness",
@@ -118,17 +113,15 @@ if (playerclass == "HUNTER") then
                         ZFeed_CHappiness(arg1);
                     end
                 end,
-                1
-            );
+                1);
         end
         if (IsConfigurableAddOn("HunterAssist")) then
-            ModManagement_RegisterCheckBox(
-                "BigFootClassMod",
+            ModManagement_RegisterCheckBox("BigFootClassMod",
                 ENABLE_AIMED_SHOT,
                 nil,
                 "EnableAimedShot",
                 0,
-                function (arg)
+                function(arg)
                     if (arg == 1) then
                         if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
                             BigFoot_LoadAddOn("HunterAssist");
@@ -141,26 +134,22 @@ if (playerclass == "HUNTER") then
                             HunterAssistBar_Toggle(false);
                         end
                     end
-                end
-            );
-            ModManagement_RegisterButton(
-                "BigFootClassMod",
+                end);
+            ModManagement_RegisterButton("BigFootClassMod",
                 AJUST_CAST_POSITION,
-                function ()
+                function()
                     if (BigFoot_IsAddOnLoaded("HunterAssist")) then
                         HunterAssistCasteBar_AjustPosition();
                     end
                 end,
                 nil,
-                1
-            );
-            ModManagement_RegisterCheckBox(
-                "BigFootClassMod",
+                1);
+            ModManagement_RegisterCheckBox("BigFootClassMod",
                 ENABLE_ANTI_DAZE,
                 nil,
                 "EnableAntiDaze",
                 1,
-                function (arg)
+                function(arg)
                     if (arg == 1) then
                         if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
                             BigFoot_LoadAddOn("HunterAssist");
@@ -173,15 +162,13 @@ if (playerclass == "HUNTER") then
                             HunterAssistDaze_Toggle(false);
                         end
                     end
-                end
-            );
-            ModManagement_RegisterCheckBox(
-                "BigFootClassMod",
+                end);
+            ModManagement_RegisterCheckBox("BigFootClassMod",
                 ENABLE_AUTO_TRACKING,
                 nil,
                 "EnableAutoTracking",
                 0,
-                function (arg)
+                function(arg)
                     if (arg == 1) then
                         if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
                             BigFoot_LoadAddOn("HunterAssist");
@@ -194,15 +181,13 @@ if (playerclass == "HUNTER") then
                             HunterAssistTracking_Toogle(false);
                         end
                     end
-                end
-            );
-            ModManagement_RegisterCheckBox(
-                "BigFootClassMod",
+                end);
+            ModManagement_RegisterCheckBox("BigFootClassMod",
                 ENABLE_ASPECT_BAR,
                 nil,
                 "EnableAspectBar",
                 1,
-                function (arg)
+                function(arg)
                     if (arg == 1) then
                         if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
                             BigFoot_LoadAddOn("HunterAssist");
@@ -215,15 +200,13 @@ if (playerclass == "HUNTER") then
                             HunterAssistAspect_Toggle(false);
                         end
                     end
-                end
-            );
-            ModManagement_RegisterCheckBox(
-                "BigFootClassMod",
+                end);
+            ModManagement_RegisterCheckBox("BigFootClassMod",
                 ENABLE_MISDIRECT,
                 nil,
                 "EnablemisDirect",
                 0,
-                function (arg)
+                function(arg)
                     if (arg == 1) then
                         if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
                             BigFoot_LoadAddOn("HunterAssist");
@@ -236,15 +219,13 @@ if (playerclass == "HUNTER") then
                             HunterAssistMisdirect_Toggle(false);
                         end
                     end
-                end
-            );
-            ModManagement_RegisterCheckBox(
-                "BigFootClassMod",
+                end);
+            ModManagement_RegisterCheckBox("BigFootClassMod",
                 ENABLE_DISTANCE,
                 nil,
                 "EnableDistance",
                 0,
-                function (arg)
+                function(arg)
                     if (arg == 1) then
                         if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
                             BigFoot_LoadAddOn("HunterAssist");
@@ -257,27 +238,23 @@ if (playerclass == "HUNTER") then
                             HunterAssistDistance_Toggle(false);
                         end
                     end
-                end
-            );
+                end);
         end
     end
 end
 
 if ((playerclass == "WARRIOR" or playerclass == "PALADIN") and IsConfigurableAddOn("AttackTimer")) then
-    ModManagement_RegisterMod(
-        "BigFootClassMod",
+    ModManagement_RegisterMod("BigFootClassMod",
         CLASS_MOD_PATH,
         BIGFOOT_CLASS_MOD,
         "",
-        nil
-    );
-    ModManagement_RegisterCheckBox(
-        "BigFootClassMod",
+        nil);
+    ModManagement_RegisterCheckBox("BigFootClassMod",
         ENABLE_ATTACK_TIMER,
         nil,
         "EnableAttackTimer",
         0,
-        function (arg)
+        function(arg)
             if (arg == 1) then
                 if (not BigFoot_IsAddOnLoaded("AttackTimer")) then
                     BigFoot_LoadAddOn("AttackTimer");
@@ -290,37 +267,31 @@ if ((playerclass == "WARRIOR" or playerclass == "PALADIN") and IsConfigurableAdd
                     AttackTimer_Toggle(false);
                 end
             end
-        end
-    );
-    ModManagement_RegisterButton(
-        "BigFootClassMod",
+        end);
+    ModManagement_RegisterButton("BigFootClassMod",
         AJUST_CAST_POSITION,
-        function ()
+        function()
             if (BigFoot_IsAddOnLoaded("AttackTimer")) then
                 AttackTimer_AjustPosition();
             end
         end,
         nil,
-        1
-    );
+        1);
 end
 
 if (playerclass == "SHAMAN" and IsConfigurableAddOn("ShamanAssist")) then
-    ModManagement_RegisterMod(
-        "BigFootClassMod",
+    ModManagement_RegisterMod("BigFootClassMod",
         CLASS_MOD_PATH,
         BIGFOOT_CLASS_MOD,
         "",
-        nil
-    );
+        nil);
 
-    ModManagement_RegisterCheckBox(
-        "BigFootClassMod",
+    ModManagement_RegisterCheckBox("BigFootClassMod",
         ENABLE_SHAMAN_ASSIST,
         SHAMAN_ASSIST_TOOLTIP,
         "EnableShamanAssist",
         1,
-        function (arg)
+        function(arg)
             if (arg == 1) then
                 if (not BigFoot_IsAddOnLoaded("ShamanAssist")) then
                     BigFoot_LoadAddOn("ShamanAssist");
@@ -333,15 +304,13 @@ if (playerclass == "SHAMAN" and IsConfigurableAddOn("ShamanAssist")) then
                     ShamanAssistToggle(false);
                 end
             end
-        end
-    );
-    ModManagement_RegisterCheckBox(
-        "BigFootClassMod",
+        end);
+    ModManagement_RegisterCheckBox("BigFootClassMod",
         SHOW_TOTEM_TITLE,
         nil,
         "ShowTitleButton",
         1,
-        function (arg)
+        function(arg)
             if (arg == 1) then
                 if (BigFoot_IsAddOnLoaded("ShamanAssist")) then
                     ShamanAssistToggleTitle(true);
@@ -352,16 +321,14 @@ if (playerclass == "SHAMAN" and IsConfigurableAddOn("ShamanAssist")) then
                 end
             end
         end,
-        1
-    );
+        1);
 
-    ModManagement_RegisterCheckBox(
-        "BigFootClassMod",
+    ModManagement_RegisterCheckBox("BigFootClassMod",
         ENABLE_TOTOEM_TIMER,
         nil,
         "EnableTotemTimer",
         1,
-        function (arg)
+        function(arg)
             if (arg == 1) then
                 if (BigFoot_IsAddOnLoaded("ShamanAssist")) then
                     ShamanAssistToggleTotemTimer(true);
@@ -372,6 +339,5 @@ if (playerclass == "SHAMAN" and IsConfigurableAddOn("ShamanAssist")) then
                 end
             end
         end,
-        1
-    );
+        1);
 end

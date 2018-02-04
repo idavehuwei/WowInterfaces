@@ -1,253 +1,253 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
-	<Script file="BigFootGlobalString.lua"/>
-	<Script file="BigFootUtils.lua"/>
-	<Script file="BigFoot.lua"/>
-	<Script file="BigFootAnim.lua"/>
-	<Script file="BigFootHash.lua"/>
-	<GameTooltip name="BigFootTooltip" frameStrata="TOOLTIP" hidden="true" inherits="GameTooltipTemplate">
-		<Scripts>
-			<OnLoad>
-				self:SetOwner(UIParent, "ANCHOR_NONE");
-			</OnLoad>
-		</Scripts>
-	</GameTooltip>
-	<Button name="BigFootMinimapButton" frameStrata="LOW" enableMouse="true" toplevel="true" movable="true" parent="Minimap">
-		<Size>
-			<AbsDimension x="33" y="33"/>
-		</Size>
-		<Anchors>
-			<Anchor point="TOPLEFT">
-				<Offset>
-					<AbsDimension x="-18" y="-90"/>
-				</Offset>
-			</Anchor>
-		</Anchors>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture name="$parentTexture" file="Interface\AddOns\BigFoot\BigFootMiniButton">
-					<Size>
-						<AbsDimension x="21" y="21"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="6" y="-6"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-					<TexCoords left="0.075" right="0.925" top="0.075" bottom="0.925"/>
-				</Texture>
-			</Layer>
-			<Layer level="OVERLAY">
-				<Texture file="Interface\Minimap\MiniMap-TrackingBorder">
-					<Size>
-						<AbsDimension x="56" y="56"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
-		<Frames>
-			<Frame name="$parentDropDown" inherits="BDropDownMenuTemplate" id="1" hidden="true">
-				<Anchors>
-					<Anchor point="TOP">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						BigFootMiniButtonDropDown_OnLoad(self);
-					</OnLoad>
-					<OnShow>
-						BigFootMiniButtonDropDown_OnLoad(self);
-					</OnShow>
-				</Scripts>
-			</Frame>
-		</Frames>
-		<Scripts>
-			<OnLoad>
-				self:RegisterEvent("VARIABLES_LOADED");
-				self:RegisterForClicks("LeftButtonUp","RightButtonUp");
-				self:RegisterForDrag("LeftButton");
-			</OnLoad>
-			<OnShow>
-				self:SetFrameLevel(Minimap:GetFrameLevel()+1);
-			</OnShow>
-			<OnClick>
-				BigFootMiniButton_OnClick(self, button);
-			</OnClick>
-			<OnMouseDown>
-				BigFootMinimapButtonTexture:SetTexCoord(0, 1, 0, 1);
-			</OnMouseDown>
-			<OnMouseUp>
-				BigFootMinimapButtonTexture:SetTexCoord(0.075, 0.925, 0.075, 0.925);
-			</OnMouseUp>
-			<OnDragStart>
-				BigFootMiniButton_OnDragStart(self, button);
-			</OnDragStart>
-			<OnDragStop>
-				BigFootMinimapButtonTexture:SetTexCoord(0.075, 0.925, 0.075, 0.925);
-				BigFootMiniButton_OnDragStop(self, button);
-			</OnDragStop>
-			<OnEvent>
-				BigFootMiniButton_OnEvent(self, event);
-			</OnEvent>
-			<OnEnter>
-				BigFootMiniButton_OnEnter(self);
-			</OnEnter>
-			<OnLeave>
-				GameTooltip:Hide();
-			</OnLeave>
-		</Scripts>
-		<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
-	</Button>
+    <Script file="BigFootGlobalString.lua"/>
+    <Script file="BigFootUtils.lua"/>
+    <Script file="BigFoot.lua"/>
+    <Script file="BigFootAnim.lua"/>
+    <Script file="BigFootHash.lua"/>
+    <GameTooltip name="BigFootTooltip" frameStrata="TOOLTIP" hidden="true" inherits="GameTooltipTemplate">
+        <Scripts>
+            <OnLoad>
+                self:SetOwner(UIParent, "ANCHOR_NONE");
+            </OnLoad>
+        </Scripts>
+    </GameTooltip>
+    <Button name="BigFootMinimapButton" frameStrata="LOW" enableMouse="true" toplevel="true" movable="true" parent="Minimap">
+        <Size>
+            <AbsDimension x="33" y="33"/>
+        </Size>
+        <Anchors>
+            <Anchor point="TOPLEFT">
+                <Offset>
+                    <AbsDimension x="-18" y="-90"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture name="$parentTexture" file="Interface\AddOns\BigFoot\BigFootMiniButton">
+                    <Size>
+                        <AbsDimension x="21" y="21"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="6" y="-6"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                    <TexCoords left="0.075" right="0.925" top="0.075" bottom="0.925"/>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <Texture file="Interface\Minimap\MiniMap-TrackingBorder">
+                    <Size>
+                        <AbsDimension x="56" y="56"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Frame name="$parentDropDown" inherits="BDropDownMenuTemplate" id="1" hidden="true">
+                <Anchors>
+                    <Anchor point="TOP">
+                        <Offset>
+                            <AbsDimension x="0" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        BigFootMiniButtonDropDown_OnLoad(self);
+                    </OnLoad>
+                    <OnShow>
+                        BigFootMiniButtonDropDown_OnLoad(self);
+                    </OnShow>
+                </Scripts>
+            </Frame>
+        </Frames>
+        <Scripts>
+            <OnLoad>
+                self:RegisterEvent("VARIABLES_LOADED");
+                self:RegisterForClicks("LeftButtonUp","RightButtonUp");
+                self:RegisterForDrag("LeftButton");
+            </OnLoad>
+            <OnShow>
+                self:SetFrameLevel(Minimap:GetFrameLevel()+1);
+            </OnShow>
+            <OnClick>
+                BigFootMiniButton_OnClick(self, button);
+            </OnClick>
+            <OnMouseDown>
+                BigFootMinimapButtonTexture:SetTexCoord(0, 1, 0, 1);
+            </OnMouseDown>
+            <OnMouseUp>
+                BigFootMinimapButtonTexture:SetTexCoord(0.075, 0.925, 0.075, 0.925);
+            </OnMouseUp>
+            <OnDragStart>
+                BigFootMiniButton_OnDragStart(self, button);
+            </OnDragStart>
+            <OnDragStop>
+                BigFootMinimapButtonTexture:SetTexCoord(0.075, 0.925, 0.075, 0.925);
+                BigFootMiniButton_OnDragStop(self, button);
+            </OnDragStop>
+            <OnEvent>
+                BigFootMiniButton_OnEvent(self, event);
+            </OnEvent>
+            <OnEnter>
+                BigFootMiniButton_OnEnter(self);
+            </OnEnter>
+            <OnLeave>
+                GameTooltip:Hide();
+            </OnLeave>
+        </Scripts>
+        <HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
+    </Button>
 
-	<Button name="BigFootMenuButtonOptions" inherits="GameMenuButtonTemplate" parent="GameMenuFrame">
-		<Anchors>
-			<Anchor point="CENTER" relativePoint="TOP">
-				<Offset>
-					<AbsDimension x="0" y="-37"/>
-				</Offset>
-			</Anchor>
-		</Anchors>
-		<Scripts>
-			<OnShow>
-				self:SetText(BF_NAME);
-			</OnShow>
-			<OnClick>
-				PlaySound("igMainMenuOption");
-				ShowUIPanel(ModManagementFrame);
-			</OnClick>
-		</Scripts>
-	</Button>
+    <Button name="BigFootMenuButtonOptions" inherits="GameMenuButtonTemplate" parent="GameMenuFrame">
+        <Anchors>
+            <Anchor point="CENTER" relativePoint="TOP">
+                <Offset>
+                    <AbsDimension x="0" y="-37"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Scripts>
+            <OnShow>
+                self:SetText(BF_NAME);
+            </OnShow>
+            <OnClick>
+                PlaySound("igMainMenuOption");
+                ShowUIPanel(ModManagementFrame);
+            </OnClick>
+        </Scripts>
+    </Button>
 
-	<Frame name="BigFootFrame" parent="UIParent" hidden="false">
-		<Size>
-			<AbsDimension x="1" y="1"/>
-		</Size>
-		<Anchors>
-			<Anchor point="TOPRIGHT" relativeTo="UIParent" relativePoint="TOPRIGHT">
-				<Offset>
-					<AbsDimension x="0" y="0"/>
-				</Offset>
-			</Anchor>
-		</Anchors>
-		<Scripts>
-			<OnUpdate>
-				BigFoot_OnUpdate(self, arg1);
-			</OnUpdate>
-			<OnLoad>
-				BigFoot_OnInit(self);
-			</OnLoad>
-			<OnEvent>
-				BigFoot_OnEvent(self, event, ...);
-			</OnEvent>
-		</Scripts>
-	</Frame>
+    <Frame name="BigFootFrame" parent="UIParent" hidden="false">
+        <Size>
+            <AbsDimension x="1" y="1"/>
+        </Size>
+        <Anchors>
+            <Anchor point="TOPRIGHT" relativeTo="UIParent" relativePoint="TOPRIGHT">
+                <Offset>
+                    <AbsDimension x="0" y="0"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Scripts>
+            <OnUpdate>
+                BigFoot_OnUpdate(self, arg1);
+            </OnUpdate>
+            <OnLoad>
+                BigFoot_OnInit(self);
+            </OnLoad>
+            <OnEvent>
+                BigFoot_OnEvent(self, event, ...);
+            </OnEvent>
+        </Scripts>
+    </Frame>
 
-	<Frame name="BigFootURLFrame" toplevel="true" frameStrata="HIGH" parent="UIParent" enableMouse="true" hidden="true">
-		<Size>
-			<AbsDimension x="400" y="150"/>
-		</Size>
-		<Anchors>
-			<Anchor point="TOP" relativeTo="UIParent" realtivePoint="TOP">
-				<Offset>
-					<AbsDimension x="0" y="-100"/>
-				</Offset>
-			</Anchor>
-		</Anchors>
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-			<BackgroundInsets>
-				<AbsInset left="11" right="12" top="12" bottom="11"/>
-			</BackgroundInsets>
-			<TileSize>
-				<AbsValue val="32"/>
-			</TileSize>
-			<EdgeSize>
-				<AbsValue val="32"/>
-			</EdgeSize>
-		</Backdrop>
-		<Layers>
-			<Layer level="ARTWORK">
-				<FontString name="$parentTitle" inherits="GameFontHighlight">
-					<Size>
-						<AbsDimension x="290" y="0"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOP">
-							<Offset>
-								<AbsDimension x="0" y="-16"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentText" inherits="GameFontNormal" justifyH="LEFT">
-					<Size>
-						<AbsDimension x="300" y="0"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT" relativeTo="BigFootURLFrame" relativePoint="TOPLEFT">
-							<Offset>
-								<AbsDimension x="80" y="-40"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<Texture name="$parentAlertIcon" file="Interface\DialogFrame\DialogAlertIcon">
-					<Size>
-						<AbsDimension x="64" y="64"/>
-					</Size>
-					<Anchors>
-						<Anchor point="LEFT">
-							<Offset>
-								<AbsDimension x="12" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
-		<Frames>
-			<Button name="$parentCloseButton" inherits="UIPanelCloseButton">
-				<Anchors>
-					<Anchor point="TOPRIGHT">
-						<Offset>
-							<AbsDimension x="-3" y="-3"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						self:GetParent():Hide();
-					</OnClick>
-				</Scripts>
-			</Button>
-			<EditBox name="$parentURL" multiLine="true" letters="65535" autoFocus="true">
-				<Size>
-					<AbsDimension x="450" y="1"/>
-				</Size>
-				<Scripts>
-					<OnTextChanged>
-						BigFootURLFrameURL:SetText(self.url);
-						BigFootURLFrameURL:HighlightText();
-					</OnTextChanged>
-					<OnEscapePressed>
-						BigFootURLFrame:Hide();
-					</OnEscapePressed>
-					<OnCursorChanged>
-						BigFootURLFrameURL:HighlightText();
-					</OnCursorChanged>
-					<OnEditFocusLost>
-						BigFootURLFrame:Hide();
-					</OnEditFocusLost>
-				</Scripts>
-				<FontString inherits="GameFontHighlightSmall"/>
-			</EditBox>
-		</Frames>
-	</Frame>
+    <Frame name="BigFootURLFrame" toplevel="true" frameStrata="HIGH" parent="UIParent" enableMouse="true" hidden="true">
+        <Size>
+            <AbsDimension x="400" y="150"/>
+        </Size>
+        <Anchors>
+            <Anchor point="TOP" relativeTo="UIParent" realtivePoint="TOP">
+                <Offset>
+                    <AbsDimension x="0" y="-100"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+            <BackgroundInsets>
+                <AbsInset left="11" right="12" top="12" bottom="11"/>
+            </BackgroundInsets>
+            <TileSize>
+                <AbsValue val="32"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="32"/>
+            </EdgeSize>
+        </Backdrop>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parentTitle" inherits="GameFontHighlight">
+                    <Size>
+                        <AbsDimension x="290" y="0"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOP">
+                            <Offset>
+                                <AbsDimension x="0" y="-16"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentText" inherits="GameFontNormal" justifyH="LEFT">
+                    <Size>
+                        <AbsDimension x="300" y="0"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeTo="BigFootURLFrame" relativePoint="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="80" y="-40"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <Texture name="$parentAlertIcon" file="Interface\DialogFrame\DialogAlertIcon">
+                    <Size>
+                        <AbsDimension x="64" y="64"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="LEFT">
+                            <Offset>
+                                <AbsDimension x="12" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-3" y="-3"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        self:GetParent():Hide();
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <EditBox name="$parentURL" multiLine="true" letters="65535" autoFocus="true">
+                <Size>
+                    <AbsDimension x="450" y="1"/>
+                </Size>
+                <Scripts>
+                    <OnTextChanged>
+                        BigFootURLFrameURL:SetText(self.url);
+                        BigFootURLFrameURL:HighlightText();
+                    </OnTextChanged>
+                    <OnEscapePressed>
+                        BigFootURLFrame:Hide();
+                    </OnEscapePressed>
+                    <OnCursorChanged>
+                        BigFootURLFrameURL:HighlightText();
+                    </OnCursorChanged>
+                    <OnEditFocusLost>
+                        BigFootURLFrame:Hide();
+                    </OnEditFocusLost>
+                </Scripts>
+                <FontString inherits="GameFontHighlightSmall"/>
+            </EditBox>
+        </Frames>
+    </Frame>
 </Ui>

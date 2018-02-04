@@ -16,10 +16,10 @@ if (IsConfigurableAddOn("ChatEnhance") or IsConfigurableAddOn("BubbleChat")) the
         SCROLL_CHATFRAME_TEXT = "允許使用鼠標滾輪滾動聊天窗口";
 
         BFC_ENABLE_TEXT = "啟用大腳聊天快捷條"
-        BFC_ENABLE_TEXT_TOOLTIP= "添加聊天快捷條，如使用大腳表情，快捷頻道切換等"
+        BFC_ENABLE_TEXT_TOOLTIP = "添加聊天快捷條，如使用大腳表情，快捷頻道切換等"
         PLAYER_LINK_ENABLE_TEXT = "增強聊天視窗";
-        PLAYER_LINK_ENABLE_TEXT_TOOLTIP= "增強聊天窗口，如聊天時間顯示，複製聊天內容等";
-        BFC_CONFIG="聊天配置"
+        PLAYER_LINK_ENABLE_TEXT_TOOLTIP = "增強聊天窗口，如聊天時間顯示，複製聊天內容等";
+        BFC_CONFIG = "聊天配置"
         BFC_DISABLE_DELAY_TEXT = "|cff00c0c0<大腳聊天>|r 妳已經關閉大腳聊天(BigFootChat)模塊，該設置將在下次插件載入時生效。";
     else
         CHAT_ENHANCEMENT_TITLE = "Chat Enhancement";
@@ -28,15 +28,14 @@ if (IsConfigurableAddOn("ChatEnhance") or IsConfigurableAddOn("BubbleChat")) the
 
         BFC_ENABLE_TEXT = "Enable BigFootChat"
         PLAYER_LINK_ENABLE_TEXT = "Enhance player linke in chat window";
-        BFC_CONFIG="Config BFC"
+        BFC_CONFIG = "Config BFC"
     end
 
     ModManagement_RegisterMod("ChatEnhancement",
         "Interface\\Icons\\Spell_Magic_PolymorphChicken",
         CHAT_ENHANCEMENT_TITLE,
         "",
-        nil
-    );
+        nil);
 end
 
 if (IsConfigurableAddOn("BubbleChat")) then
@@ -59,13 +58,11 @@ if (IsConfigurableAddOn("BubbleChat")) then
                     BubbleChat_Toggle(false);
                 end
             end
-        end
-    );
+        end);
 end
 
 if (IsConfigurableAddOn("ChatEnhance")) then
-    ModManagement_RegisterCheckBox(
-        "ChatEnhancement",
+    ModManagement_RegisterCheckBox("ChatEnhancement",
         SCROLL_CHATFRAME_TEXT,
         nil,
         "EnableScrollChatFrame",
@@ -84,13 +81,11 @@ if (IsConfigurableAddOn("ChatEnhance")) then
                     ChatEnahnce_Toggle(false);
                 end
             end
-        end
-    );
+        end);
 end
 
 if (IsConfigurableAddOn("PlayerLink")) then
-    ModManagement_RegisterCheckBox(
-        "ChatEnhancement",
+    ModManagement_RegisterCheckBox("ChatEnhancement",
         PLAYER_LINK_ENABLE_TEXT,
         PLAYER_LINK_ENABLE_TEXT_TOOLTIP,
         "EnablePlayerLink",
@@ -109,13 +104,11 @@ if (IsConfigurableAddOn("PlayerLink")) then
                     PlayerLink_Toggle(false);
                 end
             end
-        end
-    );
+        end);
 end
 
 if (IsConfigurableAddOn("BigFootChat")) then
-    ModManagement_RegisterCheckBox(
-        "ChatEnhancement",
+    ModManagement_RegisterCheckBox("ChatEnhancement",
         BFC_ENABLE_TEXT,
         BFC_ENABLE_TEXT_TOOLTIP,
         "EnableBFC",
@@ -135,19 +128,16 @@ if (IsConfigurableAddOn("BigFootChat")) then
                     BigFoot_RequestReloadUI(function() BigFoot_Print(BFC_DISABLE_DELAY_TEXT); end);
                 end
             end
-        end
-    );
-    ModManagement_RegisterButton(
-        "ChatEnhancement",
+        end);
+    ModManagement_RegisterButton("ChatEnhancement",
         BFC_CONFIG,
         function()
-            if BigFoot_IsAddOnLoaded("BigFootChat")  then
+            if BigFoot_IsAddOnLoaded("BigFootChat") then
                 BigFootChat:ShowOptions()
                 PlaySound("igMainMenuOption");
                 HideUIPanel(ModManagementFrame);
             end
         end,
         nil,
-        1
-    );
+        1);
 end

@@ -1,143 +1,149 @@
 --===================================================================================
--- BigFootEvent - °æ±¾£º1.01
--- ÈÕÆÚ£º2007-4-11
--- ×÷Õß£º¶À¹Â°ÁÑ©
--- ÃèÊö£º±ã½İ¸ßĞ§µÄ´¦ÀíÊÂ¼şµÄÀà¿â
--- °æÈ¨ËùÓĞ£º°¬ÔóÀ­Ë¹¹ú¼ÒµØÀí
--- ÌØ±ğÃùĞ»£ºAce
+-- BigFootEvent - ç‰ˆæœ¬ï¼š1.01
+-- æ—¥æœŸï¼š2007-4-11
+-- ä½œè€…ï¼šç‹¬å­¤å‚²é›ª
+-- æè¿°ï¼šä¾¿æ·é«˜æ•ˆçš„å¤„ç†äº‹ä»¶çš„ç±»åº“
+-- ç‰ˆæƒæ‰€æœ‰ï¼šè‰¾æ³½æ‹‰æ–¯å›½å®¶åœ°ç†
+-- ç‰¹åˆ«é¸£è°¢ï¼šAce
 --===================================================================================
 local __MAJOR_VERSION_NUMBER = 1;
 local __MINOR_VERSION_NUMBER = 0;
-local BEvent = {registry={},frame = nil};
+local BEvent = { registry = {}, frame = nil };
 BEvent.frame = CreateFrame("Frame", "BigFootEventFrame", UIparent);
 
-BEvent.frame:SetScript("OnEvent", function(self, __event, ...)	
-	BEvent:__EventHandler(__event, ...);
+BEvent.frame:SetScript("OnEvent", function(self, __event, ...)
+    BEvent:__EventHandler(__event, ...);
 end)
--- ÊÂ¼ş´¦Àí
-local __stack = setmetatable({}, {__mode = "__k"});	-- ÉèÖÃÎªweak Table		
+-- äº‹ä»¶å¤„ç†
+local __stack = setmetatable({}, { __mode = "__k" }); -- è®¾ç½®ä¸ºweak Table
 function BEvent:__EventHandler(__event, ...)
-	assert(__event and type(__event)=="string","Invalid __event. The type of __event must be string.");
+    assert(__event and type(__event) == "string", "Invalid __event. The type of __event must be string.");
 
-	local __tmp = next(__stack) or {};	
-	__stack[__tmp] = nil;
-	
-	if (__event and BEvent.registry[__event]) then
-		for __obj, __method in pairs(BEvent.registry[__event]) do
-			if (__event == "COMBAT_LOG_EVENT_UNFILTERED" or __event == "COMBAT_LOG_EVENT") then
-				__tmp[__obj] = BEvent.registry[__event][__obj][select(2, ...)];
-			else
-				__tmp[__obj] = __method;
-			end
-		end
-	end
+    local __tmp = next(__stack) or {};
+    __stack[__tmp] = nil;
 
-	for __o, __m in pairs(__tmp) do
-		if (type(__m) == "string") then
-			if (__o[__m] and type(__o[__m]) == "function") then
-				__o[__m](__o, ...);
-			end
-		elseif (__m and type(__m) == "function") then
-			__m(__event, ...);
-		end
-		__tmp[__o] = nil;
-	end
+    if (__event and BEvent.registry[__event]) then
+        for __obj, __method in pairs(BEvent.registry[__event]) do
+            if (__event == "COMBAT_LOG_EVENT_UNFILTERED" or __event == "COMBAT_LOG_EVENT") then
+                __tmp[__obj] = BEvent.registry[__event][__obj][select(2, ...)];
+            else
+                __tmp[__obj] = __method;
+            end
+        end
+    end
+
+    for __o, __m in pairs(__tmp) do
+        if (type(__m) == "string") then
+            if (__o[__m] and type(__o[__m]) == "function") then
+                __o[__m](__o, ...);
+            end
+        elseif (__m and type(__m) == "function") then
+            __m(__event, ...);
+        end
+        __tmp[__o] = nil;
+    end
 end
+
 --=============================================================================
--- ·½·¨£ºRegisterEevent
--- ¹¦ÄÜ£º×¢²áÊÂ¼şºÍ¶ÔÓ¦µÄ·½·¨
--- ²ÎÊı_1£ºevent - [ÊäÈë] ÊÂ¼şÃû - string
--- ²ÎÊı_2£ºmethod - [ÊäÈë] ·½·¨ - string or function<¿ÉÑ¡²ÎÊı,È±Ê¡Îªevent>
+-- æ–¹æ³•ï¼šRegisterEevent
+-- åŠŸèƒ½ï¼šæ³¨å†Œäº‹ä»¶å’Œå¯¹åº”çš„æ–¹æ³•
+-- å‚æ•°_1ï¼ševent - [è¾“å…¥] äº‹ä»¶å - string
+-- å‚æ•°_2ï¼šmethod - [è¾“å…¥] æ–¹æ³• - string or function<å¯é€‰å‚æ•°,ç¼ºçœä¸ºevent>
 --=============================================================================
 function BEvent:RegisterEvent(__event, __method)
-	assert(__event and type(__event) == "string", "BEvent: Invalid event. The type of event must be string.");
-	-- ÌØÊâ´¦ÀíCOMBAT_LOG_EVENT_UNFILTERED
-	if (__event == "COMBAT_LOG_EVENT_UNFILTERED" or __event == "COMBAT_LOG_EVENT") then
-		assert(__method and type(__method) == "string", string.gsub("BEvent: '$EVENT' - Invalid combat log event.", "$EVENT", tostring(__method)));
-		if (not BEvent.registry[__event]) then
-			BEvent.registry[__event] = {};
-			BEvent.frame:RegisterEvent(__event);
-		end
-		BEvent.registry[__event][self] = BEvent.registry[__event][self] or {};		
-		BEvent.registry[__event][self][__method] = __method;
-	else
-		__method = __method or __event;
-		if (not BEvent.registry[__event]) then
-			BEvent.registry[__event] = {};
-			BEvent.frame:RegisterEvent(__event);
-		end	
-		BEvent.registry[__event][self] = __method;
-	end
+    assert(__event and type(__event) == "string", "BEvent: Invalid event. The type of event must be string.");
+    -- ç‰¹æ®Šå¤„ç†COMBAT_LOG_EVENT_UNFILTERED
+    if (__event == "COMBAT_LOG_EVENT_UNFILTERED" or __event == "COMBAT_LOG_EVENT") then
+        assert(__method and type(__method) == "string", string.gsub("BEvent: '$EVENT' - Invalid combat log event.", "$EVENT", tostring(__method)));
+        if (not BEvent.registry[__event]) then
+            BEvent.registry[__event] = {};
+            BEvent.frame:RegisterEvent(__event);
+        end
+        BEvent.registry[__event][self] = BEvent.registry[__event][self] or {};
+        BEvent.registry[__event][self][__method] = __method;
+    else
+        __method = __method or __event;
+        if (not BEvent.registry[__event]) then
+            BEvent.registry[__event] = {};
+            BEvent.frame:RegisterEvent(__event);
+        end
+        BEvent.registry[__event][self] = __method;
+    end
 end
+
 --=============================================================================
--- ·½·¨£ºUnregisterEvent
--- ¹¦ÄÜ£ºÈ¡ÏûobjµÄÊÂ¼şµÄ×¢²á
--- ²ÎÊı£ºevent - [ÊäÈë] ÊÂ¼şÃû - string
+-- æ–¹æ³•ï¼šUnregisterEvent
+-- åŠŸèƒ½ï¼šå–æ¶ˆobjçš„äº‹ä»¶çš„æ³¨å†Œ
+-- å‚æ•°ï¼ševent - [è¾“å…¥] äº‹ä»¶å - string
 --=============================================================================
 function BEvent:UnregisterEvent(__event, __method)
-	assert(type(__event)=="string","Invalid event. The type of event must be string.");
-	
-	if (BEvent.registry[__event] and BEvent.registry[__event][self]) then
-		if (__event == "COMBAT_LOG_EVENT_UNFILTERED" or __event == "COMBAT_LOG_EVENT") then
-			if ( __method and BEvent.registry[__event][self][__method]) then
-				BEvent.registry[__event][self][__method] = nil;
-			else
-				BEvent.registry[__event][self] = nil;
-			end
-		else
-			BEvent.registry[__event][self] = nil;
-		end
+    assert(type(__event) == "string", "Invalid event. The type of event must be string.");
 
-		if (not next(BEvent.registry[__event])) then	-- Èç¹ûÃ»ÓĞÈÎºÎ²å¼ş×¢²áÁË¸ÃÊÂ¼ş
-			BEvent.registry[__event] = nil					-- È¡selfµÄÊÂ¼ş
-			BEvent.frame:UnregisterEvent(__event)		-- È¡ÏûÊÂ¼ş×¢²á
-		end
-	end
+    if (BEvent.registry[__event] and BEvent.registry[__event][self]) then
+        if (__event == "COMBAT_LOG_EVENT_UNFILTERED" or __event == "COMBAT_LOG_EVENT") then
+            if (__method and BEvent.registry[__event][self][__method]) then
+                BEvent.registry[__event][self][__method] = nil;
+            else
+                BEvent.registry[__event][self] = nil;
+            end
+        else
+            BEvent.registry[__event][self] = nil;
+        end
+
+        if (not next(BEvent.registry[__event])) then -- å¦‚æœæ²¡æœ‰ä»»ä½•æ’ä»¶æ³¨å†Œäº†è¯¥äº‹ä»¶
+            BEvent.registry[__event] = nil -- å–selfçš„äº‹ä»¶
+            BEvent.frame:UnregisterEvent(__event) -- å–æ¶ˆäº‹ä»¶æ³¨å†Œ
+        end
+    end
 end
+
 --=============================================================================
--- ·½·¨£ºUnregisterAllEvent
--- ¹¦ÄÜ£ºÈ¡ÏûobjµÄËùÓĞÊÂ¼ş×¢²á
+-- æ–¹æ³•ï¼šUnregisterAllEvent
+-- åŠŸèƒ½ï¼šå–æ¶ˆobjçš„æ‰€æœ‰äº‹ä»¶æ³¨å†Œ
 --=============================================================================
 function BEvent:UnregisterAllEvent()
-	for __event, __data in pairs(BEvent.registry) do
-		if (__data[self]) then
-			self:UnregisterEvent(__event);
-		end
-	end
+    for __event, __data in pairs(BEvent.registry) do
+        if (__data[self]) then
+            self:UnregisterEvent(__event);
+        end
+    end
 end
+
 --=============================================================================
--- ·½·¨: Init
--- ¹¦ÄÜ: ²å¼ş³õÊ¼»¯ - ¶ÔÓ¦ÓÚ'ADDON_LOADED'ÊÂ¼ş
--- ²ÎÊı: ... - [ÊäÈë] 
+-- æ–¹æ³•: Init
+-- åŠŸèƒ½: æ’ä»¶åˆå§‹åŒ– - å¯¹åº”äº'ADDON_LOADED'äº‹ä»¶
+-- å‚æ•°: ... - [è¾“å…¥]
 --=============================================================================
 BEvent.Initialization = {};
-function BEvent:Init(...)	
-	local __tab = select(1, ...);
-	__tab = type(__tab) == "table" and __tab or {};
-	__tab.name = __tab.name or __tab[1] or "Unknown";		-- ²å¼şÃû
-	__tab.func = __tab.func or __tab[2] or function() end;		-- ³õÊ¼»¯º¯Êı
-	BEvent:RegisterEvent("ADDON_LOADED");
-	table.insert(BEvent.Initialization, __tab);	
+function BEvent:Init(...)
+    local __tab = select(1, ...);
+    __tab = type(__tab) == "table" and __tab or {};
+    __tab.name = __tab.name or __tab[1] or "Unknown"; -- æ’ä»¶å
+    __tab.func = __tab.func or __tab[2] or function() end; -- åˆå§‹åŒ–å‡½æ•°
+    BEvent:RegisterEvent("ADDON_LOADED");
+    table.insert(BEvent.Initialization, __tab);
 end
+
 --=============================================================================
--- ADDON_LOADED - init·½·¨µÄ´¦Àí
+-- ADDON_LOADED - initæ–¹æ³•çš„å¤„ç†
 --=============================================================================
 function BEvent.ADDON_LOADED()
-	local __k, __v;
-	for __k, __v in pairs(BEvent.Initialization) do
-		if (arg1 == __v.name) then
-			assert(__v.func, string.format("<%s> need a init function", __v.name));
+    local __k, __v;
+    for __k, __v in pairs(BEvent.Initialization) do
+        if (arg1 == __v.name) then
+            assert(__v.func, string.format("<%s> need a init function", __v.name));
 
-			__v:func();
-			table.remove(BEvent.Initialization, __k);			
-			break;
-		end
-	end
-end
---=============================================================================
--- ¹¹Ôìº¯Êı
---=============================================================================
-function BEvent:constructor()	
+            __v:func();
+            table.remove(BEvent.Initialization, __k);
+            break;
+        end
+    end
 end
 
-BLibrary:Register(BEvent,"BEvent",__MAJOR_VERSION_NUMBER,__MINOR_VERSION_NUMBER);
+--=============================================================================
+-- æ„é€ å‡½æ•°
+--=============================================================================
+function BEvent:constructor()
+end
+
+BLibrary:Register(BEvent, "BEvent", __MAJOR_VERSION_NUMBER, __MINOR_VERSION_NUMBER);
