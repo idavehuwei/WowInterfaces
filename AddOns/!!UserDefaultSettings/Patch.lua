@@ -38,9 +38,9 @@ do
 	local frame = CreateFrame("Frame");
 	frame:RegisterEvent("ADDON_LOADED");
 	frame:SetScript("OnEvent", function(self, event, addon)
-		if (AsynCallFuncs[addon]) then		
+		if (AsynCallFuncs[addon]) then
 			for func, args in pairs(AsynCallFuncs[addon]) do
-				if (type(_G[func]) == "function") then					
+				if (type(_G[func]) == "function") then
 					_G[func](unpack(args));
 				end
 			end
@@ -279,6 +279,7 @@ do
         end
     end
 
+    frame:SetScript("OnLoad", PetActionBarFrame_UpdatePosition);
     frame:SetScript("OnEvent", PetActionBarFrame_UpdatePosition);
     hooksecurefunc("UIParent_ManageFramePositions", function()
         RePositionPetActionBar();
