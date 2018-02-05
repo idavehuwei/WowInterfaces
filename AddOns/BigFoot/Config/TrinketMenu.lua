@@ -33,7 +33,7 @@ if (IsConfigurableAddOn("TrinketMenu")) then
         TRINKET_MENU_ENABLE_TEXT,
         nil,
         "EnableTrinketMenu",
-        0,
+        1,
         function(arg)
             if (arg == 1) then
                 if (not BigFoot_IsAddOnLoaded("TrinketMenu")) then

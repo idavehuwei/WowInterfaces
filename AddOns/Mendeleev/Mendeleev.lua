@@ -118,9 +118,9 @@ local options = {
 function Mendeleev:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("MendeleevDB", {
 		profile = {
-			showItemLevel = false,
-			showItemID = false,
-			showItemCount = false,
+			showItemLevel = true,
+			showItemID = true,
+			showItemCount = true,
 			showStackSize = true,
 			showUsedInTree = true,
 			UsedInTreeIcons = true,
@@ -157,7 +157,7 @@ function Mendeleev:OnInitialize()
 			set  = function(info, val) self.db.profile.sets[key] = not val cache = {} end,
 		}
 	end
-	
+
 	LibStub("AceConfig-3.0"):RegisterOptionsTable("Mendeleev", options)
 	LibStub("AceConfig-3.0"):RegisterOptionsTable("Mendeleev-Sets", t)
 	LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Mendeleev", "Mendeleev")
@@ -176,7 +176,7 @@ function Mendeleev:OnEnable()
 	self:SecureHookScript(ShoppingTooltip2, "OnTooltipCleared")
 	self:SecureHookScript(ShoppingTooltip3, "OnTooltipSetItem")
 	self:SecureHookScript(ShoppingTooltip3, "OnTooltipCleared")
-	
+
 	if AtlasLootTooltip then
 		self:SecureHookScript(AtlasLootTooltip, "OnTooltipSetItem")
 		self:SecureHookScript(AtlasLootTooltip, "OnTooltipCleared")
@@ -206,7 +206,7 @@ function Mendeleev:GetUsedInTable(skill, reagentid)
 			if type(v) == "table" then
 				local guit = self:GetUsedInTable(v.set, reagentid)
 				if guit then
-					if not ret then 
+					if not ret then
 						ret = {}
 					end
 					for k, v in pairs(guit) do
@@ -221,7 +221,7 @@ function Mendeleev:GetUsedInTable(skill, reagentid)
 			for item, num in usedin:gmatch("(%-?%d+)x(%d+)") do
 				item = tonumber(item)
 				num = tonumber(num)
-				if not ret then 
+				if not ret then
 					ret = {}
 				end
 				ret[item] = num
@@ -332,7 +332,7 @@ function Mendeleev:GetUsedInFullTable(id)
 			local usedin = self:GetUsedInTable(skill, id)
 			if usedin then
 				for item, num in pairs(usedin) do
-					 if not cacheUsedInFull[id] then 
+					 if not cacheUsedInFull[id] then
 						cacheUsedInFull[id] = {}
 					end
 					cacheUsedInFull[id][item] = num
