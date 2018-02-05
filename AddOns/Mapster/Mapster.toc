@@ -38,3 +38,5 @@ Notes.lua
 WayPoint.lua
 WayPoints.lua
 NotePoint.lua
+
+ZoneInfo.lua
