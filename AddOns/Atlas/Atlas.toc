@@ -1,0 +1,40 @@
+## X-BigfootType: 7
+## X-BigfootType: 1
+## X-BigfootDesc: /Atlas 打开设置界面。在游戏内显示副本地图。新的版本将各模块均分立出去，需要相应功能的玩家需加载这些单独的模块。
+## X-BigfootDesc: /Atlas 打开设置界面。在游戏内显示副本地图。新的版本将各模块均分立出去，需要相应功能的玩家需加载这些单独的模块。
+## Interface: 30100
+## Title: Atlas
+## Title-zhCN: [地图] Atlas |cFFA400FF核心|r
+## Title-zhTW: [地圖] Atlas |cFFA400FF核心|r
+## Notes: Instance Map Browser
+## Notes-zhCN: Atlas 副本地图核心插件
+## Notes-zhTW: Atlas 地圖集核心插件
+## Version: 1.14.1
+## X-Date: May, 2009
+## Author: Dan Gilbert
+## X-Email: loglow@gmail.com
+## X-Website: http://www.atlasmod.com
+## X-Category: Map
+## X-OptionsFrame: AtlasOptionsFrame
+## SavedVariablesPerCharacter: AtlasOptions
+## Dependencies: !!Corelibs
+
+Locale\Atlas-enUS.lua
+Locale\Atlas-ruRU.lua
+Locale\Atlas-deDE.lua
+Locale\Atlas-frFR.lua
+Locale\Atlas-zhCN.lua
+Locale\Atlas-esES.lua
+Locale\Atlas-zhTW.lua
+AtlasMaps.lua
+
+AtlasDropDown.lua
+
+Atlas.lua
+Atlas.xml
+
+AtlasButton.lua
+AtlasButton.xml
+
+AtlasOptions.lua
+AtlasOptions.xml

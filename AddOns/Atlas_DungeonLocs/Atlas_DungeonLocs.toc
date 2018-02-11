@@ -1,0 +1,28 @@
+## X-BigfootType: 7
+## X-BigfootType: 1
+## X-BigfootDesc: /Atlas 打开设置界面。在游戏内显示副本地图。新的版本将各模块均分立出去，需要相应功能的玩家需加载这些单独的模块。
+## X-BigfootDesc: /Atlas 打开设置界面。在游戏内显示副本地图。新的版本将各模块均分立出去，需要相应功能的玩家需加载这些单独的模块。
+## Interface: 30100
+## Title: Atlas |r|cFF0099FF[Dungeon Locs]|r
+## Title-zhCN: [地图] Atlas |r|cFF0099FF副本分布图|r
+## Title-zhTW: [地圖] Atlas 地下城位置地圖
+## Notes: Dungeon Locations
+## Notes-zhCN: 副本分布图
+## Notes-zhTW: Atlas 地下城位置地圖模組，顯示各個地下城 (副本) 所在位置
+## Version: 1.14.1
+## X-Date: May, 2009
+## Author: Dan Gilbert
+## X-Email: loglow@gmail.com
+## X-Website: http://www.atlasmod.com
+## X-Category: Map
+## RequiredDeps: Atlas
+
+Locale\Atlas_DungeonLocs-enUS.lua
+Locale\Atlas_DungeonLocs-ruRU.lua
+Locale\Atlas_DungeonLocs-frFR.lua
+Locale\Atlas_DungeonLocs-deDE.lua
+Locale\Atlas_DungeonLocs-zhCN.lua
+Locale\Atlas_DungeonLocs-zhTW.lua
+Locale\Atlas_DungeonLocs-esES.lua
+
+Atlas_DungeonLocs.lua

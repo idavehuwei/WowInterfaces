@@ -1,7 +1,7 @@
 ﻿## Interface: 30100
 ## Title: AtlasLoot_OriginalWoW
-## Title-zhCN: [地图] AtlasLoot |cFF0099FF[经典旧世]|r
-## Title-zhTW: [地圖] AL 艾澤拉斯世界
+## Title-zhCN: [地图] AtlasLoot |cFF0099FF经典旧世|r
+## Title-zhTW: [地圖] AtlasLoot |cFF0099FF艾澤拉斯世界|r
 ## Notes: AtlasLoot loot tables from pre-Burning Crusade
 ## Notes-deDE: AtlasLoot Loot-Tabellen für Instanzen vor Burning Crusade
 ## Notes-zhCN: AtlasLoot Enhanced 的《燃烧的远征》发售之前的副本掉落信息

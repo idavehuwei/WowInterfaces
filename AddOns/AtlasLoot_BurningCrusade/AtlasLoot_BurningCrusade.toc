@@ -1,7 +1,7 @@
 ﻿## Interface: 30100
 ## Title: AtlasLoot_BurningCrusade
-## Title-zhCN: [地图] AtlasLoot |cFF0099FF[燃烧的远征]|r
-## Title-zhTW: [地圖] AL 燃燒的遠征
+## Title-zhCN: [地图] AtlasLoot |cFF0099FF燃烧的远征|r
+## Title-zhTW: [地圖] AtlasLoot |cFF0099FF燃燒的遠征|r
 ## Notes: AtlasLoot loot tables from the Burning Crusade
 ## Notes-zhCN: AtlasLoot Enhanced 的《燃烧的远征》副本掉落信息
 ## Notes-zhTW: AtlasLoot 燃燒的遠征副本掉落物品資料庫

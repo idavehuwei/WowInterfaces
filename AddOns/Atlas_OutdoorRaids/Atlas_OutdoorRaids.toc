@@ -1,0 +1,28 @@
+## X-BigfootType: 7
+## X-BigfootType: 1
+## X-BigfootDesc: /Atlas 打开设置界面。在游戏内显示副本地图。新的版本将各模块均分立出去，需要相应功能的玩家需加载这些单独的模块。
+## X-BigfootDesc: /Atlas 打开设置界面。在游戏内显示副本地图。新的版本将各模块均分立出去，需要相应功能的玩家需加载这些单独的模块。
+## Interface: 30100
+## Title: Atlas |r|cFF0099FF[Outdoor Raids]|r
+## Title-zhCN: [地图] Atlas |r|cFF0099FF户外首分布图|r
+## Title-zhTW: [地圖] Atlas 戶外首領地圖
+## Notes: Outdoor Raid Encounters
+## Notes-zhCN: 户外首领分布图
+## Notes-zhTW: Atlas 戶外首領地圖模組
+## Version: 1.14.1
+## X-Date: May, 2009
+## Author: Dan Gilbert
+## X-Email: loglow@gmail.com
+## X-Website: http://www.atlasmod.com
+## X-Category: Map
+## RequiredDeps: Atlas
+
+Locale\Atlas_OutdoorRaids-enUS.lua
+Locale\Atlas_OutdoorRaids-ruRU.lua
+Locale\Atlas_OutdoorRaids-frFR.lua
+Locale\Atlas_OutdoorRaids-deDE.lua
+Locale\Atlas_OutdoorRaids-zhCN.lua
+Locale\Atlas_OutdoorRaids-zhTW.lua
+Locale\Atlas_OutdoorRaids-esES.lua
+
+Atlas_OutdoorRaids.lua

@@ -8,11 +8,11 @@
 ## X-Category: Map
 ## X-License: GPL v2
 ## X-Website: http://www.atlasloot.net
-## Title-zhCN: [地图] AtlasLoot Enhanced
+## Title-zhCN: [地图] AtlasLoot |cFFA400FF核心|r
+## Title-zhTW: [地圖] AtlasLoot |cFFA400FF核心|r
 ## Notes-zhCN: 显示副本中的首领与小怪可能掉落的物品
-## Title-zhTW: [地圖] AL 物品掉落主程式
 ## Notes-zhTW: 顯示首領與小怪可能掉落的物品，並可查詢各陣營與戰場的獎勵物品、套裝物品等
-## RealTitle-zhCN: [地图] 副本掉落物品查询
+## RealTitle-zhCN: [地图] AL 副本掉落物品查询
 ## RealTitle-zhTW: [地圖] AL 物品掉落[主程式]
 ## Notes-ruRU: Отображает весю возможную добычу с боссов
 ## SavedVariables: AtlasLootOptions, AtlasLootDB, AtlasLootWishList

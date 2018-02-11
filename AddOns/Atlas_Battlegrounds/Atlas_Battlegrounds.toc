@@ -1,0 +1,28 @@
+## X-BigfootType: 7
+## X-BigfootType: 1
+## X-BigfootDesc: /Atlas 打开设置界面。在游戏内显示副本地图。新的版本将各模块均分立出去，需要相应功能的玩家需加载这些单独的模块。
+## X-BigfootDesc: /Atlas 打开设置界面。在游戏内显示副本地图。新的版本将各模块均分立出去，需要相应功能的玩家需加载这些单独的模块。
+## Interface: 30100
+## Title: Atlas |r|cFF0099FF[Battlegrounds]|r
+## Title-zhCN: [地图] Atlas |r|cFF0099FF战场地图|r
+## Title-zhTW: [地圖] Atlas 戰場地圖
+## Notes: Battleground Maps
+## Notes-zhCN: 战场地图
+## Notes-zhTW: Atlas 戰場地圖模組
+## Version: 1.14.1
+## X-Date: May, 2009
+## Author: Dan Gilbert
+## X-Email: loglow@gmail.com
+## X-Website: http://www.atlasmod.com
+## X-Category: Map
+## RequiredDeps: Atlas
+
+Locale\Atlas_Battlegrounds-enUS.lua
+Locale\Atlas_Battlegrounds-ruRU.lua
+Locale\Atlas_Battlegrounds-frFR.lua
+Locale\Atlas_Battlegrounds-deDE.lua
+Locale\Atlas_Battlegrounds-zhCN.lua
+Locale\Atlas_Battlegrounds-zhTW.lua
+Locale\Atlas_Battlegrounds-esES.lua
+
+Atlas_Battlegrounds.lua
