@@ -22,6 +22,7 @@ FQ_server = GetCVar("realmName");
 -- Player character name
 FQ_player = UnitName("player");
 
+local FQ_Inited = false;
 local FQ_LoadTrackedQuest = true;
 local FQ_ShowWatchFrame = true;
 local FQ_LastCompleteQuest;
@@ -29,7 +30,9 @@ local FQ_LastCompleteQuest;
 -- Hook the original Blizzard QuestLog_Update to run inside the modded QuestLog_Update()
 --hQuestLog_Update = QuestLog_Update;
 function Hook_QuestLog_Update()
-    FastQuest_QuestLog_Update()
+    if (FQ_Inited) then
+        FastQuest_QuestLog_Update();
+    end
 end
 hooksecurefunc("QuestLog_Update", Hook_QuestLog_Update)
 
@@ -178,6 +181,8 @@ function FastQuest_OnLoad(self)
     if (FQD == nil or FQD["FastQuest_Classic_Version"] ~= FASTQUEST_CLASSIC_VERSION) then
         FastQuest_FreshOptions();
     end
+
+    FQ_Inited = true;
 end
 
 function FastQuest_OnEvent(self, event, message)

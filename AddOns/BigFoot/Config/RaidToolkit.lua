@@ -171,7 +171,7 @@ if (IsConfigurableAddOn("Omen")) then
         THREAT_ENABLE_TEXT,
         nil,
         "EnableThreat",
-        0,
+        1,
         function(arg)
             if (arg == 1) then
                 if (not BigFoot_IsAddOnLoaded("Omen")) then

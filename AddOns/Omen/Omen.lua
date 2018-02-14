@@ -85,13 +85,13 @@ local defaults = {
         FrameStrata = "3-MEDIUM",
         ClampToScreen = true,
         Background = {
-            Texture = "Blizzard Parchment",
-            BorderTexture = "Blizzard Dialog",
+            Texture = "Blizzard Dialog Background",
+            BorderTexture = "None",
             Color = {r = 1, g = 1, b = 1, a = 1,},
             BorderColor = {r = 0.8, g = 0.6, b = 0, a = 1,},
             Tile = false,
             TileSize = 32,
-            EdgeSize = 8,
+            EdgeSize = 1,
             BarInset = 3,
         },
         TitleBar = {
@@ -111,7 +111,7 @@ local defaults = {
             EdgeSize = 8,
         },
         Bar = {
-            Texture = "Blizzard",
+            Texture = "Fifths",
             Height = 12,
             Spacing = 0,
             AnimateBars  = true,

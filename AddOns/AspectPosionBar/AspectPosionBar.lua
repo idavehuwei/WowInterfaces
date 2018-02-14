@@ -641,12 +641,13 @@ function A:OnInitialize()
         self.loaded = true;
         self:UpdateAspect();
         self:CreateBar();
+
+        AspectPosionBar_Toggle(true)
     end
 end
 
 function AspectPosionBar_OnLoad(self)
     AsynCall("AspectPosionBar", "AspectPosionBar_Jieguan", true);
-    AspectPosionBar_Toggle(true)
 end
 
 function AspectPosionBar_OnEvent(self, event, arg1)
@@ -688,9 +689,9 @@ function AspectPosionBar_Jieguan(switch)
         end
     end
     if (switch) then
-        AspectPosionBarFrame:ToggleManageFrame(false);
-    else
         AspectPosionBarFrame:ToggleManageFrame(true);
+    else
+        AspectPosionBarFrame:ToggleManageFrame(false);
     end
     SecureCall(UIParent_ManageFramePositions);
 end
