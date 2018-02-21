@@ -1,40 +1,40 @@
 ------------------------------------------------------------------------------------------
 -- cyCircled.lua
--- ÈÕÆÚ: 2008Äê5ÔÂ21ÈÕ
--- ×÷Õß: ¶À¹Â°ÁÑ©
--- ÃèÊö: ÈÃSMAssistµÄ¼¼ÄÜ¼ü½ÓÊÜcyCircledµÄ·ç¸ñĞ§¹û, Ê¹Ê¹ÓÃACE²å¼şµÄÍæ¼ÒÄÜµÃµ½Ğ§¹û
---			Í³Ò»µÄ½çÃæ.
--- °æÈ¨ËùÓĞ: °¬ÔóÀ­Ë¹¹ú¼ÒµØÀí
+-- æ—¥æœŸ: 2008å¹´5æœˆ21æ—¥
+-- ä½œè€…: ç‹¬å­¤å‚²é›ª
+-- æè¿°: è®©SMAssistçš„æŠ€èƒ½é”®æ¥å—cyCircledçš„é£æ ¼æ•ˆæœ, ä½¿ä½¿ç”¨ACEæ’ä»¶çš„ç©å®¶èƒ½å¾—åˆ°æ•ˆæœ
+-- ç»Ÿä¸€çš„ç•Œé¢.
+-- ç‰ˆæƒæ‰€æœ‰: è‰¾æ³½æ‹‰æ–¯å›½å®¶åœ°ç†
 ------------------------------------------------------------------------------------------
 local M = SMA;
 local L = BLocal("ShamanAssist");
 
 function M:RegisterCCSytle()
-	self:UnregisterEvent("ADDON_LOADED");
-	if (self.registeredStyle) then return	end
-	if (cyCircled) then	
-		local S = cyCircled:NewModule("ShamanAssist");
+    self:UnregisterEvent("ADDON_LOADED");
+    if (self.registeredStyle) then return end
+    if (cyCircled) then
+        local S = cyCircled:NewModule("ShamanAssist");
 
-		function S:AddonLoaded()
-			self.db = cyCircled:AcquireDBNamespace("ShamanAssist")
-			cyCircled:RegisterDefaults("SMAssist", "profile", {
-				["ElementButton"] = true,
-			});
-			self.elements = {
-				["ElementButton"] = {
-					args = {
-						hotkey = true,
-						ct = true,
-					},
-					elements = {"SMAButton1", "SMAButton2", "SMAButton3", "SMAButton4", "SMACALLBACK"}, 
-				},
-			};
-		end
+        function S:AddonLoaded()
+            self.db = cyCircled:AcquireDBNamespace("ShamanAssist")
+            cyCircled:RegisterDefaults("SMAssist", "profile", {
+                ["ElementButton"] = true,
+            });
+            self.elements = {
+                ["ElementButton"] = {
+                    args = {
+                        hotkey = true,
+                        ct = true,
+                    },
+                    elements = { "SMAButton1", "SMAButton2", "SMAButton3", "SMAButton4", "SMACALLBACK" },
+                },
+            };
+        end
 
-		function S:GetElements()
-			return {	["ElementButton"] = true,};
-		end		
-		
-		self.registeredStyle = true;
-	end
+        function S:GetElements()
+            return { ["ElementButton"] = true, };
+        end
+
+        self.registeredStyle = true;
+    end
 end
