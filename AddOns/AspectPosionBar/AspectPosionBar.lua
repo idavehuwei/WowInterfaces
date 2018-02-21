@@ -397,8 +397,8 @@ function A:AspectBarUpdate()
         if (numForms == 1) then
             AspectPosionBarMiddle:Hide();
             AspectPosionBarRight:SetPoint("LEFT", "AspectPosionBarLeft", "LEFT", 12, 0);
-            SecureCall(AspectPosionBarButton1.ClearAllPoints, AspectPosionBarButton1);
-            SecureCall(AspectPosionBarButton1.SetPoint, AspectPosionBarButton1, "BOTTOMLEFT", "AspectPosionBar", "BOTTOMLEFT", 12, 3);
+--            SecureCall(AspectPosionBarButton1.ClearAllPoints, AspectPosionBarButton1);
+--            SecureCall(AspectPosionBarButton1.SetPoint, AspectPosionBarButton1, "BOTTOMLEFT", "AspectPosionBar", "BOTTOMLEFT", 12, 3);
         elseif (numForms == 2) then
             AspectPosionBarMiddle:Hide();
             AspectPosionBarRight:SetPoint("LEFT", "AspectPosionBarLeft", "RIGHT", 0, 0);
@@ -626,7 +626,6 @@ function A:OnModuleDisable()
     SecureCall(AspectPosionBar.Hide, AspectPosionBar);
     ShapeshiftBar_Update();
 end
-
 
 function A:ToggleManageFrame(switch)
     if (switch) then

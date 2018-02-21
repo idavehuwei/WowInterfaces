@@ -17,7 +17,7 @@
             <OnLeave function="GameTooltip_Hide"/>
         </Scripts>
     </CheckButton>
-    <Frame name="AspectPosionBar" parent="UIParent" enableMouse="true" hidden="false">
+    <Frame name="AspectPosionBar" parent="MainMenuBar" enableMouse="true" hidden="true">
         <Size>
             <AbsDimension x="29" y="32"/>
         </Size>
@@ -30,16 +30,14 @@
         </Anchors>
         <Layers>
             <Layer level="BACKGROUND">
-                <!--<Texture name="$parentLeft" file="Interface\ShapeshiftBar\ShapeshiftBar">-->
-                <Texture name="$parentLeft">
+                <Texture name="$parentLeft" file="Interface\ShapeshiftBar\ShapeshiftBar">
                     <Size x="47" y="38"/>
                     <Anchors>
                         <Anchor point="BOTTOMLEFT"/>
                     </Anchors>
                     <TexCoords left="0" right="0.734375" top="0" bottom="0.296875"/>
                 </Texture>
-                <!--<Texture name="$parentMiddle" file="Interface\ShapeshiftBar\ShapeshiftBarMiddle">-->
-                <Texture name="$parentMiddle">
+                <Texture name="$parentMiddle" file="Interface\ShapeshiftBar\ShapeshiftBarMiddle">
                     <Size x="37" y="38"/>
                     <Anchors>
                         <Anchor point="LEFT" relativeTo="ShapeshiftBarLeft" relativePoint="RIGHT"/>
@@ -48,8 +46,7 @@
                 </Texture>
             </Layer>
             <Layer level="BORDER">
-                <!--<Texture name="$parentRight" file="Interface\ShapeshiftBar\ShapeshiftBar">-->
-                <Texture name="$parentRight">
+                <Texture name="$parentRight" file="Interface\ShapeshiftBar\ShapeshiftBar">
                     <Size x="43" y="38"/>
                     <Anchors>
                         <Anchor point="LEFT" relativeTo="ShapeshiftBarMiddle" relativePoint="RIGHT"/>

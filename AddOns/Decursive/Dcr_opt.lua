@@ -98,7 +98,7 @@ D.defaults = { -- {{{
     -- The number of MUFs updated every DebuffsFrameRefreshRate
     DebuffsFramePerUPdate = 10,
 
-    DebuffsFrameShowHelp = true,
+    DebuffsFrameShowHelp = false,
 
     -- position x save
     DebuffsFrame_x = false,
