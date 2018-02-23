@@ -166,6 +166,7 @@ GridLayout.defaultDB = {
 	BackgroundA = .65,
 
 	anchor = "TOPLEFT",
+	anchorRel = "BOTTOMLEFT",
 	groupAnchor = "BOTTOMLEFT",
 	hideTab = false,
 
