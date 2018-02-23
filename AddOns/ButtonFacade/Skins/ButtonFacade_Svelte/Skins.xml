@@ -1,9 +1,0 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\FrameXML\UI.xsd">
-
-    <Script file="Svelte Shadow.lua"/>
-    <Script file="Svelte.lua"/>
-    <Script file="Square.lua"/>
-    <Script file="Square Shadow.lua"/>
-
-</Ui>

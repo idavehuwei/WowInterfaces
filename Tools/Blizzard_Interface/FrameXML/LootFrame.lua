@@ -5,6 +5,7 @@ MASTER_LOOT_THREHOLD = 4;
 function LootFrame_OnLoad(self)
 	self:RegisterEvent("LOOT_OPENED");
 	self:RegisterEvent("LOOT_SLOT_CLEARED");
+	self:RegisterEvent("LOOT_SLOT_CHANGED");
 	self:RegisterEvent("LOOT_CLOSED");
 	self:RegisterEvent("OPEN_MASTER_LOOT_LIST");
 	self:RegisterEvent("UPDATE_MASTER_LOOT_LIST");
@@ -15,7 +16,7 @@ function LootFrame_OnEvent(self, event, ...)
 		local autoLoot = ...;
 		
 		self.page = 1;
-		ShowUIPanel(self);
+		LootFrame_Show(self);
 		if ( not self:IsShown()) then
 			CloseLoot(autoLoot == 0);	-- The parameter tells code that we were unable to open the UI
 		end
@@ -32,7 +33,7 @@ function LootFrame_OnEvent(self, event, ...)
 		end
 		local slot = arg1 - ((self.page - 1) * numLootToShow);
 		if ( (slot > 0) and (slot < (numLootToShow + 1)) ) then
-			local button = getglobal("LootButton"..slot);
+			local button = _G["LootButton"..slot];
 			if ( button ) then
 				button:Hide();
 			end
@@ -42,7 +43,7 @@ function LootFrame_OnEvent(self, event, ...)
 		local allButtonsHidden = 1;
 
 		for index = 1, LOOTFRAME_NUMBUTTONS do
-			button = getglobal("LootButton"..index);
+			button = _G["LootButton"..index];
 			if ( button:IsShown() ) then
 				allButtonsHidden = nil;
 			end
@@ -51,6 +52,24 @@ function LootFrame_OnEvent(self, event, ...)
 			LootFrame_PageDown();
 		end
 		return;
+	elseif ( event == "LOOT_SLOT_CHANGED" ) then
+		local arg1 = ...;
+		
+		if ( not self:IsShown() ) then
+			return;
+		end
+
+		local numLootToShow = LOOTFRAME_NUMBUTTONS;
+		if ( self.numLootItems > LOOTFRAME_NUMBUTTONS ) then
+			numLootToShow = numLootToShow - 1;
+		end
+		local slot = arg1 - ((self.page - 1) * numLootToShow);
+		if ( (slot > 0) and (slot < (numLootToShow + 1)) ) then
+			local button = _G["LootButton"..slot];
+			if ( button ) then
+				LootFrame_UpdateButton(slot);
+			end
+		end
 	elseif ( event == "LOOT_CLOSED" ) then
 		StaticPopup_Hide("LOOT_BIND");
 		HideUIPanel(self);
@@ -63,24 +82,22 @@ function LootFrame_OnEvent(self, event, ...)
 	end
 end
 
-function LootFrame_Update()
+function LootFrame_UpdateButton(index)
 	local numLootItems = LootFrame.numLootItems;
 	--Logic to determine how many items to show per page
 	local numLootToShow = LOOTFRAME_NUMBUTTONS;
 	if ( numLootItems > LOOTFRAME_NUMBUTTONS ) then
 		numLootToShow = numLootToShow - 1;
 	end
-	local texture, item, quantity, quality, locked;
-	local button, countString, color;
-	for index = 1, LOOTFRAME_NUMBUTTONS do
-		button = getglobal("LootButton"..index);
+	
+	local button = _G["LootButton"..index];
 		local slot = (numLootToShow * (LootFrame.page - 1)) + index;
 		if ( slot <= numLootItems ) then	
 			if ( (LootSlotIsItem(slot) or LootSlotIsCoin(slot)) and index <= numLootToShow ) then
-				texture, item, quantity, quality, locked = GetLootSlotInfo(slot);
-				color = ITEM_QUALITY_COLORS[quality];
-				getglobal("LootButton"..index.."IconTexture"):SetTexture(texture);
-				local text = getglobal("LootButton"..index.."Text");
+				local texture, item, quantity, quality, locked = GetLootSlotInfo(slot);
+				local color = ITEM_QUALITY_COLORS[quality];
+				_G["LootButton"..index.."IconTexture"]:SetTexture(texture);
+				local text = _G["LootButton"..index.."Text"];
 				text:SetText(item);
 				if( locked ) then
 					SetItemButtonNameFrameVertexColor(button, 1.0, 0, 0);
@@ -92,7 +109,7 @@ function LootFrame_Update()
 					SetItemButtonNormalTextureVertexColor(button, 1.0, 1.0, 1.0);
 				end
 				text:SetVertexColor(color.r, color.g, color.b);
-				countString = getglobal("LootButton"..index.."Count");
+				local countString = _G["LootButton"..index.."Count"];
 				if ( quantity > 1 ) then
 					countString:SetText(quantity);
 					countString:Show();
@@ -108,6 +125,11 @@ function LootFrame_Update()
 		else
 			button:Hide();
 		end
+end
+
+function LootFrame_Update()
+	for index = 1, LOOTFRAME_NUMBUTTONS do
+		LootFrame_UpdateButton(index);
 	end
 	if ( LootFrame.page == 1 ) then
 		LootFrameUpButton:Hide();
@@ -116,7 +138,11 @@ function LootFrame_Update()
 		LootFrameUpButton:Show();
 		LootFramePrev:Show();
 	end
-	if ( LootFrame.page == ceil(LootFrame.numLootItems / numLootToShow) or LootFrame.numLootItems == 0 ) then
+	local numItemsPerPage = LOOTFRAME_NUMBUTTONS;
+	if ( LootFrame.numLootItems > LOOTFRAME_NUMBUTTONS ) then
+		numItemsPerPage = numItemsPerPage - 1;
+	end
+	if ( LootFrame.page == ceil(LootFrame.numLootItems / numItemsPerPage) or LootFrame.numLootItems == 0 ) then
 		LootFrameDownButton:Hide();
 		LootFrameNext:Hide();
 	else
@@ -135,7 +161,8 @@ function LootFrame_PageUp()
 	LootFrame_Update();
 end
 
-function LootFrame_OnShow(self)
+function LootFrame_Show(self)
+	ShowUIPanel(self);
 	self.numLootItems = GetNumLootItems();
 	
 	if ( GetCVar("lootUnderMouse") == "1" ) then
@@ -165,6 +192,9 @@ function LootFrame_OnShow(self)
 	
 	LootFrame_Update();
 	LootFramePortraitOverlay:SetTexture("Interface\\TargetingFrame\\TargetDead");
+end
+
+function LootFrame_OnShow(self)
 	if( self.numLootItems == 0 ) then
 		PlaySound("LOOTWINDOWOPENEMPTY");
 	elseif( IsFishingLoot() ) then
@@ -186,7 +216,7 @@ function LootButton_OnClick(self, button)
 	LootFrame.selectedLootButton = self:GetName();
 	LootFrame.selectedSlot = self.slot;
 	LootFrame.selectedQuality = self.quality;
-	LootFrame.selectedItemName = getglobal(self:GetName().."Text"):GetText();
+	LootFrame.selectedItemName = _G[self:GetName().."Text"]:GetText();
 
 	LootSlot(self.slot);
 end
@@ -283,39 +313,83 @@ end
 function GroupLootFrame_OpenNewFrame(id, rollTime)
 	local frame;
 	for i=1, NUM_GROUP_LOOT_FRAMES do
-		frame = getglobal("GroupLootFrame"..i);
+		frame = _G["GroupLootFrame"..i];
 		if ( not frame:IsShown() ) then
 			frame.rollID = id;
 			frame.rollTime = rollTime;
-			getglobal("GroupLootFrame"..i.."Timer"):SetMinMaxValues(0, rollTime);
+			_G["GroupLootFrame"..i.."Timer"]:SetMinMaxValues(0, rollTime);
 			frame:Show();
 			return;
 		end
 	end
 end
 
+function GroupLootFrame_EnableLootButton(button)
+	button:Enable();
+	button:SetAlpha(1.0);
+	SetDesaturation(button:GetNormalTexture(), false);
+end
+
+function GroupLootFrame_DisableLootButton(button)
+	button:Disable();
+	button:SetAlpha(0.35);
+	SetDesaturation(button:GetNormalTexture(), true);
+end
+
 function GroupLootFrame_OnShow(self)
-	local texture, name, count, quality, bindOnPickUp = GetLootRollItemInfo(self.rollID);
-	
+	AlertFrame_FixAnchors();
+	local texture, name, count, quality, bindOnPickUp, canNeed, canGreed, canDisenchant, reasonNeed, reasonGreed, reasonDisenchant, deSkillRequired = GetLootRollItemInfo(self.rollID);
+	if (name == nil) then
+		self:Hide();
+		return;
+	end
 	if ( bindOnPickUp ) then
 		self:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Gold-Background", edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Gold-Border", tile = true, tileSize = 32, edgeSize = 32, insets = { left = 11, right = 12, top = 12, bottom = 11 } } );
-		getglobal(self:GetName().."Corner"):SetTexture("Interface\\DialogFrame\\UI-DialogBox-Gold-Corner");
-		getglobal(self:GetName().."Decoration"):Show();
+		_G[self:GetName().."Corner"]:SetTexture("Interface\\DialogFrame\\UI-DialogBox-Gold-Corner");
+		_G[self:GetName().."Decoration"]:Show();
 	else 
 		self:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background", edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32, insets = { left = 11, right = 12, top = 12, bottom = 11 } } );
-		getglobal(self:GetName().."Corner"):SetTexture("Interface\\DialogFrame\\UI-DialogBox-Corner");
-		getglobal(self:GetName().."Decoration"):Hide();
+		_G[self:GetName().."Corner"]:SetTexture("Interface\\DialogFrame\\UI-DialogBox-Corner");
+		_G[self:GetName().."Decoration"]:Hide();
 	end
 	
 	local id = self:GetID();
-	getglobal("GroupLootFrame"..id.."IconFrameIcon"):SetTexture(texture);
-	getglobal("GroupLootFrame"..id.."Name"):SetText(name);
+	_G["GroupLootFrame"..id.."IconFrameIcon"]:SetTexture(texture);
+	_G["GroupLootFrame"..id.."Name"]:SetText(name);
 	local color = ITEM_QUALITY_COLORS[quality];
-	getglobal("GroupLootFrame"..id.."Name"):SetVertexColor(color.r, color.g, color.b);
+	_G["GroupLootFrame"..id.."Name"]:SetVertexColor(color.r, color.g, color.b);
+	if ( count > 1 ) then
+		_G["GroupLootFrame"..id.."IconFrameCount"]:SetText(count);
+		_G["GroupLootFrame"..id.."IconFrameCount"]:Show();
+	else
+		_G["GroupLootFrame"..id.."IconFrameCount"]:Hide();
+	end
+	
+	if ( canNeed ) then
+		GroupLootFrame_EnableLootButton(self.needButton);
+		self.needButton.reason = nil;
+	else
+		GroupLootFrame_DisableLootButton(self.needButton);
+		self.needButton.reason = _G["LOOT_ROLL_INELIGIBLE_REASON"..reasonNeed];
+	end
+	if ( canGreed) then
+		GroupLootFrame_EnableLootButton(self.greedButton);
+		self.greedButton.reason = nil;
+	else
+		GroupLootFrame_DisableLootButton(self.greedButton);
+		self.greedButton.reason = _G["LOOT_ROLL_INELIGIBLE_REASON"..reasonGreed];
+	end
+	if ( canDisenchant) then
+		GroupLootFrame_EnableLootButton(self.disenchantButton);
+		self.disenchantButton.reason = nil;
+	else
+		GroupLootFrame_DisableLootButton(self.disenchantButton);
+		self.disenchantButton.reason = format(_G["LOOT_ROLL_INELIGIBLE_REASON"..reasonDisenchant], deSkillRequired);
+	end
 end
 
 function GroupLootFrame_OnHide (self)
-	AchievementAlertFrame_FixAnchors();
+	AlertFrame_FixAnchors();
 end
 
 function GroupLootFrame_OnEvent(self, event, ...)

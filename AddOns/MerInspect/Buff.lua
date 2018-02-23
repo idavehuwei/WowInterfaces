@@ -1,4 +1,4 @@
-
+if GetLocale()~='zhCN' then return end
 local M = MerInspect;
 
 function M:ScanUnitBuffs(unit, class, race, level)
@@ -8,9 +8,12 @@ function M:ScanUnitBuffs(unit, class, race, level)
 		self.tooltip:SetOwner(UIParent,"ANCHOR_NONE");
 		self.tooltip:ClearLines();
 		self.tooltip:SetUnitBuff(unit, i);
-		for j = 2, self.tooltip:NumLines() do			
-			txt = getglobal(self.tooltip:GetName() .."TextLeft" .. j):GetText();
-			self:GetBuffEffect(txt, class, race, level);
+		for j = 2, self.tooltip:NumLines() do	
+			local textLeft=_G[self.tooltip:GetName() .."TextLeft" .. j]
+			if textLeft then
+				txt = textLeft:GetText();
+				self:GetBuffEffect(txt, class, race, level);
+			end
 		end	
 		i = i + 1;
 	end

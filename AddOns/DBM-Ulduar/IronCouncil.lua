@@ -1,16 +1,17 @@
-local mod = DBM:NewMod("IronCouncil", "DBM-Ulduar")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("IronCouncil", "DBM-Ulduar")
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1195 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4523 $"):sub(12, -3))
 mod:SetCreatureID(32927)
-mod:SetZone()
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat", 32867, 32927, 32857)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"UNIT_DIED"
 )
 
 mod:AddBoolOption("HealthFrame", true)
@@ -21,129 +22,163 @@ mod:SetBossHealthInfo(
 	32857, L.StormcallerBrundir
 )
 
-local warnSupercharge		= mod:NewAnnounce("WarningSupercharge", 3, 61920)
+local warnSupercharge			= mod:NewSpellAnnounce(61920, 3)
 
 -- Stormcaller Brundir
 -- High Voltage ... 63498
-local warnChainlight		= mod:NewAnnounce("WarningChainlight", 1, 64215)
-local timerOverload		= mod:NewCastTimer(6, 63481)
-local timerLightningWhirl	= mod:NewCastTimer(5, 63483)
-local specwarnLightningTendrils	= mod:NewSpecialWarning("LightningTendrils")  -- 63486
+local warnChainlight			= mod:NewSpellAnnounce(64215, 1)
+local timerOverload				= mod:NewCastTimer(6, 63481)
+local timerLightningWhirl		= mod:NewCastTimer(5, 63483)
+local specwarnLightningTendrils	= mod:NewSpecialWarningRun(63486)
 local timerLightningTendrils	= mod:NewBuffActiveTimer(27, 63486)
-local specwarnOverload		= mod:NewSpecialWarning("Overload") 
-mod:AddBoolOption("AllwaysWarnOnOverload", false, "announce")
-mod:AddBoolOption("PlaySoundOnOverload", true, "announce")
-mod:AddBoolOption("PlaySoundLightningTendrils", true, "announce")
+local specwarnOverload			= mod:NewSpecialWarningRun(63481) 
+mod:AddBoolOption("AlwaysWarnOnOverload", false, "announce")
+mod:AddBoolOption("PlaySoundOnOverload", true)
+mod:AddBoolOption("PlaySoundLightningTendrils", true)
 
 -- Steelbreaker
 -- High Voltage ... don't know what to show here - 63498
-local warnFusionPunch		= mod:NewAnnounce("WarningFusionPunch", 4, 61903)
-local timerFusionPunchCast	= mod:NewCastTimer(3, 61903)
+local warnFusionPunch			= mod:NewSpellAnnounce(61903, 4)
+local timerFusionPunchCast		= mod:NewCastTimer(3, 61903)
 local timerFusionPunchActive	= mod:NewTargetTimer(4, 61903)
-local warnOverwhelmingPower	= mod:NewAnnounce("WarningOverwhelmingPower", 2, 61888)
-local timerOverwhelmingPower	= mod:NewNextTimer(25, 61888)
-local warnStaticDisruption	= mod:NewAnnounce("WarningStaticDisruption", 3, 61912) 
+local warnOverwhelmingPower		= mod:NewTargetAnnounce(61888, 2)
+local timerOverwhelmingPower	= mod:NewTargetTimer(25, 61888)
+local warnStaticDisruption		= mod:NewTargetAnnounce(61912, 3) 
 mod:AddBoolOption("SetIconOnOverwhelmingPower")
 mod:AddBoolOption("SetIconOnStaticDisruption")
 
+local sndWOP				= mod:NewSound(nil, "SoundWOP", true)
+
 -- Runemaster Molgeim
 -- Lightning Blast ... don't know, maybe 63491
-local timerRunicBarrier		= mod:NewBuffActiveTimer(20, 62338)
-local warnRuneofPower		= mod:NewAnnounce("WarningRuneofPower", 1, 64320)
-local warnRuneofDeath		= mod:NewAnnounce("WarningRuneofDeath", 2, 63490)
-local warnRuneofSummoning	= mod:NewAnnounce("WarningRuneofSummoning", 3, 62273)
-local specwarnRuneofDeath	= mod:NewSpecialWarning("RuneofDeath")
-local timerRuneofDeathDura	= mod:NewNextTimer(30, 63490)
-local timerRuneofPower		= mod:NewCDTimer(30, 61974)
-local timerRuneofDeath		= mod:NewCDTimer(30, 63490)
+local timerShieldofRunes		= mod:NewBuffActiveTimer(15, 63967)
+local warnRuneofPower			= mod:NewTargetAnnounce(64320, 2)
+local warnRuneofDeath			= mod:NewSpellAnnounce(63490, 2)
+local warnShieldofRunes			= mod:NewSpellAnnounce(63489, 2)
+local warnRuneofSummoning		= mod:NewSpellAnnounce(62273, 3)
+local specwarnRuneofDeath		= mod:NewSpecialWarningMove(63490)
+local timerRuneofDeath			= mod:NewCDTimer(30, 63490)
+local timerRuneofPower			= mod:NewCDTimer(30, 61974)
 mod:AddBoolOption("PlaySoundDeathRune", true, "announce")
 
-local enrageTimer		= mod:NewEnrageTimer(900)
+local enrageTimer				= mod:NewBerserkTimer(900)
+
+local disruptTargets = {}
+local disruptIcon = 7
 
 function mod:OnCombatStart(delay)
-	enrageTimer:Start(-delay)	
+	enrageTimer:Start(-delay)
+	table.wipe(disruptTargets)
+	disruptIcon = 7
+end
+
+function mod:RuneTarget()
+	local targetname = self:GetBossTarget(32927)
+	if not targetname then return end
+		warnRuneofPower:Show(targetname)
+end
+
+local function warnStaticDisruptionTargets()
+	warnStaticDisruption:Show(table.concat(disruptTargets, "<, >"))
+	table.wipe(disruptTargets)
+	disruptIcon = 7
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 61920 then -- Supercharge - Unleashes one last burst of energy as the caster dies, increasing all allies damage by 25% and granting them an additional ability.	
+	if args:IsSpellID(61920) then -- Supercharge - Unleashes one last burst of energy as the caster dies, increasing all allies damage by 25% and granting them an additional ability.	
 		warnSupercharge:Show()
-
-	elseif args.spellId == 63479 then				-- Chain light (need the 10ppl spellid)
+	elseif args:IsSpellID(63479, 61879) then	-- Chain light
 		warnChainlight:Show()
-
-	elseif args.spellId == 63483 or args.spellId == 61915 then	-- LightningWhirl
+	elseif args:IsSpellID(63483, 61915) then	-- LightningWhirl
 		timerLightningWhirl:Start()
-
-	elseif args.spellId == 61903 or args.spellId == 63493 then	-- Fusion Punch
+		sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\kickcast.mp3")
+	elseif args:IsSpellID(61903, 63493) then	-- Fusion Punch
 		warnFusionPunch:Show()
+		sndWOP:Schedule(1, "Interface\\AddOns\\DBM-Core\\extrasounds\\dispelnow.mp3")
 		timerFusionPunchCast:Start()
-	elseif args.spellId == 64637 or args.spellId == 61888 then	-- Overwhelming Power
-		warnOverwhelmingPower:Show(args.destName)
-		if GetInstanceDifficulty() == 1 then
-			timerOverwhelmingPower:Start(60, args.destName)
-		else
-			timerOverwhelmingPower:Start(30, args.destName)
-		end
-		if self.Options.SetIconOnOverwhelmingPower then
-			if GetInstanceDifficulty() == 1 then
-				mod:SetIcon(args.destName, 8, 60) -- skull for 60 seconds (until meltdown)
-			else
-				mod:SetIcon(args.destName, 8, 30) -- skull for 25 seconds (until meltdown)
-			end
-		end
-
-	elseif args.spellId == 62338 then				-- Runic Barrier
-		timerRunicBarrier:Start()
-	elseif args.spellId == 62273 then				-- Rune of Summoning
+	elseif args:IsSpellID(62274, 63489) then		-- Shield of Runes
+		warnShieldofRunes:Show()
+	elseif args:IsSpellID(62273) then				-- Rune of Summoning
 		warnRuneofSummoning:Show()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 63490 or args.spellId == 62269 then		-- Rune of Death
+	if args:IsSpellID(63490, 62269) then		-- Rune of Death
 		warnRuneofDeath:Show()
-		timerRuneofDeathDura:Start()
-
-	elseif args.spellId == 64321 or args.spellId == 61974 then	-- Rune of Power
-		warnRuneofPower:Show()
+		timerRuneofDeath:Start()
+	elseif args:IsSpellID(64321, 61974) then	-- Rune of Power
+		self:ScheduleMethod(0.1, "RuneTarget")
 		timerRuneofPower:Start()
-
-	elseif args.spellId == 61869 or args.spellId == 63481 or args.spellId == 61878 then	-- Overload (spellId 10?)
+	elseif args:IsSpellID(61869, 63481) then	-- Overload
 		timerOverload:Start()
-
-		if self.Options.AllwaysWarnOnOverload or UnitName("target") == L.StormcallerBrundir then
+--		if self.Options.AlwaysWarnOnOverload or UnitName("target") == L.StormcallerBrundir then
 			specwarnOverload:Show()
 			if self.Options.PlaySoundOnOverload then
-				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\extrasounds\\boomrun.mp3")
 			end
-		end
+--		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 61903 or args.spellId == 63493 then		-- Fusion Punch
+	if args:IsSpellID(61903, 63493) then		-- Fusion Punch
 		timerFusionPunchActive:Start(args.destName)
-
-	elseif args.spellId == 62269 or args.spellId == 63490 then	-- Rune of Death - move away from it
-		if args.destName == UnitName("player") then
+	elseif args:IsSpellID(62269, 63490) then	-- Rune of Death - move away from it
+		if args:IsPlayer() then
 			specwarnRuneofDeath:Show()
 			if self.Options.PlaySoundDeathRune then
-				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\extrasounds\\runaway.mp3")
 			end
 		end
-	elseif args.spellId == 63486 or args.spellId == 61887 then	-- lightning
+	elseif args:IsSpellID(62277, 63967) and not args:IsDestTypePlayer() then		-- Shield of Runes
+		timerShieldofRunes:Start()		
+	elseif args:IsSpellID(64637, 61888) then	-- Overwhelming Power
+		warnOverwhelmingPower:Show(args.destName)
+		if mod:IsDifficulty("normal10") then
+			timerOverwhelmingPower:Start(60, args.destName)
+			if mod:IsTank() or mod:IsHealer() then
+				sndWOP:Schedule(52, "Interface\\AddOns\\DBM-Core\\extrasounds\\changemt.mp3")
+			end
+		else
+			timerOverwhelmingPower:Start(35, args.destName)
+			if mod:IsTank() or mod:IsHealer() then
+				sndWOP:Schedule(27, "Interface\\AddOns\\DBM-Core\\extrasounds\\changemt.mp3")
+			end
+		end
+		if self.Options.SetIconOnOverwhelmingPower then
+			if mod:IsDifficulty("normal10") then
+				self:SetIcon(args.destName, 8, 60) -- skull for 60 seconds (until meltdown)
+			else
+				self:SetIcon(args.destName, 8, 35) -- skull for 35 seconds (until meltdown)
+			end
+		end
+	elseif args:IsSpellID(63486, 61887) then	-- Lightning Tendrils
 		timerLightningTendrils:Start()
 		specwarnLightningTendrils:Show()
 		if self.Options.PlaySoundLightningTendrils then
-			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+			PlaySoundFile("Interface\\AddOns\\DBM-Core\\extrasounds\\justrun.mp3")
 		end
-
-	elseif args.spellId == 61912 or args.spellId == 63494 then	-- Static Disruption (Hard Mode) don't know 25 id, took it from wowhead
-		warnStaticDisruption:Show(args.destName)
+	elseif args:IsSpellID(61912, 63494) then	-- Static Disruption (Hard Mode)
+		disruptTargets[#disruptTargets + 1] = args.destName
 		if self.Options.SetIconOnStaticDisruption then 
-			mod:SetIcon(args.destName, 8, 20)
+			self:SetIcon(args.destName, disruptIcon, 20)
+			disruptIcon = disruptIcon - 1
 		end
+		self:Unschedule(warnStaticDisruptionTargets)
+		self:Schedule(0.3, warnStaticDisruptionTargets)
 	end
 end
 
-
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 32867 then		--Steelbreaker
+		timerFusionPunchCast:Cancel()
+	elseif cid == 32927 then	--Runemaster
+		timerRuneofDeath:Cancel()
+		timerRuneofPower:Cancel()
+	elseif cid == 32857 then	--Stormcaller
+		timerOverload:Cancel()
+		timerLightningWhirl:Cancel()
+	end
+end

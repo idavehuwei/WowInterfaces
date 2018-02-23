@@ -1,0 +1,15 @@
+------------------------------------------------------------------------
+r230 | rabbit | 2010-10-14 11:48:33 +0000 (Thu, 14 Oct 2010) | 1 line
+Changed paths:
+   M /trunk/BugSack.lua
+   A /trunk/Media/error.ogg
+   D /trunk/Media/error.wav
+
+Convert to ogg for 4.0.
+------------------------------------------------------------------------
+r229 | sylvanaar | 2010-09-02 16:34:02 +0000 (Thu, 02 Sep 2010) | 1 line
+Changed paths:
+   M /trunk/BugSack.toc
+
+## X-Compatible-With: 40000
+------------------------------------------------------------------------

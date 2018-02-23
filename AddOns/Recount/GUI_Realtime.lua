@@ -5,7 +5,7 @@ local me={}
 local FreeWindows={}
 local WindowNum=1
 
-local revision = tonumber(string.sub("$Revision: 1032 $", 12, -3))
+local revision = tonumber(string.sub("$Revision: 1069 $", 12, -3))
 local Recount = _G.Recount
 if Recount.Version < revision then Recount.Version = revision end
 
@@ -239,8 +239,8 @@ function me:CreateRealtimeWindow(who,tracking,ending) -- Elsia: This function cr
 		theFrame.DragBottomRight:Hide()
 	end
 	theFrame.DragBottomRight:SetFrameLevel( theFrame:GetFrameLevel() + 10)
-	theFrame.DragBottomRight:SetNormalTexture("Interface\\AddOns\\Recount\\ResizeGripRight")
-	theFrame.DragBottomRight:SetHighlightTexture("Interface\\AddOns\\Recount\\ResizeGripRight")
+	theFrame.DragBottomRight:SetNormalTexture("Interface\\AddOns\\Recount\\textures\\ResizeGripRight")
+	theFrame.DragBottomRight:SetHighlightTexture("Interface\\AddOns\\Recount\\textures\\ResizeGripRight")
 	theFrame.DragBottomRight:SetWidth(16)
 	theFrame.DragBottomRight:SetHeight(16)
 	theFrame.DragBottomRight:SetPoint("BOTTOMRIGHT", theFrame, "BOTTOMRIGHT", 0, 0)
@@ -256,8 +256,8 @@ function me:CreateRealtimeWindow(who,tracking,ending) -- Elsia: This function cr
 		theFrame.DragBottomLeft:Hide()
 	end
 	theFrame.DragBottomLeft:SetFrameLevel( theFrame:GetFrameLevel() + 10)
-	theFrame.DragBottomLeft:SetNormalTexture("Interface\\AddOns\\Recount\\ResizeGripLeft")
-	theFrame.DragBottomLeft:SetHighlightTexture("Interface\\AddOns\\Recount\\ResizeGripLeft")
+	theFrame.DragBottomLeft:SetNormalTexture("Interface\\AddOns\\Recount\\textures\\ResizeGripLeft")
+	theFrame.DragBottomLeft:SetHighlightTexture("Interface\\AddOns\\Recount\\textures\\ResizeGripLeft")
 	theFrame.DragBottomLeft:SetWidth(16)
 	theFrame.DragBottomLeft:SetHeight(16)
 	theFrame.DragBottomLeft:SetPoint("BOTTOMLEFT", theFrame, "BOTTOMLEFT", 0, 0)

@@ -42,11 +42,11 @@ function SecurityMatrix_CreateHeaders()
 		newFrame:SetWidth(SECURITYMATRIX_GRID_SIZE);
 		newFrame:SetHeight(SECURITYMATRIX_GRID_SIZE);
 		if SECURITYMATRIX_FLIP_COORDS then
-			getglobal("SecurityMatrixFrameRowHeader"..i.."Text"):SetText(SecurityMatrix_Alphabet[i])
+			_G["SecurityMatrixFrameRowHeader"..i.."Text"]:SetText(SecurityMatrix_Alphabet[i])
 		else
-			getglobal("SecurityMatrixFrameRowHeader"..i.."Text"):SetText(i);
+			_G["SecurityMatrixFrameRowHeader"..i.."Text"]:SetText(i);
 		end
-		getglobal("SecurityMatrixFrameRowHeader"..i):SetID(i);
+		_G["SecurityMatrixFrameRowHeader"..i]:SetID(i);
 		prevFrame = newFrame;
 	end
 	for i=1, SECURITYMATRIX_NUM_COLUMNS do
@@ -64,11 +64,11 @@ function SecurityMatrix_CreateHeaders()
 		newFrame:SetWidth(SECURITYMATRIX_GRID_SIZE);
 		newFrame:SetHeight(SECURITYMATRIX_GRID_SIZE);
 		if SECURITYMATRIX_FLIP_COORDS then
-			getglobal("SecurityMatrixFrameColumnHeader"..i.."Text"):SetText(tostring(i))
+			_G["SecurityMatrixFrameColumnHeader"..i.."Text"]:SetText(tostring(i))
 		else
-			getglobal("SecurityMatrixFrameColumnHeader"..i.."Text"):SetText(SecurityMatrix_Alphabet[i]);
+			_G["SecurityMatrixFrameColumnHeader"..i.."Text"]:SetText(SecurityMatrix_Alphabet[i]);
 		end
-		getglobal("SecurityMatrixFrameColumnHeader"..i):SetID(i);
+		_G["SecurityMatrixFrameColumnHeader"..i]:SetID(i);
 		prevFrame = newFrame;
 	end
 end
@@ -116,9 +116,9 @@ function SecurityMatrix_CreateElements()
 			newBackgroundFrame:SetHeight(SECURITYMATRIX_GRID_SIZE);
 			--line the text frame and highlight up with the background frame
 			newSparkleFrame:SetAllPoints(newBackgroundFrame);
-			getglobal("SecurityMatrixFrameElementSparkle"..i.."_"..j.."Highlight"):SetModelScale(SECURITYMATRIX_CELL_HIGHLIGHT_SCALE);
-			getglobal("SecurityMatrixFrameElementSparkle"..i.."_"..j.."Highlight"):SetWidth(SECURITYMATRIX_GRID_SIZE);
-			getglobal("SecurityMatrixFrameElementSparkle"..i.."_"..j.."Highlight"):SetHeight(SECURITYMATRIX_GRID_SIZE);
+			_G["SecurityMatrixFrameElementSparkle"..i.."_"..j.."Highlight"]:SetModelScale(SECURITYMATRIX_CELL_HIGHLIGHT_SCALE);
+			_G["SecurityMatrixFrameElementSparkle"..i.."_"..j.."Highlight"]:SetWidth(SECURITYMATRIX_GRID_SIZE);
+			_G["SecurityMatrixFrameElementSparkle"..i.."_"..j.."Highlight"]:SetHeight(SECURITYMATRIX_GRID_SIZE);
 			prevBackgroundFrame = newBackgroundFrame;
 		end
 	end
@@ -138,16 +138,16 @@ function SecurityMatrix_NewCoordinate(row, column)
 	SecurityMatrix_isMoving = true;
 	
 	--turn off the sparkle on the old cell
-	getglobal("SecurityMatrixFrameElementSparkle"..SecurityMatrix_currentRow.."_"..SecurityMatrix_currentColumn.."Highlight"):Hide();
-	getglobal("SecurityMatrixFrameElementSparkle"..SecurityMatrix_currentRow.."_"..SecurityMatrix_currentColumn.."Texture"):Hide();
+	_G["SecurityMatrixFrameElementSparkle"..SecurityMatrix_currentRow.."_"..SecurityMatrix_currentColumn.."Highlight"]:Hide();
+	_G["SecurityMatrixFrameElementSparkle"..SecurityMatrix_currentRow.."_"..SecurityMatrix_currentColumn.."Texture"]:Hide();
 	
 	--turn off the text highlight on the old row/column headers
 	if SECURITYMATRIX_FLIP_COORDS then
-		getglobal("SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn.."Text"):SetText(getglobal("SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn):GetID());
-		getglobal("SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow.."Text"):SetText(SecurityMatrix_Alphabet[getglobal("SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow):GetID()]);
+		_G["SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn.."Text"]:SetText(_G["SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn]:GetID());
+		_G["SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow.."Text"]:SetText(SecurityMatrix_Alphabet[_G["SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow]:GetID()]);
 	else
-		getglobal("SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow.."Text"):SetText(getglobal("SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow):GetID());
-		getglobal("SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn.."Text"):SetText(SecurityMatrix_Alphabet[getglobal("SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn):GetID()]);
+		_G["SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow.."Text"]:SetText(_G["SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow]:GetID());
+		_G["SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn.."Text"]:SetText(SecurityMatrix_Alphabet[_G["SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn]:GetID()]);
 	end
 	
 	--set the new row/column
@@ -155,16 +155,16 @@ function SecurityMatrix_NewCoordinate(row, column)
 	SecurityMatrix_currentColumn = column;
 	
 	--turn on the sparkle on the new cell
-	getglobal("SecurityMatrixFrameElementSparkle"..SecurityMatrix_currentRow.."_"..SecurityMatrix_currentColumn.."Highlight"):Show();
-	getglobal("SecurityMatrixFrameElementSparkle"..SecurityMatrix_currentRow.."_"..SecurityMatrix_currentColumn.."Texture"):Show();
+	_G["SecurityMatrixFrameElementSparkle"..SecurityMatrix_currentRow.."_"..SecurityMatrix_currentColumn.."Highlight"]:Show();
+	_G["SecurityMatrixFrameElementSparkle"..SecurityMatrix_currentRow.."_"..SecurityMatrix_currentColumn.."Texture"]:Show();
 	
 	--turn on the text highlight on the new row/column headers
 	if SECURITYMATRIX_FLIP_COORDS then
-		getglobal("SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn.."Text"):SetText("|cFF00FF00"..getglobal("SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn):GetID().."|r");
-		getglobal("SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow.."Text"):SetText("|cFF00FF00"..SecurityMatrix_Alphabet[getglobal("SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow):GetID()].."|r");
+		_G["SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn.."Text"]:SetText("|cFF00FF00".._G["SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn]:GetID().."|r");
+		_G["SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow.."Text"]:SetText("|cFF00FF00"..SecurityMatrix_Alphabet[_G["SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow]:GetID()].."|r");
 	else
-		getglobal("SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow.."Text"):SetText("|cFF00FF00"..getglobal("SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow):GetID().."|r");
-		getglobal("SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn.."Text"):SetText("|cFF00FF00"..SecurityMatrix_Alphabet[getglobal("SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn):GetID()].."|r");
+		_G["SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow.."Text"]:SetText("|cFF00FF00".._G["SecurityMatrixFrameRowHeader"..SecurityMatrix_currentRow]:GetID().."|r");
+		_G["SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn.."Text"]:SetText("|cFF00FF00"..SecurityMatrix_Alphabet[_G["SecurityMatrixFrameColumnHeader"..SecurityMatrix_currentColumn]:GetID()].."|r");
 	end
 	
 	--set the direction text to mention the new cell
@@ -438,7 +438,7 @@ end
 
 function SecurityMatrixPinwheel_HideNumbers()
 	for i=0, 9, 1 do
-		button = getglobal("SecurityMatrixPinwheelButton"..i);
+		button = _G["SecurityMatrixPinwheelButton"..i];
 		button:SetText("");
 		button.stopSpinning = true;
 	end
@@ -446,7 +446,7 @@ end
 
 function SecurityMatrixPinwheel_ShowNumbers()
 	for i=0, 9, 1 do
-		button = getglobal("SecurityMatrixPinwheelButton"..i);
+		button = _G["SecurityMatrixPinwheelButton"..i];
 		button:SetText(i);
 		button.stopSpinning = false;
 	end
@@ -454,14 +454,14 @@ end
 
 function SecurityMatrixPinwheel_EnableNumbers()
 	for i=0, 9, 1 do
-		button = getglobal("SecurityMatrixPinwheelButton"..i);
+		button = _G["SecurityMatrixPinwheelButton"..i];
 		button:Enable();
 	end
 end
 
 function SecurityMatrixPinwheel_DisableNumbers()
 	for i=0, 9, 1 do
-		button = getglobal("SecurityMatrixPinwheelButton"..i);
+		button = _G["SecurityMatrixPinwheelButton"..i];
 		button:Disable();
 	end
 end

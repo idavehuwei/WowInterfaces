@@ -1,3 +1,11 @@
+TipTacTalents Changes | 2010 Feb 27
+-----------------------------------
+- Changed the TOC version to 30300 for the 3.3 patch.
+
+TipTacTalents Changes | 2009 Aug 13
+-----------------------------------
+- Changed the TOC version to 30200 for the 3.2 patch.
+
 TipTacTalents Changes | 2009 May 17
 -----------------------------------
 - Cleaned up the code a bit.

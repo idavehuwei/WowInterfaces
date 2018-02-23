@@ -59,11 +59,11 @@
 					</OnClick>
 					<OnEnter>
 						CloseDropDownMenus(self:GetParent():GetParent():GetID() + 1);
-						getglobal(self:GetName().."SwatchBg"):SetVertexColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
+						_G[self:GetName().."SwatchBg"]:SetVertexColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
 						GlueDropDownMenu_StopCounting(self:GetParent():GetParent());
 					</OnEnter>
 					<OnLeave>
-						getglobal(self:GetName().."SwatchBg"):SetVertexColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
+						_G[self:GetName().."SwatchBg"]:SetVertexColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
 						GlueDropDownMenu_StartCounting(self:GetParent():GetParent());
 					</OnLeave>
 				</Scripts>
@@ -125,11 +125,11 @@
 				else
 					CloseDropDownMenus(self:GetParent():GetID() + 1);
 				end
-				getglobal(self:GetName().."Highlight"):Show();
+				_G[self:GetName().."Highlight"]:Show();
 				GlueDropDownMenu_StopCounting(self:GetParent());
 			</OnEnter>
 			<OnLeave>
-				getglobal(self:GetName().."Highlight"):Hide();
+				_G[self:GetName().."Highlight"]:Hide();
 				GlueDropDownMenu_StartCounting(self:GetParent());
 			</OnLeave>
 		</Scripts>
@@ -192,7 +192,7 @@
 			<OnShow>
 				for i=1, self.maxButtons do
 					if (not self.noResize) then
-						getglobal(self:GetName().."Button"..i):SetWidth(self.maxWidth);
+						_G[self:GetName().."Button"..i]:SetWidth(self.maxWidth);
 					end
 				end
 				if (not self.noResize) then
@@ -200,7 +200,7 @@
 				end
 				self.showTime = nil;
 				if ( self:GetID() > 1 ) then
-					self.parent = getglobal("DropDownList"..(self:GetID() - 1));
+					self.parent = _G["DropDownList"..(self:GetID() - 1)];
 				end
 			</OnShow>
 		</Scripts>

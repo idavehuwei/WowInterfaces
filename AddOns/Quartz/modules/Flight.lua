@@ -1,5 +1,6 @@
 --[[
 	Copyright (C) 2006-2007 Nymbia
+	Copyright (C) 2010 Hendrik "Nevcairiel" Leppkes < h.leppkes@gmail.com >
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -15,29 +16,88 @@
 	with this program; if not, write to the Free Software Foundation, Inc.,
 	51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ]]
-if Quartz:HasModule('Flight') then
-	return
-end
+local Quartz3 = LibStub("AceAddon-3.0"):GetAddon("Quartz3")
+local L = LibStub("AceLocale-3.0"):GetLocale("Quartz3")
 
-local L = AceLibrary("AceLocale-2.2"):new("Quartz")
+local MODNAME = "Flight"
+local Flight = Quartz3:NewModule(MODNAME, "AceHook-3.0", "AceEvent-3.0")
+local Player = Quartz3:GetModule("Player")
 
-local Quartz = Quartz
-local QuartzFlight = Quartz:NewModule('Flight', 'AceHook-2.1', 'AceEvent-2.0')
-local QuartzPlayer = Quartz:GetModule('Player')
-local db
-function QuartzFlight:OnInitialize()
-	db = Quartz:AcquireDBNamespace("Flight")
-	Quartz:RegisterDefaults("Flight", "profile", {
+----------------------------
+-- Upvalues
+local GetTime = GetTime
+local unpack = unpack
+
+local db, getOptions
+
+local defaults = {
+	profile = {
 		color = {0.7, 1, 0.7},
 		deplete = false,
-	})
-end
-if InFlight then
-	function QuartzFlight:OnEnable()
-		LoadAddOn('InFlight') --!!delete
-		self:Hook(InFlight, "StartTimer")
+		},
+	}
+
+do
+	local options
+	function getOptions() 
+	options = options or {
+		type = "group",
+		name = L["Flight"],
+		order = 600,
+		args = {
+			toggle = {
+				type = "toggle",
+				name = L["Enable"],
+				get = function()
+					return Quartz3:GetModuleEnabled(MODNAME)
+				end,
+				set = function(info, v)
+					Quartz3:SetModuleEnabled(MODNAME, v)
+				end,
+				order = 100,
+			},
+			color = {
+				type = "color",
+				name = L["Flight Map Color"],
+				desc = L["Set the color to turn the cast bar when taking a flight path"],
+				get = function() return unpack(db.color) end,
+				set = function(info, ...) db.color = {...} end,
+				order = 101,
+			},
+			deplete = {
+				type = "toggle",
+				name = L["Deplete"],
+				desc = L["Deplete"],
+				get = function() return db.deplete end,
+				set = function(info, v) db.deplete = v end,
+				order = 102,
+			},
+		},
+	}
+	return options
 	end
-	function QuartzFlight:StartTimer(object, ...)
+end
+
+
+function Flight:OnInitialize()
+	self.db = Quartz3.db:RegisterNamespace(MODNAME, defaults)
+	db = self.db.profile
+	
+	self:SetEnabledState(Quartz3:GetModuleEnabled(MODNAME))
+	Quartz3:RegisterModuleOptions(MODNAME, getOptions, L["Flight"])
+end
+
+function Flight:ApplySettings()
+	db = self.db.profile
+end
+
+--[[
+if InFlight then
+	function Flight:OnEnable()
+		self:RawHook(InFlight, "StartTimer")
+	end
+
+	function Flight:StartTimer(object, ...)
 		self.hooks[object].StartTimer(object, ...)
 		
 		local f = InFlightBar
@@ -47,110 +107,50 @@ if InFlight then
 
 		self:BeginFlight(duration, destination)
 	end
-elseif ToFu then
-	function QuartzFlight:OnEnable()
-		self:RegisterEvent("ToFu_StartFlight")
+else ]]
+if FlightMapTimes_BeginFlight then
+	function Flight:OnEnable()
+		self:RawHook("FlightMapTimes_BeginFlight")
 	end
-	function QuartzFlight:ToFu_StartFlight(start, destination, duration)
-		if duration and duration > 0 then
-			self:BeginFlight(duration, destination)
-		end
-	end
-elseif FlightMapTimes_BeginFlight then
-	function QuartzFlight:OnEnable()
-		self:Hook("FlightMapTimes_BeginFlight")
-	end
-	function QuartzFlight:FlightMapTimes_BeginFlight(duration, destination)
+
+	function Flight:FlightMapTimes_BeginFlight(duration, destination)
 		if duration and duration > 0 then
 			self:BeginFlight(duration, destination)
 		end
 		return self.hooks.FlightMapTimes_BeginFlight(duration, destination)
 	end
 end
-function QuartzFlight:BeginFlight(duration, destination)
-	QuartzPlayer.casting = true
-	QuartzPlayer.startTime = GetTime()
-	QuartzPlayer.endTime = GetTime() + duration
-	QuartzPlayer.delay = 0
-	QuartzPlayer.fadeOut = nil
-	if db.profile.deplete then
-		QuartzPlayer.casting = nil
-		QuartzPlayer.channeling = true
+
+function Flight:BeginFlight(duration, destination)
+	Player.Bar.casting = true
+	Player.Bar.startTime = GetTime()
+	Player.Bar.endTime = GetTime() + duration
+	Player.Bar.delay = 0
+	Player.Bar.fadeOut = nil
+	if db.deplete then
+		Player.Bar.casting = nil
+		Player.Bar.channeling = true
 	else
-		QuartzPlayer.casting = true
-		QuartzPlayer.channeling = nil
+		Player.Bar.casting = true
+		Player.Bar.channeling = nil
 	end
 	
-	QuartzPlayer.castBar:SetStatusBarColor(unpack(db.profile.color))
+	Player.Bar.Bar:SetStatusBarColor(unpack(db.color))
 	
-	QuartzPlayer.castBar:SetValue(0)
-	QuartzPlayer.castBarParent:Show()
-	QuartzPlayer.castBarParent:SetAlpha(QuartzPlayer.db.profile.alpha)
+	Player.Bar.Bar:SetValue(0)
+	Player.Bar:Show()
+	Player.Bar:SetAlpha(Player.db.profile.alpha)
 	
-	QuartzPlayer.castBarSpark:Show()
-	QuartzPlayer.castBarIcon:SetTexture(nil)
-	QuartzPlayer.castBarText:SetText(destination)
+	Player.Bar.Spark:Show()
+	Player.Bar.Icon:SetTexture(nil)
+	Player.Bar.Text:SetText(destination)
 	
-	local position = QuartzPlayer.db.profile.timetextposition
-	if position == L["Cast Start Side"] then
-		QuartzPlayer.castBarTimeText:SetPoint('LEFT', QuartzPlayer.castBar, 'LEFT', QuartzPlayer.db.profile.timetextx, QuartzPlayer.db.profile.timetexty)
-		QuartzPlayer.castBarTimeText:SetJustifyH("LEFT")
-	elseif position == L["Cast End Side"] then
-		QuartzPlayer.castBarTimeText:SetPoint('RIGHT', QuartzPlayer.castBar, 'RIGHT', -1 * QuartzPlayer.db.profile.timetextx, QuartzPlayer.db.profile.timetexty)
-		QuartzPlayer.castBarTimeText:SetJustifyH("RIGHT")
+	local position = Player.db.profile.timetextposition
+	if position == "caststart" then
+		Player.Bar.TimeText:SetPoint("LEFT", Player.Bar.Bar, "LEFT", Player.db.profile.timetextx, Player.db.profile.timetexty)
+		Player.Bar.TimeText:SetJustifyH("LEFT")
+	elseif position == "castend" then
+		Player.Bar.TimeText:SetPoint("RIGHT", Player.Bar.Bar, "RIGHT", -1 * Player.db.profile.timetextx, Player.db.profile.timetexty)
+		Player.Bar.TimeText:SetJustifyH("RIGHT")
 	end
-end
-do
-	local function setcolor(field, ...)
-		db.profile[field] = {...}
-		Quartz.ApplySettings()
-	end
-	local function getcolor(field)
-		return unpack(db.profile[field])
-	end
-	local function set(field, value)
-		db.profile[field] = value
-		Quartz.ApplySettings()
-	end
-	local function get(field)
-		return db.profile[field]
-	end
-	Quartz.options.args.Flight = {
-		type = 'group',
-		name = L["Flight"],
-		desc = L["Flight"],
-		order = 600,
-		args = {
-			toggle = {
-				type = 'toggle',
-				name = L["Enable"],
-				desc = L["Enable"],
-				get = function()
-					return Quartz:IsModuleActive('Flight')
-				end,
-				set = function(v)
-					Quartz:ToggleModuleActive('Flight', v)
-				end,
-				order = 100,
-			},
-			color = {
-				type = 'color',
-				name = L["Flight Map Color"],
-				desc = L["Set the color to turn the cast bar when taking a flight path"],
-				get = getcolor,
-				set = setcolor,
-				passValue = 'color',
-				order = 101,
-			},
-			deplete = {
-				type = 'toggle',
-				name = L["Deplete"],
-				desc = L["Deplete"],
-				get = get,
-				set = set,
-				passValue = 'deplete',
-				order = 102,
-			},
-		},
-	}
 end

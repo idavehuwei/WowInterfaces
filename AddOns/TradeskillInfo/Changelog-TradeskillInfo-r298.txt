@@ -1,8 +1,0 @@
-------------------------------------------------------------------------
-r298 | dys | 2009-07-23 15:25:39 +0000 (Thu, 23 Jul 2009) | 2 lines
-Changed paths:
-   M /trunk/TradeskillIdData.lua
-
-Remove Glyph of Envenom. It doesn't exist in the game.
-
-------------------------------------------------------------------------

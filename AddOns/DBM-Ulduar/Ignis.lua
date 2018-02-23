@@ -1,11 +1,9 @@
-local mod = DBM:NewMod("Ignis", "DBM-Ulduar")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Ignis", "DBM-Ulduar")
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1162 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4133 $"):sub(12, -3))
 mod:SetCreatureID(33118)
-mod:SetZone()
-
-
+mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
 
@@ -15,16 +13,18 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnFlameJetsCast			= mod:NewSpecialWarning("SpecWarnJetsCast")
+local announceSlagPot			= mod:NewTargetAnnounce(63477, 3)
+
+local warnFlameJetsCast			= mod:NewSpecialWarningCast(63472)
+
 local timerFlameJetsCast		= mod:NewCastTimer(2.7, 63472)
-local timerFlameJetsCooldown		= mod:NewCDTimer(35, 63472)
+local timerFlameJetsCooldown	= mod:NewCDTimer(35, 63472)
 local timerScorchCooldown		= mod:NewNextTimer(25, 63473)
 local timerScorchCast			= mod:NewCastTimer(3, 63473)
+local timerSlagPot				= mod:NewTargetTimer(10, 63477)
+local timerAchieve				= mod:NewAchievementTimer(240, 2930, "TimerSpeedKill")
 
-local announceSlagPot			= mod:NewAnnounce("WarningSlagPot", 3, 63477)
-local timerSlagPot			= mod:NewTargetTimer(10, 63477)
-
-local timerAchieve			= mod:NewAchievementTimer(240, 2930, "TimerSpeedKill")
+local sndWOP				= mod:NewSound(nil, "SoundWOP", true)
 
 mod:AddBoolOption("SlagPotIcon")
 
@@ -34,22 +34,23 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 62680  or args.spellId == 63472 then		-- Flame Jets
+	if args:IsSpellID(62680, 63472) then		-- Flame Jets
 		timerFlameJetsCast:Start()
 		warnFlameJetsCast:Show()
+		sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\stopcast.mp3")
 		timerFlameJetsCooldown:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 62548 or args.spellId == 63474 then	-- Scorch
+	if args:IsSpellID(62548, 63474) then	-- Scorch
 		timerScorchCast:Start()
 		timerScorchCooldown:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62717 or args.spellId == 63477 then		-- Slag Pot
+	if args:IsSpellID(62717, 63477) then		-- Slag Pot
 		announceSlagPot:Show(args.destName)
 		timerSlagPot:Start(args.destName)
 		if self.Options.SlagPotIcon then
@@ -57,5 +58,3 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
-
-

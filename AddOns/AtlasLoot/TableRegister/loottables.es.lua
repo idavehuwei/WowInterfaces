@@ -7,7 +7,7 @@ inherant title to the loot table, given the origins of the mod as an Atlas plugi
 ]]
 
 --Invoke libraries
-local BabbleFaction = LibStub("LibBabble-Faction-3.0"):GetLookupTable();
+local BabbleFaction = AtlasLoot_GetLocaleLibBabble("LibBabble-Faction-3.0")
 
 if (GetLocale() == "esES") then
 

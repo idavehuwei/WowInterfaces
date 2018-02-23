@@ -1,9 +1,8 @@
-local mod = DBM:NewMod("Sapphiron", "DBM-Naxx", 5)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Sapphiron", "DBM-Naxx", 5)
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 530 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2248 $"):sub(12, -3))
 mod:SetCreatureID(15989)
-mod:SetZone()
 
 mod:RegisterCombat("combat")
 
@@ -16,16 +15,17 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-
-mod:AddBoolOption("WarningIceblock", true, "announce")
-local warnDrainLifeNow	= mod:NewAnnounce("WarningDrainLifeNow", 2, 28542)
-local warnDrainLifeSoon	= mod:NewAnnounce("WarningDrainLifeSoon", 1, 28542)
+local warnDrainLifeNow	= mod:NewSpellAnnounce(28542, 2)
+local warnDrainLifeSoon	= mod:NewSoonAnnounce(28542, 1)
 local warnAirPhaseSoon	= mod:NewAnnounce("WarningAirPhaseSoon", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 local warnAirPhaseNow	= mod:NewAnnounce("WarningAirPhaseNow", 4, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 local warnLanded		= mod:NewAnnounce("WarningLanded", 4, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+
 local warnDeepBreath	= mod:NewSpecialWarning("WarningDeepBreath")
 
-local timerDrainLife	= mod:NewTimer(22, "TimerDrainLifeCD", 28542)
+mod:AddBoolOption("WarningIceblock", true, "announce")
+
+local timerDrainLife	= mod:NewCDTimer(22, 28542)
 local timerAirPhase		= mod:NewTimer(66, "TimerAir", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 local timerLanding		= mod:NewTimer(28.5, "TimerLanding", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 local timerIceBlast		= mod:NewTimer(9.3, "TimerIceBlast", 15876)
@@ -42,14 +42,13 @@ end
 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 28522 and args.destName == UnitName("player") and self.Options.WarningIceblock then
+	if args:IsSpellID(28522) and args:IsPlayer() and self.Options.WarningIceblock then
 		SendChatMessage(L.WarningYellIceblock, "YELL")
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 28542      -- Life Drain (10)
-	or args.spellId == 55665 then -- Life Drain (25)
+	if args:IsSpellID(28542, 55665) then -- Life Drain
 		warnDrainLifeNow:Show()
 		warnDrainLifeSoon:Schedule(18.5)
 		timerDrainLife:Start()
@@ -57,7 +56,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:CHAT_MSG_MONSTER_EMOTE(msg)
-	if msg == L.EmoteBreath then
+	if msg == L.EmoteBreath or msg:find(L.EmoteBreath) then
 		self:SendSync("DeepBreath")
 	end
 end

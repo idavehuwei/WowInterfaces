@@ -9,20 +9,20 @@ local options = {
 	-- General
 	{
 		[0] = TTO_General,
-		{ type = "Check", var = "showUnitTip", label = TTO_UnitTip, tip = TTO_UnitTipTooltip, y = 8 },
+		{ type = "Check", var = "showUnitTip", label = TTO_Unit, tip = TTO_UnitToolTip, y = 8 },
 		{ type = "Check", var = "showStatus", label = TTO_Status, tip = TTO_StatusTooltip },
 		{ type = "Check", var = "showGuildRank", label = TTO_GuildRank, tip = TTO_GuildRankTooltip },
-		{ type = "Check", var = "showTargetedBy", label = TTO_TargetedBy, tip = TTO_TargetedByTooltip, y = 16 },
-		{ type = "DropDown", var = "nameType", label = TTO_NameType, list = { [TTO_NameType_Normal] = "normal", [TTO_NameType_Title] = "title", [TTO_NameType_Original] = "original" } },
+		{ type = "Check", var = "showTargetedBy", label = TTO_TargetBy, tip = TTO_TargetByToolTip, y = 16 },
+		{ type = "DropDown", var = "nameType", label = TTO_NameType, list = { [TTO_Name_Only] = "normal", [TTO_Use_Player_Titles] = "title", [TTO_Copy_From_OriginalTooltip] = "original" } },
 		{ type = "DropDown", var = "showRealm", label = TTO_Realm, list = { [TTO_Realm_Not] = "none", [TTO_Realm_Show] = "show", [TTO_Realm_Instead] = "asterisk" } },
 		{ type = "DropDown", var = "showTarget", label = TTO_Target, list = { [TTO_Target_Not] = "none", [TTO_Target_1stLine] = "first", [TTO_Target_2ndLine] = "second", [TTO_Target_LastLine] = "last" }, y = 16 },
-		{ type = "Text", var = "targetYouText", label = TTO_Target_You, y = 8 },
+		{ type = "Text", var = "targetYouText", label = TTO_Target_You },
 	},
 	-- Special
 	{
 		[0] = TTO_Special,
 		{ type = "Slider", var = "gttScale", label = TTO_GameTooltipScale, min = 0.2, max = 4, step = 0.05 },
-		{ type = "Slider", var = "updateFreq", label = TTO_UpdateFreq, min = 0, max = 5, step = 0.05 },
+		{ type = "Slider", var = "updateFreq", label = TTO_UpdateFrequency, min = 0, max = 5, step = 0.05 },
  	},
 	-- Colors
 	{
@@ -32,7 +32,7 @@ local options = {
 		{ type = "Color", subType = 2, var = "colLevel", label = TTO_ColLevel, tip = TTO_ColLevelTooltip, y = 12 },
 		{ type = "Check", var = "colorNameByClass", label = TTO_ColByClass, tip = TTO_ColByClassTooltip },
 		{ type = "Check", var = "classColoredBorder", label = TTO_ColBorder, tip = TTO_ColBorderTooltip, y = 12 },
-		{ type = "Check", var = "itemQualityBorder", label = TTO_ItemBorder, tip = TTO_ItemBorderTooltip },		
+		{ type = "Check", var = "itemQualityBorder", label = TTO_ItemBorder, tip = TTO_ItemBorderTooltip },
 	},
 	-- Reactions
 	{
@@ -50,7 +50,7 @@ local options = {
 	{
 		[0] = TTO_BGColor,
 		{ type = "Check", var = "reactColoredBackdrop", label = TTO_ReactBGCol, tip = TTO_ReactBGColTooltip },
-		{ type = "Check", var = "reactColoredBorder", label = TTO_ColoredBorder, tip = TTO_ColoredBorderTooltip, y = 20 },
+		{ type = "Check", var = "reactColoredBorder", label = TTO_ReactColoredBorder, tip = TTO_ReactColoredBorderTooltip, y = 20 },
 		{ type = "Color", var = "colReactBack1", label = TTO_ColReact1 },
 		{ type = "Color", var = "colReactBack2", label = TTO_ColReact2 },
 		{ type = "Color", var = "colReactBack3", label = TTO_ColReact3 },
@@ -62,20 +62,20 @@ local options = {
 	-- Backdrop
 	{
 		[0] = TTO_Backdrop,
-		{ type = "DropDown", var = "tipBackdropBG", label = TTO_TipBG, init = TipTacDropDowns.SharedMediaLib, media = "background" },
-		{ type = "DropDown", var = "tipBackdropEdge", label = TTO_TipBGEdge, init = TipTacDropDowns.SharedMediaLib, media = "border", y = 8 },
-		{ type = "Slider", var = "backdropEdgeSize", label = TTO_TipBGSize, min = 8, max = 64, step = 0.5 },
-		{ type = "Slider", var = "backdropInsets", label = TTO_TipBGInsets, min = -20, max = 20, step = 0.5, y = 20 },		
+		{ type = "DropDown", var = "tipBackdropBG", label = TTO_TipBG, media = "background" },
+		{ type = "DropDown", var = "tipBackdropEdge", label = TTO_TipBGEdge, media = "border", y = 8 },
+		{ type = "Slider", var = "backdropEdgeSize", label = TTO_TipBGSize, min = 0, max = 64, step = 0.5 },
+		{ type = "Slider", var = "backdropInsets", label = TTO_TipBGInsets, min = -20, max = 20, step = 0.5, y = 18 },
 		{ type = "Color", var = "tipColor", label = TTO_TipBGColor },
 		{ type = "Color", var = "tipBorderColor", label = TTO_TipBorColor, y = 10 },
 		{ type = "Check", var = "gradientTip", label = TTO_GradientTip, tip = TTO_GradientTipToolTip, y = 6 },
-		{ type = "Color", var = "gradientColor", label = TTO_GradientColor, tip = TTO_GradientColorTooltip },	
+		{ type = "Color", var = "gradientColor", label = TTO_GradientColor, tip = TTO_gradientColorTooltip },
 	},
-	--Font
+	-- Font
 	{
 		[0] = TTO_Font,
 		{ type = "Check", var = "modifyFonts", label = TTO_ModifyFonts, tip = TTO_ModifyFontsTooltip, y = 12 },
-		{ type = "DropDown", var = "fontFace", label = TTO_FontFace, init = TipTacDropDowns.SharedMediaLib, media = "font" },
+		{ type = "DropDown", var = "fontFace", label = TTO_FontFace, media = "font" },
 		{ type = "DropDown", var = "fontFlags", label = TTO_FontFlags, list = TipTacDropDowns.FontFlags },
 		{ type = "Slider", var = "fontSize", label = TTO_FontSize, min = 6, max = 29, step = 1 },
 	},
@@ -91,15 +91,15 @@ local options = {
 	-- Fading
 	{
 		[0] = TTO_Fading,
-		{ type = "Check", var = "overrideFade", label = TTO_OverrideFade, tip = TTO_OverrideFadeTooltip, y = 16 },
+		{ type = "Check", var = "overrideFade", label = TTO_OverrideFade, tip = TTO_OverrideFadeTip, y = 16 },
 		{ type = "Slider", var = "preFadeTime", label = TTO_PreFadeTime, min = 0, max = 5, step = 0.05 },
 		{ type = "Slider", var = "fadeTime", label = TTO_FadeOutTime, min = 0, max = 5, step = 0.05, y = 16 },
-		{ type = "Check", var = "hideWorldTips", label = TTO_HideWorldTips, tip = TTO_HideWorldTipsTooltip },
+		{ type = "Check", var = "hideWorldTips", label = TTO_HideWorldTip, tip = TTO_HideWorldTipToolTip },
 	},
 	-- Bars
 	{
 		[0] = TTO_Bars,
-		{ type = "Check", var = "hideDefaultBar", label = TTO_DefaultBar, tip = TTO_DefaultBarTooltips },
+		{ type = "Check", var = "hideDefaultBar", label = TTO_HideDefaultBar, tip = TTO_HideDefaultBarToolTip },
 		{ type = "Check", var = "healthBar", label = TTO_Health, tip = TTO_HealthToolTip },
 		{ type = "DropDown", var = "healthBarText", label = TTO_HealthText, list = TipTacDropDowns.BarTextFormat, y = -2 },
 		{ type = "Check", var = "healthBarClassColor", label = TTO_HealthClassCol, tip = TTO_HealthClassColTooltip, y = 6 },
@@ -112,11 +112,11 @@ local options = {
 	},
 	-- Bars Misc
 	{
-		[0] = TTO_BarsMisc,
-		{ type = "DropDown", var = "barFontFace", label = TTO_BarFontFace, init = TipTacDropDowns.SharedMediaLib, media = "font" },
+		[0] = TTO_BarsLook,
+		{ type = "DropDown", var = "barFontFace", label = TTO_BarFontFace, media = "font" },
 		{ type = "DropDown", var = "barFontFlags", label = TTO_BarFontFlags, list = TipTacDropDowns.FontFlags },
 		{ type = "Slider", var = "barFontSize", label = TTO_BarFontSize, min = 6, max = 29, step = 1, y = 36 },
-		{ type = "DropDown", var = "barTexture", label = TTO_BarTexture, init = TipTacDropDowns.SharedMediaLib, media = "statusbar" },
+		{ type = "DropDown", var = "barTexture", label = TTO_BarTexture, media = "statusbar" },
 		{ type = "Slider", var = "barHeight", label = TTO_BarHeight, min = 1, max = 50, step = 1 },
 	},
 	-- Auras
@@ -125,7 +125,7 @@ local options = {
 		{ type = "Check", var = "aurasAtBottom", label = TTO_AurasBottom, tip = TTO_AurasBottomTooltip, y = 12 },
 		{ type = "Check", var = "showBuffs", label = TTO_UnitBuffs, tip = TTO_UnitBuffsTooltip },
 		{ type = "Check", var = "showDebuffs", label = TTO_UnitDebuff, tip = TTO_UnitDebuffTooltip, y = 12 },
-		{ type = "Check", var = "selfAurasOnly", label = TTO_SelfAura, tip = TTO_SelfAuraTip, y = 12 },
+		{ type = "Check", var = "selfAurasOnly", label = TTO_ShowAuras, tip = TTO_ShowAurasTooltip, y = 12 },
 		{ type = "Slider", var = "auraSize", label = TTO_AuraIconDimension, min = 8, max = 60, step = 1 },
 		{ type = "Slider", var = "auraMaxRows", label = TTO_MaxAuraRows, min = 1, max = 8, step = 1, y = 8 },
 		{ type = "Check", var = "showAuraCooldown", label = TTO_CooldownModels, tip = TTO_CooldownModelsTooltip },
@@ -133,23 +133,23 @@ local options = {
 	-- Icon
 	{
 		[0] = TTO_Icon,
-		{ type = "Check", var = "iconRaid", label = TTO_ShowRaidIcon, tip = TTO_ShowRaidIconTip },
-		{ type = "Check", var = "iconFaction", label = TTO_ShowFactionIcon, tip = TTO_ShowFactionIconTip },
-		{ type = "Check", var = "iconCombat", label = TTO_ShowCombatIcon, tip = TTO_ShowCombatIconTip, y = 12 },
+		{ type = "Check", var = "iconRaid", label = TTO_ShowRaidIcon, tip = TTO_ShowRaidIcontip },
+		{ type = "Check", var = "iconFaction", label = TTO_ShowFactionIcon, tip = TTO_ShowFactionIcontip },
+		{ type = "Check", var = "iconCombat", label = TTO_ShowCombatIcon, tip = TTO_ShowCombatIcontip, y = 12 },
 		{ type = "DropDown", var = "iconAnchor", label = TTO_IconAnchor, list = TipTacDropDowns.AnchorPos },
 		{ type = "Slider", var = "iconSize", label = TTO_IconSize, min = 8, max = 60, step = 1 },
 	},
 	-- Anchors
 	{
 		[0] = TTO_Anchor,
-		{ type = "DropDown", var = "anchorWorldUnitType", label = TTO_Anchor_WUT, list = TipTacDropDowns.AnchorType },
-		{ type = "DropDown", var = "anchorWorldUnitPoint", label = TTO_Anchor_WUP, list = TipTacDropDowns.AnchorPos, y = 14 },
-		{ type = "DropDown", var = "anchorWorldTipType", label = TTO_Anchor_WTT, list = TipTacDropDowns.AnchorType },
-		{ type = "DropDown", var = "anchorWorldTipPoint", label = TTO_Anchor_WTP, list = TipTacDropDowns.AnchorPos, y = 14 },
-		{ type = "DropDown", var = "anchorFrameUnitType", label = TTO_Anchor_FUT, list = TipTacDropDowns.AnchorType },
-		{ type = "DropDown", var = "anchorFrameUnitPoint", label = TTO_Anchor_FUP, list = TipTacDropDowns.AnchorPos, y = 14 },
-		{ type = "DropDown", var = "anchorFrameTipType", label = TTO_Anchor_FTT, list = TipTacDropDowns.AnchorType },
-		{ type = "DropDown", var = "anchorFrameTipPoint", label = TTO_Anchor_FTP, list = TipTacDropDowns.AnchorPos, y = 14 },
+		{ type = "DropDown", var = "anchorWorldUnitType", label = TTO_AnchorWorldUnitType, list = TipTacDropDowns.AnchorType },
+		{ type = "DropDown", var = "anchorWorldUnitPoint", label = TTO_AnchorWorldUnitPoint, list = TipTacDropDowns.AnchorPos, y = 14 },
+		{ type = "DropDown", var = "anchorWorldTipType", label = TTO_AnchorWorldTipType, list = TipTacDropDowns.AnchorType },
+		{ type = "DropDown", var = "anchorWorldTipPoint", label = TTO_AnchorWorldTipPoint, list = TipTacDropDowns.AnchorPos, y = 14 },
+		{ type = "DropDown", var = "anchorFrameUnitType", label = TTO_AnchorFrameUnitType, list = TipTacDropDowns.AnchorType },
+		{ type = "DropDown", var = "anchorFrameUnitPoint", label = TTO_AnchorFrameUnitPoint, list = TipTacDropDowns.AnchorPos, y = 14 },
+		{ type = "DropDown", var = "anchorFrameTipType", label = TTO_AnchorFrameTipType, list = TipTacDropDowns.AnchorType },
+		{ type = "DropDown", var = "anchorFrameTipPoint", label = TTO_AnchorFrameTipPoint, list = TipTacDropDowns.AnchorPos, y = 14 },
 	},
 	-- Mouse
 	{
@@ -160,16 +160,17 @@ local options = {
 	-- Combat
 	{
 		[0] = TTO_Combat,
-		{ type = "Check", var = "hideAllTipsInCombat", label = TTO_AllTipsInCombat, tip = TTO_AllTipsInCombatToolTip },
-		{ type = "Check", var = "hideUFTipsInCombat", label = TTO_UFTipsInCombat, tip = TTO_UFTipsInCombatToolTips },
+		{ type = "Check", var = "hideAllTipsInCombat", label = TTO_HideAllTipsInCombat, tip = TTO_HideAllTipsInCombatTooltip },
+		{ type = "Check", var = "hideUFTipsInCombat", label = TTO_HideUFTipsInCombat, tip = TTO_HideUFTipsInCombatTooltip },
+		{ type = "Check", var = "showHiddenTipsOnShift", label = TTO_ShowHiddenTipsOnShift, tip = TTO_ShowHiddenTipsOnShiftTooltip },
 --		{ type = "DropDown", var = "hideCombatTip", label = "Hide Tips in Combat For", list = { ["Unit Frames"] = "uf", ["All Tips"] = "all", ["No Tips"] = "none" } },
 	},
 	-- Layouts
 	{
 		[0] = TTO_Layouts,
-		{ type = "DropDown", label = TTO_Layouts, init = TipTacDropDowns.LoadLayout_Init, y = 20 },
+		{ type = "DropDown", label = TTO_DropDown, init = TipTacDropDowns.LoadLayout_Init, y = 20 },
 --		{ type = "Text", label = "Save Layout", func = nil },
---		{ type = "DropDown", label = "Delete Layout", init = TipTacDropDowns.DeleteLayout },
+--		{ type = "DropDown", label = "Delete Layout", init = TipTacDropDowns.DeleteLayout_Init },
 	},
 };
 
@@ -177,9 +178,9 @@ local options = {
 if (TipTacTalents) then
 	options[#options + 1] = {
 		[0] = TTO_Talents,
-		{ type = "Check", var = "showTalents", label = TTO_EnableTalents, tip = TTO_EnableTalentsTip, y = 12 },
-		{ type = "DropDown", var = "talentFormat", label = TTO_TalentFormat, list = { [TTO_TalentFormat1] = 1, [TTO_TalentFormat2] = 2, [TTO_TalentFormat3] = 3,}, y = 8 },
-		{ type = "Slider", var = "talentCacheSize", label = TTO_TalentCacheSize, min = 0, max = 50, step = 1 },
+		{ type = "Check", var = "showTalents", label = TTO_ShowTalents, tip = TTO_ShowTalentsTooltip, y = 12 },
+		{ type = "DropDown", var = "talentFormat", label = TTO_TalentFormat, list = { [TTO_Elemental1] = 1, [TTO_Elemental2] = 2, ["57/14/00"] = 3,}, y = 8 },
+		{ type = "Slider", var = "talentCacheSize", label = TTO_TalentsCacheSize, min = 0, max = 50, step = 1 },
 	};
 end
 
@@ -222,7 +223,7 @@ end
 f.header = f:CreateFontString(nil,"ARTWORK","GameFontHighlight");
 f.header:SetFont(GameFontNormal:GetFont(),22,"THICKOUTLINE");
 f.header:SetPoint("TOPLEFT",f.outline,"TOPRIGHT",10,-4);
-f.header:SetText(modName.." Options");
+f.header:SetText(modName..TTO_Header);
 
 f.vers = f:CreateFontString(nil,"ARTWORK","GameFontNormal");
 f.vers:SetPoint("TOPRIGHT",-20,-20);
@@ -352,8 +353,7 @@ function f:BuildCategoryPage()
 			else
 				frame.color[1], frame.color[2], frame.color[3], frame.color[4] = unpack(cfg[option.var]);
 			end
-			frame.color[4] = (frame.color[4] or 1);
-			frame.texture:SetVertexColor(frame.color[1],frame.color[2],frame.color[3],frame.color[4]);
+			frame.texture:SetVertexColor(frame.color[1],frame.color[2],frame.color[3],frame.color[4] or 1);
 		-- dropdown
 		elseif (option.type == "DropDown") then
 			frame.InitFunc = (option.init or option.media and TipTacDropDowns.SharedMediaLib_Init or TipTacDropDowns.Default_Init);

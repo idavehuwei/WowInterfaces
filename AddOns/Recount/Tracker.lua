@@ -4,7 +4,7 @@ local BossIDs = LibStub("LibBossIDs-1.0")
 
 local Recount = _G.Recount
 
-local revision = tonumber(string.sub("$Revision: 1056 $", 12, -3))
+local revision = tonumber(string.sub("$Revision: 1093 $", 12, -3))
 if Recount.Version < revision then Recount.Version = revision end
 
 local dbCombatants
@@ -173,693 +173,6 @@ local DotTickTimeId={
 	[27213]=1, -- Hellfire (rank 4)
 }
 
-
-local CCId={
-	[118]=true, -- Polymorph (rank 1)
-	[12824]=true, -- Polymorph (rank 2)
-	[12825]=true, -- Polymorph (rank 3)
-	[12826]=true, -- Polymorph (rank 4)
-	[28272]=true, -- Polymorph (rank 1:pig)
-	[28271]=true, -- Polymorph (rank 1:turtle)
-	[9484]=true, -- Shackle Undead (rank 1)
-	[9485]=true, -- Shackle Undead (rank 2)
-	[10955]=true, -- Shackle Undead (rank 3)
-	[3355]=true, -- Freezing Trap Effect (rank 1)
-	[14308]=true, -- Freezing Trap Effect (rank 2)
-	[14309]=true, -- Freezing Trap Effect (rank 3)
-	[2637]=true, -- Hibernate (rank 1)
-	[18657]=true, -- Hibernate (rank 2)
-	[18658]=true, -- Hibernate (rank 3)
-	[6770]=true, -- Sap (rank 1)
-	[2070]=true, -- Sap (rank 2)
-	[11297]=true, -- Sap (rank 3)
-	[6358]=true, -- Seduction (succubus)
-}
-	
-local RessesId={
-	[2008]=true, -- Ancestral Spirit (Rank 1)
-	[20609]=true, --Ancestral Spirit (Rank 2)
-	[20610]=true, --Ancestral Spirit (Rank 3)
-	[20776]=true, --Ancestral Spirit (Rank 4)
-	[20777]=true, --Ancestral Spirit (Rank 5)
-	[2006]=true, -- Resurrection (Rank 1)
-	[2010]=true, -- Resurrection (Rank 2)
-	[10880]=true, -- Resurrection (Rank 3)
-	[10881]=true, -- Resurrection (Rank 4)
-	[20770]=true, -- Resurrection (Rank 5)
-	[25435]=true, -- Resurrection (Rank 6)
-	[20484]=true, -- Rebirth (Rank 1)
-	[20739]=true, -- Rebirth (Rank 2)
-	[20742]=true, -- Rebirth (Rank 3)
-	[20747]=true, -- Rebirth (Rank 4)
-	[20748]=true, -- Rebirth (Rank 5)
-	[26994]=true, -- Rebirth (Rank 6)
-	[7328]=true, -- Redemption (Rank 1)
-	[10322]=true, -- Redemption (Rank 2)
-	[10324]=true, -- Redemption (Rank 3)
-	[20772]=true, -- Redemption (Rank 4)
-	[20773]=true, -- Redemption (Rank 5)
-}
-
---[[local bossIDs = {
-	[17881] = true, --"Aeonus", 
-	[4422] = true, --"Agathelos the Raging",
-	[25740] = true, --"Ahune",
-	[23574] = true, --"Akil'zon",
-	[4829] = true, --"Aku'mai",
-	[19514] = true, --"Al'ar",
-	[11492] = true, --"Alzzin the Wildshaper",
-	[30258] = true, --"Amanitar",
-	[9156] = true, --"Ambassador Flamelash",
-	[18731] = true, --"Ambassador Hellmaw",
-	[7358] = true, --"Amnennar the Coldbringer",
-	--[7206] = true, --"Ancient Stone Keeper",
-	[17808] = true, --"Anetheron",
-	[17808] = true, --"Anger'rel",
-	[26763] = true, --"Anomalus",
-	[8127] = true, --"Antu'sul",
-	[29120] = true, --"Anub'arak",
-	--[15277] = true, --"Anubisath Defender",
-	--[15355] = true, --"Anubisath Guardian",
-	[15956] = true, --"Anub'Rekhan",
-	[9031] = true, --"Anub'shiah",
-	[23035] = true, --"Anzu",
-	--[16485] = true, --"Arcane Watchman",
-	[6487] = true, --"Arcanist Doan",
-	[2748] = true, --"Archaedas",
-	[31125] = true, --"Archavon the Stone Watcher",
-	[17968] = true, --"Archimonde",
-	[10811] = true, --"Archivist Galford",
-	[4275] = true, --"Archmage Arugal",
-	[4627] = true, --"Arugal's Voidwalker",
-	[8580] = true, --"Atal'alarion",
-	[15550] = true, --"Attumen the Huntsman",
-	[14464] = true, --"Avalanchion",
-	[8443] = true, --"Avatar of Hakkar",
-	[15369] = true, --"Ayamiss the Hunter",
-	[17842] = true, --"Azgalor",
-	[6490] = true, --"Azshir the Sleepless",
-	[6109] = true, --"Azuregos",
-	[9016] = true, --"Bael'Gar",
-	[6906] = true, --"Baelog",
-	[10813] = true, --"Balnazzar",
-	[9596] = true, --"Bannok Grimaxe",
-	[12876] = true, --"Baron Aquanis",
-	[14461] = true, --"Baron Charr",
-	[10436] = true, --"Baroness Anastari",
-	[12056] = true, --"Baron Geddon",
-	[15205] = true, --"Baron Kazum",
-	[10440] = true, --"Baron Rivendare", -- Strath
-	[30549] = true, --"Baron Rivendare", -- Naxx
-	[3887] = true, --"Baron Silverlaine",
-	[15516] = true, --"Battleguard Sartura",
-	[1716] = true, --"Bazil Thredd",
-	[11519] = true, --"Bazzalan",
-	[11121] = true, --"Black Guard Swordsmith",
-	[18667] = true, --"Blackheart the Inciter",
-	[18836] = true, --"Blindeye the Seer",
-	[4425] = true, --"Blind Hunter",
-	[20923] = true, --"Blood Guard Porung",
-	[11382] = true, --"Bloodlord Mandokir",
-	[4543] = true, --"Bloodmage Thalnos",
-	--[14861] = true, --"Blood Steward of Kirtonos",
-	[3672] = true, --"Boahn",
-	[596] = true, --"Brainwashed Noble",
-	[17380] = true, --"Broggok",
-	[18398] = true, --"Brokentoe",
-	[12017] = true, --"Broodlord Lashlayer",
-	[1720] = true, --"Bruegal Ironknuckle",
-	[24882] = true, --"Brutallus",
-	[10263] = true, --"Burning Felguard",
-	[15370] = true, --"Buru the Gorger",
-	-- Not a mob ["Cache of the Firelord"] = true, --"Cache of the Firelord",
-	[10997] = true, --"Cannon Master Willey",
-	[647] = true, --"Captain Greenskin",
-	[14325] = true, --"Captain Kromcrush",
-	[17862] = true, --"Captain Skarloc",
-	[12225] = true, --"Celebras the Cursed",
-	[4421] = true, --"Charlga Razorflank",
-	-- not a mob ["Chess Event"] = true, --"Chess Event",
-	-- not a mob ["Chest of The Seven"] = true, --"Chest of The Seven",
-	[7267] = true, --"Chief Ukorz Sandscalp",
-	[14324] = true, --"Cho'Rush the Observer",
-	[14020] = true, --"Chromaggus",
-	[17879] = true, --"Chrono Lord Deja",
-	[26532] = true, --"Chrono-Lord Epoch",
-	[17827] = true, --"Claw",
-	--[22055] = true, --"Coilfang Elite",
-	--[22056] = true, --"Coilfang Strider",
-	[26798] = true, --"Commander Kolurg",
-	[17976] = true, --"Commander Sarannis",
-	[4278] = true, --"Commander Springvale",
-	[26796] = true, --"Commander Stoutbeard",
-	-- Unknown ["Constructor & Controller"] = true, --"Constructor & Controller",
-	[645] = true, --"Cookie",
-	[21270] = true, --"Cosmic Infuser",
-	[11120] = true, --"Crimson Hammersmith",
-	[6229] = true, --"Crowd Pummeler 9-60",
-	[10376] = true, --"Crystal Fang",
-	[15727] = true, --"C'Thun",
-	[31134] = true, --"Cyanigosa",
-	[20885] = true, --"Dalliah the Doomsayer",
-	[27389] = true, --"Dalronn the Controller",
-	[24201] = true, --"Dalronn the Controller",
-	[6228] = true, --"Dark Iron Ambassador",
-	[1853] = true, --"Darkmaster Gandling",
-	[18472] = true, --"Darkweaver Syth",
-	[14516] = true, --"Death Knight Darkreaver",
-	[16803] = true, --"Death Knight Understudy",
-	[4428] = true, --"Death Speaker Jargba",
-	[3872] = true, --"Deathsworn Captain",
-	[21269] = true, --"Devastation",
-	[5912] = true, --"Deviate Faerie Dragon",
-	[1663] = true, --"Dextren Ward",
-	[7057] = true, --"Digmaster Shovelphlange",
-	[11261] = true, --"Doctor Theolen Krastinov",
-	[18728] = true, --"Doom Lord Kazzak",
-	[9039] = true, --"Doom'rel",
-	[17711] = true, --"Doomwalker",
-	[9040] = true, --"Dope'rel",
-	[17535] = true, --"Dorothee",
-	[29307] = true, --"Drakkari Colossus",
-	[27654] = true, --"Drakos the Interrogator",
-	[5721] = true, --"Dreamscythe",
-	-- not a mob ["Dust Covered Chest"] = true, --"Dust Covered Chest",
-	[10081] = true, --"Dustwraith",
-	[4842] = true, --"Earthcaller Halmgar",
-	[14601] = true, --"Ebonroc",
-	[29932] = true, --"Eck the Ferocious",
-	[639] = true, --"Edwin VanCleef",
-	[29309] = true, --"Elder Nadox",
-	[6235] = true, --"Electrocutioner 6000",
-	[14889] = true, --"Emeriss",
-	[9019] = true, --"Emperor Dagran Thaurissan",
-	[15276] = true, --"Emperor Vek'lor",
-	[15275] = true, --"Emperor Vek'nilash",
-	[25840] = true, --"Entropius",
-	[18096] = true, --"Epoch Hunter",
-	[29315] = true, --"Erekem",
-	[23420] = true, --"Essence of Anger",
-	[23419] = true, --"Essence of Desire",
-	[23418] = true, --"Essence of Suffering",
-	[9029] = true, --"Eviscerator",
-	[18373] = true, --"Exarch Maladaar",
-	[15589] = true, --"Eye of C'Thun",
-	[6488] = true, --"Fallen Champion",
-	[15510] = true, --"Fankriss the Unyielding",
-	[21214] = true, --"Fathom-Lord Karathress",
-	[25038] = true, --"Felmyst",
-	[4274] = true, --"Fenrus the Devourer",
-	[15930] = true, --"Feugen",
-	[9056] = true, --"Fineous Darkvire",
-	[11983] = true, --"Firemaw",
-	[11981] = true, --"Flamegor",
-	[33113] = true, --"Flame Leviathan", -- 3.1 PTR missing
-	[626] = true, --"Foreman Thistlenettle",
-	-- not a mob ["Four Horsemen Chest"] = true, --"Four Horsemen Chest",
-	[11058] = true, --"Fras Siabi",
-	[32906] = true, --"Freya",-- 3.1 PTR missing
-	[15114] = true, --"Gahz'ranka",
-	[7273] = true, --"Gahz'rilla",
-	[29306] = true, --"Gal'darah",
-	[7291] = true, --"Galgann Firehammer",
-	[12057] = true, --"Garr",
-	[5713] = true, --"Gasher",
-	[19218] = true, --"Gatewatcher Gyro-Kill",
-	[19710] = true, --"Gatewatcher Iron-Hand",
-	[22949] = true, --"Gathios the Shatterer",
-	[12259] = true, --"Gehennas",
-	[6243] = true, --"Gelihast",
-	[13741] = true, --"Gelk",
-	[9033] = true, --"General Angerforge",
-	[28586] = true, --"General Bjarngrim",
-	[10363] = true, --"General Drakkisath",
-	[15341] = true, --"General Rajaxx",
-	[33271] = true, --"General Vezax",-- 3.1 PTR missing
-	[4887] = true, --"Ghamoo-ra",
-	[18105] = true, --"Ghaz'an",
-	[9718] = true, --"Ghok Bashguud",
-	[1763] = true, --"Gilnid",
-	[10268] = true, --"Gizrul the Slavener",
-	[9037] = true, --"Gloom'rel",
-	[15932] = true, --"Gluth",
-	[8567] = true, --"Glutton",
-	[11988] = true, --"Golemagg the Incinerator",
-	[8983] = true, --"Golem Lord Argelmach",
-	[10899] = true, --"Goraluk Anvilcrack",
-	[9027] = true, --"Gorosh the Dervish",
-	[26687] = true, --"Gortok Palehoof",
-	[16060] = true, --"Gothik the Harvester",
-	[20062] = true, --"Grand Astromancer Capernian",
-	[26731] = true, --"Grand Magus Telestra",
-	[26832] = true, --"Grand Magus Telestra",
-	[26928] = true, --"Grand Magus Telestra",
-	[26929] = true, --"Grand Magus Telestra",
-	[26730] = true, --"Grand Magus Telestra",
-	[18732] = true, --"Grandmaster Vorpil",
-	-- non-attackable [17603] = true, --"Grandmother",
-	[25166] = true, --"Grand Warlock Alythess",
-	[16807] = true, --"Grand Warlock Nethekurse",
-	[15953] = true, --"Grand Widow Faerlina",
-	[12557] = true, --"Grethok the Controller",
-	[15082] = true, --"Gri'lek",
-	[4854] = true, --"Grimlok",
-	[9028] = true, --"Grizzle",
-	[15931] = true, --"Grobbulus",
-	[7361] = true, --"Grubbis",
-	[19044] = true, --"Gruul the Dragonkiller",
-	[14321] = true, --"Guard Fengus",
-	[14326] = true, --"Guard Mol'dar",
-	[14323] = true, --"Guard Slip'kik",
-	[22948] = true, --"Gurtogg Bloodboil",
-	[10339] = true, --"Gyth",
-	[28921] = true, --"Hadronox",
-	[14834] = true, --"Hakkar",
-	[23577] = true, --"Halazzi",
-	[28517] = true, --"Halazzi",
-	[29022] = true, --"Halazzi",
-	[10220] = true, --"Halycon",
-	[1717] = true, --"Hamhock",
-	[20912] = true, --"Harbinger Skyriss",
-	[9034] = true, --"Hate'rel",
-	[15083] = true, --"Hazza'rah",
-	[5722] = true, --"Hazzas",
-	[23682] = true, --"Headless Horseman",
-	[23800] = true, --"Headless Horseman",
-	[10558] = true, --"Hearthsinger Forresten",
-	[9032] = true, --"Hedrum the Creeper",
-	[15936] = true, --"Heigan the Unclean",
-	-- Maggy trash [17256] = true, --"Hellfire Channeler",
-	-- friendly NPC [8696] = true, --"Henry Stern",
-	[29311] = true, --"Herald Volazj",
-	[3975] = true, --"Herod",
-	[24239] = true, --"Hex Lord Malacrass",
-	[18805] = true, --"High Astromancer Solarian",
-	[17975] = true, --"High Botanist Freywinn",
-	[4542] = true, --"High Inquisitor Fairbanks",
-	[3977] = true, --"High Inquisitor Whitemane",
-	[9018] = true, --"High Interrogator Gerstahn",
-	[18831] = true, --"High King Maulgar",
-	[16062] = true, --"Highlord Mograine",
-	[9196] = true, --"Highlord Omokk",
-	[15204] = true, --"High Marshal Whirlaxis",
-	[22950] = true, --"High Nethermancer Zerevor",
-	[14515] = true, --"High Priestess Arlokk",
-	[14517] = true, --"High Priestess Jeklik",
-	[14510] = true, --"High Priestess Mar'li",
-	[10076] = true, --"High Priestess of Thaurissan",
-	[14509] = true, --"High Priest Thekal",
-	[14507] = true, --"High Priest Venoxis",
-	[22887] = true, --"High Warlord Naj'entus",
-	[32845] = true, --"Hodir", -- 3.1 PTR missing
-	[9319] = true, --"Houndmaster Grebmar",
-	[3974] = true, --"Houndmaster Loksey",
-	[5715] = true, --"Hukku",
-	[17770] = true, --"Hungarfen",
-	[9537] = true, --"Hurley Blackbreath",
-	[16179] = true, --"Hyakiss the Lurker",
-	[17797] = true, --"Hydromancer Thespia",
-	[7795] = true, --"Hydromancer Velratha",
-	[13280] = true, --"Hydrospawn",
-	[21216] = true, --"Hydross the Unstable",
-	[29313] = true, --"Ichoron",
-	[33118] = true, --"Ignis the Furnace Master", -- 3.1 PTR missing
-	[22917] = true, --"Illidan Stormrage", -- Not adding solo quest IDs for now
-	[23426] = true, --"Illidari Council",
-	[11488] = true, --"Illyanna Ravenoak",
-	[11496] = true, --"Immol'thar",
-	[32273] = true, --"Infinite Corruptor",
-	[21271] = true, --"Infinity Blades",
-	[23954] = true, --"Ingvar the Plunderer",
-	[23980] = true, --"Ingvar the Plunderer",
-	[10505] = true, --"Instructor Malicia",
-	[16061] = true, --"Instructor Razuvious",
-	[3983] = true, --"Interrogator Vishas",
-	[28546] = true, --"Ionar",
-	[7228] = true, --"Ironaya",
-	[6489] = true, --"Ironspine",
-	[16097] = true, --"Isalien",
-	[1063] = true, --"Jade",
-	[5710] = true, --"Jammal'an the Prophet",
-	[23578] = true, --"Jan'alai",
-	[28515] = true, --"Jan'alai",
-	[29023] = true, --"Jan'alai",
-	[10503] = true, --"Jandice Barov",
-	[29310] = true, --"Jedoga Shadowseeker",
-	[10509] = true, --"Jed Runewatcher",
-	[11518] = true, --"Jergosh the Invoker",
-	[11380] = true, --"Jin'do the Hexxer",
-	-- Not found ["Jormungar Behemoth"] = true, --"Jormungar Behemoth",
-	[17534] = true, --"Julianne",
-	[24664] = true, --"Kael'thas Sunstrider",
-	[19622] = true, --"Kael'thas Sunstrider",
-	[24891] = true, --"Kalecgos",
-	[25319] = true, --"Kalecgos",
-	[24850] = true, --"Kalecgos",
-	[1666] = true, --"Kam Deepfury",
-	[5401] = true, --"Kazkaz the Unholy",
-	[17888] = true, --"Kaz'rogal",
-	[17377] = true, --"Keli'dan the Breaker",
-	[15990] = true, --"Kel'Thuzad",
-	[25465] = true, --"Kel'Thuzad",
-	[26723] = true, --"Keristrasza",
-	[18835] = true, --"Kiggler the Crazed",
-	[25315] = true, --"Kil'jaeden",
-	[17229] = true, --"Kil'rek",
-	[27483] = true, --"King Dred",
-	[11501] = true, --"King Gordok",
-	-- Considering this a pet [21684] = true, --"King Llane Piece",
-	[26861] = true, --"King Ymiron",
-	[10506] = true, --"Kirtonos the Herald",
-	-- not a mob ["Knot Thimblejack's Cache"] = true, --"Knot Thimblejack's Cache",
-	[13742] = true, --"Kolk",
-	[16118] = true, --"Kormok",
-	[3653] = true, --"Kresh",
-	[28684] = true, --"Krik'thir the Gatewatcher",
-	[18832] = true, --"Krosh Firehand",
-	[27977] = true, --"Krystallus",
-	[15348] = true, --"Kurinnaxx",
-	[3671] = true, --"Lady Anacondra",
-	[16065] = true, --"Lady Blaumeux",
-	[10502] = true, --"Lady Illucia Barov",
-	[22951] = true, --"Lady Malande",
-	[25165] = true, --"Lady Sacrolash",
-	[4831] = true, --"Lady Sarevess",
-	[21212] = true, --"Lady Vashj",
-	[17980] = true, --"Laj",
-	[12203] = true, --"Landslide",
-	[29312] = true, --"Lavanthor",
-	[21215] = true, --"Leotheras the Blind",
-	[14888] = true, --"Lethon",
-	[14327] = true, --"Lethtendris",
-	[27656] = true, --"Ley-Guardian Eregos",
-	[17848] = true, --"Lieutenant Drake",
-	-- friendly ally [15471] = true, --"Lieutenant General Andorov",
-	[16011] = true, --"Loatheb",
-	[28923] = true, --"Loken",
-	[10504] = true, --"Lord Alexei Barov",
-	[3669] = true, --"Lord Cobrahn",
-	[14506] = true, --"Lord Hel'nurath",
-	[9017] = true, --"Lord Incendius",
-	[12397] = true, --"Lord Kazzak",
-	[15511] = true, --"Lord Kri",
-	[3670] = true, --"Lord Pythas",
-	[9025] = true, --"Lord Roccor",
-	[20060] = true, --"Lord Sanguinar",
-	[3673] = true, --"Lord Serpentis",
-	[15305] = true, --"Lord Skwol",
-	[16042] = true, --"Lord Valthalak",
-	[10162] = true, --"Lord Victor Nefarius",
-	[12236] = true, --"Lord Vyletongue",
-	[10901] = true, --"Lorekeeper Polkelt",
-	[5714] = true, --"Loro",
-	[12118] = true, --"Lucifron",
-	[3655] = true, --"Mad Magglish",
-	[15952] = true, --"Maexxna",
-	[27655] = true, --"Mage-Lord Urom",
-	[11487] = true, --"Magister Kalendris",
-	[10435] = true, --"Magistrate Barthilas",
-	[11982] = true, --"Magmadar",
-	[9938] = true, --"Magmus",
-	[13740] = true, --"Magra",
-	[17257] = true, --"Magtheridon",
-	[27975] = true, --"Maiden of Grief",
-	[16457] = true, --"Maiden of Virtue",
-	[12018] = true, --"Majordomo Executus",
-	[24239] = true, --"Malacrass",
-	[10438] = true, --"Maleki the Pallid",
-	[26533] = true, --"Mal'Ganis",
-	[29620] = true, --"Mal'Ganis",
-	[28859] = true, --"Malygos",
-	[13739] = true, --"Maraudos",
-	[10433] = true, --"Marduk Blackpool",
-	[599] = true, --"Marisa du'Paige",
-	[20063] = true, --"Master Engineer Telonicus",
-	[11834] = true, --"Maur Grimtotem",
-	[26529] = true, --"Meathook",
-	[19219] = true, --"Mechano-Lord Capacitus",
-	-- Friendly NPC Medivh = true, --"Medivh",
-	[17796] = true, --"Mekgineer Steamrigger",
-	[7800] = true, --"Mekgineer Thermaplugg",
-	[17941] = true, --"Mennu the Betrayer",
-	[12237] = true, --"Meshlok the Harvester",
-	[16151] = true, --"Midnight",
-	[5717] = true, --"Mijan",
-	[3586] = true, --"Miner Johnson",
-	[15340] = true, --"Moam",
-	[18069] = true, --"Mogor",
-	[29305] = true, --"Moorabi",
-	[29316] = true, --"Moragg",
-	[7357] = true, --"Mordresh Fire Eye",
-	[16080] = true, --"Mor Grayhoof",
-	[15687] = true, --"Moroes",
-	[21213] = true, --"Morogrim Tidewalker",
-	[5719] = true, --"Morphaz",
-	[22947] = true, --"Mother Shahraz",
-	[10596] = true, --"Mother Smolderweb",
-	[646] = true, --"Mr. Smite",
-	[18399] = true, --"Murkblood Twin",
-	-- not found ["Murkblood Twins"] = true, --"Murkblood Twins",
-	[18708] = true, --"Murmur",
-	[7608] = true, --"Murta Grimgut",
-	[25741] = true, --"M'uru",
-	[11447] = true, --"Mushgog",
-	[3654] = true, --"Mutanus the Devourer",
-	[29024] = true, --"Nalorakk",
-	[28514] = true, --"Nalorakk",
-	[23576] = true, --"Nalorakk",
-	[17536] = true, --"Nazan",
-	[11583] = true, --"Nefarian",
-	[7796] = true, --"Nekrum Gutchewer",
-	[10437] = true, --"Nerub'enkan",
-	[19221] = true, --"Nethermancer Sepethrea",
-	[15689] = true, --"Netherspite",
-	[21268] = true, --"Netherstrand Longbow",
-	[18344] = true, --"Nexus-Prince Shaffar",
-	[17225] = true, --"Nightbane",
-	[15954] = true, --"Noth the Plaguebringer",
-	[26631] = true, --"Novos the Summoner",
-	[13282] = true, --"Noxxion",
-	-- [7023] = true, --"Obsidian Sentinel",
-	[4279] = true, --"Odo the Blindwatcher",
-	[5711] = true, --"Ogom the Wretched",
-	[9030] = true, --"Ok'thor the Breaker",
-	[4830] = true, --"Old Serra'kis",
-	[18834] = true, --"Olm the Summoner",
-	[17308] = true, --"Omor the Unscarred",
-	[10184] = true, --"Onyxia",
-	[26794] = true, --"Ormorok the Tree-Shaper",
-	[7606] = true, --"Oro Eyegouge",
-	[15339] = true, --"Ossirian the Unscarred",
-	[15517] = true, --"Ouro",
-	[4420] = true, --"Overlord Ramtusk",
-	[9568] = true, --"Overlord Wyrmthalak",
-	[9026] = true, --"Overmaster Pyron",
-	-- not found ["Overseer Tidewrath"] = true, --"Overseer Tidewrath",
-	[18341] = true, --"Pandemonius",
-	[8923] = true, --"Panzor the Invincible",
-	[16028] = true, --"Patchwerk",
-	[19220] = true, --"Pathaleon the Calculator",
-	[9502] = true, --"Phalanx",
-	[21273] = true, --"Phaseshift Bulwark",
-	[14349] = true, --"Pimgib",
-	[7356] = true, --"Plaguemaw the Rotting",
-	[9499] = true, --"Plugger Spazzring",
-	[11143] = true, --"Postmaster Malown",
-	[24560] = true, --"Priestess Delrissa",
-	[23953] = true, --"Prince Keleseth",
-	[15690] = true, --"Prince Malchezaar",
-	[15203] = true, --"Prince Skaldrenox",
-	[15509] = true, --"Princess Huhuran",
-	[8929] = true, --"Princess Moira Bronzebeard",
-	[14457] = true, --"Princess Tempestria",
-	[12201] = true, --"Princess Theradras",
-	[15543] = true, --"Princess Yauj",
-	[29308] = true, --"Prince Taldaram",
-	[11486] = true, --"Prince Tortheldrin",
-	-- Hydross trash [22035] = true, --"Pure Spawn of Hydross",
-	[14354] = true, --"Pusillin",
-	[9816] = true, --"Pyroguard Emberseer",
-	[9024] = true, --"Pyromancer Loregrain",
-	[17942] = true, --"Quagmirran",
-	[9736] = true, --"Quartermaster Zigris",
-	[17767] = true, --"Rage Winterchill",
-	[7354] = true, --"Ragglesnout",
-	[11502] = true, --"Ragnaros",
-	[10439] = true, --"Ramstein the Gorger",
-	[10508] = true, --"Ras Frostwhisper",
-	[11622] = true, --"Rattlegore",
-	[3886] = true, --"Razorclaw the Butcher",
-	[12435] = true, --"Razorgore the Untamed",
-	[12258] = true, --"Razorlash",
-	-- not found Razorscale = true, --"Razorscale",
-	-- not found ["Reliquary of Souls"] = true, --"Reliquary of Souls",
-	[15084] = true, --"Renataki",
-	[17261] = true, --"Restless Skeleton",
-	[6910] = true, --"Revelosh",
-	[644] = true, --"Rhahk'Zor",
-	[9543] = true, --"Ribbly Screwspigot",
-	[17546] = true, --"Roar",
-	[16181] = true, --"Rokad the Ravager",
-	[18400] = true, --"Rokdar the Sundered Lord",
-	[17991] = true, --"Rokmar the Crackler",
-	[17533] = true, --"Romulo",
-	-- not found ["Romulo & Julianne"] = true, --"Romulo & Julianne",
-	[13596] = true, --"Rotgrip",
-	-- not found ["Runemaster Molgeim"] = true, --"Runemaster Molgeim",
-	[7797] = true, --"Ruuzlu",
-	[26530] = true, --"Salramm the Fleshcrafter",
-	[10080] = true, --"Sandarr Dunereaver",
-	[7274] = true, --"Sandfury Executioner",
-	[15989] = true, --"Sapphiron",
-	[28860] = true, --"Sartharion",
-	[24892] = true, --"Sathrovarr the Corruptor",
-	[3976] = true, --"Scarlet Commander Mograine",
-	[9038] = true, --"Seeth'rel",
-	[24723] = true, --"Selin Fireheart",
-	[7604] = true, --"Sergeant Bly",
-	[22841] = true, --"Shade of Akama",
-	[16524] = true, --"Shade of Aran",
-	[5709] = true, --"Shade of Eranikus",
-	[16180] = true, --"Shadikith the Glider",
-	[9236] = true, --"Shadow Hunter Vosh'gajin",
-	[21875] = true, --"Shadow of Leotheras",
-	[7275] = true, --"Shadowpriest Sezz'ziz",
-	[30451] = true, --"Shadron",
-	[12264] = true, --"Shazzrah",
-	[18371] = true, --"Shirrak the Dead Watcher",
-	[16063] = true, --"Sir Zeliek",
-	[27978] = true, --"Sjonnir The Ironshaper",
-	[26693] = true, --"Skadi the Ruthless",
-	[11498] = true, --"Skarr the Unbreakable",
-	[27390] = true, --"Skarvald the Constructor",
-	[24200] = true, --"Skarvald the Constructor",
-	[18401] = true, --"Skra'gath",
-	[10393] = true, --"Skul",
-	[3674] = true, --"Skum",
-	[29304] = true, --"Slad'ran",
-	[643] = true, --"Sneed",
-	[642] = true, --"Sneed's Shredder",
-	[10264] = true, --"Solakar Flamewreath",
-	-- Solarium trash [18925] = true, --"Solarium Agent",
-	-- Solarium trash [18806] = true, --"Solarium Priest",
-	[9218] = true, --"Spirestone Battle Lord",
-	[9219] = true, --"Spirestone Butcher",
-	[9217] = true, --"Spirestone Lord Magus",
-	[21274] = true, --"Staff of Disintegration",
-	[15929] = true, --"Stalagg",
-	-- not found Steelbreaker = true, --"Steelbreaker",
-	[14322] = true, --"Stomper Kreeg",
-	[10809] = true, --"Stonespine",
-	-- not found ["Stormcaller Brundir"] = true, --"Stormcaller Brundir",
-	[17543] = true, --"Strawman",
-	[12098] = true, --"Sulfuron Harbinger",
-	[22898] = true, --"Supremus",
-	[26668] = true, --"Svala Sorrowgrave",
-	[17826] = true, --"Swamplord Musel'ek",
-	[14890] = true, --"Taerar",
-	-- hydross trash [22036] = true, --"Tainted Spawn of Hydross",
-	[18473] = true, --"Talon King Ikiss",
-	[11520] = true, --"Taragaman the Hungerer",
-	[1696] = true, --"Targorr the Dread",
-	[18343] = true, --"Tavarok",
-	[6231] = true, --"Techbot",
-	[17880] = true, --"Temporus",
-	[11489] = true, --"Tendris Warpwood",
-	[30452] = true, --"Tenebron",
-	[15688] = true, --"Terestian Illhoof",
-	[22871] = true, --"Teron Gorefiend",
-	[15928] = true, --"Thaddius",
-	[20064] = true, --"Thaladred the Darkener",
-	[16064] = true, --"Thane Korth'azz",
-	[10430] = true, --"The Beast",
-	[17521] = true, --"The Big Bad Wolf",
-	[17882] = true, --"The Black Stalker",
-	-- not found ["The Blue Brothers"] = true, --"The Blue Brothers",
-	-- not found ["The Bug Family"] = true, --"The Bug Family",
-	[18168] = true, --"The Crone",
-	[15691] = true, --"The Curator",
-	-- not found ["The Eredar Twins"] = true, --"The Eredar Twins",
-	-- not found ["The Four Horsemen"] = true, --"The Four Horsemen",
-	[23426] = true, --"The Illidari Council",
-	-- not found ["The Iron Council"] = true, --"The Iron Council",
-	[7272] = true, --"Theka the Martyr",
-	[21217] = true, --"The Lurker Below",
-	[17381] = true, --"The Maker",
-	[15263] = true, --"The Prophet Skeram",
-	[26632] = true, --"The Prophet Tharon'ja",
-	[27696] = true, --"The Prophet Tharon'ja",
-	[10507] = true, --"The Ravenian",
-	[11497] = true, --"The Razza",
-	-- not found ["The Seven Dwarves"] = true, --"The Seven Dwarves",
-	[28234] = true, --"The Tribunal of Ages",
-	-- not found ["The Twin Emperors"] = true, --"The Twin Emperors",
-	[10516] = true, --"The Unforgiven",
-	[14454] = true, --"The Windreaver",
-	-- friendly NPC Thorim = true, --"Thorim",
-	[17978] = true, --"Thorngrin the Tender",
-	-- Morogrim trash [21920] = true, --"Tidewalker Lurker",
-	[10808] = true, --"Timmy the Cruel",
-	[17547] = true, --"Tinhead",
-	[13601] = true, --"Tinkerer Gizlock",
-	[17548] = true, --"Tito",
-	[3652] = true, --"Trigore the Lasher",
-	[26630] = true, --"Trollgore",
-	[11467] = true, --"Tsu'zee",
-	[7355] = true, --"Tuten'kash",
-	[4832] = true, --"Twilight Lord Kelris",
-	[10584] = true, --"Urok Doomhowl",
-	[13020] = true, --"Vaelastrasz the Corrupt",
-	[27447] = true, --"Varos Cloudstrider",
-	[17537] = true, --"Vazruden",
-	[17307] = true, --"Vazruden the Herald",
-	[10432] = true, --"Vectus",
-	[15544] = true, --"Vem",
-	[13738] = true, --"Veng",
-	[22952] = true, --"Veras Darkshadow",
-	[5775] = true, --"Verdan the Everliving",
-	[9042] = true, --"Verek",
-	[30449] = true, --"Vesperon",
-	[24744] = true, --"Vexallus",
-	[5399] = true, --"Veyzhak the Cannibal",
-	[9036] = true, --"Vile'rel",
-	[15299] = true, --"Viscidus",
-	[7079] = true, --"Viscous Fallout",
-	[19516] = true, --"Void Reaver",
-	[28587] = true, --"Volkhan",
-	[16809] = true, --"Warbringer O'mrogg",
-	-- treated as pet ["Warchief Blackhand Piece"] = true, --"Warchief Blackhand Piece",
-	[16808] = true, --"Warchief Kargath Bladefist",
-	[10429] = true, --"Warchief Rend Blackhand",
-	[20904] = true, --"Warden Mellichar",
-	[9041] = true, --"Warder Stilgiss",
-	[17798] = true, --"Warlord Kalithresh",
-	[9237] = true, --"War Master Voone",
-	[18402] = true, --"Warmaul Champion",
-	[21272] = true, --"Warp Slicer",
-	[17977] = true, --"Warp Splinter",
-	[17306] = true, --"Watchkeeper Gargolmar",
-	[5720] = true, --"Weaver",
-	[7271] = true, --"Witch Doctor Zum'rah",
-	[3927] = true, --"Wolf Master Nandos",
-	[20886] = true, --"Wrath-Scryer Soccothrates",
-	[15085] = true, --"Wushoolay",
-	[29266] = true, --"Xevozz",
-	-- not found ["XT-002 Deconstructor"] = true, --"XT-002 Deconstructor",
-	[14887] = true, --"Ysondre",
-	[5400] = true, --"Zekkis",
-	[17830] = true, --"Zelemar the Wrathful",
-	[20870] = true, --"Zereketh the Unbound",
-	[10082] = true, --"Zerillis",
-	[11490] = true, --"Zevrim Thornhoof",
-	[5712] = true, --"Zolo",
-	-- trash ["Zul'Farrak Dead Hero"] = true, --"Zul'Farrak Dead Hero",
-	[23863] = true, --"Zul'jin",
-	[5716] = true, --"Zul'Lor",
-	[29314] = true, --"Zuramat the Obliterator",
-}
-]]
-
 local bossIDs = BossIDs.BossIDs
 
 function Recount.IsBoss(GUID)
@@ -875,7 +188,9 @@ local SPELLSCHOOL_PHYSICAL = 1
 local SPELLSCHOOL_HOLY = 2
 local SPELLSCHOOL_FIRE = 4
 local SPELLSCHOOL_NATURE = 8
+local SPELLSCHOOL_NATUREFIRE = SPELLSCHOOL_FIRE + SPELLSCHOOL_NATURE
 local SPELLSCHOOL_FROST = 16
+local SPELLSCHOOL_FROSTFIRE = SPELLSCHOOL_FIRE + SPELLSCHOOL_FROST
 local SPELLSCHOOL_SHADOW = 32
 local SPELLSCHOOL_ARCANE = 64
 
@@ -884,27 +199,11 @@ Recount.SpellSchoolName = {
 	[SPELLSCHOOL_HOLY] = "Holy",  -- Elsia: Do NOT localize this, it breaks functionality!!! If you need this localized contact me on WowAce or Curse.
 	[SPELLSCHOOL_FIRE] = "Fire",  -- Elsia: Do NOT localize this, it breaks functionality!!! If you need this localized contact me on WowAce or Curse.
 	[SPELLSCHOOL_NATURE] = "Nature",  -- Elsia: Do NOT localize this, it breaks functionality!!! If you need this localized contact me on WowAce or Curse.
+	[SPELLSCHOOL_NATUREFIRE] = "Naturefire",  -- Elsia: Do NOT localize this, it breaks functionality!!! If you need this localized contact me on WowAce or Curse.
 	[SPELLSCHOOL_FROST] = "Frost",  -- Elsia: Do NOT localize this, it breaks functionality!!! If you need this localized contact me on WowAce or Curse.
+	[SPELLSCHOOL_FROSTFIRE] = "Frostfire", -- Elsia: Do NOT localize this, it breaks functionality!!! If you need this localized contact me on WowAce or Curse.
 	[SPELLSCHOOL_SHADOW] = "Shadow",  -- Elsia: Do NOT localize this, it breaks functionality!!! If you need this localized contact me on WowAce or Curse.
 	[SPELLSCHOOL_ARCANE] = "Arcane",  -- Elsia: Do NOT localize this, it breaks functionality!!! If you need this localized contact me on WowAce or Curse.
-}
-
-local POWERTYPE_MANA = 0
-local POWERTYPE_RAGE = 1
-local POWERTYPE_FOCUS = 2
-local POWERTYPE_ENERGY = 3
-local POWERTYPE_HAPPINESS = 4;
-local POWERTYPE_RUNES = 5;
-local POWERTYPE_RUNIC_POWER = 6;
-
-Recount.PowerTypeName = { -- Elsia: Do NOT localize this, it breaks functionality!!! If you need this localized contact me on WowAce or Curse.
-	[POWERTYPE_MANA] = "Mana",
-	[POWERTYPE_RAGE] = "Rage",
-	[POWERTYPE_ENERGY] = "Energy",
-	[POWERTYPE_FOCUS] = "Focus",
-	[POWERTYPE_HAPPINESS] = "Happiness",
-	[POWERTYPE_RUNES] = "Runes",
-	[POWERTYPE_RUNIC_POWER] = "Runic Power",	
 }
 
 function Recount:MatchGUID(nName,nGUID,nFlags)
@@ -1007,15 +306,34 @@ end
 
 function Recount:SwingMissed(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, missType, missAmount)
 	
-	Recount:AddDamageData(srcName, dstName, L["Melee"], nil, Recount:FixCaps(missType),nil,nil, srcGUID, srcFlags, dstGUID, dstFlags)  -- Elsia: Do NOT localize this, it breaks functionality!!! If you need this localized contact me on WowAce or Curse.
+	local blocked
+	local absorbed
+	local spellId = L["Melee"]
+
+	if missType == "ABSORB" then
+		absorbed = missAmount
+	elseif missType == "BLOCK" then
+		blocked = missAmount
+	end
+	
+	Recount:AddDamageData(srcName, dstName, L["Melee"], nil, Recount:FixCaps(missType),nil,nil, srcGUID, srcFlags, dstGUID, dstFlags, spellId, blocked, absorbed)  -- Elsia: Do NOT localize this, it breaks functionality!!! If you need this localized contact me on WowAce or Curse.
 end
 
 function Recount:SpellMissed(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,spellId, spellName, spellSchool, missType, missAmount)
 
-	Recount:AddDamageData(srcName, dstName, spellName, nil, Recount:FixCaps(missType),nil,nil, srcGUID, srcFlags, dstGUID, dstFlags, spellId)
+	local blocked
+	local absorbed
+
+	if missType == "ABSORB" then
+		absorbed = missAmount
+	elseif missType == "BLOCK" then
+		blocked = missAmount
+	end
+
+	Recount:AddDamageData(srcName, dstName, spellName, nil, Recount:FixCaps(missType),nil,nil, srcGUID, srcFlags, dstGUID, dstFlags, spellId, blocked, absorbed)
 end
 
-function Recount:SpellHeal(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,spellId, spellName, spellSchool, amount, overheal,critical)
+function Recount:SpellHeal(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,spellId, spellName, spellSchool, amount, overheal,absorbed, critical)
 
 	local healtype="Hit"  -- Elsia: Do NOT localize this, it breaks functionality!!! If you need this localized contact me on WowAce or Curse.
         local isHot
@@ -1026,16 +344,16 @@ function Recount:SpellHeal(timestamp, eventtype, srcGUID, srcName, srcFlags, dst
 		-- Not activated yet: spellName=spellName.." ("..L["HoT"]..")"
 	end
 
+	if absorbed==1 and not critical then -- 3.1 to 3.2 combatibility
+		critical = absorbed
+		absorbed = nil
+	end
+	
 	if critical then
 		healtype="Crit"  -- Elsia: Do NOT localize this, it breaks functionality!!! If you need this localized contact me on WowAce or Curse.
 	end
 
-	Recount:AddHealData(srcName, dstName, spellName, healtype, amount,overheal, srcGUID,srcFlags,dstGUID,dstFlags,spellId,isHot)-- Elsia: Overheal missing!!!
-end
-
-function Recount:SpellEnergize(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,spellId, spellName, spellSchool, amount, powerType)
-
-	Recount:AddGain(dstName, srcName, spellName, amount, Recount.PowerTypeName[powerType], dstGUID, dstFlags, srcGUID, srcFlags, spellId)
+	Recount:AddHealData(srcName, dstName, spellName, healtype, amount,overheal, srcGUID,srcFlags,dstGUID,dstFlags,spellId,isHot, absorbed)-- Elsia: Overheal missing!!!
 end
 
 local extraattacks
@@ -1063,53 +381,9 @@ function Recount:SpellExtraAttacks(timestamp, eventtype, srcGUID, srcName, srcFl
 	end
 end
 
-function Recount:SpellInterrupt(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,spellId, spellName, spellSchool, extraSpellId, extraSpellName, extraSpellSchool)
-
-	if not spellName   then
-		spellName = "Melee"
-	end
-	local ability = extraSpellName .. " (" .. spellName .. ")"
-	Recount:AddInterruptData(srcName, dstName, ability, srcGUID, srcFlags, dstGUID, dstFlags, extraSpellId) -- Elsia: Keep both interrupting spell and interrupted spell
-end
-
 function Recount:SpellDrain(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,spellId, spellName, spellSchool, amount, powerType, extraAmount)
 
 -- Currently unused.
-end
-
-function Recount:SpellLeech(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,spellId, spellName, spellSchool, amount, powerType, extraAmount)
-	Recount:AddGain(srcName, dstName, spellName, extraAmount, Recount.PowerTypeName[powerType], srcGUID, srcFlags, dstGUID, dstFlags, spellId)
-end
-
-function Recount:SpellAuraBroken(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,spellId, spellName, spellSchool, extraSpellId, extraSpellName, extraSpellSchool)
-	if not spellName then
-		spellName = "Melee"
-	end
-	
-	local ability
-	if extraSpellName then 
-	        ability = spellName .. " (" .. extraSpellName .. ")"
-	else
-		ability = spellName .." (Melee)"
-	end
-
-	if CCId[spellId] then
-		Recount:AddCCBreaker(srcName, dstName, ability, srcGUID, srcFlags, dstGUID, dstFlags, extraSpellId)
-	end
-end
-
-function Recount:SpellAuraDispelledStolen(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,spellId, spellName, spellSchool, extraSpellId, extraSpellName, extraSpellSchool)
-
-	if eventtype == "SPELL_DISPEL_FAILED" then
-		return -- Not covering failures.
-	end
-
-	if not spellName then
-		spellName = "Melee"
-	end
-	local ability = extraSpellName .. " (" .. spellName .. ")"
-
-	Recount:AddDispelData(srcName, dstName, ability, srcGUID, srcFlags, dstGUID, dstFlags, extraSpellId)
 end
 
 function Recount:SpellAuraAppliedRemoved(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,spellId, spellName, spellSchool, auraType)
@@ -1123,10 +397,6 @@ end
 function Recount:SpellAuraAppliedRemovedDose(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,spellId, spellName, spellSchool, auraType, amount)
 -- Not sure yet how to handle this
 
-end
-
-function Recount:SpellResurrect(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,spellId, spellName, spellSchool)
-			Recount:AddRes(srcName, dstName, spellName, srcGUID, srcFlags, dstGUID, dstFlags, spellId)
 end
 
 function Recount:SpellCastStartSuccess(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,spellId, spellName, spellSchool)
@@ -1188,7 +458,7 @@ local EventParse =
 	["SPELL_LEECH"] = Recount.SpellLeech,
 	["SPELL_PERIODIC_DRAIN"] = Recount.SpellDrain,
 	["SPELL_PERIODIC_LEECH"] = Recount.SpellLeech,
-	["SPELL_DISPEL_FAILED"] = Recount.SpellAuraDispelledStolen, -- Elsia: Failed dispell
+	["SPELL_DISPEL_FAILED"] = Recount.SpellAuraDispelFailed, -- Elsia: Failed dispell
 --	["SPELL_AURA_DISPELLED"] = Recount.SpellAuraDispelledStolen, -- Removed with 2.4.3
 --	["SPELL_AURA_STOLEN"] = Recount.SpellAuraDispelledStolen, -- Removed with 2.4.3
 	["SPELL_AURA_APPLIED"] = Recount.SpellAuraAppliedRemoved, -- Elsia: Auras
@@ -1215,7 +485,8 @@ local EventParse =
 	["SPELL_STOLEN"] = Recount.SpellAuraDispelledStolen, -- Post 2.4.3
 	["SPELL_RESURRECT"] = Recount.SpellResurrect, -- Post WotLK
 	["SPELL_BUILDING_DAMAGE"] = Recount.SpellBuildingDamage, -- Post WotLK
-	["SPELL_BUILDING_HEAL"] = Recount.SpellBuildingHeal
+	["SPELL_BUILDING_HEAL"] = Recount.SpellBuildingHeal,
+	["UNIT_DISSIPATES"] = Recount.UnitDied, -- Post 3.2
 }
 
 local QuickExitEvents =
@@ -1241,6 +512,28 @@ local QuickExitEvents =
 	["SPELL_CREATE"] = true,
 	["SPELL_BUILDING_DAMAGE"] = true,
 }
+
+-- This is to allow modularity of the tracker code. Functions that are not registered to be handled will be quickexited.
+if not Recount.SpellResurrect then
+	QuickExitEvents["SPELL_RESURRECT"] = true
+end
+if not Recount.SpellAuraBroken then
+	QuickExitEvents["SPELL_AURA_BROKEN"] = true
+	QuickExitEvents["SPELL_AURA_BROKEN_SPELL"] = true
+end
+if not Recount.SpellAuraDispelledStolen then
+	QuickExitEvents["SPELL_DISPEL"] = true
+	QuickExitEvents["SPELL_STOLEN"] = true
+end
+if not Recount.SpellEnergize then
+	QuickExitEvents["SPELL_ENERGIZE"] = true
+	QuickExitEvents["SPELL_PERIODIC_ENERGIZE"] = true
+	QuickExitEvents["SPELL_LEECH"] = true
+	QuickExitEvents["SPELL_PERIODIC_LEECH"] = true
+end
+if not Recount.SpellInterrupt then
+	QuickExitEvents["SPELL_INTERRUPT"] = true
+end
 
 
 local GROUPED_FILTER_BITMASK = COMBATLOG_OBJECT_AFFILIATION_MINE+COMBATLOG_OBJECT_AFFILIATION_PARTY+COMBATLOG_OBJECT_AFFILIATION_RAID
@@ -1310,8 +603,10 @@ function Recount:CheckRetentionFromFlags(nameFlags,name,nameGUID)
 
 end
 
-local srcRetention
-local dstRetention
+Recount.srcRetention = false
+Recount.dstRetention = false
+local srcRetention = Recount.srcRetention
+local dstRetention = Recount.dstRetention
 local parsefunc
 function Recount:CombatLogEvent(_,timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, ...)
 	if not Recount.db.profile.GlobalDataCollect or not Recount.CurrentDataCollect then
@@ -1328,6 +623,9 @@ function Recount:CombatLogEvent(_,timestamp, eventtype, srcGUID, srcName, srcFla
 	if not srcRetention and not dstRetention then
 		return
 	end
+	
+	Recount.srcRetention = srcRetention
+	Recount.dstRetention = dstRetention
 
 	if srcName == nil then
 		srcName = "No One"
@@ -1339,7 +637,7 @@ function Recount:CombatLogEvent(_,timestamp, eventtype, srcGUID, srcName, srcFla
 	else
 		Recount:MatchGUID(dstName,dstGUID,dstFlags)
 	end
-
+	
 	parsefunc = EventParse[eventtype]
 	
 	if parsefunc then
@@ -1766,7 +1064,8 @@ end
 
 -- Elsia: Borrowed shamelessly from Threat-2.0
 function Recount:NPCID(guid)
-	return tonumber(guid:sub(-12,-7),16)
+--	return tonumber(guid:sub(-12,-7),16)
+	return tonumber(guid:sub(-12,-9),16)
 end
 
 function Recount:DetectPet(name, nGUID, nFlags)
@@ -1787,37 +1086,31 @@ function Recount:DetectPet(name, nGUID, nFlags)
 			name = name.." <"..Recount.PlayerName..">"
 			owner = Recount.PlayerName -- Elsia: Fix up so that owner properly gets set
 			ownerID = Recount.PlayerGUID
-			if bit_band(nFlags, COMBATLOG_OBJECT_TYPE_PET) ~=0 then
+--			if bit_band(nFlags, COMBATLOG_OBJECT_TYPE_PET) ~=0 then
 --				Recount.PlayerPetGUID = nGUID
-			else -- Guardians
-				Recount.LatestGuardian = Recount.LatestGuardian + 1
-				Recount.GuardiansGUIDs[Recount.LatestGuardian]=nGUID
-				if Recount.LatestGuardian > 20 then -- Elsia: Max guardians set to 20 for now
-					Recount.LatestGuardian = 0
-				end
---[[				if Recount.NPCID then
-					local npcid = Recount:NPCID(nGUID) -- Elsia: 15438 and 15352 are mobids of shaman's greater elementals
-					if (npcid == 15438 or npcid == 15352) and (not dbCombatants[name] or dbCombatants[name].GUID ~= nGUID) then -- Elsia: Only Sync new elementals
-						Recount:AnnouncePetGUID(owner,petName,nGUID)
-					end
-				end]]
-			end
+--			else -- Guardians
+--				Recount.LatestGuardian = Recount.LatestGuardian + 1
+--				Recount.GuardiansGUIDs[Recount.LatestGuardian]=nGUID
+--				if Recount.LatestGuardian > 20 then -- Elsia: Max guardians set to 20 for now
+--					Recount.LatestGuardian = 0
+--				end
+--			end
 		elseif bit_band(nFlags, COMBATLOG_OBJECT_AFFILIATION_PARTY+COMBATLOG_OBJECT_AFFILIATION_RAID)~=0 then
-			if nFlags and bit_band(nFlags, COMBATLOG_OBJECT_TYPE_PET)~=0 then
-				owner, ownerID = Recount:FindOwnerPetFromGUID(name,nGUID)
-			
-				if owner then
-					name=name.." <"..owner..">"
-				else
-				   Recount:DPrint("NoOwner: "..name.." "..(nGUID or "nil"))
-				end
-			elseif nFlags and bit_band(nFlags, COMBATLOG_OBJECT_TYPE_GUARDIAN)~=0 then
+--			if nFlags and bit_band(nFlags, COMBATLOG_OBJECT_TYPE_PET)~=0 then
+--			elseif nFlags and bit_band(nFlags, COMBATLOG_OBJECT_TYPE_GUARDIAN)~=0 then
 				owner = Recount:GetGuardianOwnerByGUID(nGUID)
 				ownerID = owner and dbCombatants[owner] and dbCombatants[owner].GUID
+				if not owner then
+					owner, ownerID = Recount:FindOwnerPetFromGUID(name,nGUID)
+			
+					if not owner then
+					   Recount:DPrint("NoOwner: "..name.." "..(nGUID or "nil"))
+					end
+				end
 				if owner then name = name.." <"..owner..">" end
 				--Recount:DPrint("Party guardian: "..name.." "..(nGUID or "nil").." "..(owner or "nil").." "..(ownerID or "nil"))
-			end
-		elseif nFlags and bit_band(nFlags, COMBATLOG_OBJECT_TYPE_GUARDIAN)~=0 then
+--			end
+		else
 			petName = Recount:GetGuardianOwnerByGUID(nameGUID)
 			if petName then
 				petName, owner = petName:match("(.-) <(.*)>")
@@ -1955,24 +1248,24 @@ function Recount:AddDamageData(source, victim, ability, element, hittype, damage
 					Recount:AddTableDataSum(sourceData,"FDamagedWho",victim,ability,damage)
 					return
 				end
-
-				-- Elsia: Moved this out because we want this recorded regardless whether it was friendly damage or not
-				-- Elsia: Also removed bug, victims resist/block/absorb!
-				if resist then
-					Recount:AddAmount2(sourceData,"ElementDoneResist",element,resist)
-				end
-
-				if blocked then
-					Recount:AddAmount2(sourceData,"ElementDoneBlock",element,blocked)
-				end
-					
-				if absorbed then
-					Recount:AddAmount2(sourceData,"ElementDoneAbsorb",element,absorbed)
-				end
 					
 				Recount:AddTableDataSum(sourceData,"DamagedWho",victim,ability,damage)	
 			else
 				Recount:AddTableDataStatsNoAmount(sourceData,"Attacks",ability,hittype)
+			end
+
+			-- Elsia: Moved this out because we want this recorded regardless whether it was friendly damage or not
+			-- Elsia: Also removed bug, victims resist/block/absorb!
+			if resist then
+				Recount:AddAmount2(sourceData,"ElementDoneResist",element,resist)
+			end
+
+			if blocked then
+				Recount:AddAmount2(sourceData,"ElementDoneBlock",element,blocked)
+			end
+				
+			if absorbed then
+				Recount:AddAmount2(sourceData,"ElementDoneAbsorb",element,absorbed)
 			end
 
 			--Needs to be here for tracking so we don't add Friendly Damage as well
@@ -2037,48 +1330,48 @@ function Recount:AddDamageData(source, victim, ability, element, hittype, damage
 
 				Recount:AddAmount2(victimData,"ElementTaken",element,damage)
 				
-				if resist then -- Elsia: Fixed bug, source has to "take" resists, blocks and absorbs.
-					if hittype=="Crit" then
-						resist=resist*2
-					end
-					Recount:AddAmount2(victimData,"ElementTakenResist",element,resist)
-					if resist<(damage/2.5) then
-						--25% Resist
-						Recount:AddTableDataStats(victimData,"PartialResist",ability,"25%"..L["Resist"],resist)
-					elseif resist<(1.25*damage) then
-						--50% Resist
-						Recount:AddTableDataStats(victimData,"PartialResist",ability,"50%"..L["Resist"],resist)
-					else
-						--75% Resist
-						Recount:AddTableDataStats(victimData,"PartialResist",ability,"75%"..L["Resist"],resist)
-					end
-				else
-					Recount:AddTableDataStats(victimData,"PartialResist",ability,L["No Resist"],0)
-				end
-				
-				if blocked or hittype=="Block" then
-					Recount:AddAmount2(victimData,"ElementTakenBlock",element,blocked)
-					if blocked then
-						Recount:AddTableDataStats(victimData,"PartialBlock",ability,L["Blocked"],blocked)
-					else
-						Recount:AddTableDataStats(victimData,"PartialBlock",ability,L["No Block"],0)
-					end
-				end
-				
-				if absorbed then
-					Recount:AddAmount2(victimData,"ElementTakenAbsorb",element,absorbed)
-					Recount:AddTableDataStats(victimData,"PartialAbsorb",ability,L["Absorbed"],absorbed)
-				else
-					Recount:AddTableDataStats(victimData,"PartialAbsorb",ability,L["No Absorb"],0)
-				end
-				-- Elsia: Moved this out because we want this recorded regardless whether it was friendly damage or not
-				-- Elsia: Also removed bug, victims resist/block/absorb!
-
 				--For identifying who killed when no message is triggered
 				victimData.LastAttackedBy=source
 				victimData.LastDamageTaken=damage
 				victimData.LastDamageAbility=ability
 			end
+
+			if resist then -- Elsia: Fixed bug, source has to "take" resists, blocks and absorbs.
+				if hittype=="Crit" then
+					resist=resist*2
+				end
+				Recount:AddAmount2(victimData,"ElementTakenResist",element,resist)
+				if resist<(damage/2.5) then
+					--25% Resist
+					Recount:AddTableDataStats(victimData,"PartialResist",ability,"25%"..L["Resist"],resist)
+				elseif resist<(1.25*damage) then
+					--50% Resist
+					Recount:AddTableDataStats(victimData,"PartialResist",ability,"50%"..L["Resist"],resist)
+				else
+					--75% Resist
+					Recount:AddTableDataStats(victimData,"PartialResist",ability,"75%"..L["Resist"],resist)
+				end
+			else
+				Recount:AddTableDataStats(victimData,"PartialResist",ability,L["No Resist"],0)
+			end
+			
+			if blocked or hittype=="Block" then
+				Recount:AddAmount2(victimData,"ElementTakenBlock",element,blocked)
+				if blocked then
+					Recount:AddTableDataStats(victimData,"PartialBlock",ability,L["Blocked"],blocked)
+				else
+					Recount:AddTableDataStats(victimData,"PartialBlock",ability,L["No Block"],0)
+				end
+			end
+			
+			if absorbed then
+				Recount:AddAmount2(victimData,"ElementTakenAbsorb",element,absorbed)
+				Recount:AddTableDataStats(victimData,"PartialAbsorb",ability,L["Absorbed"],absorbed)
+			else
+				Recount:AddTableDataStats(victimData,"PartialAbsorb",ability,L["No Absorb"],0)
+			end
+			-- Elsia: Moved this out because we want this recorded regardless whether it was friendly damage or not
+			-- Elsia: Also removed bug, victims resist/block/absorb!
 
 			--Tracking for passing data to other functions	
 			if Tracking["DAMAGETAKEN"] then 
@@ -2115,7 +1408,10 @@ function Recount:AddHealData(source, victim, ability, healtype, amount, overheal
    local sourceownerID
    local victimowner
    local victimownerID
-   
+
+   srcRetention = Recount:CheckRetentionFromFlags(srcFlags,source,srcGUID)
+   dstRetention = Recount:CheckRetentionFromFlags(dstFlags,victim,dstGUID)
+
    source, sourceowner, sourceownerID = Recount:DetectPet(source, srcGUID, srcFlags)
    
    victim, victimowner, victimownerID = Recount:DetectPet(victim, dstGUID, dstFlags)
@@ -2136,7 +1432,7 @@ function Recount:AddHealData(source, victim, ability, healtype, amount, overheal
 
    if srcRetention then
       if not dbCombatants[source] then
-		Recount:AddCombatant(source,sourceowner,srcGUID,srcFlags,sourceownerID)
+	 Recount:AddCombatant(source,sourceowner,srcGUID,srcFlags,sourceownerID)
       end
       
       sourceData=dbCombatants[source]
@@ -2145,8 +1441,9 @@ function Recount:AddHealData(source, victim, ability, healtype, amount, overheal
 	 
 	 --Need to add events for potential deaths
 	 if source~=victim then
-		Recount:AddCurrentEvent(sourceData, "HEAL", false, nil,Recount.cleventtext)
-	 end	 
+	    Recount:AddCurrentEvent(sourceData, "HEAL", false, nil,Recount.cleventtext)
+	 end
+	 
       end
    end
    
@@ -2202,7 +1499,9 @@ function Recount:AddHealData(source, victim, ability, healtype, amount, overheal
       end
 	 
       --Need to set the source as active
-      Recount:AddTimeEvent(sourceData,victim,ability,true)
+	 if amount > 0 then -- Restore legacy behavior, i.e. pure overheals are not counted.
+		Recount:AddTimeEvent(sourceData,victim,ability,true)
+	 end
 	 
       --Stats for keeping track of HOT Uptime
       if isHot or healtype=="Tick" then
@@ -2255,135 +1554,11 @@ function Recount:AddHealData(source, victim, ability, healtype, amount, overheal
       end
 	 
       --No reason to add information if everything was overhealing
-      if amount>0 then
+      if amount>0 then	
 	 Recount:AddAmount(victimData,"HealingTaken",amount)
 	 Recount:AddTableDataSum(victimData,"WhoHealed",source,ability,amount)
       end
    end
-end
-
-function Recount:AddInterruptData(source, victim, ability, srcGUID,srcFlags, dstGUID,dstFlags, spellId)
-
-	--Friendly fire interrupt? (Duels)
-	local FriendlyFire = Recount:IsFriendlyFire(srcFlags,dstFlags)
-	--Before any further processing need to check if we are going to be placed in combat or in combat 
-	if not Recount.InCombat and Recount.db.profile.RecordCombatOnly then
-		if (not FriendlyFire) and (Recount:InGroup(srcFlags) or Recount:InGroup(dstFlags)) then
-			Recount:PutInCombat()
-		else
-		   return
-		end
-	end
-
-	--Need to add events for potential deaths	
-	Recount.cleventtext = source.." interrupts "..victim.." "..ability
-
-	-- Name and ID of pet owners
-	local sourceowner
-	local sourceownerID
-	local victimowner
-	local victimownerID
-
-	source, sourceowner, sourceownerID = Recount:DetectPet(source, srcGUID, srcFlags)
-	victim, victimowner, victimownerID = Recount:DetectPet(victim, dstGUID, dstFlags)
-
-	if srcRetention then
-	   if not dbCombatants[source] then
-	      Recount:AddCombatant(source,sourceowner,srcGUID,srcFlags, sourceownerID)
-	   end -- Elsia: Until here is if pets interupts anybody.
-	   local sourceData=dbCombatants[source]
-	 
-	   if sourceData then
-	      Recount:SetActive(sourceData)
-	      Recount:AddCurrentEvent(sourceData,"MISC", false,nil,Recount.cleventtext)
-	      --Fight tracking purposes to speed up leaving combat
-	      sourceData.LastFightIn=Recount.db2.FightNum
-
-	      Recount:AddAmount(sourceData,"Interrupts",1)
-	      Recount:AddTableDataSum(sourceData,"InterruptData",victim,ability,1)
-	   end
-
-	end
-
-	if dstRetention then
-
-	   if not dbCombatants[victim] then
-	      Recount:AddCombatant(victim, victimowner,dstGUID,dstFlags, victimownerID) -- Elsia: Bug, owner missing here
-	   end
-
-	   local victimData=dbCombatants[victim]
-
-	   if victimData then
-	      Recount:SetActive(victimData)
-	      Recount:AddCurrentEvent(victimData,"MISC", true,nil,Recount.cleventtext)
-	      --Fight tracking purposes to speed up leaving combat
-	      victimData.LastFightIn=Recount.db2.FightNum
-
-	   end
-	end
-end
-
-function Recount:AddDispelData(source, victim, ability,srcGUID,srcFlags,dstGUID,dstFlags,spellId)
-	
-        --Friendly fire interrupt? (Duels)
-        local FriendlyFire = Recount:IsFriendlyFire(srcFlags,dstFlags)
-	--Before any further processing need to check if we are going to be placed in combat or in combat 
-	if not Recount.InCombat and Recount.db.profile.RecordCombatOnly then
-	   if (not FriendlyFire) and (Recount:InGroup(srcFlags) or Recount:InGroup(dstFlags)) then
-	      Recount:PutInCombat()
-	   else
-	      return
-	   end
-	end
-   
-	-- Name and ID of pet owners
-	local sourceowner
-	local sourceownerID
-	local victimowner
-	local victimownerID
-
-	source, sourceowner, sourceownerID = Recount:DetectPet(source, srcGUID, srcFlags)
-	victim, victimowner, victimownerID = Recount:DetectPet(victim, dstGUID, dstFlags)
-
-	--Need to add events for potential deaths	
-	Recount.cleventtext = source.." dispels "..victim.." "..ability
-
-	if srcRetention then
-
-	   if not dbCombatants[source] or not dbCombatants[source] then
-	      Recount:AddCombatant(source,sourceowner,srcGUID,srcFlags, sourceownerID)
-	   end -- Elsia: Until here is if pets dispelled anybody.
-	   local sourceData=dbCombatants[source]
-
-	   if sourceData then
-	      Recount:SetActive(sourceData)
-	      --Fight tracking purposes to speed up leaving combat
-	      sourceData.LastFightIn=Recount.db2.FightNum
-
-	      Recount:AddCurrentEvent(sourceData, "MISC", false,nil,Recount.cleventtext)
-	      Recount:AddAmount(sourceData,"Dispels",1)
-	      Recount:AddTableDataSum(sourceData,"DispelledWho",victim,ability,1)
-	   end
-
-	end
-
-	if dstRetention then
-
-	   if not dbCombatants[victim] then
-	      Recount:AddCombatant(victim,victimowner,dstGUID,dstFlags, victimownerID) -- Elsia: Bug owner missing
-	   end
-	   local victimData=dbCombatants[victim]
-	
-	   if victimData then
-	      Recount:SetActive(victimData)
-	      --Fight tracking purposes to speed up leaving combat
-	      victimData.LastFightIn=Recount.db2.FightNum
-
-	      Recount:AddCurrentEvent(victimData, "MISC", true,nil,Recount.cleventtext)
-		Recount:AddAmount(victimData,"Dispelled",1)
-		Recount:AddTableDataSum(victimData,"WhoDispelled",source,ability,1)
-	   end
-	end
 end
 
 function Recount:HandleDoubleDeath(source, victim, skill,srcGUID,srcFlags,dstGUID,dstFlags,spellId)
@@ -2573,139 +1748,8 @@ function Recount:HandleDeath(arg)
 	--who.DeathLogs[#who.DeathLogs+1]=DeathLog
 end
 
-function Recount:AddCCBreaker(source, victim, ability,srcGUID,srcFlags,dstGUID,dstFlags)
-
-        --Friendly fire interrupt? (Duels)
-        local FriendlyFire = Recount:IsFriendlyFire(srcFlags,dstFlags)
-	--Before any further processing need to check if we are going to be placed in combat or in combat 
-	if not Recount.InCombat and Recount.db.profile.RecordCombatOnly then
-	   if (not FriendlyFire) and (Recount:InGroup(srcFlags) or Recount:InGroup(dstFlags)) then
-	      Recount:PutInCombat()
-	   else
-	      return
-	   end
-	end
-
-	-- Name and ID of pet owners
-	local sourceowner
-	local sourceownerID
-	local victimowner
-	local victimownerID
-
-	source, sourceowner, sourceownerID = Recount:DetectPet(source, srcGUID, srcFlags)
-	victim, victimowner, victimownerID = Recount:DetectPet(victim, dstGUID, dstFlags)
-
-
-	if srcRetention then
-	   
-	   if not dbCombatants[source] then
-	      Recount:AddCombatant(source,sourceowner,srcGUID,srcFlags, sourceownerID)
-	   end -- Elsia: Until here is if pets heal anybody.
-	   local sourceData=dbCombatants[source]
-	   if sourceData then
-
-	      Recount:SetActive(sourceData)
-
-	      --Fight tracking purposes to speed up leaving combat
-	      sourceData.LastFightIn=Recount.db2.FightNum
-	      if not FriendlyFire then
-		 Recount:AddAmount(sourceData,"CCBreak",1)
-		 Recount:AddTableDataSum(sourceData,"CCBroken",ability,victim,1)
-	      end
-	   end
-	end
-
-
-	if dstRetention then
-
-	   if not dbCombatants[victim] then
-	      Recount:AddCombatant(victim,victimowner,dstGUID,dstFlags, victimownerID)
-	   end
-	   local victimData=dbCombatants[victim]
-	   if victimData then 
-	      Recount:SetActive(victimData)
-
-	      --Fight tracking purposes to speed up leaving combat
-	      victimData.LastFightIn=Recount.db2.FightNum
-	   end
-	end
-end
-
-
-local DataAmount, DataTable, DataTable2
-function Recount:AddGain(source, victim, ability, amount, attribute,srcGUID,srcFlags,dstGUID,dstFlags,spellId)
-
-	if attribute=="Mana" then
-		DataAmount="ManaGain"
-		DataTable="ManaGained"
-		DataTable2="ManaGainedFrom"
-	elseif attribute=="Energy" or attribute=="Focus" then -- Elsia: Focus for pet.
-		DataAmount="EnergyGain"
-		DataTable="EnergyGained"
-		DataTable2="EnergyGainedFrom"
-	elseif attribute=="Rage" then
-		DataAmount="RageGain"
-		DataTable="RageGained"
-		DataTable2="RageGainedFrom"
-	elseif attribute=="Runic Power" then
-		DataAmount="RunicPowerGain"
-		DataTable="RunicPowerGained"
-		DataTable2="RunicPowerGainedFrom"
-	else
-		return
-	end
-
-	-- Name and ID of pet owners
-	local sourceowner
-	local sourceownerID
-	local victimowner
-	local victimownerID
-
-	source, sourceowner, sourceownerID = Recount:DetectPet(source, srcGUID, srcFlags)
-	victim, victimowner, victimownerID = Recount:DetectPet(victim, dstGUID, dstFlags)
-
-	if srcRetention then
-
-	   if not dbCombatants[source] then
-	      Recount:AddCombatant(source,sourceowner,srcGUID,srcFlags,sourceownerID)
-	   end -- Elsia: Until here is if pets heal anybody.
-	   local sourceData=dbCombatants[source]
-	   Recount:SetActive(sourceData)
-
-	   Recount:AddAmount(sourceData,DataAmount,amount)
-	   Recount:AddTableDataSum(sourceData,DataTable,ability,victim,amount)
-	   Recount:AddTableDataSum(sourceData,DataTable2,victim,ability,amount)
-	end
-end
-
-function Recount:AddRes(source, victim, ability,srcGUID,srcFlags, dstGUID,dstFlags,spellId)
-	--Get the tables
-
-        -- Name and ID of pet owners
-        local sourceowner
-        local sourceownerID
-        local victimowner
-        local victimownerID
-
-        source, sourceowner, sourceownerID = Recount:DetectPet(source, srcGUID, srcFlags)
-	victim, victimowner, victimownerID = Recount:DetectPet(victim, dstGUID, dstFlags)
-
-
-        if srcRetention then
-	   if not dbCombatants[source] then
-	      Recount:AddCombatant(source, nil, srcGUID,srcFlags)
-	   end
-
-	
-	   local sourceData=dbCombatants[source]
-	   if sourceData then
-
-	      Recount:SetActive(sourceData)
-
-	      Recount:AddAmount(sourceData,"Ressed",1)
-	      Recount:AddTableDataSum(sourceData,"RessedWho",victim,ability,1)
-	   end
-	end
+function Recount:SpellAuraDispelFailed(timestamp, eventtype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,spellId, spellName, spellSchool, extraSpellId, extraSpellName, extraSpellSchool)
+-- Ignoring this one for now
 end
 
 --Potential Tracking

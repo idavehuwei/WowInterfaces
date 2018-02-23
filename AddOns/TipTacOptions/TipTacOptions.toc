@@ -1,17 +1,16 @@
-﻿## Interface: 30100
+## Interface: 30300
 ## X-BigfootType: 1
-## X-BigfootDesc: |cFF4488FF此模块依赖于 TipTac|r 人物信息提示增强及跟随鼠标 - 设置。
-## Version: 09.05.17
+## X-BigfootDesc: |cFF4488FF此模块依赖于 TipTac|r Adds Talent Spec to Player Tooltips。
+## Version: 10.05.01
 ## Title: TipTacOptions
-## Title-zhCN: [辅助] 鼠标提示 设置
-## Title-zhTW: [輔助] 鼠标提示 设置
+## Title-zhTW: |cFF00FF00[介面]|r|cFF05d8e5TipTacOptions【提示訊息選單】|r|cFFf734de - 100501|r
 ## Author: Aezay (Earthen Ring EU)
 ## Notes: Option Dialog for TipTac
-## Notes-zhCN: 人物信息提示增强及跟随鼠标 - 设置
-## Notes-zhTW: 人物資訊提示增強及跟隨滑鼠 - 設置
+## Notes-zhTW: TipTac提示訊息增強工具選單。命令：/tip。[繁體化 - andy52005]
 ## Dependencies: TipTac
 ## LoadOnDemand: 1
-
 Localization.lua
+Libs\AzDropDown.lua
+Libs\AzOptionsFactory.lua
 DropDowns.lua
 Options.lua

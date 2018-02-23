@@ -4,8 +4,69 @@
 --
 
 
+--
+-- Colors
+--
+NORMAL_FONT_COLOR_CODE		= "|cffffd200";
+HIGHLIGHT_FONT_COLOR_CODE	= "|cffffffff";
+RED_FONT_COLOR_CODE			= "|cffff2020";
+GREEN_FONT_COLOR_CODE		= "|cff20ff20";
+GRAY_FONT_COLOR_CODE		= "|cff808080";
+YELLOW_FONT_COLOR_CODE		= "|cffffff00";
+LIGHTYELLOW_FONT_COLOR_CODE	= "|cffffff9a";
+ORANGE_FONT_COLOR_CODE		= "|cffff7f3f";
+FONT_COLOR_CODE_CLOSE		= "|r";
+
+NORMAL_FONT_COLOR			= {r=1.0, g=0.82, b=0.0};
+HIGHLIGHT_FONT_COLOR		= {r=1.0, g=1.0, b=1.0};
+RED_FONT_COLOR				= {r=1.0, g=0.1, b=0.1};
+GREEN_FONT_COLOR			= {r=0.1, g=1.0, b=0.1};
+GRAY_FONT_COLOR				= {r=0.5, g=0.5, b=0.5};
+YELLOW_FONT_COLOR			= {r=1.0, g=1.0, b=0.0};
+LIGHTYELLOW_FONT_COLOR		= {r=1.0, g=1.0, b=0.6};
+ORANGE_FONT_COLOR			= {r=1.0, g=0.5, b=0.25};
+PASSIVE_SPELL_FONT_COLOR	= {r=0.77, g=0.64, b=0.0};
+
+CHAT_FONT_HEIGHTS = {
+	[1] = 12,
+	[2] = 14,
+	[3] = 16,
+	[4] = 18
+};
+
+MATERIAL_TEXT_COLOR_TABLE = {
+	["Default"] = {0.18, 0.12, 0.06},
+	["Stone"] = {1.0, 1.0, 1.0},
+	["Parchment"] = {0.18, 0.12, 0.06},
+	["Marble"] = {0, 0, 0},
+	["Silver"] = {0.12, 0.12, 0.12},
+	["Bronze"] = {0.18, 0.12, 0.06}
+};
+MATERIAL_TITLETEXT_COLOR_TABLE = {
+	["Default"] = {0, 0, 0},
+	["Stone"] = {0.93, 0.82, 0},
+	["Parchment"] = {0, 0, 0},
+	["Marble"] = {0.93, 0.82, 0},
+	["Silver"] = {0.93, 0.82, 0},
+	["Bronze"] = {0.93, 0.82, 0}
+};
+
+RAID_CLASS_COLORS = {
+	["HUNTER"] = { r = 0.67, g = 0.83, b = 0.45 },
+	["WARLOCK"] = { r = 0.58, g = 0.51, b = 0.79 },
+	["PRIEST"] = { r = 1.0, g = 1.0, b = 1.0 },
+	["PALADIN"] = { r = 0.96, g = 0.55, b = 0.73 },
+	["MAGE"] = { r = 0.41, g = 0.8, b = 0.94 },
+	["ROGUE"] = { r = 1.0, g = 0.96, b = 0.41 },
+	["DRUID"] = { r = 1.0, g = 0.49, b = 0.04 },
+	["SHAMAN"] = { r = 0.0, g = 0.44, b = 0.87 },
+	["WARRIOR"] = { r = 0.78, g = 0.61, b = 0.43 },
+	["DEATHKNIGHT"] = { r = 0.77, g = 0.12 , b = 0.23 },
+};
+
+
 -- 
--- Class Constants
+-- Class
 --
 CLASS_SORT_ORDER = {
 	"WARRIOR",
@@ -21,6 +82,12 @@ CLASS_SORT_ORDER = {
 };
 MAX_CLASSES = #CLASS_SORT_ORDER;
 
+LOCALIZED_CLASS_NAMES_MALE = {};
+LOCALIZED_CLASS_NAMES_FEMALE = {};
+FillLocalizedClassList(LOCALIZED_CLASS_NAMES_MALE, false);
+FillLocalizedClassList(LOCALIZED_CLASS_NAMES_FEMALE, true);
+
+
 CLASS_ICON_TCOORDS = {
 	["WARRIOR"]		= {0, 0.25, 0, 0.25},
 	["MAGE"]		= {0.25, 0.49609375, 0, 0.25},
@@ -35,7 +102,7 @@ CLASS_ICON_TCOORDS = {
 };
 
 --
--- Spell Constants
+-- Spell
 --
 
 -- Power Types
@@ -47,7 +114,6 @@ SPELL_POWER_HAPPINESS = 4;
 SPELL_POWER_RUNES = 5;
 SPELL_POWER_RUNIC_POWER = 6;
 
--- Temporary
 SCHOOL_MASK_NONE	= 0x00;
 SCHOOL_MASK_PHYSICAL	= 0x01;
 SCHOOL_MASK_HOLY	= 0x02;
@@ -58,24 +124,30 @@ SCHOOL_MASK_SHADOW	= 0x20;
 SCHOOL_MASK_ARCANE	= 0x40;
 
 -- 
--- Talent Constants
+-- Talent
 -- 
+SHOW_TALENT_LEVEL = 10;
+SHOW_PVP_LEVEL = 10;
+SHOW_LFD_LEVEL = 15;
+
 TALENT_SORT_ORDER = {
 	"spec1",
 	"spec2",
 	"petspec1",
 };
 
-SHOW_TALENT_LEVEL = 10;
+TALENT_ACTIVATION_SPELLS = {
+	63645,
+	63644,
+};
 
 --
--- Glyph Constants
+-- Glyph
 --
-
 SHOW_INSCRIPTION_LEVEL = 15;
 
 --
--- Achievement Constants
+-- Achievement
 --
 
 -- Criteria Types
@@ -93,7 +165,7 @@ ACHIEVEMENT_CRITERIA_HIDDEN				= 0x00000002;
 NUM_ACHIEVEMENT_CRITERIA_FLAGS			= 2;
 
 --
--- Inventory Constants
+-- Inventory
 --
 
 -- General item constants
@@ -156,15 +228,15 @@ NUM_BANKGENERIC_SLOTS = 28;
 NUM_BANKBAGSLOTS = 7;
 
 --
--- Equipment Set Constants
+-- Equipment Set
 --
-
 MAX_EQUIPMENT_SETS_PER_PLAYER = 10;
 EQUIPMENT_SET_EMPTY_SLOT = 0;
+EQUIPMENT_SET_IGNORED_SLOT = 1;
 EQUIPMENT_SET_ITEM_MISSING = -1;
 
 --
--- Combat Log Constants
+-- Combat Log
 -- 
 
 -- Affiliation
@@ -298,7 +370,6 @@ COMBATLOG_FILTER_EVERYTHING =	0xFFFFFFFF;
 --
 -- Calendar
 -- 
-
 CALENDAR_FIRST_WEEKDAY			= 1;		-- 1=SUN 2=MON 3=TUE 4=WED 5=THU 6=FRI 7=SAT
 
 -- Event Types
@@ -307,6 +378,7 @@ CALENDAR_EVENTTYPE_DUNGEON		= 2;
 CALENDAR_EVENTTYPE_PVP			= 3;
 CALENDAR_EVENTTYPE_MEETING		= 4;
 CALENDAR_EVENTTYPE_OTHER		= 5;
+CALENDAR_MAX_EVENTTYPE			= CALENDAR_EVENTTYPE_OTHER;
 
 -- Invite Statuses
 CALENDAR_INVITESTATUS_INVITED		= 1;
@@ -317,7 +389,91 @@ CALENDAR_INVITESTATUS_OUT			= 5;
 CALENDAR_INVITESTATUS_STANDBY		= 6;
 CALENDAR_INVITESTATUS_SIGNEDUP		= 7;
 CALENDAR_INVITESTATUS_NOT_SIGNEDUP	= 8;
+CALENDAR_INVITESTATUS_TENTATIVE		= 9;
+CALENDAR_MAX_INVITESTATUS			= CALENDAR_INVITESTATUS_TENTATIVE;
 
 -- Invite Types
-CALENDAR_INVITETYPE_NORMAL = 1;
-CALENDAR_INVITETYPE_SIGNUP = 2;
+CALENDAR_INVITETYPE_NORMAL		= 1;
+CALENDAR_INVITETYPE_SIGNUP		= 2;
+CALENDAR_MAX_INVITETYPE			= CALENDAR_INVITETYPE_SIGNUP;
+
+--
+-- Difficulty
+--
+QuestDifficultyColors = {
+	["impossible"]		= { r = 1.00, g = 0.10, b = 0.10 };
+	["verydifficult"]	= { r = 1.00, g = 0.50, b = 0.25 };
+	["difficult"]		= { r = 1.00, g = 1.00, b = 0.00 };
+	["standard"]		= { r = 0.25, g = 0.75, b = 0.25 };
+	["trivial"]			= { r = 0.50, g = 0.50, b = 0.50 };
+	["header"]			= { r = 0.70, g = 0.70, b = 0.70 };
+};
+
+--
+-- WorldMap
+--
+NUM_WORLDMAP_DETAIL_TILES = 12;
+NUM_WORLDMAP_PATCH_TILES = 6;
+NUM_WORLDMAP_DETAIL_TILE_ROWS = 3;
+NUM_WORLDMAP_DETAIL_TILE_COLS = 4;
+
+--
+-- Totems
+--
+
+MAX_TOTEMS = 4;
+
+FIRE_TOTEM_SLOT = 1;
+EARTH_TOTEM_SLOT = 2;
+WATER_TOTEM_SLOT = 3;
+AIR_TOTEM_SLOT = 4;
+
+TOTEM_PRIORITIES = {
+	EARTH_TOTEM_SLOT,
+	FIRE_TOTEM_SLOT,
+	WATER_TOTEM_SLOT,
+	AIR_TOTEM_SLOT,
+};
+
+TOTEM_MULTI_CAST_SUMMON_SPELLS = {
+	66842,
+	66843,
+	66844,
+};
+
+TOTEM_MULTI_CAST_RECALL_SPELLS = {
+	36936,
+};
+
+--
+-- GM Ticket
+--
+
+GMTICKET_QUEUE_STATUS_ENABLED = 1;
+GMTICKET_QUEUE_STATUS_DISABLED = -1;
+
+GMTICKET_ASSIGNEDTOGM_STATUS_NOT_ASSIGNED = 0;	-- ticket is not currently assigned to a gm
+GMTICKET_ASSIGNEDTOGM_STATUS_ASSIGNED = 1;		-- ticket is assigned to a normal gm
+GMTICKET_ASSIGNEDTOGM_STATUS_ESCALATED = 2;		-- ticket is in the escalation queue
+
+GMTICKET_OPENEDBYGM_STATUS_NOT_OPENED = 0;		-- ticket has never been opened by a gm
+GMTICKET_OPENEDBYGM_STATUS_OPENED = 1;			-- ticket has been opened by a gm
+
+
+-- indicies for adding lights ModelFFX:Add*Light
+LIGHT_LIVE  = 0;
+LIGHT_GHOST = 1;
+
+-- general constant translation table
+STATIC_CONSTANTS = {}
+RegisterStaticConstants(STATIC_CONSTANTS);
+
+-- textures for quest item overlays
+TEXTURE_ITEM_QUEST_BANG = "Interface\\ContainerFrame\\UI-Icon-QuestBang";
+TEXTURE_ITEM_QUEST_BORDER = "Interface\\ContainerFrame\\UI-Icon-QuestBorder";
+
+-- Friends
+SHOW_SEARCH_BAR_NUM_FRIENDS = 12;
+
+-- faction
+PLAYER_FACTION_GROUP = { [0] = "Horde", [1] = "Alliance" };

@@ -1,11 +1,16 @@
---{{{ Libraries
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
---}}}
+--[[--------------------------------------------------------------------
+	GridStatusName.lua
+	GridStatus module for tracking unit names.
+----------------------------------------------------------------------]]
 
-GridStatusName = GridStatus:NewModule("GridStatusName")
+local _, ns = ...
+local L = ns.L
+
+local GridRoster = Grid:GetModule("GridRoster")
+
+local GridStatusName = Grid:GetModule("GridStatus"):NewModule("GridStatusName")
 GridStatusName.menuName = L["Unit Name"]
 
---{{{ AceDB defaults
 GridStatusName.defaultDB = {
 	debug = false,
 	unit_name = {
@@ -17,11 +22,9 @@ GridStatusName.defaultDB = {
 		range = false,
 	},
 }
---}}}	
 
 GridStatusName.options = false
 
---{{{ additional options
 local nameOptions = {
 	["class"] = {
 		type = 'toggle',
@@ -34,7 +37,6 @@ local nameOptions = {
 		end,
 	},
 }
---}}}
 
 function GridStatusName:OnInitialize()
 	self.super.OnInitialize(self)
@@ -51,7 +53,7 @@ function GridStatusName:OnStatusEnable(status)
 		self:RegisterEvent("Grid_UnitJoined", "UpdateGUID")
 		self:RegisterEvent("Grid_UnitChanged", "UpdateGUID")
 		self:RegisterEvent("Grid_UnitLeft", "UpdateGUID")
-		
+
 		self:RegisterEvent("Grid_ColorsChanged", "UpdateAllUnits")
 		self:UpdateAllUnits()
 	end
@@ -87,8 +89,7 @@ function GridStatusName:UpdateVehicle(unitid)
 end
 
 function GridStatusName:UpdateUnit(unitid)
-	local guid = UnitGUID(unitid)
-	self:UpdateGUID(guid)
+	self:UpdateGUID(UnitGUID(unitid))
 end
 
 function GridStatusName:UpdateGUID(guid)
@@ -96,16 +97,12 @@ function GridStatusName:UpdateGUID(guid)
 
 	local name = GridRoster:GetNameByGUID(guid)
 
-	if not name or not settings.enable then
-		return
-	end
-
+	if not name or not settings.enable then return end
 
 	-- set text
 	local text = name
 
 	local show_owner_name = true
-
 	if show_owner_name then
 		local unitid = GridRoster:GetUnitidByGUID(guid)
 		local owner_unitid = GridRoster:GetOwnerUnitidByUnitid(unitid)
@@ -119,15 +116,15 @@ function GridStatusName:UpdateGUID(guid)
 			text = owner_name
 		end
 	end
-	
+
 	-- set color
 	local color = settings.class and self.core:UnitColor(guid) or settings.color
 
 	self.core:SendStatusGained(guid, "unit_name",
-				    settings.priority,
-				    nil,
-				    color,
-				    text)
+		settings.priority,
+		nil,
+		color,
+		text)
 end
 
 function GridStatusName:UpdateAllUnits()

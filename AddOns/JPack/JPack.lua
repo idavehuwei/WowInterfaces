@@ -183,11 +183,7 @@ local function getPerffix(item)
 	if(item.rarity==0)then
 		return "00"..s
 	elseif(IsEquippableItem(item.name) and item.type~=L.TYPE_BAG and item.subType~=L.TYPE_FISHWEAPON) and item.subType~=L.TYPE_MISC then 
-		if(item.rarity <= 1 ) or (item.level<UnitLevel('player')*0.9)then
-			return '02'..s
-		end
-	elseif(item.type==L.TYPE_CONSUMABLE)then
-		if(item.level<UnitLevel('player')*0.9)then
+		if(item.rarity <= 1 ) then
 			return '01'..s
 		end
 	end
@@ -485,9 +481,8 @@ bagTypes
 packingTypeIndex
 packingBags
 ]]
-local dummy_table = {}
 local function groupBags()
-	local ignored = JPACK_IGNORE_BAGS or dummy_table
+	local ignored = JPACK_IGNORE_BAGS or {}
 	local bagTypes={}
 	bagTypes[L.TYPE_BAG]={}
 	if not ignored[0] then
@@ -1045,7 +1040,7 @@ SLASH_JPACK1 = "/jpack"
 SLASH_JPACK2 = "/jp"
 SlashCmdList.JPACK = function(msg)
 	local a,b,c=strfind(msg, "(%S+)")
-	if not c then return JPack:Pack() end
+	if not c then JPack:Pack(); return end
 	c = strlower(c)
 	if(c=="asc")then
 		JPack:Pack(nil, 1)

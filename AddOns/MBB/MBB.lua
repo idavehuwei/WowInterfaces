@@ -1,1016 +1,454 @@
-MBB_Version = "0.500";
-MBB_CheckTime = 20;
-MBB_DebugFlag = 0;
-MBB_DragFlag = 0;
-MBB_ShowTimeout = -1;
-MBB_CheckTime = 0;
-MBB_IsShown = 0;
-MBB_FuBar_MinimapContainer = "FuBarPlugin-MinimapContainer-2.0";
-MBB_Buttons = {};
-MBB_Exclude = {};
-MBB_DebugInfo = {};
-MBB_DefaultOptions = {
-	["EnableMBB"] = true,
-	["ButtonPos"] = {2, -118},
-	["AttachToMinimap"] = 1,
-	["CollapseTimeout"] = 2,
-	["ExpandDirection"] = 1,
-	["MaxButtonsPerLine"] = 0,
-	["AltExpandDirection"] = 4
-};
+local M = LibStub("AceAddon-3.0"):NewAddon("MBB","AceEvent-3.0","AceTimer-3.0","AceHook-3.0")
+if not M then return end
 
-MBB_Include = {
-	[1] = "CTMod2_MinimapButton",
-	[2] = "PoisonerMinimapButton"
-};
+local L = LibStub("AceLocale-3.0"):GetLocale("MBB")
+local LDB = LibStub("LibDataBroker-1.1", true)
 
-MBB_Ignore = {
-	[1] = "MiniMapTrackingFrame",
-	[2] = "MiniMapMeetingStoneFrame",
-	[3] = "MiniMapMailFrame",
-	[4] = "MiniMapBattlefieldFrame",
-	[5] = "MiniMapWorldMapButton",
-	[6] = "MiniMapPing",
-	[7] = "MinimapBackdrop",
-	[8] = "MinimapZoomIn",
-	[9] = "MinimapZoomOut",
-	[10] = "BookOfTracksFrame",
-	[11] = "GatherNote",
-	[12] = "FishingExtravaganzaMini",
-	[13] = "MiniNotePOI",
-	[14] = "RecipeRadarMinimapIcon",
-	[15] = "FWGMinimapPOI",
-	[16] = "CartographerNotesPOI",
-	[17] = "MBB_MinimapButtonFrame",
-	[18] = "GFW_TrackMenuFrame",
-	[19] = "GFW_TrackMenuButton",
-	[20] = "TDial_TrackingIcon",
-	[21] = "TDial_TrackButton",
-	[22] = "MiniMapTracking",
-	-- add by dugu@bigfoot
-	[23] = "BigFootMinimapButton",	
-	[24] = "MiniMapVoiceChatFrame",
-	[25] = "TimeManagerClockButton",
-	[26] = "GameTimeFrame",
-	[27] = "BigFootGPSButton",
-	[28] = "GatherMate",
-};
+local db
 
-MBB_IgnoreSize = {
-	[1] = "AM_MinimapButton",
-	[2] = "STC_HealthstoneButton",
-	[3] = "STC_ShardButton",
-	[4] = "STC_SoulstoneButton",
-	[5] = "STC_SpellstoneButton",
-	[6] = "STC_FirestoneButton"
-};
+local configDialog = LibStub("AceConfigDialog-3.0")
 
-MBB_ExtraSize = {
-	["GathererMinimapButton"] = function()
-		GathererMinimapButton.mask:SetHeight(31);
-		GathererMinimapButton.mask:SetWidth(31);
-	end
-};
-
-function MBB_OnLoad(self)
---	hooksecurefunc("SecureStateAnchor_RunChild", MBB_SecureOnEnter);
+local ignored = {
+	["MiniMapTrackingFrame"]=true,
+	["MiniMapMeetingStoneFrame"]=true,
+	["MiniMapMailFrame"]=true,
+	["MiniMapPing"]=true,
+	["MinimapBackdrop"]=true,
+	["MinimapZoomIn"]=true,
+	["MinimapZoomOut"]=true,
+	["BookOfTracksFrame"]=true,
+	["GatherNote"]=true,
+	["FishingExtravaganzaMini"]=true,
+	["MiniNotePOI"]=true,
+	["RecipeRadarMinimapIcon"]=true,
+	["FWGMinimapPOI"]=true,
+	["CartographerNotesPOI"]=true,
+	["GFW_TrackMenuFrame"]=true,
+	["GFW_TrackMenuButton"]=true,
+	["TDial_TrackingIcon"]=true,
+	["TDial_TrackButton"]=true,
+	["MiniMapTracking"]=true,
+	["BFGPSButton"]=true,
+	["TimeManagerClockButton"]=true,	
+	['MiniMapBattlefieldFrame'] = true,
+	["GatherMate"] = true,
+	["MiniMapLFGFrame"] = true,
 	
-	if( AceLibrary ) then
-		if( AceLibrary:HasInstance(MBB_FuBar_MinimapContainer) ) then
-			AceLibrary(MBB_FuBar_MinimapContainer).oldAddPlugin = AceLibrary(MBB_FuBar_MinimapContainer).AddPlugin;
-			AceLibrary(MBB_FuBar_MinimapContainer).AddPlugin = function(...)
-				local plugin = select(2, ...);
-				local value = AceLibrary(MBB_FuBar_MinimapContainer):oldAddPlugin(plugin);
-				local button = plugin.minimapFrame:GetName();
-				local frame = getglobal(button);
+}
+
+local options = {
+	profile = {
+		enabled = true,
+		enablemousetip = true,
+		enablemouseover = false,
+		direction = "LEFT",
+		itemperline = 0,		
+		excludes = {
+			['BigFootMinimapButton'] = true,
+			['GameTimeFrame'] = true,
+			["MiniMapVoiceChatFrame"] = true,
+			["MiniMapWorldMapButton"] = true
+		
+		},
+		
+		MiniMap =
+		{
+			hide = false,
+			minimapPos = 180,
+			radius = 80,		
+		}
+	},
+}
+
+local function Obj(button)
+	local obj
+	if type(button)=='string' then 
+		obj = _G[button]
+	elseif type(button)=='table' then
+		obj = button
+	end
+	return obj
+end
+
+local function Name(button)
+	local name
+	if type(button)=='string' then 
+		name = button
+	elseif type(button)=='table' then
+		name = button:GetName()
+	end
+	return name
+end
+
+
+local launcher
+
+local function IsButtonExcluded(button)
+	local name = Name(button)
+	local excluded = db.excludes
+	if not excluded then return end
+	return excluded[name]	
+end
+
+local function IsButtonIgnored(button)
+	if Name(button)==M.realIcon:GetName() then return true end
+	if  ignored[Name(button)] then return true end
+	for ignoreName in pairs(ignored) do
+		if Name(button):find(ignoreName) then return true end
+	end
+	return false
+end
+
+local function addButton(frame)
+
+	local child = Obj(frame)
+	if not child then return end
+	if child.added then return end
+	child.opoint = {child:GetPoint()};
+	if( not child.opoint[1] ) then
+		child.opoint = {"TOP", Minimap, "BOTTOM", 0, 0};
+	end	
+	child.osize = child.osize or {child:GetHeight(),child:GetWidth()};
+	child.oisshown = child:IsShown()
+	
+	M:RawHook(child,"ClearAllPoints",function() end,true)
+	M:RawHook(child,"SetPoint",function() end,true)
+	M.hooks[child].Hide(child)
+	child.added  = true
+	M.buttons[child] = true
+	
+end
+
+local function removeButton(frame)
+	local child = Obj(frame)
+	if not child then return end	
+	M:Unhook(child,"ClearAllPoints")
+	M:Unhook(child,"SetPoint")
+	child:ClearAllPoints()
+	child:SetPoint(unpack(child.opoint))
+	child:SetHeight(child.osize[1])
+	child:SetWidth(child.osize[2])
+	if child.oisshown then
+		M.hooks[child].Show(child)
+	else
+		M.hooks[child].Hide(child)
+	end
+	child.added = false
+	M.buttons[child] = false
+end
+
+local function doShowButtons()
+	M:CancelTimer(M.hideTimer, true)
+	M.showTimer = M:ScheduleTimer("showButtons",0.2)
+end
+
+local function doHideButtons()
+	M:CancelTimer(M.showTimer, true)
+	M.hideTimer = M:ScheduleTimer("hideButtons", 1)
+end
+
+local function prepareModButton(child)
+	local button;
+	_G.MBB_ButtonAdd:Hide()
+	_G.MBB_ButtonRemove:Hide()
+	if IsButtonExcluded(child) then
+		button = _G.MBB_ButtonAdd
+		button:SetScript("OnClick",function(frame) 
+			addButton(frame.operator) 
+			db.excludes[Name(frame.operator)] = false
+			frame:Hide() 
+		end)
+		button:SetScript("OnLeave",function(frame) frame:Hide() end)
+		
+	else
+		button = _G.MBB_ButtonRemove
+		button:SetScript("OnEnter",function(frame) 
+			M:CancelTimer(M.hideModTimer, true) 
+			doShowButtons()
+		end)
+		button:SetScript("OnClick",function(frame) 
+			removeButton(frame.operator)
+			db.excludes[Name(frame.operator)] = true
+			M:showButtons() 
+			frame:Hide() 
+		end)
+		button:SetScript("OnLeave",function(frame) 
+			doHideButtons()
+			frame:Hide() 
+		end)
+	end
+	button.operator = child
+	child.operant = button
+	button:ClearAllPoints()
+	button:SetPoint("BOTTOM", child, "TOP", 0, 0);
+	return button
+end
+
+function M:hideButtons()	
+	self.showed  = false
+	for button,flag in pairs(M.buttons) do
+		if flag then
+			M.hooks[button].Hide(button)
+		end
+	end
+end
+
+function M:showButtons()
+	self.showed  = true
+	local lastButton = self.realIcon
+	local itemperline = db.itemperline
+	if itemperline ==0 then itemperline = 100 end
+	local direction = db.direction
+	local currentIndex = 0
+	local x,y 
+	self.panel:SetPoint("TOPRIGHT",M.realIcon,"BOTTOMLEFT", -5,-10)
+	self.panel:Show()
+	for button,flag in pairs(self.buttons) do
+		if flag and button.oisshown then
+			self.hooks[button].ClearAllPoints(button)
+			x ,y = currentIndex%itemperline, floor(currentIndex/itemperline)
+			if x ~=0 then
+				if direction =="LEFT" then
+					self.hooks[button].SetPoint(button,"RIGHT",lastButton,"LEFT",-4,0)
+				elseif direction =="RIGHT" then
+					self.hooks[button].SetPoint(button,"LEFT",lastButton,"RIGHT",4,0)
+				elseif direction =="BOTTOM" then
+					self.hooks[button].SetPoint(button,"TOP",lastButton,"BOTTOM",0,-4)
+				elseif direction =="TOP" then
+					self.hooks[button].SetPoint(button,"BOTTOM",lastButton,"TOP",0,4)
+				end
+			else
+				if direction =="LEFT" then
+					self.hooks[button].SetPoint(button,"RIGHT",self.realIcon,"LEFT",-4,-40*y)
+				elseif direction =="RIGHT" then
+					self.hooks[button].SetPoint(button,"LEFT",self.realIcon,"RIGHT",4,-40*y)
+				elseif direction =="BOTTOM" then
+					self.hooks[button].SetPoint(button,"TOP",self.realIcon,"BOTTOM",40*y,-4)
+				elseif direction =="TOP" then
+					self.hooks[button].SetPoint(button,"BOTTOM",self.realIcon,"TOP",40*y,4)
+				end
 				
-				if( not frame.oshow ) then
-					MBB_PrepareButton(button);
-					--if( not MBB_IsExcluded(button) ) then
-					if( not MBB_IsInArray(MBB_Exclude, button) ) then
-						MBB_AddButton(button);
-						MBB_SetPositions();
-					end
-				end
-				
-				return value;
 			end
-			
-			AceLibrary(MBB_FuBar_MinimapContainer).oldRemovePlugin = AceLibrary(MBB_FuBar_MinimapContainer).RemovePlugin;
-			AceLibrary(MBB_FuBar_MinimapContainer).RemovePlugin = function(...)
-				local plugin = select(2, ...);
-				local button = plugin.minimapFrame:GetName();
-				local frame = getglobal(button);
-				
-				if( not frame.oshow ) then
-					MBB_PrepareButton(button);
-				end
-				
-				local value = AceLibrary(MBB_FuBar_MinimapContainer):oldRemovePlugin(plugin);
-				return value;
-			end
-		end
-	end
-	
-	self:RegisterEvent("ADDON_LOADED");
-	SLASH_MBB1 = "/mbb";
-	SlashCmdList["MBB"] = MBB_SlashHandler;
-end
-
-function MBB_SlashHandler(cmd)
-	if( cmd == "buttons" ) then
-		MBB_Print("MBB Buttons:");
-		for i,name in ipairs(MBB_Buttons) do
-			MBB_Print("  " .. name);
-		end
-	elseif( string.sub(cmd, 1, 6) == "debug " ) then
-		local iStart, iEnd, sFrame = string.find(cmd, "debug (.+)");
-		
-		local hasClick, hasMouseUp, hasMouseDown, hasEnter, hasLeave = MBB_TestFrame(sFrame);
-		
-		MBB_Debug("Frame: " .. sFrame);
-		if( hasClick ) then
-			MBB_Debug("  has OnClick script");
-		else
-			MBB_Debug("  has no OnClick script");
-		end
-		if( hasMouseUp ) then
-			MBB_Debug("  has OnMouseUp script");
-		else
-			MBB_Debug("  has no OnMouseUp script");
-		end
-		if( hasMouseDown ) then
-			MBB_Debug("  has OnMouseDown script");
-		else
-			MBB_Debug("  has no OnMouseDown script");
-		end
-		if( hasEnter ) then
-			MBB_Debug("  has OnEnter script");
-		else
-			MBB_Debug("  has no OnEnter script");
-		end
-		if( hasLeave ) then
-			MBB_Debug("  has OnLeave script");
-		else
-			MBB_Debug("  has no OnLeave script");
-		end
-	elseif( cmd == "reset position" ) then
-		MBB_Options.AttachToMinimap = MBB_DefaultOptions.AttachToMinimap;
-		MBB_Options.ButtonPos = MBB_DefaultOptions.ButtonPos;
-		MBB_SetButtonPosition();
-	elseif( cmd == "reset all" ) then
-		MBB_Options = MBB_DefaultOptions;
-		for i=1,table.maxn(MBB_Exclude) do
-			MBB_AddButton(MBB_Exclude[i]);
-		end
-		MBB_SetPositions();
-		MBB_SetButtonPosition();
-	elseif( cmd == "errors" ) then
-		if( table.maxn(MBB_DebugInfo) > 0 ) then
-			for name, arr in pairs(MBB_DebugInfo) do
-				MBB_Print(name);
-				for _, error in pairs(arr) do
-					MBB_Print("  " .. error);
-				end
-			end
-		else
-			MBB_Print(MBB_NOERRORS);
-		end
-	else
-		MBB_Print("MBB v" .. MBB_Version .. ":");
-		MBB_Print(MBB_HELP1);
-		MBB_Print(MBB_HELP2);
-		MBB_Print(MBB_HELP3);
-		MBB_Print(MBB_HELP4);
-	end
-end
-
-function MBB_TestFrame(name)
-	local hasClick = false;
-	local hasMouseUp = false;
-	local hasMouseDown = false;
-	local hasEnter = false;
-	local hasLeave = false;
-	local testframe = getglobal(name);
-	
-	if( testframe ) then
-		if( not testframe.HasScript ) then
-			if( testframe:GetName() ) then
-				if( not MBB_DebugInfo[testframe:GetName()] ) then
-					MBB_DebugInfo[testframe:GetName()] = {};
-				end
-				if( not MBB_IsInArray(MBB_DebugInfo[testframe:GetName()], "No HasScript") ) then
-					table.insert(MBB_DebugInfo[testframe:GetName()], "No HasScript");
-				end
-			end
-		else
-			if( testframe:HasScript("OnClick") ) then
-				local test = testframe:GetScript("OnClick");
-				if( test ) then
-					hasClick = true;
-				end
-			end
-			if( testframe:HasScript("OnMouseUp") ) then
-				local test = testframe:GetScript("OnMouseUp");
-				if( test ) then
-					hasMouseUp = true;
-				end
-			end
-			if( testframe:HasScript("OnMouseDown") ) then
-				local test = testframe:GetScript("OnMouseDown");
-				if( test ) then
-					hasMouseDown = true;
-				end
-			end
-			if( testframe:HasScript("OnEnter") ) then
-				local test = testframe:GetScript("OnEnter");
-				if( test ) then
-					hasEnter = true;
-				end
-			end
-			if( testframe:HasScript("OnLeave") ) then
-				local test = testframe:GetScript("OnLeave");
-				if( test ) then
-					hasLeave = true;
-				end
-			end
-		end
-	end
-	
-	return hasClick, hasMouseUp, hasMouseDown, hasEnter, hasLeave;
-end
-
-function MBB_OnEvent(self, event, addon)
-	if ( event == "ADDON_LOADED" and addon == "MBB") then
-		if( MBB_Options ) then
-			for opt,val in pairs(MBB_DefaultOptions) do
-				if( not MBB_Options[opt] ) then
-					MBB_Debug(opt .. " option set to default: " .. tostring(val));
-					MBB_Options[opt] = val;
-				else
-					MBB_Debug(opt .. " option exists: " .. tostring(MBB_Options[opt]));
-				end
-			end
-		else
-			MBB_Options = MBB_DefaultOptions;
-		end
-		
-		MBB_SetButtonPosition();
-		
-		local children = {Minimap:GetChildren()};
-		local additional = {MinimapBackdrop:GetChildren()};
-		for _,child in ipairs(additional) do
-			table.insert(children, child);
-		end
-		for _,child in ipairs(MBB_Include) do
-			local childframe = getglobal(child);
-			if( childframe ) then
-				table.insert(children, childframe);
-			end
-		end
-		
-		for _,child in ipairs(children) do
-			if( child:GetName() ) then
-				local ignore = false;
-				local exclude = false;
-				for i,needle in ipairs(MBB_Ignore) do
-					if( string.find(child:GetName(), needle) ) then
-						ignore = true;
-					end
-				end
-				if( not ignore ) then
-					if( not child:HasScript("OnClick") ) then
-						for _,subchild in ipairs({child:GetChildren()}) do
-							if( subchild:HasScript("OnClick") ) then
-								child = subchild;
-								child.hasParentFrame = true;
-								break;
-							end
-						end
-					end
-					
-					local hasClick, hasMouseUp, hasMouseDown, hasEnter, hasLeave = MBB_TestFrame(child:GetName());
-					
-					if( hasClick or hasMouseUp or hasMouseDown ) then
-						local name = child:GetName();
-						
-						MBB_PrepareButton(name);
-						if( not MBB_IsInArray(MBB_Exclude, name) ) then
-							if( child:IsVisible() ) then
-								MBB_Debug("Button is visible: " .. name);
-							else
-								MBB_Debug("Button is not visible: " .. name);
-							end
-							MBB_Debug("Button added: " .. name);
-							MBB_AddButton(name);
-						else
-							MBB_Debug("Button excluded: " .. name);
-						end
-					else
-						MBB_Debug("Frame is no button: " .. child:GetName());
-					end
-				else
-					MBB_Debug("Frame ignored: " .. child:GetName());
-				end
-			end
-		end
-		
-		MBB_SetPositions();
-	end
-end
-
--- 准备按键
-function MBB_PrepareButton(name)
-	local buttonframe = getglobal(name);
-	local hasHeader;
-	if( buttonframe.GetAttribute ) then
-		hasHeader = buttonframe:GetAttribute("anchorchild");
-		if( hasHeader and hasHeader == "$parent" and not buttonframe.hasParentFrame ) then
-			MBB_Debug("buttonframe has header parent");
-			buttonframe.hasParentFrame = true;
-		end
-	else
-		if( buttonframe:GetName() ) then
-			if( not MBB_DebugInfo[buttonframe:GetName()] ) then
-				MBB_DebugInfo[buttonframe:GetName()] = {};
-			end
-			if( not MBB_IsInArray(MBB_DebugInfo[buttonframe:GetName()], "No GetAttribute") ) then
-				table.insert(MBB_DebugInfo[buttonframe:GetName()], "No GetAttribute");
-			end
-		end
-	end
-	
-	if( buttonframe ) then
-		if( buttonframe.RegisterForClicks ) then
-			buttonframe:RegisterForClicks("LeftButtonDown","RightButtonDown");
-		end
-		
-		buttonframe.isvisible = buttonframe:IsVisible();
-		
-		if( buttonframe.hasParentFrame ) then
-			local parent = buttonframe:GetParent();
-			parent.MBBChild = buttonframe:GetName();
-			buttonframe.parentisvisible = parent:IsVisible();
-			if (not parent.oshow) then
-				parent.oshow = parent.Show;
-				parent.Show = function(...)
-					local parent = select(1, ...);
-					MBB_Debug("Parent Frame: " .. parent:GetName());
-					local child = getglobal(parent.MBBChild);
-					MBB_Debug("Child Frame: " .. child:GetName());
-					child.parentisvisible = true;
-					MBB_Debug("Showing frame: " .. parent:GetName());
-					if( not MBB_IsInArray(MBB_Exclude, child:GetName()) ) then
-						MBB_SetPositions();
-					end
-					if( MBB_IsInArray(MBB_Exclude, child:GetName()) or MBB_IsShown == 1 ) then
-						parent.oshow(select(1, ...));
-						--child.oshow(child);
-					end
-				end
-			end
-
-			if (not parent.ohide) then
-				parent.ohide = parent.Hide;
-				parent.Hide = function(...)
-					local parent = select(1, ...);
-					MBB_Debug("Parent Frame: " .. parent:GetName());
-					local child = getglobal(parent.MBBChild);
-					MBB_Debug("Child Frame: " .. child:GetName());
-					child.parentisvisible = false;
-					MBB_Debug("Hiding frame: " .. parent:GetName());
-					parent.ohide(select(1, ...));
-					if( not MBB_IsInArray(MBB_Exclude, child:GetName()) ) then
-						MBB_SetPositions();
-					end
-				end
-			end
-		end
-		
-		if (not buttonframe.oshow) then
-			buttonframe.oshow = buttonframe.Show;
-			buttonframe.Show = function(...)
-				local innerframe = select(1, ...);
-				innerframe.isvisible = true;
-				MBB_Debug("Showing innerframe: " .. innerframe:GetName());
-				if( not MBB_IsInArray(MBB_Exclude, innerframe:GetName()) ) then
-					MBB_SetPositions();
-				end
-				if( MBB_IsInArray(MBB_Exclude, innerframe:GetName()) or MBB_IsShown == 1 ) then
-					--[[if( innerframe.hasParentFrame ) then
-						local parent = innerframe:GetParent();
-						parent.oshow(parent);
-					else]]
-						innerframe.oshow(select(1, ...));
-					--end
-				end
-			end
-		end
-
-		if (not buttonframe.ohide) then
-			buttonframe.ohide = buttonframe.Hide;
-			buttonframe.Hide = function(...)
-				local innerframe = select(1, ...);
-				MBB_Debug("Hiding innerframe: " .. innerframe:GetName());
-				--if( innerframe.hasParentFrame ) then
-					local parent = innerframe:GetParent();
-				--	parent.ohide(parent);
-				--else
-					innerframe.isvisible = false;
-					innerframe.ohide(select(1, ...));
-				--end
-				if( not MBB_IsInArray(MBB_Exclude, innerframe:GetName()) ) then
-					MBB_SetPositions();
-				end
-			end
-		end
-		
-		if( buttonframe:HasScript("OnClick") and not hasHeader ) then
-			buttonframe.oclick = buttonframe:GetScript("OnClick");
-			buttonframe:SetScript("OnClick", function(self, ...)
-				local button = ...;
-				if( MBB_DefaultOptions["EnableMBB"] and button and button == "RightButton" and IsControlKeyDown() ) then
-					local name = self:GetName();
-					if( MBB_IsInArray(MBB_Exclude, name) ) then
-						MBB_AddButton(name);
-					else
-						MBB_RestoreButton(name);
-					end
-					MBB_SetPositions();
-				elseif( self.oclick ) then
-					self.oclick(self, select(1, ...));
-				end
-			end);
-		elseif( buttonframe:HasScript("OnMouseUp") and not hasHeader ) then
-			buttonframe.omouseup = buttonframe:GetScript("OnMouseUp");
-			buttonframe:SetScript("OnMouseUp", function(self, ...)
-				local button = ...;
-				if( MBB_DefaultOptions["EnableMBB"] and button and button == "RightButton" and IsControlKeyDown() ) then
-					local name = self:GetName();
-					if( MBB_IsInArray(MBB_Exclude, name) ) then
-						MBB_AddButton(name);
-					else
-						MBB_RestoreButton(name);
-					end
-					MBB_SetPositions();
-				elseif( self.omouseup ) then
-					self.omouseup(self, select(1, ...));
-				end
-			end);
-		elseif( buttonframe:HasScript("OnMouseDown") and not hasHeader ) then
-			buttonframe.omousedown = buttonframe:GetScript("OnMouseDown");
-			buttonframe:SetScript("OnMouseDown", function(self, ...)
-				local button = ...;
-				if( MBB_DefaultOptions["EnableMBB"] and button and button == "RightButton" and IsControlKeyDown() ) then
-					local name = self:GetName();
-					if( MBB_IsInArray(MBB_Exclude, name) ) then
-						MBB_AddButton(name);
-					else
-						MBB_RestoreButton(name);
-					end
-					MBB_SetPositions();
-				elseif( self.omousedown ) then
-					self.omousedown(self, select(1, ...));
-				end
-			end);
-		end
-		if( buttonframe:HasScript("OnEnter") and not hasHeader ) then
-			buttonframe.oenter = buttonframe:GetScript("OnEnter");
-			buttonframe:SetScript("OnEnter", function(self, ...)
-				if( IsControlKeyDown() ) then
-					local button;
-					if( MBB_IsInArray(MBB_Exclude, self:GetName()) ) then
-						button = getglobal("MBB_ButtonAdd");
-					else
-						button = getglobal("MBB_ButtonRemove");
-					end
-					button.MBBButtonName = self:GetName();
-					button:ClearAllPoints();
-					button:SetPoint("BOTTOM", self, "TOP", 0, 0);
-					button:Show();
-				end
-				if( not MBB_IsInArray(MBB_Exclude, self:GetName()) ) then
-					MBB_ShowTimeout = -1;
-				end
-				if( self.oenter ) then
-					self.oenter(self, select(1, ...));
-				end
-			end);
-		end
-		if( buttonframe:HasScript("OnLeave") and not hasHeader ) then
-			buttonframe.oleave = buttonframe:GetScript("OnLeave");
-			buttonframe:SetScript("OnLeave", function(self, ...)
-				if( not MBB_IsInArray(MBB_Exclude, self:GetName()) ) then
-					MBB_ShowTimeout = 0;
-				end
-				if( self.oleave ) then
-					self.oleave(self, select(1, ...));
-				end
-			end);
-		end
-	end
-end
-
--- 添加按键
-function MBB_AddButton(name)
-	local child = getglobal(name);
-	
-	if (child) then
-		child.opoint = {child:GetPoint()};
-		if( not child.opoint[1] ) then
-			child.opoint = {"TOP", Minimap, "BOTTOM", 0, 0};
-		end
-		child.osize = {child:GetHeight(),child:GetWidth()};
-		child.oclearallpoints = child.ClearAllPoints;
-		child.ClearAllPoints = function() end;
-		child.osetpoint = child.SetPoint;
-		child.SetPoint = function() end;
-		if( MBB_IsShown == 0 ) then
-			if( child.hasParentFrame ) then
-				local parent = child:GetParent();
-				child.oshow(child);
-				parent.ohide(parent);
+			if db.keepsize then
+				button:SetWidth(button.osize[2])
+				button:SetHeight(button.osize[1])
 			else
-				if (child.ohide) then
-					child.ohide(child);
-				else
-					child:Hide();
-				end			
+				button:SetWidth(32)
+				button:SetHeight(32)
 			end
+			self.hooks[button].Show(button)
+			lastButton = button;
+			currentIndex = currentIndex + 1
 		end
-		table.insert(MBB_Buttons, name);
-		local i = MBB_IsInArray(MBB_Exclude, name);
-		if( i ) then
-			table.remove(MBB_Exclude, i);
-		end
-
-		MBB_MinimapButtonFrame:Show();
 	end
 end
 
--- 归位按键
-function MBB_RestoreButton(name)
-	local button = getglobal(name);
+function M:showModButton(child)
+	local button = prepareModButton(child)
 	
-	button.oclearallpoints(button);
-	button.osetpoint(button, button.opoint[1], button.opoint[2], button.opoint[3], button.opoint[4], button.opoint[5]);
-	button:SetHeight(button.osize[1]);
-	button:SetWidth(button.osize[1]);
-	button.ClearAllPoints = button.oclearallpoints;
-	button.SetPoint = button.osetpoint;
-	MBB_Debug("EVENT Restoring Button");
-	if( button.hasParentFrame ) then
-		local parent = button:GetParent();
-		parent.oshow(parent);
+	button:Show();
+	
+end
+
+function M:hideModButton(child)
+	if child.operant then
+		child.operant:Hide()
+	end
+end
+
+local function toggleButtons()
+	M:CancelTimer(M.hideTimer, true)
+	M:CancelTimer(M.showTimer, true)
+	if M.showed then
+		M:hideButtons()	
 	else
-		button.oshow(button);
+		M:showButtons()
 	end
-	
-	table.insert(MBB_Exclude, name);
-	local i = MBB_IsInArray(MBB_Buttons, button:GetName());
-	if( i ) then
-		table.remove(MBB_Buttons, i);
-	end
+	 
 end
 
--- 设定按键位置
-function MBB_SetPositions()
-	local directions = {
-		[1] = {"RIGHT", "LEFT"},
-		[2] = {"BOTTOM", "TOP"},
-		[3] = {"LEFT", "RIGHT"},
-		[4] = {"TOP", "BOTTOM"}
-	};
-	local offsets = {
-		[1] = {-5, 0},
-		[2] = {0, 5},
-		[3] = {5, 0},
-		[4] = {0, -5}
-	};
-	
-	local pos = {0, 0};
-	local parentid = 0;
-	local firstid = 1;
-	local count = 1;
-	for i,name in ipairs(MBB_Buttons) do
-		local positionframe = getglobal(name);
-		if( not positionframe.hasParentFrame ) then
-			positionframe.parentisvisible = true;
-		end
-		if( positionframe.isvisible and positionframe.parentisvisible ) then
-			local parent;
-			if( parentid==0 ) then
-				parent = MBB_MinimapButtonFrame;
-			else
-				parent = getglobal(MBB_Buttons[parentid]);
-			end
-			
-			if( not MBB_IsInArray(MBB_IgnoreSize, name) ) then
-				if( MBB_ExtraSize[name] ) then
-					local func = MBB_ExtraSize[name];
-					func();
+local function createIcon()
+	launcher = LDB:NewDataObject("MBB", {
+		type = "launcher",
+		icon = [[Interface\AddOns\MBB\res\icon]],
+		OnClick = function(frame,button)
+			if button =="RightButton" then
+				if InterfaceOptionsFrame:IsShown() then
+					InterfaceOptionsFrame:Hide()
 				else
-					positionframe:SetHeight(31); -- 33
-					positionframe:SetWidth(31);
+					M:ShowOptions() 
 				end
+			elseif not db.enablemouseover then
+				toggleButtons()
 			end
+		end,
+		OnTooltipShow = function(tt)
 			
-			local direction;
-			
-			if( MBB_Options.MaxButtonsPerLine > 0 and count > MBB_Options.MaxButtonsPerLine ) then
-				parent = getglobal(MBB_Buttons[firstid]);
-				direction = {directions[MBB_Options.AltExpandDirection][1], directions[MBB_Options.AltExpandDirection][2]};
-				if( MBB_ExtraSize[name] or MBB_IsInArray(MBB_IgnoreSize, name) or MBB_ExtraSize[parent:GetName()] or MBB_IsInArray(MBB_IgnoreSize, parent:GetName()) ) then
-					pos = offsets[MBB_Options.AltExpandDirection];
-				else
-					pos = {0, 0};
-				end
-				count = 2;
-				firstid = i;
-			else
-				direction = {directions[MBB_Options.ExpandDirection][1], directions[MBB_Options.ExpandDirection][2]};
-				if( MBB_ExtraSize[name] or MBB_IsInArray(MBB_IgnoreSize, name) or MBB_ExtraSize[parent:GetName()] or MBB_IsInArray(MBB_IgnoreSize, parent:GetName()) ) then
-					pos = offsets[MBB_Options.ExpandDirection];
-				else
-					pos = {0, 0};
-				end
-				count = count + 1;
+			if db.enablemouseover or M.showed then
+				doShowButtons()
 			end
-			
-			positionframe.oclearallpoints(positionframe);
-			positionframe.osetpoint(positionframe, direction[1], parent, direction[2], pos[1], pos[2]);
-			
-			parentid = i;
+			if db.enablemousetip then
+				tt:AddLine(L["Right click on a button to Open config panel."])
+			end
+		end,		
+		OnLeave = function()
+			doHideButtons()
 		end
-	end
+	})
 end
 
-function MBB_OnClick(self, button)
-	if( button and button == "RightButton" and IsControlKeyDown() ) then
-		if( MBB_Options.AttachToMinimap == 1 ) then
-			--[[local xpos,ypos = GetCursorPosition();
-			local scale = GetCVar("uiScale");]]
-			MBB_Options.AttachToMinimap = 0;
-			MBB_Options.ButtonPos = {0, 0};	--{(xpos/scale)-10, (ypos/scale)-10};
-			MBB_SetButtonPosition();
-		else
-			MBB_Options.AttachToMinimap = 1;
-			MBB_Options.ButtonPos = MBB_DefaultOptions.ButtonPos;
-			MBB_SetButtonPosition();
-		end
-	elseif( button and button == "RightButton" ) then
-		MBB_OptionsFrame:Show();
-	else
-		if( MBB_IsShown == 1 ) then
-			MBB_HideButtons();
-		else
-			MBB_Debug("EVENT OnClick");
-			for i,name in ipairs(MBB_Buttons) do
-				local clickframe = getglobal(name);
-				if( not clickframe.hasParentFrame ) then
-					clickframe.parentisvisible = true;
-				end
-				if( clickframe.isvisible and clickframe.parentisvisible ) then
-					if( clickframe.hasParentFrame and clickframe.hasParentFrame ) then
-						local parent = clickframe:GetParent();
-						if( parent.oshow ) then
-							parent.oshow(parent);
-						else
-							if( parent:GetName() ) then
-								if( not MBB_DebugInfo[parent:GetName()] ) then
-									MBB_DebugInfo[parent:GetName()] = {};
-								end
-								if( not MBB_IsInArray(MBB_DebugInfo[parent:GetName()], "No oshow") ) then
-									table.insert(MBB_DebugInfo[parent:GetName()], "No oshow");
-								end
-							end
-						end
-					else
-						clickframe.oshow(clickframe);
-					end
-				end
-			end
-			MBB_IsShown = 1;
-			--MBB_ShowTimeout = 0;
-		end
-	end
+--old child script processing
+local function onChildShow(button)
+	button.oisshown = true
+	--M.hooks[button].Show(button)
 end
 
-function MBB_HideButtons()
-	MBB_ShowTimeout = -1;
-	for i,name in ipairs(MBB_Buttons) do
-		local buttonhideframe = getglobal(name);
-		if( buttonhideframe.hasParentFrame ) then
-			local parent = buttonhideframe:GetParent();
-			if( parent.ohide ) then
-				parent.ohide(parent);
-			else
-				if( parent:GetName() ) then
-					if( not MBB_DebugInfo[parent:GetName()] ) then
-						MBB_DebugInfo[parent:GetName()] = {};
-					end
-					if( not MBB_IsInArray(MBB_DebugInfo[parent:GetName()], "No ohide") ) then
-						table.insert(MBB_DebugInfo[parent:GetName()], "No ohide");
-					end
-				end
-				buttonhideframe.ohide(buttonhideframe);
-			end
-		else
-			buttonhideframe.ohide(buttonhideframe);
-		end
-	end
-	MBB_IsShown = 0;
+local function onChildHide(button)
+	button.oisshown = false
+
+	--M.hooks[button].Hide(button)
 end
 
-function MBB_IsKnownButton(name, opt)
-	if( not opt ) then
-		opt = 1;
-	end
-	
-	if( opt <= 1 ) then
-		for _, button in ipairs(MBB_Buttons) do
-			if( button == name ) then
-				return true;
-			end
-		end
-	end
-	if( opt <= 2 ) then
-		for _, button in ipairs(MBB_Exclude) do
-			if( button == name ) then
-				return true;
-			end
-		end
-	end
-	if( opt <= 3 ) then
-		for _, button in ipairs(MBB_Ignore) do
-			if( string.find(name, button) ) then
-				return true;
-			end
-		end
-	end
-	
-	return false;
+function M:onChildClick(frame,button)
 end
 
-function MBBL_OnUpdate(self, elapsed)
-	if (not MBB_DefaultOptions["EnableMBB"]) then return	end
-	if( MBB_CheckTime >= 3 ) then
-		MBB_CheckTime = 0;
-		local children = {Minimap:GetChildren()};
-		for _, child in ipairs(children) do
-			if( child:HasScript("OnClick") and not child.oshow and child:GetName() and not MBB_IsKnownButton(child:GetName(), 3) ) then
-				MBB_PrepareButton(child:GetName());
-				if( not MBB_IsInArray(MBB_Exclude, child:GetName()) ) then
-					MBB_AddButton(child:GetName());
-					MBB_SetPositions();
-				end
-			end
-		end
-	else
-		MBB_CheckTime = MBB_CheckTime + elapsed;
-	end
+function M:onChildMouseDown(frame,button)
 end
 
-function MBB_OnUpdate(self, elapsed)
-	if (not MBB_DefaultOptions["EnableMBB"]) then return	end
+function M:onChildMouseUp(frame,button)
+end
 
-	if( MBB_DragFlag == 1 and MBB_Options.AttachToMinimap == 1 ) then
-		local xpos,ypos = GetCursorPosition();
-		local xmin,ymin = Minimap:GetLeft(), Minimap:GetBottom();
-
-		xpos = xmin-xpos/Minimap:GetEffectiveScale()+70;
-		ypos = ypos/Minimap:GetEffectiveScale()-ymin-70;
-
-		local angle = math.deg(math.atan2(ypos,xpos));
+function M:onChildLeave(frame)
+	M.hideModTimer = M:ScheduleTimer("hideModButton",1,frame)
+	if not IsButtonExcluded(frame) then
+		doHideButtons()
 		
-		MBB_MinimapButtonFrame:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 53-(cos(angle)*81), -55+(sin(angle)*81));
-	end
-	
-	if( MBB_Options.CollapseTimeout and MBB_Options.CollapseTimeout ~= 0 ) then
-		if( MBB_ShowTimeout >= MBB_Options.CollapseTimeout and MBB_IsShown == 1 ) then
-			MBB_HideButtons();
-		end
-		if( MBB_ShowTimeout ~= -1 ) then
-			MBB_ShowTimeout = MBB_ShowTimeout + elapsed;
-		end
 	end
 end
 
-function MBB_ResetPosition()
-	MBB_Options.ButtonPos = MBB_DefaultOptions.ButtonPos;
-	MBB_Options.AttachToMinimap = MBB_DefaultOptions.AttachToMinimap;
-	
-	MBB_SetButtonPosition();
-end
-
-function MBB_SetButtonPosition()
-	if( MBB_Options.AttachToMinimap == 1 ) then
-		MBB_MinimapButtonFrame:ClearAllPoints();
-		MBB_MinimapButtonFrame:SetPoint("TOPLEFT", Minimap, "TOPLEFT", MBB_Options.ButtonPos[1], MBB_Options.ButtonPos[2]);
-	else
-		MBB_MinimapButtonFrame:ClearAllPoints();
-		MBB_MinimapButtonFrame:SetPoint("CENTER", UIParent, "CENTER", MBB_Options.ButtonPos[1], MBB_Options.ButtonPos[2]);
+function M:onChildEnter(frame)
+	M:CancelTimer(M.hideModTimer, true)
+	if( IsControlKeyDown() ) then
+		self:showModButton(frame)
+	end
+	if not IsButtonExcluded(frame) then
+		doShowButtons()
 	end
 end
 
-function MBB_RadioButton_OnClick(id, alt)
-	local substring;
-	if( alt ) then
-		substring = "Alt";
-	else
-		substring = "";
-	end
-	local buttons = {
-		[1] = "Left",
-		[2] = "Top",
-		[3] = "Right",
-		[4] = "Bottom"
-	};
+local function prepareButton(name)
+	local buttonframe = Obj(name)
 	
-	for i,name in ipairs(buttons) do
-		if( i == id ) then
-			getglobal("MBB_OptionsFrame_" .. name .. substring .. "Radio"):SetChecked(true);
-		else
-			getglobal("MBB_OptionsFrame_" .. name .. substring .. "Radio"):SetChecked(nil);
+	if not M:IsHooked(buttonframe,"Show") then M:RawHook(buttonframe,"Show",onChildShow,true) end
+	if not M:IsHooked (buttonframe,"Hide") then M:RawHook(buttonframe,"Hide",onChildHide,true) end
+
+	local function safeHook(obj,methodname,scriptname)
+		if not obj:HasScript(methodname) then
+			obj:SetScript(methodname,function() end)
+		end
+		if not M:IsHooked(obj,methodname) then
+			M:HookScript(obj,methodname,scriptname)
 		end
 	end
+	safeHook(buttonframe,"OnClick","onChildClick")
+	safeHook(buttonframe,"OnMouseDown","onChildMouseDown")
+	safeHook(buttonframe,"OnMouseUp","onChildMouseUp")
+	safeHook(buttonframe,"OnLeave","onChildLeave")
+	safeHook(buttonframe,"OnEnter","onChildEnter")
+
+	
+	--prepare button scripts here
 end
 
-function MBB_UpdateAltRadioButtons()
-	local buttons = {
-		[1] = "Left",
-		[2] = "Top",
-		[3] = "Right",
-		[4] = "Bottom",
-	};
-	
-	local exchecked = 1;
-	
-	for i,name in pairs(buttons) do
-		if( getglobal("MBB_OptionsFrame_" .. name .. "Radio"):GetChecked() ) then
-			exchecked = i;
-			break;
-		end
-	end
-	
-	local checked = false;
-	local textbox = getglobal("MBB_OptionsFrame_MaxButtonsTextBox");
-	
-	for i,name in pairs(buttons) do
-		local radio = getglobal("MBB_OptionsFrame_" .. name .. "AltRadio");
-		local label = getglobal("MBB_OptionsFrame_" .. name .. "AltRadioLabel");
-		if( textbox:GetText() == "" or tonumber(textbox:GetText()) == 0 ) then
-			radio:Disable();
-			radio:SetChecked(nil);
-			label:SetTextColor(0.5, 0.5, 0.5);
-		else
-			if( exchecked % 2 == i % 2 ) then
-				if( radio:GetChecked() ) then
-					checked = true;
-					if( i == 4 ) then
-						getglobal("MBB_OptionsFrame_LeftAltRadio"):SetChecked(true);
-					else
-						getglobal("MBB_OptionsFrame_" .. buttons[i+1] .. "AltRadio"):SetChecked(true);
-					end
-				end
-				radio:Disable();
-				radio:SetChecked(nil);
-				label:SetTextColor(0.5, 0.5, 0.5);
-			else
-				if( radio:GetChecked() ) then
-					checked = true;
-				end
-				radio:Enable();
-				label:SetTextColor(1, 1, 1);
-			end
-		end
-	end
-	
-	if( not checked and tonumber(textbox:GetText()) ~= 0 and textbox:GetText() ~= "" ) then
-		if( exchecked % 2 == 1 ) then
-			getglobal("MBB_OptionsFrame_TopAltRadio"):SetChecked(true);
-		else
-			getglobal("MBB_OptionsFrame_LeftAltRadio"):SetChecked(true);
-		end
-	end
-end
-
-function MBB_Debug(msg)
-	if (MBB_DebugFlag == 1) then
-		MBB_Print("MBB Debug : " .. tostring(msg));
-	end
-end
-
-function MBB_Test()
+local function scanMiniChildren()
 	local children = {Minimap:GetChildren()};
-	
-	for _, child in ipairs(children) do
-		--[[local found = false;
-		for _, name in ipairs(MBB_Exclude) do
-			if( name == child:GetName() ) then
-				found = true;
-				break;
-			end
-		end
-		for _, name in ipairs(MBB_Ignore) do
-			local iStart;
-			local cname = child:GetName();
-			if( cname ) then
-				iStart = string.find(cname, name);
-				if( iStart ) then
-					found = true;
+	local additional = {MinimapBackdrop:GetChildren()};
+	for _,child in ipairs(additional) do
+		table.insert(children, child);
+	end
+	for _, child in ipairs(children) do		
+		if( not child:HasScript("OnClick") ) then
+			for _,subchild in ipairs({child:GetChildren()}) do
+				if( subchild:HasScript("OnClick") ) then
+					child = subchild;
+					child.hasParentFrame = true;
 					break;
 				end
 			end
-		end]]
-		if( child:GetName() and not MBB_IsKnownButton(child:GetName()) ) then
-			ChatFrame1:AddMessage(child:GetName());
 		end
+		if Name(child) and not IsButtonIgnored(child) then
+			if child:IsObjectType("Button")  then
+				prepareButton(child)
+				if not IsButtonExcluded(child) then
+					addButton(child)
+				end
+			end
+		end
+
 	end
 end
 
-function MBB_IsInArray(array, needle)
-	if(type(array) == "table") then
-		--MBB_Debug("Looking for " .. tostring(needle) .. " in " .. tostring(array));
-		for i, element in pairs(array) do
-			if(type(element) ==  type(needle) and element == needle) then
-				return i;
-			end
-		end
-	end
-	return nil;
+function M:getDefaults()
+	return options
 end
 
-function MBB_SecureOnEnter(self, button, remapButton)
-	local name = self:GetName();
-	MBB_Debug("Name: " .. name);
-	MBB_Debug("Button: " .. button);
-	MBB_Debug("remapButton: " .. remapButton);
-	if( MBB_IsInArray(MBB_Buttons, name) ) then
-		if( remapButton == "onenterbutton" ) then
-			if( IsControlKeyDown() ) then
-				local button = getglobal("MBB_ButtonRemove");
-				button.MBBButtonName = name;
-				button:ClearAllPoints();
-				button:SetPoint("BOTTOM", self, "TOP", 0, 0);
-				button:Show();
-			end
-			MBB_ShowTimeout = -1;
-		elseif( remapButton == "onleavebutton" ) then
-			MBB_ShowTimeout = 0;
-		elseif( remapButton == "onclickbutton" ) then
-			if( button == "RightButton" and IsControlKeyDown() ) then
-				MBB_Debug("Restoring button: " .. name);
-				MBB_RestoreButton(name);
-				MBB_SetPositions();
-			end
-		end
-	elseif( MBB_IsInArray(MBB_Exclude, name) ) then
-		if( remapButton == "onclickbutton" ) then
-			if( button == "RightButton" and IsControlKeyDown() ) then
-				MBB_Debug("Adding button: " .. name);
-				MBB_AddButton(name);
-				MBB_SetPositions();
-			end
-		elseif( remapButton == "onenterbutton" ) then
-			if( IsControlKeyDown() ) then
-				local button = getglobal("MBB_ButtonAdd");
-				button.MBBButtonName = name;
-				button:ClearAllPoints();
-				button:SetPoint("BOTTOM", self, "TOP", 0, 0);
-				button:Show();
-			end
-		end
-	end
-end
-
-function MBB_Print(msg)
-	DEFAULT_CHAT_FRAME:AddMessage(msg, 0.2, 0.8, 0.8);
-end
-
-function MBB_Toggle(switch)
-	if (switch) then
-		MBB_DefaultOptions["EnableMBB"] = true;
-		for i, button in pairs(MBB_Exclude) do
-			MBB_AddButton(button);			
-		end
-		MBB_SetPositions();
-		if (#(MBB_Exclude) > 0 and MBB_CheckTime > 0) then
-			MBB_Toggle(true);
-			MBB_CheckTime = MBB_CheckTime - 1;
-			return;
-		end
+function M:Refresh()
+	if db.enabled then
+		self:Enable()
 	else
-		MBB_DefaultOptions["EnableMBB"] = false;
-		MBB_MinimapButtonFrame:Hide();
-		for i, button in pairs(MBB_Buttons) do
-			MBB_RestoreButton(button);			
+		self:Disable()
+		self.icon:Hide("MBB")
+	end
+	
+	
+end
+
+function M:OnInitialize()
+	M.buttons = {}
+	self.db = LibStub("AceDB-3.0"):New("MBBDB", self:getDefaults())
+	db = self.db.profile
+
+	local AceConfig = LibStub("AceConfig-3.0")
+	
+	createIcon()
+	self.icon =self.icon or LDB and LibStub("LibDBIcon-1.0", true)
+	self.icon:Register("MBB", launcher, self.db.profile.MiniMap)
+	self:SetupOptions()
+	M:SetDefaultModuleState(false)
+end
+
+function M:OnEnable()
+	self.panel = _G["MBBFrame"]
+	self.icon:Show("MBB")
+	M.realIcon = _G[M.icon.objects["MBB"]:GetName()]
+	scanMiniChildren()
+	self:ScheduleRepeatingTimer(scanMiniChildren,2)
+end
+
+function M:OnDisable()
+	self:CancelAllTimers()
+	for button, flag in pairs(M.buttons) do 
+		if flag then
+			removeButton(button)
+			
 		end
-		if (#(MBB_Buttons) > 0 and MBB_CheckTime > 0) then
-			MBB_Toggle(false);
-			MBB_CheckTime = MBB_CheckTime - 1;
-			return;
-		end
-	end	
-	MBB_CheckTime = 20;
+	end
+	self.icon:Hide("MBB")
+end
+
+--------------------------
+-- TODO: Add panel elements
+
+local function createVolumnBar()
+	--TODO:return volumn bar, volumn button, volumn text
+end
+
+--panel related
+function M:AddTopButton(frame,...)
+end
+
+function M:AddBottomButton(frame,...)
+end
+
+function M:AddVolumnBar()
 end

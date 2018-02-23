@@ -1,8 +1,7 @@
 --[[
 
 	Atlas, a World of Warcraft instance map browser
-	Copyright 2005 - 2008 Dan Gilbert
-	Email me at loglow@gmail.com
+	Copyright 2005-2010 Dan Gilbert <dan.b.gilbert@gmail.com>
 
 	This file is part of Atlas.
 
@@ -39,34 +38,23 @@ AtlasBGLocale = {
 	["Start"] = "Start";
 	["Summon"] = "Summon";
 	["White"] = "White";
-	
+
 	--Places
-	["Alterac Mountains"] = "Alterac Mountains";
-	["Alterac Valley"] = "Alterac Valley"; ["AV"] = "AV";
-	["Arathi Basin"] = "Arathi Basin"; ["AB"] = "AB";
-	["Arathi Highlands"] = "Arathi Highlands";
-	["Ashenvale"] = "Ashenvale";
-	["Dragonblight"] = "Dragonblight";
-	["Eastern Kingdoms"] = "Eastern Kingdoms";
+	["AV"] = "AV"; -- Alterac Valley
+	["AB"] = "AB"; -- Arathi Basin
 	["Eye of the Storm"] = "Eye of the Storm"; ["EotS"] = "EotS";
-	["Hillsbrad Foothills"] = "Hillsbrad Foothills";
-	["Kalimdor"] = "Kalimdor";
-	["Netherstorm"] = "Netherstorm";
-	["Outland"] = "Outland";
-	["Strand of the Ancients"] = "Strand of the Ancients"; ["SotA"] = "SotA";
-	["The Barrens"] = "The Barrens";
-	["Warsong Gulch"] = "Warsong Gulch"; ["WSG"] = "WSG";
-	
+	["IoC"] = "IoC"; -- Isle of Conquest
+	["SotA"] = "SotA"; -- Strand of the Ancients
+	["WSG"] = "WSG"; -- Warsong Gulch
+
 	--Alterac Valley (North)
 	["Stormpike Guard"] = "Stormpike Guard";
-	["Dun Baldar"] = "Dun Baldar";
 	["Vanndar Stormpike <Stormpike General>"] = "Vanndar Stormpike <Stormpike General>";
 	["Dun Baldar North Marshal"] = "Dun Baldar North Marshal";
 	["Dun Baldar South Marshal"] = "Dun Baldar South Marshal";
 	["Icewing Marshal"] = "Icewing Marshal";
 	["Stonehearth Marshal"] = "Stonehearth Marshal";
 	["Prospector Stonehewer"] = "Prospector Stonehewer";
-	["Irondeep Mine"] = "Irondeep Mine";
 	["Morloch"] = "Morloch";
 	["Umi Thorson"] = "Umi Thorson";
 	["Keetar"] = "Keetar";
@@ -91,21 +79,14 @@ AtlasBGLocale = {
 	["Dun Baldar South Bunker"] = "Dun Baldar South Bunker";
 	["Corporal Noreg Stormpike"] = "Corporal Noreg Stormpike";
 	["Gaelden Hammersmith <Stormpike Supply Officer>"] = "Gaelden Hammersmith <Stormpike Supply Officer>";
-	["Stormpike Graveyard"] = "Stormpike Graveyard";
-	["Icewing Cavern"] = "Icewing Cavern";
 	["Stormpike Banner"] = "Stormpike Banner";
 	["Stormpike Lumber Yard"] = "Stormpike Lumber Yard";
 	["Wing Commander Jeztor"] = "Wing Commander Jeztor";--omitted from AVS
-	["Icewing Bunker"] = "Icewing Bunker";
 	["Wing Commander Guse"] = "Wing Commander Guse";--omitted from AVS
-	["Stonehearth Graveyard"] = "Stonehearth Graveyard";
 	["Stormpike Ram Rider Commander"] = "Stormpike Ram Rider Commander";
-	["Stonehearth Outpost"] = "Stonehearth Outpost";
 	["Captain Balinda Stonehearth <Stormpike Captain>"] = "Captain Balinda Stonehearth <Stormpike Captain>";
-	["Snowfall Graveyard"] = "Snowfall Graveyard";
 	["Ichman's Beacon"] = "Ichman's Beacon";
 	["Mulverick's Beacon"] = "Mulverick's Beacon";
-	["Stonehearth Bunker"] = "Stonehearth Bunker";
 	["Ivus the Forest Lord"] = "Ivus the Forest Lord";
 	["Western Crater"] = "Western Crater";
 	["Vipore's Beacon"] = "Vipore's Beacon";
@@ -119,7 +100,6 @@ AtlasBGLocale = {
 
 	--Alterac Valley (South)
 	["Frostwolf Clan"] = "Frostwolf Clan";
-	["Frostwolf Keep"] = "Frostwolf Keep";
 	["Drek'Thar <Frostwolf General>"] = "Drek'Thar <Frostwolf General>";
 	["Duros"] = "Duros";
 	["Drakan"] = "Drakan";
@@ -128,16 +108,12 @@ AtlasBGLocale = {
 	["Tower Point Warmaster"] = "Tower Point Warmaster";
 	["Iceblood Warmaster"] = "Iceblood Warmaster";
 	["Lokholar the Ice Lord"] = "Lokholar the Ice Lord";
-	["Iceblood Garrison"] = "Iceblood Garrison";
 	["Captain Galvangar <Frostwolf Captain>"] = "Captain Galvangar <Frostwolf Captain>";
 	["Iceblood Tower"] = "Iceblood Tower";
-	["Iceblood Graveyard"] = "Iceblood Graveyard";
 	["Tower Point"] = "Tower Point";
-	["Coldtooth Mine"] = "Coldtooth Mine";
 	["Taskmaster Snivvle"] = "Taskmaster Snivvle";
 	["Masha Swiftcut"] = "Masha Swiftcut";
 	["Aggi Rumblestomp"] = "Aggi Rumblestomp";
-	["Frostwolf Graveyard"] = "Frostwolf Graveyard";
 	["Jotek"] = "Jotek";
 	["Smith Regzar"] = "Smith Regzar";
 	["Primalist Thurloga"] = "Primalist Thurloga";
@@ -148,34 +124,28 @@ AtlasBGLocale = {
 	["West Frostwolf Tower"] = "West Frostwolf Tower";
 	["East Frostwolf Tower"] = "East Frostwolf Tower";
 	["Frostwolf Relief Hut"] = "Frostwolf Relief Hut";
-	["Wildpaw Cavern"] = "Wildpaw Cavern";
 	["Frostwolf Banner"] = "Frostwolf Banner";
 
 	--Arathi Basin
 	["The Defilers"] = "The Defilers";
 	["The League of Arathor"] = "The League of Arathor";
-	["Trollbane Hall"] = "Trollbane Hall";
-	["Defiler's Den"] = "Defiler's Den";
-	["Stables"] = "Stables";
-	["Gold Mine"] = "Gold Mine";
-	["Smithy"] = "Smithy";
-	["Lumber Mill"] = "Lumber Mill";
-	["Farm"] = "Farm";
-
-	--Warsong Gulch
-	["Warsong Outriders"] = "Warsong Outriders";
-	["Silverwing Sentinels"] = "Silverwing Sentinels";
-	["Silverwing Hold"] = "Silverwing Hold";
-	["Warsong Lumber Mill"] = "Warsong Lumber Mill";
 
 	--Eye of the Storm
-	["Graveyard"] = "Graveyard";
 	["Flag"] = "Flag";
-	["Mage Tower"] = "Mage Tower";
-	["Draenei Ruins"] = "Draenei Ruins";
-	["Fel Reaver Ruins"] = "Fel Reaver Ruins";
-	["Blood Elf Tower"] = "Blood Elf Tower";
-	
+
+	--Isle of Conquest
+	["The Refinery"] = "The Refinery";
+	["The Docks"] = "The Docks";
+	["The Workshop"] = "The Workshop";
+	["The Hangar"] = "The Hangar";
+	["The Quarry"] = "The Quarry";
+	["Contested Graveyards"] = "Contested Graveyards";
+	["Horde Graveyard"] = "Horde Graveyard";
+	["Alliance Graveyard"] = "Alliance Graveyard";
+	["Gates are marked with red bars."] = "Gates are marked with red bars.";
+	["Overlord Agmar"] = "Overlord Agmar";
+	["High Commander Halford Wyrmbane <7th Legion>"] = "High Commander Halford Wyrmbane <7th Legion>";
+
 	--Strand of the Ancients
 	["Attacking Team"] = "Attacking Team";
 	["Defending Team"] = "Defending Team";
@@ -185,4 +155,56 @@ AtlasBGLocale = {
 	["Graveyard Flag"] = "Graveyard Flag";
 	["Titan Relic"] = "Titan Relic";
 	["Gates are marked with their colors."] = "Gates are marked with their colors.";
+
+	--Warsong Gulch
+	["Warsong Outriders"] = "Warsong Outriders";
+	["Silverwing Sentinels"] = "Silverwing Sentinels";
+
+	-- Hellfire Peninsula PvP 
+	["Hellfire Fortifications"] = "Hellfire Fortifications";
+	
+	-- Zangarmarsh PvP
+	["West Beacon"] = "West Beacon";
+	["East Beacon"] = "East Beacon";
+	["Twinspire Graveyard"] = "Twinspire Graveyard";
+	["Alliance Field Scout"] = "Alliance Field Scout";
+	["Horde Field Scout"] = "Horde Field Scout";
+	
+	-- Terokkar Forest PvP
+	["Auchindoun Spirit Towers"] = "Auchindoun Spirit Towers";
+	
+	-- Halaa
+	["Wyvern Camp"] = "Wyvern Camp";
+	["Quartermaster Jaffrey Noreliqe"] = "Quartermaster Jaffrey Noreliqe";
+	["Quartermaster Davian Vaclav"] = "Quartermaster Davian Vaclav";
+	["Chief Researcher Amereldine"] = "Chief Researcher Amereldine";
+	["Chief Researcher Kartos"] = "Chief Researcher Kartos";
+	["Aldraan <Blade Merchant>"] = "Aldraan <Blade Merchant>";
+	["Banro <Ammunition>"] = "Banro <Ammunition>";
+	["Cendrii <Food & Drink>"] = "Cendrii <Food & Drink>";
+	["Coreiel <Blade Merchant>"] = "Coreiel <Blade Merchant>";
+	["Embelar <Food & Drink>"] = "Embelar <Food & Drink>";
+	["Tasaldan <Ammunition>"] = "Tasaldan <Ammunition>";
+	
+	-- Wintergrasp
+	["Fortress Vihecal Workshop (E)"] = "Fortress Vihecal Workshop (E)";
+	["Fortress Vihecal Workshop (W)"] = "Fortress Vihecal Workshop (W)";
+	["Sunken Ring Vihecal Workshop"] = "Sunken Ring Vihecal Workshop";
+	["Broken Temple Vihecal Workshop"] = "Broken Temple Vihecal Workshop";
+	["Eastspark Vihecale Workshop"] = "Eastspark Vihecale Workshop";
+	["Westspark Vihecale Workshop"] = "Westspark Vihecale Workshop";
+	["Wintergrasp Graveyard"] = "Wintergrasp Graveyard";
+	["Sunken Ring Graveyard"] = "Sunken Ring Graveyard";
+	["Broken Temple Graveyard"] = "Broken Temple Graveyard";
+	["Southeast Graveyard"] = "Southeast Graveyard";
+	["Southwest Graveyard"] = "Southwest Graveyard";
+	
+	-- Eastern Plaguelands - Game of Tower
+	["A Game of Towers"] = "AGame of Towers";
+	
+	-- Silithus - The Silithyst Must Flow
+	["The Silithyst Must Flow"] = "The Silithyst Must Flow";
+	["Alliance's Camp"] = "Alliance's Camp";
+	["Horde's Camp"] = "Horde's Camp";
 };
+

@@ -1,34 +1,33 @@
-local mod = DBM:NewMod("FlameLeviathan", "DBM-Ulduar")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("FlameLeviathan", "DBM-Ulduar")
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1162 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4181 $"):sub(12, -3))
 
 mod:SetCreatureID(33113)
-mod:SetZone()
 
---mod:RegisterCombat("combat")
 mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
-	"SPELL_CAST_SUCCESS",
-	"SPELL_DAMAGE",
 	"SPELL_AURA_REMOVED",
-	"SPELL_AURA_APPLIED",	
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"SPELL_AURA_APPLIED",
+	"SPELL_SUMMON"
 )
 
+local warnHodirsFury		= mod:NewTargetAnnounce(62297)
+local pursueTargetWarn		= mod:NewAnnounce("PursueWarn", 2, 62374)
+local warnNextPursueSoon	= mod:NewAnnounce("warnNextPursueSoon", 3, 62374)
+
+local warnSystemOverload	= mod:NewSpecialWarningSpell(62475)
+local pursueSpecWarn		= mod:NewSpecialWarning("SpecialPursueWarnYou")
+local warnWardofLife		= mod:NewSpecialWarning("warnWardofLife")
 
 local timerSystemOverload	= mod:NewBuffActiveTimer(20, 62475)
 local timerFlameVents		= mod:NewCastTimer(10, 62396)
-local timerPursued		= mod:NewTargetTimer(30, 62374)
-local warnSystemOverload	= mod:NewSpecialWarning("SystemOverload")
+local timerPursued			= mod:NewTargetTimer(30, 62374)
 
-local pursueSpecWarn		= mod:NewSpecialWarning("SpecialPursueWarnYou")
-local pursueTargetWarn		= mod:NewAnnounce("PursueWarn", 2)
-local warnNextPursueSoon	= mod:NewAnnounce("warnNextPursueSoon", 3)
+local sndWOP				= mod:NewSound(nil, "SoundWOP", true)
+--local soundPursued = mod:NewSound(62374)
 
-
---local stats = {}
 local guids = {}
 local function buildGuidTable()
 	table.wipe(guids)
@@ -39,100 +38,41 @@ end
 
 function mod:OnCombatStart(delay)
 	buildGuidTable()
---	table.wipe(stats)
 end
 
+function mod:SPELL_SUMMON(args)
+	if args:IsSpellID(62907) then		-- Ward of Life spawned (Creature id: 34275)
+		warnWardofLife:Show()
+	end
+end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62396 then		-- Flame Vents
+	if args:IsSpellID(62396) then		-- Flame Vents
 		timerFlameVents:Start()
-
-	elseif args.spellId == 62475 then	-- Systems Shutdown / Overload
+		sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\kickcast.mp3")
+	elseif args:IsSpellID(62475) then	-- Systems Shutdown / Overload
 		timerSystemOverload:Start()
 		warnSystemOverload:Show()
 
-	elseif args.spellId == 62374 then	-- Pursued
+	elseif args:IsSpellID(62374) then	-- Pursued
 		local player = guids[args.destGUID]
 		warnNextPursueSoon:Schedule(25)
+		sndWOP:Schedule(25, "Interface\\AddOns\\DBM-Core\\extrasounds\\targetsoon.mp3")
 		timerPursued:Start(player)
 		pursueTargetWarn:Show(player)
-
 		if player == UnitName("player") then
 			pursueSpecWarn:Show()
+			sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\justrun.mp3")
+			--soundPursued:Play()
 		end
+	elseif args:IsSpellID(62297) then		-- Hodir's Fury (Person is frozen)
+		warnHodirsFury:Show(args.destName)
 	end
 
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 62396 then
+	if args:IsSpellID(62396) then
 		timerFlameVents:Stop()
 	end
 end
-
---[[
-function mod:OnCombatEnd()
---	mod:PrintStats()
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local player = guids[args.sourceGUID]
-	if player and args.spellId == 62359 then
-		if not stats[player] then
-			stats[player] = {kills = 0, hits = 0, casts = 0, player = player}
-		end
-		stats[player].casts = stats[player].casts + 1
-	end
-end
-
-function mod:SPELL_DAMAGE(args)
-	local player = guids[args.sourceGUID]
---	print(args.destGUID, self:GetCIDFromGUID(args.destGUID), 33214, args.spellId, player)
-	if player and args.spellId == 62363  and self:GetCIDFromGUID(args.destGUID) == 33214 then
-		if not stats[player] then
-			stats[player] = {kills = 0, hits = 0, casts = 0, player = player}
-		end
-		stats[player].hits = stats[player].hits + 1
-		if args.overkill then
-			stats[player].kills = stats[player].kills + 1
-		end
-	end
-end
-
-local sortedStats = {}
-local function sort(v1, v2)
-	return v1.kills > v2.kills
-end
-
-function mod:PrintStats()
-	local i = 0
-	for _, v in pairs(stats) do
-		sortedStats[#sortedStats + 1] = v
-		i = i + 1
-		if i >= 3 then
-			break
-		end
-	end
-	table.sort(sortedStats, sort)
-	for i, v in ipairs(sortedStats) do
-		SendChatMessage(("%d. %s: %d kills (accuracy: %.2f%%)"):format(i, v.player, v.kills, math.max(math.min(v.casts / v.hits * 100, 100), 0), "RAID")
-	end
-	table.wipe(sortedStats)
-end]]--
-
-
---[[
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
-	local target = emote:match(L.Emote)
-	if target then
-		if target == UnitName("player") then
-			pursueSpecWarn:Show()
-		end
-		pursueTargetWarn:Show(target)
-	end
-end
---]]
-
-
-
-

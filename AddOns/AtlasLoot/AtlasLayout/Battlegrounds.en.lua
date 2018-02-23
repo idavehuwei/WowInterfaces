@@ -1,14 +1,11 @@
 --[[
 Battlegrounds.en.lua
-This series of files defines the loot buttons in the Atlas interface
-for the battleground maps.  There is a need for multiple versions of the
-file due to slight translation differences between Atlas languages.
-
-The English file also contains the loot tables for the battleground loot tables.
+This file defines the loot buttons in the Atlas interface for the battleground maps.
 ]]
 ------------
 -- Layout --
 ------------
+
 AtlasLootBattlegrounds = {
 
     AlteracValleyNorth = {
@@ -74,8 +71,7 @@ AtlasLootBattlegrounds = {
         "";
         "";
         "AVMisc";
-        "AVBlue";
-        "AVPurple";
+        "AVBlue_A";
         };
     
     AlteracValleySouth = {
@@ -124,8 +120,7 @@ AtlasLootBattlegrounds = {
         "";
         "";
         "AVMisc";
-        "AVBlue";
-        "AVPurple";
+        "AVBlue_A";
     };
     
     ArathiBasin = {
@@ -139,16 +134,11 @@ AtlasLootBattlegrounds = {
         "";
         "";
         "";
-        "ABMisc";
-        "AB20291";
-        "AB20292";
-        "AB3039";
-        "AB40491";
-        "AB40492";
-        "AB5059";
-        "AB60";
+        "ABMisc_A";
+        "AB2039_A";
+        "AB4049_A";
         "";
-        "ABSets1";
+        "ABSets1_A";
     };
     
     WarsongGulch = {
@@ -158,11 +148,8 @@ AtlasLootBattlegrounds = {
         "";
         "";
         "WSGMisc";
-        "WSG1019";
-        "WSG2029";
-        "WSG3039";
-        "WSG4049";
-        "WSG5059";
-        "WSG60";
+        "WSGAccessories_A";
+        "WSGWeapons_A";
+        "WSGArmor_A";
     };
 };

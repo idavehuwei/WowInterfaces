@@ -7,7 +7,7 @@
 		</Size>
 		<Scripts>
 			<OnLoad>
-				getglobal(self:GetName().."Highlight"):SetVertexColor(0.11, 0.325, 0.48);
+				_G[self:GetName().."Highlight"]:SetVertexColor(0.11, 0.325, 0.48);
 			</OnLoad>
 			<OnClick>
 				ChatConfigCategory_OnClick(self, button, down);
@@ -58,7 +58,7 @@
 	<Frame name="ChatConfigBoxWithHeaderTemplate" inherits="ChatConfigBoxTemplate" virtual="true">
 		<Layers>
 			<Layer level="BACKGROUND">
-				<FontString name="$parentTitle" inherits="GameFontNormal">
+				<FontString name="$parentTitle" inherits="GameFontNormal" parentKey="header">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
 							<Offset x="0" y="2"/>
@@ -67,6 +67,76 @@
 				</FontString>
 			</Layer>
 		</Layers>
+	</Frame>
+	<Frame name="ChatConfigBoxWithHeaderAndClassColorsTemplate" inherits="ChatConfigBoxWithHeaderTemplate" virtual="true">
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString name="$parentColorHeader" inherits="GameFontNormalSmall" text="COLOR">
+					<Anchors>
+						<Anchor point="BOTTOM" relativePoint="TOPLEFT">
+							<Offset x="191" y="2"/>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentClassColorHeader" inherits="GameFontNormalSmall" text="SHOW_CLASS_COLOR">
+					<Anchors>
+						<Anchor point="BOTTOM" relativePoint="TOPLEFT">
+							<Offset x="275" y="2"/>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+	<FontString name="ClassColorLegendFontStringTemplate" inherits="GameFontNormal" justifyH="LEFT" virtual="true">
+		<Size>
+			<AbsDimension x="100" y="11"/>
+		</Size>
+	</FontString>
+	<Frame name="ClassColorLegendTemplate" inherits="ChatConfigBoxTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="130" y="1"/>
+		</Size>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitle" inherits="GameFontNormal" text="CLASS_COLORS" parentKey="header">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="10" y="-11"/>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString inherits="ClassColorLegendFontStringTemplate" parentKey="firstClass">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
+							<Offset x="10" y="-5"/>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				self:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 0.5);
+				self:SetBackdropColor(0.27, 0.27, 0.27);
+				
+				local fontStringOffset = 2;
+				self.classStrings = {};
+				tinsert(self.classStrings, self.firstClass);
+				for key, value in ipairs(CLASS_SORT_ORDER) do
+					local fontString = self.classStrings[key];
+					if ( not fontString ) then
+						fontString = self:CreateFontString(nil, "ARTWORK", "ClassColorLegendFontStringTemplate");
+						tinsert(self.classStrings, fontString);
+						fontString:SetPoint("TOPLEFT", self.classStrings[key - 1], "BOTTOMLEFT", 0, -fontStringOffset);
+					end
+					local classColor = RAID_CLASS_COLORS[value];
+					fontString:SetFormattedText("|cff%.2x%.2x%.2x%s|r\n", classColor.r*255, classColor.g*255, classColor.b*255, LOCALIZED_CLASS_NAMES_MALE[value]);
+				end
+				
+				self:SetHeight((self.firstClass:GetHeight() + fontStringOffset) * #self.classStrings + self.header:GetHeight() + 31);
+			</OnLoad>
+		</Scripts>
 	</Frame>
 	<CheckButton name="ChatConfigBaseCheckButtonTemplate" virtual="true">
 		<Size>
@@ -84,7 +154,7 @@
 			<OnEnter>
 				if (self.tooltip) then
 					GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-					GameTooltip:SetText(self.tooltip, nil, nil, nil, nil, 1);
+					GameTooltip:SetText(self.tooltip, nil, nil, nil, nil, (self.tooltipStyle or 1));
 				end
 			</OnEnter>
 			<OnLeave>
@@ -103,7 +173,7 @@
 		</Size>
 		<Layers>
 			<Layer level="ARTWORK">
-				<FontString name="$parentText" inherits="GameFontHighlight">
+				<FontString name="$parentText" inherits="GameFontHighlight" justifyH="LEFT">
 					<Anchors>
 						<Anchor point="LEFT" relativePoint="RIGHT">
 							<Offset>
@@ -176,9 +246,9 @@
 					<AbsDimension x="16" y="16"/>
 				</Size>
 				<Anchors>
-					<Anchor point="RIGHT">
+					<Anchor point="LEFT">
 						<Offset>
-							<AbsDimension x="-6" y="0"/>
+							<AbsDimension x="178" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -206,6 +276,28 @@
 				</Scripts>
 				<NormalTexture name="$parentNormalTexture" file="Interface\ChatFrame\ChatFrameColorSwatch"/>
 			</Button>
+		</Frames>
+	</Frame>
+	<Frame name="ChatConfigCheckBoxWithSwatchAndClassColorTemplate" inherits="ChatConfigCheckBoxWithSwatchTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="328" y="25"/>
+		</Size>
+		<Frames>
+			<CheckButton name="$parentColorClasses" inherits="ChatConfigBaseCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="24" y="23"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentColorSwatch" relativePoint="RIGHT">
+						<Offset x="65" y="0"/>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self.func = ColorClassesCheckBox_OnClick;
+					</OnLoad>
+				</Scripts>
+			</CheckButton>
 		</Frames>
 	</Frame>
 	<Frame name="ChatConfigSwatchTemplate" virtual="true">
@@ -356,7 +448,7 @@
 
 	<Frame name="ChatConfigFrame" toplevel="true" parent="UIParent" hidden="true" enableMouse="true">
 		<Size>
-			<AbsDimension x="645" y="540"/>
+			<AbsDimension x="645" y="595"/>
 		</Size>
 		<Anchors>
 			<Anchor point="CENTER"/>
@@ -464,13 +556,11 @@
 							ChatConfigCategoryFrameButton3:SetPoint("TOPLEFT", ChatConfigCategoryFrameButton2, "BOTTOMLEFT", 0, -1);
 							ChatConfigCategoryFrameButton3:SetPoint("TOPRIGHT", ChatConfigCategoryFrameButton2, "BOTTOMRIGHT", 0, -1);
 							ChatConfigCategory_OnClick(ChatConfigCategoryFrameButton2);
-							ChatConfigFrame:SetHeight(595);
 						else
 							ChatConfigCategoryFrameButton2:Hide();
 							ChatConfigCategoryFrameButton3:SetPoint("TOPLEFT", ChatConfigCategoryFrameButton1, "BOTTOMLEFT", 0, -1);
 							ChatConfigCategoryFrameButton3:SetPoint("TOPRIGHT", ChatConfigCategoryFrameButton1, "BOTTOMRIGHT", 0, -1);
 							ChatConfigCategory_OnClick(ChatConfigCategoryFrameButton1);
-							ChatConfigFrame:SetHeight(495);
 						end
 						ChatConfigFrameHeaderText:SetText(format(CHATCONFIG_HEADER, FCF_GetCurrentChatFrame().name));
 						ChatConfigFrameHeader:SetWidth(ChatConfigFrameHeaderText:GetWidth()+200);
@@ -493,7 +583,7 @@
 					<Anchor point="TOPLEFT" relativeTo="ChatConfigBackgroundFrame"/>
 				</Anchors>
 				<Frames>
-					<Frame name="$parentLeft" inherits="ChatConfigBoxWithHeaderTemplate">
+					<Frame name="$parentLeft" inherits="ChatConfigBoxWithHeaderAndClassColorsTemplate">
 						<Size x="10" y="10"/>
 						<Anchors>
 							<Anchor point="TOPLEFT">
@@ -501,19 +591,10 @@
 							</Anchor>
 						</Anchors>
 					</Frame>
-					<Frame name="$parentRight" inherits="ChatConfigBoxTemplate">
-						<Size x="10" y="10"/>
+					<Frame name="$parentClassColorLegend" inherits="ClassColorLegendTemplate">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="TOPRIGHT">
-								<Offset x="50" y="0"/>
-							</Anchor>
-						</Anchors>
-					</Frame>
-					<Frame name="$parentCreatureLeft" inherits="ChatConfigBoxWithHeaderTemplate">
-						<Size x="10" y="10"/>
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="BOTTOMLEFT">
-								<Offset x="0" y="-30"/>
+								<Offset x="5" y="0"/>
 							</Anchor>
 						</Anchors>
 					</Frame>
@@ -521,8 +602,6 @@
 				<Scripts>
 					<OnShow>
 						ChatConfig_UpdateCheckboxes(ChatConfigChatSettingsLeft);
-						ChatConfig_UpdateCheckboxes(ChatConfigChatSettingsRight);
-						ChatConfig_UpdateCheckboxes(ChatConfigChatSettingsCreatureLeft);
 						ChatConfigFrameDefaultButton:Show();
 						CombatLogDefaultButton:Hide();
 					</OnShow>
@@ -534,11 +613,18 @@
 					<Anchor point="TOPLEFT" relativeTo="ChatConfigBackgroundFrame"/>
 				</Anchors>
 				<Frames>
-					<Frame name="$parentLeft" inherits="ChatConfigBoxTemplate">
+					<Frame name="$parentLeft" inherits="ChatConfigBoxWithHeaderAndClassColorsTemplate">
 						<Size x="10" y="10"/>
 						<Anchors>
 							<Anchor point="TOPLEFT">
 								<Offset x="13" y="-25"/>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					<Frame name="$parentClassColorLegend" inherits="ClassColorLegendTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="TOPRIGHT">
+								<Offset x="5" y="0"/>
 							</Anchor>
 						</Anchors>
 					</Frame>
@@ -547,7 +633,7 @@
 					<OnShow>
 						-- Have to build it here since the channel list doesn't exist on load
 						CreateChatChannelList(self, GetChannelList());
-						ChatConfig_CreateCheckboxes(ChatConfigChannelSettingsLeft, CHAT_CONFIG_CHANNEL_LIST, "ChatConfigCheckBoxWithSwatchTemplate");
+						ChatConfig_CreateCheckboxes(ChatConfigChannelSettingsLeft, CHAT_CONFIG_CHANNEL_LIST, "ChatConfigCheckBoxWithSwatchAndClassColorTemplate", CHANNELS);
 						ChatConfig_UpdateCheckboxes(ChatConfigChannelSettingsLeft);
 						ChatConfigFrameDefaultButton:Show();
 						CombatLogDefaultButton:Hide();
@@ -584,12 +670,21 @@
 							</Anchor>
 						</Anchors>
 					</Frame>
+					<Frame name="$parentCreature" inherits="ChatConfigBoxWithHeaderTemplate">
+						<Size x="10" y="10"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentSystem" relativePoint="BOTTOMLEFT">
+								<Offset x="0" y="-25"/>
+							</Anchor>
+						</Anchors>
+					</Frame>
 				</Frames>
 				<Scripts>
 					<OnShow>
 						ChatConfig_UpdateCheckboxes(ChatConfigOtherSettingsCombat);
 						ChatConfig_UpdateCheckboxes(ChatConfigOtherSettingsPVP);
 						ChatConfig_UpdateCheckboxes(ChatConfigOtherSettingsSystem);
+						ChatConfig_UpdateCheckboxes(ChatConfigOtherSettingsCreature);
 						ChatConfigFrameDefaultButton:Show();
 						CombatLogDefaultButton:Hide();
 					</OnShow>
@@ -966,7 +1061,7 @@
 										</Anchors>
 										<Scripts>
 											<OnLoad>
-												getglobal(self:GetName().."Text"):SetText(COMBATLOG_HIGHLIGHT_KILL);
+												_G[self:GetName().."Text"]:SetText(COMBATLOG_HIGHLIGHT_KILL);
 												self.tooltip = HIGHLIGHT_KILL_COMBATLOG_TOOLTIP;
 											</OnLoad>
 											<OnClick>
@@ -992,7 +1087,7 @@
 										</Anchors>
 										<Scripts>
 											<OnLoad>
-												getglobal(self:GetName().."Text"):SetText(COMBATLOG_HIGHLIGHT_ABILITY);
+												_G[self:GetName().."Text"]:SetText(COMBATLOG_HIGHLIGHT_ABILITY);
 												self.tooltip = HIGHLIGHT_ABILITY_COMBATLOG_TOOLTIP;
 											</OnLoad>
 											<OnClick>
@@ -1018,7 +1113,7 @@
 										</Anchors>
 										<Scripts>
 											<OnLoad>
-												getglobal(self:GetName().."Text"):SetText(COMBATLOG_HIGHLIGHT_DAMAGE);
+												_G[self:GetName().."Text"]:SetText(COMBATLOG_HIGHLIGHT_DAMAGE);
 												self.tooltip = HIGHLIGHT_DAMAGE_COMBATLOG_TOOLTIP;
 											</OnLoad>
 											<OnClick>
@@ -1044,7 +1139,7 @@
 										</Anchors>
 										<Scripts>
 											<OnLoad>
-												getglobal(self:GetName().."Text"):SetText(COMBATLOG_HIGHLIGHT_SCHOOL);
+												_G[self:GetName().."Text"]:SetText(COMBATLOG_HIGHLIGHT_SCHOOL);
 												self.tooltip = HIGHLIGHT_SCHOOL_COMBATLOG_TOOLTIP;
 											</OnLoad>
 											<OnClick>
@@ -1114,7 +1209,7 @@
 												</Anchors>
 												<Scripts>
 													<OnLoad>
-														getglobal(self:GetName().."Text"):SetText(UNIT_NAMES);
+														_G[self:GetName().."Text"]:SetText(UNIT_NAMES);
 														self.tooltip = UNIT_NAMES_COMBATLOG_TOOLTIP;
 													</OnLoad>
 													<OnClick>
@@ -1169,7 +1264,7 @@
 												</Anchors>
 												<Scripts>
 													<OnLoad>
-														getglobal(self:GetName().."Text"):SetText(SPELL_NAMES);
+														_G[self:GetName().."Text"]:SetText(SPELL_NAMES);
 														self.tooltip = SPELL_NAMES_COMBATLOG_TOOLTIP;
 													</OnLoad>
 													<OnClick>
@@ -1192,7 +1287,7 @@
 												</Anchors>
 												<Scripts>
 													<OnLoad>
-														getglobal(self:GetName().."Text"):SetText(COLOR_BY_SCHOOL);
+														_G[self:GetName().."Text"]:SetText(COLOR_BY_SCHOOL);
 														self.tooltip = SPELL_COLOR_BY_SCHOOL_COMBATLOG_TOOLTIP;
 													</OnLoad>
 													<OnClick>
@@ -1276,7 +1371,7 @@
 												</Anchors>
 												<Scripts>
 													<OnLoad>
-														getglobal(self:GetName().."Text"):SetText(DAMAGE_NUMBER);
+														_G[self:GetName().."Text"]:SetText(DAMAGE_NUMBER);
 														self.tooltip = SPELL_DAMAGE_NUMBER_COMBATLOG_TOOLTIP;
 													</OnLoad>
 													<OnClick>
@@ -1299,7 +1394,7 @@
 												</Anchors>
 												<Scripts>
 													<OnLoad>
-														getglobal(self:GetName().."Text"):SetText(COLOR_BY_SCHOOL);
+														_G[self:GetName().."Text"]:SetText(COLOR_BY_SCHOOL);
 														self.tooltip = SPELL_COLOR_BY_SCHOOL_COMBATLOG_TOOLTIP;
 													</OnLoad>
 													<OnClick>
@@ -1383,7 +1478,7 @@
 												</Anchors>
 												<Scripts>
 													<OnLoad>
-														getglobal(self:GetName().."Text"):SetText(DAMAGE_SCHOOL_TEXT);
+														_G[self:GetName().."Text"]:SetText(DAMAGE_SCHOOL_TEXT);
 														self.tooltip = SPELL_DAMAGE_SCHOOL_COMBATLOG_TOOLTIP;
 													</OnLoad>
 													<OnClick>
@@ -1434,7 +1529,7 @@
 												</Anchors>
 												<Scripts>
 													<OnLoad>
-														getglobal(self:GetName().."Text"):SetText(ENTIRE_LINE);
+														_G[self:GetName().."Text"]:SetText(ENTIRE_LINE);
 														self.tooltip = ENTIRE_LINE_COMBATLOG_TOOLTIP;
 													</OnLoad>
 													<OnClick>
@@ -1457,7 +1552,7 @@
 												</Anchors>
 												<Scripts>
 													<OnLoad>
-														getglobal(self:GetName().."Text"):SetText(BY_SOURCE);
+														_G[self:GetName().."Text"]:SetText(BY_SOURCE);
 														self.tooltip = BY_SOURCE_COMBATLOG_TOOLTIP;
 													</OnLoad>
 													<OnClick>
@@ -1476,7 +1571,7 @@
 												</Anchors>
 												<Scripts>
 													<OnLoad>
-														getglobal(self:GetName().."Text"):SetText(BY_TARGET);
+														_G[self:GetName().."Text"]:SetText(BY_TARGET);
 														self.tooltip = BY_TARGET_COMBATLOG_TOOLTIP;
 													</OnLoad>
 													<OnClick>
@@ -1553,7 +1648,7 @@
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-										getglobal(self:GetName().."Text"):SetText(SHOW_TIMESTAMP);
+										_G[self:GetName().."Text"]:SetText(SHOW_TIMESTAMP);
 										self.tooltip = TIMESTAMP_COMBATLOG_TOOLTIP;
 									</OnLoad>
 									<OnClick>
@@ -1579,7 +1674,7 @@
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-										getglobal(self:GetName().."Text"):SetText(SHOW_BRACES);
+										_G[self:GetName().."Text"]:SetText(SHOW_BRACES);
 										self.tooltip = SHOW_BRACES_COMBATLOG_TOOLTIP;
 									</OnLoad>
 									<OnClick>
@@ -1602,7 +1697,7 @@
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-										getglobal(self:GetName().."Text"):SetText(UNIT_NAMES);
+										_G[self:GetName().."Text"]:SetText(UNIT_NAMES);
 										self.tooltip = UNIT_NAMES_SHOW_BRACES_COMBATLOG_TOOLTIP;
 									</OnLoad>
 									<OnClick>
@@ -1629,7 +1724,7 @@
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-										getglobal(self:GetName().."Text"):SetText(SPELL_NAMES);
+										_G[self:GetName().."Text"]:SetText(SPELL_NAMES);
 										self.tooltip = SPELL_NAMES_SHOW_BRACES_COMBATLOG_TOOLTIP;
 									</OnLoad>
 									<OnClick>
@@ -1652,7 +1747,7 @@
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-										getglobal(self:GetName().."Text"):SetText(ITEM_NAMES);
+										_G[self:GetName().."Text"]:SetText(ITEM_NAMES);
 										self.tooltip = ITEM_NAMES_SHOW_BRACES_COMBATLOG_TOOLTIP;
 									</OnLoad>
 									<OnClick>
@@ -1675,7 +1770,7 @@
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-										getglobal(self:GetName().."Text"):SetText(USE_FULL_TEXT_MODE);
+										_G[self:GetName().."Text"]:SetText(USE_FULL_TEXT_MODE);
 										self.tooltip = FULL_TEXT_COMBATLOG_TOOLTIP;
 									</OnLoad>
 									<OnClick>
@@ -1762,7 +1857,7 @@
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-										getglobal(self:GetName().."Text"):SetText(SHOW_QUICK_BUTTON);
+										_G[self:GetName().."Text"]:SetText(SHOW_QUICK_BUTTON);
 										self.tooltip = QUICK_BUTTON_COMBATLOG_TOOLTIP;
 									</OnLoad>
 									<OnClick>
@@ -1786,7 +1881,7 @@
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-										getglobal(self:GetName().."Text"):SetText(SOLO);
+										_G[self:GetName().."Text"]:SetText(SOLO);
 									</OnLoad>
 									<OnClick>
 										local checked = self:GetChecked()
@@ -1808,7 +1903,7 @@
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-										getglobal(self:GetName().."Text"):SetText(PARTY);
+										_G[self:GetName().."Text"]:SetText(PARTY);
 									</OnLoad>
 									<OnClick>
 										local checked = self:GetChecked()
@@ -1830,7 +1925,7 @@
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-										getglobal(self:GetName().."Text"):SetText(RAID);
+										_G[self:GetName().."Text"]:SetText(RAID);
 									</OnLoad>
 									<OnClick>
 										local checked = self:GetChecked()

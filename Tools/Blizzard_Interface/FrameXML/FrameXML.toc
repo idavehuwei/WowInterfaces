@@ -1,5 +1,6 @@
 # Do not delete the following line!
-## Interface: 30100
+## Interface: 30300
+##DebugHook.lua
 GlobalStrings.lua
 Constants.lua
 Fonts.xml
@@ -10,6 +11,7 @@ Localization.xml
 BasicControls.xml
 WorldFrame.xml
 UIParent.xml
+AnimTimerFrame.xml
 MoneyFrame.lua
 MoneyFrame.xml
 MoneyInputFrame.lua
@@ -30,6 +32,7 @@ CharacterFrameTemplates.xml
 TextStatusBar.lua
 TextStatusBar.xml
 UIErrorsFrame.xml
+AutoComplete.xml
 StaticPopup.xml
 Sound.lua
 OptionsFrameTemplates.xml
@@ -38,8 +41,8 @@ VideoOptionsFrame.xml
 VideoOptionsPanels.xml
 AudioOptionsFrame.xml
 AudioOptionsPanels.xml
-UIOptionsFrame.xml
-UIOptionsPanels.xml
+InterfaceOptionsFrame.xml
+InterfaceOptionsPanels.xml
 AlertFrames.xml
 MirrorTimer.xml
 CoinPickupFrame.xml
@@ -49,6 +52,7 @@ ZoneText.xml
 BattlefieldFrame.xml
 MainMenuBar.xml
 MainMenuBarMicroButtons.xml
+TutorialFrame.xml
 Minimap.xml
 GameTime.xml
 Cooldown.xml
@@ -61,6 +65,9 @@ CombatFeedback.xml
 CastingBarFrame.xml
 UnitPopup.xml
 UnitFrame.xml
+BNet.xml
+HistoryKeeper.lua
+BNConversations.xml
 ChatFrame.xml
 FloatingChatFrame.xml
 VoiceChat.xml
@@ -68,7 +75,6 @@ ReadyCheck.xml
 PlayerFrame.xml
 PartyFrame.xml
 TargetFrame.xml
-FocusFrame.xml
 TotemFrame.xml
 PetFrame.xml
 StatsFrame.xml
@@ -81,8 +87,10 @@ SkillFrame.xml
 ReputationFrame.xml
 HonorFrame.xml
 QuestFrame.xml
+QuestPOI.xml
 WatchFrame.xml
 QuestLogFrame.xml
+QuestInfo.xml
 MerchantFrame.xml
 TradeFrame.xml
 ContainerFrame.xml
@@ -94,6 +102,7 @@ FriendsFrame.xml
 RaidFrame.xml
 ChannelFrame.xml
 PetActionBarFrame.xml
+MultiCastActionBarFrame.xml
 BonusActionBarFrame.xml
 MainMenuBarBagButtons.xml
 WorldMapFrame.xml
@@ -101,7 +110,6 @@ CinematicFrame.xml
 ItemRef.xml
 ComboFrame.xml
 TabardFrame.xml
-TutorialFrame.xml
 GuildRegistrarFrame.xml
 PetitionFrame.xml
 HelpFrame.xml
@@ -120,6 +128,8 @@ PVPBattlegroundFrame.xml
 ArenaFrame.xml
 ArenaRegistrarFrame.xml
 LFGFrame.xml
+LFDFrame.xml
+LFRFrame.xml
 MovieRecordingProgress.xml
 MacOptionsFrame.xml
 RatingMenuFrame.xml
@@ -130,6 +140,7 @@ EasyMenu.lua
 ChatConfigFrame.xml
 MovieFrame.xml
 VehicleMenuBar.xml
+AlternatePowerBar.xml
 AnimationSystem.lua
 
 ## add new modules above here

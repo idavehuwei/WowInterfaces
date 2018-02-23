@@ -4,7 +4,11 @@ local FontFile
 local SM = LibStub:GetLibrary("LibSharedMedia-3.0")
 
 --First thing first need to add fonts
-SM:Register("font", "ABF",		[[Interface\AddOns\Recount\Fonts\ABF.ttf]])
+--SM:Register("font", "Vera",		[[Interface\AddOns\Recount\Fonts\Vera.ttf]])
+-- removed ABF.ttf by request from Curse (Arrowmaster)
+-- tried DejaVu, crashes client if resized too big
+-- tried Bitstream Vera, crashes client if resized too big
+-- Hence reverting to Arial Narrow as default font, sorry.
 
 function Recount:AddFontString(string)
 	local Font, Height, Flags

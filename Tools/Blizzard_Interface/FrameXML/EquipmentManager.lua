@@ -265,8 +265,8 @@ function EquipmentManager_GetItemInfoByLocation (location)
 	if ( not player and not bank and not bags ) then -- Invalid location
 		return;
 	end
-		
-	local id, name, textureName, count, durability, maxDurability, invType, locked, start, duration, enable, setTooltip, gem1, gem2, gem3;
+
+	local id, name, textureName, count, durability, maxDurability, invType, locked, start, duration, enable, setTooltip, gem1, gem2, gem3, _;
 	if ( not bags ) then -- and (player or bank) 
 		id = GetInventoryItemID("player", slot);
 		name, _, _, _, _, _, _, _, invType, textureName = GetItemInfo(id);
@@ -294,7 +294,7 @@ function EquipmentManager_GetItemInfoByLocation (location)
 end
 
 function EquipmentManager_EquipSet (name)
-	if ( EquipmentSetContainsLockedItems(name) or UnitOnTaxi("player") or UnitCastingInfo("player") ) then
+	if ( EquipmentSetContainsLockedItems(name) or UnitCastingInfo("player") ) then
 		UIErrorsFrame:AddMessage(ERR_CLIENT_LOCKED_OUT, 1.0, 0.1, 0.1, 1.0);
 		return;
 	end

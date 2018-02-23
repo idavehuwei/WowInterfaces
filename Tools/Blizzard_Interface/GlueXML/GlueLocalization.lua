@@ -4,12 +4,12 @@ end
 
 function LocalizeFrames()
 	-- Put all locale specific UI adjustments here
-	AccountLoginLogo:SetTexture("Interface\\Glues\\Common\\Glues-WoW-ChineseBCLogo");
-	CharacterCreateLogo:SetTexture("Interface\\Glues\\Common\\Glues-WoW-ChineseBCLogo");
-	CharacterSelectLogo:SetTexture("Interface\\Glues\\Common\\Glues-WoW-ChineseBCLogo");
-	CreditsLogo:SetTexture("Interface\\Glues\\Common\\Glues-WoW-ChineseBCLogo");
-	PatchDownloadLogo:SetTexture("Interface\\Glues\\Common\\Glues-WoW-ChineseBCLogo");
-	RealmWizardLogo:SetTexture("Interface\\Glues\\Common\\Glues-WoW-ChineseBCLogo");
+	AccountLoginLogo:SetTexture("Interface\\Glues\\Common\\Glues-WoW-ChineseWotLKLogo");
+	CharacterCreateLogo:SetTexture("Interface\\Glues\\Common\\Glues-WoW-ChineseWotLKLogo");
+	CharacterSelectLogo:SetTexture("Interface\\Glues\\Common\\Glues-WoW-ChineseWotLKLogo");
+	CreditsLogo:SetTexture("Interface\\Glues\\Common\\Glues-WoW-ChineseWotLKLogo");
+	PatchDownloadLogo:SetTexture("Interface\\Glues\\Common\\Glues-WoW-ChineseWotLKLogo");
+	RealmWizardLogo:SetTexture("Interface\\Glues\\Common\\Glues-WoW-ChineseWotLKLogo");
 	
 	CharacterSelectCharacterFrame:SetHeight(650);
 	CharacterCreateNameEdit:SetMaxLetters(12);

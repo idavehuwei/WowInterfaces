@@ -1,13 +1,15 @@
---{{{ Libraries
+--[[--------------------------------------------------------------------
+	GridStatusHealth.lua
+	GridStatus module for tracking unit health.
+----------------------------------------------------------------------]]
 
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local _, ns = ...
+local L = ns.L
 
---}}}
+local GridRoster = Grid:GetModule("GridRoster")
 
-GridStatusHealth = GridStatus:NewModule("GridStatusHealth")
+local GridStatusHealth = Grid:GetModule("GridStatus"):NewModule("GridStatusHealth")
 GridStatusHealth.menuName = L["Health"]
-
---{{{ AceDB defaults
 
 GridStatusHealth.defaultDB = {
 	debug = false,
@@ -60,10 +62,6 @@ GridStatusHealth.defaultDB = {
 	},
 }
 
---}}}
-
---{{{ AceOptions table
-
 GridStatusHealth.extraOptions = {
 	["deadAsFullHealth"] = {
 		type = "toggle",
@@ -71,16 +69,14 @@ GridStatusHealth.extraOptions = {
 		desc = L["Treat dead units as being full health."],
 		order = 101,
 		get = function ()
-			      return GridStatusHealth.db.profile.unit_health.deadAsFullHealth
-		      end,
+				return GridStatusHealth.db.profile.unit_health.deadAsFullHealth
+			end,
 		set = function (v)
-			      GridStatusHealth.db.profile.unit_health.deadAsFullHealth = v
-			      GridStatusHealth:UpdateAllUnits()
-		      end,
+				GridStatusHealth.db.profile.unit_health.deadAsFullHealth = v
+				GridStatusHealth:UpdateAllUnits()
+			end,
 	},
 }
-
---}}}
 
 local healthOptions = {
 	["enable"] = false, -- you can't disable this
@@ -89,12 +85,12 @@ local healthOptions = {
 		name = L["Use class color"],
 		desc = L["Color health based on class."],
 		get = function ()
-			      return GridStatusHealth.db.profile.unit_health.useClassColors
-		      end,
+				return GridStatusHealth.db.profile.unit_health.useClassColors
+			end,
 		set = function (v)
-			      GridStatusHealth.db.profile.unit_health.useClassColors = v
-			      GridStatusHealth:UpdateAllUnits()
-		      end,
+				GridStatusHealth.db.profile.unit_health.useClassColors = v
+				GridStatusHealth:UpdateAllUnits()
+			end,
 	},
 }
 
@@ -107,24 +103,24 @@ local healthDeficitOptions = {
 		min = 0,
 		step = 1,
 		get = function ()
-			      return GridStatusHealth.db.profile.unit_healthDeficit.threshold
-		      end,
+				return GridStatusHealth.db.profile.unit_healthDeficit.threshold
+			end,
 		set = function (v)
-			      GridStatusHealth.db.profile.unit_healthDeficit.threshold = v
-			      GridStatusHealth:UpdateAllUnits()
-		      end,
+				GridStatusHealth.db.profile.unit_healthDeficit.threshold = v
+				GridStatusHealth:UpdateAllUnits()
+			end,
 	},
 	["useClassColors"] = {
 		type = "toggle",
 		name = L["Use class color"],
 		desc = L["Color deficit based on class."],
 		get = function ()
-			      return GridStatusHealth.db.profile.unit_healthDeficit.useClassColors
-		      end,
+				return GridStatusHealth.db.profile.unit_healthDeficit.useClassColors
+			end,
 		set = function (v)
-			      GridStatusHealth.db.profile.unit_healthDeficit.useClassColors = v
-			      GridStatusHealth:UpdateAllUnits()
-		      end,
+				GridStatusHealth.db.profile.unit_healthDeficit.useClassColors = v
+				GridStatusHealth:UpdateAllUnits()
+			end,
 	},
 }
 
@@ -137,12 +133,12 @@ local low_healthOptions = {
 		min = 0,
 		step = 1,
 		get = function ()
-			      return GridStatusHealth.db.profile.alert_lowHealth.threshold
-		      end,
+				return GridStatusHealth.db.profile.alert_lowHealth.threshold
+			end,
 		set = function (v)
-			      GridStatusHealth.db.profile.alert_lowHealth.threshold = v
-			      GridStatusHealth:UpdateAllUnits()
-		      end,
+				GridStatusHealth.db.profile.alert_lowHealth.threshold = v
+				GridStatusHealth:UpdateAllUnits()
+			end,
 	},
 }
 
@@ -164,6 +160,8 @@ function GridStatusHealth:OnEnable()
 	self:RegisterEvent("UNIT_HEALTH", "UpdateUnit")
 	self:RegisterEvent("UNIT_MAXHEALTH", "UpdateUnit")
 	self:RegisterEvent("UNIT_AURA", "UpdateUnit")
+
+	self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateUnit")
 
 	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateAllUnits")
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateAllUnits")
@@ -199,23 +197,24 @@ function GridStatusHealth:Grid_UnitJoined(guid, unitid)
 end
 
 function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
-	local cur, max = UnitHealth(unitid), UnitHealthMax(unitid)
-
 	local guid = UnitGUID(unitid)
-	local settings = self.db.profile.unit_health
-	local deficitSettings = self.db.profile.unit_healthDeficit
-	local healthText
-	local priority = settings.priority
 
 	if not GridRoster:IsGUIDInRaid(guid) then
 		return
 	end
 
+	local cur, max = UnitHealth(unitid), UnitHealthMax(unitid)
+
+	local healthSettings = self.db.profile.unit_health
+	local deficitSettings = self.db.profile.unit_healthDeficit
+	local healthPriority = healthSettings.priority
+	local deficitPriority = deficitSettings.priority
+
 	if UnitIsDeadOrGhost(unitid) then
 		self:StatusDeath(guid, true)
 		self:StatusFeignDeath(guid, false)
 		self:StatusLowHealth(guid, false)
-		if settings.deadAsFullHealth then
+		if healthSettings.deadAsFullHealth then
 			cur = max
 		end
 	else
@@ -226,47 +225,46 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 
 	self:StatusOffline(guid, not UnitIsConnected(unitid))
 
+	local healthText
+	local deficitText
+
 	if cur < max then
-		healthText = self:FormatHealthText(cur,max)
+		if cur > 999 then
+			healthText = string.format("%.1fk", cur / 1000)
+		else
+			healthText = string.format("%d", cur)
+		end
+
+		local deficit = max - cur
+		if deficit > 999 then
+			deficitText = string.format("-%.1fk", deficit / 1000)
+		else
+			deficitText = string.format("-%d", deficit)
+		end
 	else
-		priority = 1
+		healthPriority = 1
+		deficitPriority = 1
 	end
 
 	if (cur / max * 100) <= deficitSettings.threshold then
 		self.core:SendStatusGained(guid, "unit_healthDeficit",
-					    deficitSettings.priority,
-					    (deficitSettings.range and 40),
-					    (deficitSettings.useClassColors and 
-						 self.core:UnitColor(guid) or
-					     deficitSettings.color),
-					    healthText,
-					    cur, max,
-					    deficitSettings.icon)
+			deficitPriority,
+			(deficitSettings.range and 40),
+			(deficitSettings.useClassColors and self.core:UnitColor(guid) or deficitSettings.color),
+			deficitText,
+			cur, max,
+			deficitSettings.icon)
 	else
 		self.core:SendStatusLost(guid, "unit_healthDeficit")
 	end
 
 	self.core:SendStatusGained(guid, "unit_health",
-				    priority,
-				    (ignoreRange ~= true and settings.range and 40),
-				    (settings.useClassColors and 
-					 self.core:UnitColor(guid) or
-				     settings.color),
-					healthText,
-					cur, max,
-					settings.icon)
-end
-
-function GridStatusHealth:FormatHealthText(cur, max)
-	local healthText
-	local deficit = max - cur
-	if deficit > 999 then
-		healthText = string.format("-%.1fk", deficit/1000.0)
-	else
-		healthText = string.format("-%d", deficit)
-	end
-
-	return healthText
+		healthPriority,
+		(not ignoreRange and healthSettings.range and 40),
+		(healthSettings.useClassColors and self.core:UnitColor(guid) or healthSettings.color),
+		healthText,
+		cur, max,
+		healthSettings.icon)
 end
 
 function GridStatusHealth:IsLowHealth(cur, max)
@@ -281,13 +279,13 @@ function GridStatusHealth:StatusLowHealth(guid, gained)
 
 	if gained then
 		self.core:SendStatusGained(guid, "alert_lowHealth",
-					    settings.priority,
-					    (settings.range and 40),
-					    settings.color,
-					    settings.text,
-					    nil,
-					    nil,
-					    settings.icon)
+			settings.priority,
+			(settings.range and 40),
+			settings.color,
+			settings.text,
+			nil,
+			nil,
+			settings.icon)
 	else
 		self.core:SendStatusLost(guid, "alert_lowHealth")
 	end
@@ -295,7 +293,7 @@ end
 
 function GridStatusHealth:StatusDeath(guid, gained)
 	local settings = self.db.profile.alert_death
-	
+
 	if not guid then return end
 
 	-- return if this option isnt enabled
@@ -305,13 +303,13 @@ function GridStatusHealth:StatusDeath(guid, gained)
 		-- trigger death event for other modules as wow isnt firing a death event
 		self:TriggerEvent("Grid_UnitDeath", guid)
 		self.core:SendStatusGained(guid, "alert_death",
-					    settings.priority,
-					    (settings.range and 40),
-					    settings.color,
-					    settings.text,
-					    (self.db.profile.unit_health.deadAsFullHealth and 100 or 0),
-					    100,
-					    settings.icon)
+			settings.priority,
+			(settings.range and 40),
+			settings.color,
+			settings.text,
+			(self.db.profile.unit_health.deadAsFullHealth and 100 or 0),
+			100,
+			settings.icon)
 	else
 		self.core:SendStatusLost(guid, "alert_death")
 	end
@@ -319,7 +317,7 @@ end
 
 function GridStatusHealth:StatusFeignDeath(guid, gained)
 	local settings = self.db.profile.alert_feignDeath
-	
+
 	if not name then return end
 
 	-- return if this option isnt enabled
@@ -327,13 +325,13 @@ function GridStatusHealth:StatusFeignDeath(guid, gained)
 
 	if gained then
 		self.core:SendStatusGained(guid, "alert_feignDeath",
-					    settings.priority,
-					    (settings.range and 40),
-					    settings.color,
-					    settings.text,
-					    (self.db.profile.unit_health.deadAsFullHealth and 100 or 0),
-					    100,
-					    settings.icon)
+			settings.priority,
+			(settings.range and 40),
+			settings.color,
+			settings.text,
+			(self.db.profile.unit_health.deadAsFullHealth and 100 or 0),
+			100,
+			settings.icon)
 	else
 		self.core:SendStatusLost(guid, "alert_feignDeath")
 	end
@@ -348,13 +346,13 @@ function GridStatusHealth:StatusOffline(guid, gained)
 		-- trigger offline event for other modules
 		self:TriggerEvent("Grid_UnitOffline", guid)
 		self.core:SendStatusGained(guid, "alert_offline",
-					    settings.priority,
-					    (settings.range and 40),
-					    settings.color,
-					    settings.text,
-					    nil,
-					    nil,
-					    settings.icon)
+			settings.priority,
+			(settings.range and 40),
+			settings.color,
+			settings.text,
+			nil,
+			nil,
+			settings.icon)
 	else
 		self.core:SendStatusLost(guid, "alert_offline")
 	end

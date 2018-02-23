@@ -11,6 +11,8 @@ L.LDBTOOLTIP2				= "右键点击切换小地图按钮"
 
 L.INFO_SAVED				= "活动已保存。"
 
+L.INFO_SAVED				= "活动已保存。"
+
 L.GREETING_INFO				="MiDKP：%s，由178游戏网（www.178.com）制作，请使用/md召唤面板"
 L.MINI_BUTTON_TITLE			= "MiDKP"
 L.MINI_BUTTON_TEXT			= "点击切换打开关闭MiDKP面板"
@@ -219,10 +221,10 @@ L.OPTION_BTN_INC_OFFLINE 	= "包含状态为断线的成员"
 L.OPTION_BTN_FROM_HISTORY 	= "从历史分内扣除物品分"
 
 
-L.OPTION_PAGE_ITEM_LVL1		= '|c'..select(4,GetItemQualityColor(2)).."优秀|r"
-L.OPTION_PAGE_ITEM_LVL2		= '|c'..select(4,GetItemQualityColor(3)).."精良|r"
-L.OPTION_PAGE_ITEM_LVL3		= '|c'..select(4,GetItemQualityColor(4)).."史诗|r"
-L.OPTION_PAGE_ITEM_LVL4		= '|c'..select(4,GetItemQualityColor(5)).."传奇|r"
+L.OPTION_PAGE_ITEM_LVL1		= select(4,GetItemQualityColor(2)).."优秀|r"
+L.OPTION_PAGE_ITEM_LVL2		= select(4,GetItemQualityColor(3)).."精良|r"
+L.OPTION_PAGE_ITEM_LVL3		= select(4,GetItemQualityColor(4)).."史诗|r"
+L.OPTION_PAGE_ITEM_LVL4		= select(4,GetItemQualityColor(5)).."传奇|r"
 
 L.OPTION_PAGE_EVENT_ACTION1 = "不产生动作"
 L.OPTION_PAGE_EVENT_ACTION2 = "仅显示提示"

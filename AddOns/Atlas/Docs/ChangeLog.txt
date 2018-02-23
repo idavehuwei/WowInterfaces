@@ -1,6 +1,86 @@
+Atlas, a World of Warcraft instance map browser
+Copyright 2005-2010 Dan Gilbert <dan.b.gilbert@gmail.com>
+Copyright 2010 Atlas Team (http://atlasmod.com/)
+
 ==============
 = Change Log =
 ==============
+
+v1.17.0
+- improved auto-selection feature for foreign languages (Dynaletik, arith, Lothaer)
+- introduced LibBabble-Zone and LibBabble-SubZone to Atlas (arith, Dynaletik)
+- new map: Hellfire Citadel dungeon entrace map (arith)
+- new maps: Halaa PvP, Hellfire Peninsula PvP, Zangarmarsh PvP, 
+            Terokkar Forest PvP, Wintergrasp PvP, Game of Tower, Silithyst Must Flow (arith)
+- cleaned up and tweaked some code
+- translation update for several languages
+  - German: Dynaletik
+  - French: dokcharlie
+  - Russian: StingerSoft
+  - Traditional Chinese: s8095324, arith
+  - Simplified Chinese: arith
+- rewrote the readme file for Traditional Chinese (arith)
+- added Lunar Elders locations in Northrend maps (Deadca7, Dynaletik)
+- several maps refine (Deadca7)
+
+v1.16.1
+- new map: Ruby Sanctum
+- fixed and added some ICC entries
+- minor fixes
+
+v1.16.0
+- new map: Icecrown Citadel, in three parts (Deadca7)
+- new map: The Frozen Halls: The Forge of Souls (Deadca7)
+- new map: The Frozen Halls: Pit of Saron (Deadca7)
+- new map: The Frozen Halls: Halls of Reflection (Deadca7)
+- added Toravon to VoA and updated the map (Deadca7)
+- added new instances to the dungeon locations map (Dynaletik)
+- added the new flight paths (Dienur, Dynaletik, Jeehell)
+- added event boss to SFK (Dynaletik)
+- removed Onyxia attunement (Dynaletik)
+- fixed wave 6 to wave 5 in Culling of Stratholme (Dynaletik)
+- fixed many flight path routes (Dynaletik, Jeehell)
+- fixed some map categorization issues
+- rewrote and simplified the readme file
+- removed the world map coordinates feature
+
+v1.15.2
+- updated TOC number to 30300 for the 3.3 patch
+- fix for zhTW (Traditional Chinese) translation (s8095324)
+
+v1.15.1
+- fix for deDE (German) translation
+- updated version check for some Atlas addons
+- settings will now be preserved between some updates
+
+v1.15.0
+- new map: Crusaders' Coliseum: Trial of the Champion (Deadca7)
+- new map: Crusaders' Coliseum: Trial of the Crusader (Deadca7)
+- new map: Isle of Conquest (Deadca7, Celellach)
+- added Koralon the Flame Watcher to VoA (Deadca7)
+- added Dark Ranger Marrah to Utgarde Keep (thandrenn)
+- added Prospector Doren and Archivum Console to Ulduar (thandrenn)
+- added flight path from The Dark Portal to Shattrath (Celellach)
+- added trans routes (portals) from capitals to Dark Portal (Celellach)
+- added exit to The Botanica (Celellach)
+- added VoA to dungeon location map (Celellach)
+- added brackets to battleground level ranges (Celellach)
+- removed Highlord Kruul map entirely (nonameform)
+- removed Maraudon key since it's no longer needed (Hegarol)
+- fixed some level range groups (Celellach)
+- fixed some mob positions in Wailing Caverns (arith)
+- tagged Ahune with Midsummer Festival (Celellach)
+- changed Lunar tag to Lunar Festival (Celellach)
+- updated Onyxia's Lair player and level data (Bolino)
+- current deDE (German) translation (Nihlo)
+- current esES (Spanish) translation (maqjav)
+- current frFR (French) translation (TrAsHeR)
+- current ruRU (Russian) translation (StingerSoft)
+- current zhCN (Simplified Chinese) translation (arith)
+- current zhTW (Traditional Chinese) translation (arith)
+
+v1.14.2
+- updated TOC number to 30200 for the 3.2 patch
 
 v1.14.1
 - fixed some locations in Blackwing Lair (Celellach)
@@ -875,12 +955,12 @@ v0.8
 - Escape no longer closes frame, use hotkey instead
 - updated myAddOns support
 
-v0.7:
+v0.7
 - new maps: Razorfen Kraul, Razorfen Downs and Molten Core (thanks Conquest/Sudo)
 - added punch card locs to Gnomeregan map
 - added missing credit to SM map
 
-v0.6:
+v0.6
 - new maps: Gnomeregan and Zul'farrak
 - removed loaded message (spam) upon entering the world
 - added level information to all maps
@@ -893,17 +973,17 @@ v0.5
 - added myAddOns support
 - added Cosmos support
 
-v0.4:
+v0.4
 - new map: Scarlet Monastery
 - pressing escape now closes frame
 - fixed version numbering
 
-v0.3:
+v0.3
 - new maps: Maraudon and Uldaman
 - added hotkey binding to toggle frame
 
-v0.2:
+v0.2
 - unreleased
 
-v0.1:
+v0.1
 - unreleased

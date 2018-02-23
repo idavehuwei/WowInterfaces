@@ -1,51 +1,46 @@
-if (GetLocale() == "zhCN") then
-    BF_DKP_TITLE = { "DKP工具", "dkp" };
-    BF_RECORD_TEXT = "开启DKP记录(|cff808080CT_RaidTracker|r)";
-    BF_QUERY_TEXT = "开启DKP查询(|cff808080MerDKP|r)";
-    BF_RECORD_DISABLE_DELAY_TEXT = "|cff00c0c0<CT_RaidTracker>|r 你已经关闭DKP记录(CT_RaidTracker)模块，该设置将在下次插件载入时生效。";
-    BF_QUERY_DISABLE_DELAY_TEXT = "|cff00c0c0<MerDKP>|r 你已经关闭查询记录(MerDKP)模块，该设置将在下次插件载入时生效。";
+local ADDON_TITLE
+if GetLocale()=='zhCN' then
+	ADDON_TITLE = "团队记录"
+	GDKP_ADDON_TITLE = "使用大脚金团助手"
+elseif GetLocale()=='zhTW' then
+	ADDON_TITLE = "团队記錄"
+	GDKP_ADDON_TITLE = "使用大腳金團助手"
+else
+	ADDON_TITLE = "Raid Records"
+	GDKP_ADDON_TITLE = "Use GDKP"
+end
 
-    if (IsConfigurableAddOn("CT_RaidTracker") or IsConfigurableAddOn("MerDKP")) then
-        ModManagement_RegisterMod("DKP",
-            "Interface\\Icons\\Spell_Holy_GreaterBlessingofSalvation",
-            BF_DKP_TITLE);
-    end
+if not IsConfigurableAddOn("GDKP") and not IsConfigurableAddOn("MiDKP") then return end
 
-    if (IsConfigurableAddOn("CT_RaidTracker")) then
-        ModManagement_RegisterCheckBox("DKP",
-            BF_RECORD_TEXT,
-            nil,
-            "EnableRecord",
-            0,
-            function(arg)
-                if (arg == 1) then
-                    if (not BigFoot_IsAddOnLoaded("CT_RaidTracker")) then
-                        BigFoot_LoadAddOn("CT_RaidTracker");
-                    end
-                else
-                    if (BigFoot_IsAddOnLoadedFromBigFoot("CT_RaidTracker")) then
-                        BigFoot_RequestReloadUI(function() BigFoot_Print(BF_RECORD_DISABLE_DELAY_TEXT); end);
-                    end
-                end
-            end);
-    end
+ModManagement_RegisterMod(
+	"MiDKP",
+	"Interface\\Icons\\INV_Misc_Toy_05",
+	{ADDON_TITLE,"tuanduiDKP",2},
+	"",
+	nil,
+	nil,
+	{[4]=true},
+	true,
+	"243"
+);
 
-    if (IsConfigurableAddOn("MerDKP")) then
-        ModManagement_RegisterCheckBox("DKP",
-            BF_QUERY_TEXT,
-            nil,
-            "EnableQuery",
-            0,
-            function(arg)
-                if (arg == 1) then
-                    if (not BigFoot_IsAddOnLoaded("MerDKP")) then
-                        BigFoot_LoadAddOn("MerDKP");
-                    end
-                else
-                    if (BigFoot_IsAddOnLoadedFromBigFoot("MerDKP")) then
-                        BigFoot_RequestReloadUI(function() BigFoot_Print(BF_QUERY_DISABLE_DELAY_TEXT); end);
-                    end
-                end
-            end);
-    end
+if IsConfigurableAddOn("GDKP") then
+	ModManagement_RegisterCheckBox(
+		"MiDKP",
+		GDKP_ADDON_TITLE,
+		nil,
+		"GDKPEnable",
+		0,
+		function (arg)
+			if arg == 1 then
+				if  not IsAddOnLoaded("GDKP") then
+					LoadAddOn("GDKP")
+				end
+				GDKP:Enable()
+			else
+				GDKP:Disable()
+			end
+		end
+		
+	);
 end

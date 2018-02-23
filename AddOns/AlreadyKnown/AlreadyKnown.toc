@@ -1,4 +1,4 @@
-## Interface: 30100
+## Interface: 30300
 ## X-BigfootType: 1
 ## X-BigfootDesc: AlreadyKnown已学图纸配方着色插件，可以着色商人和拍卖行内你已经学会的配方、图纸，已学图纸配方默认着色为绿色。
 ## Title: AlreadyKnown
@@ -6,7 +6,6 @@
 ## Notes: Colorizes items that you already know in default merchant and auction frames.
 ## Notes-zhCN: 可以着色商人和拍卖行内你已经学会的配方、图纸，已学图纸配方默认着色为绿色。
 ## Author: villiv
-## Dependencies: !!Corelibs
 
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Merchant: true

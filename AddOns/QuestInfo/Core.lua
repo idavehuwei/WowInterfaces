@@ -16,7 +16,7 @@ local defaults = {
 		cartoButton = true,
 		showQuestTag = true,
 		wideQuestLog = true,
-		autoUpdate = true,
+		autoUpdate = false,
 		trackedOnly = false,
 		showAllAvail = false,
 		availQuestTitle = false,
@@ -25,7 +25,7 @@ local defaults = {
 -------------------------------------------------------------------
 
 function CQI:OnInitialize()
-	self.db = LibStub("AceDB-3.0"):New("DuowanAddon_Cartographer_QuestInfoDB", defaults, UnitName("player").." - "..GetRealmName());
+	self.db = LibStub("AceDB-3.0"):New("Cartographer_QuestInfoDB", defaults, UnitName("player").." - "..GetRealmName());
 	CN = CQI:GetModule("Notes");
 	local options = {
 		--[[
@@ -136,7 +136,7 @@ function CQI:OnInitialize()
 		args = options,
 		handler = self,
 	}
-
+	
 	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(L["Quest Info"], QuestInfo);
 	self:PurgeHostileQuests();
 	self:PatchQuixote2();
@@ -148,10 +148,58 @@ function CQI_Option()
 	end
 end
 
+function CQI:OnSizeDown()
+--	self.optionsButton:Hide() 
+	_G["CQI_MapButton1"]:Hide()
+	_G["CQI_MapButton2"]:Hide()
+	_G["CQI_MapButton3"]:Hide()
+	_G["CQI_MapButton4"]:Hide()
+	_G["WorldMapTrackQuest"]:Hide()
+end
+
+function CQI:OnSizeUp()
+--	self.optionsButton:Show() 
+	_G["CQI_MapButton1"]:Show()
+	_G["CQI_MapButton2"]:Show()
+	_G["CQI_MapButton3"]:Show()
+	_G["CQI_MapButton4"]:Show()
+	_G["WorldMapTrackQuest"]:Show()
+end
+
+function CQI:SetupMapButton()
+--	self.optionsButton = CreateFrame("Button", "CQIToggleButton", WorldMapFrame, "UIPanelButtonTemplate")
+--	self.optionsButton:SetWidth(120)
+--	self.optionsButton:SetHeight(22)
+--	self.optionsButton:SetText(L["DisableQuestInfo"])
+--	self.optionsButton:ClearAllPoints()
+--	self.optionsButton:SetPoint("TOPRIGHT", WorldMapFrame, "TOPRIGHT", -28, -38)
+
+--	self.optionsButton:SetScript("OnClick",function()
+		
+--	end)
+	local mapster = LibStub("AceAddon-3.0"):GetAddon("Mapster",true)
+	if mapster then
+		self:Hook(mapster,"SizeUp",function() CQI:OnSizeUp() end)
+		self:Hook(mapster,"SizeDown",function()  CQI:OnSizeDown() end)
+	end
+	WorldMapFrame:HookScript("OnShow",function()
+		if WorldMapZoomOutButton:IsShown() then
+			--size down
+			CQI:OnSizeUp()
+		else
+			CQI:OnSizeDown()		
+		end
+	end)
+	
+	self:SecureHook("WorldMap_ToggleSizeDown", function() CQI:OnSizeDown() end)
+	self:SecureHook("WorldMap_ToggleSizeUp", function() CQI:OnSizeUp() end)
+
+
+end
+
 function CQI:OnEnable()
 	self:EnableCartoMap()
 	self:PatchQuestLog()
-	-- self:EnableWatchButton()
 	self:RegisterEvent("QUEST_QUERY_COMPLETE");
 
 	Quixote.RegisterCallback(self, "Quest_Gained", "AutoUpdateQuest")
@@ -159,15 +207,16 @@ function CQI:OnEnable()
 	Quixote.RegisterCallback(self, "Quest_Complete", "AutoUpdateQuest")
 	Quixote.RegisterCallback(self, "Quest_Failed", "AutoUpdateQuest")
 	Quixote.RegisterCallback(self, "Quest_Lost", "AutoUpdateQuest")
-	Quixote.RegisterCallback(self, "Objective_Update", "AutoUpdateQuestObjective")
+	Quixote.RegisterCallback(self, "Objective_Update", "AutoUpdateQuestObjective")	
+	QuestInfo_TogglePOIStyle(self.db.profile.showMapNotes)
 
+	self:SetupMapButton()
 	self:AutoUpdateQuest()
 	self:ScanQuestsCompleted()
 end
 
 function CQI:OnDisable()
 	self:DisableCartoMap()
-	-- self:DisableWatchButton()
 	self:UnregisterEvent("QUEST_QUERY_COMPLETE");
 	Quixote.UnregisterAll(self)
 end
@@ -233,10 +282,10 @@ end
 function CQI:ScanQuestsCompleted()
 	if (QueryQuestsCompleted) then
 		QueryQuestsCompleted();
-	end
+	end	
 end
 
-function CQI:QUEST_QUERY_COMPLETE()
+function CQI:QUEST_QUERY_COMPLETE()	
 	local tmp = GetQuestsCompleted();
 	for uid, v in pairs(tmp) do
 		if (not QuestInfoPerDB.quest[uid]) then
@@ -263,7 +312,7 @@ function CQI:PeekQuest(uid)
 	uid = tostring(uid);
 	local data = QuestInfo_Quest[uid]
 	if not data then return end
-
+	
 	local _, _, side, level_req, level, start_npc, end_npc, sharable, daily =
 		data.i:find("^(.)`(%d+)`(%d+)`([^`]+)`([^`]+)`(%d)`(%d)$")
 	if (not start_npc or not end_npc) then
@@ -304,7 +353,7 @@ function CQI:GetNPC(id, zone_filter)
 	out.level_min = level_min ~= "0" and tonumber(level_min)
 	out.level_max = level_max ~= "0" and tonumber(level_max)
 	out.classify = tonumber(classify)
-
+	
 	for zone, pos in loc:gmatch("|(%d+):([^|]*)") do
 		zone = tonumber(zone)
 		local zone_name = QuestInfo_Zone[zone]
@@ -441,19 +490,19 @@ end
 
 function CQI:PurgeHostileQuests()
 	local hostile = (UnitFactionGroup("player") == "Alliance") and "H" or "A"
-
+	
 	for uid, data in pairs(QuestInfo_Quest) do
 		if data.i:sub(1, 1) == hostile then
 			QuestInfo_Quest[uid] = nil
 		end
 	end
-
+	
 	for id, data in pairs(QuestInfo_NPC) do
 		if data:sub(1, 1) == hostile then
 			QuestInfo_NPC[id] = nil
 			QuestInfo_Name[id] = nil
 		end
-	end
+	end	
 end
 
 -------------------------------------------------------------------
@@ -465,7 +514,7 @@ function CQI:PatchQuixote2()
 		Quixote.shorttags[DAILY] = "y"
 		Quixote.shorttags[L["GROUP"]] = "g"
 	end
-
+	
 	-- disable SendAddonMessage spam
 	local f = Quixote.SendAddonMessage
 	Quixote.SendAddonMessage = function(self, contents, distribution, target, priority)
@@ -475,10 +524,10 @@ function CQI:PatchQuixote2()
 		-- don't send message in arena or battleground
 		local _, instanceType = IsInInstance()
 		if instanceType == "arena" or instanceType == "pvp" then return end
-
+				
 		f(self, contents, distribution, target, priority)
 	end
-
+	
 	-- add checking for Quixote frame OnEvent
 	if Quixote.frame then
 		Quixote.frame:SetScript("OnEvent", function(this, event, ...)
@@ -515,12 +564,14 @@ function CQI_MapButton_OnLeave(self)
 end
 
 function CQI_MapButton_OnClick(self)
-	local id = self:GetID();
+	CQI.trackMode = nil;
 
+	local id = self:GetID();
+	
 	if (id == 1) then
 		CQI:ShowAvialableQuests();
 	elseif (id == 2) then
-		CQI:ShowActiveQuests();
+		CQI:ShowActiveQuests();		
 	elseif (id == 3) then
 		CQI:ShowActiveQuests(true);
 	elseif (id == 4) then

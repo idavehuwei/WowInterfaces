@@ -181,7 +181,7 @@ function RaidGroupFrame_OnEvent(self, event, ...)
 		RaidClassButton_Update();
 	elseif ( event == "PLAYER_ENTERING_WORLD" ) then
 		RaidFrameReadyCheckButton_Update();
-		RaidFrameAddMemberButton_Update();
+		RaidFrameRaidBrowserButton_Update();
 		RaidPullout_RenewFrames();
 	elseif ( event == "VARIABLES_LOADED" ) then
 		RaidFrame.showRange = GetCVarBool("showRaidRange");
@@ -248,7 +248,7 @@ function RaidGroupFrame_Update()
 	end
 
 	RaidFrameReadyCheckButton_Update();
-	RaidFrameAddMemberButton_Update();
+	RaidFrameRaidBrowserButton_Update();
 	if ( RaidFrameReadyCheckButton:IsShown() ) then
 		RaidFrameRaidInfoButton:SetPoint("LEFT", "RaidFrameReadyCheckButton", "RIGHT", 2, 0);
 	end
@@ -570,7 +570,7 @@ function RaidGroupFrame_OnUpdate(elapsed)
 		for i=1, NUM_RAID_GROUPS do
 			for j=1, MEMBERS_PER_RAID_GROUP do
 				slot = _G["RaidGroup"..i.."Slot"..j];
-				if ( MouseIsOver(slot) ) then
+				if ( slot:IsMouseOver() ) then
 					slot:LockHighlight();
 					TARGET_RAID_SLOT = slot;
 				else
@@ -1332,7 +1332,7 @@ function RaidPulloutDropDown_Initialize()
 		-- Display the option to mute voice chat.	
 		for i=1, currentPullout.numPulloutButtons do
 			local button = _G[currentPullout:GetName().."Button"..i];
-			if ( MouseIsOver(button) ) then
+			if ( button:IsMouseOver() ) then
 				unit = (button.secondaryUnit or button.unit);
 				break;
 			end
@@ -1507,15 +1507,10 @@ function RaidFrameReadyCheckButton_Update()
 	end
 end
 
-function RaidFrameAddMemberButton_Update()
+function RaidFrameRaidBrowserButton_Update()
 	if ( GetNumRaidMembers() > 0 ) then
-		RaidFrameAddMemberButton:Show();
-		if ( IsRaidLeader() or IsRaidOfficer() ) then
-			RaidFrameAddMemberButton:Enable();
-		else
-			RaidFrameAddMemberButton:Disable();
-		end
+		RaidFrameRaidBrowserButton:Show();
 	else	
-		RaidFrameAddMemberButton:Hide();
+		RaidFrameRaidBrowserButton:Hide();
 	end
 end

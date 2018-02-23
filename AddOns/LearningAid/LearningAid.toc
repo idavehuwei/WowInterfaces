@@ -1,4 +1,4 @@
-## Interface: 30100
+## Interface: 30300
 ## Title: Learning Aid v1.07.2
 ## Title-zhCN: [辅助] 新增法术助手 LearningAid
 ## Notes: Displays a bar of spells, abilities, tradeskills, mounts or mini-pets you've just learned.  By Jamash (Kil'jaeden-US)
@@ -9,7 +9,6 @@
 ## Version: 1.07.2
 ## X-Embeds: Ace3
 ## X-Category: Interface Enhancements
-## Dependencies: !!Corelibs
 
 LearningAid.xml
 LearningAid.lua

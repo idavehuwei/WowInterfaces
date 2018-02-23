@@ -2,18 +2,18 @@ local L = LibStub("AceLocale-3.0"):NewLocale("OneBag3", "esMX")
 
 if L then 
     --@non-debug@
-    -- L["Backpack"] = ""
--- L["First Bag"] = ""
--- L["Fourth Bag"] = ""
--- L["Second Bag"] = ""
--- L["Specific Bag Filters"] = ""
--- L["%s's Bags"] = ""
--- L["Third Bag"] = ""
--- L["Toggles the display of your Backpack."] = ""
--- L["Toggles the display of your First Bag."] = ""
--- L["Toggles the display of your Fourth Bag."] = ""
--- L["Toggles the display of your Second Bag."] = ""
--- L["Toggles the display of your Third Bag."] = ""
+    L["Backpack"] = "Mochila"
+L["First Bag"] = "Primera Bolsa"
+L["Fourth Bag"] = "Cuarta Bolsa"
+L["Second Bag"] = "Segunda Bolsa"
+L["Specific Bag Filters"] = "Filtrado de bolsas específicas"
+L["%s's Bags"] = "%s's Bolsas"
+L["Third Bag"] = "Tercera Bolsa"
+L["Toggles the display of your Backpack."] = "Muestra/Oculta la Mochila"
+L["Toggles the display of your First Bag."] = "Muestra/Oculta la Primera Bolsa"
+L["Toggles the display of your Fourth Bag."] = "Muestra/Oculta la Cuarta Bolsa"
+L["Toggles the display of your Second Bag."] = "Muestra/Oculta la Segunda Bolsa"
+L["Toggles the display of your Third Bag."] = "Muestra/Oculta la Tercera Bolsa"
 
     --@end-non-debug@
 end

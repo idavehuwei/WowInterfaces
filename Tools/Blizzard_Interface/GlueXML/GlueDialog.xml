@@ -65,14 +65,14 @@
 								</Anchor>
 							</Anchors>
 						</FontString>
-						<Texture name="GlueDialogAlertIcon" file="Interface\DialogFrame\DialogAlertIcon" hidden="true">
+						<Texture name="GlueDialogAlertIcon" file="Interface\DialogFrame\UI-Dialog-Icon-AlertNew" hidden="true">
 							<Size>
-								<AbsDimension x="64" y="64"/>
+								<AbsDimension x="48" y="48"/>
 							</Size>
 							<Anchors>
 								<Anchor point="LEFT">
 									<Offset>
-										<AbsDimension x="12" y="0"/>
+										<AbsDimension x="24" y="0"/>
 									</Offset>
 								</Anchor>
 							</Anchors>
@@ -100,9 +100,9 @@
 						<FontStringHeader1 inherits="GlueFontNormalLarge" spacing="4"/>
 						<FontStringHeader2 inherits="GlueFontHighlight" spacing="4"/>
 					</SimpleHTML>
-					<Button name="GlueDialogButton1" inherits="GlueDialogButtonTemplate" id="1" jumpNavigateStart="true"/>
-					<Button name="GlueDialogButton2" inherits="GlueDialogButtonTemplate" id="2" jumpNavigateStart="true"/>
-					<Button name="GlueDialogButton3" inherits="GlueDialogButtonTemplate" id="3" jumpNavigateStart="true"/>
+					<Button name="GlueDialogButton1" inherits="GlueDialogButtonTemplate" id="1"/>
+					<Button name="GlueDialogButton2" inherits="GlueDialogButtonTemplate" id="2"/>
+					<Button name="GlueDialogButton3" inherits="GlueDialogButtonTemplate" id="3"/>
 				</Frames>
 			</Frame>
 			<EditBox name="$parentEditBox" historyLines="1" hidden="true">

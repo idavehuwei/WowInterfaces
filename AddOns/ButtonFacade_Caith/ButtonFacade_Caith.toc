@@ -1,0 +1,27 @@
+## Interface: 30300
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 ButtonFacade 主模块|r  为ButtonFacade Caith皮肤。。
+## Title: ButtonFacade: |cffff8000Caith|r
+## Version: 3.3.60
+## Notes: Caith skin for ButtonFacade.
+## Notes-deDE: Caith Skins für ButtonFacade.
+## Notes-esMX: Caith texturas para ButtonFacade.
+## Notes-esES: Caith texturas para ButtonFacade.
+## Notes-frFR: Skin Caith pour ButtonFacade.
+## Notes-koKR: ButtonFacade에 대한 Caith 스킨.
+## Notes-ruRU: Caith Шкурки для ButtonFacade.
+## Notes-zhCN: 为ButtonFacade Caith皮肤。
+## Notes-zhTW: Caith皮膚的ButtonFacade。
+## Author: StormFX
+## X-eMail: stormfx@gmail.com
+## X-Website: http://www.wowace.com/projects/buttonfacade_caith
+## X-Category: Interface Enhancements
+## X-Credits: Zeal, Caith
+## X-WoWI-ID: 8869
+## Dependencies: ButtonFacade
+## X-Curse-Packaged-Version: r60
+## X-Curse-Project-Name: ButtonFacade: Caith
+## X-Curse-Project-ID: buttonfacade_caith
+## X-Curse-Repository-ID: wow/buttonfacade_caith/mainline
+
+Skins.lua

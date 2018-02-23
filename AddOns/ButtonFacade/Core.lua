@@ -1,111 +1,75 @@
 --[[
 	Project.: ButtonFacade
 	File....: Core.lua
-	Version.: 255
-	Author..: JJ Sheets, StormFX
+	Version.: 303
+	Author..: StormFX, JJ Sheets
 ]]
+
+-- Get the private table.
+local AddOn, ns = ...
 
 -- [ Set Up ] --
 
-ButtonFacade = LibStub("AceAddon-3.0"):NewAddon("ButtonFacade", "AceConsole-3.0")
-local BF = ButtonFacade
-
--- Locals
-local mdb, db
-local pairs, gsub, format = pairs, gsub, format
-
--- [ Libraries ] --
-
 local LBF = LibStub("LibButtonFacade")
-local L = LibStub("AceLocale-3.0"):GetLocale("ButtonFacade")
-local ACD = LibStub("AceConfigDialog-3.0")
+if not LBF then return end
+local BF = LibStub("AceAddon-3.0"):NewAddon(AddOn, "AceConsole-3.0")
+
+-- [ Locals ] --
+
+local L = ns.L
+local pairs, gsub, format = pairs, gsub, format
 
 -- [ Core Methods ] --
 
--- :OnInitialize(): Initialize the add-on.
+-- Initialize the add-on.
 function BF:OnInitialize()
-	-- Reset the DB if it's old.
-	if (not ButtonFacadeDB) or (ButtonFacadeDB.version ~= 10) then
-		ButtonFacadeDB = {}
-		ButtonFacadeDB.version = 10
-	end
-
-	-- Set up the profile defaults.
 	local defaults = {
 		profile = {
 			SkinID = "Caith",
 			Gloss = false,
 			Backdrop = false,
 			Colors = {},
-			modules = {
-				["*"] = false,
-			}
 		},
 	}
-
-	-- Set up the DB.
-	mdb = LibStub("AceDB-3.0"):New("ButtonFacadeDB", nil, true) -- Set aside for module creation.
-	self.db = mdb
-	self.db:RegisterDefaults(defaults)
+	self.db = LibStub("AceDB-3.0"):New("ButtonFacadeDB", nil, true)
 	self.db.RegisterCallback(self, "OnProfileChanged", "Refresh")
 	self.db.RegisterCallback(self, "OnProfileCopied", "Refresh")
 	self.db.RegisterCallback(self, "OnProfileReset", "Refresh")
 	self.options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
-	self.options.args.profiles.order = 10
-	db = self.db.profile
-
-	-- Load enabled modules.
-	for name, module in self:IterateModules() do
-		module:SetEnabledState(self.db.profile.modules[name])
-	end
+	self.options.args.profiles.order = 100
 end
 
--- :OnEnable():
+-- Enable function.
 function BF:OnEnable()
 	-- Set up the global skin
-	LBF:RegisterSkinCallback("ButtonFacade", self.SkinCallback, self)
+	LBF:RegisterSkinCallback(AddOn, self.SkinCallback, self)
 	LBF:Group():Skin(self.db.profile.SkinID, self.db.profile.Gloss, self.db.profile.Backdrop, self.db.profile.Colors)
 
 	-- Update the elements.
-	LBF:ElementListCallback(self.ElementListUpdate, self)
+	LBF:RegisterGuiCallback(self.ElementListUpdate, self)
 
 	-- Set up options.
-	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("ButtonFacade", self.options)
-
-	-- Set up options panels.
+	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(AddOn, self.options)
+	local ACD = LibStub("AceConfigDialog-3.0")
 	self.OptionsPanel = ACD:AddToBlizOptions(self.name, self.name, nil, "global")
 	self.OptionsPanel.Addons = ACD:AddToBlizOptions(self.name, L["Addons"], self.name, "addons")
-	self.OptionsPanel.Modules = ACD:AddToBlizOptions(self.name, L["Modules"], self.name, "modules")
 	self.OptionsPanel.Profiles = ACD:AddToBlizOptions(self.name, L["Profiles"], self.name, "profiles")
-	self.OptionsPanel.About = ACD:AddToBlizOptions(self.name, L["About"], self.name, "general")
-
-	-- Register chat commands.
 	self:RegisterChatCommand("bf", function() self:OpenOptions() end)
 	self:RegisterChatCommand("buttonfacade", function() self:OpenOptions() end)
 end
 
--- :OpenOptions(): Opens the options window.
+-- Opens the options window.
 function BF:OpenOptions()
-	InterfaceOptionsFrame_OpenToCategory(self.OptionsPanel.About)
+	InterfaceOptionsFrame_OpenToCategory(self.OptionsPanel.Profiles)
 	InterfaceOptionsFrame_OpenToCategory(self.OptionsPanel)
 end
 
--- :Reload(): Reloads settings on profile activity.
+-- Reloads settings on profile activity.
 function BF:Refresh()
-	LBF:Group():SkinGroup(self.db.profile.SkinID, self.db.profile.Gloss, self.db.profile.Backdrop, self.db.profile.Colors)
-	for name, module in self:IterateModules() do
-		if type(module.Refresh) == "function" then
-			module:Refresh()
-		end
-		if self.db.profile.modules[name] then
-			module:Enable()
-		else
-			module:Disable()
-		end
-	end
+	LBF:Group():SetSkin(self.db.profile.SkinID, self.db.profile.Gloss, self.db.profile.Backdrop, self.db.profile.Colors)
 end
 
--- :SkinCallBack(): Callback function to store settings.
+-- Callback function to store settings.
 function BF:SkinCallback(SkinID, Gloss, Backdrop, Group, Button, Colors)
 	if not Group then
 		self.db.profile.SkinID = SkinID
@@ -115,119 +79,34 @@ function BF:SkinCallback(SkinID, Gloss, Backdrop, Group, Button, Colors)
 	end
 end
 
--- [ Module Functions ] --
+-- [ Core GUI Options ] --
 
--- :ToggleModule(): Toggles a module.
-function BF:ToggleModule(name, enabled)
-	self.db.profile.modules[name] = enabled or false
-	if enabled then
-		BF:EnableModule(name)
-	else
-		BF:DisableModule(name)
-	end
-end
-
--- :RemoveModuleOptions(): Removes a module's skinning option group.
-function BF:RemoveModuleOptions(module)
-	if self.options.args.addons.args[module] then
-		self.options.args.addons.args[module] = nil
-	end
-end
-
--- [ Core GUI Options ]] --
+BF.options = {
+	type = "group",
+	name = AddOn,
+	args = {
+		global = {},
+		addons = {
+			type = "group",
+			name = L["Addons"],
+			order = 2,
+			args = {
+				desc = {
+					type = "description",
+					name = L["ADDON_INFO"].."\n",
+					order = 1
+				},
+			},
+		},
+	},
+}
 
 do
-	-- Core Options
-	BF.options = {
-		type = "group",
-		name = BF.name,
-		args = {
-			global = {},
-			addons = {
-				type = "group",
-				name = L["Addons"],
-				order = 2,
-				args = {
-					desc = {
-						type = "description",
-						name = L["ADDON_INFO"].."\n",
-						order = 1
-					},
-				},
-			},
-			modules = {
-				type = "group",
-				name = L["Modules"],
-				order = 3,
-				args = {
-					desc = {
-						type = "description",
-						name = L["MOD_INFO"].."\n",
-					},
-				},
-			},
-			general = {
-				type = "group",
-				name = L["About"],
-				order = 10,
-				args = {
-					desc = {
-						type = "description",
-						name = L["BF_INFO"].."\n",
-						order = 1,
-					},
-					vers = {
-						type = "description",
-						name = "|cffffcc00"..L["Version"]..":|r "..GetAddOnMetadata(BF.name, "Version"),
-						order = 2,
-					},
-					auth = {
-						type = "description",
-						name = "|cffffcc00"..L["Authors"]..":|r |cff999999JJ Sheets|r, StormFX",
-						order = 3,
-					},
-					url = {
-						type = "description",
-						name = "|cffffcc00"..L["Web Site"]..":|r "..GetAddOnMetadata(BF.name, "X-WebSite").."\n",
-						order = 4,
-					},
-					fb_head = {
-						type = "description",
-						name = "|cffffcc00"..L["Feedback"].."|r",
-						order = 5,
-					},
-					fb_text = {
-						type = "description",
-						name = L["FB_TEXT"].."\n",
-						order = 6,
-					},
-					trans_head = {
-						type = "description",
-						name = "|cffffcc00"..L["Translations"].."|r",
-						order = 7,
-					},
-					trans_text = {
-						type = "description",
-						name = L["TRANS_TEXT"].."\n\n",
-						order = 8,
-					},
-				},
-			},
-		}
-	}
-end
-
-BF:SetDefaultModulePrototype({
-	RegisterNamespace = function(self, name, defaults)
-		return mdb:RegisterNamespace(name, defaults)
-	end,
-	RegisterModuleOptions = function(self, name, options)
-		BF.options.args.modules.args = BF.options.args.modules.args or {}
-		BF.options.args.modules.args[name] = options
-	end,
-})
-
-do
+	local function getState(info)
+		local LBFGroup, layer = info.arg[1], info.arg[2]
+		local list = LBF:GetSkins()
+		return list[LBFGroup.SkinID][layer].Hide
+	end
 	local function getSkin(info)
 		return info.arg.SkinID
 	end
@@ -236,17 +115,17 @@ do
 		LBFGroup:Skin(value, LBFGroup.Gloss, LBFGroup.Backdrop)
 	end
 	local function getGloss(info)
-		return info.arg.Gloss or 0
+		return info.arg[1].Gloss or 0
 	end
 	local function setGloss(info, value)
-		local LBFGroup = info.arg
+		local LBFGroup = info.arg[1]
 		LBFGroup:Skin(LBFGroup.SkinID, value, LBFGroup.Backdrop)
 	end
 	local function getBackdrop(info)
-		return info.arg.Backdrop
+		return info.arg[1].Backdrop
 	end
 	local function setBackdrop(info, value)
-		local LBFGroup = info.arg
+		local LBFGroup = info.arg[1]
 		LBFGroup:Skin(LBFGroup.SkinID, LBFGroup.Gloss, value and true or false)
 	end
 	local function getLayerColor(info)
@@ -262,7 +141,7 @@ do
 	end
 	local args
 	do
-		local LBFGroup = LBF:Group() -- get the root group, since this is easier...
+		local LBFGroup = LBF:Group()
 		BF.options.args.global = {
 			type = "group",
 			name = L["Global Settings"],
@@ -291,12 +170,13 @@ do
 					desc = L["Set the intensity of the gloss."],
 					get = getGloss,
 					set = setGloss,
-					arg = LBFGroup,
+					arg = {LBFGroup, "Gloss"},
 					min = 0,
 					max = 1,
 					step = 0.01,
 					width = "full",
 					isPercent = true,
+					disabled = getState,
 					order = 3,
 				},
 				__bf_backdrop = {
@@ -305,8 +185,9 @@ do
 					desc = L["Toggle the backdrop."],
 					get = getBackdrop,
 					set = setBackdrop,
-					arg = LBFGroup,
+					arg = {LBFGroup, "Backdrop"},
 					width = "half",
+					disabled = getState,
 					order = 4,
 				},
 				__bf_ColorHeading = {
@@ -322,6 +203,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Backdrop"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 6,
 				},
 				__bf_ColorFlash = {
@@ -332,6 +214,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Flash"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 7,
 				},
 				__bf_ColorNormal = {
@@ -342,6 +225,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Normal"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 8,
 				},
 				__bf_ColorPushed = {
@@ -352,6 +236,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Pushed"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 9,
 				},
 				__bf_ColorDisabled = {
@@ -362,6 +247,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Disabled"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 10,
 				},
 				__bf_ColorChecked = {
@@ -372,6 +258,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Checked"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 11,
 				},
 				__bf_ColorBorder = {
@@ -382,6 +269,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Border"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 12,
 				},
 				__bf_ColorHighlight = {
@@ -392,6 +280,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Highlight"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 13,
 				},
 				__bf_ColorGloss = {
@@ -401,6 +290,7 @@ do
 					get = getLayerColor,
 					set = setLayerColor,
 					arg = {LBFGroup,"Gloss"},
+					disabled = getState,
 					order = 14,
 				},
 				__bf_ResetColors = {
@@ -444,12 +334,13 @@ do
 					desc = L["Set the intensity of the gloss."],
 					get = getGloss,
 					set = setGloss,
-					arg = LBFGroup,
+					arg = {LBFGroup, "Gloss"},
 					min = 0,
 					max = 1,
 					step = 0.01,
 					width = "full",
 					isPercent = true,
+					disabled = getState,
 					order = 3,
 				},
 				__bf_backdrop = {
@@ -458,8 +349,9 @@ do
 					desc = L["Toggle the backdrop."],
 					get = getBackdrop,
 					set = setBackdrop,
-					arg = LBFGroup,
+					arg = {LBFGroup, "Backdrop"},
 					width = "half",
+					disabled = getState,
 					order = 4,
 				},
 				__bf_ColorHeading = {
@@ -475,6 +367,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Backdrop"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 6,
 				},
 				__bf_ColorFlash = {
@@ -485,6 +378,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Flash"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 7,
 				},
 				__bf_ColorNormal = {
@@ -495,6 +389,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Normal"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 8,
 				},
 				__bf_ColorPushed = {
@@ -505,6 +400,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Pushed"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 9,
 				},
 				__bf_ColorDisabled = {
@@ -515,6 +411,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Disabled"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 10,
 				},
 				__bf_ColorChecked = {
@@ -525,6 +422,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Checked"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 11,
 				},
 				__bf_ColorBorder = {
@@ -535,6 +433,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Border"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 12,
 				},
 				__bf_ColorHighlight = {
@@ -545,6 +444,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Highlight"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 13,
 				},
 				__bf_ColorGloss = {
@@ -554,6 +454,7 @@ do
 					get = getLayerColor,
 					set = setLayerColor,
 					arg = {LBFGroup, "Gloss"},
+					disabled = getState,
 					order = 14,
 				},
 				__bf_ResetColors = {
@@ -596,12 +497,13 @@ do
 					desc = L["Set the intensity of the gloss."],
 					get = getGloss,
 					set = setGloss,
-					arg = LBFGroup,
+					arg = {LBFGroup, "Gloss"},
 					min = 0,
 					max = 1,
 					step = 0.01,
 					width = "full",
 					isPercent = true,
+					disabled = getState,
 					order = 3,
 				},
 				__bf_backdrop = {
@@ -610,8 +512,9 @@ do
 					desc = L["Toggle the backdrop."],
 					get = getBackdrop,
 					set = setBackdrop,
-					arg = LBFGroup,
+					arg = {LBFGroup, "Backdrop"},
 					width = "half",
+					disabled = getState,
 					order = 4,
 				},
 				__bf_ColorHeading = {
@@ -627,6 +530,7 @@ do
 					set = setLayerColor,
 					hasAlpha = true,
 					arg = {LBFGroup, "Backdrop"},
+					disabled = getState,
 					order = 6,
 				},
 				__bf_ColorFlash = {
@@ -637,6 +541,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Flash"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 7,
 				},
 				__bf_ColorNormal = {
@@ -647,6 +552,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Normal"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 8,
 				},
 				__bf_ColorPushed = {
@@ -657,6 +563,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Pushed"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 9,
 				},
 				__bf_ColorDisabled = {
@@ -667,6 +574,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Disabled"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 10,
 				},
 				__bf_ColorChecked = {
@@ -677,6 +585,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Checked"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 11,
 				},
 				__bf_ColorBorder = {
@@ -687,6 +596,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Border"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 12,
 				},
 				__bf_ColorHighlight = {
@@ -697,6 +607,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Highlight"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 13,
 				},
 				__bf_ColorGloss = {
@@ -706,6 +617,7 @@ do
 					get = getLayerColor,
 					set = setLayerColor,
 					arg = {LBFGroup, "Gloss"},
+					disabled = getState,
 					order = 14,
 				},
 				__bf_ResetColors = {
@@ -748,12 +660,13 @@ do
 					desc = L["Set the intensity of the gloss."],
 					get = getGloss,
 					set = setGloss,
-					arg = LBFGroup,
+					arg = {LBFGroup, "Gloss"},
 					min = 0,
 					max = 1,
 					step = 0.01,
 					width = "full",
 					isPercent = true,
+					disabled = getState,
 					order = 3,
 				},
 				__bf_backdrop = {
@@ -762,8 +675,9 @@ do
 					desc = L["Toggle the backdrop."],
 					get = getBackdrop,
 					set = setBackdrop,
-					arg = LBFGroup,
+					arg = {LBFGroup, "Backdrop"},
 					width = "half",
+					disabled = getState,
 					order = 4,
 				},
 				__bf_ColorHeading = {
@@ -779,6 +693,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Backdrop"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 6,
 				},
 				__bf_ColorFlash = {
@@ -789,6 +704,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Flash"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 7,
 				},
 				__bf_ColorNormal = {
@@ -799,6 +715,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Normal"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 8,
 				},
 				__bf_ColorPushed = {
@@ -809,6 +726,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Pushed"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 9,
 				},
 				__bf_ColorDisabled = {
@@ -819,6 +737,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Disabled"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 10,
 				},
 				__bf_ColorChecked = {
@@ -829,6 +748,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Checked"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 11,
 				},
 				__bf_ColorBorder = {
@@ -839,6 +759,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Border"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 12,
 				},
 				__bf_ColorHighlight = {
@@ -849,6 +770,7 @@ do
 					set = setLayerColor,
 					arg = {LBFGroup, "Highlight"},
 					hasAlpha = true,
+					disabled = getState,
 					order = 13,
 				},
 				__bf_ColorGloss = {
@@ -858,6 +780,7 @@ do
 					get = getLayerColor,
 					set = setLayerColor,
 					arg = {LBFGroup, "Gloss"},
+					disabled = getState,
 					order = 14,
 				},
 				__bf_ResetColors = {

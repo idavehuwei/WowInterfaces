@@ -1,78 +1,61 @@
-﻿if GetLocale() ~= "zhCN" then return end
+﻿-- author: callmejames @《凤凰之翼》 一区藏宝海湾
+-- commit by: yaroot <yaroot AT gmail.com>
+
+
+if GetLocale() ~= "zhCN" then return end
 
 local L
 
-
-----------------------
---  FlameLeviathan  --
-----------------------
+-----------------------
+--  Flame Leviathan  --
+-----------------------
 L = DBM:GetModLocalization("FlameLeviathan")
 
 L:SetGeneralLocalization{
-	name = "烈焰战轮"
+	name 				= "烈焰巨兽"
 }
 
 L:SetTimerLocalization{
-	timerPursued			= "猎杀: %s",
-	timerFlameVents			= "烈焰外泄",
-	timerSystemOverload		= "电路超载"
 }
 	
 L:SetMiscLocalization{
-	YellPull			= "发现敌意实体。启动威胁评估协定。首要目标接近中。30秒后将再度评估。",
-	Emote				= "%%s紧追(%S+)%。"
+	YellPull			= "检测到敌对实体。威胁评定协议启动。向主要目标发动攻击。30秒后重新评估。",
+	Emote				= "%%s开始追赶(%S+)%。"
 }
 
 L:SetWarningLocalization{
-	PursueWarn			= "猎杀 >%s<!",
-	warnNextPursueSoon		= "5秒后 猎杀转换",
-	SpecialPursueWarnYou		= "你中了猎杀啰 快跑",
-	SystemOverload			= "电路超载"
+	PursueWarn			= "追踪: >%s<",
+	warnNextPursueSoon		= "5秒后 追踪转换",
+	SpecialPursueWarnYou		= "你被追踪 - 快跑",
+	warnWardofLife			= "生命结界 出现"
 }
 
 L:SetOptionLocalization{
-	timerSystemOverload		= "显示电路超载定时器",
-	timerFlameVents			= "显示烈焰外泄定时器",
-	timerPursued			= "显示猎杀定时器",
-	SystemOverload			= "为电路超载显示特别警告",
-	SpecialPursueWarnYou		= "当猎杀时显示特别警告",
-	PursueWarn			= "当玩家中了猎杀时显示团队警告",
-	warnNextPursueSoon		= "猎杀转换前警告"
+	SoundWOP = "为重要技能播放额外的警报语音",
+	SpecialPursueWarnYou		= "当你被追踪时显示特别警报",
+	PursueWarn			= "提示追踪的目标",
+	warnNextPursueSoon		= "为下一次追踪显示提前警报",
+	warnWardofLife			= "为生命结界出现显示特别警报"
 }
 
-
--------------
---  Ignis  --
--------------
+--------------------------------
+--  Ignis the Furnace Master  --
+--------------------------------
 L = DBM:GetModLocalization("Ignis")
 
 L:SetGeneralLocalization{
-	name = "『火炉之主』伊格尼司"
+	name 				= "掌炉者伊格尼斯"
 }
 
 L:SetTimerLocalization{
-	TimerFlameJetsCast		= "烈焰喷泄",
-	TimerFlameJetsCooldown		= "下一次 烈焰喷泄",
-	TimerScorch			= "下一次 灼烧",
-	TimerScorchCast			= "灼烧",
-	TimerSlagPot			= "熔渣之盆: %s"
-	TimerSpeedKill			= "快速击杀"
 }
 
 L:SetWarningLocalization{
-	WarningSlagPot			= "熔渣之盆: >%s<",
-	SpecWarnJetsCast		= "烈焰喷泄 - 停止施法"
 }
 
 L:SetOptionLocalization{
-	SpecWarnJetsCast		= "为烈焰喷泄显示特别警告 (断法)",
-	TimerFlameJetsCast		= "显示烈焰喷泄的施法定时器",
-	TimerFlameJetsCooldown		= "显示烈焰喷泄的冷却定时器",
-	TimerScorch			= "显示灼烧的冷却计时",
-	TimerScorchCast			= "显示灼烧的施法计时",
-	WarningSlagPot			= "提示熔渣之盆的目标",
-	TimerSlagPot			= "显示熔渣之盆定时器",
-	SlagPotIcon			= "设置标记在熔渣之盆的目标"
+	SoundWOP = "为重要技能播放额外的警报语音",
+	SlagPotIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(63477)
 }
 
 ------------------
@@ -81,52 +64,49 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Razorscale")
 
 L:SetGeneralLocalization{
-	name = "锐鳞"
+	name 				= "锋鳞"
 }
 
-L:SetWarningLocalization{	
-	SpecWarnDevouringFlame		= "吞噬烈焰 - 移动啰!!",
-	warnTurretsReadySoon		= "20秒后 第四座炮塔完成",
-	warnTurretsReady		= "第四座炮塔已完成",
-	SpecWarnDevouringFlameCast	= "你中了吞噬烈焰",
-	WarnDevouringFlameCast		= "吞噬烈焰: >%s<", 
+L:SetWarningLocalization{
+	warnTurretsReadySoon		= "20秒后 最后一座炮塔完成",
+	warnTurretsReady		= "最后一座炮塔已完成",
+	SpecWarnDevouringFlameCast	= "你中了噬体烈焰",
+	WarnDevouringFlameCast		= "噬体烈焰: >%s<"
 }
+
 L:SetTimerLocalization{
-	timerDeepBreathCooldown		= "下一次 火息术",
-	timerDeepBreathCast		= "火息术",
-	timerAllTurretsReady		= "炮塔",
 	timerTurret1			= "炮塔1",
 	timerTurret2			= "炮塔2",
 	timerTurret3			= "炮塔3",
-	timerTurret4			= "炮塔4"
-	timerGroundedTemp		= "地上阶段",
+	timerTurret4			= "炮塔4",
+	timerGrounded			= "地上阶段"
 }
+
 L:SetOptionLocalization{
-	SpecWarnDevouringFlame		= "当你在吞噬烈焰的攻击范围时显示特别警告",
-	PlaySoundOnDevouringFlame	= "当受到吞噬烈焰时播放音效",
-	timerAllTurretsReady		= "为炮塔显示定时器",
-	warnTurretsReadySoon		= "显示炮塔的预先警告",
-	warnTurretsReady		= "显示炮塔的警告",
-	SpecWarnDevouringFlameCast    	= "当你中了吞噬烈焰时显示特别警告",
-	timerTurret1			= "显示炮塔1的计时器",
-	timerTurret2			= "显示炮塔2的计时器",
-	timerTurret3			= "显示炮塔3的计时器 (英雄)",
-	timerTurret4			= "显示炮塔4的计时器 (英雄)",
-	OptionDevouringFlame		= "提示吞噬烈焰的目标(不可靠)",
-	timerGroundedTemp		= "显示地上阶段计时器"
+	SoundWOP = "为重要技能播放额外的警报语音",
+	PlaySoundOnDevouringFlame		= "当你中了$spell:64733时播放音效",
+	warnTurretsReadySoon		= "为炮塔显示提前警报",
+	warnTurretsReady		= "为炮塔显示警报",
+	SpecWarnDevouringFlameCast	= "当你中了$spell:64733时显示特别警报",
+	timerTurret1			= "为炮塔1显示计时条",
+	timerTurret2			= "为炮塔2显示计时条",
+	timerTurret3			= "为炮塔3显示计时条 (25人)",
+	timerTurret4			= "为炮塔4显示计时条 (25人)",
+	OptionDevouringFlame		= "提示$spell:64733的目标 (不准确)",
+	timerGrounded			= "为地上阶段显示计时条"
 }
 
 L:SetMiscLocalization{
-	YellAir 			= "给我们一点时间来准备建造炮塔。",
-	YellGroundTemp			= "快!她可不会在地面上待太久!",
-	EmotePhase2			= "%%s再也飞不动了!",
-	FlamecastUnknown		= "未知"
+	YellAir				= "给我们一点时间，做好建筑炮台的准备。",
+	YellAir2			= "火灭了！准备重建炮台！",
+	YellGround			= "快一点！她马上就要挣脱了！",
+	EmotePhase2			= "%%s被永久地禁锢在地面上！",
+	FlamecastUnknown		= DBM_CORE_UNKNOWN
 }
 
-
--------------
---  XT002  --
--------------
+----------------------------
+--  XT-002 Deconstructor  --
+----------------------------
 L = DBM:GetModLocalization("XT002")
 
 L:SetGeneralLocalization{
@@ -134,116 +114,88 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerSpeedKill			= "快速击杀"
 }
 
 L:SetWarningLocalization{
-	SpecialWarningLightBomb 	= "你中了裂光弹!",
-	WarningLightBomb		= "裂光弹: >%s<",
-	SpecialWarningGravityBomb	= "你中了重力弹!",
-	WarningGravityBomb		= "重力弹: >%s<",
 }
 
 L:SetOptionLocalization{
-	SpecialWarningLightBomb		= "当你中了裂光弹时显示特别警告",
-	WarningLightBomb		= "提示裂光弹",
-	SpecialWarningGravityBomb	= "当你中了重力弹时显示特别警告",
-	WarningGravityBomb		= "提示重力弹",
-	PlaySoundOnGravityBomb		= "当你中了重力弹时播放音效",
-	PlaySoundOnTympanicTantrum	= "躁怒时播放音效",
-	SetIconOnLightBombTarget	= "设置标记在裂光弹的目标",
-	SetIconOnGravityBombTarget	= "设置标记在重力弹的目标",
+	SoundWOP = "为重要技能播放额外的警报语音",
+	SetIconOnLightBombTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(65121),
+	SetIconOnGravityBombTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(64234)
 }
 
--------------------
---  IronCouncil  --
--------------------
+--------------------
+--  Iron Council  --
+--------------------
 L = DBM:GetModLocalization("IronCouncil")
 
 L:SetGeneralLocalization{
-	name = "铁之议会"
+	name = "钢铁议会"
 }
 
 L:SetWarningLocalization{
-	WarningSupercharge		= "超级充能 即将到来",
-	WarningChainlight		= "闪电链",
-	WarningFusionPunch		= "熔能拳击",
-	WarningOverwhelmingPower	= "极限威能: >%s<",
-	WarningRuneofPower		= "力之符文",
-	WarningRuneofDeath		= "死亡符文",
-	RuneofDeath			= "死亡符文 - 移动",
-	LightningTendrils		= "闪电触须 - 跑开!",
-	WarningRuneofSummoning			= "召唤符文"
-	WarningStaticDisruption		= "静电崩裂: >%s<",
-	Overload			= "超载 - 跑开!"
 }
 
 L:SetTimerLocalization{
-	TimerSupercharge		= "超级充能",
-	TimerLightningWhirl		= "闪电旋风",
-	TimerLightningTendrils		= "闪电触须",
-	timerFusionPunchActive		= "熔能拳击: %s",
-	timerOverwhelmingPower		= "极限威能: %s",
-	timerRunicBarrier		= "符刻屏障",
 }
 
 L:SetOptionLocalization{
-	TimerSupercharge		= "显示超级充能定时器",
-	WarningSupercharge		= "当超级充能施放时显示警告",
-	WarningChainlight		= "提示闪电链",
-	PlaySoundOnOverload		= "当超载施放时播放音效",
-	TimerLightningWhirl		= "显示闪电旋风的施法定时器",
-	LightningTendrils		= "为闪电触须显示特别警告",
-	TimerLightningTendrils		= "显示闪电旋风的持续时间定时器",
-	PlaySoundLightningTendrils	= "闪电触须时播放音效",
-	WarningFusionPunch		= "提示熔能拳击",
-	timerFusionPunchActive		= "显示熔能拳击定时器",
-	WarningOverwhelmingPower	= "提示极限威能",
-	timerOverwhelmingPower		= "显示极限威能定时器",
-	SetIconOnOverwhelmingPower	= "设置标记在极限威能的目标",
-	timerRunicBarrier		= "显示符刻屏障定时器",
-	WarningRuneofPower		= "提示力之符文",
-	WarningRuneofDeath		= "提示死亡符文",
-	RuneofDeath			= "为死亡符文显示特别警告",
-	PlaySoundDeathRune		= "当死亡符文施放时播放音效",
-	WarningRuneofSummoning 		= "提示召唤符文"
-	WarningStaticDisruption		= "提示静电崩裂",
-	SetIconOnStaticDisruption	= "为静电崩裂的目标设置标记",
-	Overload			= "为超载显示特别警告",
-	AllwaysWarnOnOverload		= "总是对超载显示警告(否则只有当目标是风暴召唤者的时候显示)"
+	SoundWOP = "为重要技能播放额外的警报语音",
+	PlaySoundLightningTendrils	= "为$spell:63486播放音效",
+	SetIconOnOverwhelmingPower	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(61888),
+	SetIconOnStaticDisruption	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(61912),
+	AlwaysWarnOnOverload		= "总是对$spell:63481显示警报(否则只有当目标是唤雷者的时候显示)",
+	PlaySoundOnOverload		= "当$spell:63481施放时播放音效",
+	PlaySoundDeathRune		= "当$spell:63490施放时播放音效"
 }
 
 L:SetMiscLocalization{
-	Steelbreaker			= "破钢者",
-	RunemasterMolgeim		= "符文大师墨吉姆",
-	StormcallerBrundir 		= "风暴召唤者布伦迪尔"
+	Steelbreaker			= "断钢者",
+	RunemasterMolgeim		= "符文大师莫尔基姆",
+	StormcallerBrundir 		= "唤雷者布隆迪尔"
 }
 
-
----------------
---  Algalon  --
----------------
+----------------------------
+--  Algalon the Observer  --
+----------------------------
 L = DBM:GetModLocalization("Algalon")
 
 L:SetGeneralLocalization{
-	name = "『观察者』艾尔加隆"
+	name 				= "观察者奥尔加隆"
 }
 
 L:SetTimerLocalization{
-	TimerBigBangCast		= "大爆炸 施放",
+	NextCollapsingStar		= "下一次 坍缩星",
+	PossibleNextCosmicSmash		= "下一次 宇宙重击",
+	TimerCombatStart		= "战斗开始"
 }
+
 L:SetWarningLocalization{
-	WarningPhasePunch		= "相位拳击: >%s<",
-	WarningBlackHole		= "黑洞爆炸",
+	WarningPhasePunch		= "相位冲压: >%s< - 第%d层",
+	WarningCosmicSmash 		= "宇宙重击 - 约4秒后爆炸",
+	WarnPhase2Soon			= "第2阶段 即将到来",
+	warnStarLow			= "坍缩星血量低"
 }
 
 L:SetOptionLocalization{
-	TimerBigBangCast		= "为大爆炸显示施法计时条",
-	SpecWarnPhasePunch		= "当你中了相位拳击显示特别警告",
-	WarningPhasePunch		= "提示相位拳击的目标",
-	WarningBlackHole		= "提示黑洞爆炸",
+	SoundWOP = "为重要技能播放额外的警报语音",
+	WarningPhasePunch		= "提示相位冲压的目标",
+	NextCollapsingStar		= "为下一次坍缩星显示计时条",
+	WarningCosmicSmash 		= "为宇宙重击显示警报",
+	PossibleNextCosmicSmash		= "为下一次宇宙重击显示计时条",
+	TimerCombatStart		= "为战斗开始显示计时条",
+	WarnPhase2Soon			= "为第2阶段显示提前警报 (大约23%)",
+	warnStarLow			= "当坍缩星血量低(大约25%)时显示特别警报"
 }
 
+L:SetMiscLocalization{
+	YellPull			= "你们的行动不合逻辑。这场战斗所有可能产生的结果都已被计算在内。无论结果如何，万神殿都会收到观察者发出的信息。",
+	YellKill			= "我曾经看过尘世沉浸在造物者的烈焰之中，众生连一声悲泣都无法呼出，就此凋零。整个星系在弹指之间历经了毁灭与重生。然而在这段历程之中，我的心却无法感受到丝毫的…恻隐之念。我‧感‧受‧不‧到。成千上万的生命就这么消逝。他们是否拥有与你同样坚韧的生命?他们是否与你同样热爱生命?",
+	Emote_CollapsingStar		= "%s开始召唤坍缩星！",
+	Phase2				= "瞧瞧泰坦造物的能耐吧!",
+	PullCheck			= "奥尔加隆发送危险信号的倒计时 = (%d+)分钟。"
+}
 
 ----------------
 --  Kologarn  --
@@ -251,43 +203,37 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Kologarn")
 
 L:SetGeneralLocalization{
-	name = "科罗刚恩"
+	name 				= "科隆加恩"
 }
 
 L:SetWarningLocalization{
-	SpecialWarningEyebeam		= "集束目光看着你 - 跑开",
-	WarningEyebeam			= "集束目光: >%s<",
-	WarnGrip			= "坚石之握: >%s<"
 }
 
 L:SetTimerLocalization{
-	timerEyebeam			= "集束目光: %s",
-	timerPetrifyingBreath		= "石化之息",
 	timerLeftArm			= "左臂 重生",
 	timerRightArm			= "右臂 重生",
-	achievementDisarmed		= "卸除手臂 计时器"
+	achievementDisarmed		= "断其臂膀 计时条"
 }
 
 L:SetOptionLocalization{
-	SpecialWarningEyebeam		= "当集束目光看着你显示特别警告",
-	WarningEyebeam			= "提示集束目光的目标",
-	timerEyebeam			= "显示集束目光的定时器",
-	SetIconOnEyebeamTarget		= "设置标记在集束目光的目标",
-	timerPetrifyingBreath		= "显示石化之息的定时器",
-	timerLeftArm			= "显示手臂重生(左) 的定时器",
-	timerRightArm			= "显示手臂重生(右) 的定时器",
-	WarnGrip			= "提示坚石之握的目标",
-	SetIconOnGripTarget		= "设置标记在坚石之握的目标",
-	achievementDisarmed		= "为成就:卸除手臂显示定时器"
+	SoundWOP = "为重要技能播放额外的警报语音",
+	timerLeftArm			= "为左臂重生显示计时条",
+	timerRightArm			= "为右臂重生显示计时条",
+	achievementDisarmed		= "为成就：断其臂膀显示计时条",
+	SetIconOnGripTarget		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(64292),
+	SetIconOnEyebeamTarget		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(63346),
+	PlaySoundOnEyebeam		= "为$spell:63346播放音效",
+	YellOnBeam			= "当你中了$spell:63346时大喊"
 }
 
 L:SetMiscLocalization{
-	Yell_Trigger_arm_left		= "小小的擦伤!",
-	Yell_Trigger_arm_right		= "只是皮肉之伤!",
-	Health_Body			= "科罗刚恩身体",
+	Yell_Trigger_arm_left		= "不疼不痒！",
+	Yell_Trigger_arm_right		= "只是轻伤而已！",
+	Health_Body			= "科隆加恩身体",
 	Health_Right_Arm		= "右臂",
-	Health_Left_Arm			= "左臂"
-	FocusedEyebeam			= "%s正在注视着你!"
+	Health_Left_Arm			= "左臂",
+	FocusedEyebeam			= "在注视着你",
+	YellBeam			= "科隆加恩正在注视我！"
 }
 
 ---------------
@@ -296,35 +242,31 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Auriaya")
 
 L:SetGeneralLocalization{
-	name = "奥芮雅"
+	name 				= "欧尔莉亚"
 }
 
 L:SetMiscLocalization{
-	Defender 			= "野性防卫者 (%d)"
+	Defender 			= "野性防御者 (%d)",
+	YellPull 			= "有些东西，最好永远都不去碰！"
+}
+
+L:SetTimerLocalization{
+	timerDefender			= "野性防御者复活"
 }
 
 L:SetWarningLocalization{
-	SpecWarnBlast 			= "哨兵冲击 - 打断!",
-	SpecWarnVoid			= "虚空区域 - 移动!",
-	WarnCatDied 			= "野性防卫者倒下 (剩余%d支)",
-	WarnCatDiedOne 			= "野性防卫者倒下 (剩下最后一条命)",
-	WarnFear 			= "恐惧!",
-	WarnFearSoon 			= "下一次恐惧即将到来!",
-	WarnSonic			= "音速尖啸!",
-	WarnSwarm			= "猫群守护者: >%s<"
+	SpecWarnBlast			= "警戒冲击 - 快打断",
+	WarnCatDied 			= "野性防御者倒下(剩余%d只)",
+	WarnCatDiedOne 			= "野性防御者倒下(剩下最后一只)"
 }
 
 L:SetOptionLocalization{
-	SpecWarnBlast	 		= "为哨兵冲击显示特别警告",
-	SpecWarnVoid			= "当站在野性精华上面时显示特别警告",
-	WarnFear 			= "显示恐惧警告",
-	WarnFearSoon 			= "显示即将恐惧警告",
-	WarnCatDied 			= "当野性防卫者死亡时显示警告",
-	WarnCatDiedOne 			= "当野性防卫者剩下最后一条命时显示警告",
-	WarnSwarm			= "当猫群守护者出现时显示警告",
-	WarnSonic			= "显示音速尖啸警告"
+	SoundWOP = "为重要技能播放额外的警报语音",
+	SpecWarnBlast			= "为警戒冲击显示特别警报(打断用)",
+	WarnCatDied			= "当野性防御者死亡时显示警报",
+	WarnCatDiedOne			= "当野性防御者剩下最后一只时显示警报",
+	timerDefender       		= "当野性防御者准备复活时显示计时条"
 }
-
 
 -------------
 --  Hodir  --
@@ -332,33 +274,26 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Hodir")
 
 L:SetGeneralLocalization{
-	name = "霍迪尔"
+	name 				= "霍迪尔"
 }
 
 L:SetWarningLocalization{
-	WarningFlashFreeze		= "闪霜",
-	WarningStormCloud		= "风暴雷云: %s", 
-	WarningBitingCold		= "刺骨之寒 - 移动"
 }
 
 L:SetTimerLocalization{
-	TimerSpeedKill			= "快速击杀"
 }
 
 L:SetOptionLocalization{
-	WarningFlashFreeze		= "为闪霜显示警告",
-	WarningBitingCold		= "为刺骨之寒显示警告",
-	PlaySoundOnFlashFreeze		= "当闪霜施放时播放音效"
-	WarningStormCloud		= "提示中了风暴雷云的玩家",
-	YellOnStormCloud		= "当风暴雷云生效时大喊",
-	SetIconOnStormCloud		= "为风暴雷云的目标设置标记"
+	SoundWOP = "为重要技能播放额外的警报语音",
+	PlaySoundOnFlashFreeze		= "当施放$spell:61968时播放音效",
+	YellOnStormCloud		= "当你中了$spell:65133时大喊",
+	SetIconOnStormCloud		= "为$spell:65133的目标设置标记"
 }
 
 L:SetMiscLocalization{
-	YellKill			= "我…我终于从他的掌控中…解脱了。"
-	YellCloud			= "我中了风暴雷云 快接近我",
+	YellKill			= "我……我终于从他的魔掌中……解脱了。",
+	YellCloud			= "我中了风暴雷云 快接近我！"
 }
-
 
 --------------
 --  Thorim  --
@@ -366,16 +301,10 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Thorim")
 
 L:SetGeneralLocalization{
-	name = "索林姆"
+	name 				= "托里姆"
 }
 
 L:SetWarningLocalization{
-	WarningStormhammer		= "风暴之锤: >%s<",
-	UnbalancingStrike		= "失衡打击: >%s<",
-	WarningPhase2			= "第二阶段",
-	WarningLightningCharge		= "闪电充能",
-	WarningBomb			= "引爆符文: >%s<",
-	LightningOrb 			= "你中了闪电震击! 快跑!"
 }
 
 L:SetTimerLocalization{
@@ -383,25 +312,19 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerHardmode			= "显示困难模式定时器",
-	UnbalancingStrike		= "提示失衡打击的目标",
-	WarningStormhammer		= "提示风暴之锤的目标",
-	WarningLightningCharge		= "提示闪电充能",
-	WarningPhase2			= "提示第二阶段",
+	SoundWOP = "为重要技能播放额外的警报语音",
+	TimerHardmode			= "为困难模式显示计时条",
 	RangeFrame			= "显示距离框",
-	WarningBomb			= "提示引爆符文",
-	LightningOrb 			= "当你中了闪电充能时显示特别警告"
-	AnnounceFails			= "公布中了闪电充能的玩家到团队频道(需要开启团队广播及团长/队长权限)" 
+	AnnounceFails			= "公布中了闪电充能的玩家到团队频道\n(需要团长或助理权限)"
 }
 
 L:SetMiscLocalization{
-	YellPhase1			= "擅闯者!像你们这种胆敢干涉我好事的凡人将付出…等等--你……",
-	YellPhase2			= "无礼的小辈，你竟敢在我的王座之上挑战我?我会亲手碾碎你们!",
-	YellKill			= "住手!我认输了!"
+	YellPhase1			= "入侵者！你们这些凡人竟敢坏了我的兴致，看我怎么……等等，你们……",
+	YellPhase2			= "狂妄的小崽子们，竟敢在我的地盘上挑战我？我要亲自碾碎你们！",
+	YellKill			= "住手！我认输了！",
 	ChargeOn			= "闪电充能: %s",
-	Charge				= "中了闪电充能 (这一次): %s" 
+	Charge				= "中了闪电充能(这一次): %s" 
 }
-
 
 -------------
 --  Freya  --
@@ -409,247 +332,207 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Freya")
 
 L:SetGeneralLocalization{
-	name = "芙蕾雅"
+	name 				= "弗蕾亚"
 }
 
 L:SetMiscLocalization{
-	SpawnYell 			= "孩子们，协助我!",
-	WaterSpirit 			= "上古水之灵",
-	Snaplasher 			= "猛攫鞭笞者",
-	StormLasher 			= "风暴鞭笞者",
-	YellKill			= "他对我的操控已然退散。我已再次恢复神智了。感激不尽，英雄们。"
+	SpawnYell			= "孩子们，帮帮我！",
+	WaterSpirit			= "古代水之精魂",
+	Snaplasher			= "迅疾鞭笞者",
+	StormLasher			= "风暴鞭笞者",
+	TreeYell      = "|cFF00FFFF生命缚誓者的礼物|r开始生长！",
+	YellKill			= "他对我的控制已经不复存在了。我又一次恢复了理智。谢谢你们，英雄们。",
+	TrashRespawnTimer		= "弗蕾亚的小怪重生"
 }
 
 L:SetWarningLocalization{
-	WarnPhase2 			= "第二阶段",
-	WarnSimulKill			= "第一支小怪死亡 - 1分钟后复活",
-	WarnFury 			= "自然烈怒: >%s<",
-	SpecWarnFury 			= "你中了自然烈怒!",
-	WarningTremor   		= "地面震颤 - 停止施法"
-	WarnRoots 			= "铁之根须: >%s<",
-	UnstableEnergy			= "不稳定的能量 - 移动"
+	WarningTree   		= "艾欧娜尔的礼物 - 快打",
+	WarnSimulKill			= "第一只元素死亡 - 大约12秒后复活"
 }
 
 L:SetTimerLocalization{
-	TimerUnstableSunBeam 		= "太阳光束: %s",
-	TimerAlliesOfNature 		= "自然和谐冷却",
-	TimerSimulKill 			= "复活",
-	TimerFuryYou 			= "你中了自然烈怒"
+	TimerSimulKill			= "复活"
 }
 
 L:SetOptionLocalization{
-	WarnPhase2 			= "提示第二阶段",
-	WarnSimulKill			= "提示小怪复活",
-	WarnFury 			= "提示自然烈怒",
-	WarnRoots 			= "提示铁之根须",
-	SpecWarnFury 			= "当你中了自然烈怒时显示特别警告",
-	WarningTremor   		= "当王施放地面震颤时显示特别警告"
-	TimerAlliesOfNature 		= "显示自然和谐冷却时间",
-	TimerFuryYou 			= "显示自然烈怒定时器",
-	TimerSimulKill 			= "显示小怪复活定时器",
-	PlaySoundOnFury			= "当你中了自然烈怒时播放音效",
-	UnstableEnergy			= "为不稳定的能量显示特别警告"
+	SoundWOP = "为重要技能播放额外的警报语音",
+	WarningTree   		= "当首领召唤艾欧娜尔的礼物时显示特别警告",
+	WarnSimulKill			= "提示第一只元素死亡",
+	PlaySoundOnFury			= "当你中了$spell:63571时播放音效",
+	TimerSimulKill			= "为三元素复活显示计时条"
 }
 
--- Elders
+----------------------
+--  Freya's Elders  --
+----------------------
 L = DBM:GetModLocalization("Freya_Elders")
 
 L:SetGeneralLocalization{
-	name = "芙蕾雅的长者们"
-}
-
-L:SetWarningLocalization{
-	SpecWarnFistOfStone 		= "石拳连击",
-	SpecWarnGroundTremor   		= "地面震颤 - 停止施法"
+	name 				= "弗蕾亚的长者们"
 }
 
 L:SetMiscLocalization{
-	TrashRespawnTimer 		= "小怪重生",
-}
-
-L:SetOptionLocalization{
-	SpecWarnFistOfStone		= "为石拳连击显示特别警告",
-	PlaySoundOnFistOfStone		= "当石拳连击施放时播放音效",
-	SpecWarnGroundTremor		= "施放地面震颤时显示特别警告",
-	TrashRespawnTimer		= "显示小怪重生时间条"
-}
-
-
--------------------
---  Mimiron  --
--------------------
-L = DBM:GetModLocalization("Mimiron")
-
-L:SetGeneralLocalization{
-	name = "弥米伦"
+	TrashRespawnTimer		= "弗蕾亚的小怪重生"
 }
 
 L:SetWarningLocalization{
-	DarkGlare 			= "雷射弹幕",
-	WarningPlasmaBlast		= "离子冲击: %s - 治疗", --unusable?
-	Phase2Engaged			= "第二阶段即将到来 - 现在重组",
-	Phase3Engaged			= "第三阶段即将到来 - 现在重组",
-	WarnShell			= "凝汽弹: >%s<",
-	WarnBlast			= "离子冲击: >%s<",
-	MagneticCore			= ">%s< 拿到了磁能之核",
-	WarningShockBlast		= "震爆 - 跑开!"
-	WarnBombSpawn			= "炸弹机械人出现了"
+}
+
+L:SetOptionLocalization{
+	SoundWOP = "为重要技能播放额外的警报语音",
+	PlaySoundOnFistOfStone		= "为岩石之拳播放音效",
+	TrashRespawnTimer		= "为弗蕾亚的小怪重生显示计时条"
+}
+
+---------------
+--  Mimiron  --
+---------------
+L = DBM:GetModLocalization("Mimiron")
+
+L:SetGeneralLocalization{
+	name 				= "米米尔隆"
+}
+
+L:SetWarningLocalization{
+	MagneticCore			= ">%s< 拿到了磁核",
+	WarningShockBlast		= "震荡冲击 - 快跑开",
+	WarnBombSpawn			= "炸弹机器人出现了"
 }
 
 L:SetTimerLocalization{
 	TimerHardmode			= "困难模式 - 自毁程序",
-	TimeToPhase2			= "第二阶段开始",
-	TimeToPhase3			= "第三阶段开始",
-	TimeToPhase4			= "第四阶段开始"
+	TimeToPhase2			= "第2阶段开始",
+	TimeToPhase3			= "第3阶段开始",
+	TimeToPhase4			= "第4阶段开始"
 }
 
 L:SetOptionLocalization{
-	DarkGlare 			= "提示雷射弹幕",
-	WarningShockBlast		= "显示震爆警告",
-	WarningPlasmaBlast		= "显示离子冲击",
-	WarnShell			= "提示凝汽弹的目标",
-	WarnBlast			= "提示离子冲击的目标",
-	PlaySoundOnShockBlast 		= "当震爆施放时播放音效",
-	PlaySoundOnDarkGlare 		= "雷射弹幕施放前播放音效",
-	NextDarkGlare 			= "下一次 雷射弹幕的计时器",
-	TimeToPhase2			= "显示第二阶段开始计时器", --第二阶段开始
-	TimeToPhase3			= "显示第三阶段开始计时器", --第三阶段开始
-	TimeToPhase4			= "显示第四阶段开始定时器",
-	SpinUp 				= "显示暖机(雷射弹幕施放前的技能)定时器",
-	MagneticCore			= "提示磁能之核的拾取者",
+	SoundWOP = "为重要技能播放额外的警报语音",
+	TimeToPhase2			= "为第2阶段开始显示计时条",
+	TimeToPhase3			= "为第3阶段开始显示计时条",
+	TimeToPhase4			= "为第4阶段开始显示计时条",
+	MagneticCore			= "提示磁核的拾取者",
 	HealthFramePhase4		= "显示第4阶段的首领血量框架",
-	AutoChangeLootToFFA		= "第三阶段自动转换拾取方式为自由拾取",
-	WarnBombSpawn			= "提示炸弹机械人",
-	TimerHardmode			= "显示困难模式定时器"
+	AutoChangeLootToFFA		= "第3阶段自动转换拾取方式为自由拾取",
+	WarnBombSpawn			= "为炸弹机器人显示警报",
+	TimerHardmode			= "为困难模式显示计时条",
+	PlaySoundOnShockBlast		= "当$spell:63631施放时播放音效",
+	PlaySoundOnDarkGlare		= "当$spell:63414施放前播放音效",
+	ShockBlastWarningInP1		= "为第1阶段的$spell:63631显示特别警报",
+	ShockBlastWarningInP4		= "为第4阶段的$spell:63631显示特别警报",
+	RangeFrame			= "在第1阶段显示距离框(6码)",
+	SetIconOnNapalm			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(65026),
+	SetIconOnPlasmaBlast	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(62997)
 }
 
 L:SetMiscLocalization{
-	YellPull			= "我们没有太多时间，朋友们!你们要帮我测试我最新也是最伟大的创作。在你们改变心意之前，别忘了就是你们把XT-002搞得一团糟，你们欠我一次。",	
-	YellHardPull			= "为什么你要做出这种事?难道你没看见标示上写着「请勿触碰这个按钮!」吗?现在自爆装置已经启动了，我们要怎么完成测试呢?",
-	YellPhase2			= "太好了!绝妙的良好结果!外壳完整度98.9%!几乎只有一点擦痕!继续下去。",
-	YellPhase3			= "感谢你，朋友们!我们的努力让我获得了一些绝佳的数据!现在，我把东西放在哪儿了--噢，在这里。",
-	YellPhase4			= "初步测试阶段完成。现在要玩真的啦!",
-	LootMsg				= "(.+)拾取了物品:.*Hitem:(%d+)",
-	MobPhase1 			= "战轮MK II",
-	MobPhase2 			= "VX-001",
-	MobPhase3 			= "空中指挥装置"
+	MobPhase1			= "巨兽二型",
+	MobPhase2			= "VX-001",
+	MobPhase3			= "空中指挥单位",
+	YellPull			= "我们时间不多了，朋友们！来帮忙测试一下我所发明的最新型、最强大的机体吧。在你们改变主意之前，请允许我提醒一下，你们把XT-002搞得一团糟，应该算是欠我个人情吧。",
+	YellHardPull			= "嘿，你们为什么要这么做啊？没看到上面写着“不要按这个按钮”吗？你们激活了自毁系统，还怎么完成测试呀？",
+	YellPhase2			= "太棒了！测试结果非常好！外壳完整率百分之九十八点九！几乎没有划伤！继续。",
+	YellPhase3			= "非常感谢，朋友们！你们的帮助使我获得了一些极其珍贵的数据！下面，我要让你们——咦，我把它放哪去了？哦！这里。",
+	YellPhase4			= "初步测试阶段完成。真正的测试开始啦！",
+	LootMsg				= "(.+)获得了物品：.*Hitem:(%d+)"
 }
 
-
---------------------
---  GeneralVezax  --
---------------------
+---------------------
+--  General Vezax  --
+---------------------
 L = DBM:GetModLocalization("GeneralVezax")
 
 L:SetGeneralLocalization{
-	name = "威札斯将军"
+	name 				= "维扎克斯将军"
 }
 
 L:SetTimerLocalization{
-	hardmodeSpawn 			= "萨伦聚恶体 出现"
+	hardmodeSpawn 			= "萨隆邪铁畸体 出现"
 }
 
 L:SetWarningLocalization{
-	SpecialWarningShadowCrash	= "你中了暗影暴击",
-	SpecialWarningSurgeDarkness	= "暗郁奔腾",
-	WarningShadowCrash		= "暗影暴击: >%s<",
-	SpecialWarningShadowCrashNear	= "暗影暴击很接近你!",
-	WarningLeechLife		= "无面者印记: >%s<",
-	SpecialWarningLLYou		= "你中了无面者印记!",
-	SpecialWarningLLNear		= "接近你的%s中了无面者印记!"
+	SpecialWarningShadowCrash	= "你中了暗影冲撞 - 快跑开",
+	SpecialWarningShadowCrashNear	= "你附近有人中暗影冲撞 - 快远离",
+	SpecialWarningLLNear		= "你附近的%s中了无面者的印记"
 }
 
 L:SetOptionLocalization{
-	WarningShadowCrash		= "为暗影暴击显示特别警告",
-	SetIconOnShadowCrash		= "为暗影暴击的目标设置标记(头颅)",
-	SetIconOnLifeLeach		= "为无面者印记的目标设置标记(十字)",
-	SpecialWarningSurgeDarkness	= "为暗郁奔腾显示特别警告",
-	SpecialWarningShadowCrash	= "为暗影暴击显示特别警告",
-	WarningLeechLife		= "提示无面者印记",
-	SpecialWarningLLYou		= "当你中了无面者印记时显示特别警告",
-	SpecialWarningLLNear		= "当你附近的人中了无面者印记时显示特别警告",
-	CrashWhisper 			= "密语提示中了暗影暴击的人"
-	YellOnLifeLeech			= "当中了无面者印记时大喊",
-	YellOnShadowCrash		= "当中了暗影暴击时大喊",
-	SpecialWarningShadowCrashNear	= "当你附近的人中了暗影暴击时显示特别警告",
-	hardmodeSpawn 			= "显然萨伦聚恶体出现(困难模式)定时器"
+	SoundWOP = "为重要技能播放额外的警报语音",
+	SetIconOnShadowCrash		= "为$spell:62660的目标设置标记 (骷髅)",
+	SetIconOnLifeLeach		= "为$spell:63276的目标设置标记 (十字)",
+	SpecialWarningShadowCrash	= "为$spell:62660显示特别警报(必须至少有一名队员设置首领为焦点)",
+	SpecialWarningShadowCrashNear	= "当你附近的人中了$spell:62660时显示特别警报",
+	SpecialWarningLLNear		= "当你附近的人中了$spell:63276时显示特别警报",
+	YellOnLifeLeech			= "当你中了$spell:63276时大喊",
+	YellOnShadowCrash		= "当你中了$spell:62660时大喊",
+	hardmodeSpawn			= "为萨隆邪铁畸体出现显示计时条 (困难模式)",
+	CrashArrow			= "当你附近的人中了$spell:62660时显示DBM箭头",
+	BypassLatencyCheck		= "不对$spell:62660使用同步延迟查询(只有出现问题时才使用这个)"
 }
 
 L:SetMiscLocalization{
-	EmoteSaroniteVapors		= "一片萨伦烟雾在附近聚合!",
-	CrashWhisper			= "你中了暗影暴击! 跑开!"
-	YellLeech			= "我中了无面者印记!",
-	YellCrash			= "我中了暗影暴击!"
+	EmoteSaroniteVapors		= "一团萨隆邪铁蒸汽在附近聚集起来！",
+	YellLeech			= "我中了无面者的印记 - 远离我",
+	YellCrash			= "我中了暗影冲撞 - 远离我"
 }
 
-
------------------
---  YoggSaron  --
------------------
+------------------
+--  Yogg-Saron  --
+------------------
 L = DBM:GetModLocalization("YoggSaron")
 
 L:SetGeneralLocalization{
-	name = "尤格萨伦"
+	name 				= "尤格萨隆"
 }
 
 L:SetMiscLocalization{
-	YellPull 			= "我们即将有机会打击怪物的首脑!现在将你的愤怒与仇恨贯注在他的爪牙上!",
-	YellPhase2 			= "我是清醒的梦境。",
+	YellPull 			= "攻击这头野兽要害的时刻即将来临！将你们的愤怒和仇恨倾泻到它的爪牙身上！",
+	YellPhase2			= "我是清醒的梦境。",
 	Sara 				= "萨拉",
-	WhisperBrainLink 		= "你中了脑波连结! 跑向 %s!",
-	WarningYellSqueeze		= "我给触手绑了! 快救命!"
-	YellRage			= "在我的真身面前颤抖吧。" --unknow message, will change later
+	WarningYellSqueeze		= "我被触须抓住了 - 快救我"
 }
 
 L:SetWarningLocalization{
-	WarningWellSpawned 		= "理智之井 出现了",
-	WarningGuardianSpawned 		= "尤格萨伦守护者 出现了",
-	WarningCrusherTentacleSpawned	= "粉碎大触手 出现了",
-	WarningP2 			= "第二阶段",
-	WarningP3 			= "第三阶段",
-	WarningBrainLink 		= "脑波连结: >%s< 和 >%s<",
-	SpecWarnBrainLink 		= "你和%s中了脑波连结!",
+	WarningGuardianSpawned 		= "尤格萨隆的卫士 %d 出现了",
+	WarningCrusherTentacleSpawned	= "重压触须 出现了",
 	WarningSanity 			= "剩下 %d 理智",
 	SpecWarnSanity 			= "剩下 %d 理智",
-	SpecWarnGuardianLow 		= "停止攻击这支守护者!",
-	WarnMadness 			= "正在施放 疯狂诱陷",
-	SpecWarnMadnessOutNow		= "疯狂诱陷即将完结 - 快传送出去",
-	WarnBrainPortalSoon		= "3秒后 传送门出现",
-	WarnSqueeze 			= "压榨(触手绑人): >%s<"
-	WarnFavor			= "萨拉的热诚: >%s<",
-	SpecWarnFavor			= "你中了萨拉的热诚",
-	specWarnBrainPortalSoon		= "传送门 即将出现",
-	RaidRage			= "萨拉生气了 快吻她啰"
+	SpecWarnGuardianLow		= "停止攻击这只守护者",
+	SpecWarnMadnessOutNow		= "疯狂诱导即将结束 - 快传送出去",
+	WarnBrainPortalSoon		= "3秒后 脑部传送门",
+	SpecWarnFervor			= "你中了萨拉的热情",
+	SpecWarnFervorCast		= "萨拉的热情正在对你施放",
+	SpecWarnMaladyNear		= "你附近的%s中了心灵疾病",
+	specWarnBrainPortalSoon		= "脑部传送门 即将到来"
 }
 
 L:SetTimerLocalization{
-	NextPortal			= "下一次 传送门",
-	TimerSpeedKill			= "快速击杀"
+	NextPortal			= "下一次 脑部传送门"
 }
 
 L:SetOptionLocalization{
-	WarningGuardianSpawned 		= "提示尤格萨伦守护者的出现",
-	WarningCrusherTentacleSpawned	= "提示粉碎大触手的出现",
-	WarningP2 			= "提示第二阶段",
-	WarningP3			= "提示第三阶段",
-	WarningBrainLink		= "提示脑波连结",
-	SpecWarnBrainLink 		= "当你中了脑波链接显示特别警告",
-	WarningSanity			= "当理智剩下50时显示警告",
-	SpecWarnSanity			= "当理智过低(25,15,5)时显示特别警告",
-	SpecWarnGuardianLow		= "当守护者(P1)血量过低时(DD用)显示特别警告",
-	WarnMadness 			= "显示疯狂诱陷的施放警告",
-	SpecWarnMadnessOutNow		= "在疯狂诱陷完结前显示特别警告",
-	WhisperBrainLink 		= "密语提示中了脑波连结的人",
-	NextPortal			= "显示下一次 传送门的定时器",
-	WarnBrainPortalSoon		= "提示传送门",
-	WarnSqueeze			= "提示压榨 (触手绑人)",
-	WarningSqueeze			= "当你中了压榨 (触手绑人)时大喊",
-	SetIconOnFearTarget		= "设置标记在恐惧的目标",
-	ShowSaraHealth			= "显示萨拉的血量"
-	WarnFavor			= "提示萨拉的热诚的目标",
-	SpecWarnFavor			= "为萨拉的热诚显示特别警告",
-	SetIconOnFavorTarget		= "设置标记在萨拉的热诚的目标",
-	specWarnBrainPortalSoon		= "当传送门即将出现时显示特别警告",
-	SetIconOnMCTarget		= "设置标记在心控的目标",
-	RaidRageSpam			= "提示 成就:接吻和好 的时机"
+	SoundWOP = "为重要技能播放额外的警报语音",
+	WarningGuardianSpawned		= "为尤格萨隆的卫士出现显示警报",
+	WarningCrusherTentacleSpawned	= "为重压触须出现显示警报",
+	WarningSanity			= "当理智剩下50时显示警报",
+	SpecWarnSanity			= "当理智过低(25,15,5)时显示特别警报",
+	SpecWarnGuardianLow		= "当尤格萨隆的卫士(第1阶段)血量过低时显示特别警报 (输出职业用)",
+	WarnBrainPortalSoon		= "为脑部传送门显示提前警报",
+	SpecWarnMadnessOutNow		= "为疯狂诱导结束前显示特别警报",
+	SetIconOnFearTarget		= "为心灵疾病的目标设置标记 (骷髅)",
+	SpecWarnFervorCast		= "当萨拉的热情正在对你施放时显示特别警报 (必须至少有一名团队成员设置首领为焦点目标)",
+	specWarnBrainPortalSoon		= "为下一次脑部传送门显示特别警报",
+	WarningSqueeze			= "当你中了挤压(触须绑人)时大喊",
+	NextPortal			= "为下一次传送门显示计时条",
+	SetIconOnFervorTarget		= "为萨拉的热情的目标设置标记",
+	ShowSaraHealth			= "显示萨拉在第1阶段的血量 (必须至少有一名团队成员设置首领为焦点目标)",
+	SpecWarnMaladyNear		= "当你附近的人中了心灵疾病时显示特别警报",
+	SetIconOnBrainLinkTarget		= "为$spell:63802的目标设置标记",
+	SoundWarnIndoorGroup		= "当小队1、2(进门组)的队员在开门前后中了$spell:64125时播放语音",
+	SoundWarnTurnAround		= "当P3你的理智过低时语音提醒你转身的时机",
+	MaladyArrow			= "当你附近的人中了$spell:63881时显示DBM箭头"
+}
+
+L:SetMiscLocalization{
+	EmoteDoorOpen	= "通往尤格-萨隆思维的传送门打开了！"
 }

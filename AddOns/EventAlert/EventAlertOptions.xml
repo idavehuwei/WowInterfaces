@@ -57,7 +57,7 @@
 
         <Frames>
 
-            <Button name="$parent_ToggleIconOptions" inherits="OptionsButtonTemplate" text="EA_ICON_POSIZION_OPTION">
+            <Button name="$parent_ToggleIconOptions" inherits="OptionsButtonTemplate" text="EA_ICON_POSITION_OPTION">
                 <Anchors>
                     <Anchor point="TOP">
                         <Offset>
@@ -66,8 +66,8 @@
                     </Anchor>
                 </Anchors>
                 <Size>
-                    <AbsDimension x="165" y="21"/>
-                </Size>
+		            <AbsDimension x="165" y="21"/>
+        		</Size>
                 <Scripts>
                     <OnClick>
                         PlaySound("gsTitleOptionOK");
@@ -76,7 +76,7 @@
                 </Scripts>
             </Button>
 
-            <CheckButton name="$parent_ShowFrame" inherits="OptionsCheckButtonTemplate">
+        	<CheckButton name="$parent_ShowFrame" inherits="OptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT">
                         <Offset>
@@ -86,7 +86,7 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText(EA_SHOW_ALERTFRAME);
+                        getglobal(this:GetName().."Text"):SetText(EA_SHOW_ALERT_FRAME);
                     </OnLoad>
                     <OnClick>
                         if (this:GetChecked()) then
@@ -105,7 +105,7 @@
                 </Scripts>
             </CheckButton>
 
-            <CheckButton name="$parent_ShowName" inherits="OptionsCheckButtonTemplate">
+        	<CheckButton name="$parent_ShowName" inherits="OptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parent_ShowFrame" relativePoint="BOTTOMLEFT">
                         <Offset>
@@ -115,7 +115,7 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText(EA_SHOW_BUFF_NAME);
+                        getglobal(this:GetName().."Text"):SetText(EA_SHOW_BUFF );
                     </OnLoad>
                     <OnClick>
                         if (this:GetChecked()) then
@@ -144,7 +144,7 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText(EA_SHOW_BUFF_REMAIN);
+                        getglobal(this:GetName().."Text"):SetText(EA_SHOW_TIMER);
                     </OnLoad>
                     <OnClick>
                         if (this:GetChecked()) then
@@ -173,7 +173,7 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText(EA_MOFANG_OMNICC);
+                        getglobal(this:GetName().."Text"):SetText(EA_MIMIC_OMNICC);
                     </OnLoad>
                     <OnClick>
                         if (this:GetChecked()) then
@@ -193,7 +193,7 @@
             </CheckButton>
 
 
-            <CheckButton name="$parent_ShowFlash" inherits="OptionsCheckButtonTemplate">
+        	<CheckButton name="$parent_ShowFlash" inherits="OptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parent_ShowTimer" relativePoint="BOTTOMLEFT">
                         <Offset>
@@ -203,7 +203,7 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText(EA_SHOW_FULL_FLASH);
+                        getglobal(this:GetName().."Text"):SetText(EA_SHOW_FS_FLASH);
                     </OnLoad>
                     <OnClick>
                         if (this:GetChecked()) then
@@ -232,7 +232,7 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText(EA_PLAY_ALERT_SOUND);
+                        getglobal(this:GetName().."Text"):SetText(EA_PLAY_SOUND);
                     </OnLoad>
                     <OnClick>
                         if (this:GetChecked()) then
@@ -261,10 +261,10 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        EventAlert_Options_AlertSoundSelect_OnLoad();
+                    	EventAlert_Options_AlertSoundSelect_OnLoad();
                     </OnLoad>
-                    <OnShow>
-                        EventAlert_Options_AlertSoundSelect_OnLoad();
+					<OnShow>
+                    	EventAlert_Options_AlertSoundSelect_OnLoad();
                     </OnShow>
                     <OnEnter>
                         GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
@@ -287,7 +287,7 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText(EA_ESC_TO_CLOSE);
+                        getglobal(this:GetName().."Text"):SetText(EA_ESC_CLOSE_ALERT);
                     </OnLoad>
                     <OnClick>
                         if (this:GetChecked()) then
@@ -306,7 +306,7 @@
                 </Scripts>
             </CheckButton>
 
-            <CheckButton name="$parent_AltAlerts" inherits="OptionsCheckButtonTemplate">
+        	<CheckButton name="$parent_AltAlerts" inherits="OptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parent_AllowESC" relativePoint="BOTTOMLEFT">
                         <Offset>
@@ -316,17 +316,17 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText(EA_TOGGLE_ALTERNATE);
+                        getglobal(this:GetName().."Text"):SetText(EA_ENABLE_ALT_ALERTS);
                     </OnLoad>
                     <OnClick>
                         if (this:GetChecked()) then
                             EA_Config.AllowAltAlerts = true;
                             if (Class_Events_Frame:IsVisible()) then
-                                Alt_Alerts_Frame:Show();
+	                            Alt_Alerts_Frame:Show();
                             end
-                        else
+                         else
                             EA_Config.AllowAltAlerts = false;
-                            Alt_Alerts_Frame:Hide();
+							Alt_Alerts_Frame:Hide();
                         end
                     </OnClick>
                     <OnEnter>
@@ -339,7 +339,7 @@
                 </Scripts>
             </CheckButton>
 
-            <Button name="$parent_ToggleClassEvents" inherits="OptionsButtonTemplate" text="EA_TOGGLE_CLASS_ALERT">
+            <Button name="$parent_ToggleClassEvents" inherits="OptionsButtonTemplate" text="EA_TOGGLE_CLASS_FRAME">
                 <Anchors>
                     <Anchor point="BOTTOM">
                         <Offset>
@@ -348,8 +348,8 @@
                     </Anchor>
                 </Anchors>
                 <Size>
-                    <AbsDimension x="175" y="21"/>
-                </Size>
+		            <AbsDimension x="175" y="21"/>
+        		</Size>
                 <Scripts>
                     <OnClick>
                         PlaySound("gsTitleOptionOK");
@@ -367,8 +367,8 @@
                     </Anchor>
                 </Anchors>
                 <Size>
-                    <AbsDimension x="75" y="21"/>
-                </Size>
+		            <AbsDimension x="75" y="21"/>
+        		</Size>
                 <Scripts>
                     <OnClick>
                         PlaySound("gsTitleOptionOK");
@@ -384,15 +384,20 @@
 
         <Scripts>
             <OnLoad>
-                this:RegisterForDrag("LeftButton");
+	            this:RegisterForDrag("LeftButton");
                 EventAlert_Options_OnLoad();
             </OnLoad>
-            <OnMouseDown>
-                EventAlert_Options_MouseDown(button);
-            </OnMouseDown>
-            <OnMouseUp>
-                EventAlert_Options_MouseUp(button);
-            </OnMouseUp>
+        	<OnMouseDown>
+	        	EventAlert_Options_MouseDown(button);
+	      	</OnMouseDown>
+	      	<OnMouseUp>
+	        	EventAlert_Options_MouseUp(button);
+	      	</OnMouseUp>
+			<OnHide>
+				EA_Anchor_Frame:Hide();
+				EA_Anchor_Frame2:Hide();
+				EA_Anchor_Frame3:Hide();
+			</OnHide>
         </Scripts>
 
     </Frame>

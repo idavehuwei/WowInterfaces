@@ -1,0 +1,24 @@
+tag 3.0.3
+bbd991ef68d5acd4ae3673fdda8399f69b498a4f
+Hendrik Leppkes <h.leppkes@gmail.com>
+2010-04-10 16:12:13 +0200
+
+Tag as 3.0.3
+
+
+--------------------
+
+Hendrik Leppkes:
+	- Added LSM callbacks for _Registered to be abel to use textures that are loaded after Quartz.
+	- Fix configuration of buff text color.
+	- Add dry-coded ConfigMode support.
+	Just simple ON/OFF handling, API taken from http://www.wowwiki.com/ConfigMode
+	- Added a global unlock mechanic to Player/Target/Focus/Pet bars.
+	- Moved cast time precision to a better place and fetch new locale.
+	- Added a global option to change the precision of the cast time on cast bars.
+	- Fix the tiling of the statusbars introduced by patch 3.3.3.
+	- Check if the returns of Unit(Casting|Channel)Info are valid.
+	- Properly disable the targetname option again.
+	- Move the "Target Name" option into the Player module.
+	The Target of a cast is only detectable for the player
+	at this point, and thus we only show the option for him.

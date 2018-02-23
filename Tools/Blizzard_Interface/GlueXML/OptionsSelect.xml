@@ -99,8 +99,8 @@
 							
 						</Frames>
 					</Frame>
-					<Button name="OptionsSelectResetSettingsButton" inherits="GlueButtonTemplateBlue" text="RESET_SETTINGS">
-						<Size x="220" y="37"/>
+					<Button name="OptionsSelectResetSettingsButton" inherits="GlueButtonSmallTemplateBlue" text="RESET_SETTINGS">
+						<Size x="220" y="38"/>
 						<Anchors>
 							<Anchor point="BOTTOMLEFT">
 								<Offset x="8" y="6"/>
@@ -112,8 +112,8 @@
 							</OnClick>
 						</Scripts>
 					</Button>
-					<Button name="$parentOkayButton" inherits="GlueButtonTemplateBlue" text="CLOSE">
-						<Size x="125" y="37"/>
+					<Button name="$parentOkayButton" inherits="GlueButtonSmallTemplateBlue" text="CLOSE">
+						<Size x="125" y="38"/>
 						<Anchors>
 							<Anchor point="BOTTOMRIGHT">
 								<Offset x="-8" y="6"/>

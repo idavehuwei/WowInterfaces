@@ -78,6 +78,12 @@ function Recount:UpdateZoneGroupFilter()
 	end
 
 	_, instanceType = IsInInstance()
+	if instanceType == "none" then -- Check if we are in an open area combat zone (ala Wintergrasp)
+		pvpType = GetZonePVPInfo()
+		if pvpType == "combat" then
+			instanceType = "pvp"
+		end
+	end
 	if not UnitIsGhost(Recount.PlayerName) then Recount:SetZoneGroupFilter(instanceType, groupType) end -- Use zone-based filters.
 end
 

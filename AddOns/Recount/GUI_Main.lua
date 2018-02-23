@@ -4,7 +4,7 @@ local Events = LibStub("AceEvent-3.0")
 local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:GetLocale( "Recount" )
 
-local revision = tonumber(string.sub("$Revision: 1034 $", 12, -3))
+local revision = tonumber(string.sub("$Revision: 1069 $", 12, -3))
 local Recount = _G.Recount
 if Recount.Version < revision then Recount.Version = revision end
 
@@ -116,7 +116,7 @@ function Recount:SetupBar(row)
 	row.LeftText:SetTextColor(1,1,1,1)
 	me:SetFontSize(row.LeftText,math_max(Recount.db.profile.MainWindow.RowHeight*0.75,Recount.db.profile.MainWindow.RowHeight-3))
 	Recount:AddFontString(row.LeftText)
-
+	
 	row.RightText=row.StatusBar:CreateFontString(nil,"OVERLAY","GameFontHighlightSmall")
 	row.RightText:SetPoint("RIGHT", row.StatusBar,"RIGHT",-2)
 	row.RightText:SetJustifyH("RIGHT")
@@ -144,20 +144,20 @@ function me:CreateRow(num)
 		return
 	end
 
-
+	
 	local row=CreateFrame("Button","Recount_MainWindow_Bar"..num,Recount.MainWindow)
-
+	
 	row:SetPoint("TOPLEFT",Recount.MainWindow,"TOPLEFT",2,-32-(Recount.db.profile.MainWindow.RowHeight+Recount.db.profile.MainWindow.RowSpacing)*(num-1+offs))
 	row:SetHeight(Recount.db.profile.MainWindow.RowHeight)
 	row:SetWidth(Recount.MainWindow:GetWidth()-4)
 	if num ~= 0 then
-		row:SetScript("OnClick", function(self,button)
+		row:SetScript("OnClick", function(self,button) 
 						if button=="RightButton" then
 							Recount:BarDropDownOpen(self)
 							CloseDropDownMenus(1)
 							ToggleDropDownMenu(1, nil, Recount_BarDropDownMenu)
 						elseif type(self.clickFunc)=="function" and self.clickData then
-							self:clickFunc(self.clickData)
+							self:clickFunc(self.clickData)						
 						end
 					end)
 		row:SetScript("OnEnter", function(self) GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT");Recount.MainWindow:TooltipFunc(self.Name,self.TooltipData);GameTooltip:Show() end)
@@ -170,10 +170,10 @@ function me:CreateRow(num)
 	else
 		row:EnableMouse(false)
 	end
-
+	
 	--Add code for the button later
 	Recount:SetupBar(row)
-
+	
 	Recount.MainWindow.Rows[num]=row
 	Recount.MainWindow.RowsCreated=num
 	Recount:UpdateBarTextColor(num)
@@ -194,7 +194,7 @@ function Recount_CreateBarDropdown(self,level)
 		UIDropDownMenu_AddButton(info, level)
 
 		info = {}
-
+		
 		info.isTitle		= nil
 		info.notCheckable	= 1
 		info.disabled		= nil
@@ -212,7 +212,7 @@ function Recount_CreateBarDropdown(self,level)
 		--info.arg1 = me
 		info.arg1 = self.relativeTo.name
 		UIDropDownMenu_AddButton(info, level)
-
+		
 		info.text		= L["Add to Current Graph (Alt Click)"]
 		info.notCheckable	= 1
 		info.func = me.AddCombatantToGraph
@@ -254,17 +254,17 @@ function Recount:DeleteCombatant(name)
 			end
 		end
 	end
-
+	
 	if dbCombatants[name].Pet then
 		for k,v in pairs(dbCombatants[name].Pet) do
 			me:DeleteCombatant(v) -- Elsia: Delete all pets with owner
 		end
 	end
-
+	
 	Recount:DeleteGuardianOwnerByGUID(dbCombatants[name])
-
+	
 	dbCombatants[name]=nil
-
+	
 	Recount.NewData = true
 end
 
@@ -285,13 +285,13 @@ end
 function me:FixRow(i)
 	local row=Recount.MainWindow.Rows[i]
 	local MaxNameWidth=row:GetWidth()-row.RightText:GetStringWidth()-4
-
+	
 	if MaxNameWidth<16 then
 		MaxNameWidth=16
 	end
 
 	local LText=row.LeftText:GetText()
-
+	
 	while row.LeftText:GetStringWidth()>MaxNameWidth do
 		LText=strsub(LText,1,#LText-1)
 		row.LeftText:SetText(LText.."...")
@@ -337,11 +337,11 @@ function me:SetBar(num,left,right,value,colorgroup, colorclass ,clickData,clickF
 	if not Recount.db.profile.MainWindow.HideTotalBar then
 		rowmin = 0
 	end
-
+	
 	if num<rowmin or not Recount.MainWindow.Rows[num] then
 		return
 	end
-
+	
 	local Row=Recount.MainWindow.Rows[num]
 	Row:Show()
 	Row.StatusBar:SetValue(value)
@@ -360,7 +360,7 @@ function me:SetBar(num,left,right,value,colorgroup, colorclass ,clickData,clickF
 	      Recount.Colors:RegisterFont(colorgroup,Recount:FixUnitString(colorclass),Row.RightText)
 	      --Row.StatusBar:SetStatusBarColor(color.r,color.g,color.b,1)
 	   end
-
+	   
 
 	   Row.StatusBar:SetVertexColor(Recount.db.profile.Colors.Bar["Bar Text"].r,Recount.db.profile.Colors.Bar["Bar Text"].g,Recount.db.profile.Colors.Bar["Bar Text"].b,Recount.db.profile.Colors.Bar["Bar Text"].a);
 	else
@@ -369,7 +369,7 @@ function me:SetBar(num,left,right,value,colorgroup, colorclass ,clickData,clickF
 	      Recount.Colors:RegisterTexture(colorgroup,Recount:FixUnitString(colorclass),Row.StatusBar)
 	      --Row.StatusBar:SetStatusBarColor(color.r,color.g,color.b,1)
 	   end
-
+	   
 	   Row.LeftText:SetTextColor(Recount.db.profile.Colors.Bar["Bar Text"].r,Recount.db.profile.Colors.Bar["Bar Text"].g,Recount.db.profile.Colors.Bar["Bar Text"].b,Recount.db.profile.Colors.Bar["Bar Text"].a);
 	   Row.RightText:SetTextColor(Recount.db.profile.Colors.Bar["Bar Text"].r,Recount.db.profile.Colors.Bar["Bar Text"].g,Recount.db.profile.Colors.Bar["Bar Text"].b,Recount.db.profile.Colors.Bar["Bar Text"].a);
 	end
@@ -397,16 +397,16 @@ function Recount:UpdateBarTextColors()
 end
 
 --[[function me:SetBarColors(r,g,b)
-
+	
 	self:SetStatusBarColor(r,g,b,1)
 end]]
 
 function Recount:ResizeMainWindow()
 	--How many bars do we have now?
 	local Bars=math_floor((Recount.MainWindow:GetHeight()-32.95)/(Recount.db.profile.MainWindow.RowHeight+Recount.db.profile.MainWindow.RowSpacing))
-
+	
 	local minbar
-
+	
 	if not Recount.db.profile.MainWindow.HideTotalBar then
 		minbar = 0
 		Bars = Bars - 1
@@ -419,7 +419,7 @@ function Recount:ResizeMainWindow()
 	if not Recount.db.profile.MainWindow.HideTotalBar and not Recount.MainWindow.Rows[0] then -- Elsia: Create Total Bar
 		me:CreateRow(0)
 	end
-
+	
 	if Bars<Recount.MainWindow.CurRows then
 		for i=Bars+1,Recount.MainWindow.CurRows do
 			Recount.MainWindow.Rows[i]:Hide()
@@ -429,7 +429,7 @@ function Recount:ResizeMainWindow()
 			me:CreateRow(i)
 		end
 	end
-
+	
 	--Update all the bar widths
 	local CurWidth=Recount.MainWindow:GetWidth()-4
 	for i=minbar,Bars do
@@ -452,14 +452,14 @@ function Recount:CreateMainWindow()
 
 	theFrame:SetResizable(true)
 	theFrame:SetMinResize(140,63)
-	theFrame:SetMaxResize(400,520)
+	theFrame:SetMaxResize(400,520)		
 
 	theFrame.SaveMainWindowPosition = Recount.SaveMainWindowPosition
-
+	
 	theFrame:SetScript("OnSizeChanged", function(self)
 						if ( self.isResizing ) then
 							Recount:ResizeMainWindow()
-
+							
 							Recount.db.profile.MainWindowHeight=self:GetHeight()
 							Recount.db.profile.MainWindowWidth=self:GetWidth()
 						end
@@ -468,7 +468,7 @@ function Recount:CreateMainWindow()
 	theFrame.TitleClick=CreateFrame("FRAME",nil,theFrame)
 	theFrame.TitleClick:SetAllPoints(theFrame.Title)
 	theFrame.TitleClick:EnableMouse(true)
-	theFrame.TitleClick:SetScript("OnMouseDown",function(self,button)
+	theFrame.TitleClick:SetScript("OnMouseDown",function(self,button) 
 							if button=="RightButton" then
 								Recount:ModeDropDownOpen(self)
 								ToggleDropDownMenu(1, nil, Recount_ModeDropDownMenu)
@@ -481,7 +481,7 @@ function Recount:CreateMainWindow()
 							  parent.isMoving = true;
 							 end
 							end)
-	theFrame.TitleClick:SetScript("OnMouseUp", function(self)
+	theFrame.TitleClick:SetScript("OnMouseUp", function(self) 
 						local parent=self:GetParent()
 						if ( parent.isMoving ) then
 						  parent:StopMovingOrSizing();
@@ -501,8 +501,8 @@ function Recount:CreateMainWindow()
 	theFrame.DragBottomRight = CreateFrame("Button", "RecountResizeGripRight", theFrame) -- Grip Buttons from Omen2
 	theFrame.DragBottomRight:Show()
 	theFrame.DragBottomRight:SetFrameLevel( theFrame:GetFrameLevel() + 10)
-	theFrame.DragBottomRight:SetNormalTexture("Interface\\AddOns\\Recount\\ResizeGripRight")
-	theFrame.DragBottomRight:SetHighlightTexture("Interface\\AddOns\\Recount\\ResizeGripRight")
+	theFrame.DragBottomRight:SetNormalTexture("Interface\\AddOns\\Recount\\textures\\ResizeGripRight")
+	theFrame.DragBottomRight:SetHighlightTexture("Interface\\AddOns\\Recount\\textures\\ResizeGripRight")
 	theFrame.DragBottomRight:SetWidth(16)
 	theFrame.DragBottomRight:SetHeight(16)
 	theFrame.DragBottomRight:SetPoint("BOTTOMRIGHT", theFrame, "BOTTOMRIGHT", 0, 0)
@@ -512,8 +512,8 @@ function Recount:CreateMainWindow()
 	theFrame.DragBottomLeft = CreateFrame("Button", "RecountResizeGripLeft", theFrame)
 	theFrame.DragBottomLeft:Show()
 	theFrame.DragBottomLeft:SetFrameLevel( theFrame:GetFrameLevel() + 10)
-	theFrame.DragBottomLeft:SetNormalTexture("Interface\\AddOns\\Recount\\ResizeGripLeft")
-	theFrame.DragBottomLeft:SetHighlightTexture("Interface\\AddOns\\Recount\\ResizeGripLeft")
+	theFrame.DragBottomLeft:SetNormalTexture("Interface\\AddOns\\Recount\\textures\\ResizeGripLeft")
+	theFrame.DragBottomLeft:SetHighlightTexture("Interface\\AddOns\\Recount\\textures\\ResizeGripLeft")
 	theFrame.DragBottomLeft:SetWidth(16)
 	theFrame.DragBottomLeft:SetHeight(16)
 	theFrame.DragBottomLeft:SetPoint("BOTTOMLEFT", theFrame, "BOTTOMLEFT", 0, 0)
@@ -521,14 +521,15 @@ function Recount:CreateMainWindow()
 	theFrame.DragBottomLeft:SetScript("OnMouseDown", function(self,button) if ((( not self:GetParent().isLocked ) or ( self:GetParent().isLocked == 0 ) ) and ( button == "LeftButton" ) ) then self:GetParent().isResizing = true; self:GetParent():StartSizing("BOTTOMLEFT") end end ) -- Elsia: disallow resizing when locked.
 	theFrame.DragBottomLeft:SetScript("OnMouseUp", function(self,button) if self:GetParent().isResizing == true then self:GetParent():StopMovingOrSizing(); self:GetParent():SaveMainWindowPosition(); self:GetParent().isResizing = false; end end )
 	--Recount:ShowGrips(not Recount.db.profile.Locked)
-
+	
 	theFrame.RightButton=CreateFrame("Button",nil,theFrame)
 	theFrame.RightButton:SetNormalTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Up.blp")
-	theFrame.RightButton:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Down.blp")
+	theFrame.RightButton:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Down.blp")	
 	theFrame.RightButton:SetHighlightTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Highlight.blp")
 	theFrame.RightButton:SetWidth(16)
 	theFrame.RightButton:SetHeight(18)
-	theFrame.RightButton:SetPoint("TOPRIGHT",theFrame,"TOPRIGHT",-38+16,-12)
+--	theFrame.RightButton:SetPoint("TOPRIGHT",theFrame,"TOPRIGHT",-38+16,-12)
+	theFrame.RightButton:SetPoint("RIGHT",theFrame.CloseButton,"LEFT",0,0)
 	theFrame.RightButton:SetScript("OnClick",function() Recount:MainWindowNextMode() end)
 	theFrame.RightButton:SetFrameLevel(theFrame.RightButton:GetFrameLevel()+1)
 
@@ -553,14 +554,14 @@ function Recount:CreateMainWindow()
 
 	theFrame.FileButton=CreateFrame("Button",nil,theFrame)
 	theFrame.FileButton:SetNormalTexture("Interface\\Buttons\\UI-GuildButton-PublicNote-Up.blp")
-	theFrame.FileButton:SetPushedTexture("Interface\\Buttons\\UI-GuildButton-PublicNote-Down.blp")
+	theFrame.FileButton:SetPushedTexture("Interface\\Buttons\\UI-GuildButton-PublicNote-Down.blp")	
 	theFrame.FileButton:SetHighlightTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Highlight.blp")
 	theFrame.FileButton:SetWidth(16)
 	theFrame.FileButton:SetHeight(16)
 	theFrame.FileButton:SetPoint("RIGHT",theFrame.ResetButton,"LEFT",0,0)
-	theFrame.FileButton:SetScript("OnClick",function(self)
+	theFrame.FileButton:SetScript("OnClick",function(self) 
 						Recount:FightDropDownOpen(self)
-						ToggleDropDownMenu(1, nil, Recount_FightDropDownMenu)
+						ToggleDropDownMenu(1, nil, Recount_FightDropDownMenu) 
 						end)
 	theFrame.FileButton:SetFrameLevel(theFrame.FileButton:GetFrameLevel()+1)
 
@@ -585,16 +586,12 @@ function Recount:CreateMainWindow()
 	Recount.MainWindow.Rows={}
 	Recount.MainWindow.CurRows=0
 	Recount.MainWindow.RowsCreated=0
-
+	
 	Recount.MainWindow.DispTableSorted={}
 	Recount.MainWindow.DispTableLookup={}
 
 	theFrame.SavePosition=Recount.SaveMainWindowPosition
-	local Profile_X = Recount.db.profile.MainWindow.Position.x;
-	local Profile_Y = Recount.db.profile.MainWindow.Position.y;
-	local Profile_W = Recount.db.profile.MainWindow.Position.w;
-	local Profile_H = Recount.db.profile.MainWindow.Position.h;
-	Recount:RestoreMainWindowPosition(Profile_X,Profile_Y,Profile_W,Profile_H)
+	Recount:RestoreMainWindowPosition(Recount.db.profile.MainWindow.Position.x,Recount.db.profile.MainWindow.Position.y,Recount.db.profile.MainWindow.Position.w,Recount.db.profile.MainWindow.Position.h)
 	--Recount:ResizeMainWindow()
 	Recount:SetupMainWindowButtons()
 	Recount.MainWindow.timeid=Recount:ScheduleRepeatingTimer("RefreshMainWindow",1,true)
@@ -613,7 +610,7 @@ function Recount:SetupMainWindowButtons()
 			--Have to use width of 1 since 0 is invalid but you can't tell the diff really
 			Recount.MainWindow[k]:SetWidth(1)
 			Recount.MainWindow[k]:Hide()
-
+			
 		end
 	end
 end
@@ -658,9 +655,9 @@ function Recount:SetMainWindowMode(mode)
 	Recount.db.profile.MainWindowMode=mode
 	Recount.DetailMode=1
 	local data=Recount.MainWindowData[mode]
-	Recount.MainWindow.Title:SetText(data[1])			-- 标题
-	Recount.MainWindow.GetData=data[2]			-- 获取数据
-	Recount.MainWindow.TooltipFunc=data[3]			-- 提示信息
+	Recount.MainWindow.Title:SetText(data[1])
+	Recount.MainWindow.GetData=data[2]
+	Recount.MainWindow.TooltipFunc=data[3]
 	Recount.MainWindow.SpecialTotal=data[4]
 	Recount.MainWindow.RealtimeSettings=data[5]
 	Recount:FreeTableRecurseLimit(Recount.MainWindow.DispTableSorted,1)
@@ -708,7 +705,7 @@ end
 
 function Recount:DetailWindowNextMode()
 	local _, Data=Recount.MainWindow:GetData(dbCombatants[Recount.MainWindow.Selected])
-
+	
 	local mode=Recount.DetailMode+1
 	if not Data or type(Data)~="table" or mode>table.maxn(Data) then
 		mode=1
@@ -727,7 +724,7 @@ function Recount:DetailWindowPrevMode()
 	end
 	Recount.DetailMode=mode
 	Recount.DetailWindow.Locked=false
-
+	
 	me:MainWindowSelectPlayer(Recount.MainWindow.Selected)
 end
 
@@ -736,12 +733,12 @@ function me:MainWindowSelectPlayer(name)
 		me:ShowGraphWindow(name)
 		return
 	end
-
+	
 	if IsControlKeyDown() and IsAltKeyDown() then -- Elsia: Add delete combatant feature
 		me:DeleteCombatant(name)
 		return
 	end
-
+	
 	local Settings=Recount.MainWindow.RealtimeSettings
 	if IsControlKeyDown() and Settings then
 		Recount:CreateRealtimeWindow(name,Settings[1],Settings[2])
@@ -770,7 +767,7 @@ end
 
 function me:ShowDetail(name)
 	local _, Data=Recount.MainWindow:GetData(dbCombatants[name])
-
+	
 	if type(Data)=="table" then
 		Recount.MainWindow.Selected=name
 		local mode=Recount.DetailMode
@@ -796,14 +793,14 @@ function Recount:RefreshMainWindow(datarefresh)
 	if not MainWindow.GetData or not MainWindow:IsShown() then
 		return
 	end
-
+	
 	-- For periodic data refreshes, only refresh if we actually got new stored data.
 	if datarefresh and not Recount.NewData then
 		return
 	else
 		Recount.NewData = nil
 	end
-
+	
 	local data=Recount.db2.combatants
 	local i
 	local dispTable=MainWindow.DispTableSorted
@@ -815,16 +812,17 @@ function Recount:RefreshMainWindow(datarefresh)
 	if type(Recount.MainWindowData[Recount.db.profile.MainWindowMode][6])=="function" then
 		MainWindow.Title:SetText(Recount.MainWindowData[Recount.db.profile.MainWindowMode][6]())
 	end
-
+	
+	
 	for k,v in pairs(lookup) do
-		if v[4].Fights[Recount.db.profile.CurDataSet] then
+		if v[4].Fights[Recount.db.profile.CurDataSet] then			
 			Value=MainWindow:GetData(v[4],1)
 		else
 			Value=0
 		end
 		if Value<=0 then
 			lookup[k]=nil
-
+					
 			for k2,v2 in pairs(dispTable) do
 				if v2[1]==v[4] then
 					table.remove(dispTable,k2)
@@ -845,7 +843,7 @@ function Recount:RefreshMainWindow(datarefresh)
 			if v and v.type and FiltersShow[v.type] and not (v.type == "Pet" and Recount.db.profile.MergePets and v.Owner and Combatants[v.Owner] and not FiltersShow[Combatants[v.Owner].type]) then -- Elsia: Added owner inheritance filtering for pets
 				if v.Fights and v.Fights[Recount.db.profile.CurDataSet] then
 					Value,PerSec=MainWindow:GetData(v,1)
-
+					
 					if Value>0 then
 						if v.type ~= "Pet" or not Recount.db.profile.MergePets then -- Elsia: Only add to total if not merging pets.
 							Total=Total+Value
@@ -853,7 +851,7 @@ function Recount:RefreshMainWindow(datarefresh)
 								TotalPerSec=TotalPerSec + PerSec
 							end
 						end
-
+						
 						if type(lookup[k])=="table" then
 							if Value~=lookup[k][2] then
 								lookup[k][1]=k
@@ -870,7 +868,7 @@ function Recount:RefreshMainWindow(datarefresh)
 						end
 					elseif type(lookup[k])=="table" then
 						lookup[k] = nil
-
+						
 						for k2,v2 in ipairs(dispTable) do
 							if v2[1]==k then
 								tremove(dispTable,k2)
@@ -884,7 +882,7 @@ function Recount:RefreshMainWindow(datarefresh)
 	end
 
 	local MainWindow_Settings = Recount.db.profile.MainWindow
-
+	
 	if noUpdates==false and table.maxn(dispTable)>0 then
 		table.sort(dispTable,sortFunc)
 		MaxValue=dispTable[1][2]
@@ -894,8 +892,8 @@ function Recount:RefreshMainWindow(datarefresh)
 	if table.getn(dispTable)>MainWindow.CurRows and MainWindow_Settings.ShowScrollbar == true then
 		RowWidth=MainWindow:GetWidth()-23
 	end
-
-	FauxScrollFrame_Update(MainWindow.ScrollBar, table.getn(dispTable), Recount.MainWindow.CurRows, 20)
+	
+		FauxScrollFrame_Update(MainWindow.ScrollBar, table.getn(dispTable), Recount.MainWindow.CurRows, 20)
 	local offset = FauxScrollFrame_GetOffset(MainWindow.ScrollBar)
 
 	if type(MainWindow.SpecialTotal)=="function" then
@@ -903,7 +901,7 @@ function Recount:RefreshMainWindow(datarefresh)
 	end
 
 	local rows = MainWindow.Rows
-
+	
 	local MainWindow_BarText_RankNum = MainWindow_Settings.BarText.RankNum
 	local MainWindow_BarText_PerSec = MainWindow_Settings.BarText.PerSec
 	local MainWindow_BarText_Percent = MainWindow_Settings.BarText.Percent
@@ -914,11 +912,11 @@ function Recount:RefreshMainWindow(datarefresh)
 		else
 			PerSec=""
 		end
-
+		
 		if not rows[0] then
 			me:CreateRow(0)
 		end
-
+		
 		local lefttext = MainWindow_BarText_RankNum and "0. "..L["Total"] or L["Total"]
 		local righttext = Recount:FormatLongNums(Total) --string_format("%.0f",Total)
 		if MainWindow_BarText_PerSec and PerSec ~= "" then
@@ -931,7 +929,7 @@ function Recount:RefreshMainWindow(datarefresh)
 		elseif MainWindow_BarText_Percent then
 			righttext = string_format("%s (%.1f%%)", righttext, 100.0)
 		end
-
+			
 		me:SetBar(0,lefttext,righttext,100,"Bar","Total Bar",L["Total"],nil,nil)	-- Recount.db.profile.Colors.Bar["Total Bar"]
 		me:FixRow(0)
 		rows[0].name="Total"
@@ -940,10 +938,10 @@ function Recount:RefreshMainWindow(datarefresh)
 	else
 		if rows[0] then rows[0]:Hide() end
 	end
-
+	
 	for i=1, MainWindow.CurRows do
 		local v=dispTable[i+offset]
-
+		
 		if v then
 			local percent=100*v[2]/Total
 			if v[5] then
@@ -967,7 +965,7 @@ function Recount:RefreshMainWindow(datarefresh)
 			elseif MainWindow_BarText_Percent then
 				righttext = string_format("%s (%.1f%%)", righttext, percent)
 			end
-
+			
 			me:SetBar(i,lefttext,righttext,100*v[2]/MaxValue,"Class",v[3],v[1],me.MainWindowSelectPlayer,v[4])
 			me:FixRow(i)
 			rows[i].name=v[1]
@@ -1029,7 +1027,7 @@ function me:CreateFightDropdown(level)
 		UIDropDownMenu_AddButton(info, level)
 
 		info.checked = nil
-
+		
 		info.text = L["Current Fight"]
 		if Recount.db.profile.CurDataSet == "CurrentFightData" or Recount.db.profile.CurDataSet == "LastFightData" then
 			info.checked = 1
@@ -1135,7 +1133,7 @@ function Recount:ReportData(amount,loc,loc2)
 			end
 		end
 	end
-
+	
 	if table.maxn(reportTable)>0 then
 		table.sort(reportTable,sortFunc)
 		maxValue=reportTable[1][2] or 0
@@ -1144,14 +1142,14 @@ function Recount:ReportData(amount,loc,loc2)
 	if type(dataMode[4])=="function" then
 		Total=Recount.MainWindow:SpecialTotal()
 	end
-
+	
 	if type(dataMode[6])=="function" then
 		SendChatMessage("Recount - "..dataMode[6](),loc,nil,loc2)
 	else
 		if ConvertDataSet[Recount.db.profile.CurDataSet] then
 			SendChatMessage("Recount - "..dataMode[1]..L[" for "]..ConvertDataSet[Recount.db.profile.CurDataSet],loc,nil,loc2)
 		elseif Recount.FightName then -- Elsia: Cover nil error here.
-			SendChatMessage("Recount - "..dataMode[1]..L[" for "]..Recount.FightName,loc,nil,loc2)
+			SendChatMessage("Recount - "..dataMode[1]..L[" for "]..Recount.FightName,loc,nil,loc2)		
 		end
 	end
 
@@ -1161,7 +1159,7 @@ function Recount:ReportData(amount,loc,loc2)
 		else
 			PerSec=""
 		end
-
+		
 		SendChatMessage("0. Total  "..(math_floor(10*Total)/10).." ("..PerSec..(math_floor(1000)/10).."%)",loc,nil,loc2)
 	end
 
@@ -1203,9 +1201,9 @@ function me:AddCombatantToGraph(name)
 
 	local DataName=GraphName[DataComparing]
 
+	
 
-
-	if (not Recount.GraphCompare) or (not Recount.GraphWindow:IsShown()) or Recount.GraphCompareMode~=DataComparing then
+	if (not Recount.GraphCompare) or (not Recount.GraphWindow:IsShown()) or Recount.GraphCompareMode~=DataComparing then		
 		Recount.GraphCompare=true
 		Recount.GraphCompareMode=DataComparing
 
@@ -1221,10 +1219,10 @@ function me:AddCombatantToGraph(name)
 		Recount:SetGraphData(DataName.." Comparison",{[name.."'s "..DataName]=dbCombatants[name].TimeData and dbCombatants[name].TimeData[DataComparing]},Recount.db2.CombatTimes)
 		return
 	end
-
+	
 	Recount.GraphWindow.Data[name.."'s "..DataName]=dbCombatants[name].TimeData and dbCombatants[name].TimeData[DataComparing]
 	Recount.GraphClass[name.."'s "..DataName]=dbCombatants[name].enClass
-	Recount:SetGraphData(DataName.." Comparison",Recount.GraphWindow.Data,Recount.db2.CombatTimes)
+	Recount:SetGraphData(DataName.." Comparison",Recount.GraphWindow.Data,Recount.db2.CombatTimes)	
 end
 
 function me:AddCombatantToGraphData(name)
@@ -1235,9 +1233,9 @@ function me:AddCombatantToGraphData(name)
 
 	local DataName=GraphName[DataComparing]
 
+	
 
-
-	if (not Recount.GraphCompare) or (not Recount.GraphWindow:IsShown()) or Recount.GraphCompareMode~=DataComparing then
+	if (not Recount.GraphCompare) or (not Recount.GraphWindow:IsShown()) or Recount.GraphCompareMode~=DataComparing then		
 		Recount.GraphCompare=true
 		Recount.GraphCompareMode=DataComparing
 
@@ -1254,7 +1252,7 @@ function me:AddCombatantToGraphData(name)
 		Recount.GraphWindow.Data[name.."'s "..DataName]=dbCombatants[name].TimeData[DataComparing]
 		return
 	end
-
+	
 	if dbCombatants[name].TimeData then
 		Recount.GraphWindow.Data[name.."'s "..DataName]=dbCombatants[name].TimeData[DataComparing]
 		Recount.GraphClass[name.."'s "..DataName]=dbCombatants[name].enClass
@@ -1281,7 +1279,7 @@ function Recount:SaveMainWindowPosition()
 	local uis = UIParent:GetScale()
 	xOfs = xOfs*s - GetScreenWidth()*uis/2
 	yOfs = yOfs*s - GetScreenHeight()*uis/2
-
+	
 	Recount.db.profile.MainWindow.Position.x=xOfs/uis
 	Recount.db.profile.MainWindow.Position.y=yOfs/uis
 	Recount.db.profile.MainWindow.Position.w=self:GetWidth()

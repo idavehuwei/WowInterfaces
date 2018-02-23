@@ -1,9 +1,8 @@
-local mod = DBM:NewMod("Gothik", "DBM-Naxx", 4)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Gothik", "DBM-Naxx", 4)
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 464 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4523 $"):sub(12, -3))
 mod:SetCreatureID(16060)
-mod:SetZone()
 
 mod:RegisterCombat("combat")
 
@@ -15,7 +14,7 @@ local warnWaveNow		= mod:NewAnnounce("WarningWaveSpawned", 3, nil, false)
 local warnWaveSoon		= mod:NewAnnounce("WarningWaveSoon", 1)
 local warnRiderDown		= mod:NewAnnounce("WarningRiderDown", 4)
 local warnKnightDown	= mod:NewAnnounce("WarningKnightDown", 2)
-local warnPhase2		= mod:NewAnnounce("WarningPhase2", 4)
+local warnPhase2		= mod:NewPhaseAnnounce(2, 4)
 
 local timerPhase2		= mod:NewTimer(270, "TimerPhase2", 27082) 
 local timerWave			= mod:NewTimer(20, "TimerWave", 27082)
@@ -79,7 +78,7 @@ local function getWaveString(wave)
 end
 
 function mod:OnCombatStart(delay)
-	if GetCurrentDungeonDifficulty() == 2 then
+	if mod:IsDifficulty("normal25") then
 		waves = wavesHeroic
 	else
 		waves = wavesNormal

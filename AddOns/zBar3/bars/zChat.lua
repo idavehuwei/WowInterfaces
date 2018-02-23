@@ -1,1 +1,0 @@
-DEFAULT_CHAT_FRAME.editBox:SetClampedToScreen(true)

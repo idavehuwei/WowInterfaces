@@ -1,12 +1,33 @@
 --[[
 
+	Atlas, a World of Warcraft instance map browser
+	Copyright 2005-2010 Dan Gilbert <dan.b.gilbert@gmail.com>
+
+	This file is part of Atlas.
+
+	Atlas is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation; either version 2 of the License, or
+	(at your option) any later version.
+
+	Atlas is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with Atlas; if not, write to the Free Software
+	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+--]]
+
 -- Atlas Localization Data (Chinese)
 -- Initial translation by DiabloHu
 -- Version : Chinese (by DiabloHu)
--- Last Update : 4/23/2009
+-- $Date: 2010-08-01 20:29:57 +0930 (Sun, 01 Aug 2010) $
+-- $Revision: 945 $
 -- http://ngacn.cc
 
---]]
 
 if ( GetLocale() == "zhCN" ) then
 
@@ -27,34 +48,23 @@ AtlasBGLocale = {
 	["Start"] = "起始点";
 	["Summon"] = "召唤";
 	["White"] = "白色";
-	
+
 	--Places
-	["Alterac Mountains"] = "奥特兰克山脉";
-	["Alterac Valley"] = "奥特兰克山谷"; ["AV"] = "AV";
-	["Arathi Basin"] = "阿拉希盆地"; ["AB"] = "AB";
-	["Arathi Highlands"] = "阿拉希高地";
-	["Ashenvale"] = "灰谷";
-	["Dragonblight"] = "龙骨荒野";
-	["Eastern Kingdoms"] = "东部王国";
+	["AV"] = "AV"; -- Alterac Valley
+	["AB"] = "AB"; -- Arathi Basin
 	["Eye of the Storm"] = "风暴之眼"; ["EotS"] = "EotS";
-	["Hillsbrad Foothills"] = "希尔斯布莱德丘陵";
-	["Kalimdor"] = "卡利姆多";
-	["Netherstorm"] = "虚空风暴";
-	["Outland"] = "外域";
-	["Strand of the Ancients"] = "远古海滩"; ["SotA"] = "SotA";
-	["The Barrens"] = "贫瘠之地";
-	["Warsong Gulch"] = "战歌峡谷"; ["WSG"] = "WSG";
+	["IoC"] = "IoC"; -- Isle of Conquest
+	["SotA"] = "SotA"; -- Strand of the Ancients
+	["WSG"] = "WSG"; -- Warsong Gulch
 
 	--Alterac Valley (North)
 	["Stormpike Guard"] = "雷矛卫队";
-	["Dun Baldar"] = "丹巴达尔";
 	["Vanndar Stormpike <Stormpike General>"] = "范达尔·雷矛 <雷矛将军>";
 	["Dun Baldar North Marshal"] = "丹巴达尔北部统帅";
 	["Dun Baldar South Marshal"] = "丹巴达尔南部统帅";
 	["Icewing Marshal"] = "冰翼统帅";
 	["Stonehearth Marshal"] = "石炉统帅";
 	["Prospector Stonehewer"] = "勘查员塔雷·石镐";
-	["Irondeep Mine"] = "深铁矿洞";
 	["Morloch"] = "莫洛克";
 	["Umi Thorson"] = "乌米·索尔森";
 	["Keetar"] = "基塔尔";
@@ -79,21 +89,14 @@ AtlasBGLocale = {
 	["Dun Baldar South Bunker"] = "丹巴达尔南部碉堡";
 	["Corporal Noreg Stormpike"] = "诺雷格·雷矛中尉";
 	["Gaelden Hammersmith <Stormpike Supply Officer>"] = "盖尔丁 <雷矛军需官>";
-	["Stormpike Graveyard"] = "雷矛墓地";
-	["Icewing Cavern"] = "冰翼洞穴";
 	["Stormpike Banner"] = "雷矛军旗";
 	["Stormpike Lumber Yard"] = "雷矛伐木场";
 	["Wing Commander Jeztor"] = "空军指挥官杰斯托";--omitted from AVS
-	["Icewing Bunker"] = "冰翼碉堡";
 	["Wing Commander Guse"] = "空军指挥官古斯";--omitted from AVS
-	["Stonehearth Graveyard"] = "石炉墓地";
 	["Stormpike Ram Rider Commander"] = "雷矛山羊骑兵指挥官";
-	["Stonehearth Outpost"] = "石炉哨站";
 	["Captain Balinda Stonehearth <Stormpike Captain>"] = "巴琳达·斯通赫尔斯 <雷矛上尉>";
-	["Snowfall Graveyard"] = "雪落墓地";
 	["Ichman's Beacon"] = "艾克曼的信号灯";
 	["Mulverick's Beacon"] = "穆维里克的信号灯";
-	["Stonehearth Bunker"] = "石炉碉堡";
 	["Ivus the Forest Lord"] = "森林之王伊弗斯";
 	["Western Crater"] = "西部平原";
 	["Vipore's Beacon"] = "维波里的信号灯";
@@ -107,7 +110,6 @@ AtlasBGLocale = {
 
 	--Alterac Valley (South)
 	["Frostwolf Clan"] = "霜狼氏族";
-	["Frostwolf Keep"] = "霜狼要塞";
 	["Drek'Thar <Frostwolf General>"] = "德雷克塔尔 <霜狼将军>";
 	["Duros"] = "杜洛斯";
 	["Drakan"] = "德拉卡";
@@ -116,16 +118,12 @@ AtlasBGLocale = {
 	["Tower Point Warmaster"] = "哨塔高地将领";
 	["Iceblood Warmaster"] = "冰血将领";
 	["Lokholar the Ice Lord"] = "冰雪之王洛克霍拉";
-	["Iceblood Garrison"] = "冰血要塞";
 	["Captain Galvangar <Frostwolf Captain>"] = "加尔范上尉 <霜狼上尉>";
 	["Iceblood Tower"] = "冰血哨塔";
-	["Iceblood Graveyard"] = "冰血墓地";
 	["Tower Point"] = "哨塔高地";
-	["Coldtooth Mine"] = "冷齿矿洞";
 	["Taskmaster Snivvle"] = "工头斯尼维尔";
 	["Masha Swiftcut"] = "玛莎";
 	["Aggi Rumblestomp"] = "埃其";
-	["Frostwolf Graveyard"] = "霜狼墓地";
 	["Jotek"] = "乔泰克";
 	["Smith Regzar"] = "铁匠雷格萨";
 	["Primalist Thurloga"] = "指挥官瑟鲁加";
@@ -136,42 +134,87 @@ AtlasBGLocale = {
 	["West Frostwolf Tower"] = "西部霜狼哨塔";
 	["East Frostwolf Tower"] = "东部霜狼哨塔";
 	["Frostwolf Relief Hut"] = "霜狼急救站";
-	["Wildpaw Cavern"] = "蛮爪洞穴";
 	["Frostwolf Banner"] = "霜狼军旗";
 
 	--Arathi Basin
 	["The Defilers"] = "污染者";
 	["The League of Arathor"] = "阿拉索联军";
-	["Trollbane Hall"] = "托尔贝恩大厅";
-	["Defiler's Den"] = "污染者之穴";
-	["Stables"] = "兽栏";
-	["Gold Mine"] = "金矿";
-	["Smithy"] = "铁匠铺";
-	["Lumber Mill"] = "伐木场";
-	["Farm"] = "农场";
-
-	--Warsong Gulch
-	["Warsong Outriders"] = "战歌侦察骑兵";
-	["Silverwing Sentinels"] = "银翼要塞";
-	["Silverwing Hold"] = "银翼要塞";
-	["Warsong Lumber Mill"] = "战歌伐木场";
 
 	--Eye of the Storm
-	["Graveyard"] = "墓地";
 	["Flag"] = "旗帜";
-	["Mage Tower"] = "法师塔";
-	["Draenei Ruins"] = "德莱尼废墟";
-	["Fel Reaver Ruins"] = "魔能机甲废墟";
-	["Blood Elf Tower"] = "血精灵塔";
-	
+
+	--Isle of Conquest
+	["The Refinery"] = "精炼厂";
+	["The Docks"] = "码头";
+	["The Workshop"] = "工坊";
+	["The Hangar"] = "机棚";
+	["The Quarry"] = "矿场";
+	["Contested Graveyards"] = "争夺中的墓地";
+	["Horde Graveyard"] = "部落墓地";
+	["Alliance Graveyard"] = "联盟墓地";
+	["Gates are marked with red bars."] = "闸门以红条标记.";
+	["Overlord Agmar"] = "霸主阿格玛";
+	["High Commander Halford Wyrmbane <7th Legion>"] = "最高指挥官海弗德•龙祸";
+
 	--Strand of the Ancients
 	["Attacking Team"] = "进攻方";
 	["Defending Team"] = "防守方";
-	["Massive Seaforium Charge"] = "Massive Seaforium Charge";
+	["Massive Seaforium Charge"] = "大型爆盐炸弹";
 	["Battleground Demolisher"] = "战场攻城车";
 	["Resurrection Point"] = "复活点";
 	["Graveyard Flag"] = "墓地旗帜";
 	["Titan Relic"] = "泰坦圣物";
 	["Gates are marked with their colors."] = "大门以其颜色进行了标记。";
+
+	--Warsong Gulch
+	["Warsong Outriders"] = "战歌侦察骑兵";
+	["Silverwing Sentinels"] = "银翼要塞";
+
+	-- Hellfire Peninsula PvP 
+	["Hellfire Fortifications"] = "防御工事";
+	
+	-- Zangarmarsh PvP
+	["West Beacon"] = "West Beacon"; -- Need translation
+	["East Beacon"] = "East Beacon"; -- Need translation
+	["Twinspire Graveyard"] = "Twinspire Graveyard"; -- Need translation
+	["Alliance Field Scout"] = "Alliance Field Scout"; -- Need translation
+	["Horde Field Scout"] = "Horde Field Scout"; -- Need translation
+	
+	-- Terokkar Forest PvP
+	["Auchindoun Spirit Towers"] = "Auchindoun Spirit Towers"; -- Need translation
+
+	-- Halaa
+	["Wyvern Camp"] = "Wyvern Camp"; -- Need translation
+	["Quartermaster Jaffrey Noreliqe"] = "Quartermaster Jaffrey Noreliqe"; -- Need translation
+	["Quartermaster Davian Vaclav"] = "Quartermaster Davian Vaclav"; -- Need translation
+	["Chief Researcher Amereldine"] = "Chief Researcher Amereldine"; -- Need translation
+	["Chief Researcher Kartos"] = "Chief Researcher Kartos"; -- Need translation
+	["Aldraan <Blade Merchant>"] = "Aldraan <Blade Merchant>"; -- Need translation
+	["Banro <Ammunition>"] = "Banro <Ammunition>"; -- Need translation
+	["Cendrii <Food & Drink>"] = "Cendrii <Food & Drink>"; -- Need translation
+	["Coreiel <Blade Merchant>"] = "Coreiel <Blade Merchant>"; -- Need translation
+	["Embelar <Food & Drink>"] = "Embelar <Food & Drink>"; -- Need translation
+	["Tasaldan <Ammunition>"] = "Tasaldan <Ammunition>"; -- Need translation
+
+	-- Wintergrasp
+	["Fortress Vihecal Workshop (E)"] = "Fortress Vihecal Workshop (E)"; -- Need translation
+	["Fortress Vihecal Workshop (W)"] = "Fortress Vihecal Workshop (W)"; -- Need translation
+	["Sunken Ring Vihecal Workshop"] = "Sunken Ring Vihecal Workshop"; -- Need translation
+	["Broken Temple Vihecal Workshop"] = "Broken Temple Vihecal Workshop"; -- Need translation
+	["Eastspark Vihecale Workshop"] = "Eastspark Vihecale Workshop"; -- Need translation
+	["Westspark Vihecale Workshop"] = "Westspark Vihecale Workshop"; -- Need translation
+	["Wintergrasp Graveyard"] = "Wintergrasp Graveyard"; -- Need translation
+	["Sunken Ring Graveyard"] = "Sunken Ring Graveyard"; -- Need translation
+	["Broken Temple Graveyard"] = "Broken Temple Graveyard"; -- Need translation
+	["Southeast Graveyard"] = "Southeast Graveyard"; -- Need translation
+	["Southwest Graveyard"] = "Southwest Graveyard"; -- Need translation
+
+	-- Eastern Plaguelands - Game of Tower
+	["A Game of Towers"] = "Game of Tower"; -- Need translation
+
+	-- Silithus - The Silithyst Must Flow
+	["The Silithyst Must Flow"] = "The Silithyst Must Flow"; -- Need translation
+	["Alliance's Camp"] = "Alliance's Camp"; -- Need translation
+	["Horde's Camp"] = "Horde's Camp"; -- Need translation
 };
 end

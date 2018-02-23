@@ -1,4 +1,4 @@
-
+if GetLocale()~='zhCN' then return end
 local M = MerInspect
 
 function M:INSPECT_HONOR_UPDATE()

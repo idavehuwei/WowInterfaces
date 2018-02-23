@@ -14,7 +14,7 @@ function CharacterSelect_OnLoad(self)
 	self.createIndex = 0;
 	self.selectedIndex = 0;
 	self.selectLast = 0;
-	self.currentModel = "";
+	self.currentModel = nil;
 	self:RegisterEvent("ADDON_LIST_UPDATE");
 	self:RegisterEvent("CHARACTER_LIST_UPDATE");
 	self:RegisterEvent("UPDATE_SELECTED_CHARACTER");
@@ -23,15 +23,14 @@ function CharacterSelect_OnLoad(self)
 	self:RegisterEvent("SUGGEST_REALM");
 	self:RegisterEvent("FORCE_RENAME_CHARACTER");
 
-	CharacterSelect:SetModel("Interface\\Glues\\Models\\UI_Orc\\UI_Orc.mdx");
+	-- CharacterSelect:SetModel("Interface\\Glues\\Models\\UI_Orc\\UI_Orc.m2");
 
-	local fogInfo = CharModelFogInfo["ORC"];
-	CharacterSelect:SetFogColor(fogInfo.r, fogInfo.g, fogInfo.b);
-	CharacterSelect:SetFogNear(0);
-	CharacterSelect:SetFogFar(fogInfo.far);
+	-- local fogInfo = CharModelFogInfo["ORC"];
+	-- CharacterSelect:SetFogColor(fogInfo.r, fogInfo.g, fogInfo.b);
+	-- CharacterSelect:SetFogNear(0);
+	-- CharacterSelect:SetFogFar(fogInfo.far);
 
 	SetCharSelectModelFrame("CharacterSelect");
-	--CharSelectModel:SetLight(1, 0, 0, -0.707, -0.707, 0.7, 1.0, 1.0, 1.0, 0.8, 1.0, 1.0, 0.8);
 
 	-- Color edit box backdrops
 	local backdropColor = DEFAULT_TOOLTIP_COLOR;
@@ -41,18 +40,14 @@ function CharacterSelect_OnLoad(self)
 end
 
 function CharacterSelect_OnShow()
-	CurrentModel = CharacterSelect.currentModel;
-	-- ANOTHER HACK!!!
-	if ( CurrentModel == "Gnome" or CurrentModel == "GNOME" ) then
-		CurrentModel = "Dwarf";
-	elseif ( CurrentModel == "Troll" or CurrentModel == "TROLL" ) then
-		CurrentModel = "Orc";
+	-- request account data times from the server (so we know if we should refresh keybindings, etc...)
+	ReadyForAccountDataTimes()
+	
+	local CurrentModel = CharacterSelect.currentModel;
+
+	if ( CurrentModel ) then
+		PlayGlueAmbience(GlueAmbienceTracks[strupper(CurrentModel)], 4.0);
 	end
-	if ( CurrentModel == "" ) then
-		CurrentModel = "Orc";
-	end
-	-- END HACK
-	PlayGlueAmbience(GlueAmbienceTracks[strupper(CurrentModel)], 4.0);
 
 	UpdateAddonButton();
 
@@ -95,7 +90,7 @@ function CharacterSelect_OnShow()
 		else
 			local billingTimeLeft = GetBillingTimeRemaining();
 			-- Set default text for the payment plan
-			local billingText = getglobal("BILLING_TEXT"..paymentPlan);
+			local billingText = _G["BILLING_TEXT"..paymentPlan];
 			if ( paymentPlan == 1 ) then
 				-- Recurring account
 				billingTimeLeft = ceil(billingTimeLeft/(60 * 24));
@@ -151,6 +146,12 @@ function CharacterSelect_OnShow()
 			CharacterSelectRealmSplitButton:ClearAllPoints();
 			CharacterSelectRealmSplitButton:SetPoint("TOP", GameRoomBillingFrame, "BOTTOM", 0, -10);
 		end
+	end
+	
+	if( IsTrialAccount() ) then
+		CharacterSelectUpgradeAccountButton:Show();
+	else
+		CharacterSelectUpgradeAccountButton:Hide();
 	end
 
 	-- fadein the character select ui
@@ -273,10 +274,8 @@ function CharacterSelect_OnEvent(self, event, ...)
 		local category, id = ...;
 		local name = GetRealmInfo(category, id);
 		if ( name ) then
-			RealmWizard.suggestedRealmName = name;
-			RealmWizard.suggestedCategory = category;
-			RealmWizard.suggestedID = id;
-			GlueDialog_Show("SUGGEST_REALM");
+			SetGlueScreen("charselect");
+			ChangeRealm(category, id);
 		else
 			if ( RealmList:IsShown() ) then
 				RealmListUpdate();
@@ -287,7 +286,7 @@ function CharacterSelect_OnEvent(self, event, ...)
 	elseif ( event == "FORCE_RENAME_CHARACTER" ) then
 		local message = ...;
 		CharacterRenameDialog:Show();
-		CharacterRenameText1:SetText(getglobal(message));
+		CharacterRenameText1:SetText(_G[message]);
 	end
 end
 
@@ -298,12 +297,12 @@ end
 
 function UpdateCharacterSelection(self)
 	for i=1, MAX_CHARACTERS_DISPLAYED, 1 do
-		getglobal("CharSelectCharacterButton"..i):UnlockHighlight();
+		_G["CharSelectCharacterButton"..i]:UnlockHighlight();
 	end
 
 	local index = self.selectedIndex;
 	if ( (index > 0) and (index <= MAX_CHARACTERS_DISPLAYED) )then
-		getglobal("CharSelectCharacterButton"..index):LockHighlight();
+		_G["CharSelectCharacterButton"..index]:LockHighlight();
 	end
 end
 
@@ -312,34 +311,36 @@ function UpdateCharacterList()
 	local index = 1;
 	local coords;
 	for i=1, numChars, 1 do
-		local name, race, class, level, zone, raceFilename, classFilename, gender, ghost, PCC = GetCharacterInfo(i);
-		if ( gender == 0 ) then
-			gender = "MALE";
-		else
-			gender = "FEMALE";
-		end
-		local button = getglobal("CharSelectCharacterButton"..index);
+		local name, race, class, level, zone, sex, ghost, PCC, PRC, PFC = GetCharacterInfo(i);
+		local button = _G["CharSelectCharacterButton"..index];
 		if ( not name ) then
 			button:SetText("ERROR - Tell Jeremy");
 		else
 			if ( not zone ) then
 				zone = "";
 			end
-			getglobal("CharSelectCharacterButton"..index.."ButtonTextName"):SetText(name);
+			_G["CharSelectCharacterButton"..index.."ButtonTextName"]:SetText(name);
 			if( ghost ) then
-				getglobal("CharSelectCharacterButton"..index.."ButtonTextInfo"):SetFormattedText(CHARACTER_SELECT_INFO_GHOST, level, class);
+				_G["CharSelectCharacterButton"..index.."ButtonTextInfo"]:SetFormattedText(CHARACTER_SELECT_INFO_GHOST, level, class);
 			else
-				getglobal("CharSelectCharacterButton"..index.."ButtonTextInfo"):SetFormattedText(CHARACTER_SELECT_INFO, level, class);
+				_G["CharSelectCharacterButton"..index.."ButtonTextInfo"]:SetFormattedText(CHARACTER_SELECT_INFO, level, class);
 			end
-			getglobal("CharSelectCharacterButton"..index.."ButtonTextLocation"):SetText(zone);
+			_G["CharSelectCharacterButton"..index.."ButtonTextLocation"]:SetText(zone);
 		end
 		button:Show();
 
-		if ( PCC ) then
-			getglobal("CharSelectCharacterCustomize"..index):Show();
-		else
-			getglobal("CharSelectCharacterCustomize"..index):Hide();
+		-- setup paid service buttons
+		_G["CharSelectCharacterCustomize"..index]:Hide();
+		_G["CharSelectRaceChange"..index]:Hide();
+		_G["CharSelectFactionChange"..index]:Hide();
+		if ( PFC ) then
+			_G["CharSelectFactionChange"..index]:Show();
+		elseif ( PRC ) then
+			_G["CharSelectRaceChange"..index]:Show();
+		elseif ( PCC ) then
+			_G["CharSelectCharacterCustomize"..index]:Show();
 		end
+
 		index = index + 1;
 		if ( index > MAX_CHARACTERS_DISPLAYED ) then
 			break;
@@ -359,7 +360,7 @@ function UpdateCharacterList()
 	
 	local connected = IsConnectedToServer();
 	for i=index, MAX_CHARACTERS_DISPLAYED, 1 do
-		local button = getglobal("CharSelectCharacterButton"..index);
+		local button = _G["CharSelectCharacterButton"..index];
 		if ( (CharacterSelect.createIndex == 0) and (numChars < MAX_CHARACTERS_PER_REALM) ) then
 			CharacterSelect.createIndex = index;
 			if ( connected ) then
@@ -369,13 +370,16 @@ function UpdateCharacterList()
 				CharSelectCreateCharacterButton:Show();	
 			end
 		end
-		getglobal("CharSelectCharacterCustomize"..index):Hide();
+		_G["CharSelectCharacterCustomize"..index]:Hide();
+		_G["CharSelectFactionChange"..index]:Hide();
+		_G["CharSelectRaceChange"..index]:Hide();
 		button:Hide();
 		index = index + 1;
 	end
 
 	if ( numChars == 0 ) then
 		CharacterSelect.selectedIndex = 0;
+		CharacterSelect_SelectCharacter(CharacterSelect.selectedIndex, 1);
 		return;
 	end
 
@@ -407,10 +411,10 @@ function CharacterSelectButton_OnDoubleClick(self)
 end
 
 function CharacterSelect_TabResize(self)
-	local buttonMiddle = getglobal(self:GetName().."Middle");
-	local buttonMiddleDisabled = getglobal(self:GetName().."MiddleDisabled");
+	local buttonMiddle = _G[self:GetName().."Middle"];
+	local buttonMiddleDisabled = _G[self:GetName().."MiddleDisabled"];
 	local width = self:GetTextWidth() - 8;
-	local leftWidth = getglobal(self:GetName().."Left"):GetWidth();
+	local leftWidth = _G[self:GetName().."Left"]:GetWidth();
 	buttonMiddle:SetWidth(width);
 	buttonMiddleDisabled:SetWidth(width);
 	self:SetWidth(width + (2 * leftWidth));
@@ -423,15 +427,8 @@ function CharacterSelect_SelectCharacter(id, noCreate)
 			SetGlueScreen("charcreate");
 		end
 	else
-		local name, race, class, level, zone, raceFilename, classFilename = GetCharacterInfo(id);
-
-		if ( classFilename == "DEATHKNIGHT" ) then
-			raceFilename = classFilename;
-		end
-		if ( raceFilename ~= CharacterSelect.currentModel ) then
-			CharacterSelect.currentModel = raceFilename;
-		end
-		SetBackgroundModel(CharacterSelect, raceFilename);
+		CharacterSelect.currentModel = GetSelectBackgroundModel(id);
+		SetBackgroundModel(CharacterSelect,CharacterSelect.currentModel);
 
 		SelectCharacter(id);
 	end
@@ -530,8 +527,9 @@ function RealmSplit_SetChoiceText()
 	RealmSplitCurrentChoice:Show();
 end
 
-function CharacterSelect_Customize(self, button, down)
-	PAID_CHARACTER_CUSTOMIZATION = self:GetID();
+function CharacterSelect_PaidServiceOnClick(self, button, down, service)
+	PAID_SERVICE_CHARACTER_ID = self:GetID();
+	PAID_SERVICE_TYPE = service;
 	PlaySound("gsCharacterSelectionCreateNew");
 	SetGlueScreen("charcreate");
 end
@@ -553,3 +551,4 @@ function CharacterSelect_DeathKnightSwap(self)
 		end
 	end
 end
+

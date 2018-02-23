@@ -83,7 +83,7 @@
 				<Font Size="LG_SMALL" Alignment="LG_RIGHT" MaxWidth="85" Wrap="false"/>
 				<RelOrigin RelTo="DAMAGE_FLD" x="0" y="16" />
 			</LCDText>
-			<LCDText name="POWER" text="ATTACK_POWER_COLON" id="56">
+			<LCDText name="POWER" text="ATTACK_POWER" id="56">
 				<Font Size="LG_SMALL" Alignment="LG_LEFT" MaxWidth="90" Wrap="false"/>
 				<RelOrigin RelTo="SPEED" x="0" y="16" />
 			</LCDText>
@@ -722,6 +722,61 @@
 			<Size x="128" y="102" />
 		</LCDBitmap>
 	</Screen>
+  <Screen name="IsleOfConquestMapScreen">
+		<LCDMap>
+			<Size x="561" y="311"/>
+			<Offset x="-115" y="-45"/>
+		</LCDMap>
+		<LCDBitmap name="IsleofConquest1" type="texture" data="Interface\WORLDMAP\Isleofconquest\IsleofConquest1.blp" miplevel="1">
+			<Origin x="-115" y="-45"/>
+			<!--<Origin x="0" y="0"/>-->
+			<Size x="144" y="120" />
+		</LCDBitmap>
+		<LCDBitmap name="IsleofConquest2" type="texture" data="Interface\WORLDMAP\Isleofconquest\IsleofConquest2.blp" miplevel="1">
+			<RelOrigin RelTo="IsleofConquest1" x="144" y="0"/>
+			<Size x="144" y="120" />
+		</LCDBitmap>
+		<LCDBitmap name="IsleofConquest3" type="texture" data="Interface\WORLDMAP\Isleofconquest\IsleofConquest3.blp" miplevel="1">
+			<RelOrigin RelTo="IsleofConquest2" x="144" y="0"/>
+			<Size x="144" y="120" />
+		</LCDBitmap>
+		<LCDBitmap name="IsleofConquest4" type="texture" data="Interface\WORLDMAP\Isleofconquest\IsleofConquest4.blp" miplevel="1">
+			<RelOrigin RelTo="IsleofConquest3" x="144" y="0"/>
+			<Size x="144" y="120" />
+		</LCDBitmap>
+		<LCDBitmap name="IsleofConquest5" type="texture" data="Interface\WORLDMAP\Isleofconquest\IsleofConquest5.blp" miplevel="1">
+			<RelOrigin RelTo="IsleofConquest1" x="0" y="120"/>
+			<Size x="144" y="120" />
+		</LCDBitmap>
+		<LCDBitmap name="IsleofConquest6" type="texture" data="Interface\WORLDMAP\Isleofconquest\IsleofConquest6.blp" miplevel="1">
+			<RelOrigin RelTo="IsleofConquest5" x="144" y="0"/>
+			<Size x="144" y="120" />
+		</LCDBitmap>
+		<LCDBitmap name="IsleofConquest7" type="texture" data="Interface\WORLDMAP\Isleofconquest\IsleofConquest7.blp" miplevel="1">
+			<RelOrigin RelTo="IsleofConquest6" x="144" y="0"/>
+			<Size x="144" y="120" />
+		</LCDBitmap>
+		<LCDBitmap name="IsleofConquest8" type="texture" data="Interface\WORLDMAP\Isleofconquest\IsleofConquest8.blp" miplevel="1">
+			<RelOrigin RelTo="IsleofConquest7" x="144" y="0"/>
+			<Size x="144" y="120" />
+		</LCDBitmap>
+		<LCDBitmap name="IsleofConquest9" type="texture" data="Interface\WORLDMAP\Isleofconquest\IsleofConquest9.blp" miplevel="1">
+			<RelOrigin RelTo="IsleofConquest5" x="0" y="120"/>
+			<Size x="144" y="120" />
+		</LCDBitmap>
+		<LCDBitmap name="IsleofConquest10" type="texture" data="Interface\WORLDMAP\Isleofconquest\IsleofConquest10.blp" miplevel="1">
+			<RelOrigin RelTo="IsleofConquest9" x="144" y="0"/>
+			<Size x="144" y="120" />
+		</LCDBitmap>
+		<LCDBitmap name="IsleofConquest11" type="texture" data="Interface\WORLDMAP\Isleofconquest\IsleofConquest11.blp" miplevel="1">
+			<RelOrigin RelTo="IsleofConquest10" x="144" y="0"/>
+			<Size x="144" y="120" />
+		</LCDBitmap>
+		<LCDBitmap name="IsleofConquest12" type="texture" data="Interface\WORLDMAP\Isleofconquest\IsleofConquest12.blp" miplevel="1">
+			<RelOrigin RelTo="IsleofConquest11" x="144" y="0"/>
+			<Size x="144" y="120" />
+		</LCDBitmap>
+	</Screen>
 	<Globals>
 		<LCDBitmap name="PartyIcon1" type="texture" data="Interface\WORLDMAP\WorldMapPartyIcon.blp" miplevel="0">
 			<Origin x="0" y="0"/>
@@ -903,5 +958,6 @@
 		<Map id="566" Screen="EyeOfTheStormMapScreen"/>
 		<Map id="607" Screen="StrandOfTheAncientsMapScreen"/>
 		<Map id="30" Screen="AlteracValleyMapScreen"/>
+    <Map id="628" Screen="IsleOfConquestMapScreen"/>
 	</POI>
 </Ui>

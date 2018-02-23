@@ -2,7 +2,7 @@ local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:GetLocale( "Recount" )
 local Epsilon=0.000000000000000001
 
-local revision = tonumber(string.sub("$Revision: 1045 $", 12, -3))
+local revision = tonumber(string.sub("$Revision: 1079 $", 12, -3))
 local Recount = _G.Recount
 if Recount.Version < revision then Recount.Version = revision end
 
@@ -166,72 +166,6 @@ DetailTitles.HOTs={
 	BotAmount = L["Duration"]
 }
 
-DetailTitles.Interrupts={
-	TopNames = L["Interrupted Who"],
-	TopCount = "",
-	TopAmount = L["Interrupts"],
-	BotNames = L["Interrupted"],
-	BotMin = "",
-	BotAvg = "",
-	BotMax = "",
-	BotAmount = L["Count"]
-}
-
-DetailTitles.Ressed={
-	TopNames = L["Ressed Who"],
-	TopCount = "",
-	TopAmount = L["Times"],
-	BotNames = L["Ability"],
-	BotMin = "",
-	BotAvg = "",
-	BotMax = "",
-	BotAmount = L["Count"]
-}
-
-
-DetailTitles.Dispels={
-	TopNames = L["Who"],
-	TopCount = "",
-	TopAmount = L["Dispels"],
-	BotNames = L["Dispelled"],
-	BotMin = "",
-	BotAvg = "",
-	BotMax = "",
-	BotAmount = L["Count"]
-}
-
-DetailTitles.CC={
-	TopNames = L["Broke"],
-	TopCount = "",
-	TopAmount = L["Count"],
-	BotNames = L["Broke On"],
-	BotMin = "",
-	BotAvg = "",
-	BotMax = "",
-	BotAmount = L["Count"]
-}
-
-DetailTitles.Gained={
-	TopNames = L["Ability"],
-	TopCount = "",
-	TopAmount = L["Gained"],
-	BotNames = L["From"],
-	BotMin = "",
-	BotAvg = "",
-	BotMax = "",
-	BotAmount = L["Gained"]
-}
-
-DetailTitles.GainedFrom={
-	TopNames = L["From"],
-	TopCount = "",
-	TopAmount = L["Gained"],
-	BotNames = L["Ability"],
-	BotMin = "",
-	BotAvg = "",
-	BotMax = "",
-	BotAmount = L["Gained"]
-}
 
 DetailTitles.Network={
 	TopNames = L["Prefix"],
@@ -243,8 +177,6 @@ DetailTitles.Network={
 	BotMax = "",
 	BotAmount = L["Messages"]
 }
-
-local DataModes={}
 
 function Recount:MergedPetDamageDPS(data,fight)
 	if not data or not data.Fights or not data.Fights[fight] then return 0,0 end
@@ -278,6 +210,8 @@ function Recount:MergedPetDamageDPS(data,fight)
 	
 	return (damage + PetAmount), (damage + PetAmount)/Time
 end
+
+local DataModes={}
 
 function DataModes:DamageReturner(data, num)
 	if not data then return 0,0 end
@@ -325,6 +259,7 @@ function Recount:MergedPetHealingDPS(data,fight)
 	if not data or not data.Fights or not data.Fights[fight] then return 0,0 end
 	local PetAmount=0
 	local PetTime=0
+	
 	local Time=data.Fights[fight].ActiveTime or 0
 	if Recount.db.profile.MergePets and data.Pet then
 		for v,k in pairs(data.Pet) do
@@ -362,12 +297,7 @@ function DataModes:HealingReturner(data, num)
 --		return (data.Fights[Recount.db.profile.CurDataSet].Healing or 0), (data.Fights[Recount.db.profile.CurDataSet].Healing or 0)/((data.Fights[Recount.db.profile.CurDataSet].ActiveTime or 0) + Epsilon)
 	end
 
-	return healing, {
-		{data.Fights[Recount.db.profile.CurDataSet].Heals,L["'s Effective Healing"],DetailTitles.Heals},
-		{data.Fights[Recount.db.profile.CurDataSet].HealedWho," "..L["Healed Who"],DetailTitles.HealedWho},
-		{data.Fights[Recount.db.profile.CurDataSet].OverHeals,L["'s Overhealing"],DetailTitles.OverHeals},
-		{data.Fights[Recount.db.profile.CurDataSet].TimeHealing,L["'s Time Spent Healing"],DetailTitles.HealTime}
-	}
+	return healing, {{data.Fights[Recount.db.profile.CurDataSet].Heals,L["'s Effective Healing"],DetailTitles.Heals},{data.Fights[Recount.db.profile.CurDataSet].HealedWho," "..L["Healed Who"],DetailTitles.HealedWho},{data.Fights[Recount.db.profile.CurDataSet].OverHeals,L["'s Overhealing"],DetailTitles.OverHeals},{data.Fights[Recount.db.profile.CurDataSet].TimeHealing,L["'s Time Spent Healing"],DetailTitles.HealTime}}
 end
 
 function DataModes:HealingTaken(data, num)
@@ -419,42 +349,6 @@ function DataModes:HOTReturner(data, num)
 	return (data.Fights[Recount.db.profile.CurDataSet].HOT_Time or 0), {{data.Fights[Recount.db.profile.CurDataSet].HOTs,L["'s HOT Uptime"],DetailTitles.HOTs}}
 end
 
-function DataModes:InterruptReturner(data, num)
-	if not data then return 0 end
-	if num==1 then
-		return (data.Fights[Recount.db.profile.CurDataSet].Interrupts or 0)
-	end
-
-	return (data.Fights[Recount.db.profile.CurDataSet].Interrupts or 0), {{data.Fights[Recount.db.profile.CurDataSet].InterruptData,L["'s Interrupts"],DetailTitles.Interrupts}}
-end
-
-function DataModes:Ressed(data, num)
-	if not data then return 0 end
-	if num==1 then
-		return (data.Fights[Recount.db.profile.CurDataSet].Ressed or 0)
-	end
-
-	return (data.Fights[Recount.db.profile.CurDataSet].Ressed or 0), {{data.Fights[Recount.db.profile.CurDataSet].RessedWho,L["'s Resses"],DetailTitles.Ressed}}
-end
-
-function DataModes:Dispels(data, num)
-	if not data then return 0 end
-	if num==1 then
-		return (data.Fights[Recount.db.profile.CurDataSet].Dispels or 0)
-	end
-
-	return (data.Fights[Recount.db.profile.CurDataSet].Dispels or 0), {{data.Fights[Recount.db.profile.CurDataSet].DispelledWho,L["'s Dispels"],DetailTitles.Dispels}}
-end
-
-function DataModes:Dispelled(data, num)
-	if not data then return 0 end
-	if num==1 then
-		return (data.Fights[Recount.db.profile.CurDataSet].Dispelled or 0)
-	end
-
-	return (data.Fights[Recount.db.profile.CurDataSet].Dispelled or 0), {{data.Fights[Recount.db.profile.CurDataSet].WhoDispelled," "..L["was Dispelled by"],DetailTitles.Dispels}}
-end
-
 function DataModes:ActiveTime(data, num)
 	if not data then return 0 end
 	if num==1 then
@@ -462,46 +356,6 @@ function DataModes:ActiveTime(data, num)
 	end
 
 	return (math_floor((data.Fights[Recount.db.profile.CurDataSet].ActiveTime or 0)*100)/100 or 0), {{data.Fights[Recount.db.profile.CurDataSet].TimeSpent,L["'s Time Spent"],DetailTitles.ActiveTime},{data.Fights[Recount.db.profile.CurDataSet].TimeDamaging,L["'s Time Spent Attacking"],DetailTitles.DamageTime},{data.Fights[Recount.db.profile.CurDataSet].TimeHealing,L["'s Time Spent Healing"],DetailTitles.HealTime}}
-end
-
-function DataModes:PolyBreak(data, num)
-	if not data then return 0 end
-	if num==1 then
-		return (data.Fights[Recount.db.profile.CurDataSet].CCBreak or 0)
-	end
-	return (data.Fights[Recount.db.profile.CurDataSet].CCBreak or 0), {{data.Fights[Recount.db.profile.CurDataSet].CCBroken," "..L["CC Breaking"],DetailTitles.CC}}
-end
-
-function DataModes:ManaGained(data, num)
-	if not data then return 0 end
-	if num==1 then
-		return (data.Fights[Recount.db.profile.CurDataSet].ManaGain or 0)
-	end
-	return (data.Fights[Recount.db.profile.CurDataSet].ManaGain or 0), {{data.Fights[Recount.db.profile.CurDataSet].ManaGained,L["'s Mana Gained"],DetailTitles.Gained},{data.Fights[Recount.db.profile.CurDataSet].ManaGainedFrom,L["'s Mana Gained From"],DetailTitles.GainedFrom}}
-end
-
-function DataModes:EnergyGained(data, num)
-	if not data then return 0 end
-	if num==1 then
-		return (data.Fights[Recount.db.profile.CurDataSet].EnergyGain or 0)
-	end
-	return (data.Fights[Recount.db.profile.CurDataSet].EnergyGain or 0), {{data.Fights[Recount.db.profile.CurDataSet].EnergyGained,L["'s Energy Gained"],DetailTitles.Gained},{data.Fights[Recount.db.profile.CurDataSet].EnergyGainedFrom,L["'s Energy Gained From"],DetailTitles.GainedFrom}}
-end
-
-function DataModes:RageGained(data, num)
-	if not data then return 0 end
-	if num==1 then
-		return (data.Fights[Recount.db.profile.CurDataSet].RageGain or 0)
-	end
-	return (data.Fights[Recount.db.profile.CurDataSet].RageGain or 0), {{data.Fights[Recount.db.profile.CurDataSet].RageGained,L["'s Rage Gained"],DetailTitles.Gained},{data.Fights[Recount.db.profile.CurDataSet].RageGainedFrom,L["'s Rage Gained From"],DetailTitles.GainedFrom}}
-end
-
-function DataModes:RunicPowerGained(data, num)
-	if not data then return 0 end
-	if num==1 then
-		return (data.Fights[Recount.db.profile.CurDataSet].RunicPowerGain or 0)
-	end
-	return (data.Fights[Recount.db.profile.CurDataSet].RunicPowerGain or 0), {{data.Fights[Recount.db.profile.CurDataSet].RunicPowerGained,L["'s RunicPower Gained"],DetailTitles.Gained},{data.Fights[Recount.db.profile.CurDataSet].RunicPowerGainedFrom,L["'s RunicPower Gained From"],DetailTitles.GainedFrom}}
 end
 
 --Some code for table management from Ace2
@@ -687,30 +541,6 @@ function TooltipFuncs:HOTs(name,data)
 	GameTooltip:AddLine("<"..L["Click for more Details"]..">",0,0.9,0)
 end
 
-function TooltipFuncs:Interrupts(name,data)
-	local SortedData,total
-	GameTooltip:ClearLines()
-	GameTooltip:AddLine(name)
-	Recount:AddSortedTooltipData(L["Top 3"].." "..L["Interrupted"],data and data.Fights[Recount.db.profile.CurDataSet] and data.Fights[Recount.db.profile.CurDataSet].InterruptData,3)
-	GameTooltip:AddLine("<"..L["Click for more Details"]..">",0,0.9,0)
-end
-
-function TooltipFuncs:Dispels(name,data)
-	local SortedData,total
-	GameTooltip:ClearLines()
-	GameTooltip:AddLine(name)
-	Recount:AddSortedTooltipData(L["Top 3"].." "..L["Dispelled"],data and data.Fights[Recount.db.profile.CurDataSet] and data.Fights[Recount.db.profile.CurDataSet].DispelledWho,3)
-	GameTooltip:AddLine("<"..L["Click for more Details"]..">",0,0.9,0)
-end
-
-function TooltipFuncs:Dispelled(name,data)
-	local SortedData,total
-	GameTooltip:ClearLines()
-	GameTooltip:AddLine(name)
-	Recount:AddSortedTooltipData(L["Top 3"].." "..L["Dispelled By"],data and data.Fights[Recount.db.profile.CurDataSet] and data.Fights[Recount.db.profile.CurDataSet].WhoDispelled,3)
-	GameTooltip:AddLine("<"..L["Click for more Details"]..">",0,0.9,0)
-end
-
 function TooltipFuncs:ActiveTime(name,data)
 	local SortedData,total
 	GameTooltip:ClearLines()
@@ -727,44 +557,6 @@ function TooltipFuncs:ActiveTime(name,data)
 	GameTooltip:AddLine("<"..L["Click for more Details"]..">",0,0.9,0)
 end
 
-function TooltipFuncs:ManaGained(name,data)
-	local SortedData,total
-	GameTooltip:ClearLines()
-	GameTooltip:AddLine(name)
-	Recount:AddSortedTooltipData(L["Top 3"].." "..L["Mana Abilities"],data and data.Fights[Recount.db.profile.CurDataSet] and data.Fights[Recount.db.profile.CurDataSet].ManaGained,3)
-	Recount:AddSortedTooltipData(L["Top 3"].." "..L["Mana Sources"],data and data.Fights[Recount.db.profile.CurDataSet] and data.Fights[Recount.db.profile.CurDataSet].ManaGainedFrom,3)
-	GameTooltip:AddLine("<"..L["Click for more Details"]..">",0,0.9,0)
-end
-
-function TooltipFuncs:EnergyGained(name,data)
-	local SortedData,total
-	GameTooltip:ClearLines()
-	GameTooltip:AddLine(name)
-	Recount:AddSortedTooltipData(L["Top 3"].." "..L["Energy Abilities"],data and data.Fights[Recount.db.profile.CurDataSet] and data.Fights[Recount.db.profile.CurDataSet].EnergyGained,3)
-	Recount:AddSortedTooltipData(L["Top 3"].." "..L["Energy Sources"],data and data.Fights[Recount.db.profile.CurDataSet] and data.Fights[Recount.db.profile.CurDataSet].EnergyGainedFrom,3)
-	GameTooltip:AddLine("<"..L["Click for more Details"]..">",0,0.9,0)
-end
-
-function TooltipFuncs:RageGained(name,data)
-	local SortedData,total
-	GameTooltip:ClearLines()
-	GameTooltip:AddLine(name)
-	Recount:AddSortedTooltipData(L["Top 3"].." "..L["Rage Abilities"],data and data.Fights[Recount.db.profile.CurDataSet] and data.Fights[Recount.db.profile.CurDataSet].RageGained,3)
-	Recount:AddSortedTooltipData(L["Top 3"].." "..L["Rage Sources"],data and data.Fights[Recount.db.profile.CurDataSet] and data.Fights[Recount.db.profile.CurDataSet].RageGainedFrom,3)
-	GameTooltip:AddLine("<"..L["Click for more Details"]..">",0,0.9,0)
-
-end
-
-function TooltipFuncs:RunicPowerGained(name,data)
-	local SortedData,total
-	GameTooltip:ClearLines()
-	GameTooltip:AddLine(name)
-	Recount:AddSortedTooltipData(L["Top 3"].." "..L["RunicPower Abilities"],data and data.Fights[Recount.db.profile.CurDataSet] and data.Fights[Recount.db.profile.CurDataSet].RunicPowerGained,3)
-	Recount:AddSortedTooltipData(L["Top 3"].." "..L["RunicPower Sources"],data and data.Fights[Recount.db.profile.CurDataSet] and data.Fights[Recount.db.profile.CurDataSet].RunicPowerGainedFrom,3)
-	GameTooltip:AddLine("<"..L["Click for more Details"]..">",0,0.9,0)
-
-end
-
 function TooltipFuncs:DeathCounts(name,data)
 	local SortedData,total
 	GameTooltip:ClearLines()
@@ -772,42 +564,19 @@ function TooltipFuncs:DeathCounts(name,data)
 	GameTooltip:Hide()
 end
 
-function TooltipFuncs:CCBroken(name,data)
-	local SortedData,total
-	GameTooltip:ClearLines()
-	GameTooltip:AddLine(name)
-	Recount:AddSortedTooltipData(L["Top 3"].." "..L["CC's Broken"],data and data.Fights[Recount.db.profile.CurDataSet] and data.Fights[Recount.db.profile.CurDataSet].CCBroken,3)
-end
-
-function TooltipFuncs:Ressed(name,data)
-	local SortedData,total
-	GameTooltip:ClearLines()
-	GameTooltip:AddLine(name)
-	Recount:AddSortedTooltipData(L["Top 3"].." "..L["Ressed"],data and data.Fights[Recount.db.profile.CurDataSet] and data.Fights[Recount.db.profile.CurDataSet].RessedWho,3)
-end
-
 
 local MainWindowModes={
-	{L["Damage Done"],DataModes.DamageReturner,TooltipFuncs.Damage,nil,{"DAMAGE",L["'s DPS"]},nil,"Damage"},
-	{L["DPS"],DataModes.DPSReturner,TooltipFuncs.Damage,nil,{"DAMAGE","'s DPS"},nil,"Damage"},
-	{L["Friendly Fire"],DataModes.FriendlyDamageReturner,TooltipFuncs.FDamage},
-	{L["Damage Taken"],DataModes.DamageTakenReturner,TooltipFuncs.DamageTaken,nil,{"DAMAGETAKEN",L["'s DTPS"]},nil,"DamageTaken"},
-	{L["Healing Done"],DataModes.HealingReturner,TooltipFuncs.Healing,nil,{"HEALING",L["'s HPS"]},nil,"Healing"},
-	{L["Healing Taken"],DataModes.HealingTaken,TooltipFuncs.HealingTaken,nil,{"HEALINGTAKEN",L["'s HTPS"]},nil,"HealingTaken"},
-	{L["Overhealing Done"],DataModes.OverhealingReturner,TooltipFuncs.Overhealing},
-	{L["Deaths"],DataModes.DeathReturner,TooltipFuncs.DeathCounts},
-	{L["DOT Uptime"],DataModes.DOTReturner,TooltipFuncs.DOTs,nil,nil,nil,nil},
-	{L["HOT Uptime"],DataModes.HOTReturner,TooltipFuncs.HOTs,nil,nil,nil,nil},
-	{L["Dispels"],DataModes.Dispels,TooltipFuncs.Dispels,nil,nil,nil,nil},
-	{L["Dispelled"],DataModes.Dispelled,TooltipFuncs.Dispelled,nil,nil,nil,nil},
-	{L["Interrupts"],DataModes.InterruptReturner,TooltipFuncs.Interrupts,nil,nil,nil,nil},
-	{L["Ressers"],DataModes.Ressed,TooltipFuncs.Ressed,nil,nil,nil,nil},
-	{L["CC Breakers"],DataModes.PolyBreak,TooltipFuncs.CCBroken,nil,nil,nil,nil},
-	{L["Activity"],DataModes.ActiveTime,TooltipFuncs.ActiveTime,nil,nil,nil,nil},
-	{L["Mana Gained"],DataModes.ManaGained,TooltipFuncs.ManaGained},
-	{L["Energy Gained"],DataModes.EnergyGained,TooltipFuncs.EnergyGained},
-	{L["Rage Gained"],DataModes.RageGained,TooltipFuncs.RageGained},
-	{L["Runic Power Gained"],DataModes.RunicPowerGained,TooltipFuncs.RunicPowerGained},
+{L["Damage Done"],DataModes.DamageReturner,TooltipFuncs.Damage,nil,{"DAMAGE",L["'s DPS"]},nil,"Damage"},
+{L["DPS"],DataModes.DPSReturner,TooltipFuncs.Damage,nil,{"DAMAGE",L["'s DPS"]},nil,"Damage"},
+{L["Friendly Fire"],DataModes.FriendlyDamageReturner,TooltipFuncs.FDamage},
+{L["Damage Taken"],DataModes.DamageTakenReturner,TooltipFuncs.DamageTaken,nil,{"DAMAGETAKEN",L["'s DTPS"]},nil,"DamageTaken"},
+{L["Healing Done"],DataModes.HealingReturner,TooltipFuncs.Healing,nil,{"HEALING",L["'s HPS"]},nil,"Healing"},
+{L["Healing Taken"],DataModes.HealingTaken,TooltipFuncs.HealingTaken,nil,{"HEALINGTAKEN",L["'s HTPS"]},nil,"HealingTaken"},
+{L["Overhealing Done"],DataModes.OverhealingReturner,TooltipFuncs.Overhealing},
+{L["Deaths"],DataModes.DeathReturner,TooltipFuncs.DeathCounts},
+{L["DOT Uptime"],DataModes.DOTReturner,TooltipFuncs.DOTs,nil,nil,nil,nil},
+{L["HOT Uptime"],DataModes.HOTReturner,TooltipFuncs.HOTs,nil,nil,nil,nil},
+{L["Activity"],DataModes.ActiveTime,TooltipFuncs.ActiveTime,nil,nil,nil,nil},
 }
 
 function Recount:AddModeTooltip(lname,modefunc,toolfunc,...)
@@ -815,8 +584,19 @@ function Recount:AddModeTooltip(lname,modefunc,toolfunc,...)
 	Recount:SetupMainWindow()
 end
 
-function Recount:SetupMainWindow()	
-	Recount:LoadMainWindowData(MainWindowModes)	
+function Recount:SetupMainWindow()
+	if Recount.LoadMainWindowData then -- If we add modes early no need to inform the main window, it will get set up later.
+		Recount:LoadMainWindowData(MainWindowModes)
+	end
+end
+
+function Recount:SetMainWindowModeByLabel(label)
+	for k,v in pairs(Recount.MainWindowData) do
+		if v[1] == L[label] then
+			Recount:SetMainWindowMode(k)
+			return
+		end
+	end
 end
 
 local oldlocalizer = Recount.LocalizeCombatants

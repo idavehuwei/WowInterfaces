@@ -25,6 +25,8 @@ local function QuickCompare_Tooltip_OnShow(OringFunc, tooltip, customtip)
 	--correct anchor if tooltip is in right half of screen
 	local anchor, align="TOPLEFT", "TOPRIGHT";
 	local scale = tooltip:GetScale();
+	local escale = tooltip:GetEffectiveScale();
+
 	
 	local item1 = nil;
 	local item2 = nil;	
@@ -49,21 +51,38 @@ local function QuickCompare_Tooltip_OnShow(OringFunc, tooltip, customtip)
 	end
 
 	rightDist = GetScreenWidth() - rightPos;
+	leftDist = leftPos;
 
 	if (leftPos and (rightDist < leftPos)) then		
 		anchor, align = "TOPRIGHT", "TOPLEFT";
 	end
 
+	local totalWidth = 0;
+	if ( item1  ) then
+		totalWidth = totalWidth + shoptip1:GetWidth();
+	end
+	if ( item2  ) then
+		totalWidth = totalWidth + shoptip2:GetWidth();
+	end
+
+	local offsetx, offsety = GetCursorPosition();
+	local realRightPos = rightPos * escale;
+	local realLeftPos = leftPos * escale;
+
+	if (anchor == "TOPLEFT" and offsetx > realRightPos) then
+		anchor, align = "TOPRIGHT", "TOPLEFT";
+	elseif (anchor == "TOPRIGHT" and offsetx < realLeftPos) then
+		anchor, align = "TOPLEFT", "TOPRIGHT";
+	end
+
+	if (anchor == "TOPRIGHT" and totalWidth > leftPos * escale) then
+		anchor, align = "TOPLEFT", "TOPRIGHT";
+	elseif (anchor == "TOPLEFT" and (rightPos * escale + totalWidth) >  GetScreenWidth() * escale) then
+		anchor, align = "TOPRIGHT", "TOPLEFT";
+	end
+
 	-- see if we should slide the tooltip
 	if ( tooltip:GetAnchorType() ) then
-		local totalWidth = 0;
-		if ( item1  ) then
-			totalWidth = totalWidth + shoptip1:GetWidth();
-		end
-		if ( item2  ) then
-			totalWidth = totalWidth + shoptip2:GetWidth();
-		end
-
 		if ( (anchor == "TOPRIGHT") and (totalWidth > leftPos) ) then
 			tooltip:SetAnchorType(tooltip:GetAnchorType(), (totalWidth - leftPos), 0);
 		elseif ( (anchor == "TOPLEFT") and (rightPos + totalWidth) >  GetScreenWidth() ) then
@@ -82,17 +101,16 @@ local function QuickCompare_Tooltip_OnShow(OringFunc, tooltip, customtip)
 			shoptip:SetHyperlinkCompareItem(link, i);
 			shoptip:ClearAllPoints();
 
-			-- 使标题显示为大脚原来的粉色.
 			local shoptiptext = getglobal(shoptip:GetName().."TextLeft1");			
-			local newtext = "|cffff00ff"..CURRENTLY_EQUIPPED.. "|r";
-			shoptiptext:SetText("|cffff00ff"..CURRENTLY_EQUIPPED.. "|r");			
-		
+			local newtext = "|cffE0E0E0["..CURRENTLY_EQUIPPED.. "]|r";
+			shoptiptext:SetText("|cffE0E0E0["..CURRENTLY_EQUIPPED.. "]|r");			
+
 			local bottom, top=shoptip:GetBottom(), shoptip:GetTop();
 			local uibottom, uitop=UIParent:GetBottom(),UIParent:GetTop();
 			if (bottom and bottom*scale-10<=uibottom) then				
 				dy = uibottom-bottom+(10*scale);			
 			end
-		
+	
 			shoptip:SetPoint(anchor, anchorframe, align, 0, dy);
 			shoptip:SetScale(scale);
 			shoptip:Show(); 
@@ -103,6 +121,7 @@ local function QuickCompare_Tooltip_OnShow(OringFunc, tooltip, customtip)
 		end
 	end
 end
+
 -------------------
 -- on hyperlink enter, show tooltip (alternative to ItemRef)
 -------------------
@@ -128,7 +147,6 @@ end
 
 local function ChatFrame_OnHyperlinkEnter(self, linkData, link)
 	GameTooltip:SetOwner(self,"ANCHOR_TOPRIGHT");
-	--if (string.sub(link, 1, 6) ~= "player") then	
 	if strfind(linkData,"^item") or strfind(linkData,"^enchant") then
 		GameTooltip:SetHyperlink(linkData);
 		GameTooltip:Show();	
@@ -138,10 +156,18 @@ local function ChatFrame_OnHyperlinkEnter(self, linkData, link)
 			GameTooltipItemButton:Show();		
 		end	
 		AjustIconPos();
+	elseif (strfind(linkData,"^achievement")) then
+		GameTooltip:SetHyperlink(linkData);
+		GameTooltip:Show();	
+	elseif (strfind(linkData,"^quest")) then
+		GameTooltip:SetHyperlink(linkData);
+		GameTooltip:Show();	
 	end		
 end
 
+
 local function ChatFrame_OnHyperlinkLeave()
+	GameTooltipItemButtonIconTexture:SetTexture("");
 	GameTooltipItemButton:Hide();
 	GameTooltip:Hide();
 end
@@ -161,11 +187,30 @@ function QuickCompare_Toggle(switch)
 		QCompare_Hooker:HookScript(GameTooltip, "OnShow", QuickCompare_Tooltip_OnShow);
 		if (not isHooked) then
 			hooksecurefunc("SetItemRef", QuickCompare_SetItemRef);
+			hooksecurefunc("GameTooltip_ShowCompareItem", function() if (not EnableCompare) then return; end QuickCompare_Tooltip_OnShow(function() end); end);
+		end
+		GameTooltip:HookScript("OnHide",function() 
+			if GameTooltipItemButtonIconTexture then 
+				GameTooltipItemButtonIconTexture:SetTexture("");
+				GameTooltipItemButton:Hide();
+			end  
+		end)
+		local worldFrame_MouseUp=WorldFrame:GetScript("OnMouseUp")
+		if worldFrame_MouseUp then
+			 WorldFrame:HookScript("OnMouseUp",function()
+				GameTooltip:Hide()
+			end)
+		else
+			 WorldFrame:SetScript("OnMouseUp",function()
+				GameTooltip:Hide()
+			end)
+			
 		end
 		
+		
 		-- 保持BF原来的风格
-		getglobal("ShoppingTooltip1"):SetBackdropColor(0.0,0.0,0.5);
-		getglobal("ShoppingTooltip2"):SetBackdropColor(0.0,0.0,0.5);	
+		getglobal("ShoppingTooltip1"):SetBackdropColor(0.3,0.3,0.0);
+		getglobal("ShoppingTooltip2"):SetBackdropColor(0.3,0.3,0.0);	
 	
 		--Hyperlink enter and leave
 		for i=1, NUM_CHAT_WINDOWS do

@@ -7,8 +7,6 @@ ACP.CheckEvents = 0
 
 local ACP_Protected_Addons = {
     ["ACP"] = true,
-    ["!!Corelibs"] = true,
-    ["!!UserDefaultSettings"] = true,
 };
 
 --==============

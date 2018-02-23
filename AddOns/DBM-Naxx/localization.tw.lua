@@ -8,30 +8,23 @@ local L
 L = DBM:GetModLocalization("Anub'Rekhan")
 
 L:SetGeneralLocalization({
-	name = "阿努比瑞克漢"
+	name 				= "阿努比瑞克漢"
 })
 
 L:SetWarningLocalization({
-	SpecialLocust			= "蝗蟲風暴!",
-	WarningLocustSoon		= "15秒後 蝗蟲風暴",
-	WarningLocustNow		= "蝗蟲風暴!",
-	WarningLocustFaded		= "蝗蟲風暴消失了"
-})
-
-L:SetTimerLocalization({
-	TimerLocustIn			= "蝗蟲風暴", 
-	TimerLocustFade 		= "蝗蟲風暴啟動"
+	SpecialLocust			= "蝗蟲風暴",
+	WarningLocustFaded		= "蝗蟲風暴結束"
 })
 
 L:SetOptionLocalization({
 	SpecialLocust			= "為蝗蟲風暴顯示特別警告",
-	WarningLocustSoon		= "顯示蝗蟲風暴的預先警告",
-	WarningLocustNow		= "顯示蝗蟲風暴警告",
-	WarningLocustFaded		= "顯示蝗蟲風暴消失警告",
-	TimerLocustIn			= "顯示蝗蟲風暴計時器", 
-	TimerLocustFade 		= "顯示蝗蟲風暴消失計時器"
+	WarningLocustFaded		= "當蝗蟲風暴結束時顯示警告",
+	ArachnophobiaTimer		= "為蜘蛛恐懼症 (成就)顯示計時器"
 })
 
+L:SetMiscLocalization({
+	ArachnophobiaTimer		= "蜘蛛恐懼症"
+})
 
 ----------------------------
 --  Grand Widow Faerlina  --
@@ -39,32 +32,18 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Faerlina")
 
 L:SetGeneralLocalization({
-	name = "大寡婦費琳娜"
+	name 				= "大寡婦費琳娜"
 })
 
 L:SetWarningLocalization({
-	WarningEmbraceActive		= "寡婦之擁啟動",
-	WarningEmbraceExpire		= "寡婦之擁5秒後完結",
-	WarningEmbraceExpired		= "寡婦之擁消失",
-	WarningEnrageSoon		= "5秒後 狂怒",
-	WarningEnrageNow		= "狂怒!"
-})
-
-L:SetTimerLocalization({
-	TimerEmbrace			= "寡婦之擁啟動",
-	TimerEnrage			= "狂怒",
+	WarningEmbraceExpire		= "寡婦之擁5秒後結束",
+	WarningEmbraceExpired		= "寡婦之擁結束"
 })
 
 L:SetOptionLocalization({
-	TimerEmbrace			= "顯示寡婦之擁計時器",
-	WarningEmbraceActive		= "顯示寡婦之擁警告",
-	WarningEmbraceExpire		= "當寡婦之擁完結時顯示警告",
-	WarningEmbraceExpired		= "當寡婦之擁即將完結時顯示警告",
-	WarningEnrageSoon		= "顯示即將狂怒警告",
-	WarningEnrageNow		= "顯示狂怒警告",
-	TimerEnrage			= "顯示狂怒計時",
+	WarningEmbraceExpire		= "為寡婦之擁結束顯示預先警告",
+	WarningEmbraceExpired		= "為寡婦之擁結束顯示警告"
 })
-
 
 ---------------
 --  Maexxna  --
@@ -72,34 +51,27 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Maexxna")
 
 L:SetGeneralLocalization({
-	name = "梅克絲娜"
+	name 				= "梅克絲娜"
 })
 
 L:SetWarningLocalization({
-	WarningWebWrap			= "撒網纏繞: >%s<",
-	WarningWebSpraySoon		= "5秒後 撒網(暈)",
-	WarningWebSprayNow		= "撒網!",
-	WarningSpidersSoon		= "5秒後 小蜘蛛",
-	WarningSpidersNow		= "小蜘蛛出現了!"
+	WarningSpidersSoon		= "梅克絲娜之子 5秒後出現",
+	WarningSpidersNow		= "梅克絲娜之子出現了"
 })
 
 L:SetTimerLocalization({
-	TimerWebSpray			= "撒網",
-	TimerSpider			= "小蜘蛛"
+	TimerSpider			= "下一次 梅克絲娜之子"
 })
 
 L:SetOptionLocalization({
-	WarningWebWrap			= "提示纏繞的蜘蛛網的目標",
-	WarningWebSpraySoon		= "顯示撒網的預先警告",
-	WarningWebSprayNow		= "顯示撒網警告",
-	WarningSpidersSoon		= "顯示小蜘蛛的預先警告",
-	WarningSpidersNow		= "顯示小蜘蛛警告",
-	TimerWebSpray			= "顯示撒網計時器",
-	TimerSpider			= "顯示小蜘蛛計時器"
+	WarningSpidersSoon		= "為梅克絲娜之子顯示預先警告",
+	WarningSpidersNow		= "為梅克絲娜之子顯示警告",
+	TimerSpider			= "為下一次梅克絲娜之子顯示計時器"
 })
 
 L:SetMiscLocalization({
-	YellWebWrap			= "我被纏繞住了! 救我!"
+	YellWebWrap			= "我被纏繞住了! 救我!",
+	ArachnophobiaTimer		= "蜘蛛恐懼症"
 })
 
 ------------------------------
@@ -108,28 +80,25 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Noth")
 
 L:SetGeneralLocalization({
-	name = "『瘟疫使者』諾斯"
+	name 				= "『瘟疫使者』諾斯"
 })
 
 L:SetWarningLocalization({
-	WarningTeleportNow		= "閃現!",
-	WarningTeleportSoon		= "20秒後 閃現",
-	WarningCurse			= "詛咒!"
+	WarningTeleportNow		= "傳送",
+	WarningTeleportSoon		= "20秒後 傳送"
 })
 
 L:SetTimerLocalization({
-	TimerTeleport			= "閃現",
-	TimerTeleportBack		= "閃現回來"
+	TimerTeleport			= "傳送",
+	TimerTeleportBack		= "傳送回來"
 })
 
 L:SetOptionLocalization({
-	WarningTeleportNow		= "顯示閃現警告",
-	WarningTeleportSoon		= "顯示閃現的預先警告",
-	WarningCurse			= "顯示詛咒警告",
-	TimerTeleport			= "顯示閃現計時器",
-	TimerTeleportBack		= "顯示閃現回來計時器"
+	WarningTeleportNow		= "為傳送顯示警告",
+	WarningTeleportSoon		= "為傳送顯示預先警告",
+	TimerTeleport			= "為傳送顯示計時器",
+	TimerTeleportBack		= "為傳送回來顯示計時器"
 })
-
 
 --------------------------
 --  Heigan the Unclean  --
@@ -137,62 +106,48 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Heigan")
 
 L:SetGeneralLocalization({
-	name = "『不潔者』海根"
+	name 				= "『不潔者』海根"
 })
 
 L:SetWarningLocalization({
-	WarningTeleportNow		= "閃現!",
-	WarningTeleportSoon		= "%d秒後 閃現",
+	WarningTeleportNow		= "傳送",
+	WarningTeleportSoon		= "%d秒後 傳送"
 })
 
 L:SetTimerLocalization({
-	TimerTeleport			= "閃現",
+	TimerTeleport			= "傳送"
 })
 
 L:SetOptionLocalization({
-	WarningTeleportNow		= "顯示閃現警告",
-	WarningTeleportSoon		= "顯示閃現的預先警告",
-	WarningCurse			= "顯示詛咒警告",
-	TimerTeleport			= "顯示閃現計時器",
-	TimerTeleportBack		= "顯示閃現回來計時器"
+	WarningTeleportNow		= "為傳送顯示警告",
+	WarningTeleportSoon		= "為傳送顯示預先警告",
+	TimerTeleport			= "為傳送顯示計時器",
+	TimerTeleportBack		= "為傳送回來顯示計時器"
 })
 
-
-----------------
---  Lolotheb  --
-----------------
+---------------
+--  Loatheb  --
+---------------
 L = DBM:GetModLocalization("Loatheb")
 
 L:SetGeneralLocalization({
-	name = "憎恨者"
+	name 				= "憎恨者"
 })
 
+L:SetMiscLocalization({
+	LoathebSpore			= "孢子"
+})
 L:SetWarningLocalization({
-	WarningSporeNow			= "孢子出現了!",
-	WarningSporeSoon		= "5秒後 孢子",
-	WarningDoomNow			= "無可避免的末日 #%d",
 	WarningHealSoon			= "3秒後可以治療",
-	WarningHealNow			= "現在治療!"
-})
-
-L:SetTimerLocalization({
-	TimerDoom			= "無可避免的末日 #%d",
-	TimerSpore			= "下一個 孢子",
-	TimerAura			= "亡域光環"
+	WarningHealNow			= "現在治療",
+	KillSpore			= "你殺死了一個孢子!!!"
 })
 
 L:SetOptionLocalization({
-	WarningSporeNow			= "顯示孢子警告",
-	WarningSporeSoon		= "顯示孢子的預先警告",
-	WarningDoomNow			= "顯示無可避免的末日警告",
-	WarningHealSoon			= "顯示\"3秒後可以治療\"的預先警告",
-	WarningHealNow			= "顯示\"現在治療\"警告",
-	TimerDoom			= "顯示無可避免的末日計時器",
-	TimerSpore			= "顯示孢子計時器",
-	TimerAura			= "顯示亡域光環計時器"
+	WarningHealSoon			= "為3秒後可以治療顯示預先警告",
+	WarningHealNow			= "為現在治療顯示警告",
+	SporeDamageAlert		= "在團隊中提示誰殺死了孢子並發送密語給兇手\n(需要團隊隊長或助理權限)"
 })
-
-
 
 -----------------
 --  Patchwerk  --
@@ -200,11 +155,11 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Patchwerk")
 
 L:SetGeneralLocalization({
-	name = "縫補者"
+	name 				= "縫補者"
 })
 
 L:SetOptionLocalization({
-	WarningHateful 			= "通告憎恨打擊到團隊頻道\n(你需要團隊領袖或助理許可權)"
+	WarningHateful 			= "公佈憎恨打擊的目標到團隊頻道\n(需要團隊隊長或助理權限)"
 })
 
 L:SetMiscLocalization({
@@ -213,29 +168,25 @@ L:SetMiscLocalization({
 	HatefulStrike 			= "憎恨打擊 --> %s [%s]"
 })
 
-
 -----------------
 --  Grobbulus  --
 -----------------
 L = DBM:GetModLocalization("Grobbulus")
 
 L:SetGeneralLocalization({
-	name = "葛羅巴斯"
+	name 				= "葛羅巴斯"
 })
 
 L:SetOptionLocalization({
-	WarningInjection		= "顯示突變注射警告",
 	SpecialWarningInjection		= "當你中了突變注射時顯示特別警告"
 })
 
 L:SetWarningLocalization({
-	WarningInjection		= "突變注射: >%s<",
-	SpecialWarningInjection		= "你中了突變注射!"
+	SpecialWarningInjection		= "你中了突變注射 - 快跑開"
 })
 
 L:SetTimerLocalization({
 })
-
 
 -------------
 --  Gluth  --
@@ -243,24 +194,8 @@ L:SetTimerLocalization({
 L = DBM:GetModLocalization("Gluth")
 
 L:SetGeneralLocalization({
-	name = "古魯斯"
+	name 				= "古魯斯"
 })
-
-L:SetOptionLocalization({
-	WarningDecimateNow		= "顯示殘殺警告",
-	WarningDecimateSoon		= "顯示殘殺的預先警告",
-	TimerDecimate			= "顯示殘殺計時器"
-})
-
-L:SetWarningLocalization({
-	WarningDecimateNow		= "殘殺!",
-	WarningDecimateSoon		= "10秒後 殘殺"
-})
-
-L:SetTimerLocalization({
-	TimerDecimate			= "殘殺冷卻"
-})
-
 
 ----------------
 --  Thaddius  --
@@ -268,59 +203,43 @@ L:SetTimerLocalization({
 L = DBM:GetModLocalization("Thaddius")
 
 L:SetGeneralLocalization({
-	name = "泰迪斯"
+	name 				= "泰迪斯"
 })
 
 L:SetMiscLocalization({
-	Yell				= "斯塔拉格要碾碎你﹗",
-	Emote				= "%s超過負荷!", -- ?
-	Emote2				= "泰斯拉線圈超過負荷!", -- ?
-	Boss1 = "伏晨",
-	Boss2 = "斯塔拉格",
-	Charge1 = "負極",
-	Charge2 = "正極",
+	Yell				= "斯塔拉格要碾碎你!",
+	Emote				= "%s超過負荷!",
+	Emote2				= "泰斯拉線圈超過負荷!",
+	Boss1 				= "伏晨",
+	Boss2 				= "斯塔拉格",
+	Charge1 			= "負極",
+	Charge2 			= "正極"
 })
 
 L:SetOptionLocalization({
-	WarningShiftCasting		= "顯示極性轉換警告",
-	WarningChargeChanged		= "顯示特別警告當你的極性變了",
-	WarningChargeNotChanged		= "顯示特別警告當你的極性沒有改變",
-	TimerShiftCast			= "顯示極性轉換施放計時器",
-	TimerNextShift			= "顯示極性轉換冷卻計時器",
+	WarningChargeChanged		= "當你的極性改變時顯示特別警告",
+	WarningChargeNotChanged		= "當你的極性沒有改變時顯示特別警告",
 	ArrowsEnabled			= "顯示箭頭 (正常 \"二邊\" 站位打法)",
 	ArrowsRightLeft			= "顯示左/右箭頭 給 \"四角\" 站位打法 (如果極性改變顯示左箭頭, 沒變顯示左箭頭)",
-	ArrowsInverse			= "倒轉的 \"四角\" 站位打法 (如果極性改變顯示左箭頭, 沒變顯示右箭頭)",
-	WarningThrow			= "顯示投擲坦克警告",
-	WarningThrowSoon		= "顯示投擲坦克的預先警告",
-	TimerThrow			= "顯示投擲坦克計時器"
+	ArrowsInverse			= "顯示倒轉的 \"四角\" 站位打法 (如果極性改變顯示左箭頭, 沒變顯示右箭頭)",
 })
 
 L:SetWarningLocalization({
-	WarningShiftCasting		= "5秒後 極性轉換!",
 	WarningChargeChanged		= "極性變為%s",
-	WarningChargeNotChanged		= "極性沒有改變",
-	WarningThrow			= "投擲坦克!",
-	WarningThrowSoon		= "3秒後 投擲坦克"
-})
-
-L:SetTimerLocalization({
-	TimerShiftCast			= "施放極性轉換",
-	TimerNextShift			= "下一次極性轉換",
-	TimerThrow			= "投擲坦克"
+	WarningChargeNotChanged		= "極性沒有改變"
 })
 
 L:SetOptionCatLocalization({
-	Arrows				= "箭頭",
+	Arrows				= "箭頭"
 })
 
-
------------------
---  Razuvious  --
------------------
+----------------------------
+--  Instructor Razuvious  --
+----------------------------
 L = DBM:GetModLocalization("Razuvious")
 
 L:SetGeneralLocalization({
-	name = "講師拉祖維斯"
+	name 				= "講師拉祖維斯"
 })
 
 L:SetMiscLocalization({
@@ -331,55 +250,41 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningShoutNow			= "顯示混亂怒吼警告",
-	WarningShoutSoon		= "顯示混亂怒吼的預先警告",
-	TimerShout			= "顯示混亂怒吼計時器",
-	WarningShieldWallSoon		= "顯示盾牆失效警告",
-	TimerShieldWall			= "顯示盾牆計時器",
-	TimerTaunt			= "顯示嘲諷計時器"
+	WarningShieldWallSoon		= "為盾牆結束顯示預先警告"
 })
 
 L:SetWarningLocalization({
-	WarningShoutNow			= "混亂怒吼!",
-	WarningShoutSoon		= "5秒後 混亂怒吼",
-	WarningShieldWallSoon		= "5秒後 盾牆失效"
+	WarningShieldWallSoon		= "5秒後 盾牆結束"
 })
 
-L:SetTimerLocalization({
-	TimerShout			= "混亂怒吼",
-	TimerTaunt			= "嘲諷",
-	TimerShieldWall			= "盾牆"
-})
-
---------------
---  Gothik  --
---------------
+----------------------------
+--  Gothik the Harvester  --
+----------------------------
 L = DBM:GetModLocalization("Gothik")
 
 L:SetGeneralLocalization({
-	name = "『收割者』高希"
+	name 				= "『收割者』高希"
 })
 
 L:SetOptionLocalization({
-	TimerWave			= "顯示波段計時",
-	TimerPhase2			= "顯示第二階段計時",
-	WarningWaveSoon			= "顯示波段的預先警告",
-	WarningWaveSpawned		= "顯示波段出現警告",
-	WarningRiderDown		= "當騎兵死亡時顯示警告",
-	WarningKnightDown		= "死亡騎士死亡時顯示警告",
-	WarningPhase2			= "顯示第二階段警告"
+	TimerWave			= "為下一波顯示計時器",
+	TimerPhase2			= "為第二階段顯示計時器",
+	WarningWaveSoon			= "為波數顯示預先警告",
+	WarningWaveSpawned		= "為波數出現顯示警告",
+	WarningRiderDown		= "當無情的騎兵死亡時顯示警告",
+	WarningKnightDown		= "當無情的死亡騎士死亡時顯示警告"
 })
 
 L:SetTimerLocalization({
-	TimerWave			= "第 #%d 波",
+	TimerWave			= "第 %d 波",
 	TimerPhase2			= "第2階段"
 })
 
 L:SetWarningLocalization({
-	WarningWaveSoon			= "3秒後第%d波: %s",
+	WarningWaveSoon			= "3秒後 第%d波: %s",
 	WarningWaveSpawned		= "第%d波: %s 出現了",
-	WarningRiderDown		= "騎兵已死亡﹗",
-	WarningKnightDown		= "死亡騎士已死亡﹗",
+	WarningRiderDown		= "騎兵已死亡",
+	WarningKnightDown		= "死亡騎士已死亡",
 	WarningPhase2			= "第二階段"
 })
 
@@ -388,45 +293,41 @@ L:SetMiscLocalization({
 	WarningWave1			= "%d %s",
 	WarningWave2			= "%d %s 和 %d %s",
 	WarningWave3			= "%d %s, %d %s 和 %d %s",
-	Trainee				= "受訓者",
-	Knight				= "死騎",
-	Rider				= "騎兵",
+	Trainee				= "受訓員",
+	Knight				= "死亡騎士",
+	Rider				= "騎兵"
 })
 
-
-----------------
---  Horsemen  --
-----------------
+---------------------
+--  Four Horsemen  --
+---------------------
 L = DBM:GetModLocalization("Horsemen")
 
 L:SetGeneralLocalization({
-	name = "四騎士"
+	name 				= "四騎士"
 })
 
 L:SetOptionLocalization({
-	TimerMark			= "顯示印記計時器",
-	WarningMarkSoon			= "顯示印記的預先警告",
-	WarningMarkNow			= "顯示印記警告",
-	SpecialWarningMarkOnPlayer	= "當你印記疊加大於四時顯示特別警告"
+	WarningMarkSoon			= "為印記顯示預先警告",
+	WarningMarkNow			= "為印記顯示警告",
+	SpecialWarningMarkOnPlayer	= "當你印記堆疊多於四層時顯示特別警告"
 })
 
 L:SetTimerLocalization({
-	TimerMark 			= "印記 %d"
 })
 
 L:SetWarningLocalization({
 	WarningMarkSoon			= "3秒後 印記 %d",
 	WarningMarkNow			= "印記 #%d",
-	SpecialWarningMarkOnPlayer	= "%s: %s",
+	SpecialWarningMarkOnPlayer	= "%s: %s"
 })
 
 L:SetMiscLocalization({
 	Korthazz			= "寇斯艾茲族長",
 	Rivendare			= "瑞文戴爾男爵",
 	Blaumeux			= "布洛莫斯女士",
-	Zeliek				= "札里克爵士",
+	Zeliek				= "札里克爵士"
 })
-
 
 -----------------
 --  Sapphiron  --
@@ -434,61 +335,56 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Sapphiron")
 
 L:SetGeneralLocalization({
-	name = "薩菲隆"
+	name 				= "薩菲隆"
 })
 
 L:SetOptionLocalization({
-	WarningDrainLifeNow		= "顯示生命吸取警告",
-	WarningDrainLifeSoon		= "顯示生命吸取的預先警告",
-	WarningAirPhaseSoon		= "顯示空中階段的預先警告",
-	WarningAirPhaseNow		= "顯示空中階段警告",
-	WarningLanded			= "顯示地上階段警告",
-	TimerDrainLifeCD		= "顯示生命吸取計時器",
-	TimerAir			= "顯示空中階段計時器",
-	TimerLanding			= "顯示降落計時器",
-	TimerIceBlast			= "顯示深呼吸計時器",
-	WarningDeepBreath		= "顯示深呼吸特別警告",
-	WarningIceblock			= "當你中了冰箱大喊",
+	WarningAirPhaseSoon		= "為空中階段顯示預先警告",
+	WarningAirPhaseNow		= "提示空中階段",
+	WarningLanded			= "提示地上階段",
+	TimerAir			= "為空中階段顯示計時器",
+	TimerLanding			= "為降落顯示計時器",
+	TimerIceBlast			= "為冰息術顯示計時器",
+	WarningDeepBreath		= "為冰息術顯示特別警告",
+	WarningIceblock			= "當你中了冰箱時大喊",
 })
 
 L:SetMiscLocalization({
 	EmoteBreath			= "%s深深地吸了一口氣。",
-	WarningYellIceblock		= "我在冰箱入面!"
+	WarningYellIceblock		= "我是冰塊!"
 })
 
 L:SetWarningLocalization({
-	WarningDrainLifeNow		= "生命吸取!",
-	WarningDrainLifeSoon		= "生命吸取 即將發動",
 	WarningAirPhaseSoon		= "10秒後 空中階段",
 	WarningAirPhaseNow		= "空中階段",
 	WarningLanded			= "薩菲隆降落了",
-	WarningDeepBreath		= "深呼吸!",
+	WarningDeepBreath		= "冰息術"
 })
 
 L:SetTimerLocalization({
-	TimerDrainLifeCD		= "生命吸取冷卻",
 	TimerAir			= "空中階段",
 	TimerLanding			= "降落",
-	TimerIceBlast			= "深呼吸"	
+	TimerIceBlast			= "冰息術"	
 })
 
 ------------------
---  Kel'thuzad  --
+--  Kel'Thuzad  --
 ------------------
 
 L = DBM:GetModLocalization("Kel'Thuzad")
 
 L:SetGeneralLocalization({
-	name = "科爾蘇加德"
+	name 				= "科爾蘇加德"
 })
 
 L:SetOptionLocalization({
-	TimerPhase2			= "顯示第二階段計時器",
-	WarningBlastTargets		= "顯示冰霜衝擊警告",
-	WarningPhase2			= "顯示第二階段警告",
-	WarningFissure			= "顯示暗影裂縫警告",
-	WarningMana			= "顯示爆裂法力警告",
-	WarningChainsTargets		= "顯示科爾蘇加德之鍊(心控)警告"
+	TimerPhase2			= "為第二階段顯示計時器",
+	specwarnP2Soon			= "為科爾蘇加德攻擊前10秒顯示特別警告",
+	warnAddsSoon			= "為寒冰皇冠守護者顯示預先警告",
+	SetIconOnMC			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(28410),
+	SetIconOnManaBomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(27819),
+	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(27808),
+	ShowRange			= "當第二階段開始時顯示距離監視框"
 })
 
 L:SetMiscLocalization({
@@ -496,11 +392,8 @@ L:SetMiscLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningBlastTargets		= "冰霜衝擊: >%s<",
-	WarningPhase2			= "第二階段",
-	WarningFissure			= "暗影裂縫 出現了",
-	WarningMana			= "爆裂法力: >%s<",
-	WarningChainsTargets		= "科爾蘇加德之鍊(心控): >%s<"
+	specwarnP2Soon			= "10秒後科爾蘇加德開始攻擊",
+	warnAddsSoon			= "寒冰皇冠守護者即將出現"
 })
 
 L:SetTimerLocalization({

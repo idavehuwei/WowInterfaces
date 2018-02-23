@@ -86,6 +86,10 @@ L["Crusade Card"] = "暗月卡片：远征"
 L["Vengeance Card"] = "暗月卡片：复仇"
 L["Madness Card"] = "暗月卡片：疯狂"
 L["Wrath Card"] = "暗月卡片：怒火"
+L["Illusion Card"] = "暗月卡片：幻象"
+L["Berserker! Card"] = "暗月卡片：狂暴！"
+L["Greatness Card"] = "暗月卡片：伟大"
+L["Death Card"] = "暗月卡片：死亡"
 
 -- Sources
 L["Drop"] = "掉落"
@@ -97,6 +101,9 @@ L["UBRS"] = "黑石塔上层"
 L["LBRS"] = "黑石塔下层"
 	
 L["Heroic"] = "英雄模式"
+	
+L["10 Man"] = "10人"
+L["25 Man"] = "25人"
 	
 -- Tier Sets
 L["Tier 1 Set"] 		= "T1 套装"
@@ -110,6 +117,10 @@ L["Tier 7.10 Set"] = "T7 10人套装"
 L["Tier 7.25 Set"] = "T7 25人套装"
 L["Tier 8.10 Set"] = "T8 10人套装"
 L["Tier 8.25 Set"] = "T8 25人套装"
+L["Tier 9.10 Set"] = "T9 10人套装"
+L["Tier 9.25 Set"] = "T9 25人套装"
+L["Tier 10.10 Set"] = "T10 10人套装"
+L["Tier 10.25 Set"] = "T10 25人套装"
 	
 -- Arena Sets
 L["Arena - Season 1 Set"] = "竞技场：第1赛季套装"
@@ -119,6 +130,9 @@ L["Arena - Season 4 Set"] = "竞技场：第4赛季套装"
 L["Arena - Season 5 Tier 1 Set"] = "竞技场：第5赛季套装1"
 L["Arena - Season 5 Tier 2 Set"] = "竞技场：第5赛季套装2"
 L["Arena - Season 5 Tier 3 Set"] = "竞技场：第5赛季套装3"
+L["Arena - Season 6 Set"] = "竞技场：第6赛季套装"
+L["Arena - Season 7 Set"] = "竞技场：第7赛季套装"
+L["Arena - Season 8 Set"] = "竞技场：第8赛季套装"
 	
 L["%d%% alc/vol (%d proof)"] = "酒精浓度：%d%%"
 L[" (%d tickets)"] = " （%d张票）"
@@ -139,11 +153,10 @@ L["Adamantite Deposit"] = "精金矿脉"
 L["Fel Iron Deposit"] = "魔铁矿脉"
 L["Khorium Vein"] = "氪金矿脉"
 L["Rich Adamantite Deposit"] = "富精金矿脉"
--- check below
 L["Cobalt Deposit"] = "钴矿脉"
 L["Rich Cobalt Deposit"] = "富钴矿脉"
-L["Saronite Deposit"] = "萨隆邪铁矿脉"
-L["Rich Saronite Deposit"] = "富萨隆邪铁矿脉"
+L["Saronite Deposit"] = "蓝铜矿脉"
+L["Rich Saronite Deposit"] = "富蓝铜矿脉"
 L["Titanium Vein"] = "泰坦神铁矿脉"
 
 -- Categories

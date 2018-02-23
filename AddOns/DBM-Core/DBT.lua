@@ -13,6 +13,7 @@
 --    * zhCN: Diablohu				http://wow.gamespot.com.cn
 --    * ruRU: BootWin				bootwin@gmail.com
 --    * zhTW: Azael/kc10577			kc10577@hotmail.com
+--    * esES: Interplay/1nn7erpLaY      http://www.1nn7erpLaY.com
 --    * (add your names here!)
 --
 -- Special thanks to:
@@ -47,6 +48,7 @@ local barPrototype = {}
 local unusedBars = {}
 local unusedBarObjects = setmetatable({}, {__mode = "kv"})
 local instances = {}
+local updateClickThrough
 local options
 local function stringFromTimer(t)
 	if t <= 60 then
@@ -201,6 +203,18 @@ options = {
 		type = "boolean",
 		default = true,
 	},
+	ClickThrough = {
+		type = "boolean",
+		default = false,
+	},
+	Font = {
+		type = "string",
+		default = STANDARD_TEXT_FONT,
+	},
+	FontSize = {
+		type = "number",
+		default = 10
+	}
 }
 
 --------------------------
@@ -351,13 +365,14 @@ do
 			frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, self.mainAnchor, "DBTBarTemplate")
 			fCounter = fCounter + 1
 		end
+		frame:EnableMouse(not self.options.ClickThrough or self.movable)
 		return frame
 	end	
 	local mt = {__index = barPrototype}
 	
-	function DBT:CreateBar(timer, id, icon, huge, small, color)
+	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy)
 		if timer <= 0 then return end
-		if (self.numBars or 0) >= 15 then return end
+		if (self.numBars or 0) >= 15 and not isDummy then return end
 		local newBar = self:GetBar(id)
 		if newBar then -- update an existing bar
 			newBar:SetTimer(timer) -- this can kill the timer and the timer methods don't like dead timers
@@ -384,7 +399,7 @@ do
 				newBar.small = small
 				newBar.color = color
 				newBar.flashing = nil
-			else  -- yes, this is duplicate code but it's slightly faster this way ;)
+			else  -- duplicate code ;(
 				newBar = setmetatable({
 					frame = newFrame,
 					id = id,
@@ -429,11 +444,11 @@ do
 		self.flashing = nil
 		self:Update(0)
 		self.flashing = nil
-		getglobal(self.frame:GetName().."BarSpark"):SetAlpha(1)
+		_G[self.frame:GetName().."BarSpark"]:SetAlpha(1)
 	end
 	function DBT:CreateDummyBar()
 		dummyBars = dummyBars + 1
-		local dummy = self:CreateBar(25, "dummy"..dummyBars, "Interface\\Icons\\Spell_Nature_WispSplode", nil, true)
+		local dummy = self:CreateBar(25, "dummy"..dummyBars, "Interface\\Icons\\Spell_Nature_WispSplode", nil, true, nil, true)
 		dummy:SetText("Dummy")
 		dummy:Cancel()
 		self.bars[dummy] = true
@@ -534,20 +549,20 @@ function barPrototype:SetElapsed(elapsed)
 end
 
 function barPrototype:SetText(text)
-	getglobal(self.frame:GetName().."BarName"):SetText(text)
+	_G[self.frame:GetName().."BarName"]:SetText(text)
 end
 
 function barPrototype:SetIcon(icon)
-	getglobal(self.frame:GetName().."BarIcon1"):SetTexture("")
-	getglobal(self.frame:GetName().."BarIcon1"):SetTexture(icon)
-	getglobal(self.frame:GetName().."BarIcon2"):SetTexture("")
-	getglobal(self.frame:GetName().."BarIcon2"):SetTexture(icon)
+	_G[self.frame:GetName().."BarIcon1"]:SetTexture("")
+	_G[self.frame:GetName().."BarIcon1"]:SetTexture(icon)
+	_G[self.frame:GetName().."BarIcon2"]:SetTexture("")
+	_G[self.frame:GetName().."BarIcon2"]:SetTexture(icon)
 end
 
 function barPrototype:SetColor(color)
 	self.color = color
-	getglobal(self.frame:GetName().."Bar"):SetStatusBarColor(color.r, color.g, color.b)
-	getglobal(self.frame:GetName().."BarSpark"):SetVertexColor(color.r, color.g, color.b)
+	_G[self.frame:GetName().."Bar"]:SetStatusBarColor(color.r, color.g, color.b)
+	_G[self.frame:GetName().."BarSpark"]:SetVertexColor(color.r, color.g, color.b)
 end
 
 ------------------
@@ -555,10 +570,10 @@ end
 ------------------
 function barPrototype:Update(elapsed)
 	local frame = self.frame
-	local bar = getglobal(frame:GetName().."Bar")
-	local texture = getglobal(frame:GetName().."BarTexture")
-	local spark = getglobal(frame:GetName().."BarSpark")
-	local timer = getglobal(frame:GetName().."BarTimer")
+	local bar = _G[frame:GetName().."Bar"]
+	local texture = _G[frame:GetName().."BarTexture"]
+	local spark = _G[frame:GetName().."BarSpark"]
+	local timer = _G[frame:GetName().."BarTimer"]
 	local obj = self.owner
 	self.timer = self.timer - elapsed
 	if obj.options.DynamicColor and not self.color then
@@ -672,6 +687,7 @@ end
 
 do
 	local function moveEnd(self)
+		updateClickThrough(self, self:GetOption("ClickThrough"))
 		self.movable = false
 	end
 	
@@ -684,7 +700,9 @@ do
 			local bar2 = self:CreateBar(20, "Move2", "Interface\\Icons\\Spell_Nature_WispSplode", true)
 			bar2:SetText(DBM_CORE_MOVABLE_BAR)
 		end
+		updateClickThrough(self, false)
 		self.movable = true
+		DBM:Unschedule(moveEnd, self)
 		DBM:Schedule(20, moveEnd, self)
 	end
 end
@@ -730,13 +748,13 @@ end
 
 function barPrototype:ApplyStyle()
 	local frame = self.frame
-	local bar = getglobal(frame:GetName().."Bar")
-	local spark = getglobal(frame:GetName().."BarSpark")
-	local texture = getglobal(frame:GetName().."BarTexture")
-	local icon1 = getglobal(frame:GetName().."BarIcon1")
-	local icon2 = getglobal(frame:GetName().."BarIcon2")
-	local name = getglobal(frame:GetName().."BarName")
-	local timer = getglobal(frame:GetName().."BarTimer")
+	local bar = _G[frame:GetName().."Bar"]
+	local spark = _G[frame:GetName().."BarSpark"]
+	local texture = _G[frame:GetName().."BarTexture"]
+	local icon1 = _G[frame:GetName().."BarIcon1"]
+	local icon2 = _G[frame:GetName().."BarIcon2"]
+	local name = _G[frame:GetName().."BarName"]
+	local timer = _G[frame:GetName().."BarTimer"]
 	texture:SetTexture(self.owner.options.Texture)
 	if self.color then
 		bar:SetStatusBarColor(self.color.r, self.color.g, self.color.b)
@@ -757,10 +775,12 @@ function barPrototype:ApplyStyle()
 	texture:SetAlpha(1)
 	bar:SetAlpha(1)
 	frame:SetAlpha(1)
+	name:SetFont(self.owner.options.Font, self.owner.options.FontSize)
+	timer:SetFont(self.owner.options.Font, self.owner.options.FontSize)
 	self:Update(0)
 end
 
-function DBT:UpdateOrientation()
+local function updateOrientation(self)
 	for bar in self:GetBarIterator() do
 		if not bar.dummy then
 			if bar.moving == "enlarge" then
@@ -774,9 +794,21 @@ function DBT:UpdateOrientation()
 		end
 	end
 end
-options.ExpandUpwards.onChange = DBT.UpdateOrientation
-options.BarYOffset.onChange = DBT.UpdateOrientation
-options.BarXOffset.onChange = DBT.UpdateOrientation
+options.ExpandUpwards.onChange = updateOrientation
+options.BarYOffset.onChange = updateOrientation
+options.BarXOffset.onChange = updateOrientation
+
+function updateClickThrough(self, newValue)
+	if not self.movable then
+		for bar in self:GetBarIterator() do
+			if not bar.dummy then
+				bar.frame:EnableMouse(not newValue)
+			end
+		end
+	end
+end
+	
+options.ClickThrough.onChange = updateClickThrough
 
 
 --------------------
@@ -787,9 +819,10 @@ function barPrototype:Announce()
 	if self.owner.announceHook then
 		msg = self.owner.announceHook(self)
 	end
-	msg = msg or ("%s  %d:%02d"):format(getglobal(self.frame:GetName().."BarName"):GetText(), math.floor(self.timer / 60), self.timer % 60)
-	if ChatFrameEditBox:IsShown() then
-		ChatFrameEditBox:Insert(msg)
+	msg = msg or ("%s  %d:%02d"):format(_G[self.frame:GetName().."BarName"]:GetText(), math.floor(self.timer / 60), self.timer % 60)
+	local chatWindow = ChatEdit_GetActiveWindow()
+	if chatWindow then
+		chatWindow:Insert(msg)
 	else
 		SendChatMessage(msg, (select(2, IsInInstance()) == "pvp" and "BATTLEGROUND") or (GetNumRaidMembers() > 0 and "RAID") or "PARTY")
 	end
@@ -880,7 +913,7 @@ function barPrototype:AnimateEnlarge(elapsed)
 		self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
 		self.frame:SetScale(newScale)
 		self.frame:SetWidth(newWidth)
-		getglobal(self.frame:GetName().."Bar"):SetWidth(newWidth)
+		_G[self.frame:GetName().."Bar"]:SetWidth(newWidth)
 	else
 		self.moving = nil
 		self.enlarged = true
@@ -890,6 +923,7 @@ function barPrototype:AnimateEnlarge(elapsed)
 	end
 end
 
+--[[
 do
 	local breakFrames = {}
 	function barPrototype:Break() -- coming soon
@@ -901,8 +935,50 @@ do
 		local tex2 = frame.tex2
 		tex1:SetTexture(self.owner.options.Texture)
 		tex2:SetTexture(self.owner.options.Texture)
-		tex1:SetTexCoordModifiesRect(true)
+		-- tex1:SetTexCoordModifiesRect(true)  
+		tex1:SetHorizTile(true)
+		tex1:SetVertTile(true)
 		tex1:SetTexCoord(0, 0.5, 0, 1)
 	end
 end
+]]--
 
+----------------------------------------
+-- Functions used by the XML Template --
+----------------------------------------
+function DBT_Bar_OnLoad(self)
+	self:SetMinMaxValues(0, 1)
+	self:SetValue(1)
+end
+
+function DBT_Bar_OnUpdate(self, elapsed)
+	self.obj:Update(elapsed)
+end
+
+function DBT_Bar_OnMouseDown(self, btn)
+	if self.obj.owner.movable and btn == "LeftButton" then
+		if self.obj.enlarged then
+			self.obj.owner.secAnchor:StartMoving()
+		else
+			self.obj.owner.mainAnchor:StartMoving()
+		end
+	end
+end
+
+function DBT_Bar_OnMouseUp(self, btn)
+	self.obj.owner.mainAnchor:StopMovingOrSizing()
+	self.obj.owner.secAnchor:StopMovingOrSizing()
+	self.obj.owner:SavePosition()
+	if btn == "RightButton" then
+		self.obj:Cancel()
+	elseif btn == "LeftButton" and IsShiftKeyDown() then
+		self.obj:Announce()
+	end
+end
+
+function DBT_Bar_OnHide(self)
+	if self.obj then
+		self.obj.owner.mainAnchor:StopMovingOrSizing()
+		self.obj.owner.secAnchor:StopMovingOrSizing()
+	end
+end

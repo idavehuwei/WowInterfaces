@@ -221,10 +221,10 @@ L.OPTION_BTN_INC_OFFLINE 	= "包含狀態為斷線的成員"
 L.OPTION_BTN_FROM_HISTORY 	= "從歷史分內扣除物品分"
 
 
-L.OPTION_PAGE_ITEM_LVL1		= '|c'..select(4,GetItemQualityColor(2)).."優秀|r"
-L.OPTION_PAGE_ITEM_LVL2		= '|c'..select(4,GetItemQualityColor(3)).."精良|r"
-L.OPTION_PAGE_ITEM_LVL3		= '|c'..select(4,GetItemQualityColor(4)).."史詩|r"
-L.OPTION_PAGE_ITEM_LVL4		= '|c'..select(4,GetItemQualityColor(5)).."傳奇|r"
+L.OPTION_PAGE_ITEM_LVL1		= select(4,GetItemQualityColor(2)).."優秀|r"
+L.OPTION_PAGE_ITEM_LVL2		= select(4,GetItemQualityColor(3)).."精良|r"
+L.OPTION_PAGE_ITEM_LVL3		= select(4,GetItemQualityColor(4)).."史詩|r"
+L.OPTION_PAGE_ITEM_LVL4		= select(4,GetItemQualityColor(5)).."傳奇|r"
 
 L.OPTION_PAGE_EVENT_ACTION1 = "不產生動作"
 L.OPTION_PAGE_EVENT_ACTION2 = "僅顯示提示"

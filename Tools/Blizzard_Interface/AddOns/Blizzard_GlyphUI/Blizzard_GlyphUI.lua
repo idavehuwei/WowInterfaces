@@ -192,7 +192,7 @@ function GlyphFrameGlyph_OnUpdate (self, elapsed)
 		self.background:SetTexCoord(GLYPH_SLOTS[id].left, GLYPH_SLOTS[id].right, GLYPH_SLOTS[id].top, GLYPH_SLOTS[id].bottom);
 		
 		local highlight = false;
-		if ( not MouseIsOver(self) ) then
+		if ( not self:IsMouseOver() ) then
 			self.highlight:Show();
 			highlight = true;
 		end
@@ -235,7 +235,7 @@ function GlyphFrameGlyph_OnClick (self, button)
 	local id = self:GetID();
 	local talentGroup = PlayerTalentFrame and PlayerTalentFrame.talentGroup;
 
-	if ( IsModifiedClick("CHATLINK") and ChatFrameEditBox:IsVisible() ) then
+	if ( IsModifiedClick("CHATLINK") and ChatEdit_GetActiveWindow() ) then
 		local link = GetGlyphLink(id, talentGroup);
 		if ( link ) then
 			ChatEdit_InsertLink(link);
@@ -290,10 +290,8 @@ function GlyphFrame_OnUpdate (self, elapsed)
 end
 
 function GlyphFrame_PulseGlow ()
-	if ( GlyphFrame:IsShown() ) then
-		GlyphFrame.glow:Show();
-		GlyphFrame.glow.pulse:Play();
-	end
+	GlyphFrame.glow:Show();
+	GlyphFrame.glow.pulse:Play();
 end
 
 function GlyphFrame_OnShow (self)
@@ -339,7 +337,7 @@ function GlyphFrame_OnEvent (self, event, ...)
 	elseif ( event == "GLYPH_ADDED" or event == "GLYPH_REMOVED" or event == "GLYPH_UPDATED" ) then
 		local index = ...;
 		local glyph = _G["GlyphFrameGlyph" .. index];
-		if ( glyph ) then
+		if ( glyph and self:IsVisible() ) then
 			-- update the glyph
 			GlyphFrameGlyph_UpdateSlot(glyph);
 			-- play effects based on the event and glyph type

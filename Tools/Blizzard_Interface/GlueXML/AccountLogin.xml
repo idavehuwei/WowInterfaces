@@ -32,7 +32,7 @@
 		</Layers>
 		<Scripts>
 			<OnLoad>
-				self.BG_Highlight = getglobal(self:GetName().."BGHighlight");
+				self.BG_Highlight = _G[self:GetName().."BGHighlight"];
 			</OnLoad>
 			<OnClick>
 				WoWAccountSelectButton_OnClick(self);
@@ -165,14 +165,23 @@
 						</Anchors>
 						<Layers>
 							<Layer level="BACKGROUND">
-								<FontString name="$parentLabel" inherits="GlueFontNormal" text="ACCOUNT_NAME">
+								<FontString name="$parentLabel" inherits="GlueFontNormal" justifyH="CENTER" text="ACCOUNT_NAME">
 									<Size>
 										<AbsDimension x="600" y="64"/>
 									</Size>
 									<Anchors>
 										<Anchor point="BOTTOM" relativePoint="TOP">
 											<Offset>
-												<AbsDimension x="-2" y="-23"/>
+												<AbsDimension x="0" y="-23"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="$parentFill" inherits="GlueFontDisableSmall" justifyH="LEFT" justifyV="MIDDLE" text="ENTER_EMAIL">
+									<Anchors>
+										<Anchor point="CENTER" relativePoint="CENTER">
+											<Offset>
+												<AbsDimension x="0" y="3"/>
 											</Offset>
 										</Anchor>
 									</Anchors>
@@ -215,6 +224,11 @@
 									SetSavedAccountName("");
 									AccountLoginSaveAccountName:SetChecked(0);
 								end
+								if ( self:GetText() ~= "" ) then
+									AccountLoginAccountEditFill:Hide();
+								else
+									AccountLoginAccountEditFill:Show();
+								end
 							</OnTextChanged>
 						</Scripts>
 						<FontString inherits="GlueEditBoxFont"/>
@@ -233,7 +247,7 @@
 						</Anchors>
 						<Layers>
 							<Layer level="BACKGROUND">
-								<FontString inherits="GlueFontNormal" text="PASSWORD">
+								<FontString inherits="GlueFontNormal" justifyH="CENTER" text="PASSWORD">
 									<Size>
 										<AbsDimension x="256" y="64"/>
 									</Size>
@@ -260,7 +274,11 @@
 						</Backdrop>
 						<Scripts>
 							<OnTabPressed>
-								AccountLogin_FocusAccountName();
+								if ( AccountLoginTokenEdit:IsShown() ) then
+									AccountLoginTokenEdit:SetFocus();
+								else
+									AccountLogin_FocusAccountName();
+								end
 							</OnTabPressed>
  							<OnEscapePressed>
 								AccountLogin_Exit();
@@ -283,6 +301,70 @@
 							<AbsInset left="12" right="5" bottom="5"/>
 						</TextInsets>
 					</EditBox>
+
+					<EditBox name="AccountLoginTokenEdit" letters="320" hidden="true">
+						<Size x="200" y="37"/>
+						<Anchors>
+							<Anchor point="TOP" relativeTo="AccountLoginPasswordEdit" relativePoint="BOTTOM">
+								<Offset>
+									<AbsDimension x="0" y="-15"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer level="BACKGROUND">
+								<FontString name="$parentLabel" inherits="GlueFontNormal" justifyH="CENTER" text="AUTHENTICATOR">
+									<Size>
+										<AbsDimension x="600" y="64"/>
+									</Size>
+									<Anchors>
+										<Anchor point="BOTTOM" relativePoint="TOP">
+											<Offset>
+												<AbsDimension x="0" y="-23"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Glues\Common\Glue-Tooltip-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="10" right="5" top="4" bottom="9"/>
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="16"/>
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+						</Backdrop>
+						<Scripts>
+							<OnTabPressed>
+								AccountLogin_FocusAccountName();
+							</OnTabPressed>
+							<OnEscapePressed>
+								AccountLogin_Exit();
+							</OnEscapePressed>
+							<OnEnterPressed>
+								if ( TOSFrame:IsShown() ) then
+									return;
+								end
+								AccountLogin_Login();
+							</OnEnterPressed>
+							<OnEditFocusLost>
+								self:HighlightText(0, 0);
+							</OnEditFocusLost>
+							<OnEditFocusGained>
+								self:HighlightText();
+							</OnEditFocusGained>
+						</Scripts>
+						<FontString inherits="GlueEditBoxFont"/>
+						<TextInsets>
+							<AbsInset left="12" right="5" bottom="5"/>
+						</TextInsets>
+					</EditBox>
+
+					
 					<Frame name="AccountLoginDropDown" inherits="GlueDropDownMenuTemplate">
 						<Anchors>
 							<Anchor point="TOP" relativeTo="AccountLoginAccountEdit" relativePoint="BOTTOM">
@@ -300,12 +382,12 @@
 							</OnLoad>
 						</Scripts>
 					</Frame>
-					<Button name="AccountLoginLoginButton" inherits="GlueButtonTemplateBlue" text="LOGIN" jumpNavigateStart="true">
+					<Button name="AccountLoginLoginButton" inherits="GlueButtonTemplateBlue" text="LOGIN">
 						<Size x="220" y="45"/>
 						<Anchors>
 							<Anchor point="BOTTOM">
 								<Offset>
-									<AbsDimension x="3" y="200"/>
+									<AbsDimension x="0" y="170"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -428,6 +510,17 @@
 						<Scripts>
 							<OnClick>
 								AccountLogin_ManageAccount();
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="AccountLoginUpgradeAccountButton" inherits="GlueButtonTemplateBlue" text="UPGRADE_ACCOUNT" hidden="true">
+						<Size x="320" y="60"/>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-10"/>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								UpgradeAccount();
 							</OnClick>
 						</Scripts>
 					</Button>
@@ -563,7 +656,7 @@
 						</Anchors>
 						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
 							<BackgroundInsets>
-								<AbsInset left="0" right="0" top="0" bottom="0"/>
+								<AbsInset left="11" right="11" top="11" bottom="11"/>
 							</BackgroundInsets>
 							<TileSize>
 								<AbsValue val="32"/>
@@ -1345,6 +1438,42 @@
 							</OnShow>
 						</Scripts>
 					</Frame>
+					<Frame name="KoreanRatings" hidden="true">
+						<Size x="288" y="224"/>
+						<Anchors>
+							<Anchor point="TOPRIGHT"/>
+						</Anchors>
+						<Layers>
+							<Layer level="ARTWORK">
+								<FontString name="KoreanRatingsText" inherits="GlueFontHighlightExtraSmall" justifyH="RIGHT" text="RATINGS_TEXT">
+									<Anchors>
+										<Anchor point="TOPRIGHT" x="-10" y="-15"/>
+									</Anchors>
+								</FontString>
+								<Texture name="KoreanRatingsDrugs" file="Interface\Glues\Login\Glues-KoreanRating-Drugs.tga">
+									<Size x="99" y="117"/>
+									<Anchors>
+										<Anchor point="TOPRIGHT" relativeTo="KoreanRatingsText" relativePoint="BOTTOMRIGHT" x="0" y="-5"/>
+									</Anchors>
+									<TexCoords left="0.094" right="0.896" top="0.023" bottom="0.966"/>
+								</Texture>
+								<Texture name="KoreanRatingsViolence" file="Interface\Glues\Login\Glues-KoreanRating-Violence.tga">
+									<Size x="99" y="117"/>
+									<Anchors>
+										<Anchor point="RIGHT" relativeTo="KoreanRatingsDrugs" relativePoint="LEFT" x="-10" y="0"/>
+									</Anchors>
+									<TexCoords left="0.094" right="0.896" top="0.023" bottom="0.966"/>
+								</Texture>
+								<Texture name="KoreanRatingsAge" file="Interface\Glues\Login\Glues-KoreanRating-Age.tga">
+									<Size x="99" y="117"/>
+									<Anchors>
+										<Anchor point="RIGHT" relativeTo="KoreanRatingsViolence" relativePoint="LEFT" x="-10" y="0"/>
+									</Anchors>
+									<TexCoords left="0.109" right="0.88" top="0.039" bottom="0.951"/>
+								</Texture>
+							</Layer>
+						</Layers>
+					</Frame>
 				</Frames>
 				<Scripts>
 					<OnShow>
@@ -1353,6 +1482,10 @@
 							AccountLogin_FocusAccountName();
 						else
 							AccountLogin_FocusPassword();
+						end
+	
+						if ( not IsSystemSupported() ) then
+							GlueDialog_Show("SYSTEM_INCOMPATIBLE_SSE");
 						end
 					</OnShow>
 				</Scripts>
@@ -1559,6 +1692,10 @@
 							</OnShow>
 							<OnScrollRangeChanged>
 								GlueScrollFrame_OnScrollRangeChanged(self, yrange);
+								if ( not TOSScrollFrame.loaded ) then
+									TOSAccept:Disable();
+									TOSScrollFrame.loaded = true;
+								end
 								AccountLogin_UpdateAcceptButton(self, TOSAccepted, "TOS");
 							</OnScrollRangeChanged>
 							<OnVerticalScroll>
@@ -2295,22 +2432,22 @@
 						</Layers>
 						<Scripts>
 							<OnVerticalScroll>
-									local scrollbar = getglobal(self:GetName().."ScrollBar");
+									local scrollbar = _G[self:GetName().."ScrollBar"];
 									scrollbar:SetValue(offset);
 									local min;
 									local max;
 									min, max = scrollbar:GetMinMaxValues();
 									if ( offset == 0 ) then
-										getglobal(scrollbar:GetName().."ScrollUpButton"):Disable();
+										_G[scrollbar:GetName().."ScrollUpButton"]:Disable();
 									else
-										getglobal(scrollbar:GetName().."ScrollUpButton"):Enable();
+										_G[scrollbar:GetName().."ScrollUpButton"]:Enable();
 									end
 									-- HACK: scrollbars do not handle max properly
 									-- DO NOT CHANGE - without speaking to Mikros/Barris/Thompson
 									if (scrollbar:GetValue() >= max - 20) then
-										getglobal(scrollbar:GetName().."ScrollDownButton"):Disable();
+										_G[scrollbar:GetName().."ScrollDownButton"]:Disable();
 									else
-										getglobal(scrollbar:GetName().."ScrollDownButton"):Enable();
+										_G[scrollbar:GetName().."ScrollDownButton"]:Enable();
 									end
 								</OnVerticalScroll>
 						</Scripts>
@@ -2363,4 +2500,106 @@
 		</Scripts>
 		<FogColor r="0.25" g="0.06" b="0.015"/>
 	</ModelFFX>
+
+	<Frame name="CinematicsFrame" toplevel="true" parent="GlueParent" setAllPoints="true" enableMouse="true" enableKeyboard="true" frameStrata="DIALOG" hidden="true">
+		<Frames>
+			<Frame name="CinematicsBackground">
+				<Size>
+					<AbsDimension x="272" y="256"/>
+				</Size>
+				<Anchors>
+					<Anchor point="CENTER">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+					<BackgroundInsets>
+						<AbsInset left="11" right="12" top="12" bottom="11"/>
+					</BackgroundInsets>
+					<TileSize>
+						<AbsValue val="32"/>
+					</TileSize>
+					<EdgeSize>
+						<AbsValue val="32"/>
+					</EdgeSize>
+				</Backdrop>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString inherits="GlueFontNormalLarge" text="CINEMATICS">
+							<Size>
+								<AbsDimension x="450" y="0"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOP">
+									<Offset>
+										<AbsDimension x="0" y="-16"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Button name="CinematicsButton1" inherits="GlueButtonTemplateBlue" text="WORLD_OF_WARCRAFT" hidden="true" id="1">
+						<Size>
+							<AbsDimension x="240" y="45"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOP">
+								<Offset>
+									<AbsDimension x="0" y="-50"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick function="Cinematics_PlayMovie"/>
+						</Scripts>
+					</Button>
+					<Button name="CinematicsButton2" inherits="GlueButtonTemplateBlue" text="BURNING_CRUSADE" hidden="true" id="2">
+						<Size>
+							<AbsDimension x="240" y="45"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOP" relativeTo="CinematicsButton1" relativePoint="BOTTOM">
+								<Offset>
+									<AbsDimension x="0" y="5"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick function="Cinematics_PlayMovie"/>
+						</Scripts>						
+					</Button>
+					<Button name="CinematicsButton3" inherits="GlueButtonTemplateBlue" text="WRATH_OF_THE_LICH_KING" hidden="true" id="3">
+						<Size>
+							<AbsDimension x="240" y="45"/>
+						</Size>
+						<Anchors>				
+							<Anchor point="TOP" relativeTo="CinematicsButton2" relativePoint="BOTTOM">
+								<Offset>
+									<AbsDimension x="0" y="5"/>
+								</Offset>
+							</Anchor>
+						</Anchors>	
+						<Scripts>
+							<OnClick function="Cinematics_PlayMovie"/>
+						</Scripts>						
+					</Button>
+				</Frames>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				CinematicsFrame_OnLoad(self);
+			</OnLoad>
+			<OnShow>
+				self:Raise();
+			</OnShow>
+			<OnKeyDown>
+				CinematicsFrame_OnKeyDown(key);
+			</OnKeyDown>
+		</Scripts>
+	</Frame>	
 </Ui>

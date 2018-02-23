@@ -2,7 +2,7 @@ local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:GetLocale( "Recount" )
 local me={}
 
-local revision = tonumber(string.sub("$Revision: 1032 $", 12, -3))
+local revision = tonumber(string.sub("$Revision: 1067 $", 12, -3))
 local Recount = _G.Recount
 if Recount.Version < revision then Recount.Version = revision end
 
@@ -144,11 +144,11 @@ function me:CreateReportWindow()
 	slider:SetOrientation("HORIZONTAL")
 	slider:SetMinMaxValues(1, 25)
 	slider:SetValueStep(1)
-	slider:SetValue(10)
+	slider:SetValue(Recount.db.profile.ReportLines or 10)
 	slider:SetWidth(180)
 	slider:SetHeight(16)
 	slider:SetPoint("TOP", theFrame, "TOP", 0, -46)
-	slider:SetScript("OnValueChanged",function(this) getglobal(this:GetName().."Text"):SetText(L["Report Top"]..": "..this:GetValue()) end)
+	slider:SetScript("OnValueChanged",function(this) Recount.db.profile.ReportLines=this:GetValue(); getglobal(this:GetName().."Text"):SetText(L["Report Top"]..": "..this:GetValue()) end)
 	getglobal(slider:GetName().."High"):SetText("25");
 	getglobal(slider:GetName().."Low"):SetText("1");
 	getglobal(slider:GetName().."Text"):SetText(L["Report Top"]..": "..slider:GetValue())

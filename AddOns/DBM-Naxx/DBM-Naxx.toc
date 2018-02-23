@@ -1,28 +1,31 @@
-## Interface: 30100
-## Title: [GRID] |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Naxxramas|r
-## Title-zhCN: [团队] |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0纳克萨玛斯|r
-## Title-zhTW: [团队] |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0納克薩瑪斯|r
+﻿## Interface: 30300
+## X-Compatible-With: 40000 
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r Naxxramas
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 纳克萨玛斯
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 納克薩瑪斯
+## Notes-zhCN: |cff00ff00DBM-Naxx|r
+## Notes-zhTW: |cff00ff00DBM-Naxx|r
 ## LoadOnDemand: 1
-## X-Revision: BigFoot
 ## RequiredDeps: DBM-Core
+## X-Revision: BigFoot
 ## SavedVariablesPerCharacter: DBMNaxx_SavedVars, DBMNaxx_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-SubCategories: Arachnid Quarter,Construct Quarter,Plague Quarter,Military Quarter,Frostwyrm Lair
-## X-DBM-Mod-SubCategories-zhCN: 蜘蛛区,傀儡区,瘟疫区,军事区,冰霜巨龙巢穴
 ## X-DBM-Mod-SubCategories-zhTW: 蜘蛛區,傀儡區,瘟疫區,軍事區,冰霜巨龍巢穴
+## X-DBM-Mod-SubCategories-zhCN: 蜘蛛区,构造区,瘟疫区,军事区,冰霜巨龙的巢穴
 ## X-DBM-Mod-Name: Naxxramas
-## X-DBM-Mod-Name-zhCN: 纳克萨玛斯
 ## X-DBM-Mod-Name-zhTW: 納克薩瑪斯
-## X-DBM-Mod-Sort: 1
-## X-DBM-Mod-LoadZone: Naxxramas
-## X-DBM-Mod-LoadZone-zhCN: 纳克萨玛斯
-## X-DBM-Mod-LoadZone-zhTW: 納克薩瑪斯
+## X-DBM-Mod-Name-zhCN: 纳克萨玛斯
+## X-DBM-Mod-Sort: 206
+## X-DBM-Mod-LoadZoneID: 536
 
 localization.en.lua
 localization.cn.lua
 localization.tw.lua
 
+MapSizes.lua
 ArachnidQuarter\Anub'Rekhan.lua
 ArachnidQuarter\Faerlina.lua
 ArachnidQuarter\Maexxna.lua

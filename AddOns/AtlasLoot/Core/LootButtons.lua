@@ -238,7 +238,7 @@ function AtlasLootItem_OnClick(arg1)
             ChatEdit_InsertLink(itemLink);
         elseif(IsShiftKeyDown() and AtlasLoot.db.profile.AllLinks) then
             ChatEdit_InsertLink(color.."|Hitem:"..this.itemID..":0:0:0:0:0:0:0|h["..name.."]|h|r");
-        elseif(ChatFrameEditBox:IsVisible() and IsShiftKeyDown()) then
+        elseif(ChatFrameEditBox and ChatFrameEditBox:IsVisible() and IsShiftKeyDown()) then
             ChatFrameEditBox:Insert(name);  -- <-- this line just inserts plain text, does not need any adjustment
         --If control-clicked, use the dressing room
         elseif(IsControlKeyDown() and iteminfo) then
@@ -306,13 +306,13 @@ function AtlasLootItem_ShowCompareItem()
    local item2 = nil;
    local item3 = nil;
    local side = "left";
-   if ( ShoppingTooltip1:SetHyperlinkCompareItem(link, 1, 1) ) then
+   if ( ShoppingTooltip1:SetHyperlinkCompareItem(link, 1, 1, AtlasLootTooltip) ) then
       item1 = true;
    end
-   if ( ShoppingTooltip2:SetHyperlinkCompareItem(link, 2, 1) ) then
+   if ( ShoppingTooltip2:SetHyperlinkCompareItem(link, 2, 1, AtlasLootTooltip) ) then
       item2 = true;
    end
-   if ( ShoppingTooltip3:SetHyperlinkCompareItem(link, 3, 1) ) then
+   if ( ShoppingTooltip3:SetHyperlinkCompareItem(link, 3, 1, AtlasLootTooltip) ) then
       item3 = true;
    end
    if not item1 and not item2 and not item3 then 
@@ -322,15 +322,15 @@ function AtlasLootItem_ShowCompareItem()
    if item3 then
         if not item1 then
             item1, item3 = true, nil;
-            ShoppingTooltip1:SetHyperlinkCompareItem(link, 3, 1);
+            ShoppingTooltip1:SetHyperlinkCompareItem(link, 3, 1, AtlasLootTooltip);
         elseif not item2 then
             item2, item3 = true, nil;
-            ShoppingTooltip2:SetHyperlinkCompareItem(link, 3, 1);
+            ShoppingTooltip2:SetHyperlinkCompareItem(link, 3, 1, AtlasLootTooltip);
         end
     end
     if item2 and not item1 then
         item1, item2 = true, nil;
-        ShoppingTooltip1:SetHyperlinkCompareItem(link, 2, 1);
+        ShoppingTooltip1:SetHyperlinkCompareItem(link, 2, 1, AtlasLootTooltip);
     end
    
    local left, right, anchor1, anchor2 = AtlasLootTooltip:GetLeft(), AtlasLootTooltip:GetRight(), "TOPLEFT", "TOPRIGHT";

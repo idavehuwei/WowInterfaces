@@ -1,17 +1,13 @@
--- GridRange.lua
---
--- A TBC range library
+--[[--------------------------------------------------------------------
+	GridRange.lua
+----------------------------------------------------------------------]]
 
---{{{ Libraries
+local _, ns = ...
+local L = ns.L
 
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
--- local BabbleSpell = LibStub:GetLibrary("LibBabble-Spell-3.0")
--- local BS = BabbleSpell:GetLookupTable()
-local gratuity = LibStub:GetLibrary("LibGratuity-3.0")
+local Gratuity = LibStub:GetLibrary("LibGratuity-3.0")
 
---}}}
-
-GridRange = Grid:NewModule("GridRange")
+local GridRange = Grid:NewModule("GridRange")
 
 local ranges, checks, rangelist
 local select = select
@@ -20,20 +16,15 @@ local CheckInteractDistance = CheckInteractDistance
 local UnitIsVisible = UnitIsVisible
 local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 
-local BS = {
-	["Mend Pet"] = GetSpellInfo(136),
-	["Health Funnel"] = GetSpellInfo(755),
-}
-
 local invalidSpells = {
-	[BS["Mend Pet"]] = true,
-	[BS["Health Funnel"]] = true,
+	[GetSpellInfo(755)] = true, -- Health Funnel
+	[GetSpellInfo(136)] = true, -- Mend Pet
 }
 
 local function addRange(range, check)
 	-- 100 yards is the farthest possible range
 	if range > 100 then return end
-	
+
 	if not checks[range] then
 		ranges[#ranges + 1] = range
 		table.sort(ranges)
@@ -85,8 +76,8 @@ function GridRange:ScanSpellbook()
 		if not name then break end
 		-- beneficial spell with a range
 		if not invalidSpells[name] and IsSpellInRange(i, BOOKTYPE_SPELL, "player") then
-			gratuity:SetSpell(i, BOOKTYPE_SPELL)
-			local range = select(3, gratuity:Find(L["(%d+) yd range"], 2, 2))
+			Gratuity:SetSpell(i, BOOKTYPE_SPELL)
+			local range = select(3, Gratuity:Find(L["(%d+) yd range"], 2, 2))
 			if range then
 				local index = i -- we have to create an upvalue
 				addRange(tonumber(range), function (unit) return IsSpellInRange(index, BOOKTYPE_SPELL, unit) == 1 end)
@@ -104,8 +95,9 @@ function GridRange:OnEnable()
 	self.super.OnEnable(self)
 
 	self:ScanSpellbook()
-	self:RegisterEvent("LEARNED_SPELL_IN_TAB", "ScanSpellbook")
-	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "ScanSpellbook")
+	self:ScheduleEvent("GridRange_ScanSpellbook", self.ScanSpellbook, 1, self)
+	self:RegisterBucketEvent("LEARNED_SPELL_IN_TAB", 2, "ScanSpellbook")
+	self:RegisterBucketEvent("CHARACTER_POINTS_CHANGED", 2, "ScanSpellbook")
 end
 
 function GridRange:GetUnitRange(unit)
@@ -122,7 +114,7 @@ end
 
 function GridRange:GetAvailableRangeList()
 	if not ranges or rangelist then return rangelist end
-	
+
 	rangelist = {}
 	for r in self:AvailableRangeIterator() do
 		rangelist[tostring(r)] = L["%d yards"]:format(r)

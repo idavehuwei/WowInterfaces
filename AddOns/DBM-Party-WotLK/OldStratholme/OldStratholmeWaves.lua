@@ -1,15 +1,17 @@
-local mod = DBM:NewMod("StratWaves", "DBM-Party-WotLK", 3)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("StratWaves", "DBM-Party-WotLK", 3)
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 559 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4345 $"):sub(12, -3))
 
 mod:RegisterEvents(
 	"UPDATE_WORLD_STATES",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"CHAT_MSG_MONSTER_SAY"
 )
 
 local warningWaveNow	= mod:NewAnnounce("WarningWaveNow", 3)
-local timerWaveIn	= mod:NewTimer(60, "TimerWaveIn")
+local timerWaveIn		= mod:NewTimer(20, "TimerWaveIn")
+local timerRoleplay		= mod:NewTimer(162, "TimerRoleplay")
 
 local wavesNormal = {
 	{2, L.Devouring},
@@ -27,19 +29,18 @@ local wavesNormal = {
 local wavesHeroic = {
 	{3, L.Devouring},
 	{1, L.Devouring, 1, L.Enraged, 1, L.Necro},
-	{1, L.Devouring, 1, L.Enraged, 1, L.Necro, 1, L.Friend},
-	{1, L.Necro, 3, L.Acolyte, 1, L.Friend},
+	{1, L.Devouring, 1, L.Enraged, 1, L.Necro, 1, L.Fiend},
+	{1, L.Necro, 4, L.Acolyte, 1, L.Fiend},
 	{L.Meathook},
-	{1, L.Devouring, 1, L.Necro, 1, Friend, 1, L.Stalker},
+	{1, L.Devouring, 1, L.Necro, 1, L.Fiend, 1, L.Stalker},
 	{1, L.Devouring, 2, L.Enraged, 1, L.Abom},
 	{1, L.Devouring, 1, L.Enraged, 1, L.Necro, 1, L.Abom},
-	{1, L.Devouring, 1, L.Necro, 1, L.Friend, 1, L.Abom},
+	{1, L.Devouring, 1, L.Necro, 1, L.Fiend, 1, L.Abom},
 	{L.Salramm},
 }
 
-local waves = wavesNormal
-local lastwave = 0
-local wave
+local waves		= wavesNormal
+local lastWave	= 0
 
 local function getWaveString(wave)
 	local waveInfo = waves[wave]
@@ -57,30 +58,41 @@ local function getWaveString(wave)
 end
 
 function mod:UPDATE_WORLD_STATES(args)
-	if GetCurrentDungeonDifficulty() == 2 then 
+	if mod:IsDifficulty("heroic5") then 
 		waves = wavesHeroic 
 	else 
 		waves = wavesNormal 
 	end
-	local text = select(3, GetWorldStateUIInfo(3))
+	local text = select(3, GetWorldStateUIInfo(2))
 	if not text then return end
 	local _, _, wave = string.find(text, L.WaveCheck)
 	if not wave then
 		wave = 0
 	end
 	wave = tonumber(wave)
-	lastwave = tonumber(lastwave)
-	if wave > lastwave or wave == 1 then
+	lastWave = tonumber(lastWave)
+	if wave < lastWave then
+		lastWave = 0
+	end
+	if wave > lastWave then
 		warningWaveNow:Show(wave, getWaveString(wave))
-		lastwave = wave
+		lastWave = wave
 	end
 end
 
 function mod:UNIT_DIED(args)
 	if bit.band(args.destGUID:sub(0, 5), 0x00F) == 3 then
-		local z = tonumber(args.destGUID:sub(9, 12), 16)
+		local z = mod:GetCIDFromGUID(args.destGUID)
 		if z == 26529 then
 			timerWaveIn:Start()
 		end
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_SAY(msg)
+	if msg == L.Roleplay or msg:find(L.Roleplay) then
+		timerRoleplay:Start()--Arthas preaches to uther and jaina
+	elseif msg == L.Roleplay2 or msg:find(L.Roleplay2) then
+		timerRoleplay:Start(106)--Arthas prances around blabbing with malganis
 	end
 end

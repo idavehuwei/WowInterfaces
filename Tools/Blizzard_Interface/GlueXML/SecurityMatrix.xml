@@ -298,12 +298,12 @@
 				</Backdrop>
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString name="SecurityMatrixKeypadEntryDigits" inherits="GlueFontNormalGargantuan" text="" justifyH="CENTER" justifyV="CENTER">
+						<FontString name="SecurityMatrixKeypadEntryDigits" inherits="GlueFontNormalGargantuan" text="">
 							<Shadow>
-								<offset>
+								<Offset>
 									<AbsDimension x="1" y="1"/>
-								</offset>
-								<color r="0" g="0" b="0"/>
+								</Offset>
+								<Color r="0" g="0" b="0"/>
 							</Shadow>
 						</FontString>
 					</Layer>

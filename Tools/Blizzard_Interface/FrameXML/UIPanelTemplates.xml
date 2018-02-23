@@ -36,7 +36,8 @@
 						<AbsDimension x="12" y="22"/>
 					</Size>
 					<Anchors>
-						<Anchor point="LEFT"/>
+						<Anchor point="TOPLEFT"/>
+						<Anchor point="BOTTOMLEFT"/>
 					</Anchors>
 					<TexCoords left="0" right="0.09375" top="0" bottom="0.6875"/>
 				</Texture>
@@ -45,7 +46,8 @@
 						<AbsDimension x="12" y="22"/>
 					</Size>
 					<Anchors>
-						<Anchor point="RIGHT"/>
+						<Anchor point="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT"/>
 					</Anchors>
 					<TexCoords left="0.53125" right="0.625" top="0" bottom="0.6875"/>
 				</Texture>
@@ -54,39 +56,74 @@
 						<AbsDimension x="12" y="22"/>
 					</Size>
 					<Anchors>
-						<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
-						<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT"/>
+						<Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight" relativePoint="BOTTOMLEFT"/>
 					</Anchors>
 					<TexCoords left="0.09375" right="0.53125" top="0" bottom="0.6875"/>
 				</Texture>
 			</Layer>
 		</Layers>
 		<Scripts>
+			<OnLoad>
+				if ( self:IsEnabled() ~= 1 ) then
+					local name = self:GetName();
+					_G[name.."Left"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Disabled");
+					_G[name.."Middle"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Disabled");
+					_G[name.."Right"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Disabled");
+				end
+			</OnLoad>
 			<OnMouseDown>
-				local name = self:GetName();
-				_G[name.."Left"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Down");
-				_G[name.."Middle"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Down");
-				_G[name.."Right"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Down");
+				if ( self:IsEnabled() == 1 ) then
+					local name = self:GetName();
+					_G[name.."Left"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Down");
+					_G[name.."Middle"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Down");
+					_G[name.."Right"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Down");
+				end
 			</OnMouseDown>
 			<OnMouseUp>
-				local name = self:GetName();
-				_G[name.."Left"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Up");
-				_G[name.."Middle"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Up");
-				_G[name.."Right"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Up");
+				if ( self:IsEnabled() == 1 ) then
+					local name = self:GetName();
+					_G[name.."Left"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Up");
+					_G[name.."Middle"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Up");
+					_G[name.."Right"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Up");
+				end
 			</OnMouseUp>
 			<OnShow>
-				-- we need to reset our textures just in case we were hidden before a mouse up fired
+				if ( self:IsEnabled() == 1 ) then
+					-- we need to reset our textures just in case we were hidden before a mouse up fired
+					local name = self:GetName();
+					_G[name.."Left"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Up");
+					_G[name.."Middle"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Up");
+					_G[name.."Right"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Up");
+				end
+			</OnShow>
+			<OnDisable>
+				local name = self:GetName();
+				_G[name.."Left"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Disabled");
+				_G[name.."Middle"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Disabled");
+				_G[name.."Right"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Disabled");
+			</OnDisable>
+			<OnEnable>
 				local name = self:GetName();
 				_G[name.."Left"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Up");
 				_G[name.."Middle"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Up");
 				_G[name.."Right"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Up");
-			</OnShow>
+			</OnEnable>
+			<OnEnter>
+				if(self.tooltipText ~= nil) then
+					GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText);
+				end
+			</OnEnter>
+			<OnLeave>
+				if(self.tooltipText ~= nil) then 
+					GameTooltip:Hide();
+				end
+			</OnLeave>
 		</Scripts>
 		<ButtonText name="$parentText"/>
 		<NormalFont style="GameFontNormal"/>
 		<HighlightFont style="GameFontHighlight"/>
 		<DisabledFont style="GameFontDisable"/>
-		<DisabledTexture inherits="UIPanelButtonDisabledTexture"/>
 		<HighlightTexture inherits="UIPanelButtonHighlightTexture"/>
 	</Button>
 	<Button name="UIPanelButtonGrayTemplate" virtual="true">
@@ -112,11 +149,11 @@
 		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 	</Button>
 	<Texture name="UIPanelScrollBarButton" virtual="true">
-		<TexCoords left="0.25" right="0.75" top="0.25" bottom="0.75"/>
+		<TexCoords left="0.20" right="0.80" top="0.25" bottom="0.75"/>
 	</Texture>
 	<Button name="UIPanelScrollUpButtonTemplate" virtual="true">
 		<Size>
-			<AbsDimension x="16" y="16"/>
+			<AbsDimension x="18" y="16"/>
 		</Size>
 		<NormalTexture inherits="UIPanelScrollBarButton" file="Interface\Buttons\UI-ScrollBar-ScrollUpButton-Up"/>
 		<PushedTexture inherits="UIPanelScrollBarButton" file="Interface\Buttons\UI-ScrollBar-ScrollUpButton-Down"/>
@@ -125,7 +162,7 @@
 	</Button>
 	<Button name="UIPanelScrollDownButtonTemplate" virtual="true">
 		<Size>
-			<AbsDimension x="16" y="16"/>
+			<AbsDimension x="18" y="16"/>
 		</Size>
 		<NormalTexture inherits="UIPanelScrollBarButton" file="Interface\Buttons\UI-ScrollBar-ScrollDownButton-Up"/>
 		<PushedTexture inherits="UIPanelScrollBarButton" file="Interface\Buttons\UI-ScrollBar-ScrollDownButton-Down"/>
@@ -169,9 +206,9 @@
 		</Scripts>
 		<ThumbTexture name="$parentThumbTexture" inherits="UIPanelScrollBarButton" file="Interface\Buttons\UI-ScrollBar-Knob">
 			<Size>
-				<AbsDimension x="16" y="24"/>
+				<AbsDimension x="18" y="24"/>
 			</Size>
-			<TexCoords left="0.25" right="0.75" top="0.125" bottom="0.875"/>
+			<TexCoords left="0.20" right="0.80" top="0.125" bottom="0.875"/>
 		</ThumbTexture>
 	</Slider>
 	<Slider name="UIPanelScrollBarTemplateLightBorder" virtual="true">
@@ -271,20 +308,20 @@
 			</OnScrollRangeChanged>
 			<!--  The code to disable the ScrollDownButton is pretty hacked, but it works -->
 			<OnVerticalScroll>
-				local scrollbar = getglobal(self:GetName().."ScrollBar");
+				local scrollbar = _G[self:GetName().."ScrollBar"];
 				scrollbar:SetValue(offset);
 				local min;
 				local max;
 				min, max = scrollbar:GetMinMaxValues();
 				if ( offset == 0 ) then
-					getglobal(scrollbar:GetName().."ScrollUpButton"):Disable();
+					_G[scrollbar:GetName().."ScrollUpButton"]:Disable();
 				else
-					getglobal(scrollbar:GetName().."ScrollUpButton"):Enable();
+					_G[scrollbar:GetName().."ScrollUpButton"]:Enable();
 				end
 				if ((scrollbar:GetValue() - max) == 0) then
-					getglobal(scrollbar:GetName().."ScrollDownButton"):Disable();
+					_G[scrollbar:GetName().."ScrollDownButton"]:Disable();
 				else
-					getglobal(scrollbar:GetName().."ScrollDownButton"):Enable();
+					_G[scrollbar:GetName().."ScrollDownButton"]:Enable();
 				end
 			</OnVerticalScroll>
 			<OnMouseWheel>
@@ -318,8 +355,8 @@
 		<Scripts>
 			<OnLoad>
 				ScrollFrame_OnLoad(self);
-				getglobal(self:GetName().."Top"):SetPoint("TOPLEFT", getglobal(self:GetName().."ScrollBar".."ScrollUpButton"), "TOPLEFT", -8, 5);
-				getglobal(self:GetName().."Bottom"):SetPoint("BOTTOMLEFT", getglobal(self:GetName().."ScrollBar".."ScrollDownButton"), "BOTTOMLEFT", -8, -2);
+				_G[self:GetName().."Top"]:SetPoint("TOPLEFT", _G[self:GetName().."ScrollBar".."ScrollUpButton"], "TOPLEFT", -8, 5);
+				_G[self:GetName().."Bottom"]:SetPoint("BOTTOMLEFT", _G[self:GetName().."ScrollBar".."ScrollDownButton"], "BOTTOMLEFT", -8, -2);
 			</OnLoad>
 		</Scripts>
 	</ScrollFrame>
@@ -358,20 +395,20 @@
 			</OnLoad>
 			<OnScrollRangeChanged function=""/>
 			<OnVerticalScroll>
-				local scrollbar = getglobal(self:GetName().."ScrollBar");
+				local scrollbar = _G[self:GetName().."ScrollBar"];
 				scrollbar:SetValue(offset);
 				local min;
 				local max;
 				min, max = scrollbar:GetMinMaxValues();
 				if ( offset == 0 ) then
-					getglobal(scrollbar:GetName().."ScrollUpButton"):Disable();
+					_G[scrollbar:GetName().."ScrollUpButton"]:Disable();
 				else
-					getglobal(scrollbar:GetName().."ScrollUpButton"):Enable();
+					_G[scrollbar:GetName().."ScrollUpButton"]:Enable();
 				end
 				if ((scrollbar:GetValue() - max) == 0) then
-					getglobal(scrollbar:GetName().."ScrollDownButton"):Disable();
+					_G[scrollbar:GetName().."ScrollDownButton"]:Disable();
 				else
-					getglobal(scrollbar:GetName().."ScrollDownButton"):Enable();
+					_G[scrollbar:GetName().."ScrollDownButton"]:Enable();
 				end
 			</OnVerticalScroll>
 			<OnMouseWheel>
@@ -532,7 +569,7 @@
 		<Scripts>
 			<OnLoad>
 				PanelTemplates_TabResize(self, 0);
-				getglobal(self:GetName().."HighlightTexture"):SetWidth(self:GetTextWidth() + 31);
+				_G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 31);
 			</OnLoad>
 		</Scripts>
 		<ButtonText name="$parentText">
@@ -998,4 +1035,29 @@
 			</Button>
 		</Frames>
 	</Frame>
+	<ScrollFrame name="DynamicScrollFrameTemplate" virtual="true">
+		<ScrollChild>
+			<Frame name="$parentScrollChild" parentKey="scrollChild">
+				<Size>
+					<AbsDimension x="10" y="10"/>
+				</Size>
+			</Frame>
+		</ScrollChild>
+		<Scripts>
+			<OnLoad>
+				ScrollFrame_OnLoad(self);
+			</OnLoad>
+			<OnScrollRangeChanged>
+				if ( self.allowedRange and yrange > self.allowedRange + 1 ) then
+					-- temp fix to jitter scroll (see task 39261)
+				else
+					ScrollFrame_OnScrollRangeChanged(self, xrange, yrange);
+				end
+			</OnScrollRangeChanged>
+			<OnVerticalScroll function="DynamicScrollFrame_OnVerticalScroll"/>
+			<OnMouseWheel>
+				ScrollFrameTemplate_OnMouseWheel(self, delta);
+			</OnMouseWheel>
+		</Scripts>
+	</ScrollFrame>
 </Ui>

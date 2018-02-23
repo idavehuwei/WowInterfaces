@@ -1,17 +1,12 @@
-## Interface: 30100
-## Version: 3.0.7
+﻿## Interface: 30300
 ## Title: Omen3
-## Title-zhCN: [战斗] 仇恨统计 Omen3
-## Title-zhTW: [戰鬥] 仇恨統計 Omen3
-## Notes: A lightweight, flexible, multi-target threat meter.
-## Notes-ruRU: Лёгкий, гибкий, измеритель угрозы.
-## Notes-frFR: Un "threat meter" léger, flexible et multi-cibles.
-## Notes-zhCN: 一个灵活的，多目标的，低资源占用的威胁值计量器。
-## Notes-zhTW: 一個輕量級、有彈性、可監視多個目標的仇恨統計插件。
-## Notes-koKR: 다중-대상에 대한 위협수준 미터기로 보여줍니다.
+## Title-zhCN: [大脚][集]仇恨统计
+## Title-zhTW: [大腳][集]仇恨統計
+## Notes: |cffbc8f8fA lightweight, flexible, multi-target threat meter.|r
+## Notes-zhCN: |cff00ff00Omen|r                                             |cffbc8f8f一个灵活的，多目标的，低资源占用的威胁值计量器。|r
+## Notes-zhTW: |cff00ff00Omen|r                                             |cffbc8f8f一個輕量級、有彈性、可監視多個目標的仇恨統計插件。|r
 ## Author: Xinhuan
-## Dependencies: !!Corelibs
-## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, LibSink-2.0, LibDBIcon-1.0, !ClassColors
+## Version: 3.0.7
 ## X-eMail: xinhuan @ gmail DOT com
 ## X-Donate: PayPal:xinhuan @ gmail DOT com
 ## X-Category: Combat
@@ -24,12 +19,7 @@
 ## X-Revision: BigFoot
 
 Localization\enUS.lua
-Localization\deDE.lua
-Localization\frFR.lua
-Localization\esES.lua
-Localization\koKR.lua
 Localization\zhTW.lua
 Localization\zhCN.lua
-Localization\ruRU.lua
 
 Omen.lua

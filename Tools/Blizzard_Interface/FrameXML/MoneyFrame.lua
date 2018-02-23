@@ -5,6 +5,8 @@ MONEY_ICON_WIDTH_SMALL = 13;
 MONEY_BUTTON_SPACING = -4;
 MONEY_BUTTON_SPACING_SMALL = -4;
 
+MONEY_TEXT_VADJUST = 0;
+
 COPPER_PER_SILVER = 100;
 SILVER_PER_GOLD = 100;
 COPPER_PER_GOLD = COPPER_PER_SILVER * SILVER_PER_GOLD;
@@ -214,13 +216,13 @@ function MoneyFrame_SetType(self, type)
 	self.moneyType = type;
 	local frameName = self:GetName();
 	if ( info.canPickup ) then
-		getglobal(frameName.."GoldButton"):EnableMouse(true);
-		getglobal(frameName.."SilverButton"):EnableMouse(true);
-		getglobal(frameName.."CopperButton"):EnableMouse(true);
+		_G[frameName.."GoldButton"]:EnableMouse(true);
+		_G[frameName.."SilverButton"]:EnableMouse(true);
+		_G[frameName.."CopperButton"]:EnableMouse(true);
 	else
-		getglobal(frameName.."GoldButton"):EnableMouse(false);
-		getglobal(frameName.."SilverButton"):EnableMouse(false);
-		getglobal(frameName.."CopperButton"):EnableMouse(false);
+		_G[frameName.."GoldButton"]:EnableMouse(false);
+		_G[frameName.."SilverButton"]:EnableMouse(false);
+		_G[frameName.."CopperButton"]:EnableMouse(false);
 	end
 
 	MoneyFrame_UpdateMoney(self);
@@ -229,7 +231,7 @@ end
 -- Update the money shown in a money frame
 function MoneyFrame_UpdateMoney(moneyFrame)
 	assert(moneyFrame);
-	
+
 	if ( moneyFrame.info ) then
 		local money = moneyFrame.info.UpdateFunc(moneyFrame);
 		if ( money ) then
@@ -260,7 +262,7 @@ function MoneyFrame_Update(frameName, money)
 		frame = frameName;
 		frameName = frame:GetName();
 	else
-		frame = getglobal(frameName);
+		frame = _G[frameName];
 	end
 	
 	local info = frame.info;
@@ -273,9 +275,9 @@ function MoneyFrame_Update(frameName, money)
 	local silver = floor((money - (gold * COPPER_PER_SILVER * SILVER_PER_GOLD)) / COPPER_PER_SILVER);
 	local copper = mod(money, COPPER_PER_SILVER);
 
-	local goldButton = getglobal(frameName.."GoldButton");
-	local silverButton = getglobal(frameName.."SilverButton");
-	local copperButton = getglobal(frameName.."CopperButton");
+	local goldButton = _G[frameName.."GoldButton"];
+	local silverButton = _G[frameName.."SilverButton"];
+	local copperButton = _G[frameName.."CopperButton"];
 
 	local iconWidth = MONEY_ICON_WIDTH;
 	local spacing = MONEY_BUTTON_SPACING;
@@ -286,14 +288,15 @@ function MoneyFrame_Update(frameName, money)
 
 	-- Set values for each denomination
 	if ( ENABLE_COLORBLIND_MODE == "1" ) then
-		if ( not frame.colorblind ) then
+		if ( not frame.colorblind or not frame.vadjust or frame.vadjust ~= MONEY_TEXT_VADJUST ) then
 			frame.colorblind = true;
+			frame.vadjust = MONEY_TEXT_VADJUST;
 			goldButton:SetNormalTexture("");
 			silverButton:SetNormalTexture("");
 			copperButton:SetNormalTexture("");
-			_G[frameName.."GoldButtonText"]:SetPoint("RIGHT");
-			_G[frameName.."SilverButtonText"]:SetPoint("RIGHT");
-			_G[frameName.."CopperButtonText"]:SetPoint("RIGHT");
+			_G[frameName.."GoldButtonText"]:SetPoint("RIGHT", 0, MONEY_TEXT_VADJUST);
+			_G[frameName.."SilverButtonText"]:SetPoint("RIGHT", 0, MONEY_TEXT_VADJUST);
+			_G[frameName.."CopperButtonText"]:SetPoint("RIGHT", 0, MONEY_TEXT_VADJUST);
 		end
 		goldButton:SetText(gold .. GOLD_AMOUNT_SYMBOL);
 		goldButton:SetWidth(goldButton:GetTextWidth());
@@ -305,17 +308,18 @@ function MoneyFrame_Update(frameName, money)
 		copperButton:SetWidth(copperButton:GetTextWidth());
 		copperButton:Show();
 	else
-		if ( frame.colorblind ) then
+		if ( frame.colorblind or not frame.vadjust or frame.vadjust ~= MONEY_TEXT_VADJUST ) then
 			frame.colorblind = nil;
+			frame.vadjust = MONEY_TEXT_VADJUST;
 			local texture = CreateMoneyButtonNormalTexture(goldButton, iconWidth);
 			texture:SetTexCoord(0, 0.25, 0, 1);
 			texture = CreateMoneyButtonNormalTexture(silverButton, iconWidth);
 			texture:SetTexCoord(0.25, 0.5, 0, 1);
 			texture = CreateMoneyButtonNormalTexture(copperButton, iconWidth);
 			texture:SetTexCoord(0.5, 0.75, 0, 1);
-			_G[frameName.."GoldButtonText"]:SetPoint("RIGHT", -iconWidth, 0);
-			_G[frameName.."SilverButtonText"]:SetPoint("RIGHT", -iconWidth, 0);
-			_G[frameName.."CopperButtonText"]:SetPoint("RIGHT", -iconWidth, 0);
+			_G[frameName.."GoldButtonText"]:SetPoint("RIGHT", -iconWidth, MONEY_TEXT_VADJUST);
+			_G[frameName.."SilverButtonText"]:SetPoint("RIGHT", -iconWidth, MONEY_TEXT_VADJUST);
+			_G[frameName.."CopperButtonText"]:SetPoint("RIGHT", -iconWidth, MONEY_TEXT_VADJUST);
 		end
 		goldButton:SetText(gold);
 		goldButton:SetWidth(goldButton:GetTextWidth() + iconWidth);
@@ -394,7 +398,7 @@ function MoneyFrame_Update(frameName, money)
 	copperButton:SetPoint("RIGHT", frameName, "RIGHT", -13, 0);
 
 	-- attach text now that denominations have been computed
-	local prefixText = getglobal(frameName.."PrefixText");
+	local prefixText = _G[frameName.."PrefixText"];
 	if ( prefixText ) then
 		if ( prefixText:GetText() and money > 0 ) then
 			prefixText:Show();
@@ -405,7 +409,7 @@ function MoneyFrame_Update(frameName, money)
 			prefixText:Hide();
 		end
 	end
-	local suffixText = getglobal(frameName.."SuffixText");
+	local suffixText = _G[frameName.."SuffixText"];
 	if ( suffixText ) then
 		if ( suffixText:GetText() and money > 0 ) then
 			suffixText:Show();
@@ -426,9 +430,9 @@ function RefreshMoneyFrame(frameName, money, small, collapse, showSmallerCoins)
 	local silver = floor((money - (gold * COPPER_PER_SILVER * SILVER_PER_GOLD)) / COPPER_PER_SILVER);
 	local copper = mod(money, COPPER_PER_SILVER);
 
-	local goldButton = getglobal(frameName.."GoldButton");
-	local silverButton = getglobal(frameName.."SilverButton");
-	local copperButton = getglobal(frameName.."CopperButton");
+	local goldButton = _G[frameName.."GoldButton"];
+	local silverButton = _G[frameName.."SilverButton"];
+	local copperButton = _G[frameName.."CopperButton"];
 
 	local iconWidth = MONEY_ICON_WIDTH;
 	local spacing = MONEY_BUTTON_SPACING;
@@ -447,7 +451,7 @@ function RefreshMoneyFrame(frameName, money, small, collapse, showSmallerCoins)
 	copperButton:SetWidth(copperButton:GetTextWidth() + iconWidth);
 	copperButton:Show();
 
-	local frame = getglobal(frameName);
+	local frame = _G[frameName];
 	frame.staticMoney = money;
 
 	if ( collapse == 0 ) then
@@ -497,7 +501,7 @@ function RefreshMoneyFrame(frameName, money, small, collapse, showSmallerCoins)
 end
 
 function SetMoneyFrameColor(frameName, color)
-	local moneyFrame = getglobal(frameName);
+	local moneyFrame = _G[frameName];
 	if ( not moneyFrame ) then
 		return;
 	end
@@ -520,9 +524,9 @@ function SetMoneyFrameColor(frameName, color)
 		end
 	end
 	
-	local goldButton = getglobal(frameName.."GoldButton");
-	local silverButton = getglobal(frameName.."SilverButton");
-	local copperButton = getglobal(frameName.."CopperButton");
+	local goldButton = _G[frameName.."GoldButton"];
+	local silverButton = _G[frameName.."SilverButton"];
+	local copperButton = _G[frameName.."CopperButton"];
 
 	goldButton:SetNormalFontObject(fontObject);
 	silverButton:SetNormalFontObject(fontObject);
@@ -531,16 +535,16 @@ end
 
 function AltCurrencyFrame_Update(frameName, texture, cost)
 	local iconWidth;
-	local button = getglobal(frameName);
-	local buttonTexture = getglobal(frameName.."Texture");
+	local button = _G[frameName];
+	local buttonTexture = _G[frameName.."Texture"];
 	button:SetText(cost);
 	buttonTexture:SetTexture(texture);
 	if ( button.pointType == HONOR_POINTS ) then
 		iconWidth = 24;
-		buttonTexture:SetPoint("LEFT", getglobal(frameName.."Text"), "RIGHT", -1, -6);
+		buttonTexture:SetPoint("LEFT", _G[frameName.."Text"], "RIGHT", -1, -6);
 	else
 		iconWidth = MONEY_ICON_WIDTH_SMALL;
-		buttonTexture:SetPoint("LEFT", getglobal(frameName.."Text"), "RIGHT", 0, 0);
+		buttonTexture:SetPoint("LEFT", _G[frameName.."Text"], "RIGHT", 0, 0);
 	end
 	buttonTexture:SetWidth(iconWidth);
 	buttonTexture:SetHeight(iconWidth);
@@ -548,7 +552,7 @@ function AltCurrencyFrame_Update(frameName, texture, cost)
 end
 
 function AltCurrencyFrame_PointsUpdate(frameName, honor, arena)
-	local buttonHonor = getglobal(frameName.."Honor");
+	local buttonHonor = _G[frameName.."Honor"];
 	if ( honor and honor > 0 ) then
 		buttonHonor.pointType = HONOR_POINTS;
 		local factionGroup = UnitFactionGroup("player");
@@ -562,7 +566,7 @@ function AltCurrencyFrame_PointsUpdate(frameName, honor, arena)
 		buttonHonor:Hide();
 	end
 	
-	local buttonArena = getglobal(frameName.."Arena");
+	local buttonArena = _G[frameName.."Arena"];
 	if ( arena and arena > 0 ) then
 		buttonHonor.pointType = ARENA_POINTS;
 		AltCurrencyFrame_Update( frameName.."Arena", "Interface\\PVPFrame\\PVP-ArenaPoints-Icon", arena );
@@ -581,4 +585,37 @@ end
 
 function GetDenominationsFromCopper(money)
 	return GetCoinText(money, " ");
+end
+
+function GetMoneyString(money)
+	local goldString, silverString, copperString;
+	local gold = floor(money / (COPPER_PER_SILVER * SILVER_PER_GOLD));
+	local silver = floor((money - (gold * COPPER_PER_SILVER * SILVER_PER_GOLD)) / COPPER_PER_SILVER);
+	local copper = mod(money, COPPER_PER_SILVER);
+	
+	if ( ENABLE_COLORBLIND_MODE == "1" ) then
+		goldString = gold..GOLD_AMOUNT_SYMBOL;
+		silverString = silver..SILVER_AMOUNT_SYMBOL;
+		copperString = copper..COPPER_AMOUNT_SYMBOL;
+	else
+		goldString = format(GOLD_AMOUNT_TEXTURE, gold, 0, 0);
+		silverString = format(SILVER_AMOUNT_TEXTURE, silver, 0, 0);
+		copperString = format(COPPER_AMOUNT_TEXTURE, copper, 0, 0);
+	end
+	
+	local moneyString = "";
+	local separator = "";	
+	if ( gold > 0 ) then
+		moneyString = goldString;
+		separator = " ";
+	end
+	if ( silver > 0 ) then
+		moneyString = moneyString..separator..silverString;
+		separator = " ";
+	end
+	if ( copper > 0 or moneyString == "" ) then
+		moneyString = moneyString..separator..copperString;
+	end
+	
+	return moneyString;
 end

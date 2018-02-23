@@ -19,6 +19,7 @@ function FocusFrame_OnLoad (self)
 	self:RegisterEvent("PLAYER_FLAGS_CHANGED");
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED");
 	self:RegisterEvent("RAID_TARGET_UPDATE");
+	self:RegisterEvent("VARIABLES_LOADED");
 
 	local frameLevel = FocusFrameTextureFrame:GetFrameLevel();
 	FocusFrameHealthBar:SetFrameLevel(frameLevel-1);
@@ -83,6 +84,8 @@ function FocusFrame_OnEvent (self, event, ...)
 		FocusFrame_CheckFaction(self);
 	elseif ( event == "RAID_TARGET_UPDATE" ) then
 		FocusFrame_UpdateRaidTargetIcon(self);
+	elseif ( event == "VARIABLES_LOADED" ) then
+		FocusFrame_SetFullSize(GetCVarBool("fullSizeFocusFrame"));
 	end
 end
 
@@ -248,14 +251,14 @@ end
 
 
 function SetFocusSpellbarAspect()
-	local frameText = getglobal(FocusFrameSpellBar:GetName().."Text");
+	local frameText = _G[FocusFrameSpellBar:GetName().."Text"];
 	if ( frameText ) then
 		frameText:SetFontObject(SystemFont_Shadow_Small);
 		frameText:ClearAllPoints();
 		frameText:SetPoint("TOP", FocusFrameSpellBar, "TOP", 0, 4);
 	end
 
-	local frameBorder = getglobal(FocusFrameSpellBar:GetName().."Border");
+	local frameBorder = _G[FocusFrameSpellBar:GetName().."Border"];
 	if ( frameBorder ) then
 		frameBorder:SetTexture("Interface\\CastingBar\\UI-CastingBar-Border-Small");
 		frameBorder:SetWidth(177);
@@ -264,13 +267,22 @@ function SetFocusSpellbarAspect()
 		frameBorder:SetPoint("TOP", FocusFrameSpellBar, "TOP", 0, 20);
 	end
 
-	local frameFlash = getglobal(FocusFrameSpellBar:GetName().."Flash");
+	local frameBorderShield = _G[FocusFrameSpellBar:GetName().."BorderShield"];
+	if ( frameBorderShield ) then
+		--frameBorderShield:SetTexture("Interface\\CastingBar\\UI-CastingBar-Small-FocusShield");
+		frameBorderShield:SetWidth(177);
+		frameBorderShield:SetHeight(49);
+		frameBorderShield:ClearAllPoints();
+		frameBorderShield:SetPoint("TOP", FocusFrameSpellBar, "TOP", -6, 20);
+	end
+	
+	local frameFlash = _G[FocusFrameSpellBar:GetName().."Flash"];
 	if ( frameFlash ) then
 		frameFlash:SetTexture("Interface\\CastingBar\\UI-CastingBar-Flash-Small");
 		frameFlash:SetWidth(177);
 		frameFlash:SetHeight(49);
 		frameFlash:ClearAllPoints();
-		frameFlash:SetPoint("TOP", FocusFrameSpellBar, "TOP", 0, 20);
+		frameFlash:SetPoint("TOP", FocusFrameSpellBar, "TOP", -2, 20);
 	end
 end
 
@@ -279,16 +291,17 @@ function Focus_Spellbar_OnLoad (self)
 	self:RegisterEvent("CVAR_UPDATE");
 	self:RegisterEvent("VARIABLES_LOADED");
 	
-	CastingBarFrame_OnLoad(self, "focus", false);
+	CastingBarFrame_OnLoad(self, "focus", false, false);
 
-	local barIcon = getglobal(self:GetName().."Icon");
+	local barIcon = _G[self:GetName().."Icon"];
 	barIcon:Show();
 	barIcon:ClearAllPoints();
 	barIcon:SetPoint("RIGHT", self:GetName(), "LEFT", -5, 0);
 
 	SetFocusSpellbarAspect();
+	self.showShield = true;
 	
-	getglobal(self:GetName().."Text"):SetWidth(130);
+	_G[self:GetName().."Text"]:SetWidth(130);
 	-- check to see if the castbar should be shown
 	if ( GetCVar("showTargetCastbar") == "0") then
 		self.showCastbar = false;	
@@ -375,3 +388,104 @@ function FocusFrame_OnDragStop(self)
 	end
 end
 
+
+--------Support for a full-size Focus Frame---------
+local dimsAndAnchors = {setDims = true, numAnchorsToCopy = 1};	--This way we don't have to have duplicate tables...
+local justAnchors = { setDims = false, numAnchorsToCopy = 1};
+local framesToDuplicate = {
+	["Frame"] = {
+		setDims = true,
+		numAnchorsToCopy = 0,
+	},
+	["FrameFlash"] = dimsAndAnchors,
+	["FrameBackground"] = dimsAndAnchors,
+	["FrameNameBackground"] = dimsAndAnchors,
+	["Portrait"] = dimsAndAnchors,
+	["Name"] = dimsAndAnchors,
+	["FrameHealthBarText"] = justAnchors,
+	["FrameManaBarText"] = justAnchors,
+	["RaidTargetIcon"] = dimsAndAnchors,
+	["FrameHealthBar"] = dimsAndAnchors,
+	["FrameManaBar"] = dimsAndAnchors,
+	["FrameNumericalThreat"] = dimsAndAnchors,
+}
+-- temp fixes to focus frame
+TargetPortrait = TargetFramePortrait;
+TargetFrameManaBarText = TargetFrameTextureFrameManaBarText;
+TargetFrameHealthBarText = TargetFrameTextureFrameHealthBarText;
+TargetRaidTargetIcon = TargetFrameTextureFrameRaidTargetIcon;
+TargetName = TargetFrameTextureFrameName;
+
+function FocusFrame_SetFullSize(fullSize)
+	if ( fullSize and not FocusFrame.fullSize) then	--It copies the TargetFrame. That way we don't have to explicitly maintain a bunch of alternate coordinates.
+		FocusFrame.fullSize = true;
+		for name, value in pairs(framesToDuplicate) do
+			local frame = _G["Focus"..name];
+			local equivFrame = _G["Target"..name];
+			if ( value.setDims ) then
+				--Save off the old dimensions so that we can set them back later (the or stops it from overwriting if there are already values)
+				frame.oldHeight = frame.oldHeight or frame:GetHeight();
+				frame.oldWidth = frame.oldWidth or frame:GetWidth();
+				
+				frame:SetHeight(equivFrame:GetHeight());
+				frame:SetWidth(equivFrame:GetWidth());
+			end
+			if ( value.numAnchorsToCopy > 0 ) then
+				frame.oldAnchors = frame.oldAnchors or {};
+				for i=1, frame:GetNumPoints() do
+					frame.oldAnchors[i] = frame.oldAnchors[i] or {frame:GetPoint(i)};
+				end
+				frame:ClearAllPoints();
+				for i=1, value.numAnchorsToCopy do
+					local point, relativeTo, relativePoint, xOffset, yOffset = equivFrame:GetPoint(i);
+					relativeTo = string.gsub(relativeTo:GetName(), "Target", "Focus", 1);
+					frame:SetPoint(point, relativeTo, relativePoint, xOffset, yOffset);
+				end
+			end
+		end
+		
+		for i=1, MAX_FOCUS_DEBUFFS do
+			_G["FocusFrameDebuff"..i]:SetHeight(21);
+			_G["FocusFrameDebuff"..i]:SetWidth(21);
+		end
+		
+		TargetofFocusFrame:SetPoint("BOTTOMRIGHT", -35, -10);
+		
+		FocusFrameFlash:SetTexture("Interface\\TargetingFrame\\UI-FocusFrame-Large-Flash");
+		FocusFrameFlash:SetTexCoord(0.0, 0.945, 0.0, 0.73125);
+		
+		FocusFrameTextureFrameSmall:Hide();
+		FocusFrameTextureFrameFullSize:Show();
+	elseif ( not fullSize and FocusFrame.fullSize ) then
+		FocusFrame.fullSize = false;
+		for name, value in pairs(framesToDuplicate) do
+			local frame = _G["Focus"..name];
+			if ( frame.oldHeight ) then
+				frame:SetHeight(frame.oldHeight);
+			end
+			if ( frame.oldWidth ) then
+				frame:SetWidth(frame.oldWidth);
+			end
+			
+			if ( frame.oldAnchors ) then
+				frame:ClearAllPoints();
+				for i=1, #frame.oldAnchors do
+					frame:SetPoint(unpack(frame.oldAnchors[i]));
+				end
+			end
+		end
+		
+		for i=1, MAX_FOCUS_DEBUFFS do
+			_G["FocusFrameDebuff"..i]:SetHeight(15);
+			_G["FocusFrameDebuff"..i]:SetWidth(15);
+		end
+		
+		TargetofFocusFrame:SetPoint("BOTTOMRIGHT", 14, -9);
+		
+		FocusFrameFlash:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame-Flash");
+		FocusFrameFlash:SetTexCoord(0.55078125, 0, 0.400390625, 0.52734375);
+		
+		FocusFrameTextureFrameSmall:Show();
+		FocusFrameTextureFrameFullSize:Hide();
+	end
+end

@@ -82,21 +82,72 @@ function SecureButton_GetModifierPrefix(frame)
 end
 
 function SecureButton_GetButtonSuffix(button)
-    local suffix = "";
     if ( button == "LeftButton" ) then
-        suffix = "1";
+        return "1";
     elseif ( button == "RightButton" ) then
-        suffix = "2";
+        return "2";
     elseif ( button == "MiddleButton" ) then
-        suffix = "3";
+        return "3";
     elseif ( button == "Button4" ) then
-        suffix = "4";
-    elseif ( button == "Button5" ) then
-        return "5";
-    elseif ( button and button ~= "" ) then
-        suffix = "-" .. tostring(button);
+        return "4";
+	elseif ( button == "Button5" ) then
+		return "5";
+	elseif ( button == "Button6" ) then
+		return "6";
+	elseif ( button == "Button7" ) then
+		return "7";
+	elseif ( button == "Button8" ) then
+		return "8";    
+	elseif ( button == "Button9" ) then
+		return "9";
+	elseif ( button == "Button10" ) then
+		return "10";
+	elseif ( button == "Button11" ) then
+		return "11";
+	elseif ( button == "Button12" ) then
+		return "12";
+	elseif ( button == "Button13" ) then
+		return "13";
+	elseif ( button == "Button14" ) then
+		return "14";
+	elseif ( button == "Button15" ) then
+		return "15";
+	elseif ( button == "Button16" ) then
+		return "16";
+	elseif ( button == "Button17" ) then
+		return "17";
+	elseif ( button == "Button18" ) then
+		return "18";    
+	elseif ( button == "Button19" ) then
+		return "19";
+	elseif ( button == "Button20" ) then
+		return "20";
+	elseif ( button == "Button21" ) then
+		return "21";
+	elseif ( button == "Button22" ) then
+		return "22";
+	elseif ( button == "Button23" ) then
+		return "23";
+	elseif ( button == "Button24" ) then
+		return "24";
+	elseif ( button == "Button25" ) then
+		return "25";
+	elseif ( button == "Button26" ) then
+		return "26";
+	elseif ( button == "Button27" ) then
+		return "27";
+	elseif ( button == "Button28" ) then
+		return "28";    
+	elseif ( button == "Button29" ) then
+		return "29";
+	elseif ( button == "Button30" ) then
+		return "30";
+	elseif ( button == "Button31" ) then
+		return "31";
+	elseif ( button and button ~= "" ) then
+        return "-" .. tostring(button);
     end
-    return suffix;
+    return "";
 end
 
 function SecureButton_GetModifiedAttribute(frame, name, button, prefix, suffix)
@@ -131,6 +182,7 @@ function SecureButton_GetModifiedUnit(self, button)
 			unit = unit .. unitsuffix;
 			-- map raid1pet to raidpet1
 			unit = gsub(unit, "^([^%d]+)([%d]+)[pP][eE][tT]", "%1pet%2");
+			unit = gsub(unit, "^[pP][lL][aA][yY][eE][rR][pP][eE][tT]", "pet");
 		end
 		
 		local noPet, hadPet = unit:gsub("[pP][eE][tT](%d)", "%1");
@@ -230,7 +282,7 @@ end
 local SECURE_ACTIONS = {};
 
 SECURE_ACTIONS.actionbar =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         local action = SecureButton_GetModifiedAttribute(self, "action", button);
         if ( action == "increment" ) then
             ActionBar_PageUp();
@@ -249,7 +301,7 @@ SECURE_ACTIONS.actionbar =
     end;
 
 SECURE_ACTIONS.action =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         local action = ActionButton_CalculateAction(self, button);
         if ( action ) then
             -- Save macros in case the one for this action is being edited
@@ -260,24 +312,36 @@ SECURE_ACTIONS.action =
     end;
 
 SECURE_ACTIONS.pet =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         local action =
             SecureButton_GetModifiedAttribute(self, "action", button);
         if ( action ) then
             CastPetAction(action, unit);
         end
     end;
+   
+SECURE_ACTIONS.multispell = 
+    function (self, unit, button)
+        local action = ActionButton_CalculateAction(self, button);
+        local spell = SecureButton_GetModifiedAttribute(self, "spell", button);
+        if ( action and spell ) then
+            SetMultiCastSpell(action, tonumber(spell) or spell);
+        end
+    end;
 
 SECURE_ACTIONS.spell =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         local spell = SecureButton_GetModifiedAttribute(self, "spell", button);
-        if ( spell ) then
+        local spellID = tonumber(spell);
+        if ( spellID) then
+            CastSpellByID(spellID, unit);
+        elseif ( spell ) then
             CastSpellByName(spell, unit);
         end
     end;
 
 SECURE_ACTIONS.item =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         local item = SecureButton_GetModifiedAttribute(self, "item", button);
         if ( not item ) then
             -- Backwards compatibility code, deprecated but still handled for now.
@@ -300,7 +364,7 @@ SECURE_ACTIONS.item =
     end;
 
 SECURE_ACTIONS.macro =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         local macro = SecureButton_GetModifiedAttribute(self, "macro", button);
         if ( macro ) then
             -- Save macros in case the one for this action is being edited
@@ -317,7 +381,7 @@ SECURE_ACTIONS.macro =
     end;
 
 SECURE_ACTIONS.cancelaura =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         local index = SecureButton_GetModifiedAttribute(self, "index", button);
         if ( index ) then
             CancelUnitBuff(unit, index);
@@ -329,14 +393,14 @@ SECURE_ACTIONS.cancelaura =
     end;
 
 SECURE_ACTIONS.stop =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         if ( SpellIsTargeting() ) then
             SpellStopTargeting();
         end
     end;
 
 SECURE_ACTIONS.target =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         if ( unit ) then
             if ( unit == "none" ) then
                 ClearTarget();
@@ -351,12 +415,12 @@ SECURE_ACTIONS.target =
     end;
 
 SECURE_ACTIONS.focus =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         return FocusUnit(unit);
     end;
 
 SECURE_ACTIONS.assist =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         return AssistUnit(unit);
     end;
 
@@ -374,23 +438,20 @@ local function SecureAction_ManageAssignment(assignment, action, unit)
     end
 end
 
--- TODO - Verify that we really want actionType to solve this, it seems
--- a bit awkward since it's the only one that does it, this mechanism
--- seems simpler
 SECURE_ACTIONS.maintank =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         local action = SecureButton_GetModifiedAttribute(self, "action", button);
         SecureAction_ManageAssignment("maintank", action, unit);
     end;
 
 SECURE_ACTIONS.mainassist =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         local action = SecureButton_GetModifiedAttribute(self, "action", button);
         SecureAction_ManageAssignment("mainassist", action, unit);
     end;
 
 SECURE_ACTIONS.click =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         local delegate =
             SecureButton_GetModifiedAttribute(self, "clickbutton", button);
         if ( delegate ) then
@@ -399,7 +460,7 @@ SECURE_ACTIONS.click =
     end;
 
 SECURE_ACTIONS.attribute =
-    function (self, unit, button, actionType)
+    function (self, unit, button)
         local frame =
             SecureButton_GetModifiedAttribute(self, "attribute-frame", button);
         if ( not frame ) then
@@ -449,18 +510,26 @@ function SecureActionButton_OnClick(self, button, down)
 
     -- Perform the requested action!
     if ( actionType ) then
-        -- TODO figure out where this GMA call came from, it's new
-        -- Also why it's second and not third
-        local handler = SECURE_ACTIONS[actionType] or
-            SecureButton_GetModifiedAttribute(self, "_"..actionType, button) or
-            rawget(self, actionType);
-
+        -- Re TODO: GMA call allows generic click handler snippets; it's second to prevent values set on the frame from suppressing it
+       local atRisk = false;
+        local handler = SECURE_ACTIONS[actionType]
+        if not handler then
+            atRisk = true; -- user-provided function, be careful
+            handler = SecureButton_GetModifiedAttribute(self, "_"..actionType, button);
+        end
+        if ( not handler ) then
+            atRisk = false; -- functions retrieved from table keys carry their own taint
+            handler = rawget(self, actionType);
+        end
         if ( type(handler) == 'function' ) then
-            -- TODO consider removing actionType here, it's not needed
+            -- TODO actiontype is ignored by internal handlers, presently left in to facilitate multi-purpose custom handlers; would we rather remove it entirely?
+            if atRisk then 
+                forceinsecure();
+            end
             handler(self, unit, button, actionType);
 
         elseif ( type(handler) == 'string' ) then
-            SecureHandler_OnClick(self, actionType, button, down);
+            SecureHandler_OnClick(self, "_"..actionType, button, down);
         end
     end
 

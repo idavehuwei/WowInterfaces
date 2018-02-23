@@ -1,9 +1,7 @@
-local L = LibStub("AceLocale-3.0"):GetLocale("EventAlert");
-
 function EventAlert_Options_OnLoad()
     UIPanelWindows["EA_Options_Frame"] = {area = "center", pushable = 0};
-    EA_Options_Frame_Header_Text:SetFontObject(GameFontNormal);
-    EA_Options_Frame_Header_Text:SetText(L["EventAlert Options"]);
+	EA_Options_Frame_Header_Text:SetFontObject(GameFontNormal);
+    EA_Options_Frame_Header_Text:SetText(EA_OPTION);
 end
 
 
@@ -21,6 +19,9 @@ end
 function EventAlert_Options_ToggleIconOptionsFrame()
 	if EA_Icon_Options_Frame:IsVisible() then
   		EA_Icon_Options_Frame:Hide();
+		EA_Anchor_Frame:Hide();
+		EA_Anchor_Frame2:Hide();
+		EA_Anchor_Frame3:Hide();
 	else
 		if Class_Events_Frame:IsVisible() then
   			Class_Events_Frame:Hide();
@@ -71,7 +72,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
 	local info;
 
 	info = {};
-	info.text = L["ShaysBell"];
+	info.text = "ShaysBell";
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 1;
     if ( info.value == selectedValue ) then
@@ -80,7 +81,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
 	info = {};
-	info.text = L["Flute"];
+	info.text = "Flute";
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 2;
     if ( info.value == selectedValue ) then
@@ -89,7 +90,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
     info = {};
-	info.text = L["Netherwind"];
+	info.text = "Netherwind";
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 3;
     if ( info.value == selectedValue ) then
@@ -98,7 +99,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
 	info = {};
-	info.text = L["PolyCow"];
+	info.text = "PolyCow";
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 4;
     if ( info.value == selectedValue ) then
@@ -107,7 +108,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
     info = {};
-	info.text = L["Rockbiter"];
+	info.text = "Rockbiter";
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 5;
     if ( info.value == selectedValue ) then
@@ -116,7 +117,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
 	info = {};
-	info.text = L["Yarrrr!"];
+	info.text = "Yarrrr!";
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 6;
     if ( info.value == selectedValue ) then
@@ -125,7 +126,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
     info = {};
-	info.text = L["Broken Heart"];
+	info.text = "Broken Heart";
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 7;
     if ( info.value == selectedValue ) then
@@ -134,7 +135,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
 	info = {};
-	info.text = L["Millhouse 1!"];
+	info.text = "Millhouse 1!";
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 8;
     if ( info.value == selectedValue ) then
@@ -143,7 +144,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
 	info = {};
-	info.text = L["Millhouse 2!"];
+	info.text = "Millhouse 2!";
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 9;
     if ( info.value == selectedValue ) then
@@ -152,7 +153,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
 	info = {};
-	info.text = L["Pissed Satyr"];
+	info.text = "Pissed Satyr";
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 10;
     if ( info.value == selectedValue ) then
@@ -161,7 +162,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
 	info = {};
-	info.text = L["Pissed Dwarf"];
+	info.text = "Pissed Dwarf";
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 11;
     if ( info.value == selectedValue ) then

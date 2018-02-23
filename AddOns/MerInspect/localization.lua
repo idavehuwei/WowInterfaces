@@ -1,9 +1,11 @@
+if GetLocale()~='zhCN' then return end
 ---簡體化:thanks to 南十字星
 local M = MerInspect
 M.loc = BLocal("MerInspect");
 
 if GetLocale() == "zhCN" then
 	M.loc = {       
+		TitleSuffix = "(装备属性)",
         Strength = "力量：",
         Agility  = "敏捷：",
         Stamina = "耐力：",
@@ -31,15 +33,17 @@ if GetLocale() == "zhCN" then
         HitRating = "物理命中：",       
         AttackDamage = "近战伤害：",
         AttackSpeed = "近战速度：",
-        AttackPower = "近战强度：",
+        AttackPower = "攻击强度：",
         AttackCrit = "近战爆击：",
         HasteMelee = "加速等级：",
+		Expertise = "精准等级：",
         RangedAttackDamage = "远程伤害：",
         RangedAttackSpeed = "远程速度：",
         RangedAttackPower = "远程强度：",
         RangedAttackCrit = "远程爆击：",
-        HasteRanged = "远程加速等级：",
-        HasteSpell = "法术加速：",
+        HasteRanged = "加速等级：",
+		ArmorPeneration = "护甲穿透：",
+        HasteSpell = "加速等级：",
 		SpellPower = "法术强度：",
         Healing = "治疗加成：",
         SpellHitRating = "法术命中：",
@@ -56,16 +60,18 @@ if GetLocale() == "zhCN" then
 		added = "进阶属性：",
 		hpmp = "生命",
 		set = "套装：",
-		Attribute = "属性",
-		Resistance = "抗性",
-		Attack = "近战&远程",
-		Spell = "法术",
-		Health = "生命&法力",
+		Attribute = "属性加成:",
+		Resistance = "抗性:",
+		Defense = "防御加成:",
+		Attack = "近战&远程加成:",
+		Spell = "法术加成:",
+		Health = "生命值:",
 		ReduceResistance = "降低抗性：",
 		HP = "生命值：",
 		Mana = "法力值：",
 		ArmorReduce = "物理免伤：",
 		["Repair Cost"] = "维修费用",
+		DPS_FORMAT = "%s 伤害/秒"
 	};
 elseif (GetLocale() == "zhTW") then
 	M.loc = {	
@@ -103,8 +109,8 @@ elseif (GetLocale() == "zhTW") then
 		RangedAttackSpeed = "遠程速度：",
 		RangedAttackPower = "遠程強度：",
 		RangedAttackCrit = "遠程致命：",
-		HasteRanged = "遠程加速等級：",
-		HasteSpell = "法術加速：",
+		HasteRanged = "加速等級：",
+		HasteSpell = "加速等级：",
 		SpellPower = "法術強度：",
 		Healing = "治療加成：",
 		SpellHitRating = "法術命中：",
@@ -216,20 +222,20 @@ M.patterns = {
 		{ effect = "ManaRestore", zhTW = "每5秒法力回复%+(%d+)", zhCN = "每5秒法力回复%+(%d+)",}, --cwow寶石
 		{ effect = "Resilience", zhTW = "韌性等級提高(%d+)", zhCN = "韧性等级提高(%d+)",},
 		{ effect = "SpellHitRating", zhTW = "提高命中等級(%d+)", zhCN = "命中等级提高(%d+)",},
-		{ effect = "HasteSpell", zhTW = "提高加速等級(%d+)", zhCN = "急速等级提高(%d+)",},
+	--	{ effect = "HasteSpell", zhTW = "提高加速等級(%d+)", zhCN = "急速等级提高(%d+)",},
+		{ effect = "HasteSpell", zhTW = "+(%d+) 急速等级", zhCN = "%+(%d+) 急速等级",},
 		{ effect = "SpellCrit", zhTW = "提高致命一擊等級(%d+)", zhCN = "爆击等级提高(%d+)",},
 		{ effect = "SpellStrike", zhTW = "法術穿透力提高(%d+)", zhCN = "法术穿透提高(%d+)",},		
 		{ effect = "SpellDamage|Healing", zhTW = "所有法術和魔法效果所造成的傷害和治療效果提高最多(%d+)", zhCN = "所有法术和魔法效果所造成的伤害和治疗效果，最多(%d+)", },
 		{ effect = "SpellDamage|Healing", zhTW = "所有法術和魔法效果所造成的傷害和治療效果提高最多(%d+)", zhCN = "使法术和魔法效果的治疗和伤害提高最多(%d+)", },
-		{ effect = "Healing", extra = 0.33, zhTW = "法術和魔法效果所造成的治療效果提高最多(%d+)", zhCN = "使法术治疗提高最多(%d+)", },
-		{ effect = "Damage_Frost", zhTW = "冰霜法術和效果所造成的傷害提高最多(%d+)", zhCN = "冰霜法术和效果所造成的伤害，最多(%d+)",},
+--[[		{ effect = "Damage_Frost", zhTW = "冰霜法術和效果所造成的傷害提高最多(%d+)", zhCN = "冰霜法术和效果所造成的伤害，最多(%d+)",},
 		{ effect = "Damage_Shadow", zhTW = "暗影法術和效果所造成的傷害提高最多(%d+)", zhCN = "暗影法术和效果所造成的伤害，最多(%d+)",},
 		{ effect = "Damage_Arcane", zhTW = "祕法法術和效果所造成的傷害提高最多(%d+)", zhCN = "奥术法术和效果所造成的伤害，最多(%d+)",},
 		{ effect = "Damage_Fire", zhTW = "火焰法術和效果所造成的傷害提高最多(%d+)", zhCN = "火焰法术和效果所造成的伤害，最多(%d+)",},
 		{ effect = "Damage_Nature", zhTW = "自然法術和效果所造成的傷害提高最多(%d+)", zhCN = "自然法术和效果所造成的伤害，最多(%d+)",},
 		{ effect = "Damage_Holy", zhTW = "神聖法術和效果所造成的傷害提高最多(%d+)", zhCN = "神圣法术和效果所造成的伤害，最多(%d+)",},
-		
-		{ effect = "HasteMelee", zhTW = "提高加速等級(%d+)", zhCN = "急速等级提高(%d+)",},
+		]]
+	--	{ effect = "HasteMelee", zhTW = "提高加速等級(%d+)", zhCN = "急速等级提高(%d+)",},
 		{ effect = "RangedAttackPower", zhTW = "提高遠程攻擊強度(%d+)", zhCN = "远程攻击强度提高(%d+)",},		
 		{ effect = "AttackCrit|RangedAttackCrit", zhTW = "提高致命一擊等級(%d+)", zhCN = "爆击等级提高(%d+)",},		
 		{ effect = "AttackPower|RangedAttackPower", zhTW = "提高攻擊強度(%d+)", zhCN = "攻击强度提高(%d+)",},
@@ -253,7 +259,7 @@ M.patterns = {
 		{ effect = "Dodge", zhTW = "提高閃躲等級(%d+)", zhCN = "提高躲闪等级(%d+)",},
 	},
 	special = {
-		{ effect = "Damage_Shadow|Damage_Frost", value = 54, zhTW = "靈魂冰霜$", zhCN = "灵魂冰霜$",},
+--[[	{ effect = "Damage_Shadow|Damage_Frost", value = 54, zhTW = "靈魂冰霜$", zhCN = "灵魂冰霜$",},
 		{ effect = "Damage_Fire|Damage_Arcane", value = 50, zhTW = "烈日火焰$", zhCN = "烈日火焰$",},
 		{ effect = "Resistance_Coma", value = 5, zhTW = "昏迷抗性", zhCN = "昏迷抗性",},
 		{ effect = "ManaRestore|HealthRestore", value = 4, zhTW = "活力$", zhCN = "活力$",},
@@ -270,7 +276,7 @@ M.patterns = {
 		{ effect = "ManaRestore", value = 12, gonext = true, zhTW = "卓越法力之油", zhCN = "卓越法力之油",},
 		{ effect = "Healing", value = 24, gonext = true, zhTW = "卓越法力之油", zhCN = "卓越法力之油",},
 		--{ effect = "", value = 2, zhTW = "威脅值$", zhCN = "威胁值$",},
-		--{ effect = "", value = 1, zhTW = "法術反射$", zhCN = "法术反射$",},		
+		--{ effect = "", value = 1, zhTW = "法術反射$", zhCN = "法术反射$",},		]]
 	},
 	percent = {
 		{ effect = "SpellDamage", anchor = "Intellect", zhTW = "法術所造成的傷害提高相當於你總智力的(%d+)%%", zhCN = "法术伤害加成提高,数值最多相当于你的智力总值的(%d+)%%",},

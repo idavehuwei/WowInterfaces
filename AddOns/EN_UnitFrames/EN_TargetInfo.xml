@@ -1,20 +1,21 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
     <Script file="EN_TargetInfo.lua"/>
-    <!-- Target Info -->
+
+<!-- Target Info -->
     <Frame name="EUF_TargetInfo_General" parent="UIParent">
         <Scripts>
             <OnLoad>
-                    EUF_TargetInfo_OnLoad()
+                EUF_TargetInfo_OnLoad(self);
             </OnLoad>
             <OnUpdate>
-                    EUF_TargetInfo_Update();
+                EUF_TargetInfo_Update(self,button);
             </OnUpdate>
             <OnEvent>
-                    EUF_TargetInfo_OnEvent(event);
+                EUF_TargetInfo_OnEvent(self,event,...);
             </OnEvent>
         </Scripts>
     </Frame>
+
     <Frame parent="TargetFrame">
         <Layers>
             <Layer level="OVERLAY">
@@ -35,6 +36,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
             </Layer>
         </Layers>
     </Frame>
+
     <Button name="EUF_TargetInfoTarget" parent="TargetFrame" inherits="SecureUnitButtonTemplate">
         <Size>
             <AbsDimension x="100" y="30"/>
@@ -74,7 +76,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                 </Layers>
                 <Scripts>
                     <OnUpdate>
-                            EUF_TargetInfoTarget_Update();
+                        EUF_TargetInfoTarget_Update(self,button);
                     </OnUpdate>
                 </Scripts>
             </Frame>
@@ -136,41 +138,40 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                         <BarTexture file="Interface\TargetingFrame\UI-TargetingFrame-BarFill"/>
                         <BarColor r="0" g="0" b="1" a="0.2"/>
                     </StatusBar>
-                    <Frame>
-                        <Layers>
-                            <Layer>
-                                <FontString name="EUF_TargetInfoTargetHPPercent" inherits="NumberFontNormal" text="">
-                                    <Anchors>
-                                        <Anchor point="TOPLEFT" relativePoint="TOPRIGHT"
-                                                relativeTo="EUF_TargetInfoTargetHPBar">
-                                            <Offset x="3" y="2"/>
-                                        </Anchor>
-                                    </Anchors>
-                                    <Color r="1" g="0.75" b="0"/>
-                                    <Shadow>
-                                        <Offset>
-                                            <AbsDimension x="1" y="-1"/>
-                                        </Offset>
-                                        <Color r="0" g="0" b="0"/>
-                                    </Shadow>
-                                </FontString>
-                            </Layer>
-                        </Layers>
-                    </Frame>
+                <Frame>
+                <Layers>
+                    <Layer>
+                        <FontString name="EUF_TargetInfoTargetHPPercent" inherits="NumberFontNormal" text="">
+                            <Anchors>
+                                <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="EUF_TargetInfoTargetHPBar">
+                                    <Offset x="3" y="2"/>
+                                </Anchor>
+                            </Anchors>
+                            <Color r="1" g="0.75" b="0"/>
+                            <Shadow>
+                                <Offset>
+                                    <AbsDimension x="1" y="-1"/>
+                                </Offset>
+                                <Color r="0" g="0" b="0"/>
+                            </Shadow>
+                        </FontString> 
+                    </Layer>
+                </Layers>
+                </Frame>
                 </Frames>
                 <Scripts>
                     <OnUpdate>
-                            EUF_TargetInfoTargetHPMP_Update();
+                        EUF_TargetInfoTargetHPMP_Update(self,button);
                     </OnUpdate>
                 </Scripts>
             </Frame>
         </Frames>
         <Scripts>
             <!--OnClick>
-                TargetUnit("targettarget");
+                TargetUnit("targettarget"); 
             </OnClick-->
             <OnLoad>
-                    EUF_TargetInfoTarget_OnLoad();
+                EUF_TargetInfoTarget_OnLoad(self);
             </OnLoad>
         </Scripts>
         <Frame name="$parentDropDown" inherits="UIDropDownMenuTemplate" hidden="true">
@@ -186,6 +187,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
             </Anchors>
         </Frame>
     </Button>
+
     <Frame name="EUF_TargetInfoShield" parent="TargetFrame">
         <Size>
             <AbsDimension x="100" y="30"/>
@@ -219,7 +221,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
         </Layers>
         <Scripts>
             <OnUpdate>
-                    EUF_TargetInfoShield_Update();
+                EUF_TargetInfoShield_Update(self,button);
             </OnUpdate>
         </Scripts>
     </Frame>

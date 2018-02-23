@@ -25,6 +25,14 @@ CharModelFogInfo["DWARF"] = { r=0.85, g=0.88, b=1.0, far=500 };
 CharModelFogInfo["NIGHTELF"] = { r=0.25, g=0.22, b=0.55, far=611 };
 CharModelFogInfo["TAUREN"] = { r=1.0, g=0.61, b=0.42, far=153 };
 CharModelFogInfo["SCOURGE"] = { r=0, g=0.22, b=0.22, far=26 };
+CharModelFogInfo["CHARACTERSELECT"] = { r=0.8, g=0.65, b=0.73, far=222 };
+
+CharModelGlowInfo = { };
+CharModelGlowInfo["WORGEN"] = 0.0;
+CharModelGlowInfo["GOBLIN"] = 0.0;
+CharModelGlowInfo["HUMAN"] = 0.15;
+CharModelGlowInfo["DWARF"] = 0.15;
+CharModelGlowInfo["CHARACTERSELECT"] = 0.3;
 
 GlueAmbienceTracks = { };
 GlueAmbienceTracks["HUMAN"] = "GlueScreenHuman";
@@ -37,6 +45,57 @@ GlueAmbienceTracks["DRAENEI"] = "GlueScreenDraenei";
 GlueAmbienceTracks["BLOODELF"] = "GlueScreenBloodElf";
 GlueAmbienceTracks["DARKPORTAL"] = "GlueScreenIntro";
 GlueAmbienceTracks["DEATHKNIGHT"] = "GlueScreenIntro";
+GlueAmbienceTracks["CHARACTERSELECT"] = "GlueScreenIntro";
+
+-- RaceLights[] duplicates the 3.2.2 color values in the models. Henceforth, the models no longer contain directional lights
+RaceLights = {
+    HUMAN =  {
+        {1,     0,  0.000000,       0.000000,       -1.000000,   1.0,   0.27,       0.27,       .27,        1.0,    0,          0,          0},
+        {1,     0,  -0.45756075,    -0.58900136,    -0.66611975, 1.0,   0.000000,   0.000000,   0.000000,   1.0,    0.19882353, 0.34921569, 0.43588236 },
+        {1,     0,  -0.64623469,    0.57582057,     -0.50081086, 1.0,   0.000000,   0.000000,   0.000000,   2.0,    0.52196085, 0.44,       0.29764709 },
+    },
+    ORC = {         
+        {1,     0,  0.00000,        0.00000,        -1.00000,   1.0,    0.15000,    0.15000,    0.15000,    1.0,    0.00000,    0.00000,    0.00000},
+        {1,     0,  -0.74919,       0.35208,        -0.56103,   1.0,    0.00000,    0.00000,    0.00000,    1.0,    0.44706,    0.54510,    0.73725},
+        {1,     0,  0.53162,        -0.84340,       0.07780,    1.0,    0.00000,    0.00000,    0.00000,    2.0,    0.55,       0.338625,   0.148825},
+    },
+    DWARF = {
+        {1,     0,  -0.00000,       -0.00000,       -1.00000,   1.0,    0.30000,    0.30000,    0.30000,    0.0,    0.00000,    0.00000,    0.00000},
+        {1,     0,  -0.88314,       0.42916,        -0.18945,   1.0,    0.00000,    0.00000,    0.00000,    2.0,    0.44706,    0.67451,    0.760785},
+    },
+    TAUREN = {
+        {1,     0,  -0.48073,       0.71827,        -0.50297,   1.0,    0.00000,    0.00000,    0.00000,    2.0,    0.65,       0.397645,   0.2727},
+        {1,     0,  -0.49767,       -0.78677,       0.36513,    1.0,    0.00000,    0.00000,    0.00000,    1.0,    0.60000,    0.47059,    0.32471},
+    },
+    SCOURGE = {
+        {1,     0,  0.00000,        0.00000,        -1.00000,   1.0,    0.20000,    0.20000,    0.20000,    1.0,    0.00000,    0.00000,    0.00000},
+    },
+    NIGHTELF = {
+        {1,     0,  -0.00000,       -0.00000,       -1.00000,   1.0,    0.09020,    0.09020,    0.17020,    1.0,    0.00000,    0.00000,    0.00000},
+    },
+    DRAENEI = {
+        {1,     0,  0.61185,        0.62942,        -0.47903,   1.0,    0.00000,    0.00000,    0.00000,    1.0,    0.56941,    0.52000,    0.60000},
+        {1,     0,  -0.64345,       -0.31052,       -0.69968,   1.0,    0.00000,    0.00000,    0.00000,    1.0,    0.60941,    0.60392,    0.70000},
+        {1,     0,  -0.46481,       -0.14320,       0.87376,    1.0,    0.00000,    0.00000,    0.00000,    2.0,    0.5835,     0.48941,    0.60000},
+    },
+    BLOODELF = {
+        {1,     0,  -0.82249,       -0.54912,       -0.14822,   1.0,    0.00000,    0.00000,    0.00000,    2.0,    0.581175,   0.50588,    0.42588},
+        {1,     0,  0.00000,        -0.00000,       -1.00000,   1.0,    0.60392,    0.61490,    0.70000,    1.0,    0.00000,    0.00000,    0.00000},
+        {1,     0,  0.02575,        0.86518,        -0.50081,   1.0,    0.00000,    0.00000,    0.00000,    1.0,    0.59137,    0.51745,    0.63471},
+    },
+    DEATHKNIGHT = {
+        {1,     0,  0.00000,        0.00000,        -1.00000,   1.0,    0.38824,    0.66353,    0.76941,    1.0,    0.00000,    0.00000,    0.00000},
+    },
+    CHARACTERSELECT =  {
+        {1,     0,  0.00000,        0.00000,        -1.00000,   1.0,    0.15000,    0.15000,    0.15000,    1.0,    0.00000,    0.00000,    0.00000},
+        {1,     0,  -0.74919,       0.35208,        -0.56103,   1.0,    0.00000,    0.00000,    0.00000,    1.0,    0.44706,    0.54510,    0.73725},
+        {1,     0,  0.53162,        -0.84340,       0.07780,    1.0,    0.00000,    0.00000,    0.00000,    2.0,    0.55,       0.338625,   0.148825},
+    },
+}
+
+-- indicies for adding lights ModelFFX:Add*Light
+LIGHT_LIVE  = 0;
+LIGHT_GHOST = 1;
 
 -- Alpha animation stuff
 FADEFRAMES = {};
@@ -62,11 +121,16 @@ ACCOUNT_MSG_HEADERS_LOADED = false;
 ACCOUNT_MSG_BODY_LOADED = false;
 ACCOUNT_MSG_CURRENT_INDEX = nil;
 
+-- Gender Constants
+SEX_NONE = 1;
+SEX_MALE = 2;
+SEX_FEMALE = 3;
+
 
 function SetGlueScreen(name)
 	local newFrame;
 	for index, value in pairs(GlueScreenInfo) do
-		local frame = getglobal(value);
+		local frame = _G[value];
 		if ( frame ) then
 			frame:Hide();
 			if ( index == name ) then
@@ -146,9 +210,14 @@ function GlueParent_OnEvent(event, arg1, arg2, arg3)
 		else
 			GlueDialog_Show("DISCONNECTED");
 		end
+		AddonList:Hide();
 	elseif ( event == "GET_PREFERRED_REALM_INFO" ) then
-		SetGlueScreen("realmwizard");
-		PlayGlueAmbience(GlueAmbienceTracks["DARKPORTAL"], 4.0);
+		if( arg1 == 1) then
+			SetPreferredInfo(1);
+		else
+			SetGlueScreen("realmwizard");
+			PlayGlueAmbience(GlueAmbienceTracks["DARKPORTAL"], 4.0);
+		end
 	elseif ( event == "SERVER_SPLIT_NOTICE" ) then
 		CharacterSelectRealmSplitButton:Show();
 		if ( SERVER_SPLIT_STATE_PENDING == -1 and arg1 == 0 and arg2 == 1 ) then
@@ -255,37 +324,65 @@ function GlueFrameFadeRemoveFrame(frame)
 	GlueFrameRemoveFrame(frame, FADEFRAMES);
 end
 
--- Function to set the background model for character select and create screens
-function SetBackgroundModel(model, race)
--- HACK!!!
-	if ( race == "Gnome" or race == "GNOME" ) then
-		race = "Dwarf";
-	elseif ( race == "Troll" or race == "TROLL" ) then
-		race = "Orc";
-	end
-	if ( not race ) then
-		race = "Orc";
-	end
--- END HACK
-
-	if ( CharacterCreate:IsShown() ) then
-		SetCharCustomizeBackground("Interface\\Glues\\Models\\UI_"..race.."\\UI_"..race..".mdx");
-	else
-		SetCharSelectBackground("Interface\\Glues\\Models\\UI_"..race.."\\UI_"..race..".mdx");
-	end
+function SetLighting(model, race)
 	model:SetSequence(0);
 	model:SetCamera(0);
-
-	PlayGlueAmbience(GlueAmbienceTracks[strupper(race)], 4.0);
-
-	local fogInfo = CharModelFogInfo[strupper(race)];
+	local fogInfo = CharModelFogInfo[race];
 	if ( fogInfo ) then
 		model:SetFogColor(fogInfo.r, fogInfo.g, fogInfo.b);
 		model:SetFogNear(0);
 		model:SetFogFar(fogInfo.far);
 	else
 		model:ClearFog();
+    end
+
+    local glowInfo = CharModelGlowInfo[race];
+    if ( glowInfo ) then
+        model:SetGlow(glowInfo);
+    else
+        model:SetGlow(0.3);
+    end
+
+    model:ResetLights();
+	--[[ 
+	ResetLights() sets all 6 light sets to default for the background. The six sets are:
+
+		background - live
+		background - ghost
+		character - live
+		character - ghost
+		pet - live
+		pet - ghost
+
+	If you add a light to any one of these, NONE of the default lights are used for that set (most backgrounds have 3).
+
+	You can add up to four lights per light set in the current version. They are merged in the engine.
+
+    The current version only supports setting directional lights, and pulls the default point lights from the models.
+	]]
+	local LightValues = RaceLights[race];
+	if(LightValues) then 
+		for index, Array in pairs (LightValues) do
+			if (Array[1]==1) then	-- is this light enabled?
+				for j, f in pairs ({model.AddCharacterLight, model.AddLight, model.AddPetLight }) do
+					f(model, LIGHT_LIVE, unpack(Array));
+				end
+			end
+		end
 	end
+end
+
+-- Function to set the background model for character select and create screens
+function SetBackgroundModel(model, name)
+    local nameupper = strupper(name);
+    local path = "Interface\\Glues\\Models\\UI_"..name.."\\UI_"..name..".m2";
+	if ( model == CharacterCreate ) then
+		SetCharCustomizeBackground(path);
+	else
+		SetCharSelectBackground(path);
+	end
+	PlayGlueAmbience(GlueAmbienceTracks[nameupper], 4.0);
+	SetLighting(model, nameupper)
 end
 
 function SecondsToTime(seconds, noSeconds)
@@ -344,7 +441,7 @@ function MinutesToTime(mins, hideDays)
 end
 
 function TriStateCheckbox_SetState(checked, checkButton)
-	local checkedTexture = getglobal(checkButton:GetName().."CheckedTexture");
+	local checkedTexture = _G[checkButton:GetName().."CheckedTexture"];
 	if ( not checkedTexture ) then
 		message("Can't find checked texture");
 	end
@@ -378,4 +475,8 @@ function SetStateRequestInfo( choice )
 	end
 end
 
+function UpgradeAccount()
+	PlaySound("gsLoginNewAccount");
+	LaunchURL(AUTH_NO_TIME_URL);
+end
 

@@ -1,12 +1,16 @@
 CHARACTER_FACING_INCREMENT = 2;
 MAX_RACES = 10;
-MAX_CLASSES_PER_RACE = 8;
+MAX_CLASSES_PER_RACE = 10;
 NUM_CHAR_CUSTOMIZATIONS = 5;
 MIN_CHAR_NAME_LENGTH = 2;
 CHARACTER_CREATE_ROTATION_START_X = nil;
 CHARACTER_CREATE_INITIAL_FACING = nil;
 
-PAID_CHARACTER_CUSTOMIZATION = nil;
+PAID_CHARACTER_CUSTOMIZATION = 1;
+PAID_RACE_CHANGE = 2;
+PAID_FACTION_CHANGE = 3;
+PAID_SERVICE_CHARACTER_ID = nil;
+PAID_SERVICE_TYPE = nil;
 
 FACTION_BACKDROP_COLOR_TABLE = {
 	["Alliance"] = {0.5, 0.5, 0.5, 0.09, 0.09, 0.19},
@@ -15,7 +19,8 @@ FACTION_BACKDROP_COLOR_TABLE = {
 FRAMES_TO_BACKDROP_COLOR = { 
 	"CharacterCreateCharacterRace",
 	"CharacterCreateCharacterClass",
-	"CharacterCreateCharacterFaction",
+--	"CharacterCreateCharacterFaction",
+	"CharacterCreateNameEdit",
 };
 RACE_ICON_TCOORDS = {
 	["HUMAN_MALE"]		= {0, 0.125, 0, 0.25},
@@ -68,10 +73,9 @@ function CharacterCreate_OnLoad(self)
 	CharacterCreate.selectedGender = 0;
 
 	SetCharCustomizeFrame("CharacterCreate");
-	--CharCreateModel:SetLight(1, 0, 0, -0.707, -0.707, 0.7, 1.0, 1.0, 1.0, 0.8, 1.0, 1.0, 0.8);
 
 	for i=1, NUM_CHAR_CUSTOMIZATIONS, 1 do
-		getglobal("CharacterCustomizationButtonFrame"..i.."Text"):SetText(getglobal("CHAR_CUSTOMIZATION"..i.."_DESC"));
+		_G["CharacterCustomizationButtonFrame"..i.."Text"]:SetText(_G["CHAR_CUSTOMIZATION"..i.."_DESC"]);
 	end
 
 	-- Color edit box backdrop
@@ -81,40 +85,37 @@ function CharacterCreate_OnLoad(self)
 end
 
 function CharacterCreate_OnShow()
-	if ( PAID_CHARACTER_CUSTOMIZATION ) then
-		CustomizeExistingCharacter( PAID_CHARACTER_CUSTOMIZATION );
+	for i=1, MAX_CLASSES_PER_RACE, 1 do
+		local button = _G["CharacterCreateClassButton"..i];
+		button:Enable();
+		SetButtonDesaturated(button, false)
+	end
+	for i=1, MAX_RACES, 1 do
+		local button = _G["CharacterCreateRaceButton"..i];
+		button:Enable();
+		SetButtonDesaturated(button, false)
+	end
+
+	if ( PAID_SERVICE_TYPE ) then
+		CustomizeExistingCharacter( PAID_SERVICE_CHARACTER_ID );
+		CharacterCreateNameEdit:SetText( PaidChange_GetName() );
 	else
 		--randomly selects a combination
 		ResetCharCustomize();
 		CharacterCreateNameEdit:SetText("");
 		CharCreateRandomizeButton:Show();
-		for i=1, MAX_CLASSES_PER_RACE, 1 do
-			local button = getglobal("CharacterCreateClassButton"..i);
-			button:Enable();
-			SetButtonDesaturated(button, false)
-		end
-		for i=1, MAX_RACES, 1 do
-			local button = getglobal("CharacterCreateRaceButton"..i);
-			button:Enable();
-			SetButtonDesaturated(button, false)
-		end
 	end
 
 	CharacterCreateEnumerateRaces(GetAvailableRaces());
 	SetCharacterRace(GetSelectedRace());
+	
+	CharacterCreateEnumerateClasses(GetAvailableClasses());
+	local_,_,index = GetSelectedClass();
+	SetCharacterClass(index);
 
 	SetCharacterGender(GetSelectedSex())
 	
-	CharacterCreateEnumerateClasses(GetClassesForRace());
-	if ( PAID_CHARACTER_CUSTOMIZATION ) then
-		_,_,index = GetSelectedClass();
-		SetCharacterClass(index);
-	else
-		SetCharacterClass(1);
-	end
-	
 	-- Hair customization stuff
-	CharacterCreate_UpdateFacialHairCustomization();
 	CharacterCreate_UpdateHairCustomization();
 
 	SetCharacterCreateFacing(-15);
@@ -124,29 +125,12 @@ function CharacterCreate_OnShow()
 	end
 	
 	-- setup customization
-	if ( PAID_CHARACTER_CUSTOMIZATION ) then
-		CharacterCreateNameEdit:SetText( GetCharacterInfo(PAID_CHARACTER_CUSTOMIZATION) );
-		CharCreateRandomizeButton:Hide();
-		CharacterCreateRandomName:Hide();
-		for i=1, MAX_CLASSES_PER_RACE, 1 do
-			if (CharacterCreate.selectedClass ~= i) then
-				local button = getglobal("CharacterCreateClassButton"..i);
-				button:Disable();
-				SetButtonDesaturated(button, true)
-			end
-		end
-		for i=1, MAX_RACES, 1 do
-			if (CharacterCreate.selectedRace ~= i) then
-				local button = getglobal("CharacterCreateRaceButton"..i);
-				button:Disable();
-				SetButtonDesaturated(button, true)
-			end
-		end
-	end
+	CharacterChangeFixup();
 end
 
 function CharacterCreate_OnHide()
-	PAID_CHARACTER_CUSTOMIZATION = nil;
+	PAID_SERVICE_CHARACTER_ID = nil;
+	PAID_SERVICE_TYPE = nil;
 end
 
 function CharacterCreateFrame_OnMouseDown(button)
@@ -181,29 +165,33 @@ function CharacterCreateEnumerateRaces(...)
 	local index = 1;
 	local button;
 	local gender;
-	if ( GetSelectedSex() == 1 ) then
+	local selectedSex = GetSelectedSex();
+	if ( selectedSex == SEX_MALE ) then
 		gender = "MALE";
-	else
+	elseif ( selectedSex == SEX_FEMALE ) then
 		gender = "FEMALE";
 	end
 	for i=1, select("#", ...), 3 do
 		coords = RACE_ICON_TCOORDS[strupper(select(i+1, ...).."_"..gender)];
-		getglobal("CharacterCreateRaceButton"..index.."NormalTexture"):SetTexCoord(coords[1], coords[2], coords[3], coords[4]);
-		button = getglobal("CharacterCreateRaceButton"..index);
+		_G["CharacterCreateRaceButton"..index.."NormalTexture"]:SetTexCoord(coords[1], coords[2], coords[3], coords[4]);
+		_G["CharacterCreateRaceButton"..index.."PushedTexture"]:SetTexCoord(coords[1], coords[2], coords[3], coords[4]);
+		button = _G["CharacterCreateRaceButton"..index];
 		button:Show();
 		if ( select(i+2, ...) == 1 ) then
 			button.enable = true;
 			SetButtonDesaturated(button);
+			button.name = select(i, ...)
 			button.tooltip = select(i, ...);
 		else
 			button.enable = false;
 			SetButtonDesaturated(button, 1);
-			button.tooltip = getglobal(strupper(select(i+1, ...).."_".."DISABLED"));
+			button.name = select(i, ...)
+			button.tooltip = _G[strupper(select(i+1, ...).."_".."DISABLED")];
 		end
 		index = index + 1;
 	end
 	for i=CharacterCreate.numRaces + 1, MAX_RACES, 1 do
-		getglobal("CharacterCreateRaceButton"..i):Hide();
+		_G["CharacterCreateRaceButton"..i]:Hide();
 	end
 end
 
@@ -218,75 +206,74 @@ function CharacterCreateEnumerateClasses(...)
 	local button;
 	for i=1, select("#", ...), 3 do
 		coords = CLASS_ICON_TCOORDS[strupper(select(i+1, ...))];
-		getglobal("CharacterCreateClassButton"..index.."NormalTexture"):SetTexCoord(coords[1], coords[2], coords[3], coords[4]);
-		button = getglobal("CharacterCreateClassButton"..index);
+		_G["CharacterCreateClassButton"..index.."NormalTexture"]:SetTexCoord(coords[1], coords[2], coords[3], coords[4]);
+		_G["CharacterCreateClassButton"..index.."PushedTexture"]:SetTexCoord(coords[1], coords[2], coords[3], coords[4]);
+		button = _G["CharacterCreateClassButton"..index];
 		button:Show();
-		if ( select(i+2, ...) == 1 ) then
+		if ( (select(i+2, ...) == 1) and (IsRaceClassValid(CharacterCreate.selectedRace, index)) ) then
 			button.enable = true;
+			button:Enable();
 			SetButtonDesaturated(button);
+			button.name = select(i, ...)
 			button.tooltip = select(i, ...);
+			_G["CharacterCreateClassButton"..index.."DisableTexture"]:Hide();
 		else
 			button.enable = false;
+			button:Disable();
 			SetButtonDesaturated(button, 1);
-			button.tooltip = getglobal(strupper(select(i+1, ...).."_".."DISABLED"));
+			button.name = select(i, ...)
+			button.tooltip = _G[strupper(select(i+1, ...).."_".."DISABLED")];
+			_G["CharacterCreateClassButton"..index.."DisableTexture"]:Show();
 		end
 		index = index + 1;
 	end
 	for i=CharacterCreate.numClasses + 1, MAX_CLASSES_PER_RACE, 1 do
-		getglobal("CharacterCreateClassButton"..i):Hide();
+		_G["CharacterCreateClassButton"..i]:Hide();
 	end
 end
 
 function SetCharacterRace(id)
 	CharacterCreate.selectedRace = id;
+	local selectedButton;
 	for i=1, CharacterCreate.numRaces, 1 do
-		local button = getglobal("CharacterCreateRaceButton"..i);
+		local button = _G["CharacterCreateRaceButton"..i];
 		if ( i == id ) then
-			getglobal("CharacterCreateRaceButton"..i.."HighlightText"):SetText(button.tooltip);
+			_G["CharacterCreateRaceButton"..i.."Text"]:SetText(button.name);
 			button:SetChecked(1);
-			button:LockHighlight();
+			selectedButton = button;
 		else
-			getglobal("CharacterCreateRaceButton"..i.."HighlightText"):SetText("");
+			_G["CharacterCreateRaceButton"..i.."Text"]:SetText("");
 			button:SetChecked(0);
-			button:UnlockHighlight();
 		end
 	end
 
 	-- Set Faction
-	local name, faction = GetFactionForRace();
-	if ( faction == "Alliance" ) then
-		CharacterCreateFactionIcon:SetTexCoord(0, 0.5, 0, 1.0);
-	else
-		CharacterCreateFactionIcon:SetTexCoord(0.5, 1.0, 0, 1.0);
-	end
-	CharacterCreateFactionScrollFrameScrollBar:SetValue(0);
-	CharacterCreateFactionLabel:SetText(name);
-	CharacterCreateFactionText:SetText(getglobal("FACTION_INFO_"..strupper(faction)));
+	local name, faction = GetFactionForRace(CharacterCreate.selectedRace);
 
 	-- Set Race
 	local race, fileString = GetNameForRace();
+
 	CharacterCreateRaceLabel:SetText(race);
 	fileString = strupper(fileString);
-	if ( GetSelectedSex() == 1 ) then
+	if ( GetSelectedSex() == SEX_MALE ) then
 		gender = "MALE";
 	else
 		gender = "FEMALE";
 	end
 	local coords = RACE_ICON_TCOORDS[fileString.."_"..gender];
 	CharacterCreateRaceIcon:SetTexCoord(coords[1], coords[2], coords[3], coords[4]);
-	local raceText = getglobal("RACE_INFO_"..fileString);
+	local raceText = _G["RACE_INFO_"..fileString];
 	local abilityIndex = 1;
-	local tempText = getglobal("ABILITY_INFO_"..fileString..abilityIndex);
+	local tempText = _G["ABILITY_INFO_"..fileString..abilityIndex];
 	abilityText = "";
 	while ( tempText ) do
-		abilityText = abilityText..tempText..
-		"\n\n";
+		abilityText = abilityText..tempText.."\n\n";
 		abilityIndex = abilityIndex + 1;
-		tempText = getglobal("ABILITY_INFO_"..fileString..abilityIndex);
+		tempText = _G["ABILITY_INFO_"..fileString..abilityIndex];
 	end
 
 	CharacterCreateRaceScrollFrameScrollBar:SetValue(0);
-	CharacterCreateRaceText:SetText(GetFlavorText("RACE_INFO_"..strupper(fileString), GetSelectedSex()));
+	CharacterCreateRaceText:SetText(GetFlavorText("RACE_INFO_"..strupper(fileString), GetSelectedSex()).."|n|n");
 	if ( abilityText and abilityText ~= "" ) then
 		CharacterCreateRaceAbilityText:SetText(abilityText);
 	else
@@ -297,39 +284,42 @@ function SetCharacterRace(id)
 	local backdropColor = FACTION_BACKDROP_COLOR_TABLE[faction];
 	local frame;
 	for index, value in pairs(FRAMES_TO_BACKDROP_COLOR) do
-		frame = getglobal(value);
+		frame = _G[value];
 		frame:SetBackdropColor(backdropColor[4], backdropColor[5], backdropColor[6]);
 	end
+	CharacterCreateConfigurationBackground:SetVertexColor(backdropColor[4], backdropColor[5], backdropColor[6]);
 
-	local _, classFilename = GetSelectedClass();
-	if (classFilename == "DEATHKNIGHT" ) then
-		fileString = classFilename;
-	end
-	SetBackgroundModel(CharacterCreate, fileString);
+	local backgroundFilename = GetCreateBackgroundModel();
+	SetBackgroundModel(CharacterCreate, backgroundFilename);
 end
 
 function SetCharacterClass(id)
 	CharacterCreate.selectedClass = id;
 	for i=1, CharacterCreate.numClasses, 1 do
-		local button = getglobal("CharacterCreateClassButton"..i);
+		local button = _G["CharacterCreateClassButton"..i];
 		if ( i == id ) then
---			getglobal("CharacterCreateClassButton"..i.."HighlightText"):SetText(button.tooltip);
-			CharacterCreateClassName:SetText(button.tooltip);
+			CharacterCreateClassName:SetText(button.name);
 			button:SetChecked(1);
-			button:LockHighlight();
 		else
---			getglobal("CharacterCreateClassButton"..i.."HighlightText"):SetText("");
-			button:UnlockHighlight();
 			button:SetChecked(0);
 		end
 	end
 	
-	local className, classFileName = GetSelectedClass();
+	local className, classFileName, _, tank, healer, damage = GetSelectedClass();
+	local abilityIndex = 0;
+	local tempText = _G["CLASS_INFO_"..classFileName..abilityIndex];
+	abilityText = "";
+	while ( tempText ) do
+		abilityText = abilityText..tempText.."\n\n";
+		abilityIndex = abilityIndex + 1;
+		tempText = _G["CLASS_INFO_"..classFileName..abilityIndex];
+	end
 	local coords = CLASS_ICON_TCOORDS[classFileName];
 	CharacterCreateClassIcon:SetTexCoord(coords[1], coords[2], coords[3], coords[4]);
 	CharacterCreateClassLabel:SetText(className);
+	CharacterCreateClassRolesText:SetText(abilityText);	
+	CharacterCreateClassText:SetText(GetFlavorText("CLASS_"..strupper(classFileName), GetSelectedSex()).."|n|n");
 	CharacterCreateClassScrollFrameScrollBar:SetValue(0);
-	CharacterCreateClassText:SetText(GetFlavorText("CLASS_"..strupper(classFileName), GetSelectedSex()));
 end
 
 function CharacterCreate_OnChar()
@@ -351,8 +341,8 @@ function CharacterCreate_UpdateModel(self)
 end
 
 function CharacterCreate_Okay()
-	if ( PAID_CHARACTER_CUSTOMIZATION ) then
-		GlueDialog_Show("CONFIRM_PCC");
+	if ( PAID_SERVICE_TYPE ) then
+		GlueDialog_Show("CONFIRM_PAID_SERVICE");
 	else
 		CreateCharacter(CharacterCreateNameEdit:GetText());
 	end
@@ -367,10 +357,11 @@ end
 function CharacterClass_OnClick(id)
 	PlaySound("gsCharacterCreationClass");
 	local _,_,currClass = GetSelectedClass();
-	if ( currClass ~= id ) then
+	if ( currClass ~= id and IsRaceClassValid(GetSelectedRace(), id) ) then
 		SetSelectedClass(id);
 		SetCharacterClass(id);
 	 	SetCharacterRace(GetSelectedRace());
+		CharacterChangeFixup();
 	end
 end
 
@@ -385,44 +376,46 @@ function CharacterRace_OnClick(self, id)
 		SetCharacterRace(id);
 		SetSelectedSex(GetSelectedSex());
 		SetCharacterCreateFacing(-15);
-		CharacterCreateEnumerateClasses(GetClassesForRace());
-		SetCharacterClass(1);
-
+		CharacterCreateEnumerateClasses(GetAvailableClasses());
+		local _,_,classIndex = GetSelectedClass();
+		if ( PAID_SERVICE_TYPE ) then
+			classIndex = PaidChange_GetCurrentClassIndex();
+		end
+		SetCharacterClass(classIndex);
+		
 		-- Hair customization stuff
-		CharacterCreate_UpdateFacialHairCustomization();
 		CharacterCreate_UpdateHairCustomization();
+			
+		CharacterChangeFixup();
 	end
 end
 
 function SetCharacterGender(sex)
 	local gender;
 	SetSelectedSex(sex);
-	if ( sex == 1 ) then
+	if ( sex == SEX_MALE ) then
 		gender = "MALE";
-		CharacterCreateGenderButtonMaleHighlightText:SetText(MALE);
+		CharacterCreateGender:SetText(MALE);
 		CharacterCreateGenderButtonMale:SetChecked(1);
-		CharacterCreateGenderButtonMale:LockHighlight();
-		CharacterCreateGenderButtonFemaleHighlightText:SetText("");
 		CharacterCreateGenderButtonFemale:SetChecked(nil);
-		CharacterCreateGenderButtonFemale:UnlockHighlight();
-	else
+	elseif ( sex == SEX_FEMALE ) then
 		gender = "FEMALE";
-		CharacterCreateGenderButtonMaleHighlightText:SetText("");
+		CharacterCreateGender:SetText(FEMALE);
 		CharacterCreateGenderButtonMale:SetChecked(nil);
-		CharacterCreateGenderButtonMale:UnlockHighlight();
-		CharacterCreateGenderButtonFemaleHighlightText:SetText(FEMALE);
 		CharacterCreateGenderButtonFemale:SetChecked(1);
-		CharacterCreateGenderButtonFemale:LockHighlight();
 	end
-	
+
 	-- Update race images to reflect gender
 	CharacterCreateEnumerateRaces(GetAvailableRaces());
-	CharacterCreateEnumerateClasses(GetClassesForRace());
+	CharacterCreateEnumerateClasses(GetAvailableClasses());
  	SetCharacterRace(GetSelectedRace());
-	SetCharacterClass(CharacterCreate.selectedClass);
 	
-	-- Update facial hair customization since gender can affect this
-	CharacterCreate_UpdateFacialHairCustomization();
+	local _,_,classIndex = GetSelectedClass();
+	if ( PAID_SERVICE_TYPE ) then
+		classIndex = PaidChange_GetCurrentClassIndex();
+	end
+	SetCharacterClass(classIndex);
+
 	CharacterCreate_UpdateHairCustomization();
 
 	-- Update right hand race portrait to reflect gender change
@@ -433,22 +426,7 @@ function SetCharacterGender(sex)
 	local coords = RACE_ICON_TCOORDS[fileString.."_"..gender];
 	CharacterCreateRaceIcon:SetTexCoord(coords[1], coords[2], coords[3], coords[4]);
 	
-	if ( PAID_CHARACTER_CUSTOMIZATION ) then
-		for i=1, MAX_CLASSES_PER_RACE, 1 do
-			if (CharacterCreate.selectedClass ~= i) then
-				local button = getglobal("CharacterCreateClassButton"..i);
-				button:Disable();
-				SetButtonDesaturated(button, true)
-			end
-		end
-		for i=1, MAX_RACES, 1 do
-			if (CharacterCreate.selectedRace ~= i) then
-				local button = getglobal("CharacterCreateRaceButton"..i);
-				button:Disable();
-				SetButtonDesaturated(button, true)
-			end
-		end
-	end
+	CharacterChangeFixup();
 end
 
 function CharacterCustomization_Left(id)
@@ -478,20 +456,10 @@ function CharacterCreateRotateLeft_OnUpdate(self)
 	end
 end
 
-function CharacterCreate_UpdateFacialHairCustomization()
-	if ( GetFacialHairCustomization() == "NONE" ) then
-		CharacterCustomizationButtonFrame5:Hide();
-		CharCreateRandomizeButton:SetPoint("TOP", "CharacterCustomizationButtonFrame5", "BOTTOM", 0, -5);
-	else
-		CharacterCustomizationButtonFrame5Text:SetText(getglobal("FACIAL_HAIR_"..GetFacialHairCustomization()));		
-		CharacterCustomizationButtonFrame5:Show();
-		CharCreateRandomizeButton:SetPoint("TOP", "CharacterCustomizationButtonFrame5", "BOTTOM", 0, -5);
-	end
-end
-
 function CharacterCreate_UpdateHairCustomization()
-	CharacterCustomizationButtonFrame3Text:SetText(getglobal("HAIR_"..GetHairCustomization().."_STYLE"));
-	CharacterCustomizationButtonFrame4Text:SetText(getglobal("HAIR_"..GetHairCustomization().."_COLOR"));
+	CharacterCustomizationButtonFrame3Text:SetText(_G["HAIR_"..GetHairCustomization().."_STYLE"]);
+	CharacterCustomizationButtonFrame4Text:SetText(_G["HAIR_"..GetHairCustomization().."_COLOR"]);
+	CharacterCustomizationButtonFrame5Text:SetText(_G["FACIAL_HAIR_"..GetFacialHairCustomization()]);		
 end
 
 function SetButtonDesaturated(button, desaturated, r, g, b)
@@ -519,16 +487,16 @@ end
 
 function GetFlavorText(tagname, sex)
 	local primary, secondary;
-	if ( sex == 1 ) then
+	if ( sex == SEX_MALE ) then
 		primary = "";
 		secondary = "_FEMALE";
 	else
 		primary = "_FEMALE";
 		secondary = "";
 	end
-	local text = getglobal(tagname..primary);
+	local text = _G[tagname..primary];
 	if ( (text == nil) or (text == "") ) then
-		text = getglobal(tagname..secondary);
+		text = _G[tagname..secondary];
 	end
 	return text;
 end
@@ -548,6 +516,42 @@ function CharacterCreate_DeathKnightSwap(self)
 			self:SetNormalTexture("Interface\\Glues\\Common\\Glue-Panel-Button-Up");
 			self:SetPushedTexture("Interface\\Glues\\Common\\Glue-Panel-Button-Down");
 			self:SetHighlightTexture("Interface\\Glues\\Common\\Glue-Panel-Button-Highlight");
+		end
+	end
+end
+
+function CharacterChangeFixup()
+	if ( PAID_SERVICE_TYPE ) then
+		for i=1, MAX_CLASSES_PER_RACE, 1 do
+			if (CharacterCreate.selectedClass ~= i) then
+				local button = _G["CharacterCreateClassButton"..i];
+				button:Disable();
+				SetButtonDesaturated(button, true)
+			end
+		end
+
+		for i=1, MAX_RACES, 1 do
+			local allow = false;
+			if ( PAID_SERVICE_TYPE == PAID_FACTION_CHANGE ) then
+				local faction = GetFactionForRace(PaidChange_GetCurrentRaceIndex());
+				if ( (i == PaidChange_GetCurrentRaceIndex()) or ((GetFactionForRace(i) ~= faction) and (IsRaceClassValid(i,CharacterCreate.selectedClass))) ) then
+					allow = true;
+				end
+			elseif ( PAID_SERVICE_TYPE == PAID_RACE_CHANGE ) then
+				local faction = GetFactionForRace(PaidChange_GetCurrentRaceIndex());
+				if ( (i == PaidChange_GetCurrentRaceIndex()) or ((GetFactionForRace(i) == faction) and (IsRaceClassValid(i,CharacterCreate.selectedClass))) ) then
+					allow = true
+				end
+			elseif ( PAID_SERVICE_TYPE == PAID_CHARACTER_CUSTOMIZATION ) then
+				if ( i == CharacterCreate.selectedRace ) then
+					allow = true
+				end
+			end
+			if (not allow) then
+				local button = _G["CharacterCreateRaceButton"..i];
+				button:Disable();
+				SetButtonDesaturated(button, true)
+			end
 		end
 	end
 end

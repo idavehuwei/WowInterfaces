@@ -31,16 +31,18 @@ AtlasLoot_AddTooltip(frameb, tooltiptext)
 AtlasLoot = LibStub("AceAddon-3.0"):NewAddon("AtlasLoot");
 
 --Instance required libraries
-local BabbleBoss = LibStub("LibBabble-Boss-3.0"):GetLookupTable();
+local BabbleBoss = AtlasLoot_GetLocaleLibBabble("LibBabble-Boss-3.0")
 local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
 
 --Establish version number and compatible version of Atlas
 local VERSION_MAJOR = "5";
-local VERSION_MINOR = "06";
-local VERSION_BOSSES = "02";
+local VERSION_MINOR = "11";
+local VERSION_BOSSES = "04";
 ATLASLOOT_VERSION = "|cffFF8400AtlasLoot Enhanced v"..VERSION_MAJOR.."."..VERSION_MINOR.."."..VERSION_BOSSES.."|r";
-ATLASLOOT_CURRENT_ATLAS = "1.14.1";
-ATLASLOOT_PREVIEW_ATLAS = "1.14.2";
+--Now allows for multiple compatible Atlas versions.  Always put the newest first
+ATLASLOOT_CURRENT_ATLAS = {"1.17.1", "1.17.0"};
+ATLASLOOT_PREVIEW_ATLAS = {"1.17.3", "1.17.2"};
+
 ATLASLOOT_POSITION = AL["Position:"];
 ATLASLOOT_DEBUGMESSAGES = false;
 ATLASLOOT_FILTER_ENABLE = false;
@@ -98,8 +100,10 @@ local AtlasLootDBDefaults = {
         HidePanel = false,
         LastBoss = "EmptyTable",
         HeroicMode = false,
+		BigraidHeroic = false,
         Bigraid = false,
         AtlasLootVersion = "1",
+        AtlasNaggedVersion = "",
         FuBarPosition = 1,
         AutoQuery = false,
         LoadAllLoDStartup = false,
@@ -112,6 +116,7 @@ local AtlasLootDBDefaults = {
         SearchOn = {
             All = true,
         },
+        AtlasType = "Release";
     }
 }
 
@@ -138,7 +143,7 @@ StaticPopupDialogs["ATLASLOOT_SETUP"] = {
 
 --Popup Box for an old version of Atlas
 StaticPopupDialogs["ATLASLOOT_OLD_ATLAS"] = {
-  text = AL["It has been detected that your version of Atlas does not match the version that Atlasloot is tuned for ("]..ATLASLOOT_CURRENT_ATLAS..AL[").  Depending on changes, there may be the occasional error, so please visit http://www.atlasmod.com as soon as possible to update."],
+  text = AL["It has been detected that your version of Atlas does not match the version that Atlasloot is tuned for ("]..ATLASLOOT_CURRENT_ATLAS[1].."/"..ATLASLOOT_PREVIEW_ATLAS[1]..AL[").  Depending on changes, there may be the occasional error, so please visit http://www.atlasmod.com as soon as possible to update."],
   button1 = AL["OK"],
   OnAccept = function()
 	  DEFAULT_CHAT_FRAME:AddMessage(BLUE..AL["AtlasLoot"]..": "..RED..AL["Incompatible Atlas Detected"]);
@@ -182,13 +187,39 @@ Invoked by the VARIABLES_LOADED event.  Now that we are sure all the assets
 the addon needs are in place, we can properly set up the mod
 ]]
 function AtlasLoot_OnVariablesLoaded()
+    local AtlasCheck = false;
     AtlasLoot.db = LibStub("AceDB-3.0"):New("AtlasLootDB");
     AtlasLoot.db:RegisterDefaults(AtlasLootDBDefaults);
 	if not AtlasLootCharDB then AtlasLootCharDB = {} end
 	if not AtlasLootCharDB["WishList"] then AtlasLootCharDB["WishList"] = {} end
     if not AtlasLootCharDB["QuickLooks"] then AtlasLootCharDB["QuickLooks"] = {} end
 	if not AtlasLootCharDB["SearchResult"] then AtlasLootCharDB["SearchResult"] = {} end
-	--Add the loot browser to the special frames tables to enable closing wih the ESC key
+	AtlasLoot.db.profile.LastBoss = "EmptyTable";
+    if AtlasLoot_TableNames then
+        AtlasLoot_TableNames["EmptyTable"] = { AL["Select a Loot Table..."], "Menu" };
+	    AtlasLoot_TableNames["EmptyInstance"] = { "AtlasLoot", "AtlasLootFallback" };
+	    AtlasLoot_TableNames["AtlasLootFallback"] = { "AtlasLoot", "AtlasLootFallback" };
+    end
+    if AtlasLoot_Data then
+        AtlasLoot_Data["EmptyTable"] = {};
+    end
+    --Figure out if it is a compatible Atlas version
+    for i=1,#ATLASLOOT_CURRENT_ATLAS do
+        if ATLAS_VERSION == ATLASLOOT_CURRENT_ATLAS[i] then
+            AtlasCheck = true;
+            AtlasLoot.db.profile.AtlasType = "Release";
+        end
+    end
+    for i=1,#ATLASLOOT_PREVIEW_ATLAS do
+        if ATLAS_VERSION == ATLASLOOT_PREVIEW_ATLAS[i] then
+            AtlasCheck = true;
+            AtlasLoot.db.profile.AtlasType = "Preview";
+        end
+    end
+    if AtlasCheck == false then
+        AtlasLoot.db.profile.AtlasType = "Unknown";
+    end
+    --Add the loot browser to the special frames tables to enable closing wih the ESC key
 	tinsert(UISpecialFrames, "AtlasLootDefaultFrame");
 	--Set up options frame
 	AtlasLootOptions_OnLoad();
@@ -242,11 +273,12 @@ function AtlasLoot_OnVariablesLoaded()
 			AtlasLoot.db.profile.AtlasLootVersion = VERSION_MAJOR..VERSION_MINOR..VERSION_BOSSES;
 			StaticPopup_Show ("ATLASLOOT_SETUP");
 		end
-		--If not the expected Atlas version
-		if( ATLAS_VERSION ~= ATLASLOOT_CURRENT_ATLAS and ATLAS_VERSION ~= ATLASLOOT_PREVIEW_ATLAS ) then
-			StaticPopup_Show ("ATLASLOOT_OLD_ATLAS");
+		--If not the expected Atlas version, nag the user once
+		if( AtlasLoot.db.profile.AtlasType == "Unknown" and AtlasLoot.db.profile.AtlasNaggedVersion ~= ATLAS_VERSION ) then
+            StaticPopup_Show ("ATLASLOOT_OLD_ATLAS");
+            AtlasLoot.db.profile.AtlasNaggedVersion = ATLAS_VERSION;
 		end
-        if ATLAS_VERSION == ATLASLOOT_PREVIEW_ATLAS then
+        if AtlasLoot.db.profile.AtlasType == "Preview" then
             AtlasLootBossButtons = AtlasLootNewBossButtons;
         end
 		Hooked_Atlas_Refresh();
@@ -345,7 +377,10 @@ function AtlasLoot_OnVariablesLoaded()
         LibStub("LibAboutPanel").new(AL["AtlasLoot"], "AtlasLoot");
     end    
     AtlasLoot_UpdateLootBrowserScale();
-
+	
+	AtlasLoot.db.profile.Bigraid = false
+	AtlasLoot.db.profile.BigraidHeroic = false
+	AtlasLoot.db.profile.HeroicMode = false
 end
 
 function AtlasLoot_Reset(data)
@@ -447,6 +482,60 @@ function AtlasLoot_OnLoad()
 end
 
 --[[
+AtlasLoot_GetLoottableHeroic:
+Set up checks to see if we have a heroic loot table or not.
+Returns: HeroicCheck, HeroicdataID, NonHeroicdataID, BigraidCheck, BigraiddataID, SmallraiddataID, heroname
+]]
+function AtlasLoot_GetLoottableHeroic(dataID)
+	local NormalID, HeroicID, Normal25ID, Heroic25ID = nil,nil,nil,nil
+	local dataSource = AtlasLoot_Data
+	local englishFaction = UnitFactionGroup("player")
+	-- remove all Heroic etc infos from the dataID**
+	dataID = gsub(dataID, "_H", "")				-- Horde
+	dataID = gsub(dataID, "_A", "")				-- Alliance
+	dataID = gsub(dataID, "HEROIC", "")			-- Hero Table (10)
+	dataID = gsub(dataID, "25Man", "")			-- 25 Man Table
+	dataID = gsub(dataID, "25ManHEROIC", "")	-- Heroic Table (25)
+	
+	-- dataID from normal <return>
+	-- Check tables if Heroic etc exists
+	if dataSource[dataID] or dataSource[dataID.."_H"] or dataSource[dataID.."_A"] then
+		NormalID = dataID
+		if englishFaction == "Horde" and dataSource[NormalID.."_H"] then
+			NormalID = NormalID.."_H"
+		elseif englishFaction ~= "Horde" and dataSource[NormalID.."_A"] then
+			NormalID = NormalID.."_A"
+		end
+	end
+	if dataSource[dataID.."HEROIC"] or dataSource[dataID.."HEROIC".."_H"] or dataSource[dataID.."HEROIC".."_A"] then
+		HeroicID = dataID.."HEROIC"
+		if englishFaction == "Horde" and dataSource[HeroicID.."_H"] then
+			HeroicID = HeroicID.."_H"
+		elseif englishFaction ~= "Horde" and dataSource[HeroicID.."_A"] then
+			HeroicID = HeroicID.."_A"
+		end
+	end
+	if dataSource[dataID.."25Man"] or dataSource[dataID.."25Man".."_H"] or dataSource[dataID.."25Man".."_A"] then
+		Normal25ID = dataID.."25Man"
+		if englishFaction == "Horde" and dataSource[Normal25ID.."_H"] then
+			Normal25ID = Normal25ID.."_H"
+		elseif englishFaction ~= "Horde" and dataSource[Normal25ID.."_A"] then
+			Normal25ID = Normal25ID.."_A"
+		end
+	end
+	if dataSource[dataID.."25ManHEROIC"] or dataSource[dataID.."25ManHEROIC".."_H"] or dataSource[dataID.."25ManHEROIC".."_A"] then
+		Heroic25ID = dataID.."25ManHEROIC"
+		if englishFaction == "Horde" and dataSource[Heroic25ID.."_H"] then
+			Heroic25ID = Heroic25ID.."_H"
+		elseif englishFaction ~= "Horde" and dataSource[Heroic25ID.."_A"] then
+			Heroic25ID = Heroic25ID.."_A"
+		end
+	end
+
+	return NormalID, HeroicID, Normal25ID, Heroic25ID
+end
+
+--[[
 AtlasLoot_ShowItemsFrame(dataID, dataSource, boss, pFrame):
 dataID - Name of the loot table
 dataSource - Table in the database where the loot table is stored
@@ -486,7 +575,7 @@ function AtlasLoot_ShowItemsFrame(dataID, dataSource, boss, pFrame)
 	-- Hide the Filter Check-Box
 	AtlasLootFilterCheck:Hide();
     
-	dataSource_backup = dataSource;
+    dataSource_backup = dataSource;
 	if dataID == "SearchResult" or dataID == "WishList" then
         dataSource = {};
         -- Match the page number to display
@@ -505,44 +594,36 @@ function AtlasLoot_ShowItemsFrame(dataID, dataSource, boss, pFrame)
     end
 
 	--Set up checks to see if we have a heroic loot table or not
-	local HeroicCheck=string.sub(dataID, string.len(dataID)-5, string.len(dataID));
-	local HeroicdataID=dataID.."HEROIC";
-	local NonHeroicdataID=string.sub(dataID, 1, string.len(dataID)-6);
-
-	local BigraidCheck=string.sub(dataID, string.len(dataID)-4, string.len(dataID));
-	local BigraiddataID=dataID.."25Man";
-	local SmallraiddataID=string.sub(dataID, 1, string.len(dataID)-5);
-    
-	--Change the dataID to be consistant with the Heroic Mode toggle
-	if dataSource then
-		if((AtlasLoot.db.profile.HeroicMode == nil) or (AtlasLoot.db.profile.HeroicMode == false)) then
-			if(HeroicCheck == "HEROIC") then
-				if dataSource[NonHeroicdataID] then
-					dataID=NonHeroicdataID;
-				end
+	local NormalID, HeroicID, Normal25ID, Heroic25ID = AtlasLoot_GetLoottableHeroic(dataID)
+	if AtlasLoot.db.profile.HeroicMode and HeroicID then
+		dataID = HeroicID
+	elseif AtlasLoot.db.profile.Bigraid and Normal25ID then
+		dataID = Normal25ID
+	elseif AtlasLoot.db.profile.BigraidHeroic and Heroic25ID then
+		dataID = Heroic25ID
+	else
+		if not NormalID then
+			if Normal25ID and not AtlasLoot.db.profile.HeroicMode then
+				dataID = Normal25ID
+				AtlasLoot.db.profile.Bigraid = true
+				AtlasLoot.db.profile.BigraidHeroic = false
+				AtlasLoot.db.profile.HeroicMode = false
+			elseif HeroicID then
+				dataID = HeroicID
+				AtlasLoot.db.profile.Bigraid = false
+				AtlasLoot.db.profile.BigraidHeroic = false
+				AtlasLoot.db.profile.HeroicMode = true
+			elseif Heroic25ID then
+				dataID = Heroic25ID
+				AtlasLoot.db.profile.Bigraid = false
+				AtlasLoot.db.profile.BigraidHeroic = true
+				AtlasLoot.db.profile.HeroicMode = false
 			end
-		elseif(AtlasLoot.db.profile.HeroicMode == true) then
-			if(HeroicCheck ~= "HEROIC") then
-				if dataSource[HeroicdataID] then
-					dataID=HeroicdataID;
-				end
-			end
-		end
-        if((AtlasLoot.db.profile.Bigraid == nil) or (AtlasLoot.db.profile.Bigraid == false)) then
-			if(BigraidCheck == "25Man") then
-				if dataSource[SmallraiddataID] then
-					dataID=SmallraiddataID;
-				end
-			end
-		elseif(AtlasLoot.db.profile.Bigraid == true) then
-			if(BigraidCheck ~= "25Man") then
-				if dataSource[BigraiddataID] then
-					dataID=BigraiddataID;
-				end
-			end
+		else
+			dataID = NormalID
 		end
 	end
-
+	
 	--Hide UI objects so that only needed ones are shown
 	for i = 1, 30, 1 do
         getglobal("AtlasLootItem_"..i.."_Unsafe"):Hide();
@@ -557,21 +638,8 @@ function AtlasLoot_ShowItemsFrame(dataID, dataSource, boss, pFrame)
         return;
     end
 
-	--Escape out of this function if creating a menu, this function only handles loot tables.
-	--Inserting escapes in this way allows consistant calling of data whether it is a loot table or a menu.
-	if(dataID=="PVPSET") then
-		AtlasLootPVPSetMenu();
-	elseif(dataID=="PVP70RepSET") then
-		AtlasLootPVP70RepSetMenu();
-	elseif(dataID=="ARENASET") then
-		AtlasLootARENASetMenu();
-	elseif(dataID=="ARENA2SET") then
-		AtlasLootARENA2SetMenu();
-	elseif(dataID=="ARENA3SET") then
-		AtlasLootARENA3SetMenu();
-	elseif(dataID=="ARENA4SET") then
-		AtlasLootARENA4SetMenu();
-	elseif (dataID == "SearchResult") or (dataID == "WishList") or (AtlasLoot_IsLootTableAvailable(dataID)) then
+	-- Create the loottable
+	if (dataID == "SearchResult") or (dataID == "WishList") or (AtlasLoot_IsLootTableAvailable(dataID)) then
 		--Iterate through each item object and set its properties
 		for i = 1, 30, 1 do
 			--Check for a valid object (that it exists, and that it has a name)
@@ -702,7 +770,7 @@ function AtlasLoot_ShowItemsFrame(dataID, dataSource, boss, pFrame)
                 else
                     itemButton.price = nil;
                 end
-                if dataSource[dataID][i][7] then
+                if dataSource[dataID][i][7] and dataSource[dataID][i][7] ~= "" then
 				    itemButton.droprate = dataSource[dataID][i][7];
                 else
                     itemButton.droprate = nil;
@@ -747,40 +815,54 @@ function AtlasLoot_ShowItemsFrame(dataID, dataSource, boss, pFrame)
 			AtlasLootFilterCheck:Show();
 		end
         
-        --Decide whether to show the Heroic mode toggle
+		--Decide whether to show the Heroic mode toggle
         --Checks if a heroic version of the loot table is available.
-		local xdataID = AtlasLootItemsFrame.refreshOri[1]
-        HeroicCheck=string.sub(xdataID, string.len(xdataID)-5, string.len(xdataID));
-        HeroicdataID=xdataID.."HEROIC";
-        NonHeroicdataID=string.sub(xdataID, 1, string.len(xdataID)-6);
-        if dataSource[HeroicdataID] then
-            AtlasLootItemsFrame_Heroic:Show();
-            AtlasLootItemsFrame_Heroic:SetChecked(false);
-            AtlasLootItemsFrame_Heroic:Enable();
-        else
-            if HeroicCheck=="HEROIC" then
-                AtlasLootItemsFrame_Heroic:Show();
-                AtlasLootItemsFrame_Heroic:SetChecked(true);
-                if dataSource[NonHeroicdataID] then
-                    AtlasLootItemsFrame_Heroic:Enable();
-                else
-                    AtlasLootItemsFrame_Heroic:Disable();
-                end 
-            end
-        end
-        BigraidCheck=string.sub(xdataID, string.len(xdataID)-4, string.len(xdataID));
-        BigraiddataID=xdataID.."25Man";
-        if BigraidCheck=="25Man" then
-            AtlasLoot10Man25ManSwitch:SetText(AL["Show 10 Man Loot"]);
-            AtlasLoot10Man25ManSwitch.lootpage = string.sub(xdataID, 1, string.len(xdataID)-5);
-            AtlasLoot10Man25ManSwitch:Show();
-        else
-            if dataSource[BigraiddataID] then
-                AtlasLoot10Man25ManSwitch:SetText(AL["Show 25 Man Loot"]);
-                AtlasLoot10Man25ManSwitch.lootpage = BigraiddataID;
-                AtlasLoot10Man25ManSwitch:Show();
-            end
-        end
+		NormalID, HeroicID, Normal25ID, Heroic25ID = AtlasLoot_GetLoottableHeroic(AtlasLootItemsFrame.refreshOri[1])
+		
+		if AtlasLoot.db.profile.Bigraid and Normal25ID and NormalID then
+			AtlasLoot10Man25ManSwitch:SetText(AL["Show 10 Man Loot"])
+			AtlasLoot10Man25ManSwitch.lootpage = NormalID
+			AtlasLoot10Man25ManSwitch:Show()
+		elseif AtlasLoot.db.profile.BigraidHeroic and Heroic25ID and HeroicID then
+			AtlasLoot10Man25ManSwitch:SetText(AL["Show 10 Man Loot"])
+			AtlasLoot10Man25ManSwitch.lootpage = HeroicID
+			AtlasLoot10Man25ManSwitch:Show()
+		elseif AtlasLoot.db.profile.HeroicMode and HeroicID and Heroic25ID then
+			AtlasLoot10Man25ManSwitch:SetText(AL["Show 25 Man Loot"]);
+			AtlasLoot10Man25ManSwitch.lootpage = Heroic25ID
+			AtlasLoot10Man25ManSwitch:Show();
+		elseif not AtlasLoot.db.profile.Bigraid and NormalID and Normal25ID then
+			AtlasLoot10Man25ManSwitch:SetText(AL["Show 25 Man Loot"]);
+			AtlasLoot10Man25ManSwitch.lootpage = Normal25ID;
+			AtlasLoot10Man25ManSwitch:Show();
+		end
+		-- Heroic check
+		if AtlasLoot.db.profile.Bigraid and Normal25ID and Heroic25ID then
+			AtlasLootItemsFrame_Heroic:Show()
+			AtlasLootItemsFrame_Heroic:SetChecked(false)
+			AtlasLootItemsFrame_Heroic:Enable()
+		elseif AtlasLoot.db.profile.BigraidHeroic and Heroic25ID then
+			AtlasLootItemsFrame_Heroic:Show()
+			AtlasLootItemsFrame_Heroic:SetChecked(true)
+			if Normal25ID then
+				AtlasLootItemsFrame_Heroic:Enable()
+			else
+				AtlasLootItemsFrame_Heroic:Disable()
+			end
+		elseif AtlasLoot.db.profile.HeroicMode and HeroicID then
+			AtlasLootItemsFrame_Heroic:Show()
+			AtlasLootItemsFrame_Heroic:SetChecked(true)
+			AtlasLootItemsFrame_Heroic:Enable()
+			if NormalID then
+				AtlasLootItemsFrame_Heroic:Enable()
+			else
+				AtlasLootItemsFrame_Heroic:Disable()
+			end
+		elseif NormalID and HeroicID then
+			AtlasLootItemsFrame_Heroic:Show()
+			AtlasLootItemsFrame_Heroic:SetChecked(false)
+			AtlasLootItemsFrame_Heroic:Enable()
+		end
         
 		--Hide navigation buttons by default, only show what we need
 		getglobal("AtlasLootItemsFrame_BACK"):Hide();
@@ -1045,18 +1127,33 @@ AtlasLoot_HeroicModeToggle:
 Switches between the heroic and normal versions of a loot page
 ]]
 function AtlasLoot_HeroicModeToggle()
-	local Heroic = AtlasLootItemsFrame.refresh[1].."HEROIC";
-	local dataID = AtlasLootItemsFrame.refresh[1];
-	local HeroicCheck=string.sub(dataID, string.len(dataID)-5, string.len(dataID));
-	local Lootpage;
-	if HeroicCheck=="HEROIC" then
-		Lootpage=string.sub(dataID, 1, string.len(dataID)-6);
-		AtlasLoot.db.profile.HeroicMode = false;
+	local Heroic
+	local dataID
+    if ATLASLOOT_FILTER_ENABLE then
+        dataID = AtlasLootItemsFrame.refreshOri[1]
+    else
+        dataID = AtlasLootItemsFrame.refresh[1]
+    end
+	local NormalID, HeroicID, Normal25ID, Heroic25ID = AtlasLoot_GetLoottableHeroic(dataID)
+
+	if AtlasLoot.db.profile.Bigraid and Heroic25ID then
+		AtlasLoot.db.profile.Bigraid = false
+		AtlasLoot.db.profile.BigraidHeroic = true
+		dataID = Heroic25ID
+	elseif AtlasLoot.db.profile.HeroicMode and NormalID then
+		AtlasLoot.db.profile.HeroicMode = false
+		dataID = NormalID
+	elseif AtlasLoot.db.profile.BigraidHeroic and Normal25ID then
+		AtlasLoot.db.profile.Bigraid = true
+		AtlasLoot.db.profile.BigraidHeroic = false
+		dataID = Normal25ID
 	else
-		Lootpage=Heroic;
-		AtlasLoot.db.profile.HeroicMode = true;
+		AtlasLoot.db.profile.HeroicMode = true
+		AtlasLoot.db.profile.Bigraid = false
+		AtlasLoot.db.profile.BigraidHeroic = false
+		dataID = HeroicID
 	end
-	AtlasLoot_ShowItemsFrame(Lootpage, AtlasLootItemsFrame.refresh[2], "", AtlasLootItemsFrame.refresh[4]);
+	AtlasLoot_ShowItemsFrame(dataID, AtlasLootItemsFrame.refresh[2], "", AtlasLootItemsFrame.refresh[4]);
 end
 
 --[[
@@ -1065,11 +1162,27 @@ Switches between the heroic and normal versions of a loot page
 ]]
 function AtlasLoot_10Man25ManToggle()
 	local Lootpage = AtlasLoot10Man25ManSwitch.lootpage;
-    if AtlasLoot.db.profile.Bigraid == true then
-        AtlasLoot.db.profile.Bigraid = false
-    else
-        AtlasLoot.db.profile.Bigraid = true
+    --Deal with loot filter issue
+    if ATLASLOOT_FILTER_ENABLE == true then
+        Lootpage = AtlasLootItemsFrame.refreshOri[1];
     end
+	
+	local NormalID, HeroicID, Normal25ID, Heroic25ID = AtlasLoot_GetLoottableHeroic(Lootpage)
+    if AtlasLoot.db.profile.Bigraid and Normal25ID then
+        AtlasLoot.db.profile.Bigraid = false
+	elseif AtlasLoot.db.profile.BigraidHeroic and Heroic25ID then
+		AtlasLoot.db.profile.BigraidHeroic = false
+		AtlasLoot.db.profile.HeroicMode = true
+	elseif AtlasLoot.db.profile.HeroicMode and HeroicID then
+		AtlasLoot.db.profile.HeroicMode = false
+		AtlasLoot.db.profile.BigraidHeroic = true
+	else
+		AtlasLoot.db.profile.Bigraid = true
+		AtlasLoot.db.profile.BigraidHeroic = false
+		AtlasLoot.db.profile.HeroicMode = false
+	end
+	
+	
     if AtlasLootItemsFrame.refresh then
 	    AtlasLoot_ShowItemsFrame(Lootpage, AtlasLootItemsFrame.refresh[2], "", AtlasLootItemsFrame.refresh[4]);
     elseif AtlasLootDefaultFrame:IsVisible() then

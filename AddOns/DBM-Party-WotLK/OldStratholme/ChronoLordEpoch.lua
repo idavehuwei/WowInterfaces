@@ -1,7 +1,7 @@
-local mod = DBM:NewMod("ChronoLordEpoch", "DBM-Party-WotLK", 3)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("ChronoLordEpoch", "DBM-Party-WotLK", 3)
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 598 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2509 $"):sub(12, -3))
 mod:SetCreatureID(26532)
 mod:SetZone()
 
@@ -9,27 +9,31 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED"
 )
 
-local warningTime 	= mod:NewAnnounce("WarningTime", 3, 58848)
-local warningCurse 	= mod:NewAnnounce("WarningCurse", 2, 52772)
-local timerCurse	= mod:NewTimer(10, "TimerCurse", 52772)
-local timerTimeCD	= mod:NewTimer(25, "TimerTimeCD", 58848)
+local warningTime 	= mod:NewSpellAnnounce(58848, 3)
+local warningCurse 	= mod:NewTargetAnnounce(52772, 2)
+local timerCurse	= mod:NewTargetTimer(10, 52772)
+local timerTimeCD	= mod:NewCDTimer(25, 58848)
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 58848 then
-		warningTime:Show(args.spellName)
-		timerTimeCD:Start(args.spellName)
-	elseif args.spellId == 52766 then
-		warningTime:Show(args.spellName)
-		timerTimeCD:Start(args.spellName)
+	if args:IsSpellID(58848, 52766)  then
+		warningTime:Show()
+		timerTimeCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 52772 then
-		warningCurse:Show(args.spellName, args.destName)
-		timerCurse:Start(args.spellName, args.destName)
+	if args:IsSpellID(52772) then
+		warningCurse:Show(args.destName)
+		timerCurse:Start(args.destName)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(52772) then
+		timerCurse:Cancel(args.destName)
 	end
 end

@@ -1,4 +1,4 @@
-local L = LibStub("AceLocale-3.0"):NewLocale("Mendeleev", "enUS", true)
+﻿local L = LibStub("AceLocale-3.0"):NewLocale("Mendeleev", "enUS", true)
 
 L["Toggle sets."] = true
 L["Toggle sets from showing information in the tooltip."] = true
@@ -85,6 +85,10 @@ L["Crusade Card"] = true
 L["Vengeance Card"] = true
 L["Madness Card"] = true
 L["Wrath Card"] = true
+L["Illusion Card"] = true
+L["Berserker! Card"] = true
+L["Greatness Card"] = true
+L["Death Card"] = true
 
 -- Sources
 L["Drop"] = true
@@ -96,6 +100,9 @@ L["UBRS"] = true
 L["LBRS"] = true
 	
 L["Heroic"] = true
+	
+L["(10 Man)"] = true
+L["(25 Man)"] = true
 	
 -- Tier Sets
 L["Tier 1 Set"] = true
@@ -109,6 +116,10 @@ L["Tier 7.10 Set"] = true
 L["Tier 7.25 Set"] = true
 L["Tier 8.10 Set"] = true
 L["Tier 8.25 Set"] = true
+L["Tier 9.10 Set"] = true
+L["Tier 9.25 Set"] = true
+L["Tier 10.10 Set"] = true
+L["Tier 10.25 Set"] = true
 	
 -- Arena Sets
 L["Arena - Season 1 Set"] = true
@@ -118,6 +129,9 @@ L["Arena - Season 4 Set"] = true
 L["Arena - Season 5 Tier 1 Set"] = true
 L["Arena - Season 5 Tier 2 Set"] = true
 L["Arena - Season 5 Tier 3 Set"] = true
+L["Arena - Season 6 Set"] = true
+L["Arena - Season 7 Set"] = true
+L["Arena - Season 8 Set"] = true
 	
 L["%d%% alc/vol (%d proof)"] = true
 L[" (%d tickets)"] = true
@@ -157,6 +171,7 @@ L["Reagent"] = true
 L["Tradeskill"] = true
 	
 L["Trash Mobs"] = true
+L["Gunship Battle"] = true
 
 -- Timed Reward Chest
 L["Timed Reward Chest1"] = true

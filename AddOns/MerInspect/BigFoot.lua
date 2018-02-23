@@ -1,3 +1,4 @@
+if GetLocale()~='zhCN' then return end
 --==============================================================================
 -- BigFoot.lua ver 1.00
 -- 日期：2008-2-1
@@ -30,58 +31,37 @@ M.shownlist = {
 		cat: 类别
 	]]
 	-- 基础属性	
-	{ effect = "Strength",	color = 1, pt_api = "UnitStat", pt_args = {"player", 1}, pt_unit = "player", cat = "Attribute" },
-	{ effect = "Agility",	color = 1, pt_api = "UnitStat", pt_args = {"player", 2}, pt_unit = "player", cat = "Attribute" },
-	{ effect = "Stamina",	color = 1, pt_api = "UnitStat", pt_args = {"player", 3}, pt_unit = "player", cat = "Attribute" },
-	{ effect = "Intellect",	color = 1, pt_api = "UnitStat", pt_args = {"player", 4}, pt_unit = "player", cat = "Attribute" },
-	{ effect = "Spirit",	color = 1, pt_api = "UnitStat", pt_args = {"player", 5}, pt_unit = "player", cat = "Attribute" },
-	{ effect = "Armor",		color = 1, pt_api = "UnitArmor", pt_args = {"player"}, pt_unit = "player", cat = "Attribute" },
-	{ effect = "Resilience",color = 1, cat = "Attribute" },
-	{ effect = "ArmorReduce",color = 3, cat = "Attribute", precent = true},
-	-- 抗性
-	{ effect = "Resistance_Arcane",	color = 6, cat = "Resistance" },
-	{ effect = "Resistance_Fire",	color = 7, cat = "Resistance" },
-	{ effect = "Resistance_Nature", color = 10, cat = "Resistance" },
-	{ effect = "Resistance_Frost",	color = 8, cat = "Resistance" },
-	{ effect = "Resistance_Shadow",	color = 11, cat = "Resistance" },
-	
-	{ effect = "Resistance_Holy", 	color = 9, cat = "Resistance" },
-	{ effect = "Resistance_Coma", 	color = 3, cat = "Resistance" },	
-	{ effect = "ReduceResistance",	format = "-%d",	color = 1, cat = "Resistance" },--	
-	-- 近战&远程
-	{ effect = "defense",				color = 3, cat = "Attack" },
-	{ effect = "Dodge",				color = 3, cat = "Attack", precent = true },	
-	{ effect = "Parry",				color = 3, cat = "Attack", precent = true },
-	{ effect = "Block",				color = 3, cat = "Attack", precent = true },
-	{ effect = "HitRating",			color = 3, cat = "Attack", precent = true },
-	{ effect = "AttackDamage",		color = 3, cat = "Attack" },
-	{ effect = "AttackSpeed",		color = 3, cat = "Attack" },
-	{ effect = "AttackPower",		color = 3, cat = "Attack" },
-	{ effect = "AttackCrit",		color = 3, cat = "Attack", precent = true },
-	{ effect = "HasteMelee",		color = 3, cat = "Attack", precent = true },
-	{ effect = "RangedAttackDamage",color = 4, cat = "Attack" },
-	{ effect = "RangedAttackSpeed", color = 4, cat = "Attack" },
-	{ effect = "RangedAttackPower", color = 4, cat = "Attack" },
-	{ effect = "RangedAttackCrit",	color = 4, cat = "Attack", precent = true },
-	{ effect = "HasteRanged",		color = 4, cat = "Attack", precent = true },
+	{ effect = "Strength",	color = 1, cat = "Attribute", effectName="STR" },
+	{ effect = "Agility",	color = 1, cat = "Attribute", effectName="AGI" },
+	{ effect = "Stamina",	color = 1, cat = "Attribute", effectName="STA" },
+	{ effect = "Intellect",	color = 1, cat = "Attribute", effectName="INT" },
+	{ effect = "Spirit",	color = 1, cat = "Attribute", effectName="SPI" },
+	{ effect = "Armor",		color = 1, cat = "Attribute", effectName="ARMOR",effectExtra="ARMOR_BONUS" },
+	{ effect = "Resilience",color = 1,cat = "Attribute", effectName="RESILIENCE_RATING"},
+
+--防御
+	{ effect = "defense",			color = 4, cat = "Defense",effectName="DEFENSE_RATING" },
+	{ effect = "Dodge",				color = 4, cat = "Defense", effectName="DODGE_RATING", percentID = CR_DODGE},	
+	{ effect = "Parry",				color = 4, cat = "Defense", effectName="PARRY_RATING", percentID = CR_PARRY},	
+	{ effect = "Block",				color = 4, cat = "Defense", effectName="BLOCK_VALUE", percentID = CR_BLOCK},
+	{ effect = "HP",				color = 4, cat = "Defense", pt_api = "UnitHealthMax" },--
+
+-- 近战&远程
+	{ effect = "HitRating",			color = 3, cat = "Attack",effectName="MELEE_HIT_RATING",percentID = CR_HIT_MELEE},
+	{ effect = "AttackPower",		color = 3, cat = "Attack",effectName="AP" },
+	{ effect = "AttackCrit",		color = 3, cat = "Attack",effectName="SPELL_CRIT_RATING",percentID = CR_CRIT_MELEE},
+	{ effect = "Expertise",			color = 3, cat = "Attack",effectName="EXPERTISE_RATING",percentID = CR_EXPERTISE},
+	{ effect = "RangedAttackCrit",	color = 3, cat = "Attack", effectName="SPELL_CRIT_RATING",effectExtra="RANGED_CRIT_RATING",percentID = CR_CRIT_RANGED},
+	{ effect = "HasteRanged",		color = 3, cat = "Attack", effectName="MELEE_HASTE_RATING",percentID = CR_HASTE_MELEE},
+	{ effect = "ArmorPeneration",	color = 3, cat = "Attack", effectName="ARMOR_PENETRATION_RATING",percentID = CR_ARMOR_PENETRATION},
 	-- 法术		
-	{ effect = "SpellPower", 		color = 5,	cat = "Spell" },
-	{ effect = "Healing", 			color = 5,	cat = "Spell" },
-	{ effect = "SpellHitRating",	color = 5,	cat = "Spell", precent = true },
-	{ effect = "SpellCrit", 		color = 5,	cat = "Spell", precent = true },	
-	{ effect = "SpellStrike", 		color = 5,	cat = "Spell" },
-	{ effect = "HasteSpell", 		color = 5,	cat = "Spell", precent = true },
-	{ effect = "Damage_Arcane&SpellDamage",	color = 6,	cat = "Spell" },
-	{ effect = "Damage_Fire&SpellDamage",	color = 7,	cat = "Spell" },
-	{ effect = "Damage_Frost&SpellDamage",	color = 8,	cat = "Spell" },
-	{ effect = "Damage_Holy&SpellDamage",	color = 9,	cat = "Spell" },
-	{ effect = "Damage_Nature&SpellDamage",	color = 10,	cat = "Spell" },
-	{ effect = "Damage_Shadow&SpellDamage",	color = 11,	cat = "Spell" },
+	{ effect = "SpellPower", 		color = 5,	cat = "Spell",effectName="SPELL_DMG" },
+	{ effect = "SpellHitRating",	color = 5,	cat = "Spell", effectName="SPELL_HIT_RATING",percentID = CR_HIT_SPELL},
+	{ effect = "SpellCrit", 		color = 5,	cat = "Spell", effectName="SPELL_CRIT_RATING",percentID = CR_CRIT_SPELL},
+	{ effect = "HasteSpell", 		color = 5,	cat = "Spell", effectName= "SPELL_HASTE_RATING",percentID = CR_HASTE_SPELL},
+	{ effect = "ManaRestore",	format = "%s MP/5s", color = 5, cat = "Spell", effectName="MANA_REG" },	
+	{ effect = "Mana",				color = 5},--
 	-- 生命&法力
-	{ effect = "HP",				color = 12, cat = "Health" },--
-	{ effect = "Mana",				color = 13, cat = "Health" },--
-	{ effect = "HealthRestore",	format = "%s HP/5s", color = 12, cat = "Health" },
-	{ effect = "ManaRestore",	format = "%s MP/5s", color = 13, cat = "Health" },
 };
 -- Create Frames
 function M:CreateCompareFrame(name)
@@ -97,7 +77,7 @@ function M:CreateCompareFrame(name)
 	f.title = f:CreateFontString(name .. "Title", "ARTWORK", "GameTooltipHeaderText");
 	f.title:SetPoint("TOPLEFT", name, "TOPLEFT", 10, -10);
 	f.text = f:CreateFontString(name .. "Text", "ARTWORK", "GameTooltipText");
-	f.text:SetPoint("BOTTOMLEFT", name, "BOTTOMLEFT", 10, 10);
+	f.text:SetPoint("TOPLEFT", f.title, "BOTTOMLEFT", 0, 5);
 	f.close = CreateFrame("Button", name .. "Close", getglobal(name), "UIPanelCloseButton");
 	f.close:SetPoint("TOPRIGHT", name, "TOPRIGHT", -1, -1);
 	f:SetScript("OnMouseDown", function(self)
@@ -118,10 +98,10 @@ function M:CreateCompareFrame(name)
 	return f;
 end
 
-M.SC = M:CreateCompareFrame("MerInspectSlefFrame");
+M.SC = M:CreateCompareFrame("MerInspectSelfFrame");
 M.TC = M:CreateCompareFrame("MerInspectTargetFrame");
 
-function M:GetTooltipText(unit, talent)
+function M:GetSummaryText(unit, talent)
 	if (not UnitExists(unit) or not UnitIsPlayer(unit)) then
 		return;
 	end
@@ -130,21 +110,22 @@ function M:GetTooltipText(unit, talent)
 	local level = UnitLevel(unit);
 	local class = strupper(select(2, UnitClass(unit)));
 	local race = strupper(select(2, UnitRace(unit)));
-	local prefix = (level == 70) and "" or "+";
+	local prefix = (level == 80) and "" or "+";
 
 	self:DoQueueScan(unit);
+	--terry@bf 去掉这些，只留下装备加成 
 	-- 在可观察天赋时需要累计上天赋加成
-	if (talent) then
+--	if (talent) then
 --		self:ScanUnitTalent(unit, class, race, level, (unit ~= "player"));
-		self:AddPercentEffect();
-	end
-	self:StatLogic(level, class, race);
+--		self:AddPercentEffect();
+--	end
+--	self:StatLogic(level, class, race);
 	local relstr = "";
 	for k, v in ipairs(self.shownlist) do
 		local point = 0;
 		local base = 0;
 
-		if (self.effect[v.effect] and ((v.pt_api and v.pt_unit == unit) or self.effect[v.effect] ~= 0)) then
+		if (self.effect[v.effectName] and self.effect[v.effectName] ~= 0 or v.pt_api) then
 			if (not lastcat or lastcat ~= v.cat) then
 				lastcat = v.cat;
 				if (relstr == "") then
@@ -154,17 +135,26 @@ function M:GetTooltipText(unit, talent)
 				end
 			end			
 
-			if (self.effect[v.effect] ~= 0) then
-				value = v.precent and format("%0.2f%%", self:GetEffect(v.effect)) or self:GetEffect(v.effect);
+			local totalEffect = 0
+			totalEffect = self:GetAllEffects(v)
+			if totalEffect ~= 0 then
+				value =  v.percentID
+					and	(format("%d(+%0.2f%%)", 
+							totalEffect,
+							self.statLogic:GetEffectFromRating(
+								totalEffect,
+								v.percentID,
+								level
+							)
+						)
+					)
+					or totalEffect;
 				value = v.format and format(v.format, value) or value;
-			else
-				value = 0;
 			end
-
-			if (v.pt_api and (v.pt_unit == unit or v.pt_unit == nil)) then
-				point = getglobal(v.pt_api)(unpack(v.pt_args));
+			if v.pt_api then
+				value = getglobal(v.pt_api)(unit);
 			end
-
+--[[
 			if (point ~= 0 and point ~= nil) then
 				if (value == nil) then
 					base = point;
@@ -174,7 +164,7 @@ function M:GetTooltipText(unit, talent)
 			else
 				base = 0;
 			end
-
+]]
 			if (base == 0) then
 				if (value ~= 0 and value ~= nil) then
 					relstr = relstr .. "\n" .. MerInspect_ColorList[v.color] .. self.loc[v.effect] .. "|r" .. prefix .. value;
@@ -185,11 +175,6 @@ function M:GetTooltipText(unit, talent)
 				else
 					relstr = relstr .. "\n" .. MerInspect_ColorList[v.color] .. self.loc[v.effect] .. "|r" .. base;
 				end
-			end
-		else
-			key, value, base = self:JoinEffect(strsplit("&", v.effect));
-			if (key and self.effect[key] and value and value ~= 0 and value ~= base) then
-				relstr = relstr .. "\n" .. MerInspect_ColorList[v.color] .. self.loc[key] .. "|r" .. prefix .. value;
 			end
 		end
 
@@ -209,17 +194,24 @@ function M:GetTooltipText(unit, talent)
 	return relstr;
 end
 
+local function setFramePos(frame, target,xoff,yoff)
+	frame:ClearAllPoints();
+	frame:SetPoint("TOPLEFT", target, "TOPRIGHT", xoff, yoff);
+	frame:Show();
+end
+
 local function showFrame(frame, unit, target, title, text, xoff, yoff)
-	frame.title:SetText(title);
+	local height,width
+	frame.title:SetText(title .."\n"..M.loc.TitleSuffix);
 	frame.text:SetText(text);
 		
-	height = frame.text:GetHeight();
+	height = frame.text:GetHeight()+frame.title:GetHeight()+30
 	width = frame.text:GetWidth();
 	if(width < frame.title:GetWidth()) then
 		width = frame.title:GetWidth();
 	end
 
-	frame:SetHeight(height+30);
+	frame:SetHeight(height);
 	frame:SetWidth(width+30);
 	frame:ClearAllPoints();
 	frame:SetPoint("TOPLEFT", target, "TOPRIGHT", xoff, yoff);
@@ -229,28 +221,57 @@ end
 function M:OnShowInspectFrame(talent)
 	if(self.Config.MerInspectEnable and InspectFrame.unit and UnitExists(InspectFrame.unit) and UnitIsPlayer(InspectFrame.unit)) then
 		title = UnitName("player");
-		text = self:GetTooltipText("player", talent);
+		text = self:GetSummaryText("player", talent);
 		if (title and text) then
 			showFrame(self.SC, "player", self.TC, title, text, 0, 0);
 		end
 		
 		local title = UnitName(InspectFrame.unit);
-		local text = self:GetTooltipText(InspectFrame.unit, talent);
+		local text = self:GetSummaryText(InspectFrame.unit, talent);
 		if (title and text) then
-			showFrame(self.TC, InspectFrame.unit, InspectFrame, title, text, -30, -12);
+			if CharacterFrame:IsShown() then
+				showFrame(self.TC, InspectFrame.unit, PaperDollFrame, title, text, -30, -12);
+			else
+				showFrame(self.TC, InspectFrame.unit, InspectFrame, title, text, -30, -12);
+			end
 		end
 
-		M:DisplayInvenrotyInfo(InspectFrame.unit or "target");
+		M:DisplayInventoryInfo(InspectFrame.unit or "target");
 	end
+
 end
 
 function M:OnShowPaperFrame(talent)
 	if (self.Config.MerInspectEnable) then
 		local title = UnitName("player");
-		local text = self:GetTooltipText("player", talent);		
+		local text = self:GetSummaryText("player", talent);		
 		if (title and text) then			
-			showFrame(self.SC, "player", PaperDollFrame, title, text, -30, -12);
+			if self.TC:IsShown() then
+				setFramePos(self.TC,PaperDollFrame,-30,-12)
+				showFrame(self.SC, "player", self.TC, title, text, 0,0);
+			else
+				showFrame(self.SC, "player", PaperDollFrame, title, text, -30,-12);
+			end
 		end
+	end
+end
+
+function M:OnHideInspectFrame()
+	self.TC:Hide()
+	if CharacterFrame:IsShown() then
+		setFramePos(self.SC,PaperDollFrame,-30,-12)
+	else
+		self.SC:Hide()
+	end
+end
+
+function M:OnHidePaperFrame()
+	if InspectFrame:IsShown() then
+		setFramePos(self.TC,InspectFrame,-30,-12)
+		setFramePos(self.SC,self.TC,0,0)
+	else
+		self.TC:Hide()
+		self.SC:Hide()
 	end
 end
 -----------------------
@@ -285,10 +306,11 @@ local ITEM_COLOR = {
 	[4] = { r = 0.5, g = 0, b = 1.0, a = 0.8},
 	[5] = { r = 1.0, g = 0.5, b = 0, a = 0.8},
 	[6] = { r = 1.0, g = 0, b = 0, a = 0.8},
+	[7] = { r = 1, g = 1, b = 0, a = 0.6 },
 	[9] = { r = 1, g = 1, b = 0, a = 0.6 },
 };
 
-function M:DisplayInvenrotyInfo(unit)
+function M:DisplayInventoryInfo(unit)
 	if (not self.Config.MerInspectEnable) then return end
 
 	local unit = unit or "player";
@@ -372,15 +394,19 @@ M:Init{
 		end
 		M.moneyFrame = CreateFrame("Frame", "MerRepairMoneyFrame", PaperDollFrame, "SmallMoneyFrameTemplate");
 		M.moneyFrame:SetPoint("BOTTOMLEFT", PlayerStatFrameLeftDropDown, "TOPLEFT", 24, 4);
-		M.moneyFrame:SetScript("OnLoad", function(self)
-			MoneyFrame_SetType("STATIC", self);		
+
+		M.moneyFrame:SetScript("OnShow", function(self)
+			MoneyFrame_SetType(self,"STATIC");		
 		end);					
 		M.moneyFrame.title = M.moneyFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal");
 		M.moneyFrame.title:SetPoint("BOTTOMLEFT", M.moneyFrame, "TOPLEFT", -2, 2);
 		M.moneyFrame.title:SetText(M.loc["Repair Cost"]);
-		__Secure:HookScript(PaperDollFrame,"OnShow", function()
+		__Secure:HookScript(CharacterFrame,"OnShow", function()
 			M:OnShowPaperFrame(true);
-			M:DisplayInvenrotyInfo();
+			M:DisplayInventoryInfo();
+		end);
+		__Secure:HookScript(CharacterFrame,"OnHide", function()
+			 M:OnHidePaperFrame()
 		end);
 		hooksecurefunc("SetItemButtonCount",function(button,...)
 			if not button then return end
@@ -389,8 +415,9 @@ M:Init{
 				getglobal(button:GetName().."Count"):Show()
 			end
 		end);
-		__Secure:HookScript(PaperDollFrame,"OnHide", function() M.SC:Hide() end);
-		__Secure:HookScript(InspectFrame,"OnHide", function() M.SC:Hide() M.TC:Hide() end);
+		__Secure:HookScript(InspectFrame,"OnHide", function() 
+			M:OnHideInspectFrame()
+		end);
 		hooksecurefunc("ClearInspectPlayer", function () M.SC:Hide() M.TC:Hide() end);
 	end
 };

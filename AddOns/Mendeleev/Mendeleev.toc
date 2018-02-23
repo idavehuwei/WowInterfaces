@@ -1,8 +1,5 @@
-﻿## Interface: 30100
-## X-BigfootType: 1
-## X-BigfootDesc: 显示物品的掉落出处、用途和专业技能材料信息。
+﻿## Interface: 30300
 ## Title: Mendeleev
-## Title-zhCN: [物品] 物品信息 Mendeleev
 ## Version: 3.0
 ## Notes: Adds various information based on PeriodicTable to item tooltips.
 ## Notes-deDE: Fügt Informationen basiernd auf PeriodicTable zu Gegenstands-Tooltips hinzu.
@@ -14,18 +11,21 @@
 ## Notes-zhTW: 在提示中顯示物品的詳細資訊，包括掉落位置、聲望要求、用途等。基於 PeriodicTable。
 ## Author: Rabbit
 ## X-Credits: MoonWolf for the orginal PT1-based version, Kemayo, Elkano, Nymbia (PT3).
-## Dependencies: !!Corelibs
 ## OptionalDeps: Ace3, LibBabble-Boss-3.0, LibBabble-Zone-3.0, LibBabble-Class-3.0, LibPeriodicTable-3.1, AtlasLoot
 ## X-Category: Inventory
 ## SavedVariables: MendeleevDB
 ## X-Email: rabbit.magtheridon@gmail.com
-## X-Curse-Packaged-Version: r261
+## X-Curse-Packaged-Version: r294
 ## X-Curse-Project-Name: Mendeleev
 ## X-Curse-Project-ID: mendeleev
 ## X-Curse-Repository-ID: wow/mendeleev/mainline
 
-## X-Revision: 261
-## X-Date: 2009-05-15T17:37:49Z
+## X-Revision: 294
+## X-Date: 2010-03-10T20:15:13Z
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
 
 locales\enUS.lua
 locales\deDE.lua

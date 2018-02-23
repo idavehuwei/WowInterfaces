@@ -1,8 +1,7 @@
 --[[
 
 	Atlas, a World of Warcraft instance map browser
-	Copyright 2005 - 2008 Dan Gilbert
-	Email me at loglow@gmail.com
+	Copyright 2005-2010 Dan Gilbert <dan.b.gilbert@gmail.com>
 
 	This file is part of Atlas.
 
@@ -21,6 +20,9 @@
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 --]]
+
+local BabbleSubZone = Atlas_GetLocaleLibBabble("LibBabble-SubZone-3.0");
+local BabbleZone = Atlas_GetLocaleLibBabble("LibBabble-Zone-3.0");
 
 local BLUE = "|cff6666ff";
 local GREY = "|cff999999";
@@ -44,7 +46,7 @@ local myCategory = AtlasORLocale["Outdoor Raid Encounters"];
 local myData = {
 	Azuregos = {
 		ZoneName = { AtlasORLocale["Azuregos"], NPC, 6109 };
-		Location = { AtlasORLocale["Azshara"], ZONE, 16 };
+		Location = { BabbleZone["Azshara"], ZONE, 16 };
 		LevelRange = "60+";
 		MinLevel = "--";
 		PlayerLimit = "40";
@@ -56,14 +58,14 @@ local myData = {
 		LevelRange = "60+";
 		MinLevel = "--";
 		PlayerLimit = "40";
-		{ GREY.."1) "..AtlasORLocale["Twilight Grove"]..", ".._RED..AtlasORLocale["Duskwood"], ZONE, 10 };
-		{ GREY.."2) "..AtlasORLocale["Seradane"]..", ".._RED..AtlasORLocale["The Hinterlands"], ZONE, 47 };
+		{ GREY.."1) "..BabbleSubZone["Twilight Grove"]..", ".._RED..BabbleZone["Duskwood"], ZONE, 10 };
+		{ GREY.."2) "..BabbleSubZone["Seradane"]..", ".._RED..BabbleZone["The Hinterlands"], ZONE, 47 };
 		{ GREY..INDENT..AtlasORLocale["Rothos"], NPC, 5718 };
 		{ GREY..INDENT..AtlasORLocale["Dreamtracker"], NPC, 12496 };
-		{ GREY.."3) "..AtlasORLocale["Dream Bough"]..", ".._RED..AtlasORLocale["Feralas"], ZONE, 357 };
+		{ GREY.."3) "..BabbleSubZone["Dream Bough"]..", ".._RED..BabbleZone["Feralas"], ZONE, 357 };
 		{ GREY..INDENT..AtlasORLocale["Lethlas"], NPC, 5312 };
 		{ GREY..INDENT..AtlasORLocale["Dreamroarer"], NPC, 12497 };
-		{ GREY.."4) "..AtlasORLocale["Bough Shadow"]..", ".._RED..AtlasORLocale["Ashenvale"], ZONE, 331 };
+		{ GREY.."4) "..BabbleSubZone["Bough Shadow"]..", ".._RED..BabbleZone["Ashenvale"], ZONE, 331 };
 		{ GREY..INDENT..AtlasORLocale["Phantim"], NPC, 5314 };
 		{ GREY..INDENT..AtlasORLocale["Dreamstalker"], NPC, 12498 };
 		{ "" };
@@ -73,42 +75,33 @@ local myData = {
 		{ GREY..INDENT..AtlasORLocale["Taerar"], NPC, 14890 };
 		{ GREY..INDENT..AtlasORLocale["Ysondre"], NPC, 14887 };
 	};
-	HighlordKruul = {
-		ZoneName = { AtlasORLocale["Highlord Kruul"], NPC, 18338 };
-		Location = { AtlasORLocale["Blasted Lands"], ZONE, 4 };
-		LevelRange = "60+";
-		MinLevel = "--";
-		PlayerLimit = "40";
-		{ GREY.."1) "..AtlasORLocale["Highlord Kruul"], NPC, 18338 };
-		{ GREY.."2) "..AtlasORLocale["Nethergarde Keep"] };
-	};
 	DoomLordKazzak = {
 		ZoneName = { AtlasORLocale["Doom Lord Kazzak"], NPC, 18728 };
-		Location = { AtlasORLocale["Hellfire Peninsula"], ZONE, 3483 };
+		Location = { BabbleZone["Hellfire Peninsula"], ZONE, 3483 };
 		LevelRange = "70+";
 		MinLevel = "--";
 		PlayerLimit = "40";
 		{ GREY.."1) "..AtlasORLocale["Doom Lord Kazzak"], NPC, 18728 };
-		{ GREY.."2) "..AtlasORLocale["Invasion Point: Annihilator"] };
-		{ GREY.."3) "..AtlasORLocale["Forge Camp: Rage"] };
-		{ GREY.."4) "..AtlasORLocale["Forge Camp: Mageddon"] };
-		{ GREY.."5) "..AtlasORLocale["Thrallmar"] };
+		{ GREY.."2) "..BabbleSubZone["Invasion Point: Annihilator"] };
+		{ GREY.."3) "..BabbleSubZone["Forge Camp: Rage"] };
+		{ GREY.."4) "..BabbleSubZone["Forge Camp: Mageddon"] };
+		{ GREY.."5) "..BabbleSubZone["Thrallmar"] };
 	};
 	Doomwalker = {
 		ZoneName = { AtlasORLocale["Doomwalker"], NPC, 17711 };
-		Location = { AtlasORLocale["Shadowmoon Valley"], ZONE, 3520 };
+		Location = { BabbleZone["Shadowmoon Valley"], ZONE, 3520 };
 		LevelRange = "70+";
 		MinLevel = "--";
 		PlayerLimit = "40";
 		{ GREY.."1) "..AtlasORLocale["Doomwalker"], NPC, 17711 };
 	};
 	Skettis = {
-		ZoneName = { AtlasORLocale["Skettis"] };
-		Location = { AtlasORLocale["Blackwind Valley"]..", "..AtlasORLocale["Terokkar Forest"], ZONE, 3519 };
+		ZoneName = { BabbleSubZone["Skettis"] };
+		Location = { BabbleSubZone["Blackwind Valley"]..", "..BabbleZone["Terokkar Forest"], ZONE, 3519 };
 		LevelRange = "70+";
 		MinLevel = "--";
 		PlayerLimit = "40";
-		{ GREY.."1) "..AtlasORLocale["Blackwind Landing"] };
+		{ GREY.."1) "..BabbleSubZone["Blackwind Landing"] };
 		{ GREY..INDENT..AtlasORLocale["Sky Commander Adaris"], NPC, 23038 };
 		{ GREY..INDENT..AtlasORLocale["Sky Sergeant Doryn"], NPC, 23048 };
 		{ GREY..INDENT..AtlasORLocale["Skyguard Handler Deesak"], NPC, 23415 };
@@ -123,7 +116,7 @@ local myData = {
 		{ GREY.."6) "..AtlasORLocale["Talonpriest Skizzik"], NPC, 23067 };
 		{ GREY.."7) "..AtlasORLocale["Talonpriest Zellek"], NPC, 23068 };
 		{ GREY.."8) "..AtlasORLocale["Hazzik's Package"], OBJECT, 185954 };
-		{ GREY.."9) "..AtlasORLocale["Graveyard"] };
+		{ GREY.."9) "..BabbleZone["Graveyard"] };
 		{ GREN.."1') "..AtlasORLocale["Skull Pile"], OBJECT, 185913 };
 		{ GREN..INDENT..AtlasORLocale["Darkscreecher Akkarai"].." ("..AtlasORLocale["Summon"]..")", NPC, 23161 };
 		{ GREN..INDENT..AtlasORLocale["Gezzarak the Huntress"].." ("..AtlasORLocale["Summon"]..")", NPC, 23163 };

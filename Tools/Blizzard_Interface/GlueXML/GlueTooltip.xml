@@ -27,7 +27,7 @@
 			if ( not tooltip ) then
 				tooltip = GlueTooltip;
 			end
-			local textString = getglobal(tooltip:GetName().."TextLeft1");
+			local textString = _G[tooltip:GetName().."TextLeft1"];
 			textString:SetText(text);
 			if ( r ) then
 				textString:SetTextColor(r, g, b);
@@ -36,8 +36,21 @@
 			tooltip:SetWidth(textString:GetWidth()+25);
 			tooltip:SetHeight(textString:GetHeight()+20);
 		end
+		function GlueTooltip_SetFont(tooltip, font)
+			if ( not tooltip ) then
+				tooltip = GlueTooltip;
+			end
+			local textString = _G[tooltip:GetName().."TextLeft1"];
+			textString:SetFontObject(font);
+			local textString = _G[tooltip:GetName().."TextRight1"];
+			textString:SetFontObject(font);
+			local textString = _G[tooltip:GetName().."TextLeft2"];
+			textString:SetFontObject(font);
+			local textString = _G[tooltip:GetName().."TextRight2"];
+			textString:SetFontObject(font);
+		end
 	</Script>
-	<Frame name="GlueTooltipTemplate" frameStrata="TOOLTIP" hidden="true" virtual="true">
+	<Frame name="GlueTooltipTemplate" frameStrata="TOOLTIP" hidden="true" clampedToScreen="true" virtual="true">
 		<Size>
 			<AbsDimension x="50" y="50"/>
 		</Size>
@@ -49,7 +62,7 @@
 				<AbsValue val="16"/>
 			</TileSize>
 			<BackgroundInsets>
-				<AbsInset left="5" right="5" top="5" bottom="5"/>
+				<AbsInset left="3" right="3" top="3" bottom="3"/>
 			</BackgroundInsets>
 		</Backdrop>
 		<Layers>

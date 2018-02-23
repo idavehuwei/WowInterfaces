@@ -1,4 +1,4 @@
-﻿## Interface: 30100
+﻿## Interface: 30300
 ## Title: [GUI] ClearFont |r|cFF0099FFby Ice|r
 ## Notes: Modify Game Fonts and Size, Color, Shadow Of Them.(For FontShow Compatible Mode)
 ## Title-zhCN: [界面] 游戏字体 ClearFont
@@ -9,8 +9,5 @@
 ## Version: v3.05b
 ## Author: Kirkburn
 ## URL: http://bbs.game.mop.com/viewthread.php?tid=1503056
-## DefaultState: Enabled
-## LoadOnDemand: 0
-## Dependencies: !!Corelibs
 
 ClearFont.lua

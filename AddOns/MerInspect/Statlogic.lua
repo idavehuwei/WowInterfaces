@@ -1,3 +1,4 @@
+if GetLocale()~='zhCN' then return end
 -- thanks to Whitetooth (author of RatingBuster)
 local M = MerInspect
 

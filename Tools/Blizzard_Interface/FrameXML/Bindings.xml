@@ -120,9 +120,6 @@
 	<Binding name="COMBATLOGBOTTOM">
 		ChatFrame2:ScrollToBottom();
 	</Binding>
-	<Binding name="TOGGLECOMBATLOG">
-		ToggleCombatLog();
-	</Binding>
 	<!-- Action bar bindings -->
 	<Binding name="ACTIONBUTTON1" runOnUp="true" header="ACTIONBAR">
 		if ( keystate == "down" ) then
@@ -310,6 +307,7 @@
 			BonusActionButtonUp(10);
 		end
 	</Binding>
+
 	<Binding name="ACTIONPAGE1">
 		ChangeActionBarPage(1);
 	</Binding>
@@ -348,6 +346,112 @@
 			SetCVar("autoSelfCast", "1");
 		end
 	</Binding>
+
+	<Binding name="MULTICASTSUMMONBUTTON1" runOnUp="true" header="MULTICASTFUNCTIONS">
+		if ( keystate == "up" ) then
+			MultiCastSummonSpellButtonUp(1);
+		end
+	</Binding>
+	<Binding name="MULTICASTACTIONBUTTON1" runOnUp="true">
+		if ( keystate == "down" ) then
+			MultiCastActionButtonDown(1);
+		else
+			MultiCastActionButtonUp(1);
+		end
+	</Binding>
+	<Binding name="MULTICASTACTIONBUTTON2" runOnUp="true">
+		if ( keystate == "down" ) then
+			MultiCastActionButtonDown(2);
+		else
+			MultiCastActionButtonUp(2);
+		end
+	</Binding>
+	<Binding name="MULTICASTACTIONBUTTON3" runOnUp="true">
+		if ( keystate == "down" ) then
+			MultiCastActionButtonDown(3);
+		else
+			MultiCastActionButtonUp(3);
+		end
+	</Binding>
+	<Binding name="MULTICASTACTIONBUTTON4" runOnUp="true">
+		if ( keystate == "down" ) then
+			MultiCastActionButtonDown(4);
+		else
+			MultiCastActionButtonUp(4);
+		end
+	</Binding>
+	<Binding name="MULTICASTSUMMONBUTTON2" runOnUp="true" header="BLANK">
+		if ( keystate == "up" ) then
+			MultiCastSummonSpellButtonUp(2);
+		end
+	</Binding>
+	<Binding name="MULTICASTACTIONBUTTON5" runOnUp="true">
+		if ( keystate == "down" ) then
+			MultiCastActionButtonDown(5);
+		else
+			MultiCastActionButtonUp(5);
+		end
+	</Binding>
+	<Binding name="MULTICASTACTIONBUTTON6" runOnUp="true">
+		if ( keystate == "down" ) then
+			MultiCastActionButtonDown(6);
+		else
+			MultiCastActionButtonUp(6);
+		end
+	</Binding>
+	<Binding name="MULTICASTACTIONBUTTON7" runOnUp="true">
+		if ( keystate == "down" ) then
+			MultiCastActionButtonDown(7);
+		else
+			MultiCastActionButtonUp(7);
+		end
+	</Binding>
+	<Binding name="MULTICASTACTIONBUTTON8" runOnUp="true">
+		if ( keystate == "down" ) then
+			MultiCastActionButtonDown(8);
+		else
+			MultiCastActionButtonUp(8);
+		end
+	</Binding>
+	<Binding name="MULTICASTSUMMONBUTTON3" runOnUp="true" header="BLANK2">
+		if ( keystate == "up" ) then
+			MultiCastSummonSpellButtonUp(3);
+		end
+	</Binding>
+	<Binding name="MULTICASTACTIONBUTTON9" runOnUp="true">
+		if ( keystate == "down" ) then
+			MultiCastActionButtonDown(9);
+		else
+			MultiCastActionButtonUp(9);
+		end
+	</Binding>
+	<Binding name="MULTICASTACTIONBUTTON10" runOnUp="true">
+		if ( keystate == "down" ) then
+			MultiCastActionButtonDown(10);
+		else
+			MultiCastActionButtonUp(10);
+		end
+	</Binding>
+	<Binding name="MULTICASTACTIONBUTTON11" runOnUp="true">
+		if ( keystate == "down" ) then
+			MultiCastActionButtonDown(11);
+		else
+			MultiCastActionButtonUp(11);
+		end
+	</Binding>
+	<Binding name="MULTICASTACTIONBUTTON12" runOnUp="true">
+		if ( keystate == "down" ) then
+			MultiCastActionButtonDown(12);
+		else
+			MultiCastActionButtonUp(12);
+		end
+	</Binding>
+	<Binding name="MULTICASTRECALLBUTTON1" runOnUp="true" header="BLANK3">
+		if ( keystate == "up" ) then
+			MultiCastRecallSpellButtonUp(1);
+		end
+	</Binding>
+
 	<!-- Target function key bindings -->
 	<Binding name="TARGETNEARESTENEMY" header="TARGETING">
 		TargetNearestEnemy();
@@ -383,7 +487,7 @@
 -->
 	<Binding name="TARGETSELF">
 		if ( UnitIsUnit("player", "target") ) then
-			TargetUnit("pet");
+			TargetUnit("pet", 1);
 		else
 			TargetUnit("player");
 		end
@@ -482,6 +586,9 @@
 	<Binding name="ATTACKTARGET">
 		AttackTarget();
 	</Binding>
+  <Binding name="STARTATTACK">
+    StartAttack();
+  </Binding>
 	<Binding name="PETATTACK">
 		PetAttack();
 	</Binding>
@@ -538,7 +645,7 @@
 		ToggleTalentFrame();
 	</Binding>
 	<Binding name="TOGGLECHARACTER4">
-		ToggleFrame(PVPParentFrame);
+		TogglePVPFrame();
 	</Binding>
 	<Binding name="TOGGLECHARACTER3">
 		ToggleCharacter("PetPaperDollFrame");
@@ -561,6 +668,11 @@
 	<Binding name="TOGGLEWORLDMAP">
 		ToggleFrame(WorldMapFrame);
 	</Binding>
+	<Binding name="TOGGLEWORLDMAPSIZE">
+		if ( WorldMapFrame:IsShown() ) then
+			WorldMapFrame_ToggleWindowSize();
+		end
+	</Binding>	
 	<Binding name="TOGGLESOCIAL">
 		ToggleFriendsFrame();
 	</Binding>
@@ -579,14 +691,11 @@
 	<Binding name="TOGGLERAIDTAB">
 		ToggleFriendsFrame(5);
 	</Binding>
-	<Binding name="TOGGLELFGPARENT">
-		ToggleLFGParentFrame();
+	<Binding name="TOGGLELFGPARENT"> <!--Keeping the name as the old LFG so that people's bindings aren't reset -->
+		ToggleLFDParentFrame();
 	</Binding>
-	<Binding name="TOGGLELFGTAB">
-		ToggleLFGParentFrame(1);
-	</Binding>
-	<Binding name="TOGGLELFMTAB">
-		ToggleLFGParentFrame(2);
+	<Binding name="TOGGLELFRPARENT">
+		ToggleLFRParentFrame();
 	</Binding>
 	<Binding name="TOGGLEWORLDSTATESCORES">
 		ToggleWorldStateScoreFrame();
@@ -728,6 +837,9 @@
 	<Binding name="SETVIEW5">
 		SetView(5);
 	</Binding>
+	<Binding name="SAVEVIEW1">
+		SaveView(1);
+	</Binding>
 	<Binding name="SAVEVIEW2">
 		SaveView(2);
 	</Binding>
@@ -739,6 +851,9 @@
 	</Binding>
 	<Binding name="SAVEVIEW5">
 		SaveView(5);
+	</Binding>
+	<Binding name="RESETVIEW1">
+		ResetView(1);
 	</Binding>
 	<Binding name="RESETVIEW2">
 		ResetView(2);
@@ -841,7 +956,7 @@
 			MultiActionButtonUp("MultiBarBottomLeft", 12);
 		end
 	</Binding>
-	<Binding name="MULTIACTIONBAR2BUTTON1" runOnUp="true" header="BLANK">
+	<Binding name="MULTIACTIONBAR2BUTTON1" runOnUp="true" header="BLANK4">
 		if ( keystate == "down" ) then
 			MultiActionButtonDown("MultiBarBottomRight", 1);
 		else
@@ -925,7 +1040,7 @@
 			MultiActionButtonUp("MultiBarBottomRight", 12);
 		end
 	</Binding>
-	<Binding name="MULTIACTIONBAR3BUTTON1" runOnUp="true" header="BLANK2">
+	<Binding name="MULTIACTIONBAR3BUTTON1" runOnUp="true" header="BLANK5">
 		if ( keystate == "down" ) then
 			MultiActionButtonDown("MultiBarRight", 1);
 		else
@@ -1009,7 +1124,7 @@
 			MultiActionButtonUp("MultiBarRight", 12);
 		end
 	</Binding>
-	<Binding name="MULTIACTIONBAR4BUTTON1" runOnUp="true" header="BLANK3">
+	<Binding name="MULTIACTIONBAR4BUTTON1" runOnUp="true" header="BLANK6">
 		if ( keystate == "down" ) then
 			MultiActionButtonDown("MultiBarLeft", 1);
 		else
@@ -1222,4 +1337,5 @@
 	<ModifiedClick action="QUESTWATCHTOGGLE" default="SHIFT"/>
 	<ModifiedClick action="TOKENWATCHTOGGLE" default="SHIFT"/>
 	<ModifiedClick action="SHOWITEMFLYOUT" default="ALT"/>
+	<ModifiedClick action="SHOWMULTICASTFLYOUT" default="ALT"/>
 </Bindings>

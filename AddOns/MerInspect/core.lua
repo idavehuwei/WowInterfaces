@@ -31,13 +31,10 @@ function M:DoQueueScan(unit)
 	for k in pairs(self.effectPercent) do
 		self.effectPercent[k] = nil;
 	end
-	local level = UnitLevel(unit) or 70;
+	local level = UnitLevel(unit) or 80;
 	local class = strupper(select(2, UnitClass(unit)));
 	local race = strupper(select(2, UnitRace(unit)));
-	for _, v in ipairs({"Strength","Agility","Stamina","Intellect","Spirit",
-		"Resistance_Nature","Resistance_Fire","Resistance_Arcane","Resistance_Shadow","Resistance_Frost"}) do
-		self.effect[v] = (self.effect[v] or 0) + self:GetBaseEffect(v, class, race, level);
-	end
+
 	for _, v in ipairs(self.QueueScan) do
 		if self[v] then
 			self[v](self, unit, class, race, level);
@@ -127,6 +124,10 @@ end
 
 function M:GetEffect(effect)
 	return self.effect[effect] or 0;
+end
+
+function M:GetAllEffects(eTable)
+	return (self.effect[eTable.effectName] or 0) + (self.effect[eTable.effectExtra] or 0)
 end
 
 function M:DEBUG(...)

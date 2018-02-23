@@ -1,11 +1,12 @@
-local mod = DBM:NewMod("IngvarThePlunderer", "DBM-Party-WotLK", 10)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("IngvarThePlunderer", "DBM-Party-WotLK", 10)
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 655 $"):sub(12, -3))
-mod:SetCreatureID(23980)
+mod:SetRevision(("$Revision: 4154 $"):sub(12, -3))
+mod:SetCreatureID(23980, 23954)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
+mod:RegisterKill("yell", L.YellCombatEnd)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -13,38 +14,38 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warningSmash		= mod:NewAnnounce("WarningSmash", 1, 42723)
-local warningGrowl		= mod:NewAnnounce("WarningGrowl", 3, 42708)
-local warningWoeStrike		= mod:NewAnnounce("WarningWoeStrike", 2, 42730)
-local timerSmash		= mod:NewTimer(3, "TimerSmash", 42723)
-local timerWoeStrike		= mod:NewTimer(10, "TimerWoeStrike", 42723)
+local warningSmash		= mod:NewSpellAnnounce(42723, 1)
+local warningGrowl		= mod:NewSpellAnnounce(42708, 3)
+local warningWoeStrike	= mod:NewTargetAnnounce(42730, 2)
+local timerSmash		= mod:NewCastTimer(3, 42723)
+local timerWoeStrike	= mod:NewTargetTimer(10, 42723)
 
-local specWarnSpelllock	= mod:NewSpecialWarning("SpecialWarningSpelllock")
+local specWarnSpelllock	= mod:NewSpecialWarningCast(42729)
 
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 42723 or args.spellId == 42669 or args.spellId == 59706 then
-		warningSmash:Show(args.spellName, args.spellName)
-		timerSmash:Start(args.spellName)
-	elseif args.spellId == 42708 or args.spellId == 42729
-	or args.spellId == 59708 or args.spellId == 59734 then
-		warningGrowl:Show(args.spellName, args.spellName)
+	if args:IsSpellID(42723, 42669, 59706) then
+		warningSmash:Show()
+		timerSmash:Start()
+	elseif args:IsSpellID(42708, 42729, 59708, 59734) then
+		warningGrowl:Show()
 	end
-	if args.spellId == 42723 or args.spllId == 59706 then
+	if args:IsSpellID(42729, 59734) then
 		specWarnSpelllock:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 42730 or args.spellId == 59735 then
-		warningWoeStrike:Show(args.spellName, args.destName)
-		timerWoeStrike:Start(args.spellName, args.destName)
-		mod:SetIcon(args.destName, 8, 10)
+	if args:IsSpellID(42730, 59735) then
+		warningWoeStrike:Show(args.destName)
+		timerWoeStrike:Start(args.destName)
+		self:SetIcon(args.destName, 8, 10)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 42730 or args.spellId == 59735 then
+	if args:IsSpellID(42730, 59735) then
 		timerWoeStrike:Cancel()
+		self:SetIcon(args.destName, 0)
 	end
 end

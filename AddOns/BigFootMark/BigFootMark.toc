@@ -1,14 +1,17 @@
-﻿## Interface: 30100
-## Title: [Map] |cff00ff00NPCMark|r
-## Title-zhTW: [地图] NPC標記 |cff00ff00BigFootMark|r
-## Title-zhCN: [地图] NPC标记 |cff00ff00BigFootMark|r
+﻿## Interface: 30300
+## Title: [BF] NPC Mark
+## Title-zhCN: [大脚]NPC标记
+## Title-zhTW: [大腳]NPC標記
+## Notes: |cffbc8f8fNPC Mark addon developed by 178.|r
+## Notes-zhCN: |cff00ff00BigFootMark|r                                             |cffbc8f8f艾泽拉斯国家地理自主开发的NPC标记。|r
+## Notes-zhTW: |cff00ff00BigFootMark|r                                             |cffbc8f8f艾澤拉斯國家地理自主開發的NPC標記。|r
 ## Version: 0.1.4
 ## Author: Terry
-## Notes-zhCN: |cff00ffff艾泽拉斯国家地理|r自主开发的NPC标记。
-## Notes-zhTW: |cff00ffff艾澤拉斯國家地理|r自主開發的NPC標記。
-## SavedVariables: BigFootMarkDB,BigFootMarkMappingDB
-## X-DuowanAddon: 地图
+## LoadOnDemand: 1
 ## Dependencies: BigFoot
+## X-Revision: BigFoot
+## SavedVariables: BigFootMarkMappingDB
+## SavedVariablesPerCharacter: BigFootMarkDB
 
 BigFootMark.xml
 

@@ -1,8 +1,9 @@
--- GridRoster.lua
---
--- Keeps track of GUID <-> name <-> unitid mappings for party/raid members.
+--[[--------------------------------------------------------------------
+	GridRoster.lua
+	Keeps track of GUID <-> name <-> unitID mappings for party/raid members.
+----------------------------------------------------------------------]]
 
-GridRoster = Grid:NewModule("GridRoster")
+local GridRoster = Grid:NewModule("GridRoster")
 
 GridRoster.defaultDB = {
 	party_state = "solo",
@@ -72,6 +73,8 @@ function GridRoster:OnEnable()
 	self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateRoster")
 	self:RegisterEvent("UNIT_PORTRAIT_UPDATE", "UpdateRoster")
 
+	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "PartyTransitionCheck")
+
 	self:UpdateRoster()
 end
 
@@ -140,7 +143,7 @@ do
 
 		if guid then
 			if realm == "" then realm = nil end
-			
+
 			if units_to_remove[guid] then
 				units_to_remove[guid] = nil
 
@@ -255,10 +258,15 @@ do
 		end
 
 		if GetNumRaidMembers() > 0 then
-			if GetCurrentDungeonDifficulty() == 2 then
-				return "heroic_raid"
+			if instance_type == "none" and GetZonePVPInfo() == "combat" then
+				return "bg"
+			end
+			if instance_type == "raid" then
+				local _, _, _, _, max_players = GetInstanceInfo()
+				return max_players > 10 and "heroic_raid" or "raid"
 			else
-				return "raid"
+				local raid_difficulty = GetRaidDifficulty()
+				return (raid_difficulty == 2 or raid_difficulty == 4) and "heroic_raid" or "raid"
 			end
 		end
 

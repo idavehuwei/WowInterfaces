@@ -1,6 +1,6 @@
 --[[
 Name: RatingBuster enUS locale
-Revision: $Revision: 240 $
+Revision: $Revision: 282 $
 Translated by:
 - Whitetooth (hotdogee [at] gmail [dot] com)
 ]]
@@ -23,6 +23,11 @@ L["Suspend/resume this addon"] = true
 ---------------------------
 -- Slash Command Options --
 ---------------------------
+L["Always"] = true
+L["ALT Key"] = true
+L["CTRL Key"] = true
+L["SHIFT Key"] = true
+L["Never"] = true
 L["General Settings"] = true
 L["Profiles"] = true
 -- /rb win
@@ -35,7 +40,7 @@ L["Disable Blizzard stat change summary when using the built-in comparison toolt
 L["Enable Stat Mods"] = true
 L["Enable support for Stat Mods"] = true
 -- /rb avoidancedr
-L["Enable avoidance diminishing returns"] = true
+L["Enable Avoidance Diminishing Returns"] = true
 L["Dodge, Parry, Hit Avoidance values will be calculated using the avoidance deminishing return formula with your current stats"] = true
 -- /rb itemid
 L["Show ItemID"] = true
@@ -44,52 +49,52 @@ L["Show the ItemID in tooltips"] = true
 L["Show ItemLevel"] = true
 L["Show the ItemLevel in tooltips"] = true
 -- /rb usereqlv
-L["Use required level"] = true
+L["Use Required Level"] = true
 L["Calculate using the required level if you are below the required level"] = true
 -- /rb level
-L["Set level"] = true
+L["Set Level"] = true
 L["Set the level used in calculations (0 = your level)"] = true
 ---------------------------------------------------------------------------
 -- /rb rating
 L["Rating"] = true
 L["Options for Rating display"] = true
 -- /rb rating show
-L["Show Rating conversions"] = true
+L["Show Rating Conversions"] = true
 L["Show Rating conversions in tooltips"] = true
 -- /rb rating spell
-L["Show Spell Hit"] = true
-L["Show Spell Hit from Hit Rating"] = true
+L["Show Spell Hit/Haste"] = true
+L["Show Spell Hit/Haste from Hit/Haste Rating"] = true
 -- /rb rating physical
-L["Show Physical Hit"] = true
-L["Show Physical Hit from Hit Rating"] = true
+L["Show Physical Hit/Haste"] = true
+L["Show Physical Hit/Haste from Hit/Haste Rating"] = true
 -- /rb rating detail
-L["Show detailed conversions text"] = true
+L["Show Detailed Conversions Text"] = true
 L["Show detailed text for Resilience and Expertise conversions"] = true
 -- /rb rating def
-L["Defense breakdown"] = true
+L["Defense Breakdown"] = true
 L["Convert Defense into Crit Avoidance, Hit Avoidance, Dodge, Parry and Block"] = true
 -- /rb rating wpn
-L["Weapon Skill breakdown"] = true
+L["Weapon Skill Breakdown"] = true
 L["Convert Weapon Skill into Crit, Hit, Dodge Neglect, Parry Neglect and Block Neglect"] = true
 -- /rb rating exp
-L["Expertise breakdown"] = true
+L["Expertise Breakdown"] = true
 L["Convert Expertise into Dodge Neglect and Parry Neglect"] = true
 ---------------------------------------------------------------------------
 -- /rb rating color
-L["Change text color"] = true
+L["Change Text Color"] = true
 L["Changes the color of added text"] = true
 -- /rb rating color pick
-L["Pick color"] = true
+L["Pick Color"] = true
 L["Pick a color"] = true
 -- /rb rating color enable
-L["Enable color"] = true
+L["Enable Color"] = true
 L["Enable colored text"] = true
 ---------------------------------------------------------------------------
 -- /rb stat
 L["Stat Breakdown"] = true
 L["Changes the display of base stats"] = true
 -- /rb stat show
-L["Show base stat conversions"] = true
+L["Show Base Stat Conversions"] = true
 L["Show base stat conversions in tooltips"] = true
 ---------------------------------------------------------------------------
 -- /rb stat str
@@ -213,55 +218,76 @@ L["Show Attack Power from Armor"] = true
 L["Stat Summary"] = true
 L["Options for stat summary"] = true
 -- /rb sum show
-L["Show stat summary"] = true
+L["Show Stat Summary"] = true
 L["Show stat summary in tooltips"] = true
 -- /rb sum ignore
-L["Ignore settings"] = true
+L["Ignore Settings"] = true
 L["Ignore stuff when calculating the stat summary"] = true
 -- /rb sum ignore unused
-L["Ignore unused items types"] = true
-L["Show stat summary only for highest level armor type and items you can use with uncommon quality and up"] = true
+L["Ignore Undesirable Items"] = true
+L["Hide stat summary for undesirable items"] = true
+-- /rb sum ignore quality
+L["Minimum Item Quality"] = true
+L["Show stat summary only for selected quality items and up"] = true
+-- /rb sum ignore armor
+L["Armor Types"] = true
+L["Select armor types you want to ignore"] = true
+-- /rb sum ignore armor cloth
+L["Ignore Cloth"] = true
+L["Hide stat summary for all cloth armor"] = true
+-- /rb sum ignore armor leather
+L["Ignore Leather"] = true
+L["Hide stat summary for all leather armor"] = true
+-- /rb sum ignore armor mail
+L["Ignore Mail"] = true
+L["Hide stat summary for all mail armor"] = true
+-- /rb sum ignore armor plate
+L["Ignore Plate"] = true
+L["Hide stat summary for all plate armor"] = true
 -- /rb sum ignore equipped
-L["Ignore equipped items"] = true
+L["Ignore Equipped Items"] = true
 L["Hide stat summary for equipped items"] = true
 -- /rb sum ignore enchant
-L["Ignore enchants"] = true
+L["Ignore Enchants"] = true
 L["Ignore enchants on items when calculating the stat summary"] = true
 -- /rb sum ignore gem
-L["Ignore gems"] = true
+L["Ignore Gems"] = true
 L["Ignore gems on items when calculating the stat summary"] = true
+-- /rb sum ignore prismaticSocket
+L["Ignore Prismatic Sockets"] = true
+L["Ignore gems in prismatic sockets when calculating the stat summary"] = true
 -- /rb sum diffstyle
-L["Display style for diff value"] = true
+L["Display Style For Diff Value"] = true
 L["Display diff values in the main tooltip or only in compare tooltips"] = true
 -- /rb sum space
-L["Add empty line"] = true
+L["Add Empty Line"] = true
 L["Add a empty line before or after stat summary"] = true
 -- /rb sum space before
-L["Add before summary"] = true
+L["Add Before Summary"] = true
 L["Add a empty line before stat summary"] = true
 -- /rb sum space after
-L["Add after summary"] = true
+L["Add After Summary"] = true
 L["Add a empty line after stat summary"] = true
 -- /rb sum icon
-L["Show icon"] = true
+L["Show Icon"] = true
 L["Show the sigma icon before summary listing"] = true
 -- /rb sum title
-L["Show title text"] = true
+L["Show Title Text"] = true
 L["Show the title text before summary listing"] = true
 -- /rb sum showzerostat
-L["Show zero value stats"] = true
+L["Show Zero Value Stats"] = true
 L["Show zero value stats in summary for consistancy"] = true
 -- /rb sum calcsum
-L["Calculate stat sum"] = true
+L["Calculate Stat Sum"] = true
 L["Calculate the total stats for the item"] = true
 -- /rb sum calcdiff
-L["Calculate stat diff"] = true
+L["Calculate Stat Diff"] = true
 L["Calculate the stat difference for the item and equipped items"] = true
 -- /rb sum sort
-L["Sort StatSummary alphabetically"] = true
+L["Sort StatSummary Alphabetically"] = true
 L["Enable to sort StatSummary alphabetically, disable to sort according to stat type(basic, physical, spell, tank)"] = true
 -- /rb sum avoidhasblock
-L["Include block chance in Avoidance summary"] = true
+L["Include Block Chance In Avoidance Summary"] = true
 L["Enable to include block chance in Avoidance summary, Disable for only dodge, parry, miss"] = true
 ---------------------------------------------------------------------------
 -- /rb sum basic
@@ -367,6 +393,9 @@ L["Weapon Skill <- Weapon Skill Rating"] = true
 -- /rb sum physical exp
 L["Sum Expertise"] = true
 L["Expertise <- Expertise Rating"] = true
+-- /rb sum physical exprating
+L["Sum Expertise Rating"] = true
+L["Expertise Rating Summary"] = true
 -- /rb sum physical arprating
 L["Sum Armor Penetration Rating"] = true
 L["Armor Penetration Rating Summary"] = true
@@ -493,8 +522,13 @@ L["Total Reduction <- Armor, Dodge, Parry, Block, Block Value, Defense, Resilien
 L["Sum Avoidance"] = true
 L["Avoidance <- Dodge, Parry, MobMiss, Block(Optional)"] = true
 ---------------------------------------------------------------------------
+-- /rb sum gemset
+L["Gem Set"] = true
+L["Select a gem set to configure"] = true
+L["Default Gem Set 1"] = true
+L["Default Gem Set 2"] = true
+L["Default Gem Set 3"] = true
 -- /rb sum gem
-L["Gems"] = true
 L["Auto fill empty gem slots"] = true
 -- /rb sum gem red
 L["Red Socket"] = EMPTY_SOCKET_RED
@@ -509,6 +543,15 @@ L["Yellow Socket"] = EMPTY_SOCKET_YELLOW
 L["Blue Socket"] = EMPTY_SOCKET_BLUE
 -- /rb sum gem meta
 L["Meta Socket"] = EMPTY_SOCKET_META
+-- /rb sum gem2
+L["Second set of default gems which can be toggled with a modifier key"] = true
+L["Can't use the same modifier as Gem Set 3"] = true
+-- /rb sum gem2 key
+L["Toggle Key"] = true
+L["Use this key to toggle alternate gems"] = true
+-- /rb sum gem3
+L["Third set of default gems which can be toggled with a modifier key"] = true
+L["Can't use the same modifier as Gem Set 2"] = true
 
 -----------------------
 -- Item Level and ID --

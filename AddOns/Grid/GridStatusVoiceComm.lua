@@ -1,12 +1,15 @@
--- Based on code from Halgrimm
--- http://www.wowace.com/forums/index.php?topic=2525.msg143457#msg143457
+--[[--------------------------------------------------------------------
+	GridStatusVoiceComm.lua
+	GridStatus module for showing who's speaking over the in-game voice comm system.
+	Based on code from Halgrimm
+	http://www.wowace.com/forums/index.php?topic=2525.msg143457#msg143457
+----------------------------------------------------------------------]]
 
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local _, ns = ...
+local L = ns.L
 
-GridStatusVoiceComm = GridStatus:NewModule("GridStatusVoiceComm")
+local GridStatusVoiceComm = Grid:GetModule("GridStatus"):NewModule("GridStatusVoiceComm")
 GridStatusVoiceComm.menuName = L["Voice Chat"]
-
---{{{ AceDB defaults
 
 GridStatusVoiceComm.defaultDB = {
 	debug = false,
@@ -18,8 +21,6 @@ GridStatusVoiceComm.defaultDB = {
 		range = false,
 	},
 }
-
---}}}
 
 GridStatusVoiceComm.options = false
 
@@ -55,8 +56,7 @@ function GridStatusVoiceComm:VOICE_START(unitid)
 		settings.text,
 		nil,
 		nil,
-		settings.icon
-	)
+		settings.icon)
 end
 
 function GridStatusVoiceComm:VOICE_STOP(unitid)

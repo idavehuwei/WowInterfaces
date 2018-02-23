@@ -5,9 +5,186 @@ This mod is distributed under Version 2 of the GPL.  A copy of the GPL is includ
 -Daviesh
 
 Patch Notes
+
+
+
+v5.11.04
+Added support for Atlas 1.17.0
+Minor fixes
+
+v5.11.03
+Added Ruby Sanctum Heroic loot
+Minor fixes and additions
+
+v5.11.02
+Added New TCG loot
+Updated Lord Ahune loot
+Minor fixes
+
+v5.11.01
+zhTW translation fixed
+
+v5.11.00
+Added Ruby Sanctum Normal loot
+Lord Ahune drops updated
+Added New TCG loot
+Added support for upcoming Atlas 1.16.1
+Minor fixes and additions
+
+v5.10.01
+Adjusted PvP prices
+Total revamp of PvP section
+Minor fixes and additions
+
+v5.10.00
+Added Arena Season 8 items
+Adjusted old Arena prices
+Added Lich King loot
+Revamp of Love is in the Air Event
+Final adjustments for Atlas 1.16.0
+Minor fixes and additions
+
+v5.09.05
+Fixed the heroic toggle
+
+v5.09.04
+Added remaining ICC loot (Normal Mode)
+Added Heroic ICC loot
+Crafting updated for Patch 3.3
+Added support for upcoming Atlas 1.16.0
+Minor fixes and additions
+
+v5.09.03
+Added The Plagueworks raid loot
+Minor fixes and additions
+
+v5.09.02
+Added Icecrown Citadel raid loot
+Added Wishlist API (see forums)
+Compatible with Atlas Fan-update
+Minor fixes
+
+v5.09.01
+Pit of Saron is now visible in the loot browser
+Minor fixes
+
+v5.09.00
+Updated for Patch 3.3
+Added Icecrown Citadel Lower Spire (Normal Mode)
+Added The Forge of Souls
+Added the Halls of Reflection
+Change so that you only get nagged for AtlasLoot/Atlas mismatches once
+Change to the use of Babble data for non-English users
+Minor fixes
+
+v5.08.10
+Commented out some Patch 3.3 stuff that was causing problems
+Attempt to make the mod more resistant to errors
+
+v5.08.09
+Pilgrim's Bounty loot
+More loot in preparation of Patch 3.3 (only on PTR)
+Minor updates
+
+v5.08.08
+Added Emblem of Frost Rewards (only on PTR)
+Added Tier 10 Sets (only on PTR)
+Many minor fixes
+
+v5.08.07
+Added links to Tier 9 sets and PvP Sets in Emblem sections as appropriate
+Fixed a bug due to changes to Babble-Boss
+
+v5.08.06
+Corrections for the ToC Tribute run
+Updated Hallow's End Headless Horseman loot
+
+v5.08.05
+Update for Atlas 1.15.1
+Fixed <- and -> navigation for Ulduar
+Added the new Scourgewar trading card game in-game items.
+
+v5.08.04
+Fixed a bug where the loot filter was breaking heroic mode loot
+Mod will no longer attempt to load a loot table at startup
+Many minor bug fixes
+
+v5.08.03
+Fixed a bug with default loot table causing errors with a 'fresh' AL install
+Update for the latest Atlas 1.15 test build
+Cleanup of Onyxia loot
+
+v5.08.02
+Moved T2 Helms to Nefarian
+25 Man Onyxia loot completed
+Fixed bug where selection of default wishlist was not preserved
+
+v5.08.01
+Fixed Argent Confessor Bug
+
+v5.08.00
+First pass of Onyxia (level 80) loot
+Added missing Tankard of Terror
+Updated crafting for Patch 3.2.2
+
+v5.07.07
+Added Cooking Daily rewards
+Added Fishing Daily rewards
+Added Patch 3.2 Wintergrasp items
+Added Emalon the Storm Watcher and Koralon the Flame Watcher loot to Vault of Archavon
+Added Wrath of the Lich King Crafted Sets (Blacksmithing, Leatherworking and Tailoring)
+Updated Brewfest 2009 items
+Added Vanity Pet Accessories
+Reins of the Violet Proto-Drake now available in Mount page
+Compatible with the Atlas version 1.15 alpha build
+Minor updates/fixes/translations
+
+v5.07.06
+Arena Season 7 Loot included
+The loot filter now applies to most PvP and Rep rewards, more coming
+Search and Wishlist headings fixed
+Many minor bug fixes and updates
+Localisation updates (including esMX)
+
+v5.07.05
+Added New Mounts, Pets and Tabards
+Added 25 Man Trial of the Crusader loot
+Updated Argent Tournament
+Updated Emblem items
+Updated Jewelcrafting and added new epic gem recipes to Jewelcrafting daily
+Added crafted weapons (lvl80 ones have been missing)
+Added Yogg-Saron+0 loot
+Added PvP Heirlooms to set menu
+
+v5.07.04
+10 Man Trial of the Crusader is complete (Horde and Alliance)
+More minor bug fixes
+
+v5.07.03
+Added New Dungeon : Trial of the Crusader, 10 Man Alliance Loot (thanks ThyrelR)
+More minor bug fixes
+
+v5.07.02
+Added New Dungeon: Trial of the Champion
+Added Patch 3.2 Crafted items
+Emblem of Triumph rewards added
+Removed all references to BabbleClass
+
+v5.07.01
+Fixed the back to front Druid sets
+
+v5.07.00
+Tier 9 Set items included
+TOC update for Patch 3.2
+Fixed deleting shared wishlists
+Fixed editing shared wishlists
+Items from shared wishlists are now correctly marked
+The Loot Browser now uses Atlas menus where possible to reduce code maintenance
+
 v5.06.02
 Fixed sorting bug with the loot filter
 Fixed adding items to wishlist from search results
+Minor updates/fixes/translations
 
 v5.06.01
 Attempt to get around addon packager issues
@@ -18,7 +195,7 @@ Loot Filter Documentation: http://www.daviesh.net/atlasloot_enhanced/wiki/index.
 New Feature: *Beta* Each character now has access to multiple wishlists and they can be shared between players
 WishList Documentation: http://www.daviesh.net/atlasloot_enhanced/wiki/index.php?n=AtlasLoot.WishLists
 Revamped the Mount page
-Drop rates added for: Tempest Keep - The Eye, Serpentshrine Cavern, Zul'Aman Caverns of Time - Battle for Mount Hyjal, Black Temple, Magisters' Terrace, Sunwell Plateau, Ahn'kahet: The Old Kingdom, Drak'Tharon Keep, The Violet Hold, Gundrak, Halls of Stone, Halls of Lightning, Caverns of Time: Old Stratholme, Utgarde Pinnacle, The Oculus, Naxxramas, Obsidian Sanctum, The Eye of Eternity, Ulduar
+Drop rates added for: Tempest Keep - The Eye, Serpentshrine Cavern, Zul'Aman, Caverns of Time - Battle for Mount Hyjal, Black Temple, Magisters' Terrace, Sunwell Plateau, Ahn'kahet: The Old Kingdom, Drak'Tharon Keep, The Violet Hold, Gundrak, Halls of Stone, Halls of Lightning, Caverns of Time: Old Stratholme, Utgarde Pinnacle, The Oculus, Naxxramas, Obsidian Sanctum, The Eye of Eternity, Ulduar
 Minor updates/fixes/translations
 
 v5.05.01

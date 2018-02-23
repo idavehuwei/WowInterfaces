@@ -11,11 +11,11 @@
 				GlueButtonMaster_OnUpdate(self, elapsed);
 			</OnUpdate>
 			<OnEnter>
-				getglobal(self:GetName().."Rays"):Show();
+				_G[self:GetName().."Rays"]:Show();
 				self.startPulse = 1;
 			</OnEnter>
 			<OnLeave>
-				getglobal(self:GetName().."Rays"):Hide();
+				_G[self:GetName().."Rays"]:Hide();
 				self.startPulse = nil;
 			</OnLeave>
 		</Scripts>
@@ -50,7 +50,7 @@
 			<Anchors>
 				<Anchor point="CENTER">
 					<Offset>
-						<AbsDimension x="-3" y="3"/>
+						<AbsDimension x="0" y="3"/>
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -71,7 +71,7 @@
 			<Anchors>
 				<Anchor point="CENTER">
 					<Offset>
-						<AbsDimension x="-3" y="3"/>
+						<AbsDimension x="0" y="3"/>
 					</Offset>
 				</Anchor>
 			</Anchors>

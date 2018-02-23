@@ -1,5 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\..\FrameXML\UI.xsd">
+..\FrameXML\UI.xsd">
 	<Texture name="TalentBranchTemplate" file="Interface\TalentFrame\UI-TalentBranches" virtual="true">
 		<Size>
 			<AbsDimension x="32" y="32"/>
@@ -60,13 +60,6 @@
 			</Layer>
 		</Layers>
 		<Scripts>
-			<OnLoad>
-				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-				self:RegisterEvent("CHARACTER_POINTS_CHANGED");
-				self:RegisterEvent("PET_TALENT_POINTS_CHANGED");
-				self:RegisterEvent("PREVIEW_TALENT_POINTS_CHANGED");
-				self:RegisterEvent("PREVIEW_PET_TALENT_POINTS_CHANGED");
-			</OnLoad>
 			<OnLeave>
 				GameTooltip:Hide();
 			</OnLeave>

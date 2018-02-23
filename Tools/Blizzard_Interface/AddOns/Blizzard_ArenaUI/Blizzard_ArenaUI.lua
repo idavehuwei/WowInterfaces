@@ -124,10 +124,10 @@ function ArenaEnemyFrame_OnLoad(self)
 	
 	UIDropDownMenu_Initialize(self.DropDown, ArenaEnemyDropDown_Initialize, "MENU");
 	
-	local showmenu = function()
-		ToggleDropDownMenu(1, nil, getglobal("ArenaEnemyFrame"..self:GetID().."DropDown"), self:GetName(), 47, 15);
+	local setfocus = function()
+		FocusUnit("arena"..self:GetID());
 	end
-	SecureUnitButton_OnLoad(self, "arena"..self:GetID(), showmenu);
+	SecureUnitButton_OnLoad(self, "arena"..self:GetID(), setfocus);
 	
 	local id = self:GetID();
 	if ( UnitClass("arena"..id) and (not UnitExists("arena"..id))) then	--It is possible for the unit itself to no longer exist on the client, but some of the information to remain (after reloading the UI)
@@ -233,7 +233,7 @@ function ArenaEnemyFrame_UpdatePet(self, id, useCVars)	--At some points, we need
 		showArenaEnemyPets = GetCVarBool("showArenaEnemyPets");
 	end
 	
-	if ( UnitExists(petFrame.unit) and showArenaEnemyPets) then
+	if ( UnitGUID(petFrame.unit) and showArenaEnemyPets) then
 		petFrame:Show();
 	else
 		petFrame:Hide();
@@ -246,10 +246,10 @@ function ArenaEnemyPetFrame_OnLoad(self)
 	local id = self:GetParent():GetID();
 	local prefix = "ArenaEnemyFrame"..id.."PetFrame";
 	local unit = "arenapet"..id;
-	UnitFrame_Initialize(self, unit,  getglobal(prefix.."Name"), getglobal(prefix.."Portrait"),
-		   getglobal(prefix.."HealthBar"), getglobal(prefix.."HealthBarText"), getglobal(prefix.."ManaBar"), getglobal(prefix.."ManaBarText"));
-	SetTextStatusBarTextZeroText(getglobal(prefix.."HealthBar"), DEAD);
-	getglobal(prefix.."Name"):Hide();
+	UnitFrame_Initialize(self, unit,  _G[prefix.."Name"], _G[prefix.."Portrait"],
+		   _G[prefix.."HealthBar"], _G[prefix.."HealthBarText"], _G[prefix.."ManaBar"], _G[prefix.."ManaBarText"]);
+	SetTextStatusBarTextZeroText(_G[prefix.."HealthBar"], DEAD);
+	_G[prefix.."Name"]:Hide();
 	SecureUnitButton_OnLoad(self, unit);
 	self:SetID(id);
 	self:SetParent(ArenaEnemyFrames);
@@ -259,10 +259,10 @@ function ArenaEnemyPetFrame_OnLoad(self)
 	
 	UIDropDownMenu_Initialize(self.DropDown, ArenaEnemyPetDropDown_Initialize, "MENU");
 	
-	local showmenu = function()
-		ToggleDropDownMenu(1, nil, getglobal("ArenaEnemyFrame"..self:GetID().."PetFrameDropDown"), self:GetName(), 47, 15);
+	local setfocus = function()
+		FocusUnit("arenapet"..self:GetID());
 	end
-	SecureUnitButton_OnLoad(self, "arenapet"..self:GetID(), showmenu);
+	SecureUnitButton_OnLoad(self, "arenapet"..self:GetID(), setfocus);
 end
 
 function ArenaEnemyPetFrame_OnEvent(self, event, ...)
@@ -277,8 +277,20 @@ function ArenaEnemyPetFrame_OnEvent(self, event, ...)
 				ArenaEnemyFrame_SetMysteryPlayer(ownerFrame);
 				ownerFrame:Show();
 			end
+			if ( self.healthbar.frequentUpdates and GetCVarBool("predictedHealth") ) then
+				self.healthbar:SetScript("OnUpdate", UnitFrameHealthBar_OnUpdate);
+				self.healthbar:UnregisterEvent("UNIT_HEALTH");
+			end
+			if ( self.manabar.frequentUpdates and GetCVarBool("predictedPower") ) then
+				self.manabar:SetScript("OnUpdate", UnitFrameManaBar_OnUpdate);
+				UnitFrameManaBar_UnregisterDefaultEvents(self.manabar);
+			end
 		elseif ( arg2 == "unseen" ) then
 			ArenaEnemyFrame_Lock(self);
+			self.healthbar:RegisterEvent("UNIT_HEALTH");
+			self.healthbar:SetScript("OnUpdate", nil);
+			UnitFrameManaBar_RegisterDefaultEvents(self.manabar);
+			self.manabar:SetScript("OnUpdate", nil);
 		elseif ( arg2 == "cleared" ) then
 			ArenaEnemyFrame_Unlock(self);
 			self:Hide()

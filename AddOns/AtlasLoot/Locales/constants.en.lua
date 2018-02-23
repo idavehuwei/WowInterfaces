@@ -9,6 +9,7 @@ The AL["text"] = true; shortcut can ONLY be used for English (the root translati
 
 --Table holding all loot tables is initialised here as it loads early
 AtlasLoot_Data = {};
+AtlasLoot_TableNames = {};
 
 --Create the library instance
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
@@ -18,7 +19,7 @@ local AL = AceLocale:NewLocale("AtlasLoot", "enUS", true);
 --Register translations
 if AL then
 
-	--Text strings for UI objects
+	-- Text strings for UI objects
 	AL["AtlasLoot"] = true;
 	AL["Select Loot Table"] = true;
 	AL["Select Sub-Table"] = true;
@@ -45,6 +46,7 @@ if AL then
 	AL["Choose Table ..."] = true;
 	AL["Unknown"] = true;
 	AL["Add to QuickLooks:"] = true;
+	AL["Assign this loot table\n to QuickLook"] = true;
 	AL["Query Server"] = true;
 	AL["Reset Frames"] = true;
 	AL["Reset Wishlist"] = true;
@@ -63,7 +65,7 @@ if AL then
 	AL["Hide Icon"] = true;
 	AL["Minimap Button Options"] = true;
 
-	--Text for Options Panel
+	-- Text for Options Panel
 	AL["Atlasloot Options"] = true;
 	AL["Safe Chat Links"] = true;
 	AL["Default Tooltips"] = true;
@@ -103,12 +105,12 @@ if AL then
 	AL["New Style"] = true;
 	AL["Classic Style"] = true;
 
-	--Slash commands
+	-- Slash commands
 	AL["reset"] = true;
 	AL["options"] = true;
 	AL["Reset complete!"] = true;
 
-	--AtlasLoot Panel
+	-- AtlasLoot Panel
 	AL["Collections"] = true;
 	AL["Crafting"] = true;
 	AL["Factions"] = true;
@@ -118,12 +120,12 @@ if AL then
 	AL["QuickLook"] = true;
 	AL["World Events"] = true;
 
-	--AtlasLoot Panel - Search
+	-- AtlasLoot Panel - Search
 	AL["Clear"] = true;
 	AL["Last Result"] = true;
 	AL["Search"] = true;
 
-	--AtlasLoot Browser Menus
+	-- AtlasLoot Browser Menus
 	AL["Classic Instances"] = true;
 	AL["BC Instances"] = true;
 	AL["Sets/Collections"] = true;
@@ -132,24 +134,28 @@ if AL then
 	AL["World Bosses"] = true;
 	AL["Close Menu"] = true;
 
-	--Crafting Menu
+	-- Crafting Menu
 	AL["Crafting Daily Quests"] = true;
-	AL["Jewelcrafting Daily"] = true;
 	AL["Cooking Daily"] = true;
+	AL["Fishing Daily"] = true;
+	AL["Jewelcrafting Daily"] = true;
 	AL["Crafted Sets"] = true;
 	AL["Crafted Epic Weapons"] = true;
+	AL["Dragon's Eye"] = true;
 
-	--Sets/Collections Menu
+	-- Sets/Collections Menu
 	AL["Badge of Justice Rewards"] = true;
 	AL["Emblem of Valor Rewards"] = true;
 	AL["Emblem of Heroism Rewards"] = true;
 	AL["Emblem of Conquest Rewards"] = true;
+	AL["Emblem of Triumph Rewards"] = true;
+	AL["Emblem of Frost Rewards"] = true;
 	AL["BoE World Epics"] = true;
 	AL["Dungeon 1/2 Sets"] = true;
 	AL["Dungeon 3 Sets"] = true;
 	AL["Legendary Items"] = true;
 	AL["Mounts"] = true;
-	AL["Non-Combat Pets"] = true;
+	AL["Vanity Pets"] = true;
 	AL["Misc Sets"] = true;
 	AL["Classic Sets"] = true;
 	AL["Burning Crusade Sets"] = true;
@@ -165,12 +171,12 @@ if AL then
 	AL["Upper Deck Card Game Items"] = true;
 	AL["Zul'Gurub Sets"] = true;
 
-	--Factions Menu
+	-- Factions Menu
 	AL["Original Factions"] = true;
 	AL["BC Factions"] = true;
 	AL["WotLK Factions"] = true;
 
-	--PvP Menu
+	-- PvP Menu
 	AL["Arena PvP Sets"] = true;
 	AL["PvP Rewards (Level 60)"] = true;
 	AL["PvP Rewards (Level 70)"] = true;
@@ -182,15 +188,21 @@ if AL then
 	AL["PvP Non-Set Epics"] = true;
 	AL["PvP Reputation Sets"] = true;
 	AL["Arena PvP Weapons"] = true;
-	AL["PvP Jewelcrafting Designs and Gems"] = true;
+	AL["PvP Misc"] = true;
 	AL["PVP Gems/Enchants/Jewelcrafting Designs"] = true;
 	AL["Level 80 PvP Sets"] = true;
+	AL["Old Level 80 PvP Sets"] = true;
+	AL["Arena Season 7/8 Sets"] = true;
+	AL["PvP Class Items"] = true;
+	AL["NOT AVAILABLE ANYMORE"] = true;
 
-	--World Events
+	-- World Events
 	AL["Abyssal Council"] = true;
+	AL["Argent Tournament"] = true;
 	AL["Bash'ir Landing Skyguard Raid"] = true;
 	AL["Brewfest"] = true;
 	AL["Children's Week"] = true;
+	AL["Day of the Dead"] = true;
 	AL["Elemental Invasion"] = true;
 	AL["Ethereum Prison"] = true;
 	AL["Feast of Winter Veil"] = true;
@@ -201,17 +213,17 @@ if AL then
 	AL["Lunar Festival"] = true;
 	AL["Midsummer Fire Festival"] = true;
 	AL["Noblegarden"] = true;
+	AL["Pilgrim's Bounty"] = true;
 	AL["Skettis"] = true;
 	AL["Stranglethorn Fishing Extravaganza"] = true;
-	AL["Argent Tournament"] = true;
 
-	--Minimap Button
+	-- Minimap Button
 	AL["|cff1eff00Left-Click|r Browse Loot Tables"] = true;
 	AL["|cffff0000Right-Click|r View Options"] = true;
 	AL["|cffff0000Shift-Click|r View Options"] = true;
 	AL["|cffccccccLeft-Click + Drag|r Move Minimap Button"] = true;
 	AL["|cffccccccRight-Click + Drag|r Move Minimap Button"] = true;
-	
+
 	-- Filter
 	AL["Filter"] = true;
 	AL["Select All Loot"] = true;
@@ -221,7 +233,7 @@ if AL then
 	AL["Ranged weapons:"] = true;
 	AL["Relics:"] = true;
 	AL["Other:"] = true;
-	
+
 	-- Wishlist
 	AL["Close"] = true;
 	AL["Wishlist"] = true;
@@ -249,7 +261,6 @@ if AL then
 	AL["Send Wishlist (%s) to"] = true;
 	AL["Send"] = true;
 	AL["Cancel"] = true;
-	AL["Delet"] = true;
 	AL["Delete Wishlist %s?"] = true;
 	AL["%s sends you a Wishlist. Accept?"] = true;
 	AL[" tried to send you a Wishlist. Rejected because you are in combat."] = true;
@@ -258,7 +269,7 @@ if AL then
 	AL["Please set a default Wishlist."] = true;
 	AL["Set as default Wishlist"] = true;
 
-	--Misc Inventory related words
+	-- Misc Inventory related words
 	AL["Enchant"] = true;
 	AL["Scope"] = true;
 	AL["Darkmoon Faire Card"] = true;
@@ -266,25 +277,26 @@ if AL then
 	AL["Set"] = true;
 	AL["Token"] = true;
 	AL["Tokens"] = true;
+	AL["Token Hand-Ins"] = true;
 	AL["Skinning Knife"] = true;
 	AL["Herbalism Knife"] = true;
 	AL["Fish"] = true;
 	AL["Combat Pet"] = true;
 	AL["Fireworks"] = true;
+	AL["Fishing Lure"] = true;
 
-	--Extra inventory stuff
+	-- Extra inventory stuff
 	AL["Cloak"] = true;
-	AL["Weapons"] = true;
 	AL["Sigil"] = true; -- Can be added to BabbleInv
 
-	--Alchemy
+	-- Alchemy
 	AL["Battle Elixirs"] = true;
 	AL["Guardian Elixirs"] = true;
 	AL["Potions"] = true;
 	AL["Transmutes"] = true;
 	AL["Flasks"] = true;
 
-	--Enchanting
+	-- Enchanting
 	AL["Enchant Boots"] = true;
 	AL["Enchant Bracer"] = true;
 	AL["Enchant Chest"] = true;
@@ -295,11 +307,11 @@ if AL then
 	AL["Enchant 2H Weapon"] = true;
 	AL["Enchant Weapon"] = true;
 
-	--Engineering
+	-- Engineering
 	AL["Ammunition"] = true;
 	AL["Explosives"] = true;
 
-	--Inscription
+	-- Inscription
 	AL["Major Glyph"] = true;
 	AL["Minor Glyph"] = true;
 	AL["Scrolls"] = true;
@@ -307,7 +319,7 @@ if AL then
 	AL["Reagents"] = true;
 	AL["Book of Glyph Mastery"] = true;
 
-	--Leatherworking
+	-- Leatherworking
 	AL["Leather Armor"] = true;
 	AL["Mail Armor"] = true;
 	AL["Cloaks"] = true;
@@ -315,16 +327,18 @@ if AL then
 	AL["Quivers and Ammo Pouches"] = true;
 	AL["Drums, Bags and Misc."] = true;
 
-	--Tailoring
+	-- Tailoring
 	AL["Cloth Armor"] = true;
 	AL["Shirts"] = true;
 	AL["Bags"] = true;
 
-	--Labels for loot descriptions
+	-- Labels for loot descriptions
 	AL["Classes:"] = true;
 	AL["This Item Begins a Quest"] = true;
 	AL["Quest Item"] = true;
+	AL["Old Quest Item"] = true;
 	AL["Quest Reward"] = true;
+	AL["Old Quest Reward"] = true;
 	AL["Shared"] = true;
 	AL["Unique"] = true;
 	AL["Right Half"] = true;
@@ -335,17 +349,18 @@ if AL then
 	AL["16 Slot"] = true;
 	AL["10 Slot"] = true;
 	AL["(has random enchantment)"] = true;
-	AL["Use to purchase rewards"] = true;
-	AL["Use to purchase rewards (Horde)"] = true;
-	AL["Use to purchase rewards (Alliance)"] = true;
+	AL["Currency"] = true;
+	AL["Currency (Alliance)"] = true;
+	AL["Currency (Horde)"] = true;
 	AL["Conjured Item"] = true;
 	AL["Used to summon boss"] = true;
 	AL["Tradable against sunmote + item above"] = true;
 	AL["Card Game Item"] = true;
 	AL["Skill Required:"] = true;
 	AL["Rating:"] = true; -- Shorthand for 'Required Rating' for the personal/team ratings
+	AL["Random Heroic Reward"] = true;
 
-	--Minor Labels for loot table descriptions
+	-- Minor Labels for loot table descriptions
 	AL["Original WoW"] = true;
 	AL["Burning Crusade"] = true;
 	AL["Wrath of the Lich King"] = true;
@@ -365,6 +380,7 @@ if AL then
 	AL["Tier 7"] = true;
 	AL["Tier 8"] = true;
 	AL["Tier 9"] = true;
+	AL["Tier 10"] = true;
 	AL["10 Man"] = true;
 	AL["25 Man"] = true;
 	AL["10/25 Man"] = true;
@@ -381,7 +397,7 @@ if AL then
 	AL["Frost Resistance Gear"] = true;
 	AL["Shadow Resistance Gear"] = true;
 
-	--Labels for loot table sections
+	-- Labels for loot table sections
 	AL["Additional Heroic Loot"] = true;
 	AL["Heroic Mode"] = true;
 	AL["Normal Mode"] = true;
@@ -402,8 +418,16 @@ if AL then
 	AL["Heirloom"] = true;
 	AL["Weapons"] = true;
 	AL["Accessories"] = true;
+	AL["Alone in the Darkness"] = true;
+	AL["Call of the Grand Crusade"] = true;
+	AL["A Tribute to Skill (25)"] = true;
+	AL["A Tribute to Mad Skill (45)"] = true;
+	AL["A Tribute to Insanity (50)"] = true;
+	AL["A Tribute to Immortality"] = true;
+	AL["Low Level"] = true;
+	AL["High Level"] = true;
 
-	--Loot Table Names
+	-- Loot Table Names
 	AL["Scholomance Sets"] = true;
 	AL["PvP Accessories (Level 60)"] = true;
 	AL["PvP Accessories - Alliance (Level 60)"] = true;
@@ -422,9 +446,13 @@ if AL then
 	AL["Summon"] = true;
 	AL["Random"] = true;
 	AL["Tier 8 Sets"] = true;
+	AL["Tier 9 Sets"] = true;
+	AL["Tier 10 Sets"] = true;
 	AL["Furious Gladiator Sets"] = true;
+	AL["Relentless Gladiator Sets"] = true;
+	AL["Brew of the Month Club"] = true;
 
-	--Extra Text in Boss lists
+	-- Extra Text in Boss lists
 	AL["Set: Embrace of the Viper"] = true;
 	AL["Set: Defias Leather"] = true;
 	AL["Set: The Gladiator"] = true;
@@ -450,18 +478,20 @@ if AL then
 	AL["Hyjal Summit Designs"] =true;
 	AL["SP Patterns/Plans"] = true;
 	AL["Ulduar Formula/Patterns/Plans"] = true;
+	AL["Trial of the Crusader Patterns/Plans"] = true;
 	AL["Legendary Items for Kael'thas Fight"] = true;
 
-	--Pets
+	-- Pets
 	AL["Pets"] = true;
 	AL["Promotional"] = true;
+	AL["Pet Store"] = true;
 	AL["Merchant Sold"] = true;
 	AL["Rare"] = true;
 	AL["Achievement"] = true;
 	AL["Faction"] = true;
 	AL["Dungeon/Raid"] = true;
 
-	--Mounts
+	-- Mounts
 	AL["Achievement Reward"] = true;
 	AL["Alliance Flying Mounts"] = true;
 	AL["Alliance Mounts"] = true;
@@ -478,13 +508,13 @@ if AL then
 	AL["Promotional Mounts"] = true;
 	AL["Rare Mounts"] = true;
 
-	--Darkmoon Faire
+	-- Darkmoon Faire
 	AL["Darkmoon Faire Rewards"] = true;
 	AL["Low Level Decks"] = true;
 	AL["Original and BC Trinkets"] = true;
 	AL["WotLK Trinkets"] = true;
-    
-	--Card Game Decks and descriptions
+
+	-- Card Game Decks and descriptions
 	AL["Loot Card Items"] = true;
 	AL["UDE Items"] = true;
 
@@ -538,54 +568,79 @@ if AL then
 
 	-- Ninth set
 	AL["Fields of Honor"] = true;
+	AL["Path of Cenarius"] = true;
+	AL["Pinata"] = true;
+	AL["El Pollo Grande"] = true;
 
-	--Battleground Brackets
+	-- Tenth set
+	AL["Scourgewar"] = true;
+	AL["Tiny"] = true;
+	AL["Tuskarr Kite"] = true;
+	AL["Spectral Kitten"] = true;
+
+	-- Eleventh set
+	AL["Wrathgate"] = true;
+	AL["Statue Generator"] = true;
+	AL["Landro's Gift"] = true;
+	AL["Blazing Hippogryph"] = true;
+
+	-- Twelvth set
+	AL["Icecrown"] = true;
+	AL["Wooly White Rhino"] = true;
+	AL["Ethereal Portal"] = true;
+	AL["Paint Bomb"] = true;
+
+	-- Battleground Brackets
+	AL["BG/Open PvP Rewards"] = true;
 	AL["Misc. Rewards"] = true;
-	AL["Superior Rewards"] = true;
-	AL["Epic Rewards"] = true;
-	AL["Level 10-19 Rewards"] = true;
+	AL["Level 20-39 Rewards"] = true;
 	AL["Level 20-29 Rewards"] = true;
 	AL["Level 30-39 Rewards"] = true;
 	AL["Level 40-49 Rewards"] = true;
-	AL["Level 50-59 Rewards"] = true;
 	AL["Level 60 Rewards"] = true;
 
-	--Brood of Nozdormu Paths
+	-- Brood of Nozdormu Paths
 	AL["Path of the Conqueror"] = true;
 	AL["Path of the Invoker"] = true;
 	AL["Path of the Protector"] = true;
 
-	--Violet Eye Paths
+	-- Violet Eye Paths
 	AL["Path of the Violet Protector"] = true;
 	AL["Path of the Violet Mage"] = true;
 	AL["Path of the Violet Assassin"] = true;
 	AL["Path of the Violet Restorer"] = true;
+	
+	-- Ashen Verdict Paths
+	AL["Path of Courage"] = true;
+	AL["Path of Destruction"] = true;
+	AL["Path of Vengeance"] = true;
+	AL["Path of Wisdom"] = true;
 
-	--AQ Opening Event
+	-- AQ Opening Event
 	AL["Red Scepter Shard"] = true;
 	AL["Blue Scepter Shard"] = true;
 	AL["Green Scepter Shard"] = true;
 	AL["Scepter of the Shifting Sands"] = true;
 
-	--World PvP
+	-- World PvP
 	AL["Hellfire Fortifications"] = true;
 	AL["Twin Spire Ruins"] = true;
 	AL["Spirit Towers"] = true;
 	AL["Halaa"] = true;
 	AL["Venture Bay"] = true;
 
-	--Karazhan Opera Event Headings
+	-- Karazhan Opera Event Headings
 	AL["Shared Drops"] = true;
 	AL["Romulo & Julianne"] = true;
 	AL["Wizard of Oz"] = true;
 	AL["Red Riding Hood"] = true;
 
-	--Karazhan Animal Boss Types
+	-- Karazhan Animal Boss Types
 	AL["Spider"] = true;
 	AL["Darkhound"] = true;
 	AL["Bat"] = true;
 
-	--ZG Tokens
+	-- ZG Tokens
 	AL["Primal Hakkari Kossack"] = true;
 	AL["Primal Hakkari Shawl"] = true;
 	AL["Primal Hakkari Bindings"] = true;
@@ -596,7 +651,7 @@ if AL then
 	AL["Primal Hakkari Armsplint"] = true;
 	AL["Primal Hakkari Tabard"] = true;
 
-	--AQ20 Tokens
+	-- AQ20 Tokens
 	AL["Qiraji Ornate Hilt"] = true;
 	AL["Qiraji Martial Drape"] = true;
 	AL["Qiraji Magisterial Ring"] = true;
@@ -604,7 +659,7 @@ if AL then
 	AL["Qiraji Regal Drape"] = true;
 	AL["Qiraji Spiked Hilt"] = true;
 
-	--AQ40 Tokens
+	-- AQ40 Tokens
 	AL["Qiraji Bindings of Dominance"] = true;
 	AL["Qiraji Bindings of Command"] = true;
 	AL["Vek'nilash's Circlet"] = true;
@@ -614,7 +669,11 @@ if AL then
 	AL["Husk of the Old God"] = true;
 	AL["Carapace of the Old God"] = true;
 
-	--Blacksmithing Crafted Sets
+	-- Blacksmithing Mail Crafted Sets
+	AL["Bloodsoul Embrace"] = true;
+	AL["Fel Iron Chain"] = true;
+
+	-- Blacksmithing Plate Crafted Sets
 	AL["Imperial Plate"] = true;
 	AL["The Darksoul"] = true;
 	AL["Fel Iron Plate"] = true;
@@ -624,10 +683,43 @@ if AL then
 	AL["Khorium Ward"] = true;
 	AL["Faith in Felsteel"] = true;
 	AL["Burning Rage"] = true;
-	AL["Bloodsoul Embrace"] = true;
-	AL["Fel Iron Chain"] = true;
+	AL["Ornate Saronite Battlegear"] = true;
+	AL["Savage Saronite Battlegear"] = true;
 
-	--Tailoring Crafted Sets
+	-- Leatherworking Crafted Leather Sets
+	AL["Volcanic Armor"] = true;
+	AL["Ironfeather Armor"] = true;
+	AL["Stormshroud Armor"] = true;
+	AL["Devilsaur Armor"] = true;
+	AL["Blood Tiger Harness"] = true;
+	AL["Primal Batskin"] = true;
+	AL["Wild Draenish Armor"] = true;
+	AL["Thick Draenic Armor"] = true;
+	AL["Fel Skin"] = true;
+	AL["Strength of the Clefthoof"] = true;
+	AL["Primal Intent"] = true;
+	AL["Windhawk Armor"] = true;
+	AL["Borean Embrace"] = true;
+	AL["Iceborne Embrace"] = true;
+	AL["Eviscerator's Battlegear"] = true;
+	AL["Overcaster Battlegear"] = true;
+
+	-- Leatherworking Crafted Mail Sets
+	AL["Green Dragon Mail"] = true;
+	AL["Blue Dragon Mail"] = true;
+	AL["Black Dragon Mail"] = true;
+	AL["Scaled Draenic Armor"] = true;
+	AL["Felscale Armor"] = true;
+	AL["Felstalker Armor"] = true;
+	AL["Fury of the Nether"] = true;
+	AL["Netherscale Armor"] = true;
+	AL["Netherstrike Armor"] = true;
+	AL["Frostscale Binding"] = true;
+	AL["Nerubian Hive"] = true;
+	AL["Stormhide Battlegear"] = true;
+	AL["Swiftarrow Battlefear"] = true;
+
+	-- Tailoring Crafted Sets
 	AL["Bloodvine Garb"] = true;
 	AL["Netherweave Vestments"] = true;
 	AL["Imbued Netherweave"] = true;
@@ -640,31 +732,11 @@ if AL then
 	AL["Primal Mooncloth"] = true;
 	AL["Shadow's Embrace"] = true;
 	AL["Wrath of Spellfire"] = true;
+	AL["Frostwoven Power"] = true;
+	AL["Duskweaver"] = true;
+	AL["Frostsavage Battlegear"] = true;
 
-	--Leatherworking Crafted Sets
-	AL["Volcanic Armor"] = true;
-	AL["Ironfeather Armor"] = true;
-	AL["Stormshroud Armor"] = true;
-	AL["Devilsaur Armor"] = true;
-	AL["Blood Tiger Harness"] = true;
-	AL["Primal Batskin"] = true;
-	AL["Wild Draenish Armor"] = true;
-	AL["Thick Draenic Armor"] = true;
-	AL["Fel Skin"] = true;
-	AL["Strength of the Clefthoof"] = true;
-	AL["Green Dragon Mail"] = true;
-	AL["Blue Dragon Mail"] = true;
-	AL["Black Dragon Mail"] = true;
-	AL["Scaled Draenic Armor"] = true;
-	AL["Felscale Armor"] = true;
-	AL["Felstalker Armor"] = true;
-	AL["Fury of the Nether"] = true;
-	AL["Primal Intent"] = true;
-	AL["Windhawk Armor"] = true;
-	AL["Netherscale Armor"] = true;
-	AL["Netherstrike Armor"] = true;
-
-	--Classic WoW Sets
+	-- Classic WoW Sets
 	AL["Defias Leather"] = true;
 	AL["Embrace of the Viper"] = true;
 	AL["Chain of the Scarlet Crusade"] = true;
@@ -687,18 +759,18 @@ if AL then
 	AL["Dal'Rend's Arms"] = true;
 	AL["Spider's Kiss"] = true;
 
-	--The Burning Crusade Sets
+	-- The Burning Crusade Sets
 	AL["Latro's Flurry"] = true;
 	AL["The Twin Stars"] = true;
 	AL["The Fists of Fury"] = true;
 	AL["The Twin Blades of Azzinoth"] = true;
 
-	--Wrath of the Lich King Sets
+	-- Wrath of the Lich King Sets
 	AL["Raine's Revenge"] = true;
-	AL["Low Level"] = true;
-	AL["High Level"] = true;
+	AL["Purified Shard of the Gods"] = true;
+	AL["Shiny Shard of the Gods"] = true;
 
-	--Recipe origin strings
+	-- Recipe origin strings
 	AL["Trainer"] = true;
 	AL["Discovery"] = true;
 	AL["World Drop"] = true;
@@ -707,7 +779,7 @@ if AL then
 	AL["Quest"] = true;
 	AL["Crafted"] = true;
 
-	--Scourge Invasion
+	-- Scourge Invasion
 	AL["Scourge Invasion"] = true;
 	AL["Scourge Invasion Sets"] = true;
 	AL["Blessed Regalia of Undead Cleansing"] = true;
@@ -716,7 +788,7 @@ if AL then
 	AL["Blessed Battlegear of Undead Slaying"] = true;
 	AL["Prince Tenris Mirkblood"] = true;
 
-	--ZG Sets
+	-- ZG Sets
 	AL["Haruspex's Garb"] = true;
 	AL["Predator's Armor"] = true;
 	AL["Illusionist's Attire"] = true;
@@ -727,7 +799,7 @@ if AL then
 	AL["Demoniac's Threads"] = true;
 	AL["Vindicator's Battlegear"] = true;
 
-	--AQ20 Sets
+	-- AQ20 Sets
 	AL["Symbols of Unending Life"] = true;
 	AL["Trappings of the Unseen Path"] = true;
 	AL["Trappings of Vaulted Secrets"] = true;
@@ -738,7 +810,7 @@ if AL then
 	AL["Implements of Unspoken Names"] = true;
 	AL["Battlegear of Unyielding Strength"] = true;
 
-	--AQ40 Sets
+	-- AQ40 Sets
 	AL["Genesis Raiment"] = true;
 	AL["Striker's Garb"] = true;
 	AL["Enigma Vestments"] = true;
@@ -749,7 +821,7 @@ if AL then
 	AL["Doomcaller's Attire"] = true;
 	AL["Conqueror's Battlegear"] = true;
 
-	--Dungeon 1 Sets
+	-- Dungeon 1 Sets
 	AL["Wildheart Raiment"] = true;
 	AL["Beaststalker Armor"] = true;
 	AL["Magister's Regalia"] = true;
@@ -760,7 +832,7 @@ if AL then
 	AL["Dreadmist Raiment"] = true;
 	AL["Battlegear of Valor"] = true;
 
-	--Dungeon 2 Sets
+	-- Dungeon 2 Sets
 	AL["Feralheart Raiment"] = true;
 	AL["Beastmaster Armor"] = true;
 	AL["Sorcerer's Regalia"] = true;
@@ -771,7 +843,7 @@ if AL then
 	AL["Deathmist Raiment"] = true;
 	AL["Battlegear of Heroism"] = true;
 
-	--Dungeon 3 Sets
+	-- Dungeon 3 Sets
 	AL["Hallowed Raiment"] = true;
 	AL["Incanter's Regalia"] = true;
 	AL["Mana-Etched Regalia"] = true;
@@ -786,7 +858,7 @@ if AL then
 	AL["Doomplate Battlegear"] = true;
 	AL["Righteous Armor"] = true;
 
-	--Tier 1 Sets
+	-- Tier 1 Sets
 	AL["Cenarion Raiment"] = true;
 	AL["Giantstalker Armor"] = true;
 	AL["Arcanist Regalia"] = true;
@@ -797,7 +869,7 @@ if AL then
 	AL["Felheart Raiment"] = true;
 	AL["Battlegear of Might"] = true;
 
-	--Tier 2 Sets
+	-- Tier 2 Sets
 	AL["Stormrage Raiment"] = true;
 	AL["Dragonstalker Armor"] = true;
 	AL["Netherwind Regalia"] = true;
@@ -808,7 +880,7 @@ if AL then
 	AL["Nemesis Raiment"] = true;
 	AL["Battlegear of Wrath"] = true;
 
-	--Tier 3 Sets
+	-- Tier 3 Sets
 	AL["Dreamwalker Raiment"] = true;
 	AL["Cryptstalker Armor"] = true;
 	AL["Frostfire Regalia"] = true;
@@ -819,7 +891,7 @@ if AL then
 	AL["Plagueheart Raiment"] = true;
 	AL["Dreadnaught's Battlegear"] = true;
 
-	--Tier 4 Sets
+	-- Tier 4 Sets
 	AL["Malorne Harness"] = true;
 	AL["Malorne Raiment"] = true;
 	AL["Malorne Regalia"] = true;
@@ -838,7 +910,7 @@ if AL then
 	AL["Warbringer Armor"] = true;
 	AL["Warbringer Battlegear"] = true;
 
-	--Tier 5 Sets
+	-- Tier 5 Sets
 	AL["Nordrassil Harness"] = true;
 	AL["Nordrassil Raiment"] = true;
 	AL["Nordrassil Regalia"] = true;
@@ -857,7 +929,7 @@ if AL then
 	AL["Destroyer Armor"] = true;
 	AL["Destroyer Battlegear"] = true;
 
-	--Tier 6 Sets
+	-- Tier 6 Sets
 	AL["Thunderheart Harness"] = true;
 	AL["Thunderheart Raiment"] = true;
 	AL["Thunderheart Regalia"] = true;
@@ -876,7 +948,7 @@ if AL then
 	AL["Onslaught Armor"] = true;
 	AL["Onslaught Battlegear"] = true;
 
-	--Tier 7 Sets
+	-- Tier 7 Sets
 	AL["Scourgeborne Battlegear"] = true;
 	AL["Scourgeborne Plate"] = true;
 	AL["Dreamwalker Garb"] = true;
@@ -897,14 +969,14 @@ if AL then
 	AL["Dreadnaught Battlegear"] = true;
 	AL["Dreadnaught Plate"] = true;
 
-	--Tier 8 Sets
+	-- Tier 8 Sets
 	AL["Darkruned Battlegear"] = true;
 	AL["Darkruned Plate"] = true;
 	AL["Nightsong Garb"] = true;
 	AL["Nightsong Battlegear"] = true;
 	AL["Nightsong Regalia"] = true;
 	AL["Scourgestalker Battlegear"] = true;
-	AL["Kirin'dor Garb"] = true;
+	AL["Kirin Tor Garb"] = true;
 	AL["Aegis Regalia"] = true;
 	AL["Aegis Battlegear"] = true;
 	AL["Aegis Plate"] = true;
@@ -918,13 +990,68 @@ if AL then
 	AL["Siegebreaker Battlegear"] = true;
 	AL["Siegebreaker Plate"] = true;
 
-	--Tier 9 Sets
+	-- Tier 9 Sets
+	AL["Malfurion's Garb"] = true;
+	AL["Malfurion's Battlegear"] = true;
+	AL["Malfurion's Regalia"] = true;
+	AL["Runetotem's Garb"] = true;
+	AL["Runetotem's Battlegear"] = true;
+	AL["Runetotem's Regalia"] = true;
+	AL["Windrunner's Battlegear"] = true;
+	AL["Windrunner's Pursuit"] = true;
+	AL["Khadgar's Regalia"] = true;
+	AL["Sunstrider's Regalia"] = true;
+	AL["Turalyon's Garb"] = true;
+	AL["Turalyon's Battlegear"] = true;
+	AL["Turalyon's Plate"] = true;
+	AL["Liadrin's Garb"] = true;
+	AL["Liadrin's Battlegear"] = true;
+	AL["Liadrin's Plate"] = true;
+	AL["Velen's Regalia"] = true;
+	AL["Velen's Raiment"] = true;
+	AL["Zabra's Regalia"] = true;
+	AL["Zabra's Raiment"] = true;
+	AL["VanCleef's Battlegear"] = true;
+	AL["Garona's Battlegear"] = true;
+	AL["Nobundo's Garb"] = true;
+	AL["Nobundo's Battlegear"] = true;
+	AL["Nobundo's Regalia"] = true;
+	AL["Thrall's Garb"] = true;
+	AL["Thrall's Battlegear"] = true;
+	AL["Thrall's Regalia"] = true;
+	AL["Kel'Thuzad's Regalia"] = true;
+	AL["Gul'dan's Regalia"] = true;
+	AL["Wrynn's Battlegear"] = true;
+	AL["Wrynn's Plate"] = true;
+	AL["Hellscream's Battlegear"] = true;
+	AL["Hellscream's Plate"] = true;
 	AL["Thassarian's Battlegear"] = true;
 	AL["Koltira's Battlegear"] = true;
 	AL["Thassarian's Plate"] = true;
 	AL["Koltira's Plate"] = true;
 
-	--Arathi Basin Sets - Alliance
+	-- Tier 10 Sets
+	AL["Lasherweave's Garb"] = true;
+	AL["Lasherweave's Battlegear"] = true;
+	AL["Lasherweave's Regalia"] = true;
+	AL["Ahn'Kahar Blood Hunter's Battlegear"] = true;
+	AL["Bloodmage's Regalia"] = true;
+	AL["Lightsworn Garb"] = true;
+	AL["Lightsworn Plate"] = true;
+	AL["Lightsworn Battlegear"] = true;
+	AL["Crimson Acolyte's Regalia"] = true;
+	AL["Crimson Acolyte's Raiment"] = true;
+	AL["Shadowblade's Battlegear"] = true;
+	AL["Frost Witch's Garb"] = true;
+	AL["Frost Witch's Battlegear"] = true;
+	AL["Frost Witch's Regalia"] = true;
+	AL["Dark Coven's Garb"] = true;
+	AL["Ymirjar Lord's Battlegear"] = true;
+	AL["Ymirjar Lord's Plate"] = true;
+	AL["Scourgelord's Battlegear"] = true;
+	AL["Scourgelord's Plate"] = true;
+
+	-- Arathi Basin Sets - Alliance
 	AL["The Highlander's Intent"] = true;
 	AL["The Highlander's Purpose"] = true;
 	AL["The Highlander's Will"] = true;
@@ -933,7 +1060,7 @@ if AL then
 	AL["The Highlander's Resolution"] = true;
 	AL["The Highlander's Resolve"] = true;
 
-	--Arathi Basin Sets - Horde
+	-- Arathi Basin Sets - Horde
 	AL["The Defiler's Intent"] = true;
 	AL["The Defiler's Purpose"] = true;
 	AL["The Defiler's Will"] = true;
@@ -941,7 +1068,7 @@ if AL then
 	AL["The Defiler's Fortitude"] = true;
 	AL["The Defiler's Resolution"] = true;
 
-	--PvP Level 60 Rare Sets - Alliance
+	-- PvP Level 60 Rare Sets - Alliance
 	AL["Lieutenant Commander's Refuge"] = true;
 	AL["Lieutenant Commander's Pursuance"] = true;
 	AL["Lieutenant Commander's Arcanum"] = true;
@@ -952,7 +1079,7 @@ if AL then
 	AL["Lieutenant Commander's Dreadgear"] = true;
 	AL["Lieutenant Commander's Battlearmor"] = true;
 
-	--PvP Level 60 Rare Sets - Horde
+	-- PvP Level 60 Rare Sets - Horde
 	AL["Champion's Refuge"] = true;
 	AL["Champion's Pursuance"] = true;
 	AL["Champion's Arcanum"] = true;
@@ -963,7 +1090,7 @@ if AL then
 	AL["Champion's Dreadgear"] = true;
 	AL["Champion's Battlearmor"] = true;
 
-	--PvP Level 60 Epic Sets - Alliance
+	-- PvP Level 60 Epic Sets - Alliance
 	AL["Field Marshal's Sanctuary"] = true;
 	AL["Field Marshal's Pursuit"] = true;
 	AL["Field Marshal's Regalia"] = true;
@@ -974,7 +1101,7 @@ if AL then
 	AL["Field Marshal's Threads"] = true;
 	AL["Field Marshal's Battlegear"] = true;
 
-	--PvP Level 60 Epic Sets - Horde
+	-- PvP Level 60 Epic Sets - Horde
 	AL["Warlord's Sanctuary"] = true;
 	AL["Warlord's Pursuit"] = true;
 	AL["Warlord's Regalia"] = true;
@@ -985,7 +1112,7 @@ if AL then
 	AL["Warlord's Threads"] = true;
 	AL["Warlord's Battlegear"] = true;
 
-	--Outland Faction Reputation PvP Sets
+	-- Outland Faction Reputation PvP Sets
 	AL["Dragonhide Battlegear"] = true;
 	AL["Wyrmhide Battlegear"] = true;
 	AL["Kodohide Battlegear"] = true;
@@ -1002,7 +1129,7 @@ if AL then
 	AL["Dreadweave Battlegear"] = true;
 	AL["Savage's Plate Battlegear"] = true;
 
-	--Arena Epic Sets
+	-- Arena Epic Sets
 	AL["Gladiator's Sanctuary"] = true;
 	AL["Gladiator's Wildhide"] = true;
 	AL["Gladiator's Refuge"] = true;
@@ -1022,12 +1149,28 @@ if AL then
 	AL["Gladiator's Battlegear"] = true;
 	AL["Gladiator's Desecration"] = true;
 
-	--Level 80 PvP Weapons
+	-- Level 80 PvP Weapons
 	AL["Savage Gladiator\'s Weapons"] = true; --unused
 	AL["Deadly Gladiator\'s Weapons"] = true; --unused
 	AL["Furious Gladiator\'s Weapons"] = true;
+	AL["Relentless Gladiator\'s Weapons"] = true;
+	AL["Wrathful Gladiator\'s Weapons"] = true;
 
-	--Specs
+	-- Months
+	AL["January"] = true;
+	AL["February"] = true;
+	AL["March"] = true;
+	AL["April"] = true;
+	AL["May"] = true;
+	AL["June"] = true;
+	AL["July"] = true;
+	AL["August"] = true;
+	AL["September"] = true;
+	AL["October"] = true;
+	AL["November"] = true;
+	AL["December"] = true;
+
+	-- Specs
 	AL["Balance"] = true;
 	AL["Feral"] = true;
 	AL["Restoration"] = true;
@@ -1043,14 +1186,14 @@ if AL then
 	AL["Tanking"] = true;
 	AL["DPS"] = true;
 
-	--Naxx Zones
+	-- Naxx Zones
 	AL["Construct Quarter"] = true;
 	AL["Arachnid Quarter"] = true;
 	AL["Military Quarter"] = true;
 	AL["Plague Quarter"] = true;
 	AL["Frostwyrm Lair"] = true;
 
-	--NPCs missing from BabbleBoss
+	-- NPCs missing from BabbleBoss
 	AL["Trash Mobs"] = true;
 	AL["Dungeon Set 2 Summonable"] = true;
 	AL["Highlord Kruul"] = true;
@@ -1155,7 +1298,7 @@ if AL then
 	AL["Templars"] = true;
 	AL["Dukes"] = true;
 	AL["High Council"] = true;
-	AL["Headless Horseman"] = true;
+	AL["Headless Horseman"] = true; --Is in BabbleBoss
 	AL["Barleybrew Brewery"] = true;
 	AL["Thunderbrew Brewery"] = true;
 	AL["Gordok Brewery"] = true;
@@ -1170,7 +1313,7 @@ if AL then
 	AL["Namdo Bizzfizzle"] = true;
 	AL["The Nameles Prophet"] = true;
 	AL["Zelemar the Wrathful"] = true;
-	AL["Henry Stern"] = true;
+	AL["Henry Stern"] = true; --Is in BabbleBoss
 	AL["Aggem Thorncurse"] = true;
 	AL["Roogug"] = true;
 	AL["Rajaxx's Captains"] = true;
@@ -1179,7 +1322,7 @@ if AL then
 	AL["Kalldan Felmoon"] = true;
 	AL["Magregan Deepshadow"] = true;
 	AL["Lord Ahune"] = true;
-	AL["Coren Direbrew"] = true;
+	AL["Coren Direbrew"] = true; --Is in BabbleBoss
 	AL["Don Carlos"] = true;
 	AL["Thomas Yance"] = true;
 	AL["Aged Dalaran Wizard"] = true;
@@ -1191,13 +1334,16 @@ if AL then
 	AL["Bjarngrim"] = true; -- Is in BabbleBoss
 	AL["Loken"] = true; -- Is in BabbleBoss
 	AL["Time-Lost Proto Drake"] = true;
-	AL["Emalon the Storm Watcher"] = true; -- Is in BabbleBoss
+	AL["Faction Champions"] = true; -- if you have a better name, use it.
+	AL["Razzashi Raptor"] = true;
+	AL["Deviate Ravager/Deviate Guardian"] = true;
+	AL["Krick and Ick"]  = true;
 
-	--Zones
+	-- Zones
 	AL["World Drop"] = true;
 	AL["Sunwell Isle"] = true;
 
-	--Shortcuts for Bossname files
+	-- Shortcuts for Bossname files
 	AL["LBRS"] = true;
 	AL["UBRS"] = true;
 	AL["CoT1"] = true;
@@ -1207,7 +1353,7 @@ if AL then
 	AL["Serpentshrine"] = true;
 	AL["Avatar"] = true; -- Avatar of the Martyred
 
-	--Chests, etc
+	-- Chests, etc
 	AL["Dark Coffer"] = true;
 	AL["The Secret Safe"] = true;
 	AL["The Vault"] = true;
@@ -1260,11 +1406,16 @@ if AL then
 	AL["Hyldnir Spoils"] = true;
 	AL["Ripe Disgusting Jar"] = true;
 	AL["Cracked Egg"] = true;
+	AL["Small Spice Bag"] = true;
+	AL["Handful of Candy"] = true;
+	AL["Lovely Dress Box"] = true;
+	AL["Dinner Suit Box"] = true;
+	AL["Bag of Heart Candies"] = true;
 
-	--The next 4 lines are the tooltip for the Server Query Button
-	--The translation doesn't have to be literal, just re-write the
-	--sentences as you would naturally and break them up into 4 roughly
-	--equal lines.
+	-- The next 4 lines are the tooltip for the Server Query Button
+	-- The translation doesn't have to be literal, just re-write the
+	-- sentences as you would naturally and break them up into 4 roughly
+	-- equal lines.
 	AL["Queries the server for all items"] = true;
 	AL["on this page. The items will be"] = true;
 	AL["refreshed when you next mouse"] = true;
@@ -1272,7 +1423,7 @@ if AL then
 	AL["The Minimap Button is generated by the FuBar Plugin."] = true;
 	AL["This is automatic, you do not need FuBar installed."] = true;
 
-	--Help Frame
+	-- Help Frame
 	AL["Help"] = true;
 	AL["AtlasLoot Help"] = true;
 	AL["For further help, see our website and forums: "] = true;
@@ -1293,7 +1444,7 @@ if AL then
 	AL["HELP!! I have broken the mod somehow!"] = true;
 	AL["Use the reset buttons available in the options menu, or type '/al reset' in your chat window."] = true;
 
-	--Error Messages and warnings
+	-- Error Messages and warnings
 	AL["AtlasLoot Error!"] = true;
 	AL["WishList Full!"] = true;
 	AL[" added to the WishList."] = true;
@@ -1304,42 +1455,42 @@ if AL then
 	AL["Server queried for "] = true;
 	AL[".  Right click on any other item to refresh the loot page."] = true;
 
-	--Incomplete Table Registry error message
+	-- Incomplete Table Registry error message
 	AL[" not listed in loot table registry, please report this message to the AtlasLoot forums at http://www.atlasloot.net"] = true;
 
-	--LoD Module disabled or missing
+	-- LoD Module disabled or missing
 	AL[" is unavailable, the following load on demand module is required: "] = true;
 
-	--LoD Module load sequence could not be completed
+	-- LoD Module load sequence could not be completed
 	AL["Status of the following module could not be determined: "] = true;
 
-	--LoD Module required has loaded, but loot table is missing
+	-- LoD Module required has loaded, but loot table is missing
 	AL[" could not be accessed, the following module may be out of date: "] = true;
 
-	--LoD module not defined
+	-- LoD module not defined
 	AL["Loot module returned as nil!"] = true;
 
-	--LoD module loaded successfully
+	-- LoD module loaded successfully
 	AL["sucessfully loaded."] = true;
 
-	--Need a big dataset for searching
+	-- Need a big dataset for searching
 	AL["Loading available tables for searching"] = true;
 
-	--All Available modules loaded
+	-- All Available modules loaded
 	AL["All Available Modules Loaded"] = true;
 
-	--First time user
+	-- First time user
 	AL["Welcome to Atlasloot Enhanced.  Please take a moment to set your preferences."] = true;
 	AL["Welcome to Atlasloot Enhanced.  Please take a moment to set your preferences for tooltips and links in the chat window.\n\n  This options screen can be reached again at any later time by typing '/atlasloot'."] = true;
 	AL["Setup"] = true;
 
-	--Old Atlas Detected
+	-- Old Atlas Detected
 	AL["It has been detected that your version of Atlas does not match the version that Atlasloot is tuned for ("] = true;
 	AL[").  Depending on changes, there may be the occasional error, so please visit http://www.atlasmod.com as soon as possible to update."] = true;
 	AL["OK"] = true;
 	AL["Incompatible Atlas Detected"] = true;
 
-	--Unsafe item tooltip
+	-- Unsafe item tooltip
 	AL["Unsafe Item"] = true;
 	AL["Item Unavailable"] = true;
 	AL["ItemID:"] = true;

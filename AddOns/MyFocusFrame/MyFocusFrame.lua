@@ -2,16 +2,19 @@
 -- Localize it for non-English clients.
 if GetLocale() == "zhCN" then
 	MYFOCUSFRAME_TITLE = "焦点目标"
-	MYFOCUSFRAME_DRAG = "按住鼠标左键拖动来移动框体"
+	MYFOCUSFRAME_DRAG = "按住鼠标左键拖动来移动框体，Alt+鼠标右键清除焦点"
 	MYFOCUSFRAME_DRAG_LOCKED = "使用 /focusframe 解锁(移动)"
+	MYFOCUSFRAME_HIDE_FRAME = "隐藏焦点"
 elseif GetLocale() == "zhTW" then
 	MYFOCUSFRAME_TITLE = "焦點目標"
-	MYFOCUSFRAME_DRAG = "按住滑鼠左鍵拖動來移動框體"
+	MYFOCUSFRAME_DRAG = "按住滑鼠左鍵拖動來移動框體，Alt+鼠標右鍵清除焦點"
 	MYFOCUSFRAME_DRAG_LOCKED = "使用 /focusframe 解鎖(移動)"
+	MYFOCUSFRAME_HIDE_FRAME = "隱藏焦點"
 else
 	MYFOCUSFRAME_TITLE = "Focus";
-	MYFOCUSFRAME_DRAG = "Drag to move";
+	MYFOCUSFRAME_DRAG = "Drag to move,Alt+Right mouse to hide frame";
 	MYFOCUSFRAME_DRAG_LOCKED = "Use /focusframe unlock to move.";
+	MYFOCUSFRAME_HIDE_FRAME = "Hide Focus"
 end
 
 -- Packages all local variables of MyFocusFrame Addon.
@@ -243,7 +246,7 @@ function MyFocusFrame_CheckLevel()
 		MyFocusLevelText:SetText(targetLevel);
 		-- Color level number
 		if ( UnitCanAttack("player", "focus") ) then
-			local color = GetDifficultyColor(targetLevel);
+			local color = GetQuestDifficultyColor(targetLevel);
 			MyFocusLevelText:SetVertexColor(color.r, color.g, color.b);
 		else
 			MyFocusLevelText:SetVertexColor(1.0, 0.82, 0.0);
@@ -649,6 +652,7 @@ end
 
 function MyFocusFrameDropDown_OnLoad(self)
 	UIDropDownMenu_Initialize(self, MyFocusFrameDropDown_Initialize, "MENU");
+
 end
 
 function MyFocusFrameDropDown_Initialize(self)
@@ -675,6 +679,7 @@ function MyFocusFrameDropDown_Initialize(self)
 	if ( menu ) then
 		UnitPopup_ShowMenu(MyFocusFrameDropDown, menu, "focus", name, id);
 	end
+
 end
 
 
@@ -907,6 +912,8 @@ function MyFocusFrame_Toggle(switch)
 
 		MyFocusFrame:SetAttribute("*type1", "target");
 		MyFocusFrame:SetAttribute("*type2", "menu");
+		MyFocusFrame:SetAttribute("alt-type2", "macro");
+		MyFocusFrame:SetAttribute("macrotext", "/clearfocus");
 		MyFocusFrame:SetAttribute("unit", "focus");
 		MyFocusFrame.menu = showmenu;
 
@@ -928,7 +935,7 @@ function MyFocusFrame_Toggle(switch)
 		--end
 		MyFocusFrame_Update(self);
 
-		MyTargetofFocusFrame:SetAttribute("*type1", "focus-target");
+		MyTargetofFocusFrame:SetAttribute("*type1", "target");
 		MyTargetofFocusFrame:SetAttribute("unit", "focus-target");
 		MyTargetofFocusFrame:RegisterEvent("UNIT_AURA");
 		RegisterUnitWatch(MyTargetofFocusFrame);

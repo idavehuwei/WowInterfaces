@@ -46,6 +46,11 @@ Nef_TANKPoly = false,				--变形(NEF)
 TAQ_Twin_AOEAdd = false,			--Add(双子)
 ShowSysInfo = false,				--显示占用
 cameraMax = false,					--增大镜头
+RaidSpell = true,					--团队物品
+Check_Cooking = true,				--进食充分
+Check_Cooking_Whisper = false,		--未进食密语
+Check_Inner_Fire = true,			--心灵之火
+Check_Inner_Fire_Whisper = false,	--心灵之火密语
 };
 
 RaidAlerter = {};
@@ -66,10 +71,14 @@ RaidAlerter_SYNC_SELECT_NAME = "|cFFFF0000"..RAL_TEXT_SYNC_SELECT_NONE.."|r";
 RaidAlerter_SYNC_SELECT_NAME_MSG = 0;
 RaidAlerter_SYNC_CHECKVER = 0;
 RaidAlerter_SYNC_CHECKVERCOUNT = 0;
-RaidAlerter_SYNC_VerPOINT = 14;
+RaidAlerter_SYNC_VerPOINT = 20;
 RaidAlerter_SYNC_MyStatus = "FFF";
 RaidAlerter_SYNC_MyStatus_Last = "TTT";
 
+RAL_BlzTanks = {};
+RAL_Tanks = {};
+
+RAL_UIMSG_TIMELIMIT = 0.5;	--Debug
 RAL_DEBUG = false;
 
 RaidAlerter_Alerter_System	= {
@@ -116,6 +125,7 @@ local CureManaPercent=0;
 local DeadRaidmembers=0;
 local OffLineRaidmembers=0;
 local RaidNum = 0;
+local RaidNumALL = 0;
 local Attack_Frame_UPDATE_FREQ = 2;
 local RaidAlerter_MT_Dead = {};
 local GemName={};
@@ -137,7 +147,8 @@ local ICONTEXT_unit;
 local ICONTEXT_icon;
 local ICONTEXT_icontext = "";
 local TeamLevel = UnitLevel("player");
-local RaidHPMAXAVG = 10000;
+local RaidHPMAXAVG = UnitHealthMax("player");
+local PartyHPMAXAVG = UnitHealthMax("player");
 local BossHPMin = 999999999;
 local DangerUnitHPMin = 666666666;
 local MyLastThreatState = 0;
@@ -145,11 +156,44 @@ local FouTarISME = false;
 local TarTarISME = false;
 local ImTANK = false;
 local RosterChanged = true;
+local RAL_LootMethod 	= {
+	["freeforall"]	= RAL_TEXT_LOOT_FREE_FOR_ALL,
+	["roundrobin"]	= RAL_TEXT_LOOT_ROUND_ROBIN,
+	["master"]	= RAL_TEXT_LOOT_MASTER_LOOTER,
+	["group"]	= RAL_TEXT_LOOT_GROUP_LOOT,
+	["needbeforegreed"]	= RAL_TEXT_LOOT_NEED_BEFORE_GREED,
+	};
+local RAL_LootMethod_SYS 	= {
+	["freeforall"]	= LOOT_FREE_FOR_ALL,
+	["roundrobin"]	= LOOT_ROUND_ROBIN,
+	["master"]	= LOOT_MASTER_LOOTER,
+	["group"]	= LOOT_GROUP_LOOT,
+	["needbeforegreed"]	= LOOT_NEED_BEFORE_GREED,
+	};
+local RAL_NextUpdateTime = 0;
+local RAL_UIMSG_PREFIX;
+local RAL_UIMSG_MSG;
+local RAL_UIMSG_CHAN;
+local RAL_UIMSG_SENDED = true;
+local GameVER = select(4,GetBuildInfo());
+local SysDif = 1;
+local EQDif = 1;
+local DifText = "";
+local instanceType, difficulty, maxPlayers, playerDifficulty, isDynamicInstance;
+local COOKFOODDUR = 0;
+
+--3.2-4.0过渡
+local UnitMana = UnitMana;
+local UnitManaMax = UnitManaMax;
+if GameVER >= 40000 then
+	UnitMana = UnitPower;
+	UnitManaMax = UnitPowerMax;
+end
 
 --事件注册
 local RaidAlerter_EVENT_LIST = {
-	"VARIABLES_LOADED",
 	"PLAYER_ENTERING_WORLD",
+	"ADDON_LOADED",
 	"CHAT_MSG_ADDON",
 	"CHAT_MSG_WHISPER_INFORM",
 	"CHAT_MSG_WHISPER",
@@ -157,6 +201,10 @@ local RaidAlerter_EVENT_LIST = {
 	"UNIT_THREAT_SITUATION_UPDATE",
 	"PLAYER_REGEN_ENABLED",
 	"RAID_ROSTER_UPDATE",
+	"PARTY_MEMBERS_CHANGED",
+	"UPDATE_INSTANCE_INFO",
+	"PLAYER_DIFFICULTY_CHANGED",
+	"ZONE_CHANGED_NEW_AREA",
 	};
 
 --Oldhand原版本的CHAT_MSG设定
@@ -173,11 +221,27 @@ local RaidAlerter_EVENT_LIST = {
 	};
 ]]
 
+
+--Terry@bf
+function BF_RaidAlerter_LoadPosition(self)
+	self:ClearAllPoints();
+	self:SetPoint(unpack(RaidAlerter_SET_AttackFramePosition))
+end
+
+
+function BF_RaidAlerter_SavePosition(self)
+	local _point,rel,relp,xo,yo=self:GetPoint()
+	RaidAlerter_SET_AttackFramePosition={_point,"UIParent",relp,xo,yo}
+end
+
+
 function RaidAlerter_OnEnter(self,action)
 	GameTooltip:SetOwner(RaidAlerter_Attack_Frame, "ANCHOR_NONE");
 	GameTooltip:SetText(RaidAlerter_UINameEN..RaidAlerter_UIName);
 	GameTooltip:SetPoint("TOPLEFT", RaidAlerter_Attack_Frame, "BOTTOMLEFT", 0, 4);
 	if GetNumRaidMembers()>0 then
+		GameTooltip:AddLine(RAL_TEXT_TIP_35..": "..RaidAlerter_GetCurrentDifficulty(3));
+		GameTooltip:AddLine(RaidAlerter_LootMethodTEXT(1));
 		if RaidAlerter_BattleTime_Record then
 			local m, s = RaidAlerter_SecondsToTime(RaidAlerter_GetTimer("BattleTime_Record"));
 			if m == 0 then
@@ -222,6 +286,11 @@ function RaidAlerter_OnEnter(self,action)
 			GameTooltip:AddLine("|cFF99CCFF"..string.format(RAL_TEXT_TIP_6,"|cFFFFFFFF"..#GemName.."|cFF99CCFF").."|r");
 		end
 		GameTooltip:AddLine(" ");
+	elseif GetNumPartyMembers()>0 then
+		GameTooltip:AddLine(RAL_TEXT_TIP_35..": "..RaidAlerter_GetCurrentDifficulty(3));
+		GameTooltip:AddLine(RaidAlerter_LootMethodTEXT(1));
+		GameTooltip:AddLine(RaidAlerter_CheckPlayer("tip"));
+		GameTooltip:AddLine(" ");
 	end
 
 	GameTooltip:AddLine("|cFF00FF00"..RAL_TEXT_TIP_7.."|r");
@@ -259,6 +328,8 @@ function RaidAlerter_OnLoad(self)
 	SlashCmdList["RaidAlerter"] = function(msg)
 		RaidAlerter_SlashCommand(msg);
 	end
+	RaidAlerter_SET_AttackFramePosition= RaidAlerter_SET_AttackFramePosition or {"TOP","UIParent","TOP",20,-12}
+
 end
 
 function RaidAlerter_SlashCommand(msg)
@@ -341,7 +412,7 @@ function RaidAlerter_SlashCommand(msg)
 			RaidAlerter_SYNC_CHECKVERCOUNT = 0;
 			RaidAlerter_StartTimer("SYNCCHECKVER");
 			RaidAlerter.AddMsg(RAL_TEXT_SYNC_START_CHECK);
-			RaidAlerter_SendAddonMessage("RAL_CHECKVER","startcheck");
+			RaidAlerter_SetAddonMessage("RAL_CHECKVER","startcheck");
 		else
 			RaidAlerter.AddMsg("|cFFFF5555"..RAL_TEXT_OUTTEAM);
 		end
@@ -358,7 +429,7 @@ function RaidAlerter_Option_MainFrame_Show(self)
 	if (RaidAlerter_MainFrame:IsVisible()) then
 		RaidAlerter_MainFrame:Hide();
 		if GetNumPartyMembers()>0 or UnitInRaid("player") then
-			RaidAlerter_SendAddonMessage("RAL_SELECT","startcheck");
+			RaidAlerter_SetAddonMessage("RAL_SELECT","startcheck");
 			RaidAlerter_SYNC_SELECT_NAME_MSG = 1;
 			RaidAlerter_StartTimer("SELECTNAMEMSG");
 		end
@@ -395,7 +466,7 @@ function RaidAlerter_Option_MainFrame_Update()
 		if RaidAlerter_SET.OT_OnOff then RaidAlerterCheckLabel11_1:SetChecked(1) else RaidAlerterCheckLabel11_1:SetChecked(0) end
 		if RaidAlerter_SET.OTM_OnOff then RaidAlerterCheckLabel12_1:SetChecked(1);RaidAlerterCheckLabel13_1:Enable(); else RaidAlerterCheckLabel12_1:SetChecked(0);RaidAlerterCheckLabel13_1:Disable(); end
 		if RaidAlerter_SET.OTMShow_OnOff then RaidAlerterCheckLabel13_1:SetChecked(1) else RaidAlerterCheckLabel13_1:SetChecked(0) end
-		if RaidAlerter_SET.Hunter_Mark then RaidAlerterCheckLabel14_1:SetChecked(1) else RaidAlerterCheckLabel14_1:SetChecked(0) end
+		if RaidAlerter_SET.Hunter_Mark then RaidAlerterCheckLabel15_2:SetChecked(1) else RaidAlerterCheckLabel15_2:SetChecked(0) end
 		if RaidAlerter_SET.Hunter_Misdirection then RaidAlerterCheckLabel08_2:SetChecked(1) else RaidAlerterCheckLabel08_2:SetChecked(0) end
 		if RaidAlerter_SET.Hunter_Shot then RaidAlerterCheckLabel09_2:SetChecked(1) else RaidAlerterCheckLabel09_2:SetChecked(0) end
 		if RaidAlerter_SET.TANK_Taunt then RaidAlerterCheckLabel10_2:SetChecked(1) else RaidAlerterCheckLabel10_2:SetChecked(0) end
@@ -409,17 +480,23 @@ function RaidAlerter_Option_MainFrame_Update()
 		if RaidAlerter_SET.Dispel_Magic then RaidAlerterCheckLabel11_3:SetChecked(1) else RaidAlerterCheckLabel11_3:SetChecked(0) end
 		if RaidAlerter_SET.BuffStolen then RaidAlerterCheckLabel12_3:SetChecked(1) else RaidAlerterCheckLabel12_3:SetChecked(0) end
 		if RaidAlerter_SET.Break_Magic then RaidAlerterCheckLabel13_3:SetChecked(1) else RaidAlerterCheckLabel13_3:SetChecked(0) end
-		if RaidAlerter_SET.Check_Gem then RaidAlerterCheckLabel14_3:SetChecked(1) else RaidAlerterCheckLabel14_3:SetChecked(0) end
+		if RaidAlerter_SET.Check_Gem then RaidAlerterCheckLabel14_4:SetChecked(1) else RaidAlerterCheckLabel14_4:SetChecked(0) end
 		if RaidAlerter_SET.Paladin_Intervention then RaidAlerterCheckLabel08_4:SetChecked(1) else RaidAlerterCheckLabel08_4:SetChecked(0) end
 		if RaidAlerter_SET.Check_Death_AtCombatEnd then RaidAlerterCheckLabel09_4:SetChecked(1) else RaidAlerterCheckLabel09_4:SetChecked(0) end
 		if RaidAlerter_SET.Nef_PriestDown then RaidAlerterCheckLabel10_4:SetChecked(1) else RaidAlerterCheckLabel10_4:SetChecked(0) end
 		if RaidAlerter_SET.Nef_TANKPoly then RaidAlerterCheckLabel11_4:SetChecked(1) else RaidAlerterCheckLabel11_4:SetChecked(0) end
 		if RaidAlerter_SET.TAQ_Twin_AOEAdd then RaidAlerterCheckLabel12_4:SetChecked(1) else RaidAlerterCheckLabel12_4:SetChecked(0) end
-		if RaidAlerter_SET.cameraMax then RaidAlerterCheckLabel15_1:SetChecked(1) else RaidAlerterCheckLabel15_1:SetChecked(0) end
+		if RaidAlerter_SET.RaidSpell then RaidAlerterCheckLabel13_4:SetChecked(1) else RaidAlerterCheckLabel13_4:SetChecked(0) end
+		if RaidAlerter_SET.Check_Cooking then RaidAlerterCheckLabel14_1:SetChecked(1); RaidAlerterCheckLabel15_1:Enable(); else RaidAlerterCheckLabel14_1:SetChecked(0); RaidAlerterCheckLabel15_1:Disable(); end
+		if RaidAlerter_SET.Check_Cooking_Whisper then RaidAlerterCheckLabel15_1:SetChecked(1) else RaidAlerterCheckLabel15_1:SetChecked(0) end
+		if RaidAlerter_SET.Check_Inner_Fire then RaidAlerterCheckLabel14_3:SetChecked(1); RaidAlerterCheckLabel15_3:Enable(); else RaidAlerterCheckLabel14_3:SetChecked(0); RaidAlerterCheckLabel15_3:Disable(); end
+		if RaidAlerter_SET.Check_Inner_Fire_Whisper then RaidAlerterCheckLabel15_3:SetChecked(1) else RaidAlerterCheckLabel15_3:SetChecked(0) end
+		if RaidAlerter_SET.cameraMax then RaidAlerterCheckLabel16_1:SetChecked(1) else RaidAlerterCheckLabel16_1:SetChecked(0) end
 	end
 end
 
 --事件注册注销并更新事件表RaidAlerter_EVENT_LIST
+--[[
 function RaidAlerter_EVENT_LIST_Update(evname,act)
 	if act == "add" then
 		RaidAlerter_Attack_Frame:RegisterEvent(evname);
@@ -436,6 +513,7 @@ function RaidAlerter_EVENT_LIST_Update(evname,act)
 		end
 	end
 end
+]]
 
 function RaidAlerter_GetTFVarText(VariableID, SIMPLE)
 	if VariableID then
@@ -464,7 +542,7 @@ function RaidAlerter_SET_FUNC_OnOff(checked)
 	end
 	RaidAlerter.AddMsg(RAL_TEXT_FUNC_1..RaidAlerter_GetTFVarText(RaidAlerter_SET.OnOff));
 	RaidAlerter_Option_MainFrame_Update();
-	RaidAlerter_SendAddonMessage("RAL_SELECT","startcheck");
+	RaidAlerter_SetAddonMessage("RAL_SELECT","startcheck");
 end
 
 function RaidAlerter_SET_FUNC_Party_Alerter(checked)
@@ -765,6 +843,66 @@ function RaidAlerter_SET_FUNC_TAQ_Twin_AOEAdd(checked)
 	RaidAlerter_Option_MainFrame_Update();
 end
 
+function RaidAlerter_SET_FUNC_RaidSpell(checked)
+	if checked == 1 then
+		RaidAlerter_SET.RaidSpell = true;
+	elseif checked =="OnOff" then
+		RaidAlerter_SET.RaidSpell = not RaidAlerter_SET.RaidSpell;
+	else
+		RaidAlerter_SET.RaidSpell = false;
+	end
+	RaidAlerter.AddMsg(RAL_TEXT_XML_141..RaidAlerter_GetTFVarText(RaidAlerter_SET.RaidSpell));
+	RaidAlerter_Option_MainFrame_Update();
+end
+
+function RaidAlerter_SET_FUNC_Check_Cooking(checked)
+	if checked == 1 then
+		RaidAlerter_SET.Check_Cooking = true;
+	elseif checked =="OnOff" then
+		RaidAlerter_SET.Check_Cooking = not RaidAlerter_SET.Check_Cooking;
+	else
+		RaidAlerter_SET.Check_Cooking = false;
+	end
+	RaidAlerter.AddMsg(RAL_TEXT_XML_145..RaidAlerter_GetTFVarText(RaidAlerter_SET.Check_Cooking));
+	RaidAlerter_Option_MainFrame_Update();
+end
+
+function RaidAlerter_SET_FUNC_Check_Cooking_Whisper(checked)
+	if checked == 1 then
+		RaidAlerter_SET.Check_Cooking_Whisper = true;
+	elseif checked =="OnOff" then
+		RaidAlerter_SET.Check_Cooking_Whisper = not RaidAlerter_SET.Check_Cooking_Whisper;
+	else
+		RaidAlerter_SET.Check_Cooking_Whisper = false;
+	end
+	RaidAlerter.AddMsg(RAL_TEXT_XML_148..RaidAlerter_GetTFVarText(RaidAlerter_SET.Check_Cooking_Whisper));
+	RaidAlerter_Option_MainFrame_Update();
+end
+
+function RaidAlerter_SET_FUNC_Check_Inner_Fire(checked)
+	if checked == 1 then
+		RaidAlerter_SET.Check_Inner_Fire = true;
+	elseif checked =="OnOff" then
+		RaidAlerter_SET.Check_Inner_Fire = not RaidAlerter_SET.Check_Inner_Fire;
+	else
+		RaidAlerter_SET.Check_Inner_Fire = false;
+	end
+	RaidAlerter.AddMsg(RAL_TEXT_XML_151..RaidAlerter_GetTFVarText(RaidAlerter_SET.Check_Inner_Fire));
+	RaidAlerter_Option_MainFrame_Update();
+end
+
+function RaidAlerter_SET_FUNC_Check_Inner_Fire_Whisper(checked)
+	if checked == 1 then
+		RaidAlerter_SET.Check_Inner_Fire_Whisper = true;
+	elseif checked =="OnOff" then
+		RaidAlerter_SET.Check_Inner_Fire_Whisper = not RaidAlerter_SET.Check_Inner_Fire_Whisper;
+	else
+		RaidAlerter_SET.Check_Inner_Fire_Whisper = false;
+	end
+	RaidAlerter.AddMsg(RAL_TEXT_XML_154..RaidAlerter_GetTFVarText(RaidAlerter_SET.Check_Inner_Fire_Whisper));
+	RaidAlerter_Option_MainFrame_Update();
+end
+
 function RaidAlerter_SET_FUNC_BossHealthPecentOnOff(checked)
 	if checked == 1 then
 		RaidAlerter_SET.BossHealthPecentOnOff = true;
@@ -961,7 +1099,7 @@ function RaidAlerter_SET_FUNC_SYNC_SELECT_SETTOME(checked)
 		RaidAlerter_SYNC_SELECT_SETTOME = 0;
 		RaidAlerter.AddMsg(RAL_TEXT_FUNC_38..":|cFF20FF20 "..RAL_TEXT_FUNC_41);
 	end
-	RaidAlerter_SendAddonMessage("RAL_SELECT","startcheck");
+	RaidAlerter_SetAddonMessage("RAL_SELECT","startcheck");
 end
 
 function RaidAlerter_SET_FUNC_CHK_MY_HP(param)
@@ -987,7 +1125,8 @@ end
 
 function RaidAlerter_SET_FUNC_TextMShow_Reset()
 	RaidAlerter_Attack_Frame:ClearAllPoints();
-	RaidAlerter_Attack_Frame:SetPoint("CENTER", "UIParent", "CENTER", 0, 60);
+	RaidAlerter_Attack_Frame:SetPoint("TOP","UIParent","TOP",20,-12);
+	RaidAlerter_Attack_Frame:Show();
 	RaidAlerter_SET.AF_Scale = 1
 	RaidAlerterCheckLabel05_2:SetValue(RaidAlerter_SET.AF_Scale);
 	RaidAlerter_SET_FUNC_AF_Scale();
@@ -1058,13 +1197,15 @@ end
 function RaidAlerter_SET_FUNC_ResetRAM(arg)
 	if arg=="reset" then
 		collectgarbage("collect");
-		RaidAlerter.AddMsg(RAL_TEXT_FUNC_46);
+--		terry@bf 去掉内存清理提示信息
+	--	RaidAlerter.AddMsg(RAL_TEXT_FUNC_46);
 	else
 --		UpdateAddOnMemoryUsage();
 		RaidAlerter_Check_RAM_CPU();
 		if GetAddOnMemoryUsage("RaidAlerter")>arg then
 			collectgarbage("collect");
-			RaidAlerter.AddMsg(RAL_TEXT_FUNC_46);
+--		terry@bf 去掉内存清理提示信息
+	--	RaidAlerter.AddMsg(RAL_TEXT_FUNC_46);
 		end
 	end
 end
@@ -1182,8 +1323,13 @@ function RaidAlerter_SET_FUNC_ResetToDefaut(arg)
 	RaidAlerter_SET_FUNC_Nef_PriestDown(0);
 	RaidAlerter_SET_FUNC_Nef_TANKPoly(0);
 	RaidAlerter_SET_FUNC_TAQ_Twin_AOEAdd(0);
+	RaidAlerter_SET_FUNC_RaidSpell(1);
+	RaidAlerter_SET_FUNC_Check_Cooking(1);
+	RaidAlerter_SET_FUNC_Check_Cooking_Whisper(0);
+	RaidAlerter_SET_FUNC_Check_Inner_Fire(1);
+	RaidAlerter_SET_FUNC_Check_Inner_Fire_Whisper(0);
 	RaidAlerter_SET_FUNC_CHK_MY_HP(0);
---	RaidAlerter_Attack_Frame:Show()
+--	RaidAlerter_Attack_Frame:Show();
 	RaidAlerter_Check_CTRAORA_LA_TANKS();
 	RaidAlerter.AddMsg("|cFF20FF20"..RAL_TEXT_FUNC_48);
 end
@@ -1226,6 +1372,11 @@ function RaidAlerter_MainFrame_SetAllChecked()
 	RaidAlerter_SET_FUNC_Nef_PriestDown(1);
 	RaidAlerter_SET_FUNC_Nef_TANKPoly(1);
 	RaidAlerter_SET_FUNC_TAQ_Twin_AOEAdd(1);
+	RaidAlerter_SET_FUNC_RaidSpell(1);
+	RaidAlerter_SET_FUNC_Check_Cooking(1);
+	RaidAlerter_SET_FUNC_Check_Cooking_Whisper(1);
+	RaidAlerter_SET_FUNC_Check_Inner_Fire(1);
+	RaidAlerter_SET_FUNC_Check_Inner_Fire_Whisper(1);
 --	RaidAlerter_SET_FUNC_CHK_MY_HP(1);
 end
 
@@ -1268,6 +1419,11 @@ function RaidAlerter_MainFrame_SetAllClean()
 	RaidAlerter_SET_FUNC_Nef_PriestDown(0);
 	RaidAlerter_SET_FUNC_Nef_TANKPoly(0);
 	RaidAlerter_SET_FUNC_TAQ_Twin_AOEAdd(0);
+	RaidAlerter_SET_FUNC_RaidSpell(0);
+	RaidAlerter_SET_FUNC_Check_Cooking(0);
+	RaidAlerter_SET_FUNC_Check_Cooking_Whisper(0);
+	RaidAlerter_SET_FUNC_Check_Inner_Fire(0);
+	RaidAlerter_SET_FUNC_Check_Inner_Fire_Whisper(0);
 --	RaidAlerter_SET_FUNC_CHK_MY_HP(0);
 end
 
@@ -1318,6 +1474,7 @@ end
 
 --变量检查，确保更新兼容
 function RaidAlerter_Check_Variables()
+	if (not RaidAlerter_SET) then RaidAlerter_SET = {}; end
 	if RaidAlerter_SET.OnOff == nil then RaidAlerter_SET.OnOff = true; end
 	if RaidAlerter_SET.RAIDMODE_MAX_GROUP == nil then RaidAlerter_SET.RAIDMODE_MAX_GROUP = 5; end
 	if RaidAlerter_SET.Party_Alerter == nil then RaidAlerter_SET.Party_Alerter = true; end
@@ -1362,6 +1519,11 @@ function RaidAlerter_Check_Variables()
 	if RaidAlerter_SET.Nef_PriestDown == nil then RaidAlerter_SET.Nef_PriestDown = false; end
 	if RaidAlerter_SET.Nef_TANKPoly == nil then RaidAlerter_SET.Nef_TANKPoly = false; end
 	if RaidAlerter_SET.TAQ_Twin_AOEAdd == nil then RaidAlerter_SET.TAQ_Twin_AOEAdd = false; end
+	if RaidAlerter_SET.RaidSpell == nil then RaidAlerter_SET.RaidSpell = true; end
+	if RaidAlerter_SET.Check_Cooking == nil then RaidAlerter_SET.Check_Cooking = true; end
+	if RaidAlerter_SET.Check_Cooking_Whisper == nil then RaidAlerter_SET.Check_Cooking_Whisper = false; end
+	if RaidAlerter_SET.Check_Inner_Fire == nil then RaidAlerter_SET.Check_Inner_Fire = true; end
+	if RaidAlerter_SET.Check_Inner_Fire_Whisper == nil then RaidAlerter_SET.Check_Inner_Fire_Whisper = false; end
 	if RaidAlerter_SET.ShowSysInfo == nil then RaidAlerter_SET.ShowSysInfo = false; end
 	if RaidAlerter_SET.cameraMax == nil then RaidAlerter_SET.cameraMax = false; end
 end
@@ -1392,22 +1554,92 @@ end
 
 --到位检查
 function RaidAlerter_CheckPlayer(check)
-	if (not UnitInRaid("player")) then
-		RaidAlerter.AddMsg("|cFFFF5555"..RAL_TEXT_OUTRAID);
-		return;
-	end
-	local RAL_UnVisiblePlayer = "";
-	local RAL_DeadPlayer = "";
-	local RAL_OfflinePlayer = "";
-	local RAL_UnVisiblePlayerCount = 0;
-	local RAL_DeadPlayerCount = 0;
-	local RAL_OfflinePlayerCount = 0;
-	local smsg = "["..RAL_TEXT_CHECK_1.."]";
-	local smsg_tip = "|cFF00FF00"..RAL_TEXT_CHECK_1.."|r ";
-	for i = 1,GetNumRaidMembers() do
-		_, _, subgroup = GetRaidRosterInfo(i);
-		if subgroup <= RaidAlerter_SET.RAIDMODE_MAX_GROUP then
-			local unit = "raid"..i;
+	if UnitInRaid("player") then
+		local RAL_UnVisiblePlayer = "";
+		local RAL_DeadPlayer = "";
+		local RAL_OfflinePlayer = "";
+		local RAL_UnVisiblePlayerCount = 0;
+		local RAL_DeadPlayerCount = 0;
+		local RAL_OfflinePlayerCount = 0;
+		local smsg = "["..RAL_TEXT_CHECK_1.."]";
+		local smsg_tip = "|cFF00FF00"..RAL_TEXT_CHECK_1.."|r ";
+		for i = 1,GetNumRaidMembers() do
+			_, _, subgroup = GetRaidRosterInfo(i);
+			if subgroup <= RaidAlerter_SET.RAIDMODE_MAX_GROUP then
+				local unit = "raid"..i;
+				if UnitIsConnected(unit) then
+					if not UnitIsDeadOrGhost(unit) then
+						if not UnitIsVisible(unit) then
+							RAL_UnVisiblePlayerCount = RAL_UnVisiblePlayerCount + 1;
+							if RAL_UnVisiblePlayerCount>0 and RAL_UnVisiblePlayerCount<20 then
+								RAL_UnVisiblePlayer = RAL_UnVisiblePlayer..UnitName(unit)..".";
+							end
+							if RAL_UnVisiblePlayerCount == 20 then
+								RAL_UnVisiblePlayer = RAL_UnVisiblePlayer.." "..RAL_TEXT_ETC;
+							end
+						end
+					else
+						RAL_DeadPlayerCount = RAL_DeadPlayerCount + 1;
+						if RAL_DeadPlayerCount>0 and RAL_DeadPlayerCount<10 then
+							RAL_DeadPlayer = RAL_DeadPlayer..UnitName(unit)..".";
+						end
+						if RAL_DeadPlayerCount == 10 then
+							RAL_DeadPlayer = RAL_DeadPlayer.." "..RAL_TEXT_ETC;
+						end
+					end
+				else
+					RAL_OfflinePlayerCount = RAL_OfflinePlayerCount + 1;
+					if RAL_OfflinePlayerCount>0 and RAL_OfflinePlayerCount<10 then
+						RAL_OfflinePlayer = RAL_OfflinePlayer..UnitName(unit)..".";
+					end
+					if RAL_OfflinePlayerCount == 10 then
+						RAL_OfflinePlayer = RAL_OfflinePlayer.." "..RAL_TEXT_ETC;
+					end
+				end
+			end
+		end
+		if RAL_UnVisiblePlayerCount==0 and RAL_DeadPlayerCount==0 and RAL_OfflinePlayerCount==0 then
+			smsg = smsg..string.format(RAL_TEXT_CHECK_2,RaidNum);
+			smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_2,"|cFF5588FF"..RaidNum.."|r");
+		else
+			smsg = smsg..string.format(RAL_TEXT_CHECK_3,(RaidNum-RAL_OfflinePlayerCount-RAL_DeadPlayerCount-RAL_UnVisiblePlayerCount))..".";
+			smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_3,"|cFFFFFFFF"..(RaidNum-RAL_OfflinePlayerCount-RAL_DeadPlayerCount-RAL_UnVisiblePlayerCount).."|r")..".";
+			if RAL_OfflinePlayerCount>0 then
+				smsg = smsg..string.format(RAL_TEXT_CHECK_4,RAL_OfflinePlayerCount)..":"..RAL_OfflinePlayer;
+				smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_4,"|cFFEEEE20"..RAL_OfflinePlayerCount.."|r")..".";
+			end
+			if RAL_DeadPlayerCount>0 then
+				smsg = smsg..string.format(RAL_TEXT_CHECK_5,RAL_DeadPlayerCount)..":"..RAL_DeadPlayer;
+				smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_5,"|cFFFF2020"..RAL_DeadPlayerCount.."|r")..".";
+			end
+			if RAL_UnVisiblePlayerCount>0 then
+				smsg = smsg..string.format(RAL_TEXT_CHECK_6,RAL_UnVisiblePlayerCount)..":"..RAL_UnVisiblePlayer;
+				smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_6,"|cFFEEEE20"..RAL_UnVisiblePlayerCount.."|r")..".";
+			end
+		end
+		if check=="tip" then
+			return smsg_tip;
+		else
+			RAL.SendMSG(smsg,"RAID",1);
+		end
+	elseif GetNumPartyMembers() > 0 then
+		local RAL_UnVisiblePlayer = "";
+		local RAL_DeadPlayer = "";
+		local RAL_OfflinePlayer = "";
+		local RAL_UnVisiblePlayerCount = 0;
+		local RAL_DeadPlayerCount = 0;
+		local RAL_OfflinePlayerCount = 0;
+		local smsg = "["..RAL_TEXT_CHECK_1.."]";
+		local smsg_tip = "|cFF00FF00"..RAL_TEXT_CHECK_1.."|r ";
+		local i;
+		local unit = "";
+		local PartyNum = GetNumPartyMembers() + 1;
+		for i = 0, GetNumPartyMembers() do
+			if i == 0 then
+				unit = "player";
+			else
+				unit = "party"..i;
+			end
 			if UnitIsConnected(unit) then
 				if not UnitIsDeadOrGhost(unit) then
 					if not UnitIsVisible(unit) then
@@ -1438,30 +1670,33 @@ function RaidAlerter_CheckPlayer(check)
 				end
 			end
 		end
-	end
-	if RAL_UnVisiblePlayerCount==0 and RAL_DeadPlayerCount==0 and RAL_OfflinePlayerCount==0 then
-		smsg = smsg..string.format(RAL_TEXT_CHECK_2,RaidNum);
-		smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_2,"|cFF5588FF"..RaidNum.."|r");
+		if RAL_UnVisiblePlayerCount==0 and RAL_DeadPlayerCount==0 and RAL_OfflinePlayerCount==0 then
+			smsg = smsg..string.format(RAL_TEXT_CHECK_2,PartyNum);
+			smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_2,"|cFF5588FF"..PartyNum.."|r");
+		else
+			smsg = smsg..string.format(RAL_TEXT_CHECK_3,(PartyNum-RAL_OfflinePlayerCount-RAL_DeadPlayerCount-RAL_UnVisiblePlayerCount))..".";
+			smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_3,"|cFFFFFFFF"..(PartyNum-RAL_OfflinePlayerCount-RAL_DeadPlayerCount-RAL_UnVisiblePlayerCount).."|r")..".";
+			if RAL_OfflinePlayerCount>0 then
+				smsg = smsg..string.format(RAL_TEXT_CHECK_4,RAL_OfflinePlayerCount)..":"..RAL_OfflinePlayer;
+				smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_4,"|cFFEEEE20"..RAL_OfflinePlayerCount.."|r")..".";
+			end
+			if RAL_DeadPlayerCount>0 then
+				smsg = smsg..string.format(RAL_TEXT_CHECK_5,RAL_DeadPlayerCount)..":"..RAL_DeadPlayer;
+				smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_5,"|cFFFF2020"..RAL_DeadPlayerCount.."|r")..".";
+			end
+			if RAL_UnVisiblePlayerCount>0 then
+				smsg = smsg..string.format(RAL_TEXT_CHECK_6,RAL_UnVisiblePlayerCount)..":"..RAL_UnVisiblePlayer;
+				smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_6,"|cFFEEEE20"..RAL_UnVisiblePlayerCount.."|r")..".";
+			end
+		end
+		if check=="tip" then
+			return smsg_tip;
+		else
+			RAL.SendMSG(smsg,"PARTY",1);
+		end
 	else
-		smsg = smsg..string.format(RAL_TEXT_CHECK_3,(RaidNum-RAL_OfflinePlayerCount-RAL_DeadPlayerCount-RAL_UnVisiblePlayerCount))..".";
-		smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_3,"|cFFFFFFFF"..(RaidNum-RAL_OfflinePlayerCount-RAL_DeadPlayerCount-RAL_UnVisiblePlayerCount).."|r")..".";
-		if RAL_OfflinePlayerCount>0 then
-			smsg = smsg..string.format(RAL_TEXT_CHECK_4,RAL_OfflinePlayerCount)..":"..RAL_OfflinePlayer;
-			smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_4,"|cFFEEEE20"..RAL_OfflinePlayerCount.."|r")..".";
-		end
-		if RAL_DeadPlayerCount>0 then
-			smsg = smsg..string.format(RAL_TEXT_CHECK_5,RAL_DeadPlayerCount)..":"..RAL_DeadPlayer;
-			smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_5,"|cFFFF2020"..RAL_DeadPlayerCount.."|r")..".";
-		end
-		if RAL_UnVisiblePlayerCount>0 then
-			smsg = smsg..string.format(RAL_TEXT_CHECK_6,RAL_UnVisiblePlayerCount)..":"..RAL_UnVisiblePlayer;
-			smsg_tip = smsg_tip..string.format(RAL_TEXT_CHECK_6,"|cFFEEEE20"..RAL_UnVisiblePlayerCount.."|r")..".";
-		end
-	end
-	if check=="tip" then
-		return smsg_tip;
-	else
-		RAL.SendMSG(smsg,"RAID",1);
+		RaidAlerter.AddMsg("|cFFFF5555"..RAL_TEXT_OUTTEAM);
+		return;
 	end
 end
 
@@ -1716,37 +1951,58 @@ function RaidAlerter_CheckRaidBuff()
 		[10]	= 0,
 		};
 
+	local GROUP_COUNT = {
+		[1]		= 0,
+		[2]		= 0,
+		[3]		= 0,
+		[4]		= 0,
+		[5]		= 0,
+		[6]		= 0,
+		[7]		= 0,
+		[8]		= 0,
+		};
+
 	local Group_NoBuff_Name = {
-		--耐,智,野性按小队号记录
+		--耐,智,野性、精神按小队号记录
 		[RAL_TEXT_BUFF_4] = {
-			[1]	= "",
-			[2]	= "",
-			[3]	= "",
-			[4]	= "",
-			[5]	= "",
-			[6]	= "",
-			[7]	= "",
-			[8]	= "",
+			[1]	= {["name"]="",["count"]=0,},
+			[2]	= {["name"]="",["count"]=0,},
+			[3]	= {["name"]="",["count"]=0,},
+			[4]	= {["name"]="",["count"]=0,},
+			[5]	= {["name"]="",["count"]=0,},
+			[6]	= {["name"]="",["count"]=0,},
+			[7]	= {["name"]="",["count"]=0,},
+			[8]	= {["name"]="",["count"]=0,},
 			},
 		[RAL_TEXT_BUFF_6] = {
-			[1]	= "",
-			[2]	= "",
-			[3]	= "",
-			[4]	= "",
-			[5]	= "",
-			[6]	= "",
-			[7]	= "",
-			[8]	= "",
+			[1]	= {["name"]="",["count"]=0,},
+			[2]	= {["name"]="",["count"]=0,},
+			[3]	= {["name"]="",["count"]=0,},
+			[4]	= {["name"]="",["count"]=0,},
+			[5]	= {["name"]="",["count"]=0,},
+			[6]	= {["name"]="",["count"]=0,},
+			[7]	= {["name"]="",["count"]=0,},
+			[8]	= {["name"]="",["count"]=0,},
 			},
 		[RAL_TEXT_BUFF_8] = {
-			[1]	= "",
-			[2]	= "",
-			[3]	= "",
-			[4]	= "",
-			[5]	= "",
-			[6]	= "",
-			[7]	= "",
-			[8]	= "",
+			[1]	= {["name"]="",["count"]=0,},
+			[2]	= {["name"]="",["count"]=0,},
+			[3]	= {["name"]="",["count"]=0,},
+			[4]	= {["name"]="",["count"]=0,},
+			[5]	= {["name"]="",["count"]=0,},
+			[6]	= {["name"]="",["count"]=0,},
+			[7]	= {["name"]="",["count"]=0,},
+			[8]	= {["name"]="",["count"]=0,},
+			},
+		[RAL_TEXT_BUFF_22] = {
+			[1]	= {["name"]="",["count"]=0,},
+			[2]	= {["name"]="",["count"]=0,},
+			[3]	= {["name"]="",["count"]=0,},
+			[4]	= {["name"]="",["count"]=0,},
+			[5]	= {["name"]="",["count"]=0,},
+			[6]	= {["name"]="",["count"]=0,},
+			[7]	= {["name"]="",["count"]=0,},
+			[8]	= {["name"]="",["count"]=0,},
 			},
 		--QS祝福按职业记录
 		[RAL_TEXT_BUFF_12] = {
@@ -1798,6 +2054,9 @@ function RaidAlerter_CheckRaidBuff()
 			[RAL_TEXT_DEATHKNIGHT]	= {["name"]="",["count"]=0,},
 			},
 		};
+	local LostFQBuff_NAME = "";			--记录未开正义之怒的防骑名字
+	local LostPRIESTBuff_NAME = "";		--记录未开心灵之火的牧师名字
+	local LostCOOKINGBuff_NAME = "";	--记录无进食充分的玩家名字
 
 	local HasPRIEST = false;
 	local HasMAGE = false;
@@ -1807,6 +2066,9 @@ function RaidAlerter_CheckRaidBuff()
 	local HasPALADIN_16 = false;
 	local HasPALADIN_18 = false;
 	local NoBuffCount = 0;
+	local HasCookingCount = 0;
+	local OnlineRaidMembers = 0;
+	local OfflineRaidMembers = 0;
 
 	for i = 1,GetNumRaidMembers() do
 		local _, _, subgroup, _, class, _, _, online = GetRaidRosterInfo(i);
@@ -1822,26 +2084,37 @@ function RaidAlerter_CheckRaidBuff()
 				if class == RAL_TEXT_SHAMAN then CLASS_COUNT[8] = CLASS_COUNT[8] + 1; end
 				if class == RAL_TEXT_PALADIN then CLASS_COUNT[9] = CLASS_COUNT[9] + 1; end
 				if class == RAL_TEXT_DEATHKNIGHT then CLASS_COUNT[10] = CLASS_COUNT[10] + 1; end
+				GROUP_COUNT[subgroup] = GROUP_COUNT[subgroup] + 1;
 			end
 		end
 	end
 
 	if CLASS_COUNT[9] >= 1 then HasPALADIN_12 = true; end							--1QS检查王者
-	if CLASS_COUNT[9] >= 2 then HasPALADIN_16 = true;HasPALADIN_18 = true; end		--2QS增加智慧、力量祝福检查
+	if CLASS_COUNT[9] >= 2 then HasPALADIN_16 = true; HasPALADIN_18 = true; end		--2QS增加智慧、力量祝福检查
+	if CLASS_COUNT[9] >= 3 then HasPALADIN_14 = true; end							--3QS增加庇护祝福检查
 
 	for i = 1,GetNumRaidMembers() do
 		local name, _, subgroup, _, class = GetRaidRosterInfo(i);
 		if subgroup <= RaidAlerter_SET.RAIDMODE_MAX_GROUP then
 			local unit = "raid"..i;
 			local j = 1;
-			local HasPRIEST_BUFF = false;
+			local HasPRIEST_BUFF_1 = false;		--耐
+			local HasPRIEST_BUFF_2 = false;		--精神
+			local IsPRIEST = false;
+			local HasPRIEST_BUFF = false;		--心灵之火
 			local HasMAGE_BUFF = false;
 			local HasDRUID_BUFF = false;
 			local HasPALADIN_BUFF_12 = false;
 			local HasPALADIN_BUFF_14 = false;
 			local HasPALADIN_BUFF_16 = false;
 			local HasPALADIN_BUFF_18 = false;
+			local IsFQ = false;
+			local HasFQBuff = false;
+			local HasCookingBuff = false;		--进食充分
 			if not UnitIsConnected(unit) then
+				HasPRIEST_BUFF_1 = true;
+				HasPRIEST_BUFF_2 = true;
+				IsPRIEST = true;
 				HasPRIEST_BUFF = true;
 				HasMAGE_BUFF = true;
 				HasDRUID_BUFF = true;
@@ -1849,11 +2122,20 @@ function RaidAlerter_CheckRaidBuff()
 				HasPALADIN_BUFF_14 = true;
 				HasPALADIN_BUFF_16 = true;
 				HasPALADIN_BUFF_18 = true;
+				IsFQ = true;
+				HasFQBuff = true;
+				HasCookingBuff = true;
+				OfflineRaidMembers = OfflineRaidMembers + 1;
+			else
+				OnlineRaidMembers = OnlineRaidMembers + 1;
 			end
 			while UnitBuff(unit, j) do
 				local BuffTEXT = UnitBuff(unit, j);
 				if string.find(BuffTEXT, RAL_TEXT_BUFF_4) or string.find(BuffTEXT, RAL_TEXT_BUFF_5) then
-					HasPRIEST_BUFF = true;
+					HasPRIEST_BUFF_1 = true;
+				end
+				if string.find(BuffTEXT, RAL_TEXT_BUFF_22) or string.find(BuffTEXT, RAL_TEXT_BUFF_23) then
+					HasPRIEST_BUFF_2 = true;
 				end
 				if string.find(BuffTEXT, RAL_TEXT_BUFF_6) or string.find(BuffTEXT, RAL_TEXT_BUFF_7) or string.find(BuffTEXT, RAL_TEXT_BUFF_7_SPEC_1) or string.find(BuffTEXT, RAL_TEXT_BUFF_7_SPEC_2) then
 					HasMAGE_BUFF = true;
@@ -1861,7 +2143,8 @@ function RaidAlerter_CheckRaidBuff()
 				if string.find(BuffTEXT, RAL_TEXT_BUFF_8) or string.find(BuffTEXT, RAL_TEXT_BUFF_9) then
 					HasDRUID_BUFF = true;
 				end
-				if string.find(BuffTEXT, RAL_TEXT_BUFF_12) or string.find(BuffTEXT, RAL_TEXT_BUFF_13) then
+				if string.find(BuffTEXT, RAL_TEXT_BUFF_12) or string.find(BuffTEXT, RAL_TEXT_BUFF_13)
+				or string.find(BuffTEXT, RAL_TEXT_BUFF_13_SPEC_1) then
 					HasPALADIN_BUFF_12 = true;
 				end
 				if string.find(BuffTEXT, RAL_TEXT_BUFF_14) or string.find(BuffTEXT, RAL_TEXT_BUFF_15) then
@@ -1873,37 +2156,83 @@ function RaidAlerter_CheckRaidBuff()
 				if string.find(BuffTEXT, RAL_TEXT_BUFF_18) or string.find(BuffTEXT, RAL_TEXT_BUFF_19) or string.find(BuffTEXT, RAL_TEXT_BUFF_19_SPEC_1) then
 					HasPALADIN_BUFF_18 = true;
 				end
+				if UnitPowerType(unit) ~= 0 then		--忽略无蓝条职业的精神
+					HasPRIEST_BUFF_2 = true;
+				end
 				if class == RAL_TEXT_DRUID then
-				--忽略野德的智力和智慧（猎豹和熊状态/HP>MP则判定为野德）
+					--忽略野德的智力和智慧（猎豹和熊状态/HP>MP则判定为野德）
 					if (string.find(BuffTEXT, RAL_TEXT_BUFF_3) or string.find(BuffTEXT, RAL_TEXT_BUFF_20))
-					or (UnitHealthMax(unit) > (UnitManaMax(unit)*1.15)) then
+					 or ((UnitHealthMax(unit) > (UnitManaMax(unit)*1.4))) then
 						HasMAGE_BUFF = true;
 						HasPALADIN_BUFF_16 = true;
 					end
-				end
-				if class == RAL_TEXT_SHAMAN then
-				--忽略增强萨满的智慧（HP>>MP）
-					if UnitHealthMax(unit) > (UnitManaMax(unit)*1.2) then
-						HasPALADIN_BUFF_16 = true;
+					--忽略鸟德和奶德的力量
+					if (string.find(BuffTEXT, RAL_TEXT_BUFF_26) or string.find(BuffTEXT, RAL_TEXT_BUFF_27))
+					 or ((UnitManaMax(unit) > (UnitHealthMax(unit)*0.7))) then
+						HasPALADIN_BUFF_18 = true;
 					end
 				end
-				if class == RAL_TEXT_ROGUE or class == RAL_TEXT_WARRIOR or class == RAL_TEXT_DEATHKNIGHT then
+				if class == RAL_TEXT_SHAMAN then
+					--忽略增强萨满的智慧（HP>>MP）
+					if UnitHealthMax(unit) > (UnitManaMax(unit)*1.4) then
+						HasPALADIN_BUFF_16 = true;
+					end
+					--忽略元素和恢复萨满的力量（HP>>MP）
+					if UnitManaMax(unit) > (UnitHealthMax(unit)*0.7) then
+						HasPALADIN_BUFF_18 = true;
+					end
+				end
+				if (class == RAL_TEXT_ROGUE) or (class == RAL_TEXT_WARRIOR) or (class == RAL_TEXT_DEATHKNIGHT) then
 					HasMAGE_BUFF = true;		--忽略潜行者、战士和死亡骑士的智力
 				end
-				if (HasPRIEST_BUFF and HasMAGE_BUFF and HasDRUID_BUFF and HasPALADIN_BUFF_12 and HasPALADIN_BUFF_14
-				and HasPALADIN_BUFF_16 and HasPALADIN_BUFF_18) then j = 99; end
+				if class == RAL_TEXT_PALADIN then
+					if RaidAlerter_TestIsMtList(unit) then
+						--检查FQ坦的正义之怒
+						IsFQ = true;
+						if string.find(BuffTEXT, RAL_TEXT_BUFF_21) then
+							HasFQBuff = true;
+						end
+					else
+						--忽略神圣骑士的的力量（MP>>HP）
+						if UnitManaMax(unit) > (UnitHealthMax(unit)*0.7) then
+							HasPALADIN_BUFF_18 = true;
+						end
+					end
+
+				end
+				if class == RAL_TEXT_PRIEST then
+					--检查牧师的心灵之火
+					IsPRIEST = true;
+					if string.find(BuffTEXT, RAL_TEXT_BUFF_25) then
+						HasPRIEST_BUFF = true;
+					end
+				end
+				--检查进食充分
+				if string.find(BuffTEXT, RAL_TEXT_BUFF_24) then
+					HasCookingBuff = true;
+				end
+--				if (HasPRIEST_BUFF_1 and HasPRIEST_BUFF_2 and HasMAGE_BUFF and HasDRUID_BUFF and HasPALADIN_BUFF_12 and HasPALADIN_BUFF_14
+--				and HasPALADIN_BUFF_16 and HasPALADIN_BUFF_18 and ((IsFQ and HasFQBuff) or (not IsFQ))) then j = 99; end
 				j = j + 1;
 			end
-			if (not HasPRIEST_BUFF) and HasPRIEST then
-				Group_NoBuff_Name[RAL_TEXT_BUFF_4][subgroup] = Group_NoBuff_Name[RAL_TEXT_BUFF_4][subgroup]..name..".";
+			if (not HasPRIEST_BUFF_1) and HasPRIEST then
+				Group_NoBuff_Name[RAL_TEXT_BUFF_4][subgroup]["name"] = Group_NoBuff_Name[RAL_TEXT_BUFF_4][subgroup]["name"]..name..".";
+				Group_NoBuff_Name[RAL_TEXT_BUFF_4][subgroup]["count"] = Group_NoBuff_Name[RAL_TEXT_BUFF_4][subgroup]["count"] + 1;
+				NoBuffCount = NoBuffCount + 1;
+			end
+			if (not HasPRIEST_BUFF_2) and HasPRIEST then
+				Group_NoBuff_Name[RAL_TEXT_BUFF_22][subgroup]["name"] = Group_NoBuff_Name[RAL_TEXT_BUFF_22][subgroup]["name"]..name..".";
+				Group_NoBuff_Name[RAL_TEXT_BUFF_22][subgroup]["count"] = Group_NoBuff_Name[RAL_TEXT_BUFF_22][subgroup]["count"] + 1;
 				NoBuffCount = NoBuffCount + 1;
 			end
 			if (not HasMAGE_BUFF) and HasMAGE then
-				Group_NoBuff_Name[RAL_TEXT_BUFF_6][subgroup] = Group_NoBuff_Name[RAL_TEXT_BUFF_6][subgroup]..name..".";
+				Group_NoBuff_Name[RAL_TEXT_BUFF_6][subgroup]["name"] = Group_NoBuff_Name[RAL_TEXT_BUFF_6][subgroup]["name"]..name..".";
+				Group_NoBuff_Name[RAL_TEXT_BUFF_6][subgroup]["count"] = Group_NoBuff_Name[RAL_TEXT_BUFF_6][subgroup]["count"] + 1;
 				NoBuffCount = NoBuffCount + 1;
 			end
 			if (not HasDRUID_BUFF) and HasDRUID then
-				Group_NoBuff_Name[RAL_TEXT_BUFF_8][subgroup] = Group_NoBuff_Name[RAL_TEXT_BUFF_8][subgroup]..name..".";
+				Group_NoBuff_Name[RAL_TEXT_BUFF_8][subgroup]["name"] = Group_NoBuff_Name[RAL_TEXT_BUFF_8][subgroup]["name"]..name..".";
+				Group_NoBuff_Name[RAL_TEXT_BUFF_8][subgroup]["count"] = Group_NoBuff_Name[RAL_TEXT_BUFF_8][subgroup]["count"] + 1;
 				NoBuffCount = NoBuffCount + 1;
 			end
 			if (not HasPALADIN_BUFF_12) and HasPALADIN_12 then
@@ -1912,6 +2241,14 @@ function RaidAlerter_CheckRaidBuff()
 				NoBuffCount = NoBuffCount + 1;
 			end
 			if (not HasPALADIN_BUFF_14) and HasPALADIN_14 then
+				--检查庇护祝福
+				Group_NoBuff_Name[RAL_TEXT_BUFF_14][class]["name"] = Group_NoBuff_Name[RAL_TEXT_BUFF_14][class]["name"]..name..".";
+				Group_NoBuff_Name[RAL_TEXT_BUFF_14][class]["count"] = Group_NoBuff_Name[RAL_TEXT_BUFF_14][class]["count"] + 1;
+				NoBuffCount = NoBuffCount + 1;
+			end
+			--[[
+			--注意: 这段检测拯救祝福的代码已废除!!
+			if (not HasPALADIN_BUFF_14) and HasPALADIN_14 then
 				if (class == RAL_TEXT_HUNTER) or (class == RAL_TEXT_MAGE) or (class == RAL_TEXT_ROGUE) or (class == RAL_TEXT_WARLOCK) then
 				--(3.0起停用)只检查4个纯dps职业的拯救：猎人、法师、潜行者、术士
 					Group_NoBuff_Name[RAL_TEXT_BUFF_14][class]["name"] = Group_NoBuff_Name[RAL_TEXT_BUFF_14][class]["name"]..name..".";
@@ -1919,21 +2256,58 @@ function RaidAlerter_CheckRaidBuff()
 					NoBuffCount = NoBuffCount + 1;
 				end
 			end
-			if (not HasPALADIN_BUFF_16) and HasPALADIN_16 then
-				if (class == RAL_TEXT_DRUID) or (class == RAL_TEXT_MAGE) or (class == RAL_TEXT_PRIEST)
-				 or (class == RAL_TEXT_WARLOCK) or (class == RAL_TEXT_SHAMAN) or (class == RAL_TEXT_PALADIN) then
-				--只检查6个法系职业的智慧祝福：德鲁伊、法师、牧师、术士、萨满祭司、圣骑士
-					Group_NoBuff_Name[RAL_TEXT_BUFF_16][class]["name"] = Group_NoBuff_Name[RAL_TEXT_BUFF_16][class]["name"]..name..".";
-					Group_NoBuff_Name[RAL_TEXT_BUFF_16][class]["count"] = Group_NoBuff_Name[RAL_TEXT_BUFF_16][class]["count"] + 1;
-					NoBuffCount = NoBuffCount + 1;
-				end
-			end
-			if (not HasPALADIN_BUFF_18) and HasPALADIN_18 then
-				if (class == RAL_TEXT_ROGUE) or (class == RAL_TEXT_WARRIOR) or (class == RAL_TEXT_DEATHKNIGHT) or (class == RAL_TEXT_HUNTER) then
-				--只检查4个AP职业的力量祝福：潜行者、战士、死亡骑士、猎人
+			]]--
+			--3.2-4.0过渡
+			if GameVER >= 40000 then
+				if (not HasPALADIN_BUFF_18) and HasPALADIN_18 then
+					--4.0.3检查所有职业的力量祝福（智慧祝福已合并到力量祝福）
 					Group_NoBuff_Name[RAL_TEXT_BUFF_18][class]["name"] = Group_NoBuff_Name[RAL_TEXT_BUFF_18][class]["name"]..name..".";
 					Group_NoBuff_Name[RAL_TEXT_BUFF_18][class]["count"] = Group_NoBuff_Name[RAL_TEXT_BUFF_18][class]["count"] + 1;
 					NoBuffCount = NoBuffCount + 1;
+				end
+			else
+				if (not HasPALADIN_BUFF_16) and HasPALADIN_16 then
+					if (class == RAL_TEXT_DRUID) or (class == RAL_TEXT_MAGE) or (class == RAL_TEXT_PRIEST)
+					 or (class == RAL_TEXT_WARLOCK) or (class == RAL_TEXT_SHAMAN) or (class == RAL_TEXT_PALADIN) then
+					--只检查6个法系职业的智慧祝福：德鲁伊、法师、牧师、术士、萨满祭司、圣骑士
+						Group_NoBuff_Name[RAL_TEXT_BUFF_16][class]["name"] = Group_NoBuff_Name[RAL_TEXT_BUFF_16][class]["name"]..name..".";
+						Group_NoBuff_Name[RAL_TEXT_BUFF_16][class]["count"] = Group_NoBuff_Name[RAL_TEXT_BUFF_16][class]["count"] + 1;
+						NoBuffCount = NoBuffCount + 1;
+					end
+				end
+				if (not HasPALADIN_BUFF_18) and HasPALADIN_18 then
+					if (class == RAL_TEXT_ROGUE) or (class == RAL_TEXT_WARRIOR) or (class == RAL_TEXT_DEATHKNIGHT) or (class == RAL_TEXT_HUNTER)
+					 or (class == RAL_TEXT_PALADIN) or (class == RAL_TEXT_SHAMAN) or (class == RAL_TEXT_DRUID) then
+					--只检查7个AP职业的力量祝福：潜行者、战士、死亡骑士、猎人、德鲁伊、萨满祭司、圣骑士
+						Group_NoBuff_Name[RAL_TEXT_BUFF_18][class]["name"] = Group_NoBuff_Name[RAL_TEXT_BUFF_18][class]["name"]..name..".";
+						Group_NoBuff_Name[RAL_TEXT_BUFF_18][class]["count"] = Group_NoBuff_Name[RAL_TEXT_BUFF_18][class]["count"] + 1;
+						NoBuffCount = NoBuffCount + 1;
+					end
+				end
+			end
+			if IsFQ and (not HasFQBuff) then
+				LostFQBuff_NAME = LostFQBuff_NAME..name..".";
+				NoBuffCount = NoBuffCount + 1;
+				RaidAlerter_Whisper(name, RAL_TEXT_ALERT_42);
+			end
+			if IsPRIEST and (not HasPRIEST_BUFF) then
+				LostPRIESTBuff_NAME = LostPRIESTBuff_NAME..name..".";
+				if RaidAlerter_SET.Check_Inner_Fire_Whisper then
+					NoBuffCount = NoBuffCount + 1;
+					RaidAlerter_Whisper(name, RAL_TEXT_ALERT_45);
+				end
+			end
+			if not HasCookingBuff then
+				LostCOOKINGBuff_NAME = LostCOOKINGBuff_NAME..name..".";
+				if RaidAlerter_SET.Check_Cooking then
+					NoBuffCount = NoBuffCount + 1;
+					if RaidAlerter_SET.Check_Cooking_Whisper and (RaidAlerter_GetTimer("COOKFOOD_CREAT") < (COOKFOODDUR-15)) then
+						RaidAlerter_Whisper(name, RAL_TEXT_ALERT_47);
+					end
+				end
+			else
+				if UnitIsConnected(unit) then
+					HasCookingCount = HasCookingCount + 1;
 				end
 			end
 		end
@@ -1946,26 +2320,39 @@ function RaidAlerter_CheckRaidBuff()
 		if HasPRIEST then
 			msg = "";
 			for i = 1, RaidAlerter_SET.RAIDMODE_MAX_GROUP do
-				if Group_NoBuff_Name[RAL_TEXT_BUFF_4][i] ~= "" then
-					if string.gsub(Group_NoBuff_Name[RAL_TEXT_BUFF_4][i], "([^%.]+)", "") == "....." then
-						Group_NoBuff_Name[RAL_TEXT_BUFF_4][i] = RAL_TEXT_CHECK_21;
+				if Group_NoBuff_Name[RAL_TEXT_BUFF_4][i]["name"] ~= "" then
+					if Group_NoBuff_Name[RAL_TEXT_BUFF_4][i]["count"] >= GROUP_COUNT[i] then
+						Group_NoBuff_Name[RAL_TEXT_BUFF_4][i]["name"] = RAL_TEXT_CHECK_21;
 					end
-					msg = msg..string.format(RAL_TEXT_CHECK_22,i,Group_NoBuff_Name[RAL_TEXT_BUFF_4][i]).." ";
+					msg = msg..string.format(RAL_TEXT_CHECK_22,i,Group_NoBuff_Name[RAL_TEXT_BUFF_4][i]["name"]).." ";
 				end
 			end
 			if msg ~= "" then
 				msg = RAL_TEXT_CHECK_23..": "..msg;
 				RAL.SendMSG(msg,"RAID",1);
 			end
+			msg = "";
+			for i = 1, RaidAlerter_SET.RAIDMODE_MAX_GROUP do
+				if Group_NoBuff_Name[RAL_TEXT_BUFF_22][i]["name"] ~= "" then
+					if Group_NoBuff_Name[RAL_TEXT_BUFF_22][i]["count"] >= GROUP_COUNT[i] then
+						Group_NoBuff_Name[RAL_TEXT_BUFF_22][i]["name"] = RAL_TEXT_CHECK_21;
+					end
+					msg = msg..string.format(RAL_TEXT_CHECK_22,i,Group_NoBuff_Name[RAL_TEXT_BUFF_22][i]["name"]).." ";
+				end
+			end
+			if msg ~= "" then
+				msg = RAL_TEXT_BUFF_22..": "..msg;
+				RAL.SendMSG(msg,"RAID",1);
+			end
 		end
 		if HasMAGE then
 			msg = "";
 			for i = 1, RaidAlerter_SET.RAIDMODE_MAX_GROUP do
-				if Group_NoBuff_Name[RAL_TEXT_BUFF_6][i] ~= "" then
-					if string.gsub(Group_NoBuff_Name[RAL_TEXT_BUFF_6][i], "([^%.]+)", "") == "....." then
-						Group_NoBuff_Name[RAL_TEXT_BUFF_6][i] = RAL_TEXT_CHECK_21;
+				if Group_NoBuff_Name[RAL_TEXT_BUFF_6][i]["name"] ~= "" then
+					if Group_NoBuff_Name[RAL_TEXT_BUFF_6][i]["count"] >= GROUP_COUNT[i] then
+						Group_NoBuff_Name[RAL_TEXT_BUFF_6][i]["name"] = RAL_TEXT_CHECK_21;
 					end
-					msg = msg..string.format(RAL_TEXT_CHECK_22,i,Group_NoBuff_Name[RAL_TEXT_BUFF_6][i]).." ";
+					msg = msg..string.format(RAL_TEXT_CHECK_22,i,Group_NoBuff_Name[RAL_TEXT_BUFF_6][i]["name"]).." ";
 				end
 			end
 			if msg ~= "" then
@@ -1976,11 +2363,11 @@ function RaidAlerter_CheckRaidBuff()
 		if HasDRUID then
 			msg = "";
 			for i = 1, RaidAlerter_SET.RAIDMODE_MAX_GROUP do
-				if Group_NoBuff_Name[RAL_TEXT_BUFF_8][i] ~= "" then
-					if string.gsub(Group_NoBuff_Name[RAL_TEXT_BUFF_8][i], "([^%.]+)", "") == "....." then
-						Group_NoBuff_Name[RAL_TEXT_BUFF_8][i] = RAL_TEXT_CHECK_21;
+				if Group_NoBuff_Name[RAL_TEXT_BUFF_8][i]["name"] ~= "" then
+					if Group_NoBuff_Name[RAL_TEXT_BUFF_8][i]["count"] >= GROUP_COUNT[i] then
+						Group_NoBuff_Name[RAL_TEXT_BUFF_8][i]["name"] = RAL_TEXT_CHECK_21;
 					end
-					msg = msg..string.format(RAL_TEXT_CHECK_22,i,Group_NoBuff_Name[RAL_TEXT_BUFF_8][i]).." ";
+					msg = msg..string.format(RAL_TEXT_CHECK_22,i,Group_NoBuff_Name[RAL_TEXT_BUFF_8][i]["name"]).." ";
 				end
 			end
 			if msg ~= "" then
@@ -2048,6 +2435,57 @@ function RaidAlerter_CheckRaidBuff()
 				RAL.SendMSG(msg,"RAID",1);
 			end
 		end
+		if LostFQBuff_NAME ~= "" then
+			RAL.SendMSG(RAL_TEXT_ALERT_43..": "..LostFQBuff_NAME,"RAID",1);
+		end
+		if RaidAlerter_SET.Check_Inner_Fire and (LostPRIESTBuff_NAME ~= "") then
+			RAL.SendMSG(RAL_TEXT_ALERT_46..": "..LostPRIESTBuff_NAME,"RAID",1);
+		end
+		if RaidAlerter_SET.Check_Cooking then
+			local bShowCookingDetail = false;
+			msg = "";
+			--若放置的团队烹饪食物还未消失，则检查进食充分buff
+			if RaidAlerter_GetTimer("COOKFOOD_CREAT") < (COOKFOODDUR-15) then
+				--若已有进食充分的玩家超过1/3才显示详细的未进食名单, 否则只显示概况
+				if HasCookingCount >= (OnlineRaidMembers / 3) then
+					if HasCookingCount >= OnlineRaidMembers then
+						bShowCookingDetail = true;
+						RAL.SendMSG(RAL_TEXT_BUFF_24..": "..RAL_TEXT_CHECK_35,"RAID",1);
+					else
+						if LostCOOKINGBuff_NAME ~= "" then
+							bShowCookingDetail = true;
+							msg = string.format("%s"..RAL_TEXT_CHECK_37, RAL_TEXT_ALERT_48, (OnlineRaidMembers-HasCookingCount));
+							RAL.SendMSG(msg..": "..LostCOOKINGBuff_NAME,"RAID",1);
+						end
+					end
+				end
+			end
+			if not bShowCookingDetail then
+				--若已有进食充分的玩家超过半数才显示详细的未进食名单, 否则只显示概况
+				if HasCookingCount >= (OnlineRaidMembers / 2) then
+					if HasCookingCount >= OnlineRaidMembers then
+						RAL.SendMSG(RAL_TEXT_BUFF_24..": "..RAL_TEXT_CHECK_35,"RAID",1);
+					else
+						if LostCOOKINGBuff_NAME ~= "" then
+							msg = string.format("%s"..RAL_TEXT_CHECK_37, RAL_TEXT_ALERT_48, (OnlineRaidMembers-HasCookingCount));
+							RAL.SendMSG(msg..": "..LostCOOKINGBuff_NAME,"RAID",1);
+						end
+					end
+				else
+					if HasCookingCount <= 0 then
+						msg = RAL_TEXT_CHECK_21;
+					elseif HasCookingCount >= OnlineRaidMembers then
+						--msg = string.format(RAL_TEXT_CHECK_18, RAL_TEXT_BUFF_24);
+						msg = RAL_TEXT_CHECK_35;
+					elseif (OnlineRaidMembers-HasCookingCount) > 0 then
+						msg = string.format(RAL_TEXT_CHECK_36, HasCookingCount, (OnlineRaidMembers-HasCookingCount));
+					else
+						msg = string.format(RAL_TEXT_CHECK_15, HasCookingCount, RAL_TEXT_BUFF_24)..", ";
+					end
+					RAL.SendMSG(RAL_TEXT_BUFF_24..": "..msg,"RAID",1);
+				end
+			end
+		end
 	end
 end
 
@@ -2095,69 +2533,33 @@ function RaidAlerter_Target_Check(check)
 		end
 		RAL.SendMSG(string.format(RAL_TEXT_CHECK_28,check),"RAID",1);
 
-		if (oRA) then
-			if oRA.maintanktable then
-				local i;
-				for i = 1, 5 do
-					if (oRA.maintanktable[i]) then
-						MSG_NAME = "("..i.."T)"..oRA.maintanktable[i];
-						local unit = RaidAlerter_NameToUnit(oRA.maintanktable[i]);
-						if (unit) then
-							if UnitName(unit.."target") then
-								MSG_TARNAME = UnitName(unit.."target");
-								local icon = GetRaidTargetIndex(unit.."target");
-								if icon then
-									MSG_ICON = RaidAlerter_RAIDICON[icon];
-									ICON_COUNT[icon] = ICON_COUNT[icon] + 1;
-									NAME_COUNT[icon] = NAME_COUNT[icon]..UnitName(unit)..".";
-								else
-									MSG_ICON = "";
-								end
-								if not UnitIsEnemy("player", unit.."target") then
-									NONE_NUM = NONE_NUM + 1;
-									msg3 = msg3..UnitName(unit)..".";
-								end
-							else
-								MSG_TARNAME = RAL_TEXT_CHECK_31;
-								MSG_ICON = "";
-								NONE_NUM = NONE_NUM + 1;
-								msg3 = msg3..UnitName(unit)..".";
-							end
-							RAL.SendMSG(string.format(RAL_TEXT_CHECK_30,MSG_NAME,MSG_ICON,MSG_TARNAME),"RAID",1);
-						end
-					end
-				end
-			end
-		end
-		if (CT_RA_MainTanks and (not oRA)) then
-			local i;
-			for i = 1, 5 do
-				if (CT_RA_MainTanks[i]) then
-					MSG_NAME = "("..i.."T)"..CT_RA_MainTanks[i];
-					local unit = RaidAlerter_NameToUnit(CT_RA_MainTanks[i]);
-					if (unit) then
-						if UnitName(unit.."target") then
-							MSG_TARNAME = UnitName(unit.."target");
-							local icon = GetRaidTargetIndex(unit.."target");
-							if icon then
-								MSG_ICON = RaidAlerter_RAIDICON[icon];
-								ICON_COUNT[icon] = ICON_COUNT[icon] + 1;
-								NAME_COUNT[icon] = NAME_COUNT[icon]..UnitName(unit)..".";
-							else
-								MSG_ICON = "";
-							end
-							if not UnitIsEnemy("player", unit.."target") then
-								NONE_NUM = NONE_NUM + 1;
-								msg3 = msg3..UnitName(unit)..".";
-							end
+		local i;
+		for i = 1, 5 do
+			if (RAL_Tanks[i]) then
+				MSG_NAME = "("..i.."T)"..RAL_Tanks[i];
+				local unit = RaidAlerter_NameToUnit(RAL_Tanks[i]);
+				if (unit) then
+					if UnitName(unit.."target") then
+						MSG_TARNAME = UnitName(unit.."target");
+						local icon = GetRaidTargetIndex(unit.."target");
+						if icon then
+							MSG_ICON = RaidAlerter_RAIDICON[icon];
+							ICON_COUNT[icon] = ICON_COUNT[icon] + 1;
+							NAME_COUNT[icon] = NAME_COUNT[icon]..UnitName(unit)..".";
 						else
-							MSG_TARNAME = RAL_TEXT_CHECK_31;
 							MSG_ICON = "";
+						end
+						if not UnitIsEnemy("player", unit.."target") then
 							NONE_NUM = NONE_NUM + 1;
 							msg3 = msg3..UnitName(unit)..".";
 						end
-						RAL.SendMSG(string.format(RAL_TEXT_CHECK_30,MSG_NAME,MSG_ICON,MSG_TARNAME),"RAID",1);
+					else
+						MSG_TARNAME = RAL_TEXT_CHECK_31;
+						MSG_ICON = "";
+						NONE_NUM = NONE_NUM + 1;
+						msg3 = msg3..UnitName(unit)..".";
 					end
+					RAL.SendMSG(string.format(RAL_TEXT_CHECK_30,MSG_NAME,MSG_ICON,MSG_TARNAME),"RAID",1);
 				end
 			end
 		end
@@ -2239,6 +2641,9 @@ function RaidAlerter_Check_CTRAORA_LA_TANKS()
 	end
 	if RaidAlerter_TestMtHasSet() then
 		RaidAlerter.AddMsg(string.format(RAL_TEXT_CHECK_26,"|cFF20FF20"..RaidAlerter_TestMtHasSet().."|r"));
+		for k, v in pairs(RAL_Tanks) do
+			RaidAlerter.AddMsg(RAL.ToRed(k.."T")..RAL.ToGreen(RAL_TEXT_ARROW_R)..RaidAlerter_ToClassColorNameText(v));
+		end
 	else
 		RaidAlerter.AddMsg("|cFFFF5555"..RAL_TEXT_CHECK_24);
 	end
@@ -2250,7 +2655,9 @@ function RaidAlerter_Check_CTRAORA_LA_TANKS()
 end
 
 function RaidAlerter_OnEvent(self, event, ...)
-	if( event == "VARIABLES_LOADED" ) then
+	if (event=="ADDON_LOADED") then
+		local addon = ...
+		if addon ~="RaidAlerter" then return end
 		if RaidAlerter_SET.TextMShow_OnOff then
 			RaidAlerter_Attack_Frame:Show();
 			RaidAlerter_SET_FUNC_AF_Scale();
@@ -2259,26 +2666,46 @@ function RaidAlerter_OnEvent(self, event, ...)
 		end
 		RaidAlerter_Check_Variables();
 		RaidAlerter_ChatFrame_Filter(self);
+		BF_RaidAlerter_LoadPosition(RaidAlerter_Attack_Frame);
+		self:UnregisterEvent("ADDON_LOADED")
 	elseif (event=="PLAYER_ENTERING_WORLD") then
-		if UnitInRaid("player") or UnitInParty("player") then
-			RaidAlerter.AddMsg(RAL_TEXT_MINDMSG.."|cFF5588FF/ral help|r");
-		end
+		RaidAlerter_SET_AttackFramePosition= RaidAlerter_SET_AttackFramePosition or {"TOP","UIParent","TOP",20,-12}
+		BF_RaidAlerter_LoadPosition(RaidAlerter_Attack_Frame);
+--		if UnitInRaid("player") or UnitInParty("player") then
+--			RaidAlerter.AddMsg(RAL_TEXT_MINDMSG.."|cFF5588FF/ral help|r");
+--		end
 		RaidAlerter_SetCameraMaxToMax();
 		RaidAlerter_Option_MainFrame_Update();
 	elseif (event=="CHAT_MSG_ADDON") then
-		if string.sub(arg1, 1, 4) == "RAL_" then
---			if RAL_DEBUG then RaidAlerter.AddMsg(arg1.."↑"..arg2.."↑"..arg3.."↑"..arg4);end		--debug
-			if arg3=="PARTY" or arg3=="RAID" or arg3=="BATTLEGROUND" then
-				RaidAlerter_SYNC(arg1,arg2,arg3,arg4);
+		local ARG_1, ARG_2, ARG_3, ARG_4 = ...;
+		if string.sub(ARG_1, 1, 4) == "RAL_" then
+--			if RAL_DEBUG then RaidAlerter.AddMsg(ARG_1.."↑"..ARG_2.."↑"..ARG_3.."↑"..ARG_4);end		--debug
+			if ARG_3=="PARTY" or ARG_3=="RAID" or ARG_3=="BATTLEGROUND" then
+				RaidAlerter_SYNC(ARG_1,ARG_2,ARG_3,ARG_4);
 			end
 		end
 	elseif event == "UNIT_THREAT_SITUATION_UPDATE" then
-		RaidAlerter_THREAT_UPDATE(event, ...);
+		local ARG_1 = ...;
+		RaidAlerter_THREAT_UPDATE(ARG_1);
 	elseif event == "PLAYER_REGEN_ENABLED" then
 		MyLastThreatState = 0;
 		TarTarISME = false;
-	elseif event == "RAID_ROSTER_UPDATE" then
+	elseif event == "RAID_ROSTER_UPDATE" or event == "PARTY_MEMBERS_CHANGED" then
 		RosterChanged = true;
+	elseif event == "UPDATE_INSTANCE_INFO" or event == "PLAYER_DIFFICULTY_CHANGED" or event == "ZONE_CHANGED_NEW_AREA" then
+		RaidAlerter_GetCurrentDifficulty();
+		local CUR_MAX_GROUP = floor((maxPlayers+4)/5);
+		if (instanceType == "pvp" and maxPlayers == 0) then CUR_MAX_GROUP = 8;end
+		--GetWintergraspWaitTime 4.06后失效
+		if GameVER < 40600 then
+			if (GetWintergraspWaitTime() == nil) and (GetZoneText() == RAL_TEXT_ZONE_5) then CUR_MAX_GROUP = 8;end
+		end
+		if CUR_MAX_GROUP > 1 then
+			if CUR_MAX_GROUP ~= RaidAlerter_SET.RAIDMODE_MAX_GROUP then
+				UIDropDownMenu_SetSelectedID(RaidAlerter_RAIDMODEList, (CUR_MAX_GROUP-1));
+				RaidAlerter_RAIDMODE_MAX_GROUP_SETUP(CUR_MAX_GROUP);
+			end
+		end
 	end
 end
 
@@ -2305,8 +2732,8 @@ function RaidAlerter_ChatFrame_Filter(self)
 	end)
 end
 
-function RaidAlerter_SYNC(arg1,arg2,arg3,arg4)
-	if arg1=="RAL_SELECT" then
+function RaidAlerter_SYNC(ARG_1,ARG_2,ARG_3,ARG_4)
+	if ARG_1=="RAL_SELECT" then
 		local RAL_SYNC_PAR = "";
 
 		local SETONCOUNT = 0;
@@ -2335,13 +2762,16 @@ function RaidAlerter_SYNC(arg1,arg2,arg3,arg4)
 		if RaidAlerter_SET.Paladin_Intervention then SETONCOUNT = SETONCOUNT + 0.5;end
 		if RaidAlerter_SET.Check_Death_AtCombatEnd then SETONCOUNT = SETONCOUNT + 0.5;end
 		if RaidAlerter_SET.OT_OnOff then SETONCOUNT = SETONCOUNT + 1;end
+		if RaidAlerter_SET.RaidSpell then SETONCOUNT = SETONCOUNT + 1;end
+		if RaidAlerter_SET.Check_Cooking then SETONCOUNT = SETONCOUNT + 1;end
+		if RaidAlerter_SET.Check_Inner_Fire then SETONCOUNT = SETONCOUNT + 1;end
 
 		--不适宜做警报方的检测修正
-		if not(oRA or CT_RA_MainTanks) then SETONCOUNT = SETONCOUNT - 2;end		--无团队助手
+		if not(oRA or oRA3 or CT_RA_MainTanks) then SETONCOUNT = SETONCOUNT - 2;end		--无团队助手
 
 		SETONCOUNT = floor(SETONCOUNT);
 		if SETONCOUNT<1 then SETONCOUNT = 1;end
-		if SETONCOUNT>15 then SETONCOUNT = 15;end
+		if SETONCOUNT>16 then SETONCOUNT = 16;end
 
 		if RaidAlerter_SYNC_SELECT_SETTOME == 0 then
 			SETONCOUNT = SETONCOUNT + RaidAlerter_SYNC_VerPOINT;
@@ -2352,8 +2782,10 @@ function RaidAlerter_SYNC(arg1,arg2,arg3,arg4)
 		if RaidAlerter_SYNC_SELECT_SETTOME == 1 then
 			SETONCOUNT = 99;
 		end
-		if RaidAlerter_NameToGroup(UnitName("player")) > RaidAlerter_SET.RAIDMODE_MAX_GROUP then	--自己属于替补
-			SETONCOUNT = 1;
+		if (UnitInRaid("player")) then
+			if RaidAlerter_NameToGroup(UnitName("player")) > RaidAlerter_SET.RAIDMODE_MAX_GROUP then	--自己属于替补
+				SETONCOUNT = 1;
+			end
 		end
 		if UnitIsGhost("player") then	--灵魂中
 			SETONCOUNT = 1;
@@ -2365,31 +2797,31 @@ function RaidAlerter_SYNC(arg1,arg2,arg3,arg4)
 		local _,_,RAL_SYNC_latency = GetNetStats();
 		RAL_SYNC_PAR = RAL_SYNC_PAR..format("%012d",((10000/(RAL_SYNC_latency+10))+((GetFramerate()/10) + (random(100)/100)))*1000000);
 
-		RaidAlerter_SendAddonMessage("RAL_SELECTREPLY", RAL_SYNC_PAR);
+		RaidAlerter_SetAddonMessage("RAL_SELECTREPLY", RAL_SYNC_PAR);
 		return;
 	end
-	if arg1=="RAL_SELECTREPLY" then
-		if RaidAlerter_GetTimer("SYNCSELECT")<5 then
-			if tonumber(arg2) >= RaidAlerter_SYNC_SELECT_TMPPRA then
-				if arg4 == UnitName("player") then
+	if ARG_1=="RAL_SELECTREPLY" then
+		if RaidAlerter_GetTimer("SYNCSELECT")<3 then		--有效响应时间：3秒内
+			if tonumber(ARG_2) >= RaidAlerter_SYNC_SELECT_TMPPRA then
+				if ARG_4 == UnitName("player") then
 					RaidAlerter_SYNC_SELECT_TOME = 1;
 				else
 					RaidAlerter_SYNC_SELECT_TOME = 0;
 				end
-				RaidAlerter_SYNC_SELECT_TMPPRA = tonumber(arg2);
-				RaidAlerter_SYNC_SELECT_NAME = arg4;
+				RaidAlerter_SYNC_SELECT_TMPPRA = tonumber(ARG_2);
+				RaidAlerter_SYNC_SELECT_NAME = ARG_4;
 			end
 		end
 		return;
 	end
-	if arg1=="RAL_CHECKVER" then
+	if ARG_1=="RAL_CHECKVER" then
 		local _,_,RAL_SYNC_latency = GetNetStats();
-		RaidAlerter_SendAddonMessage("RAL_CHECKVERREPLY", RaidAlerter_Version.."("..RaidAlerter_GetTFVarText(RaidAlerter_SET.OnOff,1)..")  "..RAL_SYNC_latency.."ms, "..format("%.1f",GetFramerate()).."FPS");
+		RaidAlerter_SetAddonMessage("RAL_CHECKVERREPLY", RaidAlerter_Version.."("..RaidAlerter_GetTFVarText(RaidAlerter_SET.OnOff,1)..")  "..RAL_SYNC_latency.."ms, "..format("%.1f",GetFramerate()).."FPS");
 		return;
 	end
-	if arg1=="RAL_CHECKVERREPLY" then
+	if ARG_1=="RAL_CHECKVERREPLY" then
 		if RaidAlerter_SYNC_CHECKVER==1 then
-			RaidAlerter.AddMsg(arg4..": "..RAL_TEXT_FUNC_50..arg2, 1);
+			RaidAlerter.AddMsg(ARG_4..": "..RAL_TEXT_FUNC_50..ARG_2, 1);
 			RaidAlerter_SYNC_CHECKVERCOUNT = RaidAlerter_SYNC_CHECKVERCOUNT + 1;
 		end
 		return;
@@ -2398,7 +2830,9 @@ end
 
 --OnUpdate事件
 function RaidAlerter_Frame_OnUpdate(self)
-	if RaidAlerter_GetTimer("RaidAlerter_Update")>0.25 then	--每秒检测大约4次
+--	if RaidAlerter_GetTimer("RaidAlerter_Update")>0.25 then	--每秒检测大约4次
+	if GetTime() > RAL_NextUpdateTime then
+		RaidAlerter_SendAddonMessage();
 		--每9秒检查一次自己的组队和LA状态是否变更，若有变化（如加入团队或被提升）则发起选择报警方请求
 		if (RaidAlerter_GetTimer("RaidAlerter_SYNC_MyStatus_Check")>9) and (RosterChanged) then
 			local PR="";
@@ -2410,7 +2844,7 @@ function RaidAlerter_Frame_OnUpdate(self)
 			RaidAlerter_SYNC_MyStatus = PR..PP..PA;
 			if RaidAlerter_SYNC_MyStatus_Last ~= RaidAlerter_SYNC_MyStatus then
 				RaidAlerter_SYNC_SELECT_TOME = 1;
-				RaidAlerter_SendAddonMessage("RAL_SELECT","startcheck");
+				RaidAlerter_SetAddonMessage("RAL_SELECT","startcheck");
 				RaidAlerter_SYNC_MyStatus_Last = RaidAlerter_SYNC_MyStatus;
 				RaidAlerter_StartTimer("RaidAlerter_SYNC_MyStatus_Check");
 			end
@@ -2419,7 +2853,7 @@ function RaidAlerter_Frame_OnUpdate(self)
 		end
 
 		if RaidAlerter_SYNC_CHECKVER == 1 then
-			if RaidAlerter_GetTimer("SYNCCHECKVER")>3 then
+			if RaidAlerter_GetTimer("SYNCCHECKVER")>3 then		--版本检查：等待3秒
 				RaidAlerter.AddMsg(string.format(RAL_TEXT_SYNC_END_CHECK,"|cFF20FF20"..RaidAlerter_SYNC_CHECKVERCOUNT.."|r"));
 				RaidAlerter_SYNC_CHECKVER = 0;
 				RaidAlerter_SYNC_CHECKVERCOUNT = 0;
@@ -2427,7 +2861,7 @@ function RaidAlerter_Frame_OnUpdate(self)
 		end
 
 		if RaidAlerter_SYNC_SELECT_NAME_MSG == 1 then
-			if RaidAlerter_GetTimer("SELECTNAMEMSG")>3 then
+			if RaidAlerter_GetTimer("SELECTNAMEMSG")>3 then		--显示报警发送方选择：等待3秒
 				RaidAlerter.AddMsg(RAL_TEXT_SYNC_SELECT_FINISH..RaidAlerter_ToClassColorNameText(RaidAlerter_SYNC_SELECT_NAME));
 				RaidAlerter_SYNC_SELECT_NAME_MSG = 0;
 			end
@@ -2551,12 +2985,12 @@ function RaidAlerter_Frame_OnUpdate(self)
 			if GetNumPartyMembers()>0 then		--In Party
 				if RaidAlerter_SET.OnOff then
 					if RaidAlerter_SYNC_SELECT_TOME == 1 then
-						RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_2,"|cFF20FF20"..RAL_TEXT_FRAME_ON.."|r",(GetNumPartyMembers()+1)));
+						RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_2, "|cFF20FF20"..RAL_TEXT_FRAME_ON.."|r", RAL.ToOrange(GetNumPartyMembers()+1), RaidAlerter_GetCurrentDifficulty(2), RaidAlerter_LootMethodTEXT(2)));
 					else
-						RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_2,"|cFFFFDD00"..RAL_TEXT_FRAME_ON.."|r",(GetNumPartyMembers()+1)));
+						RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_2, "|cFFFFDD00"..RAL_TEXT_FRAME_ON.."|r", RAL.ToOrange(GetNumPartyMembers()+1), RaidAlerter_GetCurrentDifficulty(2), RaidAlerter_LootMethodTEXT(2)));
 					end
 				else
-					RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_2,"|cFFFF2020"..RAL_TEXT_FRAME_OFF.."|r",(GetNumPartyMembers()+1)));
+					RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_2, "|cFFFF2020"..RAL_TEXT_FRAME_OFF.."|r", RAL.ToOrange(GetNumPartyMembers()+1), RaidAlerter_GetCurrentDifficulty(2), RaidAlerter_LootMethodTEXT(2)));
 				end
 				if RaidAlerter_GetTimer("RaidAlerter_Boss_Record")>5 then		--5人小队中每5秒更新一次boss表
 					RaidAlerter_Boss_Record_Party();
@@ -2581,14 +3015,15 @@ function RaidAlerter_Frame_OnUpdate(self)
 				end
 			end
 		end
-		RaidAlerter_StartTimer("RaidAlerter_Update");
+		RAL_NextUpdateTime = GetTime() + 0.15;			--每秒检测大约6次
+--		RaidAlerter_StartTimer("RaidAlerter_Update");
 	end
 end
 
---玩家名称按职业着色
+--名称按玩家职业着色，非玩家着色为红色
 function RaidAlerter_ToClassColorNameText(name)
 	local SELECT_UNIT = RaidAlerter_NameToUnit(name);
-	if not SELECT_UNIT then return name;end
+	if not SELECT_UNIT then return "|cFFFF0000"..name.."|r";end
 	local ClassColor = RAID_CLASS_COLORS[select(2,UnitClass(SELECT_UNIT))] or NORMAL_FONT_COLOR;
 	return format("|cFF%s%s|r",format("%02X%02X%02X",ClassColor.r*255,ClassColor.g*255,ClassColor.b*255),name);
 end
@@ -2624,22 +3059,35 @@ function RaidAlerter_ToSafeColorText(num,safe,mid,danger)
 	return format("|cFF%s%d|r",format("%02X%02X%02X",r*255,g*255,b*255),num);
 end
 
---更新状态条
+--更新状态条（团队时）
 function RaidAlerter_Attack_Frame_OnUpdate()
 	if Attack_Frame_UPDATE_FREQ >= 2 then				--更新频率0.25x2=0.5秒
 		RaidAlerter_Get_RaidState();					--更新团队参数
+		RaidAlerter_UpdateTanks();						--更新主坦克表
 		local RAL_AllMP = RaidAlerter_ToSafeColorText(ManaPercent,95,50,20);
 		local RAL_HealMP = RaidAlerter_ToSafeColorText(CureManaPercent,95,50,20);
 		local RAL_DeadN = RaidAlerter_ToSafeColorText(DeadRaidmembers,0,RaidNum/4,RaidNum/2);
-
-		if RaidAlerter_SET.OnOff then
-			if RaidAlerter_SYNC_SELECT_TOME == 1 then
-				RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_3, "|cFF20FF20"..RAL_TEXT_FRAME_ON.."|r",RAL_AllMP, RAL_HealMP, RAL_DeadN));
+		local AFrame_TEXT = "";
+		if IsInInstance() or RaidAlerter_RaidAllInCombat then
+			if RaidAlerter_SET.OnOff then
+				if RaidAlerter_SYNC_SELECT_TOME == 1 then
+					RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_3, "|cFF20FF20"..RAL_TEXT_FRAME_ON.."|r",RAL_AllMP, RAL_HealMP, RAL_DeadN));
+				else
+					RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_3, "|cFFFFDD00"..RAL_TEXT_FRAME_ON.."|r",RAL_AllMP, RAL_HealMP, RAL_DeadN));
+				end
 			else
-				RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_3, "|cFFFFDD00"..RAL_TEXT_FRAME_ON.."|r",RAL_AllMP, RAL_HealMP, RAL_DeadN));
+				RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_3, "|cFFFF2020"..RAL_TEXT_FRAME_OFF.."|r",RAL_AllMP, RAL_HealMP, RAL_DeadN));
 			end
 		else
-			RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_3, "|cFFFF2020"..RAL_TEXT_FRAME_OFF.."|r",RAL_AllMP, RAL_HealMP, RAL_DeadN));
+			if RaidAlerter_SET.OnOff then
+				if RaidAlerter_SYNC_SELECT_TOME == 1 then
+					RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_4, "|cFF20FF20"..RAL_TEXT_FRAME_ON.."|r",RAL.ToOrange(GetNumRaidMembers()), RaidAlerter_GetCurrentDifficulty(1), RaidAlerter_LootMethodTEXT(2)));
+				else
+					RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_4, "|cFFFFDD00"..RAL_TEXT_FRAME_ON.."|r",RAL.ToOrange(GetNumRaidMembers()), RaidAlerter_GetCurrentDifficulty(1), RaidAlerter_LootMethodTEXT(2)));
+				end
+			else
+				RaidAlerter_Attack_Frame_Text:SetText(string.format(RAL_TEXT_FRAME_4, "|cFFFF2020"..RAL_TEXT_FRAME_OFF.."|r",RAL.ToOrange(GetNumRaidMembers()), RaidAlerter_GetCurrentDifficulty(1), RaidAlerter_LootMethodTEXT(2)));
+			end
 		end
 --[[
 		if (CureManaPercent > 0) and (ManaPercent > 0) and ((ManaPercent < 30) or (CureManaPercent < 20) or (DeadRaidmembers > RaidNum/2)) then
@@ -2654,8 +3102,8 @@ function RaidAlerter_Attack_Frame_OnUpdate()
 end
 
 --团队状态条快捷键操作
-function RaidAlerter_RaidState(self,arg1)
-	if arg1=="LeftButton" then
+function RaidAlerter_RaidState(self, button)
+	if button=="LeftButton" then
 		if (IsControlKeyDown() and IsAltKeyDown()) then
 			RaidAlerter_SET_FUNC_CHK_MY_HP();
 			return;
@@ -2669,7 +3117,7 @@ function RaidAlerter_RaidState(self,arg1)
 		else
 			RaidAlerter_SET_FUNC_OnOff("OnOff");
 		end
-	elseif arg1=="RightButton" then
+	elseif button=="RightButton" then
 		if IsShiftKeyDown() then
 			RaidAlerter_SET_FUNC_ResetRAM("reset");
 		elseif IsAltKeyDown() then
@@ -2699,7 +3147,7 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 		if RaidAlerter_SET.TANK_ShieldWall then
 			if spellName == RAL_TEXT_SPELL_1 or spellName == RAL_TEXT_SPELL_30 or spellName == RAL_TEXT_SPELL_33
 			or spellName == RAL_TEXT_SPELL_34 then
-				TempUnit1 = RaidAlerter_NameToUnit(dstName);
+				TempUnit1 = RaidAlerter_GUIDToUnit(dstGUID);
 				if TempUnit1 then
 					RAL.SendMSG(string.format(RAL_TEXT_ALERT_16,dstName,spellName), AlertWChan);
 				end
@@ -2707,8 +3155,8 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 			end
 		end
 		if RaidAlerter_SET.TANK_LastStand then
-			if spellName == RAL_TEXT_SPELL_2 or spellName == RAL_TEXT_SPELL_31 then
-				TempUnit1 = RaidAlerter_NameToUnit(dstName);
+			if spellName == RAL_TEXT_SPELL_2 or spellName == RAL_TEXT_SPELL_31 or spellName == RAL_TEXT_SPELL_36 then
+				TempUnit1 = RaidAlerter_GUIDToUnit(dstGUID);
 				if TempUnit1 then
 					RAL.SendMSG(string.format(RAL_TEXT_ALERT_16,dstName,spellName), AlertWChan);
 				end
@@ -2716,7 +3164,7 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 			end
 		end
 		if spellName == RAL_TEXT_SPELL_3 then
-			TempUnit1 = RaidAlerter_NameToUnit(dstName);
+			TempUnit1 = RaidAlerter_GUIDToUnit(dstGUID);
 			if TempUnit1 then
 				if RaidAlerter_SET.Check_Gem then
 					RAL.SendMSG(string.format(RAL_TEXT_ALERT_18,dstName), AlertChan);
@@ -2732,24 +3180,96 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 		return;
 	end
 
+	if eventtype == "SPELL_CREATE" then
+		if not RaidAlerter_RaidAllInCombat then			--只在非团队战斗状态检测
+			if RaidAlerter_SET.RaidSpell then
+				TempUnit1 = RaidAlerter_GUIDToUnit(srcGUID);
+				if TempUnit1 then
+					for i, v in pairs(RAL_TEXT_RAIDSPELL_1) do
+						if v["MATCH"] == 0 then
+							if string.find(spellName, v["TEXT"]) then
+								RAL.SendMSG(string.format(RAL_TEXT_ALERT_39,srcName,spellName), AlertWChan, 0, 10, "RAIDSPELL"..srcGUID);	--刷屏限制：10秒
+								RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_39,srcName,spellName));
+								if v["TYPE"] == "COOKFOOD" then
+									RaidAlerter_StartTimer("COOKFOOD_CREAT");
+									COOKFOODDUR = v["DUR"];
+								end
+								return;
+							end
+						elseif v["MATCH"] == 1 then
+							if spellName == v["TEXT"] then
+								RAL.SendMSG(string.format(RAL_TEXT_ALERT_39,srcName,spellName), AlertWChan, 0, 10, "RAIDSPELL"..srcGUID);	--刷屏限制：10秒
+								RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_39,srcName,spellName));
+								if v["TYPE"] == "COOKFOOD" then
+									RaidAlerter_StartTimer("COOKFOOD_CREAT");
+									COOKFOODDUR = v["DUR"];
+								end
+								return;
+							end
+						end
+					end
+				end
+			end
+		end
+		return;
+	end
+
 	if eventtype == "SPELL_CAST_SUCCESS" then
-		if spellName == RAL_TEXT_SPELL_4 then
+		if not RaidAlerter_RaidAllInCombat then			--只在非团队战斗状态检测
+			if RaidAlerter_SET.RaidSpell then
+				TempUnit1 = RaidAlerter_GUIDToUnit(srcGUID);
+				if TempUnit1 then
+					for i, v in pairs(RAL_TEXT_RAIDSPELL_2) do
+						if v["MATCH"] == 0 then
+							if string.find(spellName, v["TEXT"]) then
+								RAL.SendMSG(string.format(RAL_TEXT_ALERT_39,srcName,spellName), AlertWChan, 0, 10, "RAIDSPELL"..srcGUID);	--刷屏限制：10秒
+								RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_39,srcName,spellName));
+								return;
+							end
+						elseif v["MATCH"] == 1 then
+							if spellName == v["TEXT"] then
+								RAL.SendMSG(string.format(RAL_TEXT_ALERT_39,srcName,spellName), AlertWChan, 0, 10, "RAIDSPELL"..srcGUID);	--刷屏限制：10秒
+								RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_39,srcName,spellName));
+								return;
+							end
+						end
+					end
+				end
+			end
+		end
+		if spellName == RAL_TEXT_SPELL_37 then		--专注魔法：只在本机显示提示，玩家属于无关人员则不于显示
+			if not(IsRaidLeader() or IsRaidOfficer() or (UnitPowerType("player")==0 and (UnitClass("player")~=RAL_TEXT_HUNTER))) then
+				return;
+			end
+			TempUnit1 = RaidAlerter_GUIDToUnit(srcGUID);
+			if TempUnit1 then
+				if srcName == UnitName("player") then
+					RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_44,spellName,RAL.ToPink(RAL_TEXT_YOU),RaidAlerter_ToClassColorNameText(dstName)), nil, true);
+				elseif dstName == UnitName("player") then
+					RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_44,spellName,RaidAlerter_ToClassColorNameText(srcName),RAL.ToPink(RAL_TEXT_YOU)), nil, true);
+				else
+					RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_44,spellName,RaidAlerter_ToClassColorNameText(srcName),RaidAlerter_ToClassColorNameText(dstName)), nil, true);
+				end
+			end
+			return;
+		end
+		if spellName == RAL_TEXT_SPELL_4 or spellName == RAL_TEXT_SPELL_4_SPEC_1 then
 			if RaidAlerter_SET.Hunter_Misdirection then
-				TempUnit1 = RaidAlerter_NameToUnit(srcName);
+				TempUnit1 = RaidAlerter_GUIDToUnit(srcGUID);
 				if TempUnit1 then
 					if srcName == UnitName("player") then
-						RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_19,RAL.ToPink(RAL_TEXT_YOU),RAL.ToRed(dstName)));
+						RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_44,spellName,RAL.ToPink(RAL_TEXT_YOU),RaidAlerter_ToClassColorNameText(dstName)));
 					elseif dstName == UnitName("player") then
-						RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_19,RAL.ToRed(srcName),RAL.ToPink(RAL_TEXT_YOU)));
+						RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_44,spellName,RaidAlerter_ToClassColorNameText(srcName),RAL.ToPink(RAL_TEXT_YOU)));
 					end
-					RAL.SendMSG(string.format(RAL_TEXT_ALERT_19,srcName,dstName), AlertChan);
+					RAL.SendMSG(string.format(RAL_TEXT_ALERT_44,spellName,srcName,dstName), AlertChan);
 				end
 			end
 			return;
 		end
 		if spellName == RAL_TEXT_SPELL_5 then
 			if RaidAlerter_SET.Hunter_Shot then
-				TempUnit1 = RaidAlerter_NameToUnit(srcName);
+				TempUnit1 = RaidAlerter_GUIDToUnit(srcGUID);
 				if TempUnit1 then
 					RAL.SendMSG(string.format(RAL_TEXT_ALERT_20,srcName,RaidAlerter_GUIDTOICONTEXT(dstGUID)..dstName), AlertChan);
 				end
@@ -2758,7 +3278,7 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 		end
 		if spellName == RAL_TEXT_SPELL_6 then
 			if RaidAlerter_SET.Hunter_Mark then
-				TempUnit1 = RaidAlerter_NameToUnit(srcName);
+				TempUnit1 = RaidAlerter_GUIDToUnit(srcGUID);
 				if TempUnit1 then
 					RAL.SendMSG(string.format(RAL_TEXT_ALERT_21,srcName,RaidAlerter_GUIDTOICONTEXT(dstGUID)..dstName), AlertChan);
 				end
@@ -2767,7 +3287,7 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 		end
 		if spellName == RAL_TEXT_SPELL_7 then
 			if RaidAlerter_SET.Paladin_Intervention then
-				TempUnit1 = RaidAlerter_NameToUnit(dstName);
+				TempUnit1 = RaidAlerter_GUIDToUnit(dstGUID);
 				if TempUnit1 then
 					RAL.SendMSG(string.format(RAL_TEXT_ALERT_22,srcName,dstName), AlertWChan);
 				end
@@ -2776,7 +3296,7 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 		end
 		if spellName == RAL_TEXT_SPELL_8 then
 			if (RaidAlerter_SET.Nef_TANKPoly and GetRealZoneText() == RAL_TEXT_ZONE_1) then
-				TempUnit1 = RaidAlerter_NameToUnit(dstName);
+				TempUnit1 = RaidAlerter_GUIDToUnit(dstGUID);
 				if TempUnit1 then
 						local playerClass = UnitClass(TempUnit1);
 						if(playerClass==RAL_TEXT_WARRIOR or playerClass==RAL_TEXT_ROGUE) then
@@ -2792,8 +3312,8 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 	if eventtype == "SPELL_AURA_BROKEN_SPELL" or eventtype == "SPELL_AURA_BROKEN" then
 		if (spellName == RAL_TEXT_SPELL_9 or spellName == RAL_TEXT_SPELL_10 or spellName == RAL_TEXT_SPELL_11 or spellName == RAL_TEXT_SPELL_12) then
 			if RaidAlerter_SET.Break_Poly then
-				TempUnit1 = RaidAlerter_NameToUnit(srcName);
-				TempUnit2 = RaidAlerter_NameToUnit(dstName);
+				TempUnit1 = RaidAlerter_GUIDToUnit(srcGUID);
+				TempUnit2 = RaidAlerter_GUIDToUnit(dstGUID);
 				amount = amount or RAL_TEXT_SPELL_29;
 				if not TempUnit2 then
 					local DeText = "";
@@ -2842,8 +3362,8 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 	if eventtype == "SPELL_DISPEL" or eventtype == "SPELL_AURA_DISPELLED" then
 		if (spellName == RAL_TEXT_SPELL_13 or spellName == RAL_TEXT_SPELL_14 or spellName == RAL_TEXT_SPELL_15) then
 			if RaidAlerter_SET.Dispel_Magic then
-				TempUnit1 = RaidAlerter_NameToUnit(srcName);
-				TempUnit2 = RaidAlerter_NameToUnit(dstName);
+				TempUnit1 = RaidAlerter_GUIDToUnit(srcGUID);
+				TempUnit2 = RaidAlerter_GUIDToUnit(dstGUID);
 				if (TempUnit1 and (not TempUnit2)) then
 					local icon = RaidAlerter_GUIDTOICONTEXT(dstGUID);
 					if srcName == UnitName("player") then
@@ -2860,8 +3380,8 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 	if eventtype == "SPELL_STOLEN" or eventtype == "SPELL_AURA_STOLEN" then
 		if spellName == RAL_TEXT_SPELL_16 then
 			if RaidAlerter_SET.BuffStolen then
-				TempUnit1 = RaidAlerter_NameToUnit(srcName);
-				TempUnit2 = RaidAlerter_NameToUnit(dstName);
+				TempUnit1 = RaidAlerter_GUIDToUnit(srcGUID);
+				TempUnit2 = RaidAlerter_GUIDToUnit(dstGUID);
 				if (TempUnit1 and (not TempUnit2)) then
 					local icon = RaidAlerter_GUIDTOICONTEXT(dstGUID);
 					if srcName == UnitName("player") then
@@ -2879,23 +3399,24 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 		if (spellName == RAL_TEXT_SPELL_17 or spellName == RAL_TEXT_SPELL_18 or spellName == RAL_TEXT_SPELL_19 or spellName == RAL_TEXT_SPELL_32
 		or spellName == RAL_TEXT_SPELL_9 or spellName == RAL_TEXT_SPELL_20 or spellName == RAL_TEXT_SPELL_16 or spellName == RAL_TEXT_SPELL_13
 		or spellName == RAL_TEXT_SPELL_14 or spellName == RAL_TEXT_SPELL_21 or spellName == RAL_TEXT_SPELL_5) then
-			if ((not RaidAlerter_SET.TANK_Taunt) and (spellName == RAL_TEXT_SPELL_17 or spellName == RAL_TEXT_SPELL_18 or spellName == RAL_TEXT_SPELL_19 or spellName == RAL_TEXT_SPELL_32)) then return; end
+			if ((not RaidAlerter_SET.TANK_Taunt) and (spellName == RAL_TEXT_SPELL_17 or spellName == RAL_TEXT_SPELL_18
+			or spellName == RAL_TEXT_SPELL_19 or spellName == RAL_TEXT_SPELL_32)) then return; end
 			if ((not RaidAlerter_SET.RES_DispelMagic) and (spellName == RAL_TEXT_SPELL_13 or spellName == RAL_TEXT_SPELL_14 or spellName == RAL_TEXT_SPELL_5)) then return; end
 			if ((not RaidAlerter_SET.RES_Polymorph) and (spellName == RAL_TEXT_SPELL_9 or spellName == RAL_TEXT_SPELL_20)) then return; end
 			if ((not RaidAlerter_SET.RES_MagicBreak) and (spellName == RAL_TEXT_SPELL_21)) then return; end
 			if ((not RaidAlerter_SET.RES_BuffStolen) and (spellName == RAL_TEXT_SPELL_16)) then return; end
-			TempUnit1 = RaidAlerter_NameToUnit(srcName);
+			TempUnit1 = RaidAlerter_GUIDToUnit(srcGUID);
 			if TempUnit1 then
 				if auraType == "MISS" or auraType == "RESIST" then
 					local icon = RaidAlerter_GUIDTOICONTEXT(dstGUID);
 					if srcName == UnitName("player") then
-						RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_31,RAL.ToPink(RAL_TEXT_YOU),RAL.ToCyan(spellName),icon..RAL.ToRed(dstName)));
+						RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_31,RAL.ToPink(RAL_TEXT_YOU),RAL.ToCyan(spellName),icon..RaidAlerter_ToClassColorNameText(dstName)));
 					end
 					RAL.SendMSG(string.format(RAL_TEXT_ALERT_31,srcName,spellName,icon..dstName), AlertChan);
 				elseif auraType == "IMMUNE" then
 					local icon = RaidAlerter_GUIDTOICONTEXT(dstGUID);
 					if srcName == UnitName("player") then
-						RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_32,icon..RAL.ToRed(dstName),RAL.ToPink(RAL_TEXT_YOU),RAL.ToCyan(spellName)));
+						RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_32,icon..RaidAlerter_ToClassColorNameText(dstName),RAL.ToPink(RAL_TEXT_YOU),RAL.ToCyan(spellName)));
 					end
 					RAL.SendMSG(string.format(RAL_TEXT_ALERT_32,icon..dstName,srcName,spellName), AlertChan);
 				end
@@ -2904,11 +3425,11 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 		end
 		if RaidAlerter_SET.TANK_ShieldReflection then
 			if auraType == "REFLECT" then
-				TempUnit1 = RaidAlerter_NameToUnit(dstName);
+				TempUnit1 = RaidAlerter_GUIDToUnit(dstGUID);
 				if TempUnit1 then
 					local icon = RaidAlerter_GUIDTOICONTEXT(srcGUID);
 					if dstName == UnitName("player") then
-						RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_33,RAL.ToPink(RAL_TEXT_YOU),RAL.ToCyan(spellName),icon..RAL.ToRed(srcName)));
+						RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_33,RAL.ToPink(RAL_TEXT_YOU),RAL.ToCyan(spellName),icon..RaidAlerter_ToClassColorNameText(srcName)));
 					end
 					RAL.SendMSG(string.format(RAL_TEXT_ALERT_33,dstName,spellName,icon..srcName), AlertChan);
 					return;
@@ -2920,11 +3441,11 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 
 	if eventtype == "SPELL_INTERRUPT" then
 		if RaidAlerter_SET.Break_Magic then
-			TempUnit1 = RaidAlerter_NameToUnit(srcName);
+			TempUnit1 = RaidAlerter_GUIDToUnit(srcGUID);
 			if TempUnit1 then
 				local icon = RaidAlerter_GUIDTOICONTEXT(dstGUID);
 				if srcName == UnitName("player") then
-					RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_34,RAL.ToPink(RAL_TEXT_YOU),icon..RAL.ToRed(dstName),RAL.ToCyan(amount)));
+					RaidAlerter.AddSCRMsg(string.format(RAL_TEXT_ALERT_34,RAL.ToPink(RAL_TEXT_YOU),icon..RaidAlerter_ToClassColorNameText(dstName),RAL.ToCyan(amount)));
 				end
 				RAL.SendMSG(string.format(RAL_TEXT_ALERT_34,srcName,icon..dstName,amount), AlertChan, 0, 0.5, "BM"..srcGUID);		--防DZ刀扇刷屏
 				return;
@@ -2935,8 +3456,8 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 
 	if eventtype == "PARTY_KILL" then
 		if RaidAlerter_SET.BossKill then
-			TempUnit1 = RaidAlerter_NameToUnit(srcName);
-			TempUnit2 = RaidAlerter_NameToUnit(dstName);
+			TempUnit1 = RaidAlerter_GUIDToUnit(srcGUID);
+			TempUnit2 = RaidAlerter_GUIDToUnit(dstGUID);
 			if (TempUnit1 and (not TempUnit2)) then
 				for k, v in pairs(RaidAlerter_Bosses) do
 					if dstName == v then
@@ -2952,7 +3473,7 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 	if eventtype == "SPELL_SUMMON" then
 		if RaidAlerter_SET.TANK_ShieldWall then
 			if spellName == RAL_TEXT_SPELL_35 then
-				TempUnit1 = RaidAlerter_NameToUnit(srcName);
+				TempUnit1 = RaidAlerter_GUIDToUnit(srcGUID);
 				if TempUnit1 then
 					RAL.SendMSG(string.format(RAL_TEXT_ALERT_39,srcName,spellName), AlertWChan);
 				end
@@ -2983,8 +3504,8 @@ function RaidAlerter_Raid_PARTY_Combat_Alerter(timestamp, eventtype, srcGUID, sr
 		if RaidAlerter_SET.Nef_PriestDown then
 			if GetRealZoneText() == RAL_TEXT_ZONE_1 then
 				if spellName == RAL_TEXT_SPELL_28 then
-					TempUnit1 = RaidAlerter_NameToUnit(srcName);
-					TempUnit2 = RaidAlerter_NameToUnit(dstName);
+					TempUnit1 = RaidAlerter_GUIDToUnit(srcGUID);
+					TempUnit2 = RaidAlerter_GUIDToUnit(dstGUID);
 					if (TempUnit1 and TempUnit2)then
 						RaidAlerter_Alerter_ErrorCure[TempUnit1] = RaidAlerter_Alerter_ErrorCure[TempUnit1] + 1;
 						RaidAlerter_Alerter_ErrorCure[TempUnit2] = RaidAlerter_Alerter_ErrorCure[TempUnit2] + auraType;
@@ -3004,105 +3525,50 @@ end
 
 --TANK血量监视
 function RaidAlerter_Check_T_health()
-	if (oRA) then
-		if oRA.maintanktable then
-			local i;
-			for i = 1, 5 do
-				if (oRA.maintanktable[i]) then
-					local unit = RaidAlerter_NameToUnit(oRA.maintanktable[i]);
-					if (unit) then
-						if (UnitIsConnected(unit)) then
-							if RaidAlerter_SET.TANK_Death then
-								if (UnitIsDeadOrGhost(unit)) then
-									if RaidAlerter_MT_Dead[unit] == nil then
-										RaidAlerter_MT_Dead[unit] = 0;
-									end
-									if ( RaidAlerter_MT_Dead[unit] == 0) then
-										RAL.SendMSG(string.format(RAL_TEXT_ALERT_5,i.."T",oRA.maintanktable[i]),"RAID_WARNING");
-										RaidAlerter_MT_Dead[unit] = 1;
-									end
---									return;
-								else
-									RaidAlerter_MT_Dead[unit] = 0;
-								end
-							end
-
-							local health, healthmax, mana, manamax = UnitHealth(unit), UnitHealthMax(unit), UnitMana(unit), UnitManaMax(unit);
-							local healthPercent = floor(health/healthmax*100+0.5)
-
-							if RaidAlerter_SET.TANK_DangerHealth then
-								if (healthPercent <= RaidAlerter_SET.TANK_DangerHealthPecent) and (not UnitIsDeadOrGhost(unit)) then
-									RaidAlerter_Alerter_dangerHealth[unit] = RaidAlerter_Alerter_dangerHealth[unit] + 1;
-									if ( RaidAlerter_Alerter_dangerHealth[unit] > 40) then
-										RaidAlerter_Alerter_dangerHealth[unit] = 0;
-									elseif ( RaidAlerter_Alerter_dangerHealth[unit] == 1)then
-										if RaidAlerter_GetTimer("RH"..oRA.maintanktable[i])>3 then		--同一人3秒内只报一次
-											RAL.SendMSG(string.format(RAL_TEXT_ALERT_4,i.."T",oRA.maintanktable[i],healthPercent),"RAID_WARNING");
-											RAL.SOUND(3);
-											RaidAlerter_StartTimer("RH"..oRA.maintanktable[i]);
-										end
-									end
---									return;
-								else
-									RaidAlerter_Alerter_dangerHealth[unit] = 0;
-								end
-							end
-
-							if healthPercent > RaidAlerter_SET.TANK_DangerHealthPecent then
-								RaidAlerter_Alerter_dangerHealth[unit] = 0;
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-	if (CT_RA_MainTanks and (not oRA)) then
-		local i;
-		for i = 1, 5 do
-			if (CT_RA_MainTanks[i]) then
-				local unit = RaidAlerter_NameToUnit(CT_RA_MainTanks[i]);
-				if (unit) then
-					if (UnitIsConnected(unit)) then
-						if RaidAlerter_SET.TANK_Death then
-							if (UnitIsDeadOrGhost(unit)) then
-								if RaidAlerter_MT_Dead[unit] == nil then
-									RaidAlerter_MT_Dead[unit] = 0;
-								end
-								if ( RaidAlerter_MT_Dead[unit] == 0) then
-									RAL.SendMSG(string.format(RAL_TEXT_ALERT_5,i.."T",CT_RA_MainTanks[i]),"RAID_WARNING");
-									RaidAlerter_MT_Dead[unit] = 1;
-								end
---								return;
-							else
+	local i;
+	for i = 1, 5 do
+		if (RAL_Tanks[i]) then
+			local unit = RaidAlerter_NameToUnit(RAL_Tanks[i]);
+			if (unit) then
+				if (UnitIsConnected(unit)) then
+					if RaidAlerter_SET.TANK_Death then
+						if (UnitIsDeadOrGhost(unit)) then
+							if RaidAlerter_MT_Dead[unit] == nil then
 								RaidAlerter_MT_Dead[unit] = 0;
 							end
-						end
-
-						local health, healthmax, mana, manamax = UnitHealth(unit), UnitHealthMax(unit), UnitMana(unit), UnitManaMax(unit);
-						local healthPercent = floor(health/healthmax*100+0.5)
-
-						if RaidAlerter_SET.TANK_DangerHealth then
-							if (healthPercent <= RaidAlerter_SET.TANK_DangerHealthPecent) and (not UnitIsDeadOrGhost(unit)) then
-								RaidAlerter_Alerter_dangerHealth[unit] = RaidAlerter_Alerter_dangerHealth[unit] + 1;
-								if ( RaidAlerter_Alerter_dangerHealth[unit] > 40) then
-									RaidAlerter_Alerter_dangerHealth[unit] = 0;
-								elseif ( RaidAlerter_Alerter_dangerHealth[unit] == 1)then
-									if RaidAlerter_GetTimer("RH"..CT_RA_MainTanks[i])>3 then	--同一人3秒内只报一次
-										RAL.SendMSG(string.format(RAL_TEXT_ALERT_4,i.."T",CT_RA_MainTanks[i],healthPercent),"RAID_WARNING");
-										RAL.SOUND(3);
-										RaidAlerter_StartTimer("RH"..CT_RA_MainTanks[i]);
-									end
-								end
---								return;
-							else
-								RaidAlerter_Alerter_dangerHealth[unit] = 0;
+							if ( RaidAlerter_MT_Dead[unit] == 0) then
+								RAL.SendMSG(string.format(RAL_TEXT_ALERT_5,i.."T",RAL_Tanks[i]),"RAID_WARNING");
+								RaidAlerter_MT_Dead[unit] = 1;
 							end
+--									return;
+						else
+							RaidAlerter_MT_Dead[unit] = 0;
 						end
+					end
 
-						if healthPercent > RaidAlerter_SET.TANK_DangerHealthPecent then
+					local health, healthmax, mana, manamax = UnitHealth(unit), UnitHealthMax(unit), UnitMana(unit), UnitManaMax(unit);
+					local healthPercent = floor(health/healthmax*100+0.5)
+
+					if RaidAlerter_SET.TANK_DangerHealth then
+						if (healthPercent <= RaidAlerter_SET.TANK_DangerHealthPecent) and (not UnitIsDeadOrGhost(unit)) then
+							RaidAlerter_Alerter_dangerHealth[unit] = RaidAlerter_Alerter_dangerHealth[unit] + 1;
+							if ( RaidAlerter_Alerter_dangerHealth[unit] > 40) then
+								RaidAlerter_Alerter_dangerHealth[unit] = 0;
+							elseif ( RaidAlerter_Alerter_dangerHealth[unit] == 1)then
+								if RaidAlerter_GetTimer("RH"..RAL_Tanks[i])>3 then		--同一人3秒内只报一次
+									RAL.SendMSG(string.format(RAL_TEXT_ALERT_4,i.."T",RAL_Tanks[i],healthPercent),"RAID_WARNING");
+									RAL.SOUND(3);
+									RaidAlerter_StartTimer("RH"..RAL_Tanks[i]);
+								end
+							end
+--							return;
+						else
 							RaidAlerter_Alerter_dangerHealth[unit] = 0;
 						end
+					end
+
+					if healthPercent > RaidAlerter_SET.TANK_DangerHealthPecent then
+						RaidAlerter_Alerter_dangerHealth[unit] = 0;
 					end
 				end
 			end
@@ -3236,7 +3702,7 @@ function RaidAlerter_Check_BossHealthPecent_Party(unit)
 end
 
 --仇恨提示：自己的仇恨信息
-function RaidAlerter_THREAT_UPDATE(event, unit, ...)
+function RaidAlerter_THREAT_UPDATE(unit)
 	if RaidAlerter_SET.THREATCheck then
 		if (GetNumPartyMembers()>0 or GetNumRaidMembers()>0) then
 			if unit == "player" then
@@ -3420,11 +3886,14 @@ function RaidAlerter_Check_MyHP()
 	end
 end
 
+--[[
 function RaidAlerter_BU(s) local P,B,i="player",true,1 while UnitBuff(P,i) do if string.find(UnitBuff(P,i),s) then B=false end i=i+1 end return B end
 function RaidAlerter_TargetBU(s) local P,B,i="target",true,1 while UnitBuff(P,i) do if string.find(UnitBuff(P,i),s) then B=false end i=i+1 end return B end
+]]
 function RaidAlerter_TargetDeBU(s,t) local B,i=true,1 while UnitDebuff(t,i) do if string.find(UnitDebuff(t,i),s) then B=false end i=i+1 end return B end
 
 --统计有效成员数量（限定人数模式）
+--[[
 function RaidAlerter_GetNumRaidMembers(check)
 	local n=0;
 	for i=1, GetNumRaidMembers() do
@@ -3435,36 +3904,66 @@ function RaidAlerter_GetNumRaidMembers(check)
 	end
 	return n;
 end
+]]
+
+--更新主坦克表
+function RaidAlerter_UpdateTanks()
+	RAL_Tanks = {};
+	if (oRA3) then
+		if oRA3.GetSortedTanks then
+			RAL_Tanks = oRA3.GetSortedTanks();
+			local i = 1;
+			while RAL_Tanks[i] do
+				local found = false;
+				for k, v in pairs(RAL_BlzTanks) do
+					if v == RAL_Tanks[i] then
+						found = true;
+						break;
+					end
+				end
+				if not found then
+					table.remove(RAL_Tanks,i);
+					i = i - 1;
+				end
+				i = i + 1;
+			end
+		end
+	elseif (oRA) then		--oRA2
+		if oRA.maintanktable then
+			for i=1, 5 do
+				if (oRA.maintanktable[i]) then
+					RaidAlerter_Table_Update(RAL_Tanks, oRA.maintanktable[i], "ADD");
+				end
+			end
+		end
+	elseif (CT_RA_MainTanks) then
+		for i=1, 5 do
+			if (CT_RA_MainTanks[i]) then
+				RaidAlerter_Table_Update(RAL_Tanks, CT_RA_MainTanks[i], "ADD");
+			end
+		end
+	end
+	if #RAL_Tanks == 0 then
+		RAL_Tanks = RAL_BlzTanks;
+	end
+end
 
 --TANK判定
 function RaidAlerter_TestIsMtList(inameunit)
-	if (UnitInRaid("player")) then
-		if RaidAlerter_NameToGroup(UnitName(inameunit)) > RaidAlerter_SET.RAIDMODE_MAX_GROUP then
-			return false;
+	if oRA or CT_RA_MainTanks then		--oRA2和CTA下的RAL_Tanks未作判定，可能会属于替补
+		if (UnitInRaid("player")) then
+			if RaidAlerter_NameToGroup(UnitName(inameunit)) > RaidAlerter_SET.RAIDMODE_MAX_GROUP then
+				return false;
+			end
 		end
 	end
 	if RaidAlerter_TestMtHasSet() then
 		local i;
-		for i = 1, 10 do
-			if (oRA) then
-				if oRA.maintanktable then
-					if (oRA.maintanktable[i]) then
-						local unit = RaidAlerter_NameToUnit(oRA.maintanktable[i]);
-						if (unit) then
-							if oRA.maintanktable[i] == UnitName(inameunit) then
-								return true;
-							end
-						end
-					end
-				end
-			end
-			if (CT_RA_MainTanks and (not oRA)) then
-				if (CT_RA_MainTanks[i]) then
-					local unit = RaidAlerter_NameToUnit(CT_RA_MainTanks[i]);
-					if (unit) then
-						if CT_RA_MainTanks[i] == UnitName(inameunit) then
-							return true;
-						end
+		for i = 1, 5 do
+			if RAL_Tanks[i] then
+				if RaidAlerter_NameToUnit(RAL_Tanks[i]) then
+					if RAL_Tanks[i] == UnitName(inameunit) then
+						return true;
 					end
 				end
 			end
@@ -3475,7 +3974,7 @@ function RaidAlerter_TestIsMtList(inameunit)
 		if (playerClass==RAL_TEXT_WARRIOR) or (playerClass==RAL_TEXT_DEATHKNIGHT) then
 			if UnitInRaid("player") then
 				if UnitHealthMax(inameunit) > (RaidHPMAXAVG*1.4) then
-					return true;			--高血量判定为TANK（考虑oRA2未设定TANK的情况）
+					return true;			--高血量判定为TANK（考虑未设定TANK的情况）
 				end
 				return false;				--RAID中应避免DPS板甲职业OT的情况
 			else
@@ -3484,7 +3983,7 @@ function RaidAlerter_TestIsMtList(inameunit)
 		elseif (playerClass==RAL_TEXT_DRUID) then		--熊德
 			if UnitInRaid("player") then
 				if UnitHealthMax(inameunit) > (RaidHPMAXAVG*1.4) then
-					return true;			--高血量判定为TANK（考虑oRA2未设定TANK的情况）
+					return true;			--高血量判定为TANK（考虑未设定TANK的情况）
 				end
 				return false;
 			else
@@ -3500,7 +3999,7 @@ function RaidAlerter_TestIsMtList(inameunit)
 		elseif (playerClass==RAL_TEXT_PALADIN) then		--防骑
 			if UnitInRaid("player") then
 				if UnitHealthMax(inameunit) > (RaidHPMAXAVG*1.4) then
-					return true;			--高血量判定为TANK（考虑oRA2未设定TANK的情况）
+					return true;			--高血量判定为TANK（考虑未设定TANK的情况）
 				end
 				return false;
 			else
@@ -3520,63 +4019,25 @@ end
 
 --TANK检测
 function RaidAlerter_TestMtHasSet()
-	if (oRA) then
-		if oRA.maintanktable then
-			local i;
-			local j = 0;
-			for i = 1, 10 do
-				if (oRA.maintanktable[i]) then
-					local unit = RaidAlerter_NameToUnit(oRA.maintanktable[i]);
-					if (unit) then
-					j = j + 1;
-					end
-				end
-			end
-			if j > 0 then
-				return j;
-			end
-		end
+	if #RAL_Tanks >= 1 then
+		return #RAL_Tanks;
+	else
+		return false;
 	end
-	if (CT_RA_MainTanks and (not oRA)) then
-		local i;
-		local j = 0;
-		for i = 1, 10 do
-			if (CT_RA_MainTanks[i]) then
-				local unit = RaidAlerter_NameToUnit(CT_RA_MainTanks[i]);
-				if (unit) then
-				j = j + 1;
-				end
-			end
-		end
-		if j > 0 then
-			return j;
-		end
-	end
-	return false;
 end
 
 --MT战斗状态判定
+--[[
 function RaidAlerter_TestRaidAffectingCombat()
-	if (oRA) then
-		if oRA.maintanktable then
-			if (oRA.maintanktable[1]) then
-				local unit = RaidAlerter_NameToUnit(oRA.maintanktable[1]);
-				if(UnitAffectingCombat(unit)==1) then
-					return true;
-				end
-			end
-		end
-	end
-	if (CT_RA_MainTanks and (not oRA)) then
-		if (CT_RA_MainTanks[1]) then
-			local unit = RaidAlerter_NameToUnit(CT_RA_MainTanks[1]);
-			if(UnitAffectingCombat(unit)==1) then
-				return true;
-			end
+	if (RAL_Tanks[1]) then
+		local unit = RaidAlerter_NameToUnit(RAL_Tanks[1]);
+		if(UnitAffectingCombat(unit)==1) then
+			return true;
 		end
 	end
 	return false;
 end
+]]
 
 --原版团队战斗判定
 --[[
@@ -3641,6 +4102,7 @@ function RaidAlerter_TestAllRaidAffectingCombat()
 end
 
 --判定自己是否和团队在同一场景
+--[[
 function RaidAlerter_TestMe_InRaidZone()
 	local MeZone = GetRealZoneText();
 	local OnlineCount = 0;
@@ -3662,6 +4124,7 @@ function RaidAlerter_TestMe_InRaidZone()
 		return false;
 	end
 end
+]]
 
 --查找目标锁定Boss的ID
 function RaidAlerter_GetIsTargetBossUnit()
@@ -3694,10 +4157,10 @@ function RaidAlerter_GetTarIsGUIDUnit(GUID)
 	elseif (GUID == UnitGUID("party4target")) then
 		return "party4";
 	else
-		local numRaidMembers = GetNumRaidMembers();
-		if (numRaidMembers > 0) then
+		RaidNumALL = GetNumRaidMembers();
+		if (RaidNumALL > 0) then
 			-- we are in a raid
-			for i=1, numRaidMembers do
+			for i=1, RaidNumALL do
 				if (GUID == UnitGUID("raid"..i.."target")) then
 					return "raid"..i;
 				end
@@ -3722,10 +4185,10 @@ function RaidAlerter_GetPetMaster(GUID)
 	elseif (GUID == UnitGUID("partypet4")) then
 		return "("..UnitName("party4")..")";
 	else
-		local numRaidMembers = GetNumRaidMembers();
-		if (numRaidMembers > 0) then
+		RaidNumALL = GetNumRaidMembers();
+		if (RaidNumALL > 0) then
 			-- we are in a raid
-			for i=1, numRaidMembers do
+			for i=1, RaidNumALL do
 				if (GUID == UnitGUID("raidpet"..i)) then
 					return "("..UnitName("raid"..i)..")";
 				end
@@ -3812,28 +4275,92 @@ function RaidAlerter_Boss_Record_Party()
 	end
 end
 
---3.1：GetCurrentDungeonDifficulty() --> 3.2
-function RaidAlerter_GetCurrentDifficulty()
-	local SysDif = 1;	--小队：1=普通 2=英雄		团队：1=10人  2=25人  3=10人(英雄)  4=25人(英雄)
-	local EQDif = 0;	--返回值：1=普通  2=英雄  0=未知
-	if UnitInRaid("player") then
-		SysDif = GetRaidDifficulty();
-		if not SysDif then return 0;end
-		if SysDif == 1 or SysDif == 2 then
-			EQDif = 1;
-		else
-			EQDif = 2;
+function RaidAlerter_LootMethodTEXT(TipTextMode)	--1全 2简
+	if TipTextMode == 1 then
+		return RaidAlerter_GetColoredText(_G["ITEM_QUALITY_COLORS"][GetLootThreshold()], RAL_LootMethod_SYS[GetLootMethod()]);
+	else
+		return RaidAlerter_GetColoredText(_G["ITEM_QUALITY_COLORS"][GetLootThreshold()], RAL_LootMethod[GetLootMethod()]);
+	end
+end
+
+function RaidAlerter_GetColoredText(color, text)
+	if (color and text) then
+		return format("|cFF%s%s|r",format("%02X%02X%02X",color.r*255,color.g*255,color.b*255),text);
+	else
+		return "";
+	end
+end
+
+function RaidAlerter_GetCurrentDifficulty(TipTextMode)		--副本难度返回值：1=普通  2=英雄
+	SysDif = 1;	--小队：1=普通 2=英雄		团队：1=10人  2=25人  3=10人(英雄)  4=25人(英雄)
+	EQDif = 1;	--副本难度：1=普通  2=英雄
+	DifText = "";
+	_, instanceType, difficulty, _, maxPlayers, playerDifficulty, isDynamicInstance = GetInstanceInfo();
+	if instanceType == "raid" then				--在副本时直接读取副本参数
+		SysDif = difficulty;
+		if difficulty > 2 then EQDif = 2;end
+	elseif instanceType == "party" then			--在副本时直接读取副本参数
+		SysDif = difficulty;
+		EQDif = SysDif;
+	else										--不在副本时读取团队设定值
+		if UnitInRaid("player") then
+			SysDif = GetRaidDifficulty();
+			if SysDif > 2 then EQDif = 2;end
+		elseif GetNumPartyMembers() > 0 then
+			SysDif = GetDungeonDifficulty();
+			EQDif = SysDif;
 		end
-	elseif GetNumPartyMembers() > 0 then
-		SysDif = GetDungeonDifficulty();
-		if not SysDif then return 0;end
-		if SysDif == 1 then
-			EQDif = 1;
-		else
+	end
+
+	if isDynamicInstance then			--可动态调整难度的副本
+		if playerDifficulty == 1 then
 			EQDif = 2;
 		end
 	end
-	return EQDif;
+
+	if TipTextMode then
+		--字串处理
+		if instanceType == "party" or instanceType == "raid" then			--在副本时
+			if EQDif == 1 then
+				DifText = string.format(RAL_TEXT_TIP_36, RAL.ToWhite(maxPlayers), RAL.ToGreen(RAL_TEXT_TIP_33));
+			else
+				DifText = string.format(RAL_TEXT_TIP_36, RAL.ToWhite(maxPlayers), RAL.ToRed(RAL_TEXT_TIP_34));
+			end
+		else		--不在副本
+			if UnitInRaid("player") then
+				if SysDif == 1 then DifText = RAL.ToWhite(RAL_TEXT_TIP_31)..RAL.ToGreen(RAL_TEXT_TIP_33) end;
+				if SysDif == 2 then DifText = RAL.ToWhite(RAL_TEXT_TIP_32)..RAL.ToGreen(RAL_TEXT_TIP_33) end;
+				if SysDif == 3 then DifText = RAL.ToWhite(RAL_TEXT_TIP_31)..RAL.ToRed(RAL_TEXT_TIP_34) end;
+				if SysDif == 4 then DifText = RAL.ToWhite(RAL_TEXT_TIP_32)..RAL.ToRed(RAL_TEXT_TIP_34) end;
+			elseif GetNumPartyMembers() > 0 then
+				DifText = RAL.ToWhite(RAL_TEXT_TIP_30);
+				if SysDif == 1 then
+					DifText = DifText..RAL.ToGreen(RAL_TEXT_TIP_33);
+				else
+					DifText = DifText..RAL.ToRed(RAL_TEXT_TIP_34);
+				end
+			end
+		end
+		if TipTextMode == 1 then			--1完整彩色文本如：25人英雄
+			return DifText;
+		elseif TipTextMode == 2 then		--2仅难度如：英雄
+			if EQDif == 1 then
+				return RAL.ToGreen(RAL_TEXT_TIP_33);
+			elseif EQDif == 2 then
+				return RAL.ToRed(RAL_TEXT_TIP_34);
+			else
+				return "";
+			end
+		elseif TipTextMode == 3 then		--3(用于tip显示)完整彩色文本并显示动态如：25人英雄(动态)
+			if isDynamicInstance then
+				return DifText.."("..RAL.ToYellow(RAL_TEXT_TIP_37)..")";
+			else
+				return DifText;
+			end
+		end
+	else
+		return EQDif;
+	end
 end
 
 function RaidAlerter_IsBossUnit(unit)
@@ -3844,24 +4371,27 @@ function RaidAlerter_IsBossUnit(unit)
 		BossHPMin = 999999999;
 		if UnitInRaid("player") then
 			if (RaidNum - OffLineRaidmembers) > 14 then
-				BossHPMin = 750000;		--25RAID
+				BossHPMin = RaidHPMAXAVG*200;		--25RAID
 			else
-				BossHPMin = 300000;		--10RAID
+				BossHPMin = RaidHPMAXAVG*80;		--10RAID
 			end
 		elseif GetNumPartyMembers() > 0 then
-			BossHPMin = 120000;			--PARTY
 			TeamLevel = UnitLevel("player");
+			PartyHPMAXAVG = UnitHealthMax("player");
 			for i=1, GetNumPartyMembers() do
 				TeamLevel = TeamLevel + UnitLevel("party"..i);
+				PartyHPMAXAVG = PartyHPMAXAVG + UnitHealthMax("party"..i);
 			end
 			TeamLevel = TeamLevel/(GetNumPartyMembers()+1);
+			PartyHPMAXAVG = PartyHPMAXAVG/(GetNumPartyMembers()+1);
+			BossHPMin = PartyHPMAXAVG*15;			--PARTY
 		end
-		if GetCurrentDungeonDifficulty() >= 2 then
+		if EQDif >= 2 then
 			BossHPMin = BossHPMin*1.35;
 		end
-		if TeamLevel > 72 then
-			BossHPMin = BossHPMin*(1+((TeamLevel-72)/10));		--Lv70-80动态调整
-		end
+--		if TeamLevel > 80 then
+--			BossHPMin = BossHPMin*(1+((TeamLevel-80)/5));		--Lv80-85动态调整
+--		end
 		if (UnitHealth(unit) > BossHPMin) then
 			return true;
 		end
@@ -3879,19 +4409,19 @@ function RaidAlerter_IsDangerUnit(unit)
 			DangerUnitHPMin = 666666666;
 			if UnitInRaid("player") then
 				if (RaidNum - OffLineRaidmembers) > 14 then
-					DangerUnitHPMin = 150000;		--25RAID
+					DangerUnitHPMin = RaidHPMAXAVG*20;		--25RAID
 				else
-					DangerUnitHPMin = 60000;		--10RAID
+					DangerUnitHPMin = RaidHPMAXAVG*8;		--10RAID
 				end
 			elseif GetNumPartyMembers() > 0 then
-				DangerUnitHPMin = 30000;			--PARTY
+				DangerUnitHPMin = PartyHPMAXAVG*3;			--PARTY
 			end
-			if GetCurrentDungeonDifficulty() >= 2 then
+			if EQDif >= 2 then
 				DangerUnitHPMin = DangerUnitHPMin*1.35;
 			end
-			if TeamLevel > 72 then
-				DangerUnitHPMin = DangerUnitHPMin*(1+((TeamLevel-72)/10));		--Lv70-80动态调整
-			end
+--			if TeamLevel > 80 then
+--				DangerUnitHPMin = DangerUnitHPMin*(1+((TeamLevel-80)/5));		--Lv80-85动态调整
+--			end
 			if (UnitLevel(unit)-TeamLevel) >= 3 then
 				DangerUnitHPMin = DangerUnitHPMin*0.75;
 			elseif (UnitLevel(unit)-TeamLevel) >= 2 then
@@ -3988,7 +4518,7 @@ function RaidAlerter_Check_SoulGemOn()
 			local i = 1;
 			while (UnitBuff("raid"..id, i)) do
 				if (string.find(UnitBuff("raid"..id, i), RAL_TEXT_BUFF_1)) then
-					RaidAlerter_Table_Update(GemName, UnitName("raid"..id), "ADD")
+					RaidAlerter_Table_Update(GemName, UnitName("raid"..id), "ADD");
 				end
 			i = i + 1;
 			end
@@ -4058,7 +4588,8 @@ function RaidAlerter_Check_P_BeControled()
 	local DEP_count = 0;
 	for id=1, GetNumRaidMembers() do
 		if (BC_count >= 3) or (DEP_count >= 3) then return; end			--一次最多只报3人，防刷屏
-		local unit = RaidAlerter_NameToUnit(UnitName("raid"..id));
+--		local unit = RaidAlerter_NameToUnit(UnitName("raid"..id));
+		local unit = "raid"..id;
 		if (unit) then
 			if (UnitIsFriend("player", "raid"..id) and UnitIsEnemy("player", "raid"..id)) then
 				if RaidAlerter_Check_P_BeControled_ButIsPolyUp("raid"..id) then
@@ -4188,6 +4719,7 @@ function RaidAlerter_Check_P_BeControled_Party()
 end
 
 --查找锁定标记者ID
+--[[
 function RaidAlerter_Find_Hunter_SniperShot()
 	if UnitExists("playertarget") then
 		if(not UnitIsFriend("player","playertarget")) then
@@ -4216,12 +4748,15 @@ function RaidAlerter_Find_Hunter_SniperShot()
 	end
 	return "";
 end
+]]
 
 --玩家名称转换为ID
 function RaidAlerter_NameToUnit(Name)
 	if (not Name) then
 		return false;
-	elseif (Name == UnitName("player")) then
+	end
+	Name = Name:match("(.+)%-(.+)") or Name;
+	if (Name == UnitName("player")) then
 		return "player";
 	elseif (Name == UnitName("party1")) then
 		return "party1";
@@ -4232,12 +4767,39 @@ function RaidAlerter_NameToUnit(Name)
 	elseif (Name == UnitName("party4")) then
 		return "party4";
 	else
-		local numRaidMembers = GetNumRaidMembers();
-		if (numRaidMembers > 0) then
+		RaidNumALL = GetNumRaidMembers();
+		if (RaidNumALL > 0) then
 			-- we are in a raid
-			for i=1, numRaidMembers do
-				RaidName = GetRaidRosterInfo(i);
-				if ( Name == RaidName) then
+			for i=1, RaidNumALL do
+				if Name == GetRaidRosterInfo(i) then
+					return "raid"..i;
+				end
+			end
+		end
+	end
+	return false;
+end
+
+--玩家GUID转换为ID
+function RaidAlerter_GUIDToUnit(GUID)
+	if (not GUID) then
+		return false;
+	elseif (GUID == UnitGUID("player")) then
+		return "player";
+	elseif (GUID == UnitGUID("party1")) then
+		return "party1";
+	elseif (GUID == UnitGUID("party2")) then
+		return "party2";
+	elseif (GUID == UnitGUID("party3")) then
+		return "party3";
+	elseif (GUID == UnitGUID("party4")) then
+		return "party4";
+	else
+		RaidNumALL = GetNumRaidMembers();
+		if (RaidNumALL > 0) then
+			-- we are in a raid
+			for i=1, RaidNumALL do
+				if GUID == UnitGUID("raid"..i) then
 					return "raid"..i;
 				end
 			end
@@ -4247,6 +4809,7 @@ function RaidAlerter_NameToUnit(Name)
 end
 
 --PET名称转换为ID
+--[[
 function RaidAlerter_PetNameToUnit(Name)
 	if (Name or Name ~="") then
 		for k, v in pairs(RaidAlerter_Bosses) do
@@ -4281,6 +4844,7 @@ function RaidAlerter_PetNameToUnit(Name)
 	end
 	return false;
 end
+]]
 
 --查找玩家的小队号（团队）
 function RaidAlerter_NameToGroup(CheckName)
@@ -4306,11 +4870,17 @@ function RaidAlerter_Get_RaidState()
 	local level;
 	local totallevel = 0;
 	local totalhpmax = 0;
+	local role = "";
+	RAL_BlzTanks = {};
 
 	for id=1, GetNumRaidMembers() do
-		_, _, subgroup, level, playerClass = GetRaidRosterInfo(id);
+		_, _, subgroup, level, playerClass, _, _, _, _, role = GetRaidRosterInfo(id);
 		if subgroup <= RaidAlerter_SET.RAIDMODE_MAX_GROUP then
 			local unit = "raid"..id;
+			if role == "MAINTANK" then
+--				table.insert(RAL_BlzTanks, UnitName(unit));
+				RaidAlerter_Table_Update(RAL_BlzTanks, UnitName(unit), "ADD");
+			end
 			if (UnitIsConnected(unit)) then
 				if (UnitIsDeadOrGhost(unit)) then
 					DeadRaidmembers = DeadRaidmembers + 1;
@@ -4353,6 +4923,8 @@ end
 
 function RaidAlerter_Whisper(playerName, Message)
 	if (RaidAlerter_SYNC_SELECT_TOME==1) and (IsRaidLeader() or IsRaidOfficer()) then
+		--如果是仅本机或仅本屏的话, 则不发送密语
+		if (RaidAlerter_SET.OnlySelfCHAN or RaidAlerter_SET.OnlySelfSCR) then return end
 		return SendChatMessage("<RaidAlerter> "..Message, "WHISPER", nil, playerName);
 	end
 end
@@ -4389,6 +4961,7 @@ function RaidAlerter_GetTimer(id)
 	return 9999;
 end
 
+--[[
 function RaidAlerter_EndTimer(id)
 	for k, v in pairs(RaidAlerterTimerDatas) do
 		if(id == v["Name"]) then
@@ -4397,6 +4970,7 @@ function RaidAlerter_EndTimer(id)
 		end
 	end
 end
+]]
 
 function RaidAlerter_SecondsToTime(seconds, returntype)
 	local m, s;
@@ -4456,9 +5030,9 @@ function RaidAlerter.AddErrorMsg(msg)
 	end
 end
 
-function RaidAlerter.AddSCRMsg(msg, iconsize)
+function RaidAlerter.AddSCRMsg(msg, iconsize, WithChatFrameMSG)
 	if RaidAlerter_SET.ScrMsg then
-		if not iconsize then iconsize = 24;end
+		if not iconsize then iconsize = 0;end
 		for index,value in pairs(RaidAlerter_RAIDICON) do
 			msg = string.gsub(msg,value,"|T".."Interface\\TargetingFrame\\UI-RaidTargetingIcon_"..index..":"..iconsize.."|t");
 		end
@@ -4466,18 +5040,21 @@ function RaidAlerter.AddSCRMsg(msg, iconsize)
 		msg = string.gsub(msg,RAL_TEXT_ARROW_R,RAL.ToOrange(RAL_TEXT_ARROW_R));
 		msg = string.gsub(msg,"%*%*",RAL.ToGreen("**"));
 		RAL_SCRInfo:AddMessage(tostring(msg), 1.0, 1.0, 0.7);
+		if WithChatFrameMSG then
+			RaidAlerter.AddMsg(msg);
+		end
 	end
 end
 
-function RaidAlerter_SendAddonMessage(arg1,msg)
-	if not arg1 then return; end
+function RaidAlerter_SetAddonMessage(ARG_1,msg)
+	if not ARG_1 then return; end
 	if not msg then return; end
-	if (arg1=="RAL_SELECTREPLY") and ((not RaidAlerter_SET.OnOff) or RaidAlerter_SET.OnlySelfCHAN or RaidAlerter_SET.OnlySelfSCR) then
+	if (ARG_1=="RAL_SELECTREPLY") and ((not RaidAlerter_SET.OnOff) or RaidAlerter_SET.OnlySelfCHAN or RaidAlerter_SET.OnlySelfSCR) then
 		return;
 	end
 
-	if arg1=="RAL_SELECT" or arg1=="RAL_SELECTREPLY" then
-		if RaidAlerter_GetTimer("SYNCSELECT")>=3 then		--3秒前的传递参数视为过期，重置
+	if ARG_1=="RAL_SELECT" or ARG_1=="RAL_SELECTREPLY" then
+		if RaidAlerter_GetTimer("SYNCSELECT")>4 then		--4秒前的传递参数视为过期，重置
 			RaidAlerter_SYNC_SELECT_TMPPRA = 0;
 			RaidAlerter_SYNC_SELECT_NAME = "|cFFFF0000"..RAL_TEXT_SYNC_SELECT_NONE.."|r";
 			RaidAlerter_StartTimer("SYNCSELECT");
@@ -4487,10 +5064,10 @@ function RaidAlerter_SendAddonMessage(arg1,msg)
 	local SendAddonMSG = false;
 	local SendAddonMSGCHAN = "";
 
-	if arg1=="RAL_CHECKVER" or arg1=="RAL_CHECKVERREPLY" then SendAddonMSG = true;end
+	if ARG_1=="RAL_CHECKVER" or ARG_1=="RAL_CHECKVERREPLY" then SendAddonMSG = true;end
 
 	if (UnitInRaid("player")) then
-		if arg1=="RAL_SELECT" or arg1=="RAL_CHECKVER" or arg1=="RAL_CHECKVERREPLY" then
+		if ARG_1=="RAL_SELECT" or ARG_1=="RAL_CHECKVER" or ARG_1=="RAL_CHECKVERREPLY" then
 			SendAddonMSG = true;
 			SendAddonMSGCHAN = "RAID";
 		end
@@ -4499,7 +5076,7 @@ function RaidAlerter_SendAddonMessage(arg1,msg)
 			SendAddonMSGCHAN = "RAID";
 		end
 	elseif GetNumPartyMembers()>0 then
-		if (arg1=="RAL_SELECTREPLY") and (not RaidAlerter_SET.Party_Alerter) then
+		if (ARG_1=="RAL_SELECTREPLY") and (not RaidAlerter_SET.Party_Alerter) then
 			return;
 		end
 		SendAddonMSG = true;
@@ -4507,7 +5084,21 @@ function RaidAlerter_SendAddonMessage(arg1,msg)
 	end
 
 	if SendAddonMSG and SendAddonMSGCHAN~="" then
-		SendAddonMessage(arg1,msg,SendAddonMSGCHAN);
+--		SendAddonMessage(ARG_1,msg,SendAddonMSGCHAN);
+		RAL_UIMSG_PREFIX = ARG_1;
+		RAL_UIMSG_MSG = msg;
+		RAL_UIMSG_CHAN = SendAddonMSGCHAN;
+		RAL_UIMSG_SENDED = false;
+	end
+end
+
+function RaidAlerter_SendAddonMessage()
+	if not RAL_UIMSG_SENDED then
+		if RaidAlerter_GetTimer("RAL_UIMSG_TIME") >= RAL_UIMSG_TIMELIMIT then		--4.0后SendAddonMessage()使用频率限制?
+			SendAddonMessage(RAL_UIMSG_PREFIX,RAL_UIMSG_MSG,RAL_UIMSG_CHAN);
+			RAL_UIMSG_SENDED = true;
+			RaidAlerter_StartTimer("RAL_UIMSG_TIME");
+		end
 	end
 end
 
@@ -4552,10 +5143,18 @@ function RAL.SendMSG(msg, chan, ForceSend, CheckTime, MsgID)
 	end
 	if chan =="PARTY_RW" then
 		if RaidAlerter_SYNC_SELECT_TOME==1 then
-			SendChatMessage(msg,"RAID_WARNING");
---		else
+			--3.2-4.0过渡
+			if GameVER >= 30300 then
+				SendChatMessage(msg,"PARTY");
+				RaidAlerter.AddSCRMsg(msg);
+			else
+				SendChatMessage(msg,"RAID_WARNING");
+			end
+		else
 --			RaidAlerter.AddMsg(msg);
---			RaidAlerter.AddSCRMsg(msg);
+			if GameVER >= 30300 then
+				RaidAlerter.AddSCRMsg(msg);
+			end
 		end
 		return;
 	end
@@ -4596,6 +5195,10 @@ function RAL.SOUND(i)
 	end
 end
 
+function RAL.ToWhite(text)
+	if (not text) or (text==nil) then return "";end
+	return "|cFFFFFFFF"..tostring(text).."|r";
+end
 function RAL.ToRed(text)
 	if (not text) or (text==nil) then return "";end
 	return "|cFFFF0000"..tostring(text).."|r";
@@ -4625,6 +5228,7 @@ function RAL.ToOrange(text)
 	return "|cFFFF9900"..tostring(text).."|r";
 end
 
+--[[
 function RAL.ChatIconToSCRText(icontext, size)
 	if (not icontext) or (icontext==nil) then return "";end
 	for index,value in pairs(RaidAlerter_RAIDICON) do
@@ -4634,6 +5238,7 @@ function RAL.ChatIconToSCRText(icontext, size)
 	end
 	return icontext;
 end
+]]
 
 --下面提供可用于宏的增强讯息函数
 function RAL.MSG(msg,Repeattime,mychan,latencytime,PREF)

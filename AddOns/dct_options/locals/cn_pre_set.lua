@@ -175,7 +175,7 @@ DCT_PRESET_TEXT = {
 		["DCT_SHOWHEAL"] = {show = {"+#am#ic","+#am {#oh}#ic"}},
 		["DCT_SHOWPERIODICHEAL"] = {show = {"+#am#ic","+#am {#oh}#ic"}},
 		["DCT_SHOWSHIELD"] = {show = {"-#am#ic"}},
-		["DCT_SHOWACTIVE"] = {show = {"→#sn"}},
+		["DCT_SHOWACTIVE"] = {show = {"→#sn#ic"}},
 		["DCT_SHOWBUFF"] = {show = {"获得: #ic"}},
 		["DCT_SHOWDEBUFF"] = {show = {"不良效果: #ic"}},
 		["DCT_SHOWBUFFFADE"] = {show = {"消失: #ic","#ic"}},

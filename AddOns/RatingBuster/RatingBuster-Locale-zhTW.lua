@@ -1,6 +1,6 @@
 --[[
 Name: RatingBuster zhTW locale
-Revision: $Revision: 240 $
+Revision: $Revision: 282 $
 Translated by:
 - Whitetooth@Cenarius (hotdogee@bahamut.twbbs.org)
 - CuteMiyu
@@ -26,8 +26,13 @@ L["Suspend/resume this addon"] = "暫停/繼續使用這個插件"
 ---------------------------
 -- Slash Command Options --
 ---------------------------
---L["General Settings"] = true
---L["Profiles"] = true
+L["Always"] = "永遠顯示"
+L["ALT Key"] = "ALT 鍵"
+L["CTRL Key"] = "CTRL 鍵"
+L["SHIFT Key"] = "SHIFT 鍵"
+L["Never"] = "不顯示"
+L["General Settings"] = "一般設定"
+L["Profiles"] = "設定檔"
 -- /rb win
 L["Options Window"] = "選項視窗"
 L["Shows the Options Window"] = "顯示選項視窗"
@@ -38,7 +43,7 @@ L["Disable Blizzard stat change summary when using the built-in comparison toolt
 L["Enable Stat Mods"] = "屬性加成"
 L["Enable support for Stat Mods"] = "啟用屬性加成計算"
 -- /rb avoidancedr
-L["Enable avoidance diminishing returns"] = "啟用迴避遞減效應"
+L["Enable Avoidance Diminishing Returns"] = "啟用迴避遞減效應"
 L["Dodge, Parry, Hit Avoidance values will be calculated using the avoidance deminishing return formula with your current stats"] = "你的閃避、招架、避免命中值會被計算在迴避遞減效應中"
 -- /rb itemid
 L["Show ItemID"] = "顯示物品編號"
@@ -47,52 +52,52 @@ L["Show the ItemID in tooltips"] = "顯示物品編號"
 L["Show ItemLevel"] = "顯示物品等級"
 L["Show the ItemLevel in tooltips"] = "顯示物品等級"
 -- /rb usereqlv
-L["Use required level"] = "使用需要等級"
+L["Use Required Level"] = "使用需要等級"
 L["Calculate using the required level if you are below the required level"] = "如果你的等級低於需要等級則用需要等級來換算"
 -- /rb level
-L["Set level"] = "設定換算等級"
+L["Set Level"] = "設定換算等級"
 L["Set the level used in calculations (0 = your level)"] = "設定換算等級 (0 = 你的目前的等級)"
 ---------------------------------------------------------------------------
 -- /rb rating
 L["Rating"] = "屬性等級"
 L["Options for Rating display"] = "設定屬性等級顯示"
 -- /rb rating show
-L["Show Rating conversions"] = "顯示屬性等級轉換"
+L["Show Rating Conversions"] = "顯示屬性等級轉換"
 L["Show Rating conversions in tooltips"] = "在提示框架中顯示屬性等級轉換結果"
 -- /rb rating spell
-L["Show Spell Hit"] = "顯示法術命中"
-L["Show Spell Hit from Hit Rating"] = "顯示命中給的法術命中"
+L["Show Spell Hit/Haste"] = "顯示法術命中/加速"
+L["Show Spell Hit/Haste from Hit/Haste Rating"] = "顯示命中/加速給的法術命中/加速"
 -- /rb rating physical
-L["Show Physical Hit"] = "顯示物理命中"
-L["Show Physical Hit from Hit Rating"] = "顯示命中給的物理命中"
+L["Show Physical Hit/Haste"] = "顯示物理命中/加速"
+L["Show Physical Hit/Haste from Hit/Haste Rating"] = "顯示命中/加速給的物理命中/加速"
 -- /rb rating detail
-L["Show detailed conversions text"] = "顯示詳細轉換文字"
+L["Show Detailed Conversions Text"] = "顯示詳細轉換文字"
 L["Show detailed text for Resilience and Expertise conversions"] = "顯示韌性和熟練技能的詳細轉換文字"
 -- /rb rating def
-L["Defense breakdown"] = "分析防禦"
+L["Defense Breakdown"] = "分析防禦"
 L["Convert Defense into Crit Avoidance, Hit Avoidance, Dodge, Parry and Block"] = "將防禦分為避免致命、避免命中、閃躲、招架和格擋"
 -- /rb rating wpn
-L["Weapon Skill breakdown"] = "分析武器技能"
+L["Weapon Skill Breakdown"] = "分析武器技能"
 L["Convert Weapon Skill into Crit, Hit, Dodge Neglect, Parry Neglect and Block Neglect"] = "將武器技能分為致命、擊中、防止被閃躲、防止被招架和防止被格擋"
 -- /rb rating exp
-L["Expertise breakdown"] = "分析熟練技能"
+L["Expertise Breakdown"] = "分析熟練技能"
 L["Convert Expertise into Dodge Neglect and Parry Neglect"] = "將熟練技能分為防止被閃躲、防止被招架"
 ---------------------------------------------------------------------------
 -- /rb rating color
-L["Change text color"] = "設定文字顏色"
+L["Change Text Color"] = "設定文字顏色"
 L["Changes the color of added text"] = "設定 RB 所增加的文字的顏色"
 -- /rb rating color pick
-L["Pick color"] = "挑選顏色"
+L["Pick Color"] = "挑選顏色"
 L["Pick a color"] = "挑選顏色"
 -- /rb rating color enable
-L["Enable color"] = "啟用文字顏色"
+L["Enable Color"] = "啟用文字顏色"
 L["Enable colored text"] = "啟用文字顏色"
 ---------------------------------------------------------------------------
 -- /rb stat
 L["Stat Breakdown"] = "基本屬性解析"
 L["Changes the display of base stats"] = "設定基本屬性的解析顯示"
 -- /rb stat show
-L["Show base stat conversions"] = "顯示基本屬性解析"
+L["Show Base Stat Conversions"] = "顯示基本屬性解析"
 L["Show base stat conversions in tooltips"] = "在物品提示中顯示基本屬性解析"
 ---------------------------------------------------------------------------
 -- /rb stat str
@@ -201,60 +206,91 @@ L["Show Spell Damage from Spirit"] = "顯示精神給的法術傷害加成"
 -- /rb stat spi heal
 L["Show Healing"] = "顯示治療"
 L["Show Healing from Spirit"] = "顯示精神給的治療加成"
+-- /rb stat spi spellcrit
+L["Show Spell Crit"] = "顯示法術致命"
+L["Show Spell Crit chance from Spirit"] = "顯示精神給的法術致命一擊機率"
+---------------------------------------------------------------------------
+-- /rb stat armor
+L["Armor"] = "護甲"
+L["Changes the display of Armor"] = "自訂護甲解析項目"
+-- /rb stat armor ap
+L["Show Attack Power"] = "顯示攻擊強度"
+L["Show Attack Power from Armor"] = "顯示護甲給的攻擊強度"
 ---------------------------------------------------------------------------
 -- /rb sum
 L["Stat Summary"] = "屬性統計"
 L["Options for stat summary"] = "自訂屬性選項"
 -- /rb sum show
-L["Show stat summary"] = "顯示屬性統計"
+L["Show Stat Summary"] = "顯示屬性統計"
 L["Show stat summary in tooltips"] = "在物品提示中顯示屬性統計"
 -- /rb sum ignore
-L["Ignore settings"] = "忽略設定"
+L["Ignore Settings"] = "忽略設定"
 L["Ignore stuff when calculating the stat summary"] = "設定在統計總合時所要忽略的項目"
 -- /rb sum ignore unused
-L["Ignore unused items types"] = "忽略不可能使用的物品"
-L["Show stat summary only for highest level armor type and items you can use with uncommon quality and up"] = "只顯示在你會使用的物品上"
+L["Ignore Undesirable Items"] = "忽略不想要的物品"
+L["Hide stat summary for undesirable items"] = "只在你可以裝備的物品顯示屬性統計"
+-- /rb sum ignore quality
+L["Minimum Item Quality"] = "最低物品品質"
+L["Show stat summary only for selected quality items and up"] = "只在你所選的品質或更好的物品上顯示屬性統計"
+-- /rb sum ignore armor
+L["Armor Types"] = "護甲種類"
+L["Select armor types you want to ignore"] = "選擇你想忽略的護甲種類"
+-- /rb sum ignore armor cloth
+L["Ignore Cloth"] = "忽略布甲"
+L["Hide stat summary for all cloth armor"] = "隱藏所有布甲的屬性統計"
+-- /rb sum ignore armor leather
+L["Ignore Leather"] = "忽略皮甲"
+L["Hide stat summary for all leather armor"] = "隱藏所有皮甲的屬性統計"
+-- /rb sum ignore armor mail
+L["Ignore Mail"] = "忽略鎖甲"
+L["Hide stat summary for all mail armor"] = "隱藏所有鎖甲的屬性統計"
+-- /rb sum ignore armor plate
+L["Ignore Plate"] = "忽略鎧甲"
+L["Hide stat summary for all plate armor"] = "隱藏所有鎧甲的屬性統計"
 -- /rb sum ignore equipped
-L["Ignore equipped items"] = "忽略已裝備的物品"
-L["Hide stat summary for equipped items"] = "隱藏已裝備的物品的統計總合"
+L["Ignore Equipped Items"] = "忽略已裝備的物品"
+L["Hide stat summary for equipped items"] = "隱藏已裝備的物品的屬性統計"
 -- /rb sum ignore enchant
-L["Ignore enchants"] = "忽略附魔"
-L["Ignore enchants on items when calculating the stat summary"] = "計算時忽略物品上的附魔效果"
+L["Ignore Enchants"] = "忽略附魔"
+L["Ignore enchants on items when calculating the stat summary"] = "統計時忽略物品上的附魔效果"
 -- /rb sum ignore gem
-L["Ignore gems"] = "忽略寶石"
-L["Ignore gems on items when calculating the stat summary"] = "計算時忽略物品上的寶石效果"
+L["Ignore Gems"] = "忽略寶石"
+L["Ignore gems on items when calculating the stat summary"] = "統計時忽略物品上的寶石效果"
+-- /rb sum ignore prismaticSocket
+L["Ignore Prismatic Sockets"] = "忽略多色插槽"
+L["Ignore gems in prismatic sockets when calculating the stat summary"] = "統計時忽略多色插槽裡的寶石效果"
 -- /rb sum diffstyle
-L["Display style for diff value"] = "差異值顯示方式"
+L["Display Style For Diff Value"] = "差異值顯示方式"
 L["Display diff values in the main tooltip or only in compare tooltips"] = "設定在主提示框架或只在比較框架中顯示差異值"
 -- /rb sum space
-L["Add empty line"] = "加入空白列"
+L["Add Empty Line"] = "加入空白列"
 L["Add a empty line before or after stat summary"] = "在物品提示中的屬性統計前或後加入空白列"
 -- /rb sum space before
-L["Add before summary"] = "加在統計前"
+L["Add Before Summary"] = "加在統計前"
 L["Add a empty line before stat summary"] = "在物品提示中的屬性統計前加入空白列"
 -- /rb sum space after
-L["Add after summary"] = "加在統計後"
+L["Add After Summary"] = "加在統計後"
 L["Add a empty line after stat summary"] = "在物品提示中的屬性統計後加入空白列"
 -- /rb sum icon
-L["Show icon"] = "顯示圖示"
+L["Show Icon"] = "顯示圖示"
 L["Show the sigma icon before summary listing"] = "在屬性統計前顯示圖示"
 -- /rb sum title
-L["Show title text"] = "顯示標題"
+L["Show Title Text"] = "顯示標題"
 L["Show the title text before summary listing"] = "在屬性統計前顯示標題文字"
 -- /rb sum showzerostat
-L["Show zero value stats"] = "顯示數值為 0 的屬性"
+L["Show Zero Value Stats"] = "顯示數值為 0 的屬性"
 L["Show zero value stats in summary for consistancy"] = "為了一致性，在統計中顯示數值為 0 的屬性"
 -- /rb sum calcsum
-L["Calculate stat sum"] = "計算統計總合"
+L["Calculate Stat Sum"] = "計算統計總合"
 L["Calculate the total stats for the item"] = "計算物品的統計總合"
 -- /rb sum calcdiff
-L["Calculate stat diff"] = "計算統計差異"
+L["Calculate Stat Diff"] = "計算統計差異"
 L["Calculate the stat difference for the item and equipped items"] = "計算物品和已裝備物品的統計差異"
 -- /rb sum sort
-L["Sort StatSummary alphabetically"] = "依字幕順序排列屬性統計"
+L["Sort StatSummary Alphabetically"] = "依字幕順序排列屬性統計"
 L["Enable to sort StatSummary alphabetically, disable to sort according to stat type(basic, physical, spell, tank)"] = "開啟時依字幕順序排列，關閉時依屬性種類排列(基本、物理、魔法、坦克)"
 -- /rb sum avoidhasblock
-L["Include block chance in Avoidance summary"] = "傷害迴避包含格檔率"
+L["Include Block Chance In Avoidance Summary"] = "傷害迴避包含格檔率"
 L["Enable to include block chance in Avoidance summary, Disable for only dodge, parry, miss"] = "開啟時傷害迴避包含格檔率，關閉時有閃躲、招架、未擊中"
 ---------------------------------------------------------------------------
 -- /rb sum basic
@@ -360,6 +396,9 @@ L["Weapon Skill <- Weapon Skill Rating"] = "武器技能 ← 武器技能等級"
 -- /rb sum physical exp
 L["Sum Expertise"] = "統計熟練技能"
 L["Expertise <- Expertise Rating"] = "熟練技能 ← 熟練等級"
+-- /rb sum physical exprating
+L["Sum Expertise Rating"] = "統計熟練等級"
+L["Expertise Rating Summary"] = "統計熟練等級"
 -- /rb sum physical arprating
 L["Sum Armor Penetration Rating"] = "統計無視護甲穿透等級"
 L["Armor Penetration Rating Summary"] = "統計無視護甲穿透等級"
@@ -486,8 +525,13 @@ L["Total Reduction <- Armor, Dodge, Parry, Block, Block Value, Defense, Resilien
 L["Sum Avoidance"] = "統計傷害迴避"
 L["Avoidance <- Dodge, Parry, MobMiss, Block(Optional)"] = "傷害迴避 ← 閃躲、招架、怪物未擊中、格擋(選項)"
 ---------------------------------------------------------------------------
+-- /rb sum gemset
+L["Gem Set"] = "寶石設定"
+L["Select a gem set to configure"] = "選擇一組寶石設定"
+L["Default Gem Set 1"] = "寶石設定 1"
+L["Default Gem Set 2"] = "寶石設定 2"
+L["Default Gem Set 3"] = "寶石設定 3"
 -- /rb sum gem
-L["Gems"] = "預設寶石"
 L["Auto fill empty gem slots"] = "空寶石插槽的預設寶石"
 -- /rb sum gem red
 L["Red Socket"] = EMPTY_SOCKET_RED
@@ -502,6 +546,15 @@ L["Yellow Socket"] = EMPTY_SOCKET_YELLOW
 L["Blue Socket"] = EMPTY_SOCKET_BLUE
 -- /rb sum gem meta
 L["Meta Socket"] = EMPTY_SOCKET_META
+-- /rb sum gem2
+L["Second set of default gems which can be toggled with a modifier key"] = "你可以使用 SHIFT, ALT 或 CTRL 來切換第二組預設寶石設定"
+L["Can't use the same modifier as Gem Set 3"] = "無法使用與第 3 組預設寶石設定相同的切換鍵"
+-- /rb sum gem2 key
+L["Toggle Key"] = "切換鍵"
+L["Use this key to toggle alternate gems"] = "選擇一個按鍵來切換這組寶石設定"
+-- /rb sum gem3
+L["Third set of default gems which can be toggled with a modifier key"] = "你可以使用 SHIFT, ALT 或 CTRL 來切換第三組預設寶石設定"
+L["Can't use the same modifier as Gem Set 2"] = "無法使用與第 2 組預設寶石設定相同的切換鍵"
 
 -----------------------
 -- Item Level and ID --

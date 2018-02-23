@@ -1,4 +1,4 @@
-	local BB = LibStub("LibBabble-Boss-3.0"):GetLookupTable()
+﻿	local BB = LibStub("LibBabble-Boss-3.0"):GetLookupTable()
 	local BZ = LibStub("LibBabble-Zone-3.0"):GetLookupTable()
 	local L = LibStub("AceLocale-3.0"):GetLocale("Mendeleev")
 	
@@ -172,6 +172,221 @@
 	})
 
 	table.insert(MENDELEEV_SETS, {
+		name = BZ["Halls of Reflection"],
+		setindex = "InstanceLoot.Halls of Reflection",
+		colour = "|cffB0C4DE",
+		header = BZ["Halls of Reflection"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLoot.Halls of Reflection.Marwyn"] = BB["Marwyn"],
+			["InstanceLoot.Halls of Reflection.Falric"] = BB["Falric"],
+			["InstanceLoot.Halls of Reflection.The Lich King"] = BB["The Lich King"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Halls of Reflection"] .. " " .. L["Heroic"],
+		setindex = "InstanceLootHeroic.Halls of Reflection",
+		colour = "|cffB0C4DE",
+		header = BZ["Halls of Reflection"] .. " " .. L["Heroic"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLootHeroic.Halls of Reflection.Marwyn"] = BB["Marwyn"],
+			["InstanceLootHeroic.Halls of Reflection.Falric"] = BB["Falric"],
+			["InstanceLootHeroic.Halls of Reflection.The Lich King"] = BB["The Lich King"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Icecrown Citadel"] .. " " .. L["(10 Man)"],
+		setindex = "InstanceLoot.Icecrown Citadel",
+		colour = "|cffB0C4DE",
+		header = BZ["Icecrown Citadel"] .. " " .. L["(10 Man)"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLoot.Icecrown Citadel.Lord Marrowgar.10 Man"] = BB["Lord Marrowgar"],
+			["InstanceLoot.Icecrown Citadel.Lady Deathwhisper.10 Man"] = BB["Lady Deathwhisper"],
+			["InstanceLoot.Icecrown Citadel.Gunship Armory.10 Man"] = L["Gunship Battle"],
+			["InstanceLoot.Icecrown Citadel.Deathbringer Saurfang.10 Man"] = BB["Deathbringer Saurfang"],
+			["InstanceLoot.Icecrown Citadel.Festergut"] = BB["Festergut"],
+			["InstanceLoot.Icecrown Citadel.Rotface"] = BB["Rotface"],
+			["InstanceLoot.Icecrown Citadel.Professor Putricide"] = BB["Professor Putricide"],
+			["InstanceLoot.Icecrown Citadel.Prince Valanar"] = BB["Prince Valanar"],
+			["InstanceLoot.Icecrown Citadel.Blood-Queen Lana'thel"] = BB["Blood-Queen Lana'thel"],
+			["InstanceLoot.Icecrown Citadel.Valithria Dreamwalker"] = BB["Valithria Dreamwalker"],
+			["InstanceLoot.Icecrown Citadel.Sindragosa"] = BB["Sindragosa"],
+			["InstanceLoot.Icecrown Citadel.The Lich King"] = BB["The Lich King"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Icecrown Citadel"] .. " " .. L["(25 Man)"],
+		setindex = "InstanceLoot.Icecrown Citadel",
+		colour = "|cffB0C4DE",
+		header = BZ["Icecrown Citadel"] .. " " .. L["(25 Man)"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLoot.Icecrown Citadel.Lord Marrowgar.25 Man"] = BB["Lord Marrowgar"],
+			["InstanceLoot.Icecrown Citadel.Lady Deathwhisper.25 Man"] = BB["Lady Deathwhisper"],
+			["InstanceLoot.Icecrown Citadel.Gunship Armory.25 Man"] = L["Gunship Battle"],
+			["InstanceLoot.Icecrown Citadel.Deathbringer Saurfang.25 Man"] = BB["Deathbringer Saurfang"],
+			["InstanceLoot.Icecrown Citadel.Festergut"] = BB["Festergut"],
+			["InstanceLoot.Icecrown Citadel.Rotface"] = BB["Rotface"],
+			["InstanceLoot.Icecrown Citadel.Professor Putricide"] = BB["Professor Putricide"],
+			["InstanceLoot.Icecrown Citadel.Prince Valanar"] = BB["Prince Valanar"],
+			["InstanceLoot.Icecrown Citadel.Blood-Queen Lana'thel"] = BB["Blood-Queen Lana'thel"],
+			["InstanceLoot.Icecrown Citadel.Valithria Dreamwalker"] = BB["Valithria Dreamwalker"],
+			["InstanceLoot.Icecrown Citadel.Sindragosa"] = BB["Sindragosa"],
+			["InstanceLoot.Icecrown Citadel.The Lich King"] = BB["The Lich King"],
+			["InstanceLoot.Icecrown Citadel.Trash Mobs"] = L["Trash Mobs"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Icecrown Citadel"] .. " " .. L["(10 Man)"] .. L["Heroic"],
+		setindex = "InstanceLootHeroic.Icecrown Citadel",
+		colour = "|cffB0C4DE",
+		header = BZ["Icecrown Citadel"] .. " " .. L["(10 Man)"] .. L["Heroic"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLootHeroic.Icecrown Citadel.Lord Marrowgar.10 Man"] = BB["Lord Marrowgar"],
+			["InstanceLootHeroic.Icecrown Citadel.Lady Deathwhisper.10 Man"] = BB["Lady Deathwhisper"],
+			["InstanceLootHeroic.Icecrown Citadel.Gunship Armory.10 Man"] = L["Gunship Battle"],
+			["InstanceLootHeroic.Icecrown Citadel.Deathbringer Saurfang.10 Man"] = BB["Deathbringer Saurfang"],
+			["InstanceLootHeroic.Icecrown Citadel.Festergut"] = BB["Festergut"],
+			["InstanceLootHeroic.Icecrown Citadel.Rotface"] = BB["Rotface"],
+			["InstanceLootHeroic.Icecrown Citadel.Professor Putricide"] = BB["Professor Putricide"],
+			["InstanceLootHeroic.Icecrown Citadel.Prince Valanar"] = BB["Prince Valanar"],
+			["InstanceLootHeroic.Icecrown Citadel.Blood-Queen Lana'thel"] = BB["Blood-Queen Lana'thel"],
+			["InstanceLootHeroic.Icecrown Citadel.Valithria Dreamwalker"] = BB["Valithria Dreamwalker"],
+			["InstanceLootHeroic.Icecrown Citadel.Sindragosa"] = BB["Sindragosa"],
+			["InstanceLootHeroic.Icecrown Citadel.The Lich King"] = BB["The Lich King"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Icecrown Citadel"] .. " " .. L["(25 Man)"] .. L["Heroic"],
+		setindex = "InstanceLootHeroic.Icecrown Citadel",
+		colour = "|cffB0C4DE",
+		header = BZ["Icecrown Citadel"] .. " " .. L["(25 Man)"] .. L["Heroic"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLootHeroic.Icecrown Citadel.Lord Marrowgar.25 Man"] = BB["Lord Marrowgar"],
+			["InstanceLootHeroic.Icecrown Citadel.Lady Deathwhisper.25 Man"] = BB["Lady Deathwhisper"],
+			["InstanceLootHeroic.Icecrown Citadel.Gunship Armory.25 Man"] = L["Gunship Battle"],
+			["InstanceLootHeroic.Icecrown Citadel.Deathbringer Saurfang.25 Man"] = BB["Deathbringer Saurfang"],
+			["InstanceLootHeroic.Icecrown Citadel.Festergut"] = BB["Festergut"],
+			["InstanceLootHeroic.Icecrown Citadel.Rotface"] = BB["Rotface"],
+			["InstanceLootHeroic.Icecrown Citadel.Professor Putricide"] = BB["Professor Putricide"],
+			["InstanceLootHeroic.Icecrown Citadel.Prince Valanar"] = BB["Prince Valanar"],
+			["InstanceLootHeroic.Icecrown Citadel.Blood-Queen Lana'thel"] = BB["Blood-Queen Lana'thel"],
+			["InstanceLootHeroic.Icecrown Citadel.Valithria Dreamwalker"] = BB["Valithria Dreamwalker"],
+			["InstanceLootHeroic.Icecrown Citadel.Sindragosa"] = BB["Sindragosa"],
+			["InstanceLootHeroic.Icecrown Citadel.The Lich King"] = BB["The Lich King"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Trial of the Champion"],
+		setindex = "InstanceLoot.Trial of the Champion",
+		colour = "|cffB0C4DE",
+		header = BZ["Trial of the Champion"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLoot.Trial of the Champion.Grand Champions"] = BB["Grand Champions"],
+			["InstanceLoot.Trial of the Champion.Eadric the Pure"] = BB["Eadric the Pure"],
+			["InstanceLoot.Trial of the Champion.Argent Confessor Paletress"] = BB["Argent Confessor Paletress"],
+			["InstanceLoot.Trial of the Champion.The Black Knight"] = BB["The Black Knight"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Trial of the Champion"] .. " " .. L["Heroic"],
+		setindex = "InstanceLootHeroic.Trial of the Champion",
+		colour = "|cffB0C4DE",
+		header = BZ["Trial of the Champion"] .. " " .. L["Heroic"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLootHeroic.Trial of the Champion.Grand Champions"] = BB["Grand Champions"],
+			["InstanceLootHeroic.Trial of the Champion.Eadric the Pure"] = BB["Eadric the Pure"],
+			["InstanceLootHeroic.Trial of the Champion.Argent Confessor Paletress"] = BB["Argent Confessor Paletress"],
+			["InstanceLootHeroic.Trial of the Champion.The Black Knight"] = BB["The Black Knight"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Trial of the Crusader"] .. " " .. L["(10 Man)"],
+		setindex = "InstanceLoot.Trial of the Crusader",
+		colour = "|cffB0C4DE",
+		header = BZ["Trial of the Crusader"] .. " " .. L["(10 Man)"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLoot.Trial of the Crusader.The Beasts of Northrend.10 Man"] = BB["The Beasts of Northrend"],
+			["InstanceLoot.Trial of the Crusader.Lord Jaraxxus.10 Man"] = BB["Lord Jaraxxus"],
+			["InstanceLoot.Trial of the Crusader.Faction Champions.10 Man"] = BB["Faction Champions"],
+			["InstanceLoot.Trial of the Crusader.The Twin Val'kyr.10 Man"] = BB["The Twin Val'kyr"],
+			["InstanceLoot.Trial of the Crusader.Anub'arak.10 Man"] = BB["Anub'arak"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Trial of the Crusader"] .. " " .. L["(25 Man)"],
+		setindex = "InstanceLoot.Trial of the Crusader",
+		colour = "|cffB0C4DE",
+		header = BZ["Trial of the Crusader"] .. " " .. L["(25 Man)"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLoot.Trial of the Crusader.The Beasts of Northrend.25 Man"] = BB["The Beasts of Northrend"],
+			["InstanceLoot.Trial of the Crusader.Lord Jaraxxus.25 Man"] = BB["Lord Jaraxxus"],
+			["InstanceLoot.Trial of the Crusader.Faction Champions.25 Man"] = BB["Faction Champions"],
+			["InstanceLoot.Trial of the Crusader.The Twin Val'kyr.25 Man"] = BB["The Twin Val'kyr"],
+			["InstanceLoot.Trial of the Crusader.Anub'arak.25 Man"] = BB["Anub'arak"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Trial of the Crusader"] .. " " .. L["(10 Man)"] .. " "..L["Heroic"],
+		setindex = "InstanceLootHeroic.Trial of the Crusader",
+		colour = "|cffB0C4DE",
+		header = BZ["Trial of the Crusader"] .. " " .. L["(10 Man)"] .." ".. L["Heroic"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLootHeroic.Trial of the Crusader.The Beasts of Northrend.10 Man"] = BB["The Beasts of Northrend"],
+			["InstanceLootHeroic.Trial of the Crusader.Lord Jaraxxus.10 Man"] = BB["Lord Jaraxxus"],
+			["InstanceLootHeroic.Trial of the Crusader.Faction Champions.10 Man"] = BB["Faction Champions"],
+			["InstanceLootHeroic.Trial of the Crusader.The Twin Val'kyr.10 Man"] = BB["The Twin Val'kyr"],
+			["InstanceLootHeroic.Trial of the Crusader.Anub'arak.10 Man"] = BB["Anub'arak"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Trial of the Crusader"] .. " " .. L["(25 Man)"] .." "..L["Heroic"],
+		setindex = "InstanceLootHeroic.Trial of the Crusader",
+		colour = "|cffB0C4DE",
+		header = BZ["Trial of the Crusader"] .. " " .. L["(25 Man)"] .." ".. L["Heroic"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLootHeroic.Trial of the Crusader.The Beasts of Northrend.25 Man"] = BB["The Beasts of Northrend"],
+			["InstanceLootHeroic.Trial of the Crusader.Lord Jaraxxus.25 Man"] = BB["Lord Jaraxxus"],
+			["InstanceLootHeroic.Trial of the Crusader.Faction Champions.25 Man"] = BB["Faction Champions"],
+			["InstanceLootHeroic.Trial of the Crusader.The Twin Val'kyr.25 Man"] = BB["The Twin Val'kyr"],
+			["InstanceLootHeroic.Trial of the Crusader.Anub'arak.25 Man"] = BB["Anub'arak"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
 		name = BZ["Naxxramas"],
 		setindex = "InstanceLoot.Naxxramas",
 		colour = "|cffB0C4DE",
@@ -226,6 +441,58 @@
 	})
 
 	table.insert(MENDELEEV_SETS, {
+		name = BZ["Onyxia's Lair"],
+		setindex = "InstanceLoot.Onyxia's Lair",
+		colour = "|cffB0C4DE",
+		header = BZ["Onyxia's Lair"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLoot.Onyxia's Lair.Onyxia.80"] = BB["Onyxia"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Onyxia's Lair"] .. " " .. L["Heroic"],
+		setindex = "InstanceLoot.Onyxia's Lair",
+		colour = "|cffB0C4DE",
+		header = BZ["Onyxia's Lair"] .. " " .. L["Heroic"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLootHeroic.Onyxia's Lair.Onyxia.80"] = BB["Onyxia"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Pit of Saron"],
+		setindex = "InstanceLoot.Pit of Saron",
+		colour = "|cffB0C4DE",
+		header = BZ["Pit of Saron"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLoot.Pit of Saron.Forgemaster Garfrost"] = BB["Forgemaster Garfrost"],
+			["InstanceLoot.Pit of Saron.Ick"] = BB["Krick and Ick"],
+			["InstanceLoot.Pit of Saron.Scourgelord Tyrannus"] = BB["Scourgelord Tyrannus"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
+		name = BZ["Pit of Saron"] .. " " .. L["Heroic"],
+		setindex = "InstanceLootHeroic.Pit of Saron",
+		colour = "|cffB0C4DE",
+		header = BZ["Pit of Saron"] .. " " .. L["Heroic"],
+		useval = showDropRate,
+		quality = 3,
+		sets = {
+			["InstanceLootHeroic.Pit of Saron.Forgemaster Garfrost"] = BB["Forgemaster Garfrost"],
+			["InstanceLootHeroic.Pit of Saron.Ick"] = BB["Krick and Ick"],
+			["InstanceLootHeroic.Pit of Saron.Scourgelord Tyrannus"] = BB["Scourgelord Tyrannus"],
+		},
+	})
+
+	table.insert(MENDELEEV_SETS, {
 		name = BZ["The Eye of Eternity"],
 		setindex = "InstanceLoot.The Eye of Eternity",
 		colour = "|cffB0C4DE",
@@ -248,6 +515,32 @@
 			["InstanceLootHeroic.The Eye of Eternity.Malygos"] = BB["Malygos"],
 		},
 	})
+
+ 	table.insert(MENDELEEV_SETS, {
+		name = BZ["The Forge of Souls"],
+		setindex = "InstanceLoot.The Forge of Souls",
+		colour = "|cffB0C4DE",
+ 		header = BZ["The Forge of Souls"],
+ 		useval = showDropRate,
+ 		quality = 3,
+ 		sets = {
+ 			["InstanceLoot.The Forge of Souls.Bronjahm"] = BB["Bronjahm"],
+ 			["InstanceLoot.The Forge of Souls.Devourer of Souls"] = BB["Devourer of Souls"],
+ 		},
+ 	})
+
+ 	table.insert(MENDELEEV_SETS, {
+		name = BZ["The Forge of Souls"] .. " " .. L["Heroic"],
+		setindex = "InstanceLootHeroic.The Forge of Souls",
+		colour = "|cffB0C4DE",
+ 		header = BZ["The Forge of Souls"] .. " " .. L["Heroic"],
+ 		useval = showDropRate,
+ 		quality = 3,
+ 		sets = {
+ 			["InstanceLootHeroic.The Forge of Souls.Bronjahm"] = BB["Bronjahm"],
+ 			["InstanceLootHeroic.The Forge of Souls.Devourer of Souls"] = BB["Devourer of Souls"],
+ 		},
+ 	})
 
 	table.insert(MENDELEEV_SETS, {
 		name = BZ["The Nexus"],
@@ -555,6 +848,8 @@
 		sets = {
 			["InstanceLoot.Vault of Archavon.Archavon the Stone Watcher"] = BB["Archavon the Stone Watcher"],
 			["InstanceLoot.Vault of Archavon.Emalon the Storm Watcher"] = BB["Emalon the Storm Watcher"],
+			["InstanceLoot.Vault of Archavon.Koralon the Flame Watcher"] = BB["Koralon the Flame Watcher"],
+			["InstanceLoot.Vault of Archavon.Toravon the Ice Watcher"] = BB["Toravon the Ice Watcher"],
 		},
 	})
 
@@ -568,5 +863,7 @@
 		sets = {
 			["InstanceLootHeroic.Vault of Archavon.Archavon the Stone Watcher"] = BB["Archavon the Stone Watcher"],
 			["InstanceLootHeroic.Vault of Archavon.Emalon the Storm Watcher"] = BB["Emalon the Storm Watcher"],
+			["InstanceLootHeroic.Vault of Archavon.Koralon the Flame Watcher"] = BB["Koralon the Flame Watcher"],
+			["InstanceLootHeroic.Vault of Archavon.Toravon the Ice Watcher"] = BB["Toravon the Ice Watcher"],
 		},
 	})

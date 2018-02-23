@@ -1,38 +1,44 @@
--- **********************************************************
--- **                Deadly Boss Mods - GUI                **
--- **             http://www.deadlybossmods.com            **
--- **********************************************************
+-- *********************************************************
+-- **               Deadly Boss Mods - GUI                **
+-- **            http://www.deadlybossmods.com            **
+-- *********************************************************
 --
 -- This addon is written and copyrighted by:
---    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
 --    * Paul Emmerich (Tandanu @ EU-Aegwynn) (DBM-Core)
--- 
+--    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
+--
 -- The localizations are written by:
---    * enGB/enUS: Nitram/Tandanu        http://www.deadlybossmods.com
---    * deDE: Nitram/Tandanu             http://www.deadlybossmods.com
---    * zhCN: Diablohu                   http://wow.gamespot.com.cn
---    * zhTW: Hman			 herman_c1@hotmail.com
---    * zhTW: Azael/kc10577				kc10577@hotmail.com
---    * (add your names here!)
+--    * enGB/enUS: Tandanu				http://www.deadlybossmods.com
+--    * deDE: Tandanu					http://www.deadlybossmods.com
+--    * zhCN: Diablohu					http://wow.gamespot.com.cn
+--    * ruRU: BootWin					bootwin@gmail.com
+--    * ruRU: Vampik					admin@vampik.ru
+--    * zhTW: Hman						herman_c1@hotmail.com
+--    * zhTW: Azael/kc10577				paul.poon.kw@gmail.com
+--    * koKR: BlueNyx					bluenyx@gmail.com
+--    * esES: Interplay/1nn7erpLaY      http://www.1nn7erpLaY.com
 --
 -- Special thanks to:
 --    * Arta (DBM-Party)
--- 
+--    * Omegal @ US-Whisperwind (some patches, and DBM-Party updates)
+--    * Tennberg (a lot of fixes in the enGB/enUS localization)
+--
 --
 -- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
--- All included textures and sounds are copyrighted by their respective owners.
+-- All included textures and sounds are copyrighted by their respective owners, license information for these media files can be found in the modules that make use of them.
 --
 --
 --  You are free:
---    * to Share — to copy, distribute, display, and perform the work
---    * to Remix — to make derivative works
+--    * to Share - to copy, distribute, display, and perform the work
+--    * to Remix - to make derivative works
 --  Under the following conditions:
---    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).
+--    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work). (A link to http://www.deadlybossmods.com is sufficient)
 --    * Noncommercial. You may not use this work for commercial purposes.
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
+--
+--
 
-
-local revision =("$Revision: 1104 $"):sub(12, -3) 
+local revision =("$Revision: 4532 $"):sub(12, -3) 
 local FrameTitle = "DBM_GUI_Option_"	-- all GUI frames get automatically a name FrameTitle..ID
 
 local PanelPrototype = {}
@@ -132,7 +138,7 @@ do
 		area.mytype = "area"
 		area:SetBackdropBorderColor(0.4, 0.4, 0.4)
 		area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
-		getglobal(FrameTitle..self:GetCurrentID()..'Title'):SetText(name)
+		_G[FrameTitle..self:GetCurrentID()..'Title']:SetText(name)
 		if width ~= nil and width < 0 then
 			area:SetWidth( self.frame:GetWidth() -12 + width)
 		else
@@ -233,8 +239,12 @@ do
 	end
 		
 	local function onHyperlinkClick(self, data, link)
-		if IsShiftKeyDown() and ChatFrameEditBox:IsShown() then
-			ChatFrameEditBox:Insert(link:gsub("|h(.*)|h", "|h[%1]|h"))
+		if IsShiftKeyDown() then
+			local msg = link:gsub("|h(.*)|h", "|h[%1]|h")
+			local chatWindow = ChatEdit_GetActiveWindow()
+			if chatWindow then
+				chatWindow:Insert(msg)
+			end
 		elseif not IsShiftKeyDown() then
 			if cursorInHitBox(self:GetParent()) then
 				self:GetParent():Click()
@@ -263,15 +273,29 @@ do
 		end
 	end
 	
+	local function replaceSpellLinks(id)
+		local spellId = tonumber(id)
+		local spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
+		return ("|cff71d5ff|Hspell:%d|h%s|h|r"):format(spellId, spellName)
+	end
+	
 	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar)
+		if not name then
+			return
+		end
+		if type(name) == "number" then
+			return DBM:AddMsg("CreateCheckButton: error: expected string, received number. You probably called mod:NewTimer(optionId) with a spell id.")
+		end
 		local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
 		button.myheight = 25
 		button.mytype = "checkbutton"
-		-- font strings do not support hyperlinks, so check if we need one
-		if name:find("|H") then
-			-- and replace it with a SimpleHTML frame
-			setglobal(button:GetName().."Text", CreateFrame("SimpleHTML", button:GetName().."Text", button))
-			local html = getglobal(button:GetName().."Text")
+		-- font strings do not support hyperlinks, so check if we need one...
+		if name:find("%$spell:") then
+			name = name:gsub("%$spell:(%d+)", replaceSpellLinks)
+		end
+		if name and name:find("|H") then -- ...and replace it with a SimpleHTML frame
+			_G[button:GetName().."Text"] = CreateFrame("SimpleHTML", button:GetName().."Text", button)
+			local html = _G[button:GetName().."Text"]
 			html:SetHeight(12)
 			html:SetFontObject("GameFontNormal")
 			html:SetPoint("LEFT", button, "RIGHT", 0, 1)
@@ -279,15 +303,15 @@ do
 			html:SetScript("OnHyperlinkEnter", onHyperlinkEnter)
 			html:SetScript("OnHyperlinkLeave", onHyperlinkLeave)
 		end
-		getglobal(button:GetName() .. 'Text'):SetText(name)
-		getglobal(button:GetName() .. 'Text'):SetWidth( self.frame:GetWidth() - 50 )
+		_G[button:GetName() .. 'Text']:SetText(name or DBM_CORE_UNKNOWN)
+		_G[button:GetName() .. 'Text']:SetWidth( self.frame:GetWidth() - 50 )
 
 		if textleft then
-			getglobal(button:GetName() .. 'Text'):ClearAllPoints()
-			getglobal(button:GetName() .. 'Text'):SetPoint("RIGHT", button, "LEFT", 0, 0)
-			getglobal(button:GetName() .. 'Text'):SetJustifyH("RIGHT")
+			_G[button:GetName() .. 'Text']:ClearAllPoints()
+			_G[button:GetName() .. 'Text']:SetPoint("RIGHT", button, "LEFT", 0, 0)
+			_G[button:GetName() .. 'Text']:SetJustifyH("RIGHT")
 		else
-			getglobal(button:GetName() .. 'Text'):SetJustifyH("LEFT")
+			_G[button:GetName() .. 'Text']:SetJustifyH("LEFT")
 		end
 		
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
@@ -331,7 +355,7 @@ do
 	function PanelPrototype:CreateEditBox(text, value, width, height)
 		local textbox = CreateFrame('EditBox', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_FrameEditBoxTemplate')
 		textbox.mytype = "textbox"
-		getglobal(FrameTitle..self:GetCurrentID().."Text"):SetText(text)
+		_G[FrameTitle..self:GetCurrentID().."Text"]:SetText(text)
 		textbox:SetWidth(width or 100)
 		textbox:SetHeight(height or 20)
 		textbox:SetScript("OnEscapePressed", unfocus)
@@ -360,17 +384,17 @@ function PanelPrototype:CreateScrollingMessageFrame(width, height, insertmode, f
 	if not fading then
 		scrollframe:SetFading(false)
 	end
-	scrollframe:SetInsertMode(insertmode or "BOTTOM")
+--	scrollframe:SetInsertMode(insertmode or "BOTTOM")
 	scrollframe:SetFontObject(fontobject or "GameFontNormal")
 	scrollframe:SetMaxLines(2000)
 	scrollframe:EnableMouse(true)
 	scrollframe:EnableMouseWheel(1)
 	
 	scrollframe:SetScript("OnHyperlinkClick", ChatFrame_OnHyperlinkShow)
-	scrollframe:SetScript("OnMouseWheel", function(self, arg)
-		if arg == 1 then
+	scrollframe:SetScript("OnMouseWheel", function(self, delta)
+		if delta == 1 then
 			self:ScrollUp()
-		elseif arg == -1 then 
+		elseif delta == -1 then 
 			self:ScrollDown()
 		end
 	end)
@@ -399,9 +423,9 @@ do
 		slider.mytype = "slider"
 		slider:SetMinMaxValues(low, high)
 		slider:SetValueStep(step)
-		slider:SetWidth(famewidth or 180)
-		getglobal(FrameTitle..self:GetCurrentID()..'Text'):SetText(text)
-		slider:SetScript("OnValueChanged", onValueChanged(getglobal(FrameTitle..self:GetCurrentID()..'Text'), text))
+		slider:SetWidth(framewidth or 180)
+		_G[FrameTitle..self:GetCurrentID()..'Text']:SetText(text)
+		slider:SetScript("OnValueChanged", onValueChanged(_G[FrameTitle..self:GetCurrentID()..'Text'], text))
 		self:SetLastObj(slider)
 		return slider
 	end
@@ -481,8 +505,8 @@ function PanelPrototype:CreateButton(title, width, height, onclick, FontObject)
 		button:SetNormalFontObject(FontObject);
 		button:SetHighlightFontObject(FontObject);		
 	end
-	if getglobal(button:GetName().."Text"):GetStringWidth() > button:GetWidth() then
-		button:SetWidth( getglobal(button:GetName().."Text"):GetStringWidth() + 25 )
+	if _G[button:GetName().."Text"]:GetStringWidth() > button:GetWidth() then
+		button:SetWidth( _G[button:GetName().."Text"]:GetStringWidth() + 25 )
 	end
 
 	self:SetLastObj(button)
@@ -689,7 +713,7 @@ end
 local UpdateAnimationFrame
 do
 	local function HideScrollBar(frame)
-		local list = getglobal(frame:GetName() .. "List");
+		local list = _G[frame:GetName() .. "List"];
 		list:Hide();
 		local listWidth = list:GetWidth();
 		for _, button in next, frame.buttons do
@@ -698,7 +722,7 @@ do
 	end
 
 	local function DisplayScrollBar(frame)
-		local list = getglobal(frame:GetName() .. "List");
+		local list = _G[frame:GetName() .. "List"];
 		list:Show();
 		local listWidth = list:GetWidth();
 		for _, button in next, frame.buttons do
@@ -713,7 +737,7 @@ do
 	-- This function is for internal use.
 	-- Function to update the left scrollframe buttons with the menu entries
 	function DBM_GUI_OptionsFrame:UpdateMenuFrame(listframe)
-		local offset = getglobal(listframe:GetName().."List").offset;
+		local offset = _G[listframe:GetName().."List"].offset;
 		local buttons = listframe.buttons;
 		local TABLE 
 
@@ -745,12 +769,12 @@ do
 		end
 	
 		if ( numAddOnCategories > numButtons ) then
-			getglobal(listframe:GetName().."List"):Show();
-			getglobal(listframe:GetName().."ListScrollBar"):SetMinMaxValues(0, (numAddOnCategories - numButtons) * buttons[1]:GetHeight());
-			getglobal(listframe:GetName().."ListScrollBar"):SetValueStep( buttons[1]:GetHeight() )
+			_G[listframe:GetName().."List"]:Show();
+			_G[listframe:GetName().."ListScrollBar"]:SetMinMaxValues(0, (numAddOnCategories - numButtons) * buttons[1]:GetHeight());
+			_G[listframe:GetName().."ListScrollBar"]:SetValueStep( buttons[1]:GetHeight() )
 		else
-			getglobal(listframe:GetName().."ListScrollBar"):SetValue(0);
-			getglobal(listframe:GetName().."List"):Hide();
+			_G[listframe:GetName().."ListScrollBar"]:SetValue(0);
+			_G[listframe:GetName().."List"]:Hide();
 		end
 
 		local selection = DBM_GUI_OptionsFrameBossMods.selection;
@@ -777,8 +801,10 @@ do
 	function DBM_GUI_OptionsFrame:DisplayButton(button, element)
 		button:Show();
 		button.element = element;
-		
+
+		button.text:ClearAllPoints()		
 		button.text:SetPoint("LEFT", 12 + 8 * element.depth, 2);
+		button.text:SetFontObject(GameFontNormalSmall)
 		button.toggle:ClearAllPoints()
 		button.toggle:SetPoint("LEFT", 8 * element.depth - 2, 1);
 
@@ -809,6 +835,7 @@ do
 		end
 
 		button.text:SetText(element.name);
+		button.text:Show()
 	end
 
 	-- This function is for internal use.
@@ -836,9 +863,9 @@ do
 	function DBM_GUI_OptionsFrame:CreateButtons(frame)
 		local name = frame:GetName()
 	
-		frame.scrollBar = getglobal(name.."ListScrollBar")
+		frame.scrollBar = _G[name.."ListScrollBar"]
 		frame:SetBackdropBorderColor(0.6, 0.6, 0.6, 1)
-		getglobal(name.."Bottom"):SetVertexColor(0.66, 0.66, 0.66)
+		_G[name.."Bottom"]:SetVertexColor(0.66, 0.66, 0.66)
 	
 		local buttons = {}
 		local button = CreateFrame("BUTTON", name.."Button1", frame, "DBM_GUI_FrameButtonTemplate")
@@ -861,8 +888,8 @@ do
 		local parent = button:GetParent();
 		local buttons = parent.buttons;
 	
-		self:ClearSelection(getglobal(self:GetName().."BossMods"),   getglobal(self:GetName().."BossMods").buttons);
-		self:ClearSelection(getglobal(self:GetName().."DBMOptions"), getglobal(self:GetName().."DBMOptions").buttons);
+		self:ClearSelection(_G[self:GetName().."BossMods"],   _G[self:GetName().."BossMods"].buttons);
+		self:ClearSelection(_G[self:GetName().."DBMOptions"], _G[self:GetName().."DBMOptions"].buttons);
 		self:SelectButton(parent, button);
 
 		self:DisplayFrame(button.element);
@@ -881,7 +908,7 @@ do
 	-- This function is for internal use.
 	-- places the selected tab on the container frame
 	function DBM_GUI_OptionsFrame:DisplayFrame(frame)
-		local container = getglobal(self:GetName().."PanelContainer")
+		local container = _G[self:GetName().."PanelContainer"]
 
 		if not (type(frame) == "table" and type(frame[0]) == "userdata") or select("#", frame:GetChildren()) == 0 then
 --			DBM:AddMsg(debugstack())
@@ -899,13 +926,13 @@ do
 		if mymax <= 0 then mymax = 0 end
 
 		if mymax > 0 then
-			getglobal(container:GetName().."FOV"):Show()
-			getglobal(container:GetName().."FOV"):SetScrollChild(frame)
-			getglobal(container:GetName().."FOVScrollBar"):SetMinMaxValues(0, mymax)
+			_G[container:GetName().."FOV"]:Show()
+			_G[container:GetName().."FOV"]:SetScrollChild(frame)
+			_G[container:GetName().."FOVScrollBar"]:SetMinMaxValues(0, mymax)
 
 			if frame.isfixed then
 				frame.isfixed = nil
-				local listwidth = getglobal(container:GetName().."FOVScrollBar"):GetWidth()
+				local listwidth = _G[container:GetName().."FOVScrollBar"]:GetWidth()
 				for i=1, select("#", frame:GetChildren()), 1 do
 					local child = select(i, frame:GetChildren())
 					if child.mytype == "area" then
@@ -914,14 +941,14 @@ do
 				end
 			end
 		else
-			getglobal(container:GetName().."FOV"):Hide()
+			_G[container:GetName().."FOV"]:Hide()
 			frame:ClearAllPoints()
 			frame:SetPoint("TOPLEFT", container ,"TOPLEFT", 5, 0)
 			frame:SetPoint("BOTTOMRIGHT", container ,"BOTTOMRIGHT", 0, 0)
 
 			if not frame.isfixed then
 				frame.isfixed = true
-				local listwidth = getglobal(container:GetName().."FOVScrollBar"):GetWidth()
+				local listwidth = _G[container:GetName().."FOVScrollBar"]:GetWidth()
 				for i=1, select("#", frame:GetChildren()), 1 do
 					local child = select(i, frame:GetChildren())
 					if child.mytype == "area" then
@@ -1168,7 +1195,7 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 165, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 240, true)
 	
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
@@ -1177,6 +1204,7 @@ local function CreateOptionsMenu()
 		local StatusEnabled = generaloptions:CreateCheckButton(L.EnableStatus, true, nil, "StatusEnabled")
 		local AutoRespond   = generaloptions:CreateCheckButton(L.AutoRespond,  true, nil, "AutoRespond")
 		local MiniMapIcon   = generaloptions:CreateCheckButton(L.EnableMiniMapIcon,  true)
+		local FixCLEUOnCombatStart   = generaloptions:CreateCheckButton(L.FixCLEUOnCombatStart,  true, nil, "FixCLEUOnCombatStart")
 		MiniMapIcon:SetScript("OnClick", function(self)
 			DBM:ToggleMinimapButton()
 			self:SetChecked( DBM.Options.ShowMinimapButton )
@@ -1184,9 +1212,10 @@ local function CreateOptionsMenu()
 		MiniMapIcon:SetScript("OnShow", function(self)
 			self:SetChecked( DBM.Options.ShowMinimapButton )
 		end)
+		generaloptions:CreateCheckButton(L.SKT_Enabled, true, nil, "AlwaysShowSpeedKillTimer")
 	
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame)
-		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -5)
+		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -55)
 		bmrange:SetScript("OnClick", function(self) 
 			if DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Hide()
@@ -1196,8 +1225,13 @@ local function CreateOptionsMenu()
 		end)
 
 		local bmtestmode  = generaloptions:CreateButton(L.Button_TestBars)
-		bmtestmode:SetPoint('TOPLEFT', bmrange, "TOPRIGHT", 20, 0)
+		bmtestmode:SetPoint('TOPLEFT', bmrange, "TOPRIGHT", 0, 0)
 		bmtestmode:SetScript("OnClick", function(self) DBM:DemoMode() end)
+
+		local latencySlider = generaloptions:CreateSlider(L.Latency_Text, 50, 750, 5, 210)   -- (text , min_value , max_value , step , width)
+     	latencySlider:SetPoint('BOTTOMLEFT', bmrange, "BOTTOMLEFT", 10, -35)
+     	latencySlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.LatencyThreshold) end)
+		latencySlider:HookScript("OnValueChanged", function(self) DBM.Options.LatencyThreshold = self:GetValue() end)
 
 		-- Pizza Timer (create your own timer menu)
 		local pizzaarea = DBM_GUI_Frame:CreateArea(L.PizzaTimer_Headline, nil, 85)
@@ -1249,7 +1283,7 @@ local function CreateOptionsMenu()
 		--            Raid Warning Colors            --
 		-----------------------------------------------
 		local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
-		local raidwarnoptions = RaidWarningPanel:CreateArea(L.Tab_RaidWarning, nil, 165, true)
+		local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 165, true)
 
 		local ShowWarningsInChat 	= raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
 		local ShowFakedRaidWarnings 	= raidwarnoptions:CreateCheckButton(L.ShowFakedRaidWarnings,  true, nil, "ShowFakedRaidWarnings")
@@ -1275,27 +1309,6 @@ local function CreateOptionsMenu()
 			end
 		)
 		RaidWarnSoundDropDown:SetPoint("TOPLEFT", WarningIconRight, "BOTTOMLEFT", 20, -10)
-
-		-- SpecialWarn Sound
-		local Sounds = {
-			{	text	= L.NoSound,		value	= "" },
-			{	text	= "Default",		value 	= "Sound\\Spells\\PVPFlagTaken.wav", 		sound=true },
-			{	text	= "NightElfBell",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true }
-		}
-		if GetSharedMedia3() then
-			for k,v in next, GetSharedMedia3():HashTable("sound") do
-				if k ~= "None" then -- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
-					table.insert(Sounds, {text=k, value=v, sound=true})
-				end
-			end
-		end
-		local SpecialWarnSoundDropDown = raidwarnoptions:CreateDropdown(L.SpecialWarnSound, Sounds, 
-			DBM.Options.SpecialWarningSound, function(value) 
-				DBM.Options.SpecialWarningSound = value
-			end
-		)
-		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", RaidWarnSoundDropDown, "TOPRIGHT", 40, 0)
-
 
 		local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 175, true)
 	
@@ -1415,7 +1428,7 @@ local function CreateOptionsMenu()
 	do
 		local BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 		
-		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 180, true)
+		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 240, true)
 
 		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', BarSetup.frame, "TOPRIGHT", 0, -1)
@@ -1434,7 +1447,7 @@ local function CreateOptionsMenu()
 				old(self, ...) 
 				self.frame:SetWidth(183)
 				self.frame:SetScale(0.9)
-				getglobal(self.frame:GetName().."Bar"):SetWidth(183)
+				_G[self.frame:GetName().."Bar"]:SetWidth(183)
 			end 
 		end
 
@@ -1496,7 +1509,6 @@ local function CreateOptionsMenu()
 							color2text:SetTextColor(self:GetColorRGB())
 						  end)					  
 
-
 		local Textures = { 
 			{	text	= "Default",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\default.tga", 	texture	= "Interface\\AddOns\\DBM-Core\\textures\\default.tga"	},
 			{	text	= "Blizzad",	value 	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar", 	texture	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar"	},
@@ -1513,7 +1525,7 @@ local function CreateOptionsMenu()
 			DBM.Bars:GetOption("Texture"), function(value) 
 				DBM.Bars:SetOption("Texture", value) 
 			end
-		);
+		)
 		TextureDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 210, -80)
 
 		local ExpandUpwards = BarSetup:CreateCheckButton(L.ExpandUpwards, false, nil, nil, "ExpandUpwards")
@@ -1522,7 +1534,9 @@ local function CreateOptionsMenu()
 		local FillUpBars = BarSetup:CreateCheckButton(L.FillUpBars, false, nil, nil, "FillUpBars")
 		FillUpBars:SetPoint("TOP", ExpandUpwards, "BOTTOM", 0, 5)
 		
-
+		local ClickThrough = BarSetup:CreateCheckButton(L.ClickThrough, false, nil, nil, "ClickThrough")
+		ClickThrough:SetPoint("TOPLEFT", color1reset, "BOTTOMLEFT", -7, -5)
+		
 		-- Functions for the next 2 Areas
 		local function createDBTOnShowHandler(option)
 			return function(self)
@@ -1534,6 +1548,28 @@ local function CreateOptionsMenu()
 				DBM.Bars:SetOption(option, self:GetValue())
 			end
 		end
+
+		local Fonts = { 
+			{	text	= "Default",		value 	= STANDARD_TEXT_FONT,			font = STANDARD_TEXT_FONT		},
+			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
+			{	text	= "Skurri",			value 	= "Fonts\\skurri.ttf",			font = "Fonts\\skurri.ttf"		},
+			{	text	= "Morpheus",		value 	= "Fonts\\MORPHEUS.ttf",		font = "Fonts\\MORPHEUS.ttf"	}
+		}
+		if GetSharedMedia3() then
+			for k,v in next, GetSharedMedia3():HashTable("font") do
+				table.insert(Fonts, {text=k, value=v, font=v})
+			end
+		end
+		local FontDropDown = BarSetup:CreateDropdown(L.Bar_Font, Fonts, DBM.Bars:GetOption("Font"), 
+			function(value) 
+				DBM.Bars:SetOption("Font", value) 
+			end)
+		FontDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 210, -200)
+
+		local FontSizeSlider = BarSetup:CreateSlider(L.Bar_FontSize, 7, 18, 1)
+		FontSizeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -202)
+		FontSizeSlider:SetScript("OnShow", createDBTOnShowHandler("FontSize"))
+		FontSizeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("FontSize"))
 
 		-----------------------
 		-- Small Bar Options --
@@ -1604,17 +1640,198 @@ local function CreateOptionsMenu()
 	end
 
 	do
+		local specPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpecWarnFrame, "option")
+		local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 205, true)
+		specArea:CreateCheckButton(L.SpecWarn_Enabled, true, nil, "ShowSpecialWarnings")
+
+		local showbutton = specArea:CreateButton(L.SpecWarn_DemoButton, 120, 16)
+		showbutton:SetPoint('TOPRIGHT', specArea.frame, "TOPRIGHT", -5, -5)
+		showbutton:SetNormalFontObject(GameFontNormalSmall);
+		showbutton:SetHighlightFontObject(GameFontNormalSmall);		
+		showbutton:SetScript("OnClick", function() DBM:ShowTestSpecialWarning() end)
+
+		local movemebutton = specArea:CreateButton(L.SpecWarn_MoveMe, 120, 16)
+		movemebutton:SetPoint('TOPRIGHT', showbutton, "BOTTOMRIGHT", 0, -5)
+		movemebutton:SetNormalFontObject(GameFontNormalSmall);
+		movemebutton:SetHighlightFontObject(GameFontNormalSmall);		
+		movemebutton:SetScript("OnClick", function() DBM:MoveSpecialWarning() end)
+
+		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 8, 40, 1)
+		fontSizeSlider:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, -55)
+		do
+			local firstshow = true
+			fontSizeSlider:SetScript("OnShow", function(self) 
+					firstshow = true
+					self:SetValue(DBM.Options.SpecialWarningFontSize) 
+			end)
+			fontSizeSlider:HookScript("OnValueChanged", function(self)
+					if firstshow then firstshow = false; return end
+					DBM.Options.SpecialWarningFontSize = self:GetValue()
+					DBM:UpdateSpecialWarningOptions()
+					DBM:ShowTestSpecialWarning()
+			end)
+		end
+
+		local color1 = specArea:CreateColorSelect(64)
+		color1:SetPoint('TOPLEFT', specArea.frame, "TOPLEFT", 20, -105)		
+		local color1text = specArea:CreateText(L.SpecWarn_FontColor, 80)
+		color1text:SetPoint("BOTTOM", color1, "TOP", 5, 4)
+		local color1reset = specArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+		color1reset:SetPoint('TOP', color1, "BOTTOM", 5, -10)
+		color1reset:SetScript("OnClick", function(self)
+				DBM.Options.SpecialWarningFontColor[1] = DBM.DefaultOptions.SpecialWarningFontColor[1]
+				DBM.Options.SpecialWarningFontColor[2] = DBM.DefaultOptions.SpecialWarningFontColor[2]
+				DBM.Options.SpecialWarningFontColor[3] = DBM.DefaultOptions.SpecialWarningFontColor[3]
+				color1:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
+				DBM:UpdateSpecialWarningOptions()
+				DBM:ShowTestSpecialWarning()
+		end)
+		do
+			local firstshow = true
+			color1:SetScript("OnShow", function(self)
+					firstshow = true
+					self:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
+			end)
+			color1:SetScript("OnColorSelect", function(self)
+					if firstshow then firstshow = false; return end
+					DBM.Options.SpecialWarningFontColor[1] = select(1, self:GetColorRGB())
+					DBM.Options.SpecialWarningFontColor[2] = select(2, self:GetColorRGB())
+					DBM.Options.SpecialWarningFontColor[3] = select(3, self:GetColorRGB())
+					color1text:SetTextColor(self:GetColorRGB())
+					DBM:UpdateSpecialWarningOptions()
+					DBM:ShowTestSpecialWarning()
+			end)
+		end
+
+		local Fonts = { 
+			{	text	= "Default",		value 	= STANDARD_TEXT_FONT,			font = STANDARD_TEXT_FONT		},
+			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
+			{	text	= "Skurri",			value 	= "Fonts\\skurri.ttf",			font = "Fonts\\skurri.ttf"		},
+			{	text	= "Morpheus",		value 	= "Fonts\\MORPHEUS.ttf",		font = "Fonts\\MORPHEUS.ttf"	}
+		}
+		if GetSharedMedia3() then
+			for k,v in next, GetSharedMedia3():HashTable("font") do
+				table.insert(Fonts, {text=k, value=v, font=v})
+			end
+		end
+		local FontDropDown = specArea:CreateDropdown(L.SpecWarn_FontType, Fonts, DBM.Options.SpecialWarningFont, 
+			function(value) 
+				DBM.Options.SpecialWarningFont = value
+				DBM:UpdateSpecialWarningOptions()
+				DBM:ShowTestSpecialWarning()
+			end
+		)
+		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -100)
+
+		-- SpecialWarn Sound
+		local Sounds = {
+			{	text	= L.NoSound,		value	= "" },
+			{	text	= "Default",		value 	= "Sound\\Spells\\PVPFlagTaken.wav", 		sound=true },
+			{	text	= "NightElfBell",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true }
+		}
+		if GetSharedMedia3() then
+			for k,v in next, GetSharedMedia3():HashTable("sound") do
+				if k ~= "None" then -- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
+					table.insert(Sounds, {text=k, value=v, sound=true})
+				end
+			end
+		end
+		local SpecialWarnSoundDropDown = specArea:CreateDropdown(L.SpecialWarnSound, Sounds, 
+			DBM.Options.SpecialWarningSound, function(value) 
+				DBM.Options.SpecialWarningSound = value
+			end
+		)
+		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -150)
+
+
+		local resetbutton = specArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
+		resetbutton:SetPoint('BOTTOMRIGHT', specArea.frame, "BOTTOMRIGHT", -5, 5)
+		resetbutton:SetNormalFontObject(GameFontNormalSmall);
+		resetbutton:SetHighlightFontObject(GameFontNormalSmall);		
+		resetbutton:SetScript("OnClick", function()
+				DBM.Options.SpecialWarningFont = DBM.DefaultOptions.SpecialWarningFont
+				DBM.Options.SpecialWarningFontSize = DBM.DefaultOptions.SpecialWarningFontSize
+				DBM.Options.SpecialWarningFontColor[1] = DBM.DefaultOptions.SpecialWarningFontColor[1]
+				DBM.Options.SpecialWarningFontColor[2] = DBM.DefaultOptions.SpecialWarningFontColor[2]
+				DBM.Options.SpecialWarningFontColor[3] = DBM.DefaultOptions.SpecialWarningFontColor[3]
+				DBM.Options.SpecialWarningPoint = DBM.DefaultOptions.SpecialWarningPoint
+				DBM.Options.SpecialWarningX = DBM.DefaultOptions.SpecialWarningX
+				DBM.Options.SpecialWarningY = DBM.DefaultOptions.SpecialWarningY
+				color1:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
+				fontSizeSlider:SetValue(DBM.DefaultOptions.SpecialWarningFontSize)
+				DBM:UpdateSpecialWarningOptions()
+		end)
+	end
+
+	do
+		local hpPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_HPFrame, "option")
+		local hpArea = hpPanel:CreateArea(L.Area_HPFrame, nil, 150, true)
+		hpArea:CreateCheckButton(L.HP_Enabled, true, nil, "AlwaysShowHealthFrame")
+		local growbttn = hpArea:CreateCheckButton(L.HP_GrowUpwards, true)
+		growbttn:SetScript("OnShow",  function(self) self:SetChecked(DBM.Options.HealthFrameGrowUp) end)
+		growbttn:SetScript("OnClick", function(self) 
+				DBM.Options.HealthFrameGrowUp = not not self:GetChecked() 
+				DBM.BossHealth:UpdateSettings()
+		end)
+
+
+		local BarWidthSlider = hpArea:CreateSlider(L.BarWidth, 150, 275, 1)
+		BarWidthSlider:SetPoint("TOPLEFT", hpArea.frame, "TOPLEFT", 20, -75)
+		BarWidthSlider:SetScript("OnShow", function(self) self:SetValue(DBM.Options.HealthFrameWidth or 100) end)
+		BarWidthSlider:HookScript("OnValueChanged", function(self) 
+				DBM.Options.HealthFrameWidth = self:GetValue()
+				DBM.BossHealth:UpdateSettings()
+		end)
+
+		local resetbutton = hpArea:CreateButton(L.Reset, 120, 16)
+		resetbutton:SetPoint('BOTTOMRIGHT', hpArea.frame, "BOTTOMRIGHT", -5, 5)
+		resetbutton:SetNormalFontObject(GameFontNormalSmall);
+		resetbutton:SetHighlightFontObject(GameFontNormalSmall);		
+		resetbutton:SetScript("OnClick", function()
+				DBM.Options.HPFramePoint = DBM.DefaultOptions.HPFramePoint
+				DBM.Options.HPFrameX = DBM.DefaultOptions.HPFrameX
+				DBM.Options.HPFrameY = DBM.DefaultOptions.HPFrameY
+				DBM.Options.HealthFrameGrowUp = DBM.DefaultOptions.HealthFrameGrowUp
+				DBM.Options.HealthFrameWidth = DBM.DefaultOptions.HealthFrameWidth
+				DBM.BossHealth:UpdateSettings()
+		end)		
+
+		local function createDummyFunc(i) return function() return i end end
+		local showbutton = hpArea:CreateButton(L.HP_ShowDemo, 120, 16)
+		showbutton:SetPoint('BOTTOM', resetbutton, "TOP", 0, 5)
+		showbutton:SetNormalFontObject(GameFontNormalSmall);
+		showbutton:SetHighlightFontObject(GameFontNormalSmall);		
+		showbutton:SetScript("OnClick", function()
+				DBM.BossHealth:Show("Health Frame")
+				DBM.BossHealth:AddBoss(createDummyFunc(25), "TestBoss 1")
+				DBM.BossHealth:AddBoss(createDummyFunc(50), "TestBoss 2")
+				DBM.BossHealth:AddBoss(createDummyFunc(75), "TestBoss 3")
+				DBM.BossHealth:AddBoss(createDummyFunc(100), "TestBoss 4")			
+		end)
+	end
+
+	do
 		local spamPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpamFilter, "option")
+		local spamOutArea = spamPanel:CreateArea(L.Area_SpamFilter_Outgoing, nil, 120, true)
+		spamOutArea:CreateCheckButton(L.SpamBlockNoShowAnnounce, true, nil, "DontShowBossAnnounces")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoSendAnnounce, true, nil, "DontSendBossAnnounces")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoSendWhisper, true, nil, "DontSendBossWhispers")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoSetIcon, true, nil, "DontSetIcons")
+
 		local spamArea = spamPanel:CreateArea(L.Area_SpamFilter, nil, 135, true)
 		spamArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame")
 		spamArea:CreateCheckButton(L.SpamBlockRaidWarning, true, nil, "SpamBlockRaidWarning")
 		spamArea:CreateCheckButton(L.SpamBlockBossWhispers, true, nil, "SpamBlockBossWhispers")
-		spamArea:CreateCheckButton(L.ShowVersionUpadeAsPopup, true, nil, "ShowVersionUpdateAsPopup")
-		spamArea:CreateCheckButton(L.ShowBigBrotherOnCombatStart, true, nil, "ShowBigBrotherOnCombatStart")
-
+		spamArea:CreateCheckButton(L.BlockVersionUpdatePopup, true, nil, "BlockVersionUpdatePopup")
+		if BigBrother and type(BigBrother.ConsumableCheck) == "function" then
+			spamArea:CreateCheckButton(L.ShowBigBrotherOnCombatStart, true, nil, "ShowBigBrotherOnCombatStart")
+			spamArea:CreateCheckButton(L.BigBrotherAnnounceToRaid, true, nil, "BigBrotherAnnounceToRaid")
+		end
+		spamArea:AutoSetDimension()
+		spamOutArea:AutoSetDimension()
 		spamPanel:SetMyOwnHeight()
 	end
-	
+
 	-- Set Revision // please don't translate this!
 	DBM_GUI_OptionsFrameRevision:SetText("Version: "..DBM.DisplayVersion.." - Core: r"..DBM.Revision.." - Gui: r"..revision)
 	DBM_GUI_OptionsFrameTranslation:SetText("Translated by: "..L.TranslationBy)
@@ -1622,14 +1839,25 @@ end
 DBM:RegisterOnGuiLoadCallback(CreateOptionsMenu, 1)
 
 do
-	local function OnShowGetStats(stats, bossvalue1, bossvalue2, bossvalue3, heroicvalue1, heroicvalue2, heroicvalue3)
+	local function OnShowGetStats(stats, party, bossvalue1, bossvalue2, bossvalue3, boss25value1, boss25value2, boss25value3, bossvalue4, bossvalue5, bossvalue6, boss25value4, boss25value5, boss25value6)
 		return function(self)
-			bossvalue1:SetText( stats.kills )
-			bossvalue2:SetText( stats.pulls - stats.kills )
-			bossvalue3:SetText( stats.bestTime and ("%d:%02d"):format(math.floor(stats.bestTime / 60), stats.bestTime % 60) or "-" )
-			heroicvalue1:SetText( stats.heroicKills )
-			heroicvalue2:SetText( stats.heroicPulls-stats.heroicKills )
-			heroicvalue3:SetText( stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
+			bossvalue1:SetText( stats.normalKills )
+			bossvalue2:SetText( stats.normalPulls - stats.normalKills )
+			bossvalue3:SetText( stats.normalBestTime and ("%d:%02d"):format(math.floor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
+			boss25value1:SetText( stats.normal25Kills )
+			boss25value2:SetText( stats.normal25Pulls - stats.normal25Kills )
+			boss25value3:SetText( stats.normal25BestTime and ("%d:%02d"):format(math.floor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-" )
+			bossvalue4:SetText( stats.heroicKills )
+			bossvalue5:SetText( stats.heroicPulls-stats.heroicKills )
+			bossvalue6:SetText( stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
+			boss25value4:SetText( stats.heroic25Kills )
+			boss25value5:SetText( stats.heroic25Pulls-stats.heroic25Kills )
+			boss25value6:SetText( stats.heroic25BestTime and ("%d:%02d"):format(math.floor(stats.heroic25BestTime / 60), stats.heroic25BestTime % 60) or "-" )
+			if party then
+				boss25value1:SetText( stats.heroicKills )
+				boss25value2:SetText( stats.heroicPulls-stats.heroicKills )
+				boss25value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
+			end
 		end
 	end
 
@@ -1647,41 +1875,93 @@ do
 
 		for _, mod in ipairs(DBM.Mods) do
 			if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) then
+				local party = false
 				bossstats = bossstats + 1
 				local Boss 		= area:CreateText(mod.localization.general.name, nil, nil, GameFontHighlight, "LEFT")
+				local Boss10		= area:CreateText(L.Statistic_10Man, nil, nil, GameFontHighlightSmall, "LEFT")				
 				local bossstat1		= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
 				local bossstat2		= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
 				local bossstat3		= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
-				Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(80*(bossstats-1)))
-				bossstat1:SetPoint("TOPLEFT", Boss, "BOTTOMLEFT", 40, -5)
+				local Heroic10		= area:CreateText(L.Statistic_Heroic, nil, nil, GameFontDisableSmall, "LEFT")
+				local bossstat4	= 	area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
+				local bossstat5	= 	area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
+				local bossstat6	= 	area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
+
+				local Heroic	 	= area:CreateText(L.Statistic_Heroic, nil, nil, GameFontDisableSmall, "LEFT")
+				local Boss25		= area:CreateText(L.Statistic_25Man, nil, nil, GameFontHighlightSmall, "LEFT")
+				local boss25stat1	= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25stat2	= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25stat3	= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
+				local Heroic25		= area:CreateText(L.Statistic_Heroic, nil, nil, GameFontDisableSmall, "LEFT")
+				local boss25stat4	= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25stat5	= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25stat6	= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
+
+				local bossvalue1	= area:CreateText(mod.stats.normalKills, nil, nil, GameFontNormalSmall, "LEFT")
+				local bossvalue2	= area:CreateText((mod.stats.normalPulls-mod.stats.normalKills), nil, nil, GameFontNormalSmall, "LEFT")
+				local bossvalue3	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
+				local bossvalue4	= area:CreateText(mod.stats.heroicKills, nil, nil, GameFontNormalSmall, "LEFT")
+				local bossvalue5	= area:CreateText((mod.stats.heroicPulls-mod.stats.normal25Kills), nil, nil, GameFontNormalSmall, "LEFT")
+				local bossvalue6	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
+
+				local boss25value1	= area:CreateText(mod.stats.normal25Kills, nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25value2	= area:CreateText((mod.stats.normal25Pulls-mod.stats.heroicKills), nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25value3	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25value4	= area:CreateText(mod.stats.heroic25Kills, nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25value5	= area:CreateText((mod.stats.heroic25Pulls-mod.stats.heroic25Kills), nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25value6	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
+
+				Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(100*(bossstats-1)))
+				Boss10:SetPoint("TOPLEFT", Boss, "BOTTOMLEFT", 20, -5)
+				bossstat1:SetPoint("TOPLEFT", Boss10, "BOTTOMLEFT", 20, -5)
 				bossstat2:SetPoint("TOPLEFT", bossstat1, "BOTTOMLEFT", 0, -5)
 				bossstat3:SetPoint("TOPLEFT", bossstat2, "BOTTOMLEFT", 0, -5)
-	
-				local Heroic	 	= area:CreateText(L.Statistic_Heroic, nil, nil, GameFontDisableSmall, "LEFT")
-				local Heroicstat1	= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
-				local Heroicstat2	= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
-				local Heroicstat3	= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
-				Heroic:SetPoint("LEFT", Boss, "LEFT", 220, 0)
-				Heroicstat1:SetPoint("LEFT", bossstat1, "LEFT", 180, 0)
-				Heroicstat2:SetPoint("LEFT", bossstat2, "LEFT", 180, 0)
-				Heroicstat3:SetPoint("LEFT", bossstat3, "LEFT", 180, 0)
 
-				local bossvalue1	= area:CreateText(mod.stats.kills, nil, nil, GameFontNormalSmall, "LEFT")
-				local bossvalue2	= area:CreateText((mod.stats.pulls-mod.stats.kills), nil, nil, GameFontNormalSmall, "LEFT")
-				local bossvalue3	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
+				Heroic:SetPoint("LEFT", Boss, "LEFT", 220, 0)
+				Boss25:SetPoint("LEFT", Boss10, "LEFT", 220, 0)
+				boss25stat1:SetPoint("LEFT", bossstat1, "LEFT", 220, 0)
+				boss25stat2:SetPoint("LEFT", bossstat2, "LEFT", 220, 0)
+				boss25stat3:SetPoint("LEFT", bossstat3, "LEFT", 220, 0)
+
 				bossvalue1:SetPoint("TOPLEFT", bossstat1, "TOPLEFT", 80, 0)
 				bossvalue2:SetPoint("TOPLEFT", bossstat2, "TOPLEFT", 80, 0)
 				bossvalue3:SetPoint("TOPLEFT", bossstat3, "TOPLEFT", 80, 0)
+				
+				boss25value1:SetPoint("TOPLEFT", boss25stat1, "TOPLEFT", 80, 0)
+				boss25value2:SetPoint("TOPLEFT", boss25stat2, "TOPLEFT", 80, 0)
+				boss25value3:SetPoint("TOPLEFT", boss25stat3, "TOPLEFT", 80, 0)
 
-				local heroicvalue1	= area:CreateText(mod.stats.heroicKills, nil, nil, GameFontNormalSmall, "LEFT")
-				local heroicvalue2	= area:CreateText((mod.stats.heroicPulls-mod.stats.heroicKills), nil, nil, GameFontNormalSmall, "LEFT")
-				local heroicvalue3	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
-				heroicvalue1:SetPoint("TOPLEFT", Heroicstat1, "TOPLEFT", 80, 0)
-				heroicvalue2:SetPoint("TOPLEFT", Heroicstat2, "TOPLEFT", 80, 0)
-				heroicvalue3:SetPoint("TOPLEFT", Heroicstat3, "TOPLEFT", 80, 0)
+				if mod.modId:sub(1,9) == "DBM-Party" or mod.modId:sub(1,9) == "DBM-World" then
+					party = true
+					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(80*(bossstats-1)))
+					Boss10:Hide()
+					Boss25:Hide()
+					bossstat1:SetPoint("TOPLEFT", Boss, "BOTTOMLEFT", 20, -5)
+					area.frame:SetHeight( area.frame:GetHeight() + 80 )
+				elseif not mod.hasHeroic then
+					Heroic:Hide()
+					area.frame:SetHeight( area.frame:GetHeight() + 100 ) 
+				else
+					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(160*(bossstats-1)))
+					Heroic:Hide()
+					Heroic10:SetPoint("TOPLEFT", bossstat3, "BOTTOMLEFT", -20, -5)
+					bossstat4:SetPoint("TOPLEFT", Heroic10, "BOTTOMLEFT", 20, -5)
+					bossstat5:SetPoint("TOPLEFT", bossstat4, "BOTTOMLEFT", 0, -5)
+					bossstat6:SetPoint("TOPLEFT", bossstat5, "BOTTOMLEFT", 0, -5)
+					Heroic25:SetPoint("LEFT", Heroic10, "LEFT", 220, 0)
+					boss25stat4:SetPoint("LEFT", bossstat4, "LEFT", 220, 0)
+					boss25stat5:SetPoint("LEFT", bossstat5, "LEFT", 220, 0)
+					boss25stat6:SetPoint("LEFT", bossstat6, "LEFT", 220, 0)
+					bossvalue4:SetPoint("TOPLEFT", bossstat4, "TOPLEFT", 80, 0)
+					bossvalue5:SetPoint("TOPLEFT", bossstat5, "TOPLEFT", 80, 0)
+					bossvalue6:SetPoint("TOPLEFT", bossstat6, "TOPLEFT", 80, 0)
+					boss25value4:SetPoint("TOPLEFT", boss25stat4, "TOPLEFT", 80, 0)
+					boss25value5:SetPoint("TOPLEFT", boss25stat5, "TOPLEFT", 80, 0)
+					boss25value6:SetPoint("TOPLEFT", boss25stat6, "TOPLEFT", 80, 0)
+					area.frame:SetHeight( area.frame:GetHeight() + 160 ) 
+				end
 
-				area.frame:SetHeight( area.frame:GetHeight() + 80 ) 
-				table.insert(area.onshowcall, OnShowGetStats(mod.stats, bossvalue1, bossvalue2, bossvalue3, heroicvalue1, heroicvalue2, heroicvalue3))
+				table.insert(area.onshowcall, OnShowGetStats(mod.stats, party, bossvalue1, bossvalue2, bossvalue3, boss25value1, boss25value2, boss25value3, bossvalue4, bossvalue5, bossvalue6, boss25value4, boss25value5, boss25value6))
 			end
 		end
 		area.frame:SetScript("OnShow", function(self) 
@@ -1708,8 +1988,11 @@ do
 		for k,addon in ipairs(DBM.AddOns) do
 			if not Categories[addon.category] then
 				-- Create a Panel for "Wrath of the Lich King" "Burning Crusade" ...
-				Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="WOTLK"))
-	
+				if select(4, _G.GetBuildInfo()) >= 40000 then--Choose default expanded catagory based on toc. expands cata in cata and wotlk if not cata.
+					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="CATA"))
+				else
+					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="WOTLK"))
+				end
 				if L["TabCategory_"..addon.category:upper()] then
 					local ptext = Categories[addon.category]:CreateText(L["TabCategory_"..addon.category:upper()])
 					ptext:SetPoint('TOPLEFT', Categories[addon.category].frame, "TOPLEFT", 10, -10)
@@ -1774,7 +2057,29 @@ do
 		end
 		local panel = mod.panel
 		local category
-	
+
+		local iconstat = panel.frame:CreateFontString("DBM_GUI_Mod_Icons"..mod.localization.general.name, "ARTWORK")
+		iconstat:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -16, -16)
+		iconstat:SetFontObject(GameFontNormal)
+		iconstat:SetText(L.IconsInUse)
+		for i=1, 8, 1 do
+			local icon = panel.frame:CreateTexture()
+			icon:SetTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcons.blp")
+			icon:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", 2-(i*18), -32)
+			icon:SetWidth(16)
+			icon:SetHeight(16)
+			if not mod.usedIcons or not mod.usedIcons[i] then		icon:SetAlpha(0.25)		end
+			if 		i == 1 then		icon:SetTexCoord(0,		0.25,	0,		0.25)
+			elseif	i == 2 then		icon:SetTexCoord(0.25,	0.5,	0,		0.25)
+			elseif	i == 3 then		icon:SetTexCoord(0.5, 	0.75,	0,		0.25)
+			elseif	i == 4 then		icon:SetTexCoord(0.75,	1,		0,		0.25)
+			elseif	i == 5 then		icon:SetTexCoord(0,		0.25,	0.25,	0.5)
+			elseif	i == 6 then		icon:SetTexCoord(0.25,	0.5,	0.25,	0.5)
+			elseif	i == 7 then		icon:SetTexCoord(0.5,	0.75,	0.25,	0.5)
+			elseif	i == 8 then		icon:SetTexCoord(0.75,	1,		0.25,	0.5)
+			end
+		end
+
 		local button = panel:CreateCheckButton(L.Mod_Enabled, true)
 		button:SetScript("OnShow",  function(self) self:SetChecked(mod.Options.Enabled) end)
 		button:SetScript("OnClick", function(self) mod:Toggle()	end)
@@ -1785,18 +2090,21 @@ do
 		
 		for _, catident in pairs(mod.categorySort) do
 			category = mod.optionCategories[catident]
-
 			local catpanel = panel:CreateArea(mod.localization.cats[catident], nil, nil, true)
+			local button, lastButton, addSpacer
 			for _,v in ipairs(category) do
-
-				if type(mod.Options[v]) == "boolean" then
-
-					local button = catpanel:CreateCheckButton(mod.localization.options[v], true)
-
+				if v == DBM_OPTION_SPACER then
+					addSpacer = true
+				elseif type(mod.Options[v]) == "boolean" then
+					lastButton = button
+					button = catpanel:CreateCheckButton(mod.localization.options[v], true)
+					if addSpacer then
+						button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -6)
+						addSpacer = false
+					end
 					button:SetScript("OnShow",  function(self) 
 						self:SetChecked(mod.Options[v]) 
 					end)
-
 					button:SetScript("OnClick", function(self) 
 						mod.Options[v] = not mod.Options[v]
 						if mod.optionFuncs and mod.optionFuncs[v] then mod.optionFuncs[v]() end

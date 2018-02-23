@@ -1,4 +1,4 @@
-## Interface: 30100
+## Interface: 30300
 ## Title: [GUI] SharedMedia
 ## Title-zhCN: [界面] 界面材质包 SharedMedia
 ## Notes: Inserts some media into LibSharedMedia's storage.
@@ -13,7 +13,6 @@
 ## X-Revision: 177
 ## X-Date: 2009-06-09T06:46:50Z
 
-## Dependencies: !!Corelibs
 ## OptionalDeps: LibStub, LibSharedMedia-3.0
 
 SharedMedia.lua

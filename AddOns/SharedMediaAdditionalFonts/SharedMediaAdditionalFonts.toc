@@ -1,4 +1,4 @@
-## Interface: 30100
+## Interface: 30300
 ## X-Curse-Packaged-Version: 1.0.2-release
 ## X-Curse-Project-Name: SharedMediaAdditionalFonts
 ## X-Curse-Project-ID: shared-media-additional-fonts
@@ -12,7 +12,6 @@
 ## X-Category: Miscellaneous
 ## X-Credits: elsia
 
-## Dependencies: !!Corelibs
 ## OptionalDeps: LibSharedMedia-3.0, LibSharedMedia-2.0, SharedMediaLib
 
 Core.lua

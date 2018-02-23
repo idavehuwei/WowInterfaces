@@ -20,7 +20,6 @@ local tinsert = tinsert;
 local tonumber = tonumber;
 local tostring = tostring;
 local gsub = gsub;
-local setglobal = setglobal;
 
 
 -- [[ Slider functions ]] --
@@ -133,44 +132,7 @@ function BlizzardOptionsPanel_CheckButton_SetNewValue (checkButton)
 		end
 	end
 end
---[[
-function BlizzardOptionsPanel_CheckButton_OnClick (checkButton)
-	local setting = "0";
-	if ( checkButton:GetChecked() ) then
-		if ( not checkButton.invert ) then
-			setting = "1"
-		end
-	elseif ( checkButton.invert ) then
-		setting = "1"
-	end
 
-	checkButton.value = setting;
-
-	if ( checkButton.cvar ) then
-		BlizzardOptionsPanel_SetCVarSafe(checkButton.cvar, setting, checkButton.event);
-	end
-
-	if ( checkButton.uvar ) then
-		setglobal(checkButton.uvar, setting);
-	end
-
-	if ( checkButton.dependentControls ) then
-		if ( checkButton:GetChecked() ) then
-			for _, control in SecureNext, checkButton.dependentControls do
-				control:Enable();
-			end
-		else
-			for _, control in SecureNext, checkButton.dependentControls do
-				control:Disable();
-			end
-		end
-	end
-
-	if ( checkButton.setFunc ) then
-		checkButton.setFunc(checkButton.value);
-	end
-end
---]]
 function BlizzardOptionsPanel_CheckButton_Refresh (checkButton)
 	local value;
 
@@ -415,11 +377,11 @@ function BlizzardOptionsPanel_SetupControl (control)
 			control.value = value;
 
 			if ( control.uvar ) then
-				setglobal(control.uvar, value);
+				_G[control.uvar] = value;
 			end
 
 			control.GetValue = function(self) return GetCVar(self.cvar); end
-			control.SetValue = function(self, value) self.value = value; BlizzardOptionsPanel_SetCVarSafe(self.cvar, value, self.event); if ( self.uvar ) then setglobal(self.uvar, value) end end
+			control.SetValue = function(self, value) self.value = value; BlizzardOptionsPanel_SetCVarSafe(self.cvar, value, self.event); if ( self.uvar ) then _G[self.uvar] = value end end
 			control.Disable = function (self) getmetatable(self).__index.Disable(self) _G[self:GetName().."Text"]:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b) end;
 			control.Enable = function (self)
 				getmetatable(self).__index.Enable(self);
@@ -436,10 +398,10 @@ function BlizzardOptionsPanel_SetupControl (control)
 					control.value = "0";
 				end
 				if ( control.uvar ) then
-					setglobal(control.uvar, value);
+					_G[control.uvar] = value;
 				end
 
-				control.SetValue = function(self, value) self.value = value; if ( self.uvar ) then setglobal(self.uvar, value); end end;
+				control.SetValue = function(self, value) self.value = value; if ( self.uvar ) then _G[self.uvar] = value; end end;
 				control.Disable = function (self) getmetatable(self).__index.Disable(self) _G[self:GetName().."Text"]:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b) end;
 				control.Enable = function (self)
 					getmetatable(self).__index.Enable(self);

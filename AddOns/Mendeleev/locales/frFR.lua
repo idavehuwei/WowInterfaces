@@ -15,23 +15,23 @@ L["Show stack size"] = "Afficher la taille des piles"
 L["Toggle showing the stack size in the tooltip."] = "Affiche ou non la taille des piles dans la bulle d'aide."
 L["Show 'used in' tree"] = "Afficher 'Utilisé dans'"
 L["Toggle showing the 'used in' tree in the tooltip."] = "Affiche ou non l'arbre 'Utilisé pour' dans la bulle d'aide."
---L["Show icons in 'used in' tree"] = true
---L["Toggle showing of icons in the 'used in' tree."] = true
---L["Minimal skill for 'used in' tree"] = true
+L["Show icons in 'used in' tree"] = "Afficher les icônes dans l'arbre 'Utilisé pour'"
+L["Toggle showing of icons in the 'used in' tree."] = "Affiche ou non les icônes dans l'arbre 'Utilisé pour'"
+L["Minimal skill for 'used in' tree"] = "Compétence minimale pour l'arbre 'Utilisé pour'"
 --L["Minimal skill advance for an item to show up in the 'used in' tree."] = true
---L["Minimal skill for 'used in' tree (shift)"] = true
+L["Minimal skill for 'used in' tree (shift)"] = "Compétence minimale pour l'arbre 'Utilisé pour' (shift)"
 --L["Minimal skill advance for an item to show up in the 'used in' tree if Shift is held."] = true
---L["TRADESKILL_UNKNOWN"] = "unknown"
---L["TRADESKILL_TRIVIAL"] = "trivial"
---L["TRADESKILL_EASY"] = "easy"
---L["TRADESKILL_MEDIUM"] = "medium"
---L["TRADESKILL_OPTIMAL"] = "optimal"
+L["TRADESKILL_UNKNOWN"] = "inconnu"
+L["TRADESKILL_TRIVIAL"] = "trivial"
+L["TRADESKILL_EASY"] = "facile"
+L["TRADESKILL_MEDIUM"] = "moyen"
+L["TRADESKILL_OPTIMAL"] = "optimal"
 L["Item ID"] = "ID objet"
 L["iLevel"] = "iNiveau"
 L["You have"] = "Vous en avez"
 L["Stacksize"] = "S'empile par"
 
---L["Bought for"] = true
+L["Bought for"] = "Acheté contre"
 L["Crafted by"] = "Fabriqué par"
 L["Component in"] = "Composant pour"
 
@@ -57,14 +57,14 @@ L["Found in"] = "Trouvé dans"
 L["Dropped by"] = "Butin de"
 L["Used in"] = "Utilisé dans"
 --L["Fits special bag"] = true
---L["SPECIALBAG_HERB"] = "Herbalism"
---L["SPECIALBAG_ENCHANTING"] = "Enchanting"
---L["SPECIALBAG_ENGINEERING"] = "Engineering"
---L["SPECIALBAG_GEM"] = "Gems"
---L["SPECIALBAG_INSCRIPTION"] = "Inscription"
---L["SPECIALBAG_LEATHERWORKING"] = "Leatherworking"
---L["SPECIALBAG_MINING"] = "Mining"
---L["SPECIALBAG_SOULSHARD"] = "Soul Shards"
+L["SPECIALBAG_HERB"] = "Herboristerie"
+L["SPECIALBAG_ENCHANTING"] = "Enchantement"
+L["SPECIALBAG_ENGINEERING"] = "Ingénierie"
+L["SPECIALBAG_GEM"] = "Gemmes"
+L["SPECIALBAG_INSCRIPTION"] = "Calligraphie"
+L["SPECIALBAG_LEATHERWORKING"] = "Travail du cuir"
+L["SPECIALBAG_MINING"] = "Minage"
+L["SPECIALBAG_SOULSHARD"] = "Fragments d'âme"
 
 L["Fish"] = "Poisson"
 L["Meat"] = "Viande"
@@ -116,9 +116,10 @@ L["Arena - Season 1 Set"] = "Arène - Ensemble saison 1"
 L["Arena - Season 2 Set"] = "Arène - Ensemble saison 2"
 L["Arena - Season 3 Set"] = "Arène - Ensemble saison 3"
 L["Arena - Season 4 Set"] = "Arène - Ensemble saison 4"
---L["Arena - Season 5 Tier 1 Set"] = true
---L["Arena - Season 5 Tier 2 Set"] = true
---L["Arena - Season 5 Tier 3 Set"] = true
+L["Arena - Season 5 Tier 1 Set"] = "Arène - Ensemble palier 1 saison 5"
+L["Arena - Season 5 Tier 2 Set"] = "Arène - Ensemble palier 2 saison 5"
+L["Arena - Season 5 Tier 3 Set"] = "Arène - Ensemble palier 3 saison 5"
+L["Arena - Season 6 Set"] = "Arène - Ensemble saison 6"
 
 L["%d%% alc/vol (%d proof)"] = "%d%% alc/vol (%d degré)"
 L[" (%d tickets)"] = " (%d tickets)"
@@ -143,31 +144,24 @@ L["Cobalt Deposit"] = "Gisement de cobalt"
 L["Rich Cobalt Deposit"] = "Riche gisement de cobalt"
 L["Saronite Deposit"] = "Gisement de saronite"
 L["Rich Saronite Deposit"] = "Riche gisement de saronite"
-L["Titanium Vein"] = "Gisement de titanium"
+L["Titanium Vein"] = "Veine de titane"
 
 -- Categories
---L["CurrencyItems"] = true
---L["Consumable"] = true
---L["Gear"] = true
---L["GearSet"] = true
---L["InstanceLoot"] = true
---L["InstanceLootHeroic"] = true
---L["Misc"] = true
+L["CurrencyItems"] = "Monnaie"
+L["Consumable"] = "Consommable"
+L["Gear"] = "Équipement"
+L["GearSet"] = "EnsembleÉquipement"
+L["InstanceLoot"] = "ButinInstance"
+L["InstanceLootHeroic"] = "ButinInstanceHéroïque"
+L["Misc"] = "Divers"
 --L["QuestMats"] = true
---L["Reagent"] = true
---L["Tradeskill"] = true
-	
+L["Reagent"] = "Composant"
+L["Tradeskill"] = "Métier"
+
 L["Trash Mobs"] = "Trash Mobs"
 
 -- Timed Reward Chest
---L["Timed Reward Chest1"] = true
---L["Timed Reward Chest2"] = true
---L["Timed Reward Chest3"] = true
---L["Timed Reward Chest4"] = true
-
--- depriciated / remove once all translations are updated
-L["Limit 'used in' tree to craftable"] = "Limiter 'Utilisé pour' aux fabricables"
-L["Toggle limiting the 'used in' tree to items the char can craft."] = "Limite ou non l'arbre 'Utilisé pour' aux objets que le personnage peut fabriquer."
-L["Badge of Justice"] = "Insigne de justice"
-L["G'eras"] = "G'eras"
-L["Smith Hauthaa"] = "Forgeron Hauthaa"
+L["Timed Reward Chest1"] = "Récompense chronométrée - Coffre 1"
+L["Timed Reward Chest2"] = "Récompense chronométrée - Coffre 2"
+L["Timed Reward Chest3"] = "Récompense chronométrée - Coffre 3"
+L["Timed Reward Chest4"] = "Récompense chronométrée - Coffre 4"

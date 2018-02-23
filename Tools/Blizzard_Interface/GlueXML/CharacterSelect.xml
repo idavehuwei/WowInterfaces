@@ -74,29 +74,79 @@
 	</Button>
 	<Button name="CharSelectCharacterCustomizeTemplate" virtual="true" hidden="true">
 		<Size>
-			<AbsDimension x="68" y="74"/>
+			<AbsDimension x="64" y="64"/>
 		</Size>
 		<Scripts>
 			<OnClick>
-				CharacterSelect_Customize(self, button, down);
+				CharacterSelect_PaidServiceOnClick(self, button, down, PAID_CHARACTER_CUSTOMIZATION);
 			</OnClick>
 			<OnEnter>
 				GlueTooltip_SetOwner(self);
-				GlueTooltip_SetText(PAID_CHARACTER_CUSTOMIZE, nil, 1.0, 1.0, 1.0);
+				GlueTooltip_SetText(PAID_CHARACTER_CUSTOMIZE_TOOLTIP, nil, 1.0, 1.0, 1.0);
 			</OnEnter>
 			<OnLeave>
 				GlueTooltip:Hide();
 			</OnLeave>
 		</Scripts>
 		<NormalTexture file="Interface\Buttons\UI-PaidCharacterCustomization-Button">
-			<TexCoords left="0" right="0.53125" top="0" bottom="0.578125"/>
+			<TexCoords left="0" right=".5" top="0" bottom=".5"/>
 		</NormalTexture>
 		<HighlightTexture file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD">
-			<Size x="42" y="42"/>
+			<Size x="46" y="46"/>
 			<Anchors>
-				<Anchor point="TOPLEFT">
-					<Offset x="13" y="-14"/>
-				</Anchor>
+				<Anchor point="CENTER"/>
+			</Anchors>
+		</HighlightTexture>
+	</Button>
+	<Button name="CharSelectRaceChangeTemplate" virtual="true" hidden="true">
+		<Size>
+			<AbsDimension x="64" y="64"/>
+		</Size>
+		<Scripts>
+			<OnClick>
+				CharacterSelect_PaidServiceOnClick(self, button, down, PAID_RACE_CHANGE);
+			</OnClick>
+			<OnEnter>
+				GlueTooltip_SetOwner(self);
+				GlueTooltip_SetText(PAID_RACE_CHANGE_TOOLTIP, nil, 1.0, 1.0, 1.0);
+			</OnEnter>
+			<OnLeave>
+				GlueTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+		<NormalTexture file="Interface\Buttons\UI-PaidCharacterCustomization-Button">
+			<TexCoords left=".5" right="1" top="0" bottom=".5"/>
+		</NormalTexture>
+		<HighlightTexture file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD">
+			<Size x="46" y="46"/>
+			<Anchors>
+				<Anchor point="CENTER"/>
+			</Anchors>
+		</HighlightTexture>
+	</Button>
+	<Button name="CharSelectFactionChangeTemplate" virtual="true" hidden="true">
+		<Size>
+			<AbsDimension x="64" y="64"/>
+		</Size>
+		<Scripts>
+			<OnClick>
+				CharacterSelect_PaidServiceOnClick(self, button, down, PAID_FACTION_CHANGE);
+			</OnClick>
+			<OnEnter>
+				GlueTooltip_SetOwner(self);
+				GlueTooltip_SetText(PAID_FACTION_CHANGE_TOOLTIP, nil, 1.0, 1.0, 1.0);
+			</OnEnter>
+			<OnLeave>
+				GlueTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+		<NormalTexture file="Interface\Buttons\UI-PaidCharacterCustomization-Button">
+			<TexCoords left="0" right=".5" top="0.5" bottom="1"/>
+		</NormalTexture>
+		<HighlightTexture file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD">
+			<Size x="46" y="46"/>
+			<Anchors>
+				<Anchor point="CENTER"/>
 			</Anchors>
 		</HighlightTexture>
 	</Button>
@@ -131,7 +181,7 @@
 					</Layer>
 				</Layers>
 				<Frames>
-					<Button name="CharSelectEnterWorldButton" inherits="GlueButtonTemplate" text="ENTER_WORLD" jumpNavigateStart="true">
+					<Button name="CharSelectEnterWorldButton" inherits="GlueButtonTemplate" text="ENTER_WORLD">
 						<Size>
 							<AbsDimension x="200" y="60"/>
 						</Size>
@@ -337,6 +387,20 @@
 						</Scripts>
 						<NormalFont style="GlueFontHighlight"/>
 					</Button>
+					<Button name="CharacterSelectUpgradeAccountButton" inherits="GlueButtonTemplate" text="UPGRADE_ACCOUNT" hidden="true">
+						<Size x="320" y="60"/>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-10"/>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								UpgradeAccount();
+							</OnClick>
+							<OnUpdate>
+								CharacterSelect_DeathKnightSwap(self);
+							</OnUpdate>
+						</Scripts>
+					</Button>
 					<Button name="CharacterSelectDeleteButton" inherits="GlueButtonSmallTemplate" text="DELETE_CHARACTER">
 						<Size>
 							<AbsDimension x="165" y="35"/>
@@ -531,6 +595,7 @@
 									</OnUpdate>
 								</Scripts>
 							</Button>
+
 							<Button name="CharSelectCharacterCustomize1" inherits="CharSelectCharacterCustomizeTemplate" id="1">
 								<Anchors>
 									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton1" relativePoint="TOPLEFT">
@@ -601,7 +666,149 @@
 									</Anchor>
 								</Anchors>
 							</Button>
-						</Frames>
+
+							<Button name="CharSelectRaceChange1" inherits="CharSelectRaceChangeTemplate" id="1">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton1" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectRaceChange2" inherits="CharSelectRaceChangeTemplate" id="2">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton2" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectRaceChange3" inherits="CharSelectRaceChangeTemplate" id="3">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton3" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectRaceChange4" inherits="CharSelectRaceChangeTemplate" id="4">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton4" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectRaceChange5" inherits="CharSelectRaceChangeTemplate" id="5">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton5" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectRaceChange6" inherits="CharSelectRaceChangeTemplate" id="6">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton6" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectRaceChange7" inherits="CharSelectRaceChangeTemplate" id="7">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton7" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectRaceChange8" inherits="CharSelectRaceChangeTemplate" id="8">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton8" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectRaceChange9" inherits="CharSelectRaceChangeTemplate" id="9">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton9" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectRaceChange10" inherits="CharSelectRaceChangeTemplate" id="10">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton10" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+
+							<Button name="CharSelectFactionChange1" inherits="CharSelectFactionChangeTemplate" id="1">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton1" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectFactionChange2" inherits="CharSelectFactionChangeTemplate" id="2">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton2" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectFactionChange3" inherits="CharSelectFactionChangeTemplate" id="3">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton3" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectFactionChange4" inherits="CharSelectFactionChangeTemplate" id="4">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton4" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectFactionChange5" inherits="CharSelectFactionChangeTemplate" id="5">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton5" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectFactionChange6" inherits="CharSelectFactionChangeTemplate" id="6">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton6" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectFactionChange7" inherits="CharSelectFactionChangeTemplate" id="7">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton7" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectFactionChange8" inherits="CharSelectFactionChangeTemplate" id="8">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton8" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectFactionChange9" inherits="CharSelectFactionChangeTemplate" id="9">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton9" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="CharSelectFactionChange10" inherits="CharSelectFactionChangeTemplate" id="10">
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativeTo="CharSelectCharacterButton10" relativePoint="TOPLEFT">
+										<Offset x="-15" y="6"/>
+									</Anchor>
+								</Anchors>
+							</Button>
+							</Frames>
 						<Backdrop bgFile="Interface\Glues\Common\Glue-Tooltip-Background" edgeFile="Interface\Glues\Common\Glue-Tooltip-Border" tile="true">
 							<BackgroundInsets>
 								<AbsInset left="10" right="5" top="4" bottom="9"/>
@@ -775,14 +982,14 @@
 								</Anchor>
 							</Anchors>
 						</FontString>
-						<Texture name="CharacterDeleteAlertIcon" file="Interface\DialogFrame\DialogAlertIcon">
+						<Texture name="CharacterDeleteAlertIcon" file="Interface\DialogFrame\UI-Dialog-Icon-AlertNew">
 							<Size>
-								<AbsDimension x="64" y="64"/>
+								<AbsDimension x="48" y="48"/>
 							</Size>
 							<Anchors>
 								<Anchor point="LEFT">
 									<Offset>
-										<AbsDimension x="12" y="10"/>
+										<AbsDimension x="24" y="10"/>
 									</Offset>
 								</Anchor>
 							</Anchors>
@@ -841,7 +1048,7 @@
 					</Anchor>
 				</Anchors>
 				<Layers>
-					<Layer level="ARTWORK">
+					<Layer level="BACKGROUND">
 						<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
 							<Size>
 								<AbsDimension x="75" y="32"/>
@@ -951,14 +1158,14 @@
 								</Anchor>
 							</Anchors>
 						</FontString>
-						<Texture name="CharacterRenameAlertIcon" file="Interface\DialogFrame\DialogAlertIcon">
+						<Texture name="CharacterRenameAlertIcon" file="Interface\DialogFrame\UI-Dialog-Icon-AlertNew">
 							<Size>
-								<AbsDimension x="64" y="64"/>
+								<AbsDimension x="48" y="48"/>
 							</Size>
 							<Anchors>
 								<Anchor point="LEFT">
 									<Offset>
-										<AbsDimension x="12" y="10"/>
+										<AbsDimension x="24" y="10"/>
 									</Offset>
 								</Anchor>
 							</Anchors>

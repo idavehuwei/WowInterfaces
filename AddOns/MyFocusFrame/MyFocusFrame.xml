@@ -160,7 +160,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame name="MyFocusFrameTitle">
+			<Button name="MyFocusFrameTitle">
 				<Size>
 					<AbsDimension x="71" y="16"/>
 				</Size>
@@ -223,6 +223,7 @@
 						MyFocusFrameTitleText:SetAlpha(0.7);
 						self:SetWidth(MyFocusFrameTitleText:GetWidth()+40);
 						self:RegisterForDrag("LeftButton");
+						self:RegisterForClicks("AnyUp");
 					</OnLoad>
 					<OnDragStart>
 						MyFocusFrame_OnDragStart(self);
@@ -236,10 +237,10 @@
 					<OnLeave>
 						GameTooltip:Hide(self);
 					</OnLeave>
+					
 				</Scripts>
-				<Frames>
-				</Frames>
-			</Frame>
+
+			</Button>
 			<Frame name="MyFocusFrameTextureFrame" setAllPoints="true">
 				<Layers>
 					<Layer level="BACKGROUND">

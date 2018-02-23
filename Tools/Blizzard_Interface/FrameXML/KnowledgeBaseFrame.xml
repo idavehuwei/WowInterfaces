@@ -636,7 +636,7 @@
 				</Layers>
 			</Frame>
 
-			<Button name="KnowledgeBaseFrameGMTalk" inherits="GameMenuButtonTemplate" text="KBASE_GMTALK">
+			<Button name="KnowledgeBaseFrameReportIssue" inherits="GameMenuButtonTemplate" text="KBASE_REPORTISSUE">
 				<Size x="150" y="20"/>
 				<Anchors>
 					<Anchor point="BOTTOMLEFT">
@@ -647,14 +647,14 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						HelpFrame_ShowFrame("GMTalk");
+						HelpFrame_ShowFrame("ReportIssue");
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Button name="KnowledgeBaseFrameReportIssue" inherits="GameMenuButtonTemplate" text="KBASE_REPORTISSUE">
+			<Button name="KnowledgeBaseFrameGMTalk" inherits="GameMenuButtonTemplate" text="KBASE_GMTALK">
 				<Size x="150" y="20"/>
 				<Anchors>
-					<Anchor point="LEFT" relativeTo="KnowledgeBaseFrameGMTalk" relativePoint="RIGHT">
+					<Anchor point="BOTTOM" relativeTo="KnowledgeBaseFrameReportIssue" relativePoint="TOP">
 						<Offset>
 							<AbsDimension x="0" y="0"/>
 						</Offset>
@@ -662,10 +662,44 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						HelpFrame_ShowFrame("ReportIssue");
+						HelpFrame_ShowFrame("GMTalk");
 					</OnClick>
 				</Scripts>
 			</Button>
+
+			<Button name="KnowledgeBaseFrameAbandonTicket" inherits="GameMenuButtonTemplate" text="HELP_TICKET_ABANDON" hidden="true">
+				<Size x="150" y="20"/>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="12" y="21"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						StaticPopup_Show("HELP_TICKET_ABANDON_CONFIRM");
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="KnowledgeBaseFrameEditTicket" inherits="GameMenuButtonTemplate" text="HELP_TICKET_EDIT" hidden="true">
+				<Size x="150" y="20"/>
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="KnowledgeBaseFrameAbandonTicket" relativePoint="TOP">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						HelpFrame_ShowFrame("OpenTicket");
+					</OnClick>
+				</Scripts>
+			</Button>
+
+
+
 			<Button name="KnowledgeBaseFrameStuck" inherits="GameMenuButtonTemplate" text="KBASE_CHARSTUCK">
 				<Size x="150" y="20"/>
 				<Anchors>
@@ -681,25 +715,11 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Button name="KnowledgeBaseFrameOpenTicketEdit" inherits="GameMenuButtonTemplate" text="HELP_TICKET_EDIT" hidden="true">
+
+			<Button name="KnowledgeBaseFrameLag" inherits="GameMenuButtonTemplate" text="KBASE_LAG">
 				<Size x="150" y="20"/>
 				<Anchors>
-					<Anchor point="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="12" y="21"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						HelpFrame_ShowFrame("OpenTicket");
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="KnowledgeBaseFrameOpenTicketCancel" inherits="GameMenuButtonTemplate" text="HELP_TICKET_ABANDON" hidden="true">
-				<Size x="150" y="20"/>
-				<Anchors>
-					<Anchor point="LEFT" relativeTo="KnowledgeBaseFrameOpenTicketEdit" relativePoint="RIGHT">
+					<Anchor point="LEFT" relativeTo="KnowledgeBaseFrameGMTalk" relativePoint="RIGHT">
 						<Offset>
 							<AbsDimension x="0" y="0"/>
 						</Offset>
@@ -707,8 +727,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						HideUIPanel(HelpFrame);
-						StaticPopup_Show("HELP_TICKET_ABANDON_CONFIRM");					
+						HelpFrame_ShowFrame("Lag");
 					</OnClick>
 				</Scripts>
 			</Button>

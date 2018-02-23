@@ -124,7 +124,7 @@ function DCT_Ani_FrameAddObject(fId,text,exParam,crit,saveP,obj)
 	DCT_Ani_AniInit(obj,fp)
 	obj.active = true
 	if crit and fParam.aniType ~= 3 and fParam.aniType ~= 7 then
-		obj.crit = true
+		if DCT_Get("DCT_ScaleOnCrit") == 1 then obj.crit = true;end
 	end
 	--DCT_Ani_ObjScale(obj,1)
 	table.insert(DCT_Ani_frameList[fId].objL,obj)
@@ -304,7 +304,11 @@ function DCT_Ani_AniInit(obj,frameP)
 		obj.ybak = 0
 		obj.alpha = 0
 		local fc = table.getn(frameP.objL)		
-
+		while fc > 10 do
+			DCT_Ani_ObjClear(frameP.objL[1])
+			table.remove(frameP.objL,1)
+			fc = fc - 1
+		end
 		if fc > 0 then
 			local fixH = (frameP.objL[fc].fontSizeMax + obj.fontSizeMax) / 2	
 			local fixT = obj.p2 / obj.p1 * fixH / (aniParam.speed / 100)
@@ -383,11 +387,11 @@ function DCT_Ani_AniProc7(obj,theTime)
 		end
 	elseif obj.p5 == 2 then
 		if theTime < 0.05 then
-			obj.scale = 1.6
-		elseif theTime < 0.3 then
-			obj.scale =  1.6 -  (theTime - 0.05) / 0.25 * 0.75
-		elseif theTime < 0.36 then
-			obj.scale =  0.85 + (theTime - 0.3) / 0.06 * 0.15
+			obj.scale = 1.5
+		elseif theTime < 0.2 then
+			obj.scale =  1.5 -  (theTime - 0.05) / 0.15 * 0.6
+		elseif theTime < 0.26 then
+			obj.scale =  0.9 + (theTime - 0.2) / 0.06 * 0.1
 		elseif obj.scale ~= 1 then
 			obj.scale = 1
 		end

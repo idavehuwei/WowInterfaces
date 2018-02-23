@@ -1,7 +1,7 @@
-local mod = DBM:NewMod("KingDred", "DBM-Party-WotLK", 4)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("KingDred", "DBM-Party-WotLK", 4)
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 598 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2250 $"):sub(12, -3))
 mod:SetCreatureID(27483)
 mod:SetZone()
 
@@ -12,31 +12,31 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warningSlash	= mod:NewAnnounce("WarningSlash", 3, 48873)
-local warningBite	= mod:NewAnnounce("WarningBite", 2, 48920)
-local warningFear	= mod:NewAnnounce("WarningFear", 1, 22686)
+local warningSlash	= mod:NewSpellAnnounce(48873, 3)
+local warningBite	= mod:NewTargetAnnounce(48920, 2)
+local warningFear	= mod:NewSpellAnnounce(22686, 1)
 
-local timerFearCD	= mod:NewTimer(15, "TimerFearCD", 22686)  -- cooldown ??
-local timerSlash	= mod:NewTimer(10, "TimerSlash", 48873)
-local timerSlashCD	= mod:NewTimer(18, "TimerSlashCD", 48873)
+local timerFearCD	= mod:NewCDTimer(15, 22686)  -- cooldown ??
+local timerSlash	= mod:NewTargetTimer(10, 48873)
+local timerSlashCD	= mod:NewCDTimer(18, 48873)
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 22686 and args.sourceGUID == 27483 then
-		warningFear:Show(args.spellName)
-		timerFear:Start(args.spellName)
+	if args:IsSpellID(22686) and args.sourceGUID == 27483 then
+		warningFear:Show()
+		timerFearCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 48920 then
-		warningBite:Show(args.spellName, args.destName)
-	elseif args.spellId == 48873 then
-		warningSlash:Show(args.spellName)
-		timerSlash:Start(15, args.spellName, args.destName)
-		timerSlashCD:Start(args.spellName)
-	elseif args.spellId == 48878 then
-		warningSlash:Show(args.spellName)
-		timerSlash:Start(10, args.spellName, args.destName)
-		timerSlashCD:Start(args.spellName)
+	if args:IsSpellID(48920) then
+		warningBite:Show(args.destName)
+	elseif args:IsSpellID(48873) then
+		warningSlash:Show()
+		timerSlash:Start(15, args.destName)
+		timerSlashCD:Start()
+	elseif args:IsSpellID(48878) then
+		warningSlash:Show()
+		timerSlash:Start(10, args.destName)
+		timerSlashCD:Start()
 	end
 end

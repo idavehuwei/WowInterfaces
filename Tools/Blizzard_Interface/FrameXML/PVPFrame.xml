@@ -41,7 +41,7 @@
 		                    <Anchors>
 		                        <Anchor point="TOPLEFT">
 		                            <Offset>
-		                                <AbsDimension x="9" y="-6"/>
+		                                <AbsDimension x="7" y="-6"/>
 		                            </Offset>
 		                        </Anchor>
 		                    </Anchors>
@@ -614,7 +614,10 @@
 						</Texture>
 					</Layer>
 					<Layer level="ARTWORK">
-						<FontString name="$parentName" inherits="GameFontNormal">
+						<FontString name="$parentName" inherits="GameFontNormal" justifyH="LEFT">
+							<Size>
+								<AbsDimension x="0" y="12"/>
+							</Size>						
 							<Anchors>
 								<Anchor point="TOPLEFT" relativeTo="PVPTeamDetails" relativePoint="TOPLEFT">
 									<Offset>
@@ -1033,6 +1036,7 @@
 						PVPBattlegroundFrame:Show();
 						PanelTemplates_Tab_OnClick(self, PVPParentFrame);
 						PlaySound("igCharacterInfoTab");
+						PVPBattlegroundFrameGroupJoinButton:SetFrameLevel(self:GetFrameLevel() + 1);
 					</OnClick>
 					<OnLeave function="GameTooltip_Hide"/>
                 </Scripts>

@@ -1,9 +1,0 @@
-## Interface: 30200
-## Title: LibBetterBlizOptions
-## Notes: Makes the Blizzard options frame movable and resizable
-## Author: Antiarc
-## X-Category: Library
-## Version: 1.0
-## X-Revision: 1
-
-LibBetterBlizzOptions-1.0.lua

@@ -1,7 +1,0 @@
-Shadowed:
-	* Added Ace3 as an optional dependency so it won't error depending on load order
-	* I spell gud
-	* Added the ability to use the arrow keys to browse through the predicted spell list
-	* Upped the prediction list to 10 rows (was 8)
-	* Upped the delay to 500 spells per 0.10 second but made the time elapsed run every 0.10 seconds without time loss, and update the prediction frame every 1 second while scanning
-	* Initial Import: Let's see if this works

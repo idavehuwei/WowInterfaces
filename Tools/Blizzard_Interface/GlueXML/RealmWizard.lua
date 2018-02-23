@@ -4,9 +4,9 @@ function RealmWizard_OnLoad(self)
 
 	if (IsStreamingTrial()) then
 		AccountLoginCinematicsButton:Disable();
-		RealmWizard:SetModel("Interface\\Glues\\Models\\UI_MainMenu\\UI_MainMenu.mdx");
+		RealmWizard:SetModel("Interface\\Glues\\Models\\UI_MainMenu\\UI_MainMenu.m2");
 	else
-		RealmWizard:SetModel("Interface\\Glues\\Models\\UI_MainMenu_Northrend\\UI_MainMenu_Northrend.mdx");
+		RealmWizard:SetModel("Interface\\Glues\\Models\\UI_MainMenu_Northrend\\UI_MainMenu_Northrend.m2");
 	end
 end
 
@@ -30,8 +30,8 @@ function RealmWizard_UpdateCategories(...)
 
 	local categoryIndex = 1;
 	for i=1, MAX_REALM_CATEGORY_TABS do
-		button = getglobal("RealmWizardLocationButton"..i);
-		buttonText = getglobal("RealmWizardLocationButton"..i.."Text");
+		button = _G["RealmWizardLocationButton"..i];
+		buttonText = _G["RealmWizardLocationButton"..i.."Text"];
 		while (IsTournamentRealmCategory(categoryIndex)) do
 			categoryIndex = categoryIndex + 1;
 			if (categoryIndex > numTabs) then

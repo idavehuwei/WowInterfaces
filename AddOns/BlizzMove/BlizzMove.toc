@@ -1,17 +1,16 @@
-﻿## Interface: 30100
-## Title: [GUI] Blizzmove
-## Title-zhCN: [界面] 界面移动 Blizzmove
-## Notes: Move thoes blizzard windows by yess
+﻿## Interface: 30300
+## Title: Blizz Move
+## Title-zhCN: [大脚][集]窗体移动
+## Title-zhTW: [大腳][集]窗體移動
+## Notes: |cffbc8f8fMove those blizzard windows by yess.|r
+## Notes-zhTW: |cff00ff00BlizzMove|r                                             |cffbc8f8f移動系統各種默認窗體。|r
+## Notes-zhCN: |cff00ff00BlizzMove|r                                             |cffbc8f8f移动系统各种默认窗体。|r
 ## Author: yess
 ## Version: 0.3
-## X-Email: yessica@fantasymail.de
-## X-Curse-Packaged-Version: 0.3
-## X-Curse-Project-Name: BlizzMove
-## X-Curse-Project-ID: blizzmove
-## X-Curse-Repository-ID: wow/blizzmove/mainline
-## Dependencies: !!Corelibs
-
-## SavedVariables: BlizzMoveDB
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## SavedVariablesPerCharacter: BlizzMoveDB
+## LoadOnDemand: 1
 
 Blizzmove.lua
 

@@ -16,6 +16,9 @@ local updateBar
 local anchor
 local header
 local dropdownFrame
+local is_cata = select(4, _G.GetBuildInfo()) >= 40000--4.0 PTR or Beta
+local is_china = select(4, _G.GetBuildInfo()) == 30200--Chinese wow (3.2.2) No one else should be on 3.2.x, screw private servers.
+--local sortingEnabled
 
 do
 	local id = 0
@@ -28,9 +31,19 @@ end
 ------------
 --  Menu  --
 ------------
-local menu = {
-	[1] = {
+local menu
+menu = {
+	{
+		text = DBM_CORE_RANGECHECK_LOCK,
+		checked = false, -- requires DBM.Options which is not available yet
+		func = function()
+			menu[1].checked = not menu[1].checked
+			DBM.Options.HealthFrameLocked = menu[1].checked
+		end
+	},
+	{
 		text = DBM_CORE_BOSSHEALTH_HIDE_FRAME,
+		notCheckable = true,
 		func = function() bossHealth:Hide() end
 	}
 }
@@ -40,7 +53,7 @@ local menu = {
 --  Script Handlers  --
 -----------------------
 local function onMouseDown(self, button)
-	if button == "LeftButton" then
+	if button == "LeftButton" and not DBM.Options.HealthFrameLocked then
 		anchor.moving = true
 		anchor:StartMoving()
 	end
@@ -61,6 +74,37 @@ end
 local onHide = onMouseUp
 
 
+-----------------
+-- Apply Style --
+-----------------
+local function updateBarStyle(bar, id)
+	bar:ClearAllPoints()
+	if DBM.Options.HealthFrameGrowUp then
+		bar:SetPoint("BOTTOM", bars[id - 1] or anchor, "TOP", 0, 0)
+	else
+		bar:SetPoint("TOP", bars[id - 1] or anchor, "BOTTOM", 0, 0)
+	end
+	local barborder = _G[bar:GetName().."BarBorder"]
+	local barbar = _G[bar:GetName().."Bar"]
+	local width = DBM.Options.HealthFrameWidth
+	if width < 175 then -- these health frames really suck :(
+		barbar:ClearAllPoints()
+		barbar:SetPoint("CENTER", barbar:GetParent(), "CENTER", -6, 0)
+		bar:SetWidth(DBM.Options.HealthFrameWidth)
+		barborder:SetWidth(DBM.Options.HealthFrameWidth * 0.99)
+		barbar:SetWidth(DBM.Options.HealthFrameWidth * 0.95)
+	elseif width >= 225 then
+		barbar:ClearAllPoints()
+		barbar:SetPoint("CENTER", barbar:GetParent(), "CENTER", 5, 0)
+		bar:SetWidth(DBM.Options.HealthFrameWidth)
+		barborder:SetWidth(DBM.Options.HealthFrameWidth * 0.995)
+		barbar:SetWidth(DBM.Options.HealthFrameWidth * 0.965)
+	else
+		bar:SetWidth(DBM.Options.HealthFrameWidth)
+		barborder:SetWidth(DBM.Options.HealthFrameWidth * 0.99)
+		barbar:SetWidth(DBM.Options.HealthFrameWidth * 0.95)
+	end
+end
 
 -----------------------
 -- Create the Frame  --
@@ -79,6 +123,7 @@ local function createFrame(self)
 	anchor:SetScript("OnMouseUp", onMouseUp)
 	anchor:SetScript("OnHide", onHide)
 	dropdownFrame = CreateFrame("Frame", "DBMBossHealthDropdown", anchor, "UIDropDownMenuTemplate")
+	menu[1].checked = DBM.Options.HealthFrameLocked
 end
 
 local function createBar(self, cId, name)
@@ -86,11 +131,13 @@ local function createBar(self, cId, name)
 	bar:Show()
 	local bartext = _G[bar:GetName().."BarName"]
 	local barborder = _G[bar:GetName().."BarBorder"]
+	local barbar = _G[bar:GetName().."Bar"]
 	barborder:SetScript("OnMouseDown", onMouseDown)
 	barborder:SetScript("OnMouseUp", onMouseUp)
 	barborder:SetScript("OnHide", onHide)
 	bar.id = cId
-	bar:SetPoint("TOP", bars[#bars] or anchor, "BOTTOM", 0, 0)
+	bar.hidden = false
+	bar:ClearAllPoints()
 	bartext:SetText(name)
 	updateBar(bar, 100)
 	return bar
@@ -98,14 +145,13 @@ end
 
 
 
-
 ------------------
 --  Bar Update  --
 ------------------
-function updateBar(bar, percent)
+function updateBar(bar, percent, dontShowDead)
 	local bartimer = _G[bar:GetName().."BarTimer"]
 	local barbar = _G[bar:GetName().."Bar"]
-	bartimer:SetText((percent > 0) and math.floor(percent).."%" or DBM_CORE_DEAD)
+	bartimer:SetText((percent > 0 or dontShowDead) and math.floor(percent).."%" or DBM_CORE_DEAD)
 	barbar:SetValue(percent)
 	barbar:SetStatusBarColor((100 - percent) / 100, percent/100, 0)
 	bar.value = percent
@@ -129,28 +175,57 @@ do
 			return -1
 		end
 		local cType = bit.band(guid:sub(0, 5), 0x00F)
-		return (cType == 3 or cType == 5) and tonumber(guid:sub(9, 12), 16) or -1
+		if select(4, _G.GetBuildInfo()) >= 40000 or select(4, _G.GetBuildInfo()) == 30200 then
+			return (cType == 3 or cType == 5) and tonumber(guid:sub(7, 10), 16) or -1
+		else
+			return (cType == 3 or cType == 5) and tonumber(guid:sub(9, 12), 16) or -1
+		end
 	end
-
+	
+--	local function compareBars(b1, b2)
+--		return b1.value > b2.value
+--	end
+	
 	function updateFrame(self, e)
 		t = t + e
 		if t >= 0.5 then
 			t = 0
+--			if #bars > DBM.Options.HPFrameMaxEntries then
+--				sortingEnabled = true
+--			end
+--			if sortingEnabled then
+--				table.sort(bars, compareBars)
+--			end
 			for i, v in ipairs(bars) do
-				local id = targetCache[v.id]
-				if getCIDfromGUID(UnitGUID(id or "")) ~= v.id then
-					targetCache[v.id] = nil
-					local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
-					for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
-						id = (i == 0 and "target") or uId..i.."target"
-						if getCIDfromGUID(UnitGUID(id or "")) == v.id then
-							targetCache[v.id] = id
-							break
+--				if i > DBM.Options.HPFrameMaxEntries then
+--					v:Hide()
+--				else
+--					v:Show()
+--				end
+				if type(v.id) == "number" then
+					local id = targetCache[v.id] -- ask the cache if we already know where the mob is
+					if getCIDfromGUID(UnitGUID(id or "")) ~= v.id then -- the cache doesn't know it, update the cache
+						targetCache[v.id] = nil
+						-- check focus target
+						if getCIDfromGUID(UnitGUID("focus")) == v.id then
+							targetCache[v.id] = "focus"
+						else
+							-- check target and raid/party targets
+							local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
+							for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+								id = (i == 0 and "target") or uId..i.."target"
+								if getCIDfromGUID(UnitGUID(id or "")) == v.id then
+									targetCache[v.id] = id
+									break
+								end
+							end
 						end
 					end
-				end
-				if getCIDfromGUID(UnitGUID(id or "")) == v.id then
-					updateBar(v, ((UnitHealth(id)) / (UnitHealthMax(id)) * 100 or 100))
+					if getCIDfromGUID(UnitGUID(id or "")) == v.id then -- did we find the mob? if yes: update the health bar
+						updateBar(v, ((UnitHealth(id)) / (UnitHealthMax(id)) * 100 or 100))
+					end
+				elseif type(v.id) == "function" then -- generic bars
+					updateBar(v, v.id(), true)
 				end
 			end
 		end
@@ -168,6 +243,7 @@ function bossHealth:Show(name)
 end
 
 function bossHealth:Clear()
+	if not anchor or not anchor:IsShown() then return end
 	for i = #bars, 1, -1 do
 		local bar = bars[i]
 		bar:Hide()
@@ -175,6 +251,7 @@ function bossHealth:Clear()
 		barCache[#barCache + 1] = bar
 		bars[i] = nil
 	end
+--	sortingEnabled = false
 end
 
 function bossHealth:Hide()
@@ -182,10 +259,13 @@ function bossHealth:Hide()
 end
 
 function bossHealth:AddBoss(cId, name)
+	if not anchor or not anchor:IsShown() then return end
 	table.insert(bars, createBar(self, cId, name))
+	updateBarStyle(bars[#bars], #bars)
 end
 
 function bossHealth:RemoveBoss(cId)
+	if not anchor or not anchor:IsShown() then return end
 	for i = #bars, 1, -1 do
 		local bar = bars[i]
 		if bar.id == cId then
@@ -201,3 +281,10 @@ function bossHealth:RemoveBoss(cId)
 	end
 end
 
+function bossHealth:UpdateSettings()
+	if not anchor then createFrame(bossHealth) end
+	anchor:SetPoint(DBM.Options.HPFramePoint, UIParent, DBM.Options.HPFramePoint, DBM.Options.HPFrameX, DBM.Options.HPFrameY)
+	for i, v in ipairs(bars) do
+		updateBarStyle(v, i)
+	end
+end

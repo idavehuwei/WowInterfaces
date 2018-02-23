@@ -184,7 +184,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		</Frames>
 		<Scripts>
 			<OnUpdate>
-				SpellTimerFrame_OnUpdate(self, arg1);
+				SpellTimerFrame_OnUpdate(self, elapsed);
 			</OnUpdate>
 		</Scripts>
 	</Frame>
@@ -244,26 +244,12 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				self:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.4);
 				self:SetBackdropColor(0.0, 0.0, 0.0, 0.5);
 			</OnLoad>
-			<OnEnter>
-				SpellTimerUnitFrame_OnEnter(self);
-			</OnEnter>
-			<OnUpdate>
-				SpellTimerUnitFrame_OnUpdate(self);
-			</OnUpdate>
-			<OnLeave>
-				SpellTimerUnitFrame_OnLeave(self);
-			</OnLeave>
-			<OnMouseDown>
-				if (IsShiftKeyDown()) then
-					SpellTimerMainFrame:StartMoving();
-				end
-			</OnMouseDown>
-			<OnMouseUp>
-				SpellTimerMainFrame:StopMovingOrSizing();
-			</OnMouseUp>
 			<OnHide>
 				SpellTimerMainFrame:StopMovingOrSizing();
 			</OnHide>
+			<OnUpdate>
+				SpellTimerUnitFrame_OnUpdate(self, elapsed);
+			</OnUpdate>
 		</Scripts>
 	</Button>
 	<Frame name="SpellTimerOptionTemplate" hidden="false" virtual="true">
@@ -446,7 +432,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnVerticalScroll>
-								FauxScrollFrame_OnVerticalScroll(self, arg1, 20, SpellTimerList_Update);
+								FauxScrollFrame_OnVerticalScroll(self, offset, 20, SpellTimerList_Update);
 							</OnVerticalScroll>
 						</Scripts>
 					</ScrollFrame>
@@ -459,7 +445,6 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			</OnShow>
 		</Scripts>
 	</Frame>
-
 	<GameTooltip name="SpellTimerTooltip" parent="UIParent" hidden="false" frameStrata="TOOLTIP" inherits="GameTooltipTemplate">
 		<Scripts>
 			<OnLoad>
@@ -467,7 +452,5 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			</OnLoad>
 		</Scripts>
 	</GameTooltip>
-	<!--
-	<GameTooltip name="SpellTimerHelpTooltip" frameStrata="TOOLTIP" hidden="true" parent="UIParent" inherits="GameTooltipTemplate"/>
-	-->
+	
 </Ui>

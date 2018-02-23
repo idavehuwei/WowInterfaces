@@ -32,7 +32,7 @@ function BankFrameItemButton_OnEnter (self)
 end
 
 function BankFrameItemButton_Update (button)
-	local texture = getglobal(button:GetName().."IconTexture");
+	local texture = _G[button:GetName().."IconTexture"];
 	local inventoryID = button:GetInventorySlot();
 	local textureName = GetInventoryItemTexture("player",inventoryID);
 	local slotName = button:GetName();
@@ -42,6 +42,18 @@ function BankFrameItemButton_Update (button)
 
 	if( button.isBag ) then
 		id, slotTextureName = GetInventorySlotInfo(strsub(slotName,10));
+	else
+		local isQuestItem, questId, isActive = GetContainerItemQuestInfo(BANK_CONTAINER, button:GetID());
+		local questTexture = _G[button:GetName().."IconQuestTexture"];
+		if ( questId and not isActive ) then
+			questTexture:SetTexture(TEXTURE_ITEM_QUEST_BANG);
+			questTexture:Show();
+		elseif ( questId or isQuestItem ) then
+			questTexture:SetTexture(TEXTURE_ITEM_QUEST_BORDER);
+			questTexture:Show();		
+		else
+			questTexture:Hide();
+		end
 	end
 
 	if ( textureName ) then
@@ -63,7 +75,7 @@ function BankFrameItemButton_Update (button)
 end
 
 function BankFrame_UpdateCooldown(container, button)
-	local cooldown = getglobal(button:GetName().."Cooldown");
+	local cooldown = _G[button:GetName().."Cooldown"];
 	local start, duration, enable = GetContainerItemCooldown(container, button:GetID());
 	CooldownFrame_SetTimer(cooldown, start, duration, enable);
 	if ( duration > 0 and enable == 0 ) then
@@ -97,7 +109,7 @@ function UpdateBagSlotStatus ()
 	local numSlots,full = GetNumBankSlots();
 	local button;
 	for i=1, NUM_BANKBAGSLOTS, 1 do
-		button = getglobal("BankFrameBag"..i);
+		button = _G["BankFrameBag"..i];
 		if ( button ) then
 			if ( i <= numSlots ) then
 				SetItemButtonTextureVertexColor(button, 1.0,1.0,1.0);
@@ -146,17 +158,17 @@ function BankFrame_OnEvent (self, event, ...)
 		local bag, slot = ...;
 		if ( bag == BANK_CONTAINER ) then
 			if ( slot <= NUM_BANKGENERIC_SLOTS ) then
-				BankFrameItemButton_UpdateLocked(getglobal("BankFrameItem"..slot));
+				BankFrameItemButton_UpdateLocked(_G["BankFrameItem"..slot]);
 			else
-				BankFrameItemButton_UpdateLocked(getglobal("BankFrameBag"..(slot-NUM_BANKGENERIC_SLOTS)));
+				BankFrameItemButton_UpdateLocked(_G["BankFrameBag"..(slot-NUM_BANKGENERIC_SLOTS)]);
 			end
 		end
 	elseif ( event == "PLAYERBANKSLOTS_CHANGED" ) then
 		local slot = ...;
 		if ( slot <= NUM_BANKGENERIC_SLOTS ) then
-			BankFrameItemButton_Update(getglobal("BankFrameItem"..slot));
+			BankFrameItemButton_Update(_G["BankFrameItem"..slot]);
 		else
-			BankFrameItemButton_Update(getglobal("BankFrameBag"..(slot-NUM_BANKGENERIC_SLOTS)));
+			BankFrameItemButton_Update(_G["BankFrameBag"..(slot-NUM_BANKGENERIC_SLOTS)]);
 		end
 	elseif ( event == "PLAYER_MONEY" or event == "PLAYERBANKBAGSLOTS_CHANGED" ) then
 		UpdateBagSlotStatus();
@@ -174,12 +186,12 @@ function BankFrame_OnShow (self)
 
 	local button;
 	for i=1, NUM_BANKGENERIC_SLOTS, 1 do
-		button = getglobal("BankFrameItem"..i);
+		button = _G["BankFrameItem"..i];
 		BankFrameItemButton_Update(button);
 	end
 	
 	for i=1, NUM_BANKBAGSLOTS, 1 do
-		button = getglobal("BankFrameBag"..i);
+		button = _G["BankFrameBag"..i];
 		BankFrameItemButton_Update(button);
 	end
 	UpdateBagSlotStatus();
@@ -224,14 +236,14 @@ function BankFrameItemButtonGeneric_OnModifiedClick (self, button)
 end
 
 function UpdateBagButtonHighlight (id) 
-	local texture = getglobal("BankFrameBag"..(id - NUM_BAG_SLOTS).."HighlightFrameTexture");
+	local texture = _G["BankFrameBag"..(id - NUM_BAG_SLOTS).."HighlightFrameTexture"];
 	if ( not texture ) then
 		return;
 	end
 
 	local frame;
 	for i=1, NUM_CONTAINER_FRAMES, 1 do
-		frame = getglobal("ContainerFrame"..i);
+		frame = _G["ContainerFrame"..i];
 		if ( ( frame:GetID() == id ) and frame:IsShown() ) then
 			texture:Show();
 			return;

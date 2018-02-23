@@ -1,244 +1,77 @@
 local CQI = Cartographer_QuestInfo;
-local QUEST_POI_BUTTONS_MAX = { };				-- max of a button created
-local QUEST_POI_BUTTONS_SELECTED = { };			-- selected button
-local QUEST_POI_SWAP_BUTTONS = { };				-- buttons that need to swap in (for QUEST_POI_COMPLETE_SWAP type)
-local QUEST_POI_ICONS_PER_ROW = 8;
-local QUEST_POI_ICON_SIZE = 0.125;
 
--- POI types
-local QUEST_POI_MAX_TYPES = 4;
-QUEST_POI_NUMERIC = 1;					-- number within a circle
-QUEST_POI_COMPLETE_IN = 2;				-- completed quest icon within a normal circle
-QUEST_POI_COMPLETE_OUT = 3;			-- completed quest icon within a darker circle (quest outside current zone)
-QUEST_POI_COMPLETE_SWAP = 4;			-- completed quest icon without a circle that needs to be swapped on selection (for map)
 
--- POI text colors (offsets into texture)
-local QUEST_POI_COLOR_BLACK = 0;
-local QUEST_POI_COLOR_YELLOW = 0.5;
 
+-- 修改QuestPOIButton的功能
 function CQI:QuestPOI_DisplayButton(parentName, buttonType, buttonIndex, questId)
-	local buttonName = "POI"..parentName..buttonType.."_"..buttonIndex;
-	local poiButton = _G[buttonName];
-	local swapButton;
+	local button = self.hooks.QuestPOI_DisplayButton(parentName, buttonType, buttonIndex, questId)	
+	local oriScript = button:GetScript("OnClick")
+	if not button.cqiIsHooked  then
+		button:HookScript("OnMouseDown",function(bn) 
+			bn.qID = bn.questId
+		end)
+		button:HookScript("OnMouseUp",CQI_WatchFrameQuestPOI_OnClick)
+		button.cqiIsHooked = true
+	end
 
-	if ( not poiButton ) then
-		if ( buttonType == QUEST_POI_COMPLETE_SWAP ) then
-			poiButton = CreateFrame("Button", buttonName, _G[parentName], "CQI_QuestPOICompletedTemplate");
-			if ( not QUEST_POI_SWAP_BUTTONS[parentName] ) then
-				swapButton = true;
-			end
-		else
-			poiButton = CreateFrame("Button", buttonName, _G[parentName], "CQI_QuestPOITemplate");
-		end
-		-- frame-specific stuff
-		if ( parentName == "WatchFrameLines" ) then
-			poiButton:SetScale(0.9);
-			poiButton:SetScript("OnClick", CQI_WatchFrameQuestPOI_OnClick);
-		elseif ( parentName == "WorldMapPOIFrame" ) then
-			--[[
-			poiButton:SetScript("OnEnter", WorldMapQuestPOI_OnEnter);
-			poiButton:SetScript("OnLeave", WorldMapQuestPOI_OnLeave);
-			poiButton:SetScript("OnClick", WorldMapQuestPOI_OnClick);
-			if ( swapButton ) then
-				swapButton = CreateFrame("Button", "poi"..parentName.."_Swap", _G[parentName], "QuestPOITemplate");
-				QUEST_POI_SWAP_BUTTONS[parentName] = swapButton;
-				swapButton.type = buttonType;
-				swapButton:SetScript("OnEnter", WorldMapQuestPOI_OnEnter);
-				swapButton:SetScript("OnLeave", WorldMapQuestPOI_OnLeave);
-				swapButton:SetScript("OnClick", WorldMapQuestPOI_OnClick);
-				swapButton:SetFrameLevel(poiButton:GetFrameLevel() + 2);
-				swapButton.selectionGlow:Show();
-				swapButton.normalTexture:SetTexCoord(0.500, 0.625, 0.375, 0.5);
-				swapButton.pushedTexture:SetTexCoord(0.375, 0.500, 0.375, 0.5);
-				swapButton.highlightTexture:SetTexCoord(0.625, 0.750, 0.375, 0.5);
-				swapButton.turnin:Show();
-				swapButton.number:Hide();
-			end
-			]]
-		end
-		-- *
-		poiButton.index = buttonIndex;
-		poiButton.type = buttonType;
-		poiButton.parentName = parentName;
-		QUEST_POI_BUTTONS_MAX[parentName..buttonType] = buttonIndex;
-		if ( buttonType == QUEST_POI_COMPLETE_IN ) then
-			poiButton.turnin:Show();
-			poiButton.number:Hide();
-		elseif ( buttonType == QUEST_POI_COMPLETE_OUT ) then
-			poiButton.turnin:Show();
-			poiButton.number:Hide();
-			poiButton.normalTexture:SetTexCoord(0.500, 0.625, 0.875, 1.0);
-			poiButton.pushedTexture:SetTexCoord(0.375, 0.500, 0.875, 1.0);
-			poiButton.highlightTexture:SetTexCoord(0.625, 0.750, 0.375, 0.5);
-		elseif ( buttonType == QUEST_POI_NUMERIC ) then
-			buttonIndex = buttonIndex - 1;
-			local yOffset = 0.5 + floor(buttonIndex / QUEST_POI_ICONS_PER_ROW) * QUEST_POI_ICON_SIZE;
-			local xOffset = mod(buttonIndex, QUEST_POI_ICONS_PER_ROW) * QUEST_POI_ICON_SIZE;
-			poiButton.number:SetTexCoord(xOffset, xOffset + QUEST_POI_ICON_SIZE, yOffset, yOffset + QUEST_POI_ICON_SIZE);
-		end
-	end
-	poiButton.questId = questId;
-	if ( poiButton.isSelected ) then
-		QuestPOI_DeselectButton(poiButton);
-	end
-	poiButton:Show();
-	return poiButton;
+	return button;
 end
 
-local function QuestPOI_FindButtonByQuestId(parentName, questId)
-	local poiButton;
-	local numButtons;
+--修改地图右侧任务栏的QuestPOI 按钮
+function CQI:WorldMapFrame_GetQuestFrame(questCount,isComplete)
+	local frame = self.hooks.WorldMapFrame_GetQuestFrame(questCount,isComplete)
+	if not frame.cqiIsHooked then
+		frame:HookScript("OnMouseDown",function(bn)
+			bn.qID = bn.questId
+		end)
+		frame:HookScript("OnMouseUp",function(...)
+			CQI_WatchFrameQuestPOI_OnClick(...)
+			QuestInfo_TogglePOIStyle(false);
+		end)
+		frame.cqiIsHooked = true
+	end
 
-	for i = 1, QUEST_POI_MAX_TYPES do
-		numButtons = QUEST_POI_BUTTONS_MAX[parentName..i];
-		if ( numButtons ) then
-			for j = 1, numButtons do
-				poiButton = _G["POI"..parentName..i.."_"..j];
-				if ( poiButton.questId == questId ) then
-					return poiButton;
-				end
-			end
-		end
+	return frame
+end
+
+function CQI:HideNotes()
+	local i = 1;
+	local note = _G["MapsterNotesPOI"..i];
+	while (note) do
+		note:SetAlpha(0);
+		note:SetSize(0, 0);
+		i = i + 1;
+		note = _G["MapsterNotesPOI"..i];
 	end
 end
 
-function CQI:QuestPOI_SelectButtonByIndex(parentName, buttonType, buttonIndex)
-	QuestPOI_SelectButton(_G["POI"..parentName..buttonType.."_"..buttonIndex]);
-end
-
-function CQI:QuestPOI_SelectButtonByQuestId(parentName, questId, deselectOnFail)
-	local poiButton = QuestPOI_FindButtonByQuestId(parentName, questId);
-	if ( poiButton ) then
-		QuestPOI_SelectButton(poiButton);
-	elseif ( deselectOnFail ) then
-		poiButton = QUEST_POI_BUTTONS_SELECTED[parentName];
-		if ( poiButton ) then
-			QuestPOI_DeselectButton(poiButton);
+function CQI:ShowNotes()
+	local i = 1;
+	local note = _G["MapsterNotesPOI"..i];
+	while (note) do
+		note:SetAlpha(1);
+		note:SetSize(16, 16);
+		if (note.oldOnEnter) then
+			note.OnEnter = note.oldOnEnter;
 		end
+		i = i + 1;
+		note = _G["MapsterNotesPOI"..i];
 	end
 end
 
-function CQI:QuestPOI_SelectButton(poiButton)
-	if ( poiButton ) then
-		local parentName = poiButton.parentName;
-		if ( QUEST_POI_BUTTONS_SELECTED[parentName] ) then
-			-- return if already selected
-			if ( QUEST_POI_BUTTONS_SELECTED[parentName] == poiButton ) then
-				return;
-			else
-				QuestPOI_DeselectButton(QUEST_POI_BUTTONS_SELECTED[parentName]);
-			end
-		end
-		-- select
-		QUEST_POI_BUTTONS_SELECTED[parentName] = poiButton;
-		poiButton.isSelected = true;
-		if ( poiButton.type == QUEST_POI_NUMERIC ) then
-			poiButton.selectionGlow:Show();
-			poiButton.normalTexture:SetTexCoord(0.500, 0.625, 0.375, 0.5);
-			poiButton.pushedTexture:SetTexCoord(0.375, 0.500, 0.375, 0.5);
-			poiButton.highlightTexture:SetTexCoord(0.625, 0.750, 0.375, 0.5);
-			QuestPOI_SetTextColor(poiButton, QUEST_POI_COLOR_BLACK);
-		elseif ( poiButton.type == QUEST_POI_COMPLETE_IN ) then
-			poiButton.selectionGlow:Show();
-			poiButton.normalTexture:SetTexCoord(0.500, 0.625, 0.375, 0.5);
-			poiButton.pushedTexture:SetTexCoord(0.375, 0.500, 0.375, 0.5);
-			poiButton.highlightTexture:SetTexCoord(0.625, 0.750, 0.375, 0.5);
-		elseif ( poiButton.type == QUEST_POI_COMPLETE_OUT ) then
-			-- has no selected mode, should switch to QUEST_POI_COMPLETE_IN type upon being selected
-		elseif ( poiButton.type == QUEST_POI_COMPLETE_SWAP ) then
-			local swapButton = QUEST_POI_SWAP_BUTTONS[parentName];
-			swapButton:ClearAllPoints();
-			swapButton:SetPoint("CENTER", poiButton);
-			swapButton.quest = poiButton.quest;
-			swapButton:Show();
-			poiButton:Hide();
-		end
+function QuestInfo_TogglePOIStyle(showMapNotes)
+	local self = CQI;
+
+	if not self:IsHooked("WatchFrame_Update") then
+		self:SecureHook("WatchFrame_Update")
+		self:RawHook("WorldMapFrame_GetQuestFrame",true)
+		self:RawHook("QuestPOI_DisplayButton",true)
 	end
-end
 
-function CQI:QuestPOI_DeselectButtonByParent(parentName)
-	QuestPOI_DeselectButton(QUEST_POI_BUTTONS_SELECTED[parentName]);
-end
-
-function CQI:QuestPOI_DeselectButton(poiButton)
-	if ( poiButton and poiButton.isSelected ) then
-		if ( poiButton.type == QUEST_POI_NUMERIC ) then
-			poiButton.selectionGlow:Hide();
-			poiButton.normalTexture:SetTexCoord(0.875, 1, 0.875, 1);
-			poiButton.pushedTexture:SetTexCoord(0.750, 0.875, 0.875, 1);
-			poiButton.highlightTexture:SetTexCoord(0.625, 0.750, 0.875, 1);
-			QuestPOI_SetTextColor(poiButton, QUEST_POI_COLOR_YELLOW);
-		elseif ( poiButton.type == QUEST_POI_COMPLETE_IN ) then
-			poiButton.selectionGlow:Hide();
-			poiButton.normalTexture:SetTexCoord(0.875, 1, 0.875, 1);
-			poiButton.pushedTexture:SetTexCoord(0.750, 0.875, 0.875, 1);
-			poiButton.highlightTexture:SetTexCoord(0.625, 0.750, 0.875, 1);
-		elseif ( poiButton.type == QUEST_POI_COMPLETE_OUT ) then
-			-- has no selected mode
-		elseif ( poiButton.type == QUEST_POI_COMPLETE_SWAP ) then
-			poiButton:Show();
-			QUEST_POI_SWAP_BUTTONS[poiButton.parentName]:Hide();
-		end
-		QUEST_POI_BUTTONS_SELECTED[poiButton.parentName] = nil;
-		poiButton.isSelected = false;
-	end
-end
-
-function CQI:QuestPOI_SetTextColor(poiButton, yOffset)
-	local index = poiButton.index - 1
-	yOffset = yOffset + floor(index / QUEST_POI_ICONS_PER_ROW) * QUEST_POI_ICON_SIZE;
-	local xOffset = mod(index, QUEST_POI_ICONS_PER_ROW) * QUEST_POI_ICON_SIZE;
-	poiButton.number:SetTexCoord(xOffset, xOffset + QUEST_POI_ICON_SIZE, yOffset, yOffset + QUEST_POI_ICON_SIZE);
-end
-
-function CQI:QuestPOI_HideButtons(parentName, buttonType, buttonIndex)
-	local numButtons;
-
-	numButtons = QUEST_POI_BUTTONS_MAX[parentName..buttonType];
-	if ( numButtons ) then
-		local poiButton;
-		local buttonName = "POI"..parentName..buttonType.."_";
-		for i = buttonIndex, numButtons do
-			poiButton = _G[buttonName..i];
-			if ( poiButton.isSelected and poiButton.type == QUEST_POI_COMPLETE_SWAP ) then
-				QuestPOI_DeselectButton(poiButton);
-			end
-			poiButton:Hide();
-		end
-	end
-end
-
-function CQI:QuestPOI_HideAllButtons(parentName)
-	local numButtons;
-
-	for i = 1, QUEST_POI_MAX_TYPES do
-		numButtons = QUEST_POI_BUTTONS_MAX[parentName..i];
-		if ( numButtons ) then
-			local poiButton;
-			local buttonName = "POI"..parentName..i.."_";
-			for j = 1, numButtons do
-				poiButton = _G[buttonName..j];
-				if ( poiButton.isSelected and poiButton.type == QUEST_POI_COMPLETE_SWAP ) then
-					QuestPOI_DeselectButton(poiButton);
-				end
-				poiButton:Hide();
-			end
-		end
-	end
-end
-
-function QuestPOIButton_OnMouseDown(self)
-	if ( self.isComplete ) then
-		self.turnin:SetPoint("CENTER", 0, -1);
+	CQI.showMapNotes = showMapNotes
+	if showMapNotes then
+		self:ShowNotes();
 	else
-		self.number:SetPoint("CENTER", 1, -1);
-	end
-end
-
-function QuestPOIButton_OnMouseUp(self)
-	if ( self.isComplete ) then
-		self.turnin:SetPoint("CENTER", -1, 0);
-	else
-		self.number:SetPoint("CENTER", 0, 0);
+		self:HideNotes();
 	end
 end

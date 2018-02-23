@@ -1,4 +1,28 @@
 ﻿-- BlizzMmove, move the blizzard frames by yess
+--locale added by Terry@bf
+if GetLocale()=='zhCN' then
+	BINDING_HEADER_BLIZZMOVE= "BlizzMove";
+	BINDING_NAME_MOVEFRAME 	= "移动/锁定框体";
+	BLZMOVE_FRAME_SAVED		= "框体: %s将会被保存."
+	BLZMOVE_FRAME_NOT_SAVED	= "框体: %s将不会被保存."
+	BLZMODE_OPTION_TEXT		= "点击下方按钮可重置所有框体."
+	BLZMODE_OPTION_RESET	= "重置"
+elseif GetLocale() =='zhTW' then
+	BINDING_HEADER_BLIZZMOVE= "BlizzMove";
+	BINDING_NAME_MOVEFRAME 	= "移動/鎖定框體";
+	BLZMOVE_FRAME_SAVED		= "框體: %s將會被保存."
+	BLZMOVE_FRAME_NOT_SAVED	= "框體: %s將不會被保存."
+	BLZMODE_OPTION_TEXT		= "點擊下方按鈕可重置所有框體."
+	BLZMODE_OPTION_RESET	= "重置"
+else
+	BINDING_HEADER_BLIZZMOVE = "BlizzMove";
+	BINDING_NAME_MOVEFRAME = "Move/Lock a Frame";
+	BLZMOVE_FRAME_SAVED		= "Frame: %s will be saved."
+	BLZMOVE_FRAME_NOT_SAVED	= "Frame: %s will not be saved."
+	BLZMODE_OPTION_TEXT		= "Click the button below to reset all frames."
+	BLZMODE_OPTION_RESET	= "Reset"
+end
+
 db = nil
 local frame = CreateFrame("Frame")
 local optionPanel = nil
@@ -26,11 +50,17 @@ local function Debug(...)
 	end
 end
 
+local function dummyMove()
+end
+
 local function OnShow(self, ...)
 	local settings = self.settings
 	if settings and settings.point and settings.save then
+		
+
 		self:ClearAllPoints()
 		self:SetPoint(settings.point,settings.relativeTo, settings.relativePoint, settings.xOfs,settings.yOfs)
+	--Terry@bf : disable scaling
 		local scale = settings.scale
 		if scale then 
 			self:SetScale(scale)
@@ -38,9 +68,10 @@ local function OnShow(self, ...)
 	end
 end
 
-
+	--Terry@bf : disable scaling
 local function OnMouseWheel(self, ...)
 	if IsControlKeyDown() then
+--terry@bf: frame size will always save
 		local frameToMove = self.frameToMove
 		local scale = frameToMove:GetScale() or 1
 		if(arg1 == 1) then --scale up 
@@ -95,12 +126,12 @@ local function OnMouseUp(self, ...)
 		if settings then
 			settings.save = not settings.save
 			if settings.save then
-				Print("Frame: ",frameToMove:GetName()," will be saved.")
+				Print(string.format(BLZMOVE_FRAME_SAVED,frameToMove:GetName()));
 			else
-				Print("Frame: ",frameToMove:GetName()," will be not saved.")
+				Print(string.format(BLZMOVE_FRAME_NOT_SAVED,frameToMove:GetName()));
 			end
 		else
-			Print("Frame: ",frameToMove:GetName()," will be saved.")
+			Print(string.format(BLZMOVE_FRAME_SAVED,frameToMove:GetName()));
 			db[frameToMove:GetName()] = {}
 			settings = db[frameToMove:GetName()]
 			settings.save = true
@@ -114,6 +145,7 @@ local function OnMouseUp(self, ...)
 end
 
 local function SetMoveHandler(frameToMove, handler)
+
 	if not frameToMove then
 		return
 	end
@@ -141,7 +173,7 @@ local function SetMoveHandler(frameToMove, handler)
 	
 	--hook OnMouseUp 
 	handler:HookScript("OnMouseUp", OnMouseUp)
-	
+--Terry@bf : disable scaling
 	--hook Scroll for setting scale
 	handler:EnableMouseWheel(true) 
 	handler:HookScript("OnMouseWheel",OnMouseWheel)
@@ -161,6 +193,7 @@ local function resetDB()
 	end
 end
 
+
 local function createOptionPanel()
 	optionPanel = CreateFrame( "Frame", "BlizzMovePanel", UIParent );
 	local title = optionPanel:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
@@ -176,18 +209,33 @@ local function createOptionPanel()
 	subtitle:SetJustifyH("LEFT")
 	subtitle:SetJustifyV("TOP")
 
-	subtitle:SetText("Click the button below to reset all frames.")
+	subtitle:SetText(BLZMODE_OPTION_TEXT)
 
 	local button = CreateFrame("Button",nil,optionPanel, "UIPanelButtonTemplate")
 	button:SetWidth(100)
 	button:SetHeight(30)
 	button:SetScript("OnClick", resetDB)
-	button:SetText("Reset")
+	button:SetText(BLZMODE_OPTION_RESET)
 	button:SetPoint("TOPLEFT",20,-60)
 	
 	optionPanel.name = "BlizzMove";
 	InterfaceOptions_AddCategory(optionPanel);
 end
+
+local function BlizzMove_CanOpenPanels()
+	local centerFrame = GetUIPanel("center");
+	if ( not centerFrame ) then
+		return nil;
+	end
+	local area = GetUIPanelWindowInfo(centerFrame, "area");
+	if ( area and (area == "center") ) then
+		return nil;
+	end
+
+	return 1;
+end
+
+
 
 local function OnEvent()
 	Debug(event, arg1, arg2)
@@ -195,7 +243,6 @@ local function OnEvent()
 		frame:RegisterEvent("ADDON_LOADED") --for blizz lod addons
 		db = BlizzMoveDB or defaultDB
 		BlizzMoveDB = db
-		--SetMoveHandler(frameToMove, handlerFrame)
 		SetMoveHandler(CharacterFrame,PaperDollFrame)
 		SetMoveHandler(CharacterFrame,TokenFrame)
 		SetMoveHandler(CharacterFrame,SkillFrame)
@@ -204,7 +251,9 @@ local function OnEvent()
 		SetMoveHandler(SpellBookFrame)
 		SetMoveHandler(QuestLogFrame)
 		SetMoveHandler(FriendsFrame)
-		SetMoveHandler(PVPFrame)
+		PVPBattlegroundFrameFrameLabel:ClearAllPoints()
+		SetMoveHandler(PVPParentFrame,PVPBattlegroundFrame)
+		SetMoveHandler(PVPParentFrame,PVPFrame)
 		SetMoveHandler(LFGParentFrame)
 		SetMoveHandler(GameMenuFrame)
 		SetMoveHandler(GossipFrame)
@@ -219,12 +268,13 @@ local function OnEvent()
 		SetMoveHandler(VideoOptionsFrame)
 		SetMoveHandler(InterfaceOptionsFrame)
 		SetMoveHandler(LootFrame)
-		
+		SetMoveHandler(InspectFrame)
 		InterfaceOptionsFrame:HookScript("OnShow", function() 
 			if not optionPanel then
 				createOptionPanel()
 			end
 		end)
+
 	-- blizzard lod addons
 	elseif arg1 == "Blizzard_InspectUI" then
 		SetMoveHandler(InspectFrame)
@@ -252,6 +302,7 @@ local function OnEvent()
 		SetMoveHandler(KeyBindingFrame)
 	elseif arg1 == "Blizzard_AuctionUI" then
 		SetMoveHandler(AuctionFrame)
+		UIPanelWindows["AuctionFrame"] = { area = "left", pushable = 3, wide = 840};
 	end
 end
 
@@ -298,6 +349,3 @@ function BlizzMove:Toggle(handler)
 	end
 	
 end
-
-BINDING_HEADER_BLIZZMOVE = "BlizzMove";
-BINDING_NAME_MOVEFRAME = "Move/Lock a Frame";

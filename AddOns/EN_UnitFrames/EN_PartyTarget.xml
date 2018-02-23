@@ -1,7 +1,7 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\FrameXML\UI.xsd">
-    <Button name="PartyTargetFrameTemplate" inherits="SecureUnitButtonTemplate" toplevel="true" frameStrata="LOW"
-            movable="true" hidden="false" virtual="true">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+    <Script file="EN_PartyTarget.lua"/>
+
+    <Button name="PartyTargetFrameTemplate" inherits="SecureUnitButtonTemplate" toplevel="true" frameStrata="LOW" movable="true" hidden="false" virtual="true">
         <Size>
             <AbsDimension x="80" y="16"/>
         </Size>
@@ -29,7 +29,7 @@
                         </Anchor>
                     </Anchors>
                 </FontString>
-            </Layer>
+            </Layer>            
             <Layer level="OVERLAY">
                 <Texture name="$parentBorder" file="Interface\Tooltips\UI-StatusBar-Border">
                     <Size>
@@ -41,11 +41,10 @@
                         </Anchor>
                     </Anchors>
                 </Texture>
-            </Layer>
+            </Layer>            
         </Layers>
-        <Frames>
-            <StatusBar name="$parentHealthBar" drawLayer="BACKGROUND" frameStrata="LOW" minValue="0" maxValue="100"
-                       defaultValue="100">
+        <Frames>            
+            <StatusBar name="$parentHealthBar" drawLayer="BACKGROUND" frameStrata="LOW" minValue="0" maxValue="100" defaultValue="100">
                 <Size>
                     <AbsDimension x="74" y="10"/>
                 </Size>

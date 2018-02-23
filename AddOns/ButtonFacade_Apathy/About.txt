@@ -1,0 +1,16 @@
+Apathy is a skin for ButtonFacade that will add some custom button styles to the supported action bars. This skin was inspired by the Vol skin for cyCircled.
+
+  Project Page: http://www.wowace.com/projects/buttonfacade_apathy
+  Forum Thread: http://forums.wowace.com/showthread.php?t=12534
+  ButtonFacade: http://www.wowace.com/projects/buttonfacade
+
+- Installation -
+
+  1. Download the package.
+  2. Extract the package to your "World of Warcraft\Interface\AddOns" directory.
+
+  Note: You must have ButtonFacade installed to use this add-on.
+
+- Feedback -
+
+Please post all comments in the forum thread listed above. For bug reports and suggestions, please post a ticket on the project page.

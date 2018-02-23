@@ -1,29 +1,44 @@
 --[[
     This file is part of Decursive.
     
-    Decursive (v 2.4.2_beta_6-12-g708f71e) add-on for World of Warcraft UI
-    Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/?to=decursive.php )
+    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
+    Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/to/decursive.php )
 
-    This is the continued work of the original Decursive (v1.9.4) by Quu
-    "Decursive 1.9.4" is in public domain ( www.quutar.com )
+    Starting from 2009-10-31 and until said otherwise by its author, Decursive
+    is no longer free software, all rights are reserved to its author (John Wellesz).
 
-    Decursive is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    The only official and allowed distribution means are www.2072productions.com, www.wowace.com and curse.com.
+    To distribute Decursive through other means a special authorization is required.
+    
+
+    Decursive is inspired from the original "Decursive v1.9.4" by Quu.
+    The original "Decursive 1.9.4" is in public domain ( www.quutar.com )
 
     Decursive is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    but WITHOUT ANY WARRANTY.
 
-    You should have received a copy of the GNU General Public License
-    along with Decursive.  If not, see <http://www.gnu.org/licenses/>.
 --]]
 -------------------------------------------------------------------------------
 
+-- big ugly scary fatal error message display function {{{
+if not DcrFatalError then
+-- the beautiful error popup : {{{ -
+StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
+    text = "|cFFFF0000Decursive Error:|r\n%s",
+    button1 = "OK",
+    OnAccept = function()
+        return false;
+    end,
+    timeout = 0,
+    whileDead = 1,
+    hideOnEscape = 1,
+    showAlert = 1,
+    }; -- }}}
+DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
+end
+-- }}}
 if not DcrLoadedFiles or not DcrLoadedFiles["Dcr_DebuffsFrame.xml"] or not DcrLoadedFiles["Dcr_DebuffsFrame.lua"] then
-    if not DcrCorrupted then message("Decursive installation is corrupted! (Dcr_DebuffsFrame.xml or Dcr_DebuffsFrame.lua not loaded)"); end;
+    if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (Dcr_DebuffsFrame.xml or Dcr_DebuffsFrame.lua not loaded)"); end;
     DcrCorrupted = true;
     return;
 end
@@ -31,38 +46,50 @@ end
 local D   = Dcr;
 --D:SetDateAndRevision("$Date: 2008-09-16 00:25:13 +0200 (mar., 16 sept. 2008) $", "$Revision: 81755 $");
 
-local L	    = D.L;
-local BC    = D.BC;
-local AceOO = D.AOO;
+local L     = D.L;
+local LC    = D.LC;
 local DC    = DcrC;
 local DS    = DC.DS;
 
-D.LiveList = AceOO.Class();
+--D.LiveList = OOP.Class();
 
+-- http://www.lua.org/pil/13.4.1.html
+-- define the namespace
+D.LiveList = {};
 local LiveList = D.LiveList;
+-- a prototype for LiveList objects, empty, defaults are defined in the :New for better performances
+LiveList.prototype = {};
+LiveList.metatable ={ __index = LiveList.prototype };
+
+function LiveList:new(...)
+    local instance = setmetatable({}, self.metatable);
+    instance:init(...);
+    return instance;
+end
+
 local MicroUnitF = D.MicroUnitF;
 
-LiveList.ExistingPerID	    = {};
-LiveList.Number		    = 0;
-LiveList.NumberShown	    = 0;
-D.ForLLDebuffedUnitsNum	    = 0;
+LiveList.ExistingPerID      = {};
+LiveList.Number             = 0;
+LiveList.NumberShown        = 0;
+D.ForLLDebuffedUnitsNum     = 0;
 
 -- temporary variables often used in function
 local Debuff, Debuffs, IsCharmed, MF, i, Index, RangeStatus;
 
 -- local shortcuts to often called global functions
-local pairs		= _G.pairs;
-local ipairs		= _G.ipairs;
-local next		= _G.next;
-local select		= _G.select;
-local unpack		= _G.unpack;
-local table		= _G.table;
-local UnitExists	= _G.UnitExists;
-local IsSpellInRange	= _G.IsSpellInRange;
-local UnitClass		= _G.UnitClass;
-local UnitIsFriend	= _G.UnitIsFriend;
-local floor		= _G.math.floor;
-local str_upper		= _G.string.upper;
+local pairs             = _G.pairs;
+local ipairs            = _G.ipairs;
+local next              = _G.next;
+local select            = _G.select;
+local unpack            = _G.unpack;
+local table             = _G.table;
+local UnitExists        = _G.UnitExists;
+local IsSpellInRange    = _G.IsSpellInRange;
+local UnitClass         = _G.UnitClass;
+local UnitIsFriend      = _G.UnitIsFriend;
+local floor             = _G.math.floor;
+local str_upper         = _G.string.upper;
 
 
 -- defines what is printed when the object is read as a string
@@ -74,7 +101,7 @@ end -- }}}
 function LiveList:Create() -- {{{
 
     if self.Number + 1 > D.profile.Amount_Of_Afflicted then
-	return false;
+        return false;
     end
 
     self.Number = self.Number + 1;
@@ -92,39 +119,39 @@ function LiveList:DisplayItem (ID, UnitID, Debuff) -- {{{
     local LVItem = false;
 
     if ID > self.Number + 1 then
-	return error(("LiveList:DisplayItem: bad argument #1 'ID (= %d)' must be < LiveList.Number + 1 (LiveList.Number = %d)"):format(ID, self.Number),2);
+        return error(("LiveList:DisplayItem: bad argument #1 'ID (= %d)' must be < LiveList.Number + 1 (LiveList.Number = %d)"):format(ID, self.Number),2);
     end
 
     if not self.ExistingPerID[ID] then
-	LVItem=self:Create();
+        LVItem=self:Create();
     else
-	LVItem = self.ExistingPerID[ID];
+        LVItem = self.ExistingPerID[ID];
     end
 
     if not LVItem then
-	return false;
+        return false;
     end
 
     if not Debuff then
-	Debuff = D.ManagedDebuffUnitCache[UnitID][1];
+        Debuff = D.ManagedDebuffUnitCache[UnitID][1];
     end
 
     LVItem:SetDebuff(UnitID, Debuff, nil);
     --D:Debug("XXXX => Updating ll item %d for %s", ID, UnitID);
 
     if not LVItem.IsShown then
-	--D:Debug("(LiveList) Showing LVItem %d", ID);
-	LVItem.Frame:Show();
-	self.NumberShown = self.NumberShown + 1;
-	LVItem.IsShown = true;
+        --D:Debug("(LiveList) Showing LVItem %d", ID);
+        LVItem.Frame:Show();
+        self.NumberShown = self.NumberShown + 1;
+        LVItem.IsShown = true;
     end
 
 end -- }}}
 
 function LiveList:RestAllPosition () -- {{{
     for _, LVitem in ipairs(self.ExistingPerID) do
-	LVitem.Frame:ClearAllPoints();
-	LVitem.Frame:SetPoint(LVitem:GiveAnchor());
+        LVitem.Frame:ClearAllPoints();
+        LVitem.Frame:SetPoint(LVitem:GiveAnchor());
     end
 end -- }}}
 
@@ -136,50 +163,51 @@ function LiveList.prototype:GiveAnchor() -- {{{
     end
 
     if self.ID == 1 then
-	if D.profile.ReverseLiveDisplay then
-	    return "BOTTOMLEFT", DecursiveMainBar, "BOTTOMLEFT", 5, -1 * (ItemHeight + 1) * D.profile.Amount_Of_Afflicted;
-	else
-	    return "TOPLEFT", DecursiveMainBar, "BOTTOMLEFT", 5, 0;
-	end
+        if D.profile.ReverseLiveDisplay then
+            return "BOTTOMLEFT", DecursiveMainBar, "BOTTOMLEFT", 5, -1 * (ItemHeight + 1) * D.profile.Amount_Of_Afflicted;
+        else
+            return "TOPLEFT", DecursiveMainBar, "BOTTOMLEFT", 5, 0;
+        end
     else
-	if D.profile.ReverseLiveDisplay then
-	    return "BOTTOMLEFT", LiveList.ExistingPerID[self.ID - 1].Frame, "TOPLEFT", 0, 1;
-	else
-	    return "TOPLEFT", LiveList.ExistingPerID[self.ID - 1].Frame, "BOTTOMLEFT", 0, -1;
-	end
+        if D.profile.ReverseLiveDisplay then
+            return "BOTTOMLEFT", LiveList.ExistingPerID[self.ID - 1].Frame, "TOPLEFT", 0, 1;
+        else
+            return "TOPLEFT", LiveList.ExistingPerID[self.ID - 1].Frame, "BOTTOMLEFT", 0, -1;
+        end
     end
 
 end -- }}}
 
 
 function LiveList.prototype:init(Container,ID) -- {{{
-    LiveList.super.prototype.init(self); -- needed
+    
+    --LiveList.super.prototype.init(self); -- needed
     D:Debug("(LiveList) Initializing LiveList object '%s'", ID);
 
     --ObjectRelated
-    self.ID		    = ID;
-    self.IsShown	    = false;
-    self.Parent		    = Container;
+    self.ID                 = ID;
+    self.IsShown            = false;
+    self.Parent             = Container;
 
     --Debuff info
-    self.UnitID		    = false;
-    self.UnitName	    = false;
-    self.PrevUnitName	    = false;
-    self.PrevUnitID	    = false;
-    self.UnitClass	    = false;
+    self.UnitID             = false;
+    self.UnitName           = false;
+    self.PrevUnitName       = false;
+    self.PrevUnitID         = false;
+    self.UnitClass          = false;
     
-    self.Debuff			= {};
+    self.Debuff             = {};
 
-    self.PrevDebuffIndex	= false;
-    self.PrevDebuffName		= false;
-    self.PrevDebuffTypeName	= false;
-    self.PrevDebuffApplicaton	= false;
-    self.PrevDebuffTexture	= false;
+    self.PrevDebuffIndex    = false;
+    self.PrevDebuffName     = false;
+    self.PrevDebuffTypeName    = false;
+    self.PrevDebuffApplicaton  = false;
+    self.PrevDebuffTexture  = false;
 
-    self.IsCharmed	    = false;
-    self.PrevIsCharmed	    = false;
+    self.IsCharmed          = false;
+    self.PrevIsCharmed      = false;
 
-    self.Alpha		    = false;
+    self.Alpha              = false;
 
     -- Create the frame
     self.Frame = CreateFrame ("Button", "DcrLiveListItem"..ID, self.Parent, "DcrLVItemTemplate");
@@ -219,69 +247,70 @@ function LiveList.prototype:init(Container,ID) -- {{{
 
     self.Frame:Show();
 
+
 end -- }}}
 
 function LiveList.prototype:SetDebuff(UnitID, Debuff, IsCharmed) -- {{{
-    self.UnitID		    = UnitID;
-    self.UnitName	    = D:PetUnitName(UnitID, true);
-    self.Debuff		    = Debuff;
-    self.IsCharmed	    = IsCharmed;
+    self.UnitID             = UnitID;
+    self.UnitName           = D:PetUnitName(UnitID, true);
+    self.Debuff             = Debuff;
+    self.IsCharmed          = IsCharmed;
 
     if D.profile.LiveListAlpha ~= self.Alpha then
-	self.Frame:SetAlpha(D.profile.LiveListAlpha);
-	self.Alpha = D.profile.LiveListAlpha;
+        self.Frame:SetAlpha(D.profile.LiveListAlpha);
+        self.Alpha = D.profile.LiveListAlpha;
     end
 
     -- Set the graphical elements to the right values
     -- Icon
     if self.PrevDebuffTexture ~= Debuff.Texture then
-	self.IconTexture:SetTexture(Debuff.Texture);
-	self.PrevDebuffTexture =  Debuff.Texture;
+        self.IconTexture:SetTexture(Debuff.Texture);
+        self.PrevDebuffTexture =  Debuff.Texture;
     end
 
     -- Applications count
     if self.PrevDebuffApplicaton ~= Debuff.Applications then
-	if (Debuff.Applications > 1) then
-	    self.DebuffAppsFontString:SetText(Debuff.Applications);
-	    self.PrevDebuffApplicaton = Debuff.Applications;
-	else
-	    self.DebuffAppsFontString:SetText(" ");
-	    self.PrevDebuffApplicaton = " ";
-	end
+        if (Debuff.Applications > 1) then
+            self.DebuffAppsFontString:SetText(Debuff.Applications);
+            self.PrevDebuffApplicaton = Debuff.Applications;
+        else
+            self.DebuffAppsFontString:SetText(" ");
+            self.PrevDebuffApplicaton = " ";
+        end
     end
 
     -- Unit Name
     if self.PrevUnitName ~= self.UnitName then
-	self.UnitClass = (select(2, UnitClass(UnitID)));
-	self.UnitNameFontString:SetText(self.UnitName);
-	if self.UnitClass then
-	    self.UnitNameFontString:SetTextColor(unpack(DC.ClassesColors[self.UnitClass]));
-	end
-	self.PrevUnitName =  self.UnitName;
-	--D:Debug("(LiveList) Updating %d with %s", self.ID, UnitID);
+        self.UnitClass = (select(2, UnitClass(UnitID)));
+        self.UnitNameFontString:SetText(self.UnitName);
+        if self.UnitClass then
+            self.UnitNameFontString:SetTextColor(unpack(DC.ClassesColors[self.UnitClass]));
+        end
+        self.PrevUnitName =  self.UnitName;
+        --D:Debug("(LiveList) Updating %d with %s", self.ID, UnitID);
     end
 
     -- Unit ID
     if self.PrevUnitID ~= UnitID then
-	self.UnitIDFontString:SetText("( "..UnitID.." )");
-	self.PrevUnitID = UnitID;
+        self.UnitIDFontString:SetText("( "..UnitID.." )");
+        self.PrevUnitID = UnitID;
     end
 
     -- Debuff Type Name
     if self.PrevDebuffTypeName ~= Debuff.TypeName then
-	if Debuff.Type then
-	    self.DebuffTypeFontString:SetText(D:ColorText(L[str_upper(Debuff.TypeName)], "FF" .. DC.TypeColors[Debuff.Type] ));
-	    --self.DebuffTypeFontString:SetTextColor(DC.TypeColors[Debuff.Type]);
-	else
-	    self.DebuffTypeFontString:SetText("Unknown");
-	end
-	self.PrevDebuffTypeName = Debuff.TypeName;
+        if Debuff.Type then
+            self.DebuffTypeFontString:SetText(D:ColorText(L[str_upper(Debuff.TypeName)], "FF" .. DC.TypeColors[Debuff.Type] ));
+            --self.DebuffTypeFontString:SetTextColor(DC.TypeColors[Debuff.Type]);
+        else
+            self.DebuffTypeFontString:SetText("Unknown");
+        end
+        self.PrevDebuffTypeName = Debuff.TypeName;
     end
 
     -- Debuff Name
     if self.PrevDebuffName ~= Debuff.Name then
-	self.DebuffNameFontString:SetText(Debuff.Name);
-	self.PrevDebuffName = Debuff.Name;
+        self.DebuffNameFontString:SetText(Debuff.Name);
+        self.PrevDebuffName = Debuff.Name;
     end
 
 end -- }}}
@@ -292,54 +321,57 @@ function LiveList:GetDebuff(UnitID) -- {{{
 
     --D:Debug("(LiveList) Getting Debuff for ", UnitID);
     if (UnitID == "target" or UnitID == "mouseover") and not UnitIsFriend(UnitID, "player") then
-	if D.ManagedDebuffUnitCache[UnitID] and D.ManagedDebuffUnitCache[UnitID][1] and D.ManagedDebuffUnitCache[UnitID][1].Type then
-	    D.ManagedDebuffUnitCache[UnitID][1].Type = false; -- clear target/mouseover debuff
-	    D.UnitDebuffed["target"] = false;
-	end
-	--D:Debug("(LiveList) GetDebuff() |cFF00DDDDcanceled|r, unit %s is hostile or gone.", UnitID);
-	return false;
+        if D.ManagedDebuffUnitCache[UnitID] and D.ManagedDebuffUnitCache[UnitID][1] and D.ManagedDebuffUnitCache[UnitID][1].Type then
+            D.ManagedDebuffUnitCache[UnitID][1].Type = false; -- clear target/mouseover debuff
+            D.UnitDebuffed["target"] = false;
+        end
+        --D:Debug("(LiveList) GetDebuff() |cFF00DDDDcanceled|r, unit %s is hostile or gone.", UnitID);
+        return false;
     end
 
     -- decrease the total debuff number if the MUFs system isn't already doing it and if it's not the mouseover or target unit
     if not D.profile.ShowDebuffsFrame and D.UnitDebuffed[UnitID] and UnitID ~= "mouseover" and UnitID ~= "target" then
-	D.ForLLDebuffedUnitsNum = D.ForLLDebuffedUnitsNum - 1;
+        D.ForLLDebuffedUnitsNum = D.ForLLDebuffedUnitsNum - 1;
     end
 
     -- Get the unit Debuffs
     if not D.profile.ShowDebuffsFrame or not MicroUnitF.UnitToMUF[UnitID] or UnitID == "mouseover" or UnitID == "target" then
-	Debuffs, IsCharmed = D:UnitCurableDebuffs(UnitID);
-	--Debuffs, IsCharmed = D:UnitCurableDebuffs(UnitID, true);
+        Debuffs, IsCharmed = D:UnitCurableDebuffs(UnitID);
+        --Debuffs, IsCharmed = D:UnitCurableDebuffs(UnitID, true);
     else -- The MUFs are active and Unit is not mouseover and is not target
-	MF = MicroUnitF.UnitToMUF[UnitID];
-	if MF then
-	    Debuffs = MF.Debuffs;
-	else -- (ticket #6)
-	    D:AddDebugText("Sanity check failed in LiveList:GetDebuff() no MUF for unit", UnitID, "MUFs are", D.profile.ShowDebuffsFrame, "MUFnum:", MicroUnitF.Number, "MUFshown:", MicroUnitF.UnitShown, "UnitNum:", D.Status.UnitNum, "UnitExists:", UnitExists(UnitID), "Auto MUF show/hide:", D.profile.AutoHideDebuffsFrame, "InCombatLockdown():", InCombatLockdown());
-	    D:AddDebugText("Stack:\n", debugstack(2));
-	end
+        MF = MicroUnitF.UnitToMUF[UnitID];
+        if MF then
+            Debuffs = MF.Debuffs;
+            --[=[
+        else -- (ticket #6)
+            D:AddDebugText("Sanity check failed in LiveList:GetDebuff() no MUF for unit", UnitID, "MUFs are", D.profile.ShowDebuffsFrame, "MUFnum:", MicroUnitF.Number, "MUFshown:", MicroUnitF.UnitShown, "UnitNum:", D.Status.UnitNum, "UnitExists:", UnitExists(UnitID), "Auto MUF show/hide:", D.profile.AutoHideDebuffsFrame, "InCombatLockdown():", InCombatLockdown());
+            D:AddDebugText("Stack:\n", debugstack(2));
+            --]=]
+        end
     end
 
     if (Debuffs and Debuffs[1] and Debuffs[1].Type) then -- there is a Debuff
 
-	D.UnitDebuffed[UnitID] = true; -- register that this unit is debuffed
+        D.UnitDebuffed[UnitID] = true; -- register that this unit is debuffed
 
-	-- increase the total debuff number
-	if not D.profile.ShowDebuffsFrame and UnitID ~= "mouseover" and UnitID ~= "target" then
+        -- increase the total debuff number
+        if not D.profile.ShowDebuffsFrame and UnitID ~= "mouseover" and UnitID ~= "target" then
 
-	    D.ForLLDebuffedUnitsNum = D.ForLLDebuffedUnitsNum + 1;
+            D.ForLLDebuffedUnitsNum = D.ForLLDebuffedUnitsNum + 1;
 
-	end
+        end
     else
-	D.UnitDebuffed[UnitID] = false; -- unregister this unit
+        D.UnitDebuffed[UnitID] = false; -- unregister this unit
     end
 
     return D.UnitDebuffed[UnitID];
 end -- }}}
 
 function LiveList:DelayedGetDebuff(UnitID) -- {{{
-    if not D:IsEventScheduled("Dcr_GetDebuff"..UnitID) then
-	D.DebuffUpdateRequest = D.DebuffUpdateRequest + 1;
-	D:ScheduleEvent("Dcr_GetDebuff"..UnitID, self.GetDebuff, (D.profile.ScanTime / 2) * (1 + floor(D.DebuffUpdateRequest / 7.5)), self, UnitID);
+    if not D:DelayedCallExixts("Dcr_GetDebuff"..UnitID) then
+        D.DebuffUpdateRequest = D.DebuffUpdateRequest + 1;
+        D:Debug("LiveList: GetDebuff scheduled for, ", UnitID);
+        D:ScheduleDelayedCall("Dcr_GetDebuff"..UnitID, self.GetDebuff, (D.profile.ScanTime / 2) * (1 + floor(D.DebuffUpdateRequest / 7.5)), self, UnitID);
     end
 end -- }}}
 
@@ -349,123 +381,125 @@ local _;
 function LiveList:Update_Display() -- {{{
 
     if not D.DcrFullyInitialized  then
-	return;
+        return;
     end
 
     -- Update the unit array
+    --[[
     if (D.Groups_datas_are_invalid) then
-	D:GetUnitArray();
+        D:GetUnitArray();
     end
+    --]]
 
     Index = 0;
 
     if D.profile.ShowDebuffsFrame and D.profile.LV_OnlyInRange then -- The MUFs are here and we test for range
-	DebuffedUnitsNumber = MicroUnitF.UnitsDebuffedInRange;
+        DebuffedUnitsNumber = MicroUnitF.UnitsDebuffedInRange;
     else -- the MUFs are not here or we don't test for range
-	DebuffedUnitsNumber = D.ForLLDebuffedUnitsNum;
+        DebuffedUnitsNumber = D.ForLLDebuffedUnitsNum;
     end
 
     -- Check the units in order of importance:
 
     -- First the Target
     if D.Status.TargetExists and self:GetDebuff("target") then -- TargetExists implies that the unit is a friend
-	Index = Index + 1;
-	self:DisplayItem(Index, "target");
-	--D:Debug("frenetic target update");
+        Index = Index + 1;
+        self:DisplayItem(Index, "target");
+        --D:Debug("frenetic target update");
 
-	DebuffedUnitsNumber = DebuffedUnitsNumber + 1;
+        DebuffedUnitsNumber = DebuffedUnitsNumber + 1;
 
-	if not D.Status.SoundPlayed then
-	    D:PlaySound ("target", "LV target" );
-	end
+        if not D.Status.SoundPlayed then
+            D:PlaySound ("target", "LV target" );
+        end
     end
 
     -- Then the MouseOver
     if not D.Status.MouseOveringMUF and D.UnitDebuffed["mouseover"] and self:GetDebuff("mouseover") then -- this won't catch new debuff if all debuffs disappeard while overing the unit...
-	Index = Index + 1;
-	self:DisplayItem(Index, "mouseover");
-	--D:Debug("frenetic mouseover update");
+        Index = Index + 1;
+        self:DisplayItem(Index, "mouseover");
+        --D:Debug("frenetic mouseover update");
 
-	DebuffedUnitsNumber = DebuffedUnitsNumber + 1;
+        DebuffedUnitsNumber = DebuffedUnitsNumber + 1;
 
-	if not D.Status.SoundPlayed then
-	    D:PlaySound ("mouseover", "LV mouseover" );
-	end
+        if not D.Status.SoundPlayed then
+            D:PlaySound ("mouseover", "LV mouseover" );
+        end
     end
 
     -- the sound played status is reset here because the live list is able to display target and mouseover units and far away ones...
     if DebuffedUnitsNumber == 0 then
-	D.Status.SoundPlayed = false;
+        D.Status.SoundPlayed = false;
     end
 
     IndexOffset = Index;
 
     -- Then continue with all the remaining units if at least one of them is debuffed
     -- We need this loop because:
-    --	    1, we have to show an ordered list (always true)
-    --	    2, we want to test if the unit is in spell range (only if the option is active and the MUFs hidden)
-    --	    There is no event to do the last and a not simple table.sort() would be needed for the first...
+    --      1, we have to show an ordered list (always true)
+    --      2, we want to test if the unit is in spell range (only if the option is active and the MUFs hidden)
+    --      There is no event to do the last and a not simple table.sort() would be needed for the first...
     if DebuffedUnitsNumber > 0 and Index < D.profile.Amount_Of_Afflicted then
-	for _, UnitID in ipairs(D.Status.Unit_Array) do
-	    -- if the unit is debuffed and still exists and is not stealthed check this only if the MUFs engine is not there, redudent tests otherwise...
-	    if D.UnitDebuffed[UnitID] and UnitExists(UnitID) and not (not D.profile.ShowDebuffsFrame and D.profile.Ingore_Stealthed and D.Stealthed_Units[UnitID]) then
+        for _, UnitID in ipairs(D.Status.Unit_Array) do
+            -- if the unit is debuffed and still exists and is not stealthed check this only if the MUFs engine is not there, redudent tests otherwise...
+            if D.UnitDebuffed[UnitID] and UnitExists(UnitID) then
 
-		-- we don't care about range
-		if not D.profile.LV_OnlyInRange then
-		    Index = Index + 1;
-		    self:DisplayItem(Index, UnitID);
+                -- we don't care about range
+                if not D.profile.LV_OnlyInRange then
+                    Index = Index + 1;
+                    self:DisplayItem(Index, UnitID);
 
-		    -- play the sound if not already done
-		    if not D.Status.SoundPlayed then
-			D:PlaySound (UnitID, "LV scan NR" );
-		    end
+                    -- play the sound if not already done
+                    if not D.Status.SoundPlayed then
+                        D:PlaySound (UnitID, "LV scan NR" );
+                    end
 
-		else -- we care about range
+                else -- we care about range
 
-		    if D.profile.ShowDebuffsFrame and MicroUnitF.UnitToMUF[UnitID] then
-			RangeStatus = MicroUnitF.UnitToMUF[UnitID].UnitStatus; -- MicroUnitF.UnitToMUF[UnitID] is nil sometimes XXX
-			RangeStatus = (RangeStatus == DC.AFFLICTED or RangeStatus == DC.AFFLICTED_AND_CHARMED) and true or false;
-		    else
-			RangeStatus = IsSpellInRange(D.Status.CuringSpells[D.ManagedDebuffUnitCache[UnitID][1].Type], UnitID);
-			RangeStatus = (RangeStatus and RangeStatus ~= 0) and true or false;
-		    end
+                    if D.profile.ShowDebuffsFrame and MicroUnitF.UnitToMUF[UnitID] then
+                        RangeStatus = MicroUnitF.UnitToMUF[UnitID].UnitStatus; -- MicroUnitF.UnitToMUF[UnitID] is nil sometimes XXX
+                        RangeStatus = (RangeStatus == DC.AFFLICTED or RangeStatus == DC.AFFLICTED_AND_CHARMED) and true or false;
+                    else
+                        RangeStatus = IsSpellInRange(D.Status.CuringSpells[D.ManagedDebuffUnitCache[UnitID][1].Type], UnitID);
+                        RangeStatus = (RangeStatus and RangeStatus ~= 0) and true or false;
+                    end
 
-		    if (RangeStatus) then
-			Index = Index + 1;
-			self:DisplayItem(Index, UnitID);
-			-- play the sound if not already done
-			if not D.Status.SoundPlayed then
-			    D:PlaySound (UnitID, "LV R" );
-			end
-		    end
-		end
-	    end
+                    if (RangeStatus) then
+                        Index = Index + 1;
+                        self:DisplayItem(Index, UnitID);
+                        -- play the sound if not already done
+                        if not D.Status.SoundPlayed then
+                            D:PlaySound (UnitID, "LV R" );
+                        end
+                    end
+                end
+            end
 
-	    -- don't loop if we reach the max displayed unit num or if all debuffed units have been displayed
-	    if Index == D.profile.Amount_Of_Afflicted or Index == DebuffedUnitsNumber + IndexOffset then
-		break;
-	    end
-	end
+            -- don't loop if we reach the max displayed unit num or if all debuffed units have been displayed
+            if Index == D.profile.Amount_Of_Afflicted or Index == DebuffedUnitsNumber + IndexOffset then
+                break;
+            end
+        end
     end
 
     -- reset the sound if no units were displayed
     if not D.profile.ShowDebuffsFrame and Index == 0 and D.Status.SoundPlayed then
-	Dcr:Debug("LV: No more unit displayed, sound re-enabled");
-	D.Status.SoundPlayed = false; -- re-enable the sound if no more debuff
+        Dcr:Debug("LV: No more unit displayed, sound re-enabled");
+        D.Status.SoundPlayed = false; -- re-enable the sound if no more debuff
     end
 
     -- Hide unneeded Items
     if self.NumberShown > Index then -- if there are more unit shown than the actual number of debuffed units
-	for i = Index + 1, self.NumberShown do
-	    if self.ExistingPerID[i] and self.ExistingPerID[i].IsShown then
-		--D:Debug("(LiveList) Hidding LVItem %d", i);
-		self.ExistingPerID[i].Frame:Hide();
-		self.ExistingPerID[i].IsShown = false;
-		self.NumberShown = self.NumberShown - 1;
-	    else
-		break;
-	    end
-	end
+        for i = Index + 1, self.NumberShown do
+            if self.ExistingPerID[i] and self.ExistingPerID[i].IsShown then
+                --D:Debug("(LiveList) Hidding LVItem %d", i);
+                self.ExistingPerID[i].Frame:Hide();
+                self.ExistingPerID[i].IsShown = false;
+                self.NumberShown = self.NumberShown - 1;
+            else
+                break;
+            end
+        end
     end
 
 
@@ -475,8 +509,8 @@ end -- }}}
 
 function LiveList:DisplayTestItem() -- {{{
     if not self.TestItemDisplayed and D.Status.Unit_Array[1] then
-	self.TestItemDisplayed = true;
-	D:DummyDebuff(D.Status.Unit_Array[1], "Test item");
+        self.TestItemDisplayed = true;
+        D:DummyDebuff(D.Status.Unit_Array[1], "Test item");
     end
 end -- }}}
 
@@ -485,22 +519,24 @@ function LiveList:HideTestItem() -- {{{
      local i = 1;
 
      for UnitID, Debuffed in pairs(D.UnitDebuffed) do
-	 if Debuffed then
-	     D:ScheduleEvent("Dcr_rmt"..i, D.DummyDebuff, i * (D.profile.ScanTime / 2), D, UnitID, "Test item");
-	     i = i + 1;
-	 end
+         if Debuffed then
+             D:ScheduleDelayedCall("Dcr_rmt"..i, D.DummyDebuff, i * (D.profile.ScanTime / 2), D, UnitID);
+             i = i + 1;
+         end
      end
 
 end -- }}}
 
 
 -- this displays the tooltips of the live-list
-function LiveList:DebuffTemplate_OnEnter() --{{{
-    if (D.profile.AfflictionTooltips and this.Object.UnitID) then
-	DcrDisplay_Tooltip:SetOwner(this, "ANCHOR_CURSOR");
-	DcrDisplay_Tooltip:ClearLines();
-	DcrDisplay_Tooltip:SetUnitDebuff(this.Object.UnitID,this.Object.Debuff.index); -- OK
-	DcrDisplay_Tooltip:Show();
+function LiveList:DebuffTemplate_OnEnter(frame) --{{{
+    if (D.profile.AfflictionTooltips and frame.Object.UnitID) then
+        DcrDisplay_Tooltip:SetOwner(frame, "ANCHOR_CURSOR");
+        DcrDisplay_Tooltip:ClearLines();
+        DcrDisplay_Tooltip:SetUnitDebuff(frame.Object.UnitID,frame.Object.Debuff.index); -- OK
+        DcrDisplay_Tooltip:Show();
+    else
+        D:Debug(D.profile.AfflictionTooltips, frame.Object.UnitID );
     end
 end --}}}
 
@@ -508,4 +544,4 @@ function LiveList:Onclick() -- {{{
     D:Println(L["HLP_LL_ONCLICK_TEXT"]);
 end -- }}}
 
-DcrLoadedFiles["Dcr_LiveList.lua"] = "2.4.2_beta_6-12-g708f71e";
+DcrLoadedFiles["Dcr_LiveList.lua"] = "2.4.5-3-g6a02387";

@@ -1,7 +1,7 @@
-local mod = DBM:NewMod("LeyGuardianEregos", "DBM-Party-WotLK", 9)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("LeyGuardianEregos", "DBM-Party-WotLK", 9)
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 598 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2481 $"):sub(12, -3))
 mod:SetCreatureID(27656)
 mod:SetZone()
 
@@ -11,20 +11,28 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warningShift	= mod:NewAnnounce("WarningShift", 1, 51162)
+local warningShift		= mod:NewSpellAnnounce(51162, 1)
 local warningShiftEnd	= mod:NewAnnounce("WarningShiftEnd", 1, 51162)
-local warningEnraged	= mod:NewAnnounce("WarningEnraged", 3, 51170)
-local timerEnraged	= mod:NewTimer(12, "TimerEnrage", 51170)
-local timerShift	= mod:NewTimer(18, "TimerShift", 51162)
+local warningEnraged	= mod:NewSpellAnnounce(51170, 3)
+local timerEnraged		= mod:NewBuffActiveTimer(12, 51170)
+local timerShift		= mod:NewBuffActiveTimer(18, 51162)
 
+
+function mod:OnCombatEnd(wipe)
+	if not wipe then
+		if DBM.Bars:GetBar(L.MakeitCountTimer) then
+			DBM.Bars:CancelBar(L.MakeitCountTimer) 
+		end	
+	end
+end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 51162 then
-		warningShift:Show(args.spellName)
+	if args:IsSpellID(51162) then
+		warningShift:Show()
 		warningShiftEnd:Schedule(13)
-		timerShift:Start(args.spellName)
-	elseif args.spellId == 51170 then
-		warningEnraged:Show(args.spellName)
-		timerEnraged:Start(args.spellName)
+		timerShift:Start()
+	elseif args:IsSpellID(51170) then
+		warningEnraged:Show()
+		timerEnraged:Start()
 	end
 end

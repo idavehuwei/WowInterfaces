@@ -18,9 +18,6 @@ local AL = AceLocale:NewLocale("AtlasLoot", "esES", false);
 if AL then
 	--Text strings for UI objects
 	--AL["AtlasLoot"] = true,
-	AL["No match found for"] = "No se ha encontrado ninguna coincidencia";
-	AL["Search"] = "Buscar";
-	AL["Clear"] = "Limpiar";
 	AL["Select Loot Table"] = "Selecciona tabla";
 	AL["Select Sub-Table"] = "Selecciona subtabla";
 	AL["Drop Rate: "] = "Prob. de conseguirse: ";
@@ -28,11 +25,8 @@ if AL then
 	AL["Priority:"] = "Prioridad:";
 	AL["Click boss name to view loot."] = "Haz click sobre el nombre del jefe para ver el botín.";
 	AL["Various Locations"] = "Se obtiene en diferentes sitios";
-	AL["This is a loot browser only.  To view maps as well, install either Atlas or Alphamap."] = "Esto es tan solo un buscador de botines. Para ver el mapa instala el Atlas o Alphamap";
+	AL["This is a loot browser only.  To view maps as well, install either Atlas or Alphamap."] = "Esto es tan solo un buscador de objetos. Para ver el mapa instala el Atlas o Alphamap";
 	AL["Toggle AL Panel"] = "Panel AtlasLoot";
-	AL[" is safe."] = " es válido.";
-	AL["Server queried for "] = "Preguntando al servidor por ";
-	AL[".  Right click on any other item to refresh the loot page."] = ".  Haz click-dcho en otro objeto para refrescar la página.";
 	AL["Back"] = "Atrás";
 	AL["Level 60"] = "Nivel 60";
 	AL["Level 70"] = "Nivel 70";
@@ -41,40 +35,21 @@ if AL then
 	AL["Misc"] = "Misc.";
 	AL["Miscellaneous"] = "Misceláneo";
 	AL["Rewards"] = "Recompensas";
-	AL["Heroic Mode"] = "Modo heróico";
-	AL["Normal Mode"] = "Modo normal";
-	AL["Hard Mode"] = "Modo dificil";
 	AL["Show 10 Man Loot"] = "Muestra 10 Pers. Botín";
 	AL["Show 25 Man Loot"] = "Muestra 25 Pers. Botín";
-	AL["10 Man"] = "10 pers.";
-	AL["25 Man"] = "25 pers.";	
-	AL["Raid"] = "Banda";
 	AL["Factions - Original WoW"] = "Facciones - WoW Original";
 	AL["Factions - Burning Crusade"] = "Facciones - Burning Crusade";
 	AL["Factions - Wrath of the Lich King"] = "Facciones - Wrath of the Lich King";
 	AL["Choose Table ..."] = "Elige una tabla...";
-	AL["Close Menu"] = "Cerrar menú";
 	AL["Unknown"] = "Desconocido";
-	AL["Skill Required:"] = "Habilidad necesaria";
-	AL["QuickLook"] = "VistaRápida";
 	AL["Add to QuickLooks:"] = "Añade a VistaRápida";
-	AL["Rating:"] = "Indice:";	--Shorthand for 'Required Rating' for the personal/team ratings in Arena S4 
+	AL["Assign this loot table\n to QuickLook"] = "Asignar esta tabla\n a VistaRapida";
 	AL["Query Server"] = "Pregun. Servidor";
-	AL["Classic Instances"] = "Mazmorras clásicas";
-	AL["BC Instances"] = "Mazmorras BC";
-	AL["WotLK Instances"] = "Mazmorras WotLK";
-	AL["Original WoW"] = "WoW Original";	
-	--AL["Burning Crusade"] = true,
-	AL["Entrance"] = "Entrada";
-	AL["Original Factions"] = "Facciones originales";
-	AL["BC Factions"] = "Facciones BC";
-	AL["WotLK Factions"] = "Facciones WotLK";
 	AL["Reset Frames"] = "Restaurar marcos";
 	AL["Reset Wishlist"] = "Res. ListaDeseada";
 	AL["Reset Quicklooks"] = "Res. BotínRápido";
 	AL["Select a Loot Table..."] = "Elige una tabla de Botín...";
 	AL["OR"] = "O";
-	--AL["Wrath of the Lich King"] = true,
 	AL["FuBar Options"] = "Opciones FuBar";
 	AL["Attach to Minimap"] = "Sujetar al minimapa";
 	AL["Hide FuBar Plugin"] = "Esconder FuBar Plugin";
@@ -86,22 +61,18 @@ if AL then
 	AL["Hide Text"] = "Esconder Texto";
 	AL["Hide Icon"] = "Esconder Icono";
 	AL["Minimap Button Options"] = "Opciones botón minimapa";
-	AL["Bonus Loot"] = "Bonus Botín";
-	AL["Three Drakes Left"] = "Quedan tres dracos";
-	AL["Two Drakes Left"] = "Quedan dos dracos";
-	AL["One Drake Left"] = "Queda un draco";
 	
 	--Text for Options Panel
 	AL["Atlasloot Options"] = "Opciones Atlasloot";
 	AL["Safe Chat Links"] = "Enlaces seguros en el chat";
 	AL["Default Tooltips"] = "Bocadillos texto predet.";
-	AL["Lootlink Tooltips"] = "Bocadillos enlaces de botín";
-	AL["|cff9d9d9dLootlink Tooltips|r"] = "|cff9d9d9dBocadillos enlaces de botín";
-	AL["ItemSync Tooltips"] = "Bocadillos sincronismo de objetos";
-	AL["|cff9d9d9dItemSync Tooltips|r"] = "|cff9d9d9dBocadillos de sincronismo de objetos";
+	AL["Lootlink Tooltips"] = "Bocadillos enlaces";
+	AL["|cff9d9d9dLootlink Tooltips|r"] = "|cff9d9d9dBocadillos enlaces";
+	AL["ItemSync Tooltips"] = "Bocadillos de sincronismo";
+	AL["|cff9d9d9dItemSync Tooltips|r"] = "|cff9d9d9dBocadillos de sincronismo";
 	AL["Use EquipCompare"] = "Utilizar EquipCompare";
 	AL["|cff9d9d9dUse EquipCompare|r"] = "|cff9d9d9dUtilizar EquipCompare";
-	AL["Show Comparison Tooltips"] = "Mostrar bocadillos de comparación";
+	AL["Show Comparison Tooltips"] = "Mostrar bocadillos comparar";
 	AL["Make Loot Table Opaque"] = "Hacer opaca tabla botines";
 	AL["Show itemIDs at all times"] = "Mostrar el ID objetos";
 	AL["Hide AtlasLoot Panel"] = "Esconder panel de AtlasLoot";
@@ -110,15 +81,13 @@ if AL then
 	AL["Set Minimap Button Position"] = "Elegir la posición del botón del mini mapa";
 	AL["Suppress Item Query Text"] = "Suprimir texto petición objetos";
 	AL["Notify on LoD Module Load"] = "Notificar al cargar un módulo";
-	AL["Load Loot Modules at Startup"] = "Cargar módulos al iniciar el juego";
+	AL["Load Loot Modules at Startup"] = "Cargar módulos al iniciar";
 	AL["Loot Browser Scale: "] = "Escala del buscador: ";
 	AL["Button Position: "] = "Posición del botón";
 	AL["Button Radius: "] = "Radio del botón";
 	AL["Done"] = "Hecho";
 	AL["FuBar Toggle"] = "Conmutar FuBar";
-	AL["WishList"] = "Lista deseada";
 	AL["Search Result: %s"] = "Buscar resultado: %s";
-	AL["Last Result"] = "Último resulta.";
 	AL["Search on"] = "Buscar en";
 	AL["All modules"] = "Todos los módulos";
 	AL["If checked, AtlasLoot will load and search across all the modules."] = "Si lo marcas, AtlasLoot lo cargará y buscará por todos los módulos.";
@@ -126,88 +95,173 @@ if AL then
 	AL["Partial matching"] = "Coincidencia parcial";
 	AL["If checked, AtlasLoot search item names for a partial match."] = "Si lo marcas, AtlasLoot buscará el nombre de los objetos con una coincidencia parcial.";
 	AL["You don't have any module selected to search on!"] = "¡No tienes marcado ningún módulo donde buscar!";
-	--The next 4 lines are the tooltip for the Server Query Button
-	--The translation doesn't have to be literal, just re-write the
-	--sentences as you would naturally and break them up into 4 roughly
-	--equal lines.
-	AL["Queries the server for all items"] = "Pregunta al servidor por todos los objectos";
-	AL["on this page. The items will be"] = "de esta página, Los objectos serán";
-	AL["refreshed when you next mouse"] = "refrescados al pasar el ratón";
-	AL["over them."] = "sobre ellos";
-	AL["The Minimap Button is generated by the FuBar Plugin."] = "El botón del Minimapa es generado por el plugin FuBar.";
-	AL["This is automatic, you do not need FuBar installed."] = "Esto es automático, no tienes que tener instalado FuBar.";
+	AL["Treat Crafted Items:"] = "Tratar objetos creados";
+	AL["As Crafting Spells"] = "Como hechizos creados";
+	AL["As Items"] = "Como objetos";
+	AL["Loot Browser Style:"] = "Estilo del buscador:";
+	AL["New Style"] = "Estilo nuevo";
+	AL["Classic Style"] = "Estilo clásico";
 	
 	--Slash commands
 	AL["reset"] = "Reiniciar";
 	AL["options"] = "Opciones";
 	AL["Reset complete!"] = "¡Se ha reiniciado!";
 
-	--Error Messages and warnings
-	AL["AtlasLoot Error!"] = "¡AtlasLoot error!";
-	AL["WishList Full!"] = "¡Lista de deseos llena'";
-	AL[" added to the WishList."] = " añadido a la lista de deseos.";
-	AL[" already in the WishList!"] = " ya esta en la lista de deseos";
-	AL[" deleted from the WishList."] = " borrado de la lista de deseos";
+	-- AtlasLoot Panel
+	AL["Collections"] = "Colecciones";
+	AL["Crafting"] = "Fabricados";
+	AL["Factions"] = "Facciones";
+	AL["Load Modules"] = "Cargar módulos";
+	AL["Options"] = "Opciones";
+	AL["PvP Rewards"] = "Recompensas JcJ";
+	AL["QuickLook"] = "VistaRapida"
+	AL["World Events"] = "Eventos mundo";
 
-	--Incomplete Table Registry error message
-	AL[" not listed in loot table registry, please report this message to the AtlasLoot forums at http://www.atlasloot.net"] = " no figura en el registro de botines, por favor informa sobre este mensaje en los foros de AtlasLoot http://www.atlasloot.net";
+	-- AtlasLoot Panel - Search
+	AL["Clear"] = "Limpiar";
+	AL["Last Result"] = "Último resultado";
+	AL["Search"] = "Buscar";
 
-	--LoD Module disabled or missing
-	AL[" is unavailable, the following load on demand module is required: "] = " no está disponible, se necesita el siguiente módulo: ";
+	-- AtlasLoot Browser Menus
+	AL["Classic Instances"] = "Mazmorras clásicas";
+	AL["BC Instances"] = "Mazmorras BC";
+	AL["Sets/Collections"] = "Conjuntos/Colecciones";
+	AL["Reputation Factions"] = "Reputación facciones";
+	AL["WotLK Instances"] = "Mazmorras WotLK";
+	AL["World Bosses"] = "Jefes del mundo";
+	AL["Close Menu"] = "Cerrar menú";
 
-	--LoD Module load sequence could not be completed
-	AL["Status of the following module could not be determined: "] = "No se ha podido determinar el estado del siguiente módulo: ";
+	-- Crafting Menu
+	AL["Crafting Daily Quests"] = "Fabricados misiones diarias";
+	AL["Cooking Daily"] = "Cocina diaria";
+	AL["Fishing Daily"] = "Pesca diaria";	
+	AL["Jewelcrafting Daily"] = "Joyería diaria";
+	AL["Crafted Sets"] = "Conjuntos fabricados";
+	AL["Crafted Epic Weapons"] = "Armas épicas fabricadas";
+    AL["Dragon's Eye"] = "Ojo de dragón";
 
-	--LoD Module required has loaded, but loot table is missing
-	AL[" could not be accessed, the following module may be out of date: "] = " no se ha podido acceder, el siguiente módulo no debe estar actualizado: ";
+	-- Sets/Collections Menu
+	AL["Badge of Justice Rewards"] = "Recompensas con Distintivos de justicia";
+	AL["Emblem of Valor Rewards"] = "Recompensas con Emblemas del valor";
+	AL["Emblem of Heroism Rewards"] = "Recompensas con Emblemas de heroismo";
+	AL["Emblem of Conquest Rewards"] = "Recompensas con Emblemas de conquista";
+	AL["Emblem of Triumph Rewards"] = "Recompensas con Emblemas de triunfo";
+	AL["BoE World Epics"] = "Épicos del mundo BoE";
+	AL["Dungeon 1/2 Sets"] = "Conjuntos de Mazmorra 1/2";
+	AL["Dungeon 3 Sets"] = "Conjuntos de Mazmorra 3";
+	AL["Legendary Items"] = "Objetos legendários";
+	AL["Mounts"] = "Monturas";
+	AL["Vanity Pets"] = "Mascotas No-Combate";
+	AL["Misc Sets"] = "Conjuntos varios";
+	AL["Classic Sets"] = "Conjuntos WoW Clásico";
+	AL["Burning Crusade Sets"] = "Conjuntos Burning Crusade";
+	AL["Wrath Of The Lich King Sets"] = "Conjuntos Wrath Of The Lich King";
+	AL["Ruins of Ahn'Qiraj Sets"] = "Conjuntos de las Ruinas de Ahn'Qiraj";
+	AL["Temple of Ahn'Qiraj Sets"] = "Conjuntos del Templo de Ahn'Qiraj";
+	AL["Tabards"] = "Tabardos";
+	AL["Tier 1/2 Sets"] = "Conjuntos T1/2";
+	AL["Tier 1/2/3 Sets"] = "Conjuntos T1/2/3";
+	AL["Tier 3 Sets"] = "Conjuntos T3";
+	AL["Tier 4/5/6 Sets"] = "Conjuntos T4/5/6";
+	AL["Tier 7/8 Sets"] = "Conjuntos T7/8";
+	AL["Upper Deck Card Game Items"] = "Juegos de cartas de The Burning Crusade";
+	AL["Zul'Gurub Sets"] = "Conjuntos de Zul'Gurub";
 
-	--LoD module not defined
-	AL["Loot module returned as nil!"] = "¡El módulo de botín ha retornado null!";
+	-- Factions Menu
+	AL["Original Factions"] = "Facciones originales";
+	AL["BC Factions"] = "Facciones BC";
+	AL["WotLK Factions"] = "Facciones WotLK";
 
-	--LoD module loaded successfully
-	AL["sucessfully loaded."] = "cargado satisfactoriamente.";
+	-- PvP Menu
+	AL["Arena PvP Sets"] = "Conjuntos de Arenas JcJ";
+	AL["PvP Rewards (Level 60)"] = "Recompensas JcJ (Nivel 60)";
+	AL["PvP Rewards (Level 70)"] = "Recompensas JcJ (Nivel 70)";
+	AL["PvP Rewards (Level 80)"] = "Recompensas JcJ (Nivel 80)";
+	AL["Arathi Basin Sets"] = "Conjuntos de Cuenca de Arathi";
+	AL["PvP Accessories"] = "Accesorios JcJ";
+	AL["PvP Armor Sets"] = "Conjuntos de armaduras JcJ";
+	AL["PvP Weapons"] = "Armas JcJ";
+	AL["PvP Non-Set Epics"] = "Épicos JcJ No-Conjuntos";
+	AL["PvP Reputation Sets"] = "Conjuntos JcJ por reputación"
+	AL["Arena PvP Weapons"] = "Armas de Arenas JcJ";
+	AL["PvP Misc"] = "Diseños Joyería JcJ";
+	AL["PVP Gems/Enchants/Jewelcrafting Designs"] = "Diseños Gemas/Encantamientos/Joyería JcJ";
+	AL["Level 80 PvP Sets"] = "Conjuntos Nivel 80 JcJ";
+	AL["Old Level 80 PvP Sets"] = "Conjuntos viejos Nivel 80 JcJ";
+	AL["Arena Season 7/8 Sets"] = "Conjuntos arena Temp 7/8";
+	AL["PvP Class Items"] = "Objetos de clase JcJ";
 
-	--Need a big dataset for searching
-	AL["Loading available tables for searching"] = "Cargando las tablas disponibles para búsquedas";
-
- 	--All Available modules loaded
-	AL["All Available Modules Loaded"] = "Se han cargado todos los módulos disponibles";
-
+	-- World Events
+	AL["Abyssal Council"] = "Consejo abisal";
+	AL["Bash'ir Landing Skyguard Raid"] = "Punto de anclaje de Bash'ir";
+	AL["Brewfest"] = "Fiesta de la Cerveza";
+	AL["Children's Week"] = "Semana de los niños";
+	AL["Elemental Invasion"] = "Invasión de elementales";
+	AL["Ethereum Prison"] = "Prisión de los Etereum";
+	AL["Feast of Winter Veil"] = "Festival de Invierno";
+	AL["Gurubashi Arena Booty Run"] = "El cofre pirata de Gurubashi";
+	AL["Hallow's End"] = "Halloween";
+	AL["Harvest Festival"] = "Festival de la Cosecha";
+	AL["Love is in the Air"] = "Amor en el aire";
+	AL["Lunar Festival"] = "Festival Lunar";
+	AL["Midsummer Fire Festival"] = "Festival del Solsticio de Verano";
+	AL["Noblegarden"] = "El jardín de los nobles";
+	AL["Skettis"] = "Skettis";
+	AL["Stranglethorn Fishing Extravaganza"] = "Concurso de Pesca";
+	AL["Argent Tournament"] = "Torneo Argenta";
+	
 	--Minimap Button
 	AL["|cff1eff00Left-Click|r Browse Loot Tables"] = "|cff1eff00Click-izdo|r Navegar por las tablas de botines";
 	AL["|cffff0000Right-Click|r View Options"] = "|cffff0000Click-dcho|r Ver opciones";
 	AL["|cffff0000Shift-Click|r View Options"] = "|cffff0000Shift-Click|r Ver opciones";
 	AL["|cffccccccLeft-Click + Drag|r Move Minimap Button"] = "|cffccccccClick-izdo + arrastrar|r Mueve el botón del mini mapa";
 	AL["|cffccccccRight-Click + Drag|r Move Minimap Button"] = "|cffccccccClick-dcho + arrastrar|r Mueve el botón del mini mapa";
+
+		-- Filter
+	AL["Filter"] = "Filtrar";
+	AL["Select All Loot"] = "Seleccionar todo el botín";
+	AL["Apply Filter:"] = "Aplicar filtro";
+	AL["Armor:"] = "Armadura:";
+	AL["Melee weapons:"] = "Armas CaC:";
+	AL["Ranged weapons:"] = "Armas distancia:";
+	AL["Relics:"] = "Reliquias:";
+	AL["Other:"] = "Otro:";
 	
-	--AtlasLoot Panel
-	AL["Options"] = "Opciones";
-	AL["Collections"] = "Colecciones";
-	AL["Factions"] = "Facciones";
-	AL["World Events"] = "Eventos mundo";
-	AL["Load Modules"] = "Cargar módulos";
-	AL["Crafting"] = "Fabricados";
-	AL["Crafting Daily Quests"] = "Fabricados misiones diarias";
+	-- Wishlist
+	AL["Close"] = "Cerrar";
+	AL["Wishlist"] = "ListaDeseada";
+	AL["Own Wishlists"] = "ListasDeseadas propias";
+	AL["Other Wishlists"] = "Otras ListasDeseadas";
+	AL["Shared Wishlists"] = "ListasDeseadas compartidas";
+	AL["Mark items in loot tables"] = "Marcas objetos en las tablas";
+	AL["Mark items from own Wishlist"] = "Marcar objetos de lista propia";
+	AL["Mark items from all Wishlists"] = "Marcar objetos de todas";
+	AL["Enable Wishlist Sharing"] = "Activar compartir";
+	AL["Auto reject in combat"] = "Auto rechazar en combate";
+	AL["Always use default Wishlist"] = "Utilizar lista predet.";
+	AL["Add Wishlist"] = "Añadir Lista Deseada";
+	AL["Edit Wishlist"] = "Editar ListasDeseada";
+	AL["Show More Icons"] = "Mostrar mas iconos";
+	AL["Wishlist name:"] = "Nombre ListaDeseada:";
+	AL["Delete"] = "Borrar";
+	AL["Edit"] = "Editar";
+	AL["Share"] = "Compartir";
+	AL["Show all Wishlists"] = "Mostrar todas";
+	AL["Show own Wishlists"] = "Mostrar todas las propias";
+	AL["Show shared Wishlists"] = "Mostrar todas las compartidas";
+	AL["You must wait "] = "Tienes que esperar ";
+	AL[" seconds before you can send a new Wishlist to "] = " unos segundos antes de poder enviar la ListaDeseada a ";
+	AL["Send Wishlist (%s) to"] = "Enviar ListaDeseada (%s) a";
+	AL["Send"] = "Enviar";
+	AL["Cancel"] = "Cancelar";
+	AL["Delete Wishlist %s?"] = "¿Borrar ListaDeseada %s?";
+	AL["%s sends you a Wishlist. Accept?"] = "%s te esta enviando una ListaDeseada. ¿Aceptar?";
+	AL[" tried to send you a Wishlist. Rejected because you are in combat."] = " intentó enviarte una ListaDeseada. Se rechazó porque estabas en combate.";
+	AL[" rejects your Wishlist."] = " rechazada tu ListaDeseada.";
+	AL["You can't send Wishlists to yourself"] = "No puedes enviarte ListasDeseadas a ti mismo";
+	AL["Please set a default Wishlist."] = "Por favor, elige una ListaDeseada como predeterminada.";
+	AL["Set as default Wishlist"] = "Elegir ListaDeseada como predeterminada.";
 	
-	--First time user
-	AL["Welcome to Atlasloot Enhanced.  Please take a moment to set your preferences."] = "Bienvenido a AtlasLoot Enhanced. Por favor, tómate un momento para elegir tus preferencias.";
-	AL["Welcome to Atlasloot Enhanced.  Please take a moment to set your preferences for tooltips and links in the chat window.\n\n  This options screen can be reached again at any later time by typing '/atlasloot'."] = "Bienvenido a Atlasloot Enhanced. Por favor tómate un momento para elegir tus preferencias en cada bocadillo y enlaces de la ventana de chat.\n\n Puedes volver a abrir esta ventana de opciones escribiendo '/atlasloot'.";
-	AL["Setup"] = "Configuración";
-
-	--Old Atlas Detected
-	AL["It has been detected that your version of Atlas does not match the version that Atlasloot is tuned for ("] = "Se ha detectado que tu versión de Atlas no coincide con la versión del AtlasLoot para la cual se ha hecho (";
-	AL[").  Depending on changes, there may be the occasional error, so please visit http://www.atlasmod.com as soon as possible to update."] = ").  Dependiendo de algún cambio, puede haber algún error ocasional, con lo que por favor, visita http://www.atlasmod.com/ lo antes posible para posibles actualizaciones.";
-	AL["OK"] = "Vale";
-	AL["Incompatible Atlas Detected"] = "Se ha detectado un Atlas incompatible ";
-
-	--Unsafe item tooltip
-	AL["Unsafe Item"] = "Objeto no seguro";
-	AL["Item Unavailable"] = "Objeto no disponible";
-	AL["ItemID:"] = "ObjetoID:";
-	AL["This item is not available on your server or your battlegroup yet."] = "Este objeto no está disponible en tu servidor o en tu grupo de batalla todavía";
-	AL["This item is unsafe.  To view this item without the risk of disconnection, you need to have first seen it in the game world. This is a restriction enforced by Blizzard since Patch 1.10."] =	"Este objeto no es seguro.\nPara verlo sin riesgo de ser desconectado, tienes que haberlo visto primero en el mundo del juego.\nEsto es una restricción forzada por Blizzard desde el Parche 1.10.";
-	AL["You can right-click to attempt to query the server.  You may be disconnected."] = "Puedes hacer Click-dcho para intentar consultar al servidor.\nPuedes ser desconectado.";
-
 	--Misc Inventory related words
 	AL["Enchant"] = "Encantamiento";
 	AL["Scope"] = "Mira";
@@ -221,10 +275,11 @@ if AL then
 	AL["Fish"] = "Pescado"; --Comprobar
 	AL["Combat Pet"] = "Mascota de combate"; --Comprobar
 	AL["Fireworks"] = "Fuegos artificiales";
+	AL["Fishing Lure"] = "Cebos de pesca";
 	
 	--Extra inventory stuff
 	AL["Cloak"] = "Capa";
-	AL["Weapons"] = "Armas";
+	AL["Sigil"] = "Sigilo"; -- Can be added to BabbleInv
 
 	--Alchemy
 	AL["Battle Elixirs"] = "Elixires de Batalla";
@@ -247,6 +302,7 @@ if AL then
 	--Engineering
 	AL["Ammunition"] = "Munición";
 	AL["Explosives"] = "Explosivos";
+	
 	--Inscription
 	AL["Major Glyph"] = "Glifos Sublimes";
 	AL["Minor Glyph"] = "Glifos Menores";
@@ -272,7 +328,9 @@ if AL then
 	AL["Classes:"] = "Clases";
 	AL["This Item Begins a Quest"] = "Este objeto empieza una misión";
 	AL["Quest Item"] = "Objeto de misión";
+	AL["Old Quest Item"] = "Objetos viejos de misiones";
 	AL["Quest Reward"] = "Recompensa de misión";
+	AL["Old Quest Reward"] = "Recompensas viejas de misiones";
 	AL["Shared"] = "Compartido";
 	AL["Unique"] = "Único";
 	AL["Right Half"] = "Parte derecha";
@@ -283,13 +341,27 @@ if AL then
 	AL["16 Slot"] = "16 huecos";
 	AL["10 Slot"] = "10 huecos";
 	AL["(has random enchantment)"] = "(añade un encantamiento aleatorio)";
-	AL["Use to purchase rewards"] = "Utiliza recompensas para comprarlo";
-	AL["Use to purchase rewards (Horde)"] = "Utiliza recompensas para comprarlo (Horda)";
-	AL["Use to purchase rewards (Alliance)"] = "Utiliza recompensas para comprarlo (Alianza)";
-	AL["World Bosses"] = "Jefes del Mundo";
-	AL["Reputation Factions"] = "Reputación con facciones";
-	AL["Sets/Collections"] = "Conjuntos/Colecciones";
+	AL["Currency"] = "Utiliza recompensas para comprarlo";
+	AL["Currency (Horde)"] = "Utiliza recompensas para comprarlo (Horda)";
+	AL["Currency (Alliance)"] = "Utiliza recompensas para comprarlo (Alianza)";
+	AL["Conjured Item"] = "Objetos conjurados";
+	AL["Used to summon boss"] = "Utilizados para invocar jefe";
+	AL["Tradable against sunmote + item above"] = "Intercambiable";
 	AL["Card Game Item"] = "Juego de cartas";
+	AL["Skill Required:"] = "Requerida habilidad:";
+	AL["Rating:"] = "Indice:"; -- Shorthand for 'Required Rating' for the personal/team ratings
+
+	-- Minor Labels for loot table descriptions
+	AL["Original WoW"] = "WoW Original";
+	--AL["Burning Crusade"] = true;
+	--AL["Wrath of the Lich King"] = true;
+	AL["Entrance"] = "Entrada";
+	AL["Season 2"] = "Temporada 2";
+	AL["Season 3"] = "Temporada 3";
+	AL["Season 4"] = "Temporada 4";
+	AL["Dungeon Set 1"] = "Conjunto de Mazmorra 1";
+	AL["Dungeon Set 2"] = "Conjunto de Mazmorra 2";
+	AL["Dungeon Set 3"] = "Conjunto de Mazmorra 3";	
 	AL["Tier 1"] = "Conjunto T1";
 	AL["Tier 2"] = "Conjunto T2";
 	AL["Tier 3"] = "Conjunto T3";
@@ -298,51 +370,138 @@ if AL then
 	AL["Tier 6"] = "Conjunto T6";
 	AL["Tier 7"] = "Conjunto T7";
 	AL["Tier 8"] = "Conjunto T8";
+	AL["Tier 9"] = "Conjunto T9";
+	AL["10 Man"] = "10 personas";
+	AL["25 Man"] = "25 personas";
 	AL["10/25 Man"] = "10/25 Personas";
-	AL["Tier 8 Sets"] = "Conjuntos T8";
-	AL["Tier 7/8 Sets"] = "Conjuntos T7/8";
-	AL["Level 80 PvP Sets"] = "Conjuntos Nivel 80 JcJ";
-	AL["Furious Gladiator Sets"] = "Conjunto Gladiador Furioso";
-	AL["Arena Reward"] = "Recompensas de Arenas";
-	AL["Conjured Item"] = "Objetos conjurados";
-	AL["Used to summon boss"] = "Usado para invocar a un jefe";
-	AL["Phase 1"] = "Fase 1";
-	AL["Phase 2"] = "Fase 2";
-	AL["Phase 3"] = "Fase 3";
+	AL["Epic Set"] = "Conjunto épico";
+	AL["Rare Set"] = "Conjunto superior";
 	AL["Fire"] = "Fuego";
 	AL["Water"] = "Agua";
 	AL["Wind"] = "Aire";
 	AL["Earth"] = "Tierra";
 	AL["Master Angler"] = "Maestro pescador";
+	AL["Fire Resistance Gear"] = "Equipamientos con resistencia al fuego";
+	AL["Arcane Resistance Gear"] = "Equipamientos con resistencia a lo arcano";
+	AL["Nature Resistance Gear"] = "Equipamientos con resistencia a la naturaleza";
+	AL["Frost Resistance Gear"] = "Equipamientos con resistencia al hielo";
+	AL["Shadow Resistance Gear"] = "Equipamientos con resistencia a las sombras";
+
+	-- Labels for loot table sections
+	AL["Additional Heroic Loot"] = "Botin heróico adicional";
+	AL["Heroic Mode"] = "Modo heróico";
+	AL["Normal Mode"] = "Modo normal";
+	AL["Raid"] = "Banda";
+	AL["Hard Mode"] = "Modo dificil";
+	AL["Bonus Loot"] = "Botín bonus";
+	AL["One Drake Left"] = "Con un dragón";
+	AL["Two Drakes Left"] = "Con dos dragones";
+	AL["Three Drakes Left"] = "Con tres dragones";
+	AL["Arena Reward"] = "Recompensas de arena";
+	AL["Phase 1"] = "Fase 1";
+	AL["Phase 2"] = "Fase 2";
+	AL["Phase 3"] = "Fase 3";
 	AL["First Prize"] = "Primer precio";
-	AL["Rare Fish Rewards"] = "Recompensas raras de pesca";
-	AL["Rare Fish"] = "Pescados raros";
-	AL["Tradable against sunmote + item above"] = "Comerciables";
-	AL["Rare"] = "Raro";
+	AL["Rare Fish Rewards"] = "Recompensas superiores pesca";
+	AL["Rare Fish"] = "Pescado superior";
+	AL["Unattainable Tabards"] = "Tabardos inalcanzables";
+	AL["Heirloom"] = "Reliquia";
+	AL["Weapons"] = "Armas";
+	AL["Accessories"] = "Accesorios";
+	AL["Alone in the Darkness"] = "Solo en la oscuridad";
+	AL["A Tribute to Skill (25)"] = "Un tributo a la habilidad";
+	AL["A Tribute to Mad Skill (45)"] = "Un tributo a la habilidad loca";
+	AL["A Tribute to Insanity (50)"] = "Un tributo a la locura";
+	AL["A Tribute to Immortality"] = "Un tributo a la inmortalidad";
+	AL["Low Level"] = "Nivel bajo";
+	AL["High Level"] = "Nivel alto";
+
+	-- Loot Table Names
+	AL["Scholomance Sets"] = "Conjuntos Scholomance";
+	AL["PvP Accessories (Level 60)"] = "Accesorios JcJ (Nivel 60)";
+	AL["PvP Accessories - Alliance (Level 60)"] = "Accesorios - Alianza (Nivel 60)";
+	AL["PvP Accessories - Horde (Level 60)"] = "Accesorios - Horda (Nivel 60)";
+	AL["PvP Weapons (Level 60)"] = "Armas JcJ (Nivel 60)";
+	AL["PvP Accessories (Level 70)"] = "Accesorios JcJ (Nivel 70)";
+	AL["PvP Weapons (Level 70)"] = "Armas JcJ (Nivel 70)";
+	AL["PvP Reputation Sets (Level 70)"] = "Conjuntos JcJ por Reputación (Nivel 70)";
+	AL["Arena Season 2 Weapons"] = "Armas Arenas - Temporada 2";
+	AL["Arena Season 3 Weapons"] = "Armas Arenas - Temporada 3";
+	AL["Arena Season 4 Weapons"] = "Armas Arenas - Temporada 4";
+	AL["Level 30-39"] = "Niveles 30-39";
+	AL["Level 40-49"] = "Niveles 40-49";
+	AL["Level 50-60"] = "Niveles 50-60";
 	AL["Heroic"] = "Heróico";
-	AL["Hard Mode"] = "Modo difícil";		
 	AL["Summon"] = "Invocar";
 	AL["Random"] = "Aleatorio";
-	AL["Weapons"] = "Armas";
-	AL["Achievement"] = "Logro";
-	AL["Unattainable Tabards"] = "Tabardos inasequibles";
-	AL["Heirloom"] = "Reliquia";	
+	AL["Tier 8 Sets"] = "Conjuntos T8";
+	AL["Tier 9 Sets"] = "Conjuntos T9";
+	AL["Furious Gladiator Sets"] = "Conjuntos gladiador furioso";
+	AL["Relentless Gladiator Sets"] = "Conjuntos de Gladiador incansable";
+	AL["Brew of the Month Club"] = "Club de la Cerveza del Mes";
 
+	-- Extra Text in Boss lists
+	AL["Set: Embrace of the Viper"] = "Conjunto: Abrazo de la víbora";
+	AL["Set: Defias Leather"] = "Conjunto: Cuero Defias";
+	AL["Set: The Gladiator"] = "Conjunto: El Gladiador";
+	AL["Set: Chain of the Scarlet Crusade"] = "Conjunto: Cadena de la Cruzada Escarlata";
+	AL["Set: The Postmaster"] = "Conjunto: El jefe de correos";
+	AL["Set: Necropile Raiment"] = "Conjunto: Vestiduras necrópilas";
+	AL["Set: Cadaverous Garb"] = "Conjunto: Atuendo de cadáver";
+	AL["Set: Bloodmail Regalia"] = "Conjunto: Atavío mallasangre";
+	AL["Set: Deathbone Guardian"] = "Conjunto: Guardia de hueso de muerto";
+	AL["Set: Dal'Rend's Arms"] = "Conjunto: Armas de Dal'Rend";
+	AL["Set: Spider's Kiss"] = "Beso de la araña";
+	AL["AQ20 Class Sets"] = "Conjuntos por Clase de AQ20";
+	AL["AQ Enchants"] = "Encantamientos AQ";
+	AL["AQ40 Class Sets"] = "Conjuntos por Clase de AQ40";
+	AL["AQ Opening Quest Chain"] = "Apertura de la misión de la cadena AQ";
+	AL["ZG Class Sets"] = "Conjuntos por Clase de ZG";
+	AL["ZG Enchants"] = "Encantamientos ZG";
+	AL["Class Books"] = "Libros de clase";
+	AL["Tribute Run"] = "Homenaje de carrera";
+	AL["Dire Maul Books"] = "Libros de La Masacre";
+	AL["Random Boss Loot"] = "Botín de jefes aleatorios";
+	AL["BT Patterns/Plans"] = "Recetas/Planos del Templo Oscuro";
+	AL["Hyjal Summit Designs"] = "Diseños de la Cumbre de Hyjal";
+	AL["SP Patterns/Plans"] = "Recinto de Esclavos Recetas/Planos";
+	AL["Ulduar Formula/Patterns/Plans"] = "Formulas/patrones/planos Ulduar";
+    AL["Trial of the Crusader Patterns/Plans"] = "Patrones/planos Prueba del Cruzado";
+	AL["Legendary Items for Kael'thas Fight"] = "Objetos legendários de la pelea contra Kael'thas";
+	
+	-- Pets
+	AL["Pets"] = "Mascotas";
+	AL["Promotional"] = "Promocional";
+	AL["Merchant Sold"] = "Vendidas en comerciante";
+	AL["Rare"] = "Raras";
+	AL["Achievement"] = "Logro";
+	AL["Faction"] = "Facción";
+	AL["Dungeon/Raid"] = "Mazmorra/banda";
+	
+	-- Mounts
+	AL["Achievement Reward"] = "Recompensa logro";
+	AL["Alliance Flying Mounts"] = "Monturas voladoras Alianza";
+	AL["Alliance Mounts"] = "Monturas Alianza";
+	AL["Horde Flying Mounts"] = "Monturas voladoras Horda";
+	AL["Horde Mounts"] = "Monturas Horda";
+	AL["Card Game Mounts"] = "Monturas juegos de cartas";
+	AL["Crafted Mounts"] = "Monturas fabricadas";
+	AL["Event Mounts"] = "Monturas eventos";
+	AL["Neutral Faction Mounts"] = "Monturas facciones neutrales";
+	AL["PvP Mounts"] = "Monturas JcJ";
+	AL["Alliance PvP Mounts"] = "Monturas JcJ Alianza";
+	AL["Horde PvP Mounts"] = "Monturas JcJ Horda";
+	AL["Halaa PvP Mounts"] = "Monturas JcJ Halaa";
+	AL["Promotional Mounts"] = "Monturas promocionales"
+	AL["Rare Mounts"] = "Monturas raras"
+	
 	--Darkmoon Faire
 	AL["Darkmoon Faire Rewards"] = "Recompensas Feria de la Luna Negra";
 	AL["Low Level Decks"] = "Bajaras de bajo nivel";
 	AL["Original and BC Trinkets"] = "Abalorios Original y BC";
 	AL["WotLK Trinkets"] = "Abalorios WotLK";
-    
-	--Argent Tournament
-	AL["Argent Tournament"] = "Torneo Argenta";
-	
-	-- Daily Quest
---	AL["Jewelcrafting Daily"] = true;
---	AL["Cooking Daily"] = true;
 
 	--Card Game Decks and descriptions
-	AL["Upper Deck Card Game Items"] = "Juegos de cartas de The Burning Crusade";
 	AL["Loot Card Items"] = "Objetos (juegos de cartas)";
 	AL["UDE Items"] = "Objetos (puntos UDE)";
 
@@ -351,51 +510,66 @@ if AL then
 	AL["Landro Longshot"] = "Landro Tirolargo";
 	AL["Thunderhead Hippogryph"] = "Hipogrifo Tronatesta";
 	AL["Saltwater Snapjaw"] = "Quijaforte marino";
+	
 	-- Second set	
 	AL["Through The Dark Portal"] = "A través del Portal Oscuro";
 	AL["King Mukla"] = "Rey Mukla";
 	AL["Rest and Relaxation"] = "Descanso y relajación";
 	AL["Fortune Telling"] = "La buena aventura"; --Comprobar
+	
 	-- Third set
 	AL["Fires of Outland"] = "Fuegos de Terrallende";
 	AL["Spectral Tiger"] = "Tigre espectral";
 	AL["Gone Fishin'"] = "Se fué pescando"; --Comprobar
 	AL["Goblin Gumbo"] = "Potaje goblin";
+	
 	-- Fourth set
 	AL["March of the Legion"] = "Marca de la Legión";
 	--AL["Kiting"] = true, FALTA
 	--AL["Robotic Homing Chicken"] = true, FALTA
 	AL["Paper Airplane"] = "Avión de papel"
+	
 	-- Fifth set	
 	AL["Servants of the Betrayer"] = "Sirvientes del Traidor";
 	AL["X-51 Nether-Rocket"] = "Cohete abisal X-51";
 	AL["Personal Weather Machine"] = "Máquina del tiempo personal";
 	AL["Papa Hummel's Old-fashioned Pet Biscuit"] = "Galleta de mascota retro de papá Hummel"
+
 	-- Sixth set
 	AL["Hunt for Illidan"] = "Caza de Illidan"; 
 	AL["The Footsteps of Illidan"] = "Las huellas de Illidan"; 
 	--AL["Disco Inferno!"] = true, FALTA
 	AL["Ethereal Plunderer"] = "Desvalijador etéreo";
+	
 	-- Seventh set
 	AL["Drums of War"] = "Tambores de guerra";
 	--AL["The Red Bearon"] = "The Red Bearon"; --FALTA
 	--AL["Owned!"] = true, --FALTA
 	--AL["Slashdance"] = true, --FALTA
+	
 	-- Eighth set
 	AL["Blood of Gladiators"] = "Sangre de Gladiadores";
 	AL["Sandbox Tiger"] = "Tigre Balancín";
 	AL["Center of Attention"] = "Centro de atención"; --Check
 	AL["Foam Sword Rack"] = "Espada de gomaespuma";
+
+	-- Ninth set
+	--AL["Fields of Honor"] = true;
+	--AL["Path of Cenarius"] = true;
+	--AL["Pinata"] = true;
+	--AL["El Pollo Grande"] = true;
+	-- Tenth set
+	AL["Scourgewar"] = "Guerra de la Plaga"; --Check
+	AL["Tiny"] = "Pequeño";
+	AL["Tuskarr Kite"] = "Cometa colmillarr";
+	AL["Spectral Kitten"] = "Gatito espectral"; --Check
 	
 	--Battleground Brackets
 	AL["Misc. Rewards"] = "Recompensas varias";
-	AL["Superior Rewards"] = "Recompensas superiores";
-	AL["Epic Rewards"] = "Recompensas épicas";
-	AL["Level 10-19 Rewards"] = "Recompensas de niveles 10-19";
 	AL["Level 20-29 Rewards"] = "Recompensas de niveles 20-29";
 	AL["Level 30-39 Rewards"] = "Recompensas de niveles 30-39";
+	AL["Level 20-39 Rewards"] = "Recompensas de niveles 20-39";
 	AL["Level 40-49 Rewards"] = "Recompensas de niveles 40-49";
-	AL["Level 50-59 Rewards"] = "Recompensas de niveles 50-59";
 	AL["Level 60 Rewards"] = "Recompensas de nivel 60";
 
 	--Brood of Nozdormu Paths
@@ -444,14 +618,14 @@ if AL then
 	AL["Primal Hakkari Armsplint"] = "Cabestrillo Hakkari primigenio";
 	AL["Primal Hakkari Tabard"] = "Tabardo Hakkari primigenio";
 
-	--AQ20 Tokens
-	AL["Qiraji Ornate Hilt"] = "Empuñadura Qiraji ornamentada";
-	AL["Qiraji Martial Drape"] = "Mantón Qiraji marcial";
-	AL["Qiraji Magisterial Ring"] = "Anillo Qiraji magistral";
-	AL["Qiraji Ceremonial Ring"] = "Anillo ceremonial Qiraji";
-	AL["Qiraji Regal Drape"] = "Mantón Qiraji real";
-	AL["Qiraji Spiked Hilt"] = "Puño con pinchos Qiraji";
-
+	-- AQ20 Tokens
+	AL["Qiraji Ornate Hilt"] = "Empuñadura qiraji ornamentada";
+	AL["Qiraji Martial Drape"] = "Mantón qiraji marcial";
+	AL["Qiraji Magisterial Ring"] = "Anillo qiraji magistral";
+	AL["Qiraji Ceremonial Ring"] = "Anillo ceremonial qiraji";
+	AL["Qiraji Regal Drape"] = "Mantón qiraji real";
+	AL["Qiraji Spiked Hilt"] = "Puño con pinchos qiraji";
+	
 	--AQ40 Tokens
 	AL["Qiraji Bindings of Dominance"] = "Ataduras de dominio Qiraji";
 	AL["Qiraji Bindings of Command"] = "Ataduras de mando Qiraji";
@@ -512,7 +686,7 @@ if AL then
 	AL["Netherscale Armor"] = "Armadura de escamas abisales";
 	AL["Netherstrike Armor"] = "Armadura de golpe abisal";
 
-	--Vanilla WoW Sets
+	-- Classic WoW Sets
 	AL["Defias Leather"] = "Cuero Defias";
 	AL["Embrace of the Viper"] = "Abrazo de la víbora";
 	AL["Chain of the Scarlet Crusade"] = "Cadena de la Cruzada Escarlata";
@@ -543,9 +717,8 @@ if AL then
 
 	--Wrath of the Lich King Sets
 	AL["Raine's Revenge"] = "Venganza de Raine";
---  AL["Low Level"] = true;
---	AL["High Level"] = true;
-
+	AL["Purified Shard of the Gods"] = "Fragmento de los Dioses purificado";
+	AL["Shiny Shard of the Gods"] = "Fragmento de los Dioses lustroso";
 
 	--Recipe origin strings
 	AL["Trainer"] = "Instructor";
@@ -753,7 +926,7 @@ if AL then
 	AL["Nightsong Battlegear"] = "Arrullanoche"; --Check
 	AL["Nightsong Regalia"] = "Arrullanoche"; --Check
 	AL["Scourgestalker Battlegear"] = "Acechador de la Plaga"; --Check
-	--AL["Kirin'dor Garb"] = "Kirin'dor Garb"; --FALTA
+	--AL["Kirin Tor Garb"] = "Kirin Tor Garb"; --FALTA
 	AL["Aegis Regalia"] = "Égida"; --Check
 	AL["Aegis Battlegear"] = "Batalla de Égida"; --Check
 	AL["Aegis Plate"] = "Placas de Égida"; --Check
@@ -766,6 +939,47 @@ if AL then
 	AL["Deathbringer Garb"] = "Libramonte"; --Check
 	AL["Siegebreaker Battlegear"] = "Batalla de rompedor de asedio"; --Check
 	AL["Siegebreaker Plate"] = "Placas de rompedor de asedio"; --Check
+
+	-- Tier 9 Sets
+	--AL["Malfurion's Garb"] = true;
+	--AL["Malfurion's Battlegear"] = true;
+	--AL["Malfurion's Regalia"] = true;
+	--AL["Runetotem's Garb"] = true;
+	--AL["Runetotem's Battlegear"] = true;
+	--AL["Runetotem's Regalia"] = true;
+	--AL["Windrunner's Battlegear"] = true;
+	--AL["Windrunner's Pursuit"] = true;
+	--AL["Khadgar's Regalia"] = true;
+	--AL["Sunstrider's Regalia"] = true;
+	--AL["Turalyon's Garb"] = true;
+	--AL["Turalyon's Battlegear"] = true;
+	--AL["Turalyon's Plate"] = true;
+	--AL["Liadrin's Garb"] = true;
+	--AL["Liadrin's Battlegear"] = true;
+	--AL["Liadrin's Plate"] = true;
+	--AL["Velen's Regalia"] = true;
+	--AL["Velen's Raiment"] = true;
+	--AL["Zabra's Regalia"] = true;
+	--AL["Zabra's Raiment"] = true;
+	--AL["VanCleef's Battlegear"] = true;
+	--AL["Garona's Battlegear"] = true;
+	--AL["Nobundo's Garb"] = true;
+	--AL["Nobundo's Battlegear"] = true;
+	--AL["Nobundo's Regalia"] = true;
+	--AL["Thrall's Garb"] = true;
+	--AL["Thrall's Battlegear"] = true;
+	--AL["Thrall's Regalia"] = true;
+	--AL["Kel'Thuzad's Regalia"] = true;
+	--AL["Gul'dan's Regalia"] = true;
+	--AL["Wrynn's Battlegear"] = true;
+	--AL["Wrynn's Plate"] = true;
+	--AL["Hellscream's Battlegear"] = true;
+	--AL["Hellscream's Plate"] = true;
+	--AL["Thassarian's Battlegear"] = true;
+	--AL["Koltira's Battlegear"] = true;
+	--AL["Thassarian's Plate"] = true;
+	--AL["Koltira's Plate"] = true;	
+	
 	--Arathi Basin Sets - Alliance
 	AL["The Highlander's Intent"] = "Intención del montañés";
 	AL["The Highlander's Purpose"] = "Propósito del montañés";
@@ -867,110 +1081,21 @@ if AL then
 	--Level 80 PvP Weapons
 	AL["Savage Gladiator\'s Weapons"] = "Armas de Gladiador indómito";
 	AL["Deadly Gladiator\'s Weapons"] = "Armas de Gladiador mortífero"; --Comprobar
-	
-	--Set Labels
-	AL["Set: Embrace of the Viper"] = "Conjunto: Abrazo de la víbora";
-	AL["Set: Defias Leather"] = "Conjunto: Cuero Defias";
-	AL["Set: The Gladiator"] = "Conjunto: El Gladiador";
-	AL["Set: Chain of the Scarlet Crusade"] = "Conjunto: Cadena de la Cruzada Escarlata";
-	AL["Set: The Postmaster"] = "Conjunto: El jefe de correos";
-	AL["Set: Necropile Raiment"] = "Conjunto: Vestiduras necrópilas";
-	AL["Set: Cadaverous Garb"] = "Conjunto: Atuendo de cadáver";
-	AL["Set: Bloodmail Regalia"] = "Conjunto: Atavío mallasangre";
-	AL["Set: Deathbone Guardian"] = "Conjunto: Guardia de hueso de muerto";
-	AL["Set: Dal'Rend's Arms"] = "Conjunto: Armas de Dal'Rend";
-	AL["Set: Spider's Kiss"] = "Beso de la araña";
-	AL["Temple of Ahn'Qiraj Sets"] = "Conjuntos del Templo de Ahn'Qiraj";
-	AL["AQ40 Class Sets"] = "Conjuntos por Clase de AQ40";
-	AL["Ruins of Ahn'Qiraj Sets"] = "Conjuntos de las Ruinas de Ahn'Qiraj";
-	AL["AQ20 Class Sets"] = "Conjuntos por Clase de AQ20";
-	AL["AQ Enchants"] = "Encantamientos AQ";
-	AL["AQ Opening Quest Chain"] = "Apertura de la misión de la cadena AQ";
-	AL["Misc Sets"] = "Conjuntos varios";
-	AL["Classic Sets"] = "Conjuntos WoW Clásico";
-	AL["Burning Crusade Sets"] = "Conjuntos Burning Crusade";
-	AL["Wrath Of The Lich King Sets"] = "Conjuntos Wrath Of The Lich King";
-	AL["Scholomance Sets"] = "Conjuntos Scholomance";
-	AL["Crafted Sets"] = "Conjuntos fabricados";
-	AL["Crafted Epic Weapons"] = "Armas épicas fabricadas";
-	AL["Zul'Gurub Sets"] = "Conjuntos de Zul'Gurub";
-	AL["ZG Class Sets"] = "Conjuntos por Clase de ZG";
-	AL["ZG Enchants"] = "Encantamientos ZG";
-	AL["Dungeon 1/2 Sets"] = "Conjuntos de Mazmorra 1/2";
-	AL["Dungeon Set 1"] = "Conjunto de Mazmorra 1";
-	AL["Dungeon Set 2"] = "Conjunto de Mazmorra 2";
-	AL["Dungeon Set 3"] = "Conjunto de Mazmorra 3";	
-	AL["Dungeon 3 Sets"] = "Conjuntos de Mazmorra 3";
-	AL["Tier 1/2 Sets"] = "Conjuntos T1/2";
-	AL["Tier 1/2/3 Sets"] = "Conjuntos T1/2/3";
-	AL["Tier 3 Sets"] = "Conjuntos T3";
-	AL["Tier 4/5/6 Sets"] = "Conjuntos T4/5/6";
-	AL["PvP Reputation Sets (Level 70)"] = "Conjuntos JcJ por Reputación (Nivel 70)";
-	AL["PvP Rewards (Level 60)"] = "Recompensas JcJ (Nivel 60)";
-	AL["PvP Rewards (Level 70)"] = "Recompensas JcJ (Nivel 70)";
-	AL["PvP Rewards (Level 80)"] = "Recompensas JcJ (Nivel 80)";
-	AL["PvP Accessories (Level 60)"] = "Accesorios JcJ (Nivel 60)";
-	AL["PvP Accessories - Alliance (Level 60)"] = "Accesorios - Alianza (Nivel 60)";
-	AL["PvP Accessories - Horde (Level 60)"] = "Accesorios - Horda (Nivel 60)";
-	AL["PvP Accessories (Level 70)"] = "Accesorios JcJ (Nivel 70)";
-	AL["PvP Jewelcrafting Designs and Gems"] = "Diseños Joyería JcJ";
-	AL["PvP Rewards"] = "Recompen. JcJ";
-	AL["PvP Armor Sets"] = "Conjuntos de armaduras JcJ";
-	AL["PvP Weapons"] = "Armas JcJ";
-	AL["PvP Weapons (Level 60)"] = "Armas JcJ (Nivel 60)";
-	AL["PvP Weapons (Level 70)"] = "Armas JcJ (Nivel 70)";
-	AL["PvP Accessories"] = "Accesorios JcJ";
-	AL["PvP Non-Set Epics"] = "Épicos JcJ No-Conjuntos";
-	AL["PvP Reputation Sets"] = "Conjuntos JcJ por reputación";
-	AL["Arena PvP Sets"] = "Conjuntos de Arenas JcJ";
-	AL["Arena PvP Weapons"] = "Armas de Arenas JcJ";
-	AL["Arena Season 2 Weapons"] = "Armas Arenas - Temporada 2";
-	AL["Arena Season 3 Weapons"] = "Armas Arenas - Temporada 3";
-	AL["Arena Season 4 Weapons"] = "Armas Arenas - Temporada 4";
-	AL["Season 2"] = "Temporada 2";
-	AL["Season 3"] = "Temporada 3";
-	AL["Season 4"] = "Temporada 4";
-	AL["Arathi Basin Sets"] = "Conjuntos de Cuenca de Arathi";
-	AL["Class Books"] = "Libros de clase";
-	AL["Tribute Run"] = "Homenaje de carrera";
-	AL["Dire Maul Books"] = "Libros de La Masacre";
-	AL["Random Boss Loot"] = "Botín de jefes aleatorios";
-	AL["Epic Set"] = "Conjunto épico";
-	AL["Rare Set"] = "Conjunto raro";
-	AL["Legendary Items"] = "Objetos legendários";
-	AL["Badge of Justice Rewards"] = "Recompensas con Distintivos de justicia";
-	AL["Emblem of Valor Rewards"] = "Recompensas con Emblemas del valor";
-	AL["Emblem of Heroism Rewards"] = "Recompensas con Emblemas de heroismo";
-	AL["Emblem of Conquest Rewards"] = "Recompensas con Emblemas de conquista";
-	AL["Accessories"] = "Accesorios";
-	AL["Fire Resistance Gear"] = "Equipamientos con resistencia al fuego";
-	AL["Arcane Resistance Gear"] = "Equipamientos con resistencia a lo arcano";
-	AL["Nature Resistance Gear"] = "Equipamientos con resistencia a la naturaleza";
-	AL["Frost Resistance Gear"] = "Equipamientos con resistencia al hielo";
-	AL["Shadow Resistance Gear"] = "Equipamientos con resistencia a las sombras";
-	AL["Tabards"] = "Tabardos";
-	AL["Legendary Items for Kael'thas Fight"] = "Objetos legendários de la pelea contra Kael'thas";
-	AL["BoE World Epics"] = "Épicos del mundo BoE";
-	AL["Level 30-39"] = "Niveles 30-39";
-	AL["Level 40-49"] = "Niveles 40-49";
-	AL["Level 50-60"] = "Niveles 50-60";
-	AL["BT Patterns/Plans"] = "Recetas/Planos del Templo Oscuro";
-	AL["Hyjal Summit Designs"] = "Diseños de la Cumbre de Hyjal";
-	AL["SP Patterns/Plans"] = "Recinto de Esclavos Recetas/Planos";
-	AL["Additional Heroic Loot"] = "Botin heróico adicional";
-	AL["Sigil"] = "Sigilo";
-	
-	--Pets
-	AL["Pets"] = "Mascotas";
-	AL["Non-Combat Pets"] = "Mascotas No-Combate";
-
-	--Mounts
-	AL["Mounts"] = "Monturas";
-	AL["Card Game Mounts"] = "Monturas Barajas";
-	AL["Crafted Mounts"] = "Monturas fabricadas";
-	AL["Event Mounts"] = "Monturas de eventos";
-	AL["PvP Mounts"] = "JcJ Monturas";
-	AL["Rare Mounts"] = "Monturas raras";
+	AL["Furious Gladiator\'s Weapons"] = "Armas de Gladiador furioso";
+	AL["Relentless Gladiator\'s Weapons"] = "Armas de Gladiador incansable";
+	-- Months
+	AL["January"] = "Enero";
+	AL["February"] = "Febrero";
+	AL["March"] = "Marzo";
+	AL["April"] = "Abril";
+	AL["May"] = "Mayo";
+	AL["June"] = "Junio";
+	AL["July"] = "Julio";
+	AL["August"] = "Agosto";
+	AL["September"] = "Septiembre";
+	AL["October"] = "Octubre";
+	AL["November"] = "Noviembre";
+	AL["December"] = "Diciembre";
 	
 	--Specs
 	AL["Balance"] = "Equilibrio";
@@ -987,12 +1112,13 @@ if AL then
 	AL["Destruction"] = "Destrucción";
 	AL["Tanking"] = "Tanque";
 	--AL["DPS"] = true,
+	
 	--Naxx Zones
 	AL["Construct Quarter"] = "El Arrabal de los Ensamblajes";
 	AL["Arachnid Quarter"] = "El Arrabal Arácnido";
 	AL["Military Quarter"] = "El Arrabal Militar";
-	AL["Plague Quarter"] = "El Arrabal de la Peste";
-	--AL["Frostwyrm Lair"] = "Frostwyrm Lair"; --FALTA
+	AL["Plague Quarter"] = "El Arrabal de la Plaga";
+	AL["Frostwyrm Lair"] = "Guarida Helada";
 	
 	--NPCs missing from BabbleBoss
 	AL["Trash Mobs"] = "Bichos varios";
@@ -1135,7 +1261,7 @@ if AL then
 	AL["Bjarngrim"] = "Bjarngrim"; --FALTA
 	AL["Loken"] = "Loken"; --FALTA
 	AL["Time-Lost Proto Drake"] = "Protodraco Tiempo Perdido";
-	AL["Emalon the Storm Watcher"] = "Emalon el Vigía de la Tormenta"; --Is in BabbleBoss
+	AL["Faction Champions"] = "Facciones Campeones"; -- if you have a better name, use it.
 	
 	--Zones
 	AL["World Drop"] = "Hallazgos del Mundo";
@@ -1204,31 +1330,24 @@ if AL then
 	AL["Hyldnir Spoils"] = "Botín Hyldnir";
 	AL["Ripe Disgusting Jar"] = "Tarro desagradable maduro";
 	AL["Cracked Egg"] = "Huevo roto";
+	AL["Small Spice Bag"] = "Bolsa de especias pequeña";
 	
-	--World Events
-	AL["Abyssal Council"] = "Consejo abisal";
-	AL["Bash'ir Landing Skyguard Raid"] = "Punto de anclaje de Bash'ir";
-	AL["Brewfest"] = "Fiesta de la Cerveza";
-	AL["Children's Week"] = "Semana de los niños";
-	AL["Elemental Invasion"] = "Invasión de elementales";
-	AL["Ethereum Prison"] = "Prisión de los Etereum";
-	AL["Feast of Winter Veil"] = "Festival de Invierno";
-	AL["Gurubashi Arena Booty Run"] = "El cofre pirata de Gurubashi";
-	AL["Hallow's End"] = "Halloween";
-	AL["Harvest Festival"] = "Festival de la Cosecha";
-	AL["Love is in the Air"] = "Amor en el aire";
-	AL["Lunar Festival"] = "Festival Lunar";
-	AL["Midsummer Fire Festival"] = "Festival del Solsticio de Verano";
-	AL["Noblegarden"] = "El jardín de los nobles";
-	AL["Skettis"] = "Skettis";
-	AL["Stranglethorn Fishing Extravaganza"] = "Concurso de Pesca";
---	AL["Argent Tournament"] = "Torneo Argenta"; -- duplicated
+	-- The next 4 lines are the tooltip for the Server Query Button
+	-- The translation doesn't have to be literal, just re-write the
+	-- sentences as you would naturally and break them up into 4 roughly
+	-- equal lines.
+	AL["Queries the server for all items"] = "Pregunta al servidor por todos los objectos";
+	AL["on this page. The items will be"] = "de esta página, Los objectos serán";
+	AL["refreshed when you next mouse"] = "refrescados al pasar el ratón";
+	AL["over them."] = "sobre ellos";
+	AL["The Minimap Button is generated by the FuBar Plugin."] = "El botón del Minimapa es generado por el plugin FuBar.";
+	AL["This is automatic, you do not need FuBar installed."] = "Esto es automático, no tienes que tener instalado FuBar.";
 
 	--Help Frame
 	AL["Help"] = "Ayuda";
 	AL["AtlasLoot Help"] = "Ayuda Atlasloot";
 	AL["For further help, see our website and forums: "] = "Para mas ayuda consulta nuestra web y foros: ";
-	AL["How to open the standalone Loot Browser:"] = "Como abrir el buscador de botín estandar:";
+	AL["How to open the standalone Loot Browser:"] = "Como abrir el buscador de objetos estandar:";
 	AL["If you have AtlasLootFu enabled, click the minimap button, or alternatively a button generated by a mod like Titan or FuBar.  Finally, you can type '/al' in the chat window."] = "Si tienes AtlasLootFu activado, haz click en el botón del minimapa, o alternativamente en algún botón generado por otro addon como Titan o FuBar.  Finalmente, puedes escribir '/al' en la ventana del chat.";
 	AL["How to view an 'unsafe' item:"] = "Como ver un objeto 'no seguro':";
 	AL["Unsafe items have a red border around the icon and are marked because you have not seen the item since the last patch or server restart. Right-click the item, then move your mouse back over the item or click the 'Query Server' button at the bottom of the loot page."] = "Los objetos no seguros tienen un borde rojo alrededor de su icono y son marcados porque no has visto dicho objeto en el juego desde el último parche o reinicio de servidor. Haz click-dcho en el objeto y después mueve el cursor por encima del icono o haz click en 'pregunta al servidor' en el pie de la ventana de botín.";
@@ -1244,4 +1363,59 @@ if AL then
 	AL["If you Left Click any item on the wishlist, you can jump to the loot page the item comes from.  Also, on a loot page any item already in your wishlist is marked with a yellow star."] = "Si haces click izquierdo en un objeto de tu lista deseada, puedes saltar a la ventana de botín de donde proviene.  Del mismo modo, los objetos que se encuentran en tu lista aparecen marcados con una estrella amarilla.";
 	AL["HELP!! I have broken the mod somehow!"] = "¡¡AYUDA!! De alguna manera he roto el addon";
 	AL["Use the reset buttons available in the options menu, or type '/al reset' in your chat window."] = "Utiliza los botones de reinicio disponibles en el menú de opciones o escribe '/al reset' en tu ventana de chat.";
+
+		--Error Messages and warnings
+	AL["AtlasLoot Error!"] = "¡AtlasLoot error!";
+	AL["WishList Full!"] = "¡Lista de deseos llena'";
+	AL[" added to the WishList."] = " añadido a la lista de deseos.";
+	AL[" already in the WishList!"] = " ya esta en la lista de deseos";
+	AL[" deleted from the WishList."] = " borrado de la lista de deseos";
+	AL["No match found for"] = "No se ha encontrado ninguna coincidencia";
+	AL[" is safe."] = " es válido.";
+	AL["Server queried for "] = "Preguntando al servidor por ";
+	AL[".  Right click on any other item to refresh the loot page."] = ".  Haz click-dcho en otro objeto para refrescar la página.";
+	
+	--Incomplete Table Registry error message
+	AL[" not listed in loot table registry, please report this message to the AtlasLoot forums at http://www.atlasloot.net"] = " no figura en el registro de botines, por favor informa sobre este mensaje en los foros de AtlasLoot http://www.atlasloot.net";
+
+	--LoD Module disabled or missing
+	AL[" is unavailable, the following load on demand module is required: "] = " no está disponible, se necesita el siguiente módulo: ";
+
+	--LoD Module load sequence could not be completed
+	AL["Status of the following module could not be determined: "] = "No se ha podido determinar el estado del siguiente módulo: ";
+
+	--LoD Module required has loaded, but loot table is missing
+	AL[" could not be accessed, the following module may be out of date: "] = " no se ha podido acceder, el siguiente módulo no debe estar actualizado: ";
+
+	--LoD module not defined
+	AL["Loot module returned as nil!"] = "¡El módulo de botín ha retornado null!";
+
+	--LoD module loaded successfully
+	AL["sucessfully loaded."] = "cargado satisfactoriamente.";
+
+	--Need a big dataset for searching
+	AL["Loading available tables for searching"] = "Cargando las tablas disponibles para búsquedas";
+
+ 	--All Available modules loaded
+	AL["All Available Modules Loaded"] = "Se han cargado todos los módulos disponibles";
+		
+	--First time user
+	AL["Welcome to Atlasloot Enhanced.  Please take a moment to set your preferences."] = "Bienvenido a AtlasLoot Enhanced. Por favor, tómate un momento para elegir tus preferencias.";
+	AL["Welcome to Atlasloot Enhanced.  Please take a moment to set your preferences for tooltips and links in the chat window.\n\n  This options screen can be reached again at any later time by typing '/atlasloot'."] = "Bienvenido a Atlasloot Enhanced. Por favor tómate un momento para elegir tus preferencias en cada bocadillo y enlaces de la ventana de chat.\n\n Puedes volver a abrir esta ventana de opciones escribiendo '/atlasloot'.";
+	AL["Setup"] = "Configuración";
+
+	--Old Atlas Detected
+	AL["It has been detected that your version of Atlas does not match the version that Atlasloot is tuned for ("] = "Se ha detectado que tu versión de Atlas no coincide con la versión del AtlasLoot para la cual se ha hecho (";
+	AL[").  Depending on changes, there may be the occasional error, so please visit http://www.atlasmod.com as soon as possible to update."] = ").  Dependiendo de algún cambio, puede haber algún error ocasional, con lo que por favor, visita http://www.atlasmod.com/ lo antes posible para posibles actualizaciones.";
+	AL["OK"] = "Vale";
+	AL["Incompatible Atlas Detected"] = "Se ha detectado un Atlas incompatible ";
+
+	--Unsafe item tooltip
+	AL["Unsafe Item"] = "Objeto no seguro";
+	AL["Item Unavailable"] = "Objeto no disponible";
+	AL["ItemID:"] = "ObjetoID:";
+	AL["This item is not available on your server or your battlegroup yet."] = "Este objeto no está disponible en tu servidor o en tu grupo de batalla todavía";
+	AL["This item is unsafe.  To view this item without the risk of disconnection, you need to have first seen it in the game world. This is a restriction enforced by Blizzard since Patch 1.10."] =	"Este objeto no es seguro.\nPara verlo sin riesgo de ser desconectado, tienes que haberlo visto primero en el mundo del juego.\nEsto es una restricción forzada por Blizzard desde el Parche 1.10.";
+	AL["You can right-click to attempt to query the server.  You may be disconnected."] = "Puedes hacer Click-dcho para intentar consultar al servidor.\nPuedes ser desconectado.";
+
 end

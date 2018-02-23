@@ -68,6 +68,9 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		<Size>
 			<AbsDimension x="90" y="23"/>
 		</Size>
+		<OnShow>
+			self:SetFrameLevel(self:GetParent():GetFrameLevel()+1);
+		</OnShow>
 	</Button>
 
 	<Frame name="MapPlusEditFrame" toplevel="true" hidden="true" parent="WorldMapFrame" movable="true" enableMouse="true" enableKeyboard="true" frameStrata="HIGH">
@@ -121,7 +124,6 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						self:SetFrameLevel(10);
 						self:SetText(MAPPLUS_OK);
 					</OnLoad>
 					<OnClick>
@@ -139,7 +141,6 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						self:SetFrameLevel(10);
 						self:SetText(MAPPLUS_CANCEL);
 					</OnLoad>
 					<OnClick>
@@ -204,7 +205,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				</Layers>
 				<Scripts>
 					<OnLoad>
-						self:SetFrameLevel(10);
+						self:SetFrameLevel(self:GetParent():GetFrameLevel()+1);
 					</OnLoad>
 					<OnTabPressed>
 						MapPlusNoteEditBox:SetFocus();
@@ -286,7 +287,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				</ScrollChild>
 				<Scripts>
 					<OnLoad>
-						self:SetFrameLevel(10);
+						self:SetFrameLevel(self:GetParent():GetFrameLevel()+1);
 					</OnLoad>
 				</Scripts>
 			</ScrollFrame>
@@ -326,7 +327,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				</Backdrop>
 				<Scripts>
 					<OnLoad>
-						self:SetFrameLevel(10);
+						self:SetFrameLevel(self:GetParent():GetFrameLevel()+1);
 						self:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b);
 						self:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b);
 					</OnLoad>
@@ -358,7 +359,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				</Layers>
 				<Scripts>
 					<OnLoad>
-						self:SetFrameLevel(10);
+						self:SetFrameLevel(self:GetParent():GetFrameLevel()+1);
 						MapPlusIconStatic:SetText(MAPPLUS_ICON_STATIC);
 					</OnLoad>
 				</Scripts>

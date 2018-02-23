@@ -40,29 +40,53 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		</Scripts>
 		<HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD"/>
 	</Button>
-	<Button name="ChannelFilterMuteButton" frameStrata="LOW" parent="UIParent">
+	<Button name="ChannelFilterMuteButton" frameStrata="LOW" parent="ChatFrame1" hidden="true">
 		<Size>
-			<AbsDimension x="32" y="32"/>
+			<AbsDimension x="22" y="22"/>
 		</Size>
+		<Layers>
+			<Layer level="BORDER">
+				<Texture  file="Interface\AddOns\BigFoot\Media\normal-up.tga" >
+					<Size>
+						<AbsDimension x="18" y="18"/>
+					</Size>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+				
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture name="$parentMute" file="Interface\AddOns\BigFoot\Media\mute.tga" setAllPoints="true" hidden="true">
+					<Size>
+						<AbsDimension x="20" y="20"/>
+					</Size>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+				
+			</Layer>
+		</Layers>
 		<Anchors>
-			<Anchor point="BOTTOM" relativeTo="ChatFrameMenuButton" relativePoint="TOP"/>
+			<Anchor point="TOPRIGHT" relativeTo="ChatFrame1" relativePoint="TOPRIGHT">
+				<AbsDimension x="-23" y="3"/>
+			</Anchor>
 		</Anchors>
 		<Scripts>
+			
 			<OnClick>
 				PlaySound("igChatEmoteButton");
 				ChannelFilterMuteButton_OnClick();
 			</OnClick>
 			<OnEnter>
-				GameTooltip_AddNewbieTip(self, CHANNEL_FILTER_MUTE_LABEL, 1.0, 1.0, 1.0, CHANNEL_FILTER_MUTE_DESC, 1);
+				BigFoot_ShowNewbieTooltip(CHANNEL_FILTER_MUTE_LABEL, CHANNEL_FILTER_MUTE_DESC);
 			</OnEnter>
 			<OnLeave>
 				GameTooltip:Hide();
 			</OnLeave>
 		</Scripts>
-		<NormalTexture file="Interface\AddOns\ChannelFilter\artworks\normal-up"/>
-		<PushedTexture file="Interface\AddOns\ChannelFilter\artworks\normal-down"/>
-		<DisabledTexture file="Interface\AddOns\ChannelFilter\artworks\normal-disabled"/>
-		<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+		<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>		
 	</Button>
 	<Frame name="ChannelFilterOptionFrame" toplevel="true" hidden="true">
 		<Size>

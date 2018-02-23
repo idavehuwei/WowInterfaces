@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AddOnList version="1.0" url="http://wowui.178.com/" purl="http://wowui.178.com/">
+    <AddOn name="全能模块化施法条Quartz" displayName="全能模块化施法条Quartz" img="/data/wow/70/ui_logo.jpg" info="ui/70" package="down/70/412/Quartz-3.0_.3_.zip" update="2010-04-12" version="3.0.3" />
+</AddOnList>

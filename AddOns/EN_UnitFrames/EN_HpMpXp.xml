@@ -1,18 +1,19 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
     <Script file="EN_HpMpXp.lua"/>
-    <!-- General -->
+
+<!-- General -->
     <Frame name="EUF_HpMpXp_Genreal" parent="UIParent" hidden="true">
         <Scripts>
             <OnLoad>
-                    EUF_HpMpXp_OnLoad();
+                EUF_HpMpXp_OnLoad(self);
             </OnLoad>
             <OnEvent>
-                    EUF_HpMpXp_OnEvent(event);
+                EUF_HpMpXp_OnEvent(self,event,...);
             </OnEvent>
         </Scripts>
     </Frame>
-    <!-- Player Frame -->
+
+<!-- Player Frame -->
     <Frame name="EUF_PlayerFrame" parent="PlayerFrame">
         <Frames>
             <Frame>
@@ -42,21 +43,21 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                 </Layers>
                 <Scripts>
                     <OnLoad>
-                            this:SetFrameLevel(this:GetFrameLevel() - 1);
+                        self:SetFrameLevel(self:GetFrameLevel() - 1);
                     </OnLoad>
                     <OnUpdate><!-- 加入上下載具時，頭像更新及死騎符文條位置 -->
-                            EUF_Frame_Update();
-                            --EUF_PlayerFrameElite_Update();
-                            local _, class = UnitClass("player");
-                            if (class == "DEATHKNIGHT" and PetFrame:IsVisible()) then
-                                RuneFrame:SetScale(1)
-                                RuneFrame:ClearAllPoints()
-                                RuneFrame:SetPoint("TOP", "PetFrame", "BOTTOM", 27, 4)
-                            else
-                                RuneFrame:SetScale(1)
-                                RuneFrame:ClearAllPoints()
-                                RuneFrame:SetPoint("TOP", "PlayerFrame", "BOTTOM", 54, 20)
-                            end
+                        EUF_Frame_Update();
+                        --EUF_PlayerFrameElite_Update();
+                        local _, class = UnitClass("player");
+                        if (class == "DEATHKNIGHT" and PetFrame:IsVisible()) then
+                            RuneFrame:SetScale(1)
+                            RuneFrame:ClearAllPoints()
+                            RuneFrame:SetPoint("TOP", "PetFrame", "BOTTOM", 27, 4)
+                        else
+                            RuneFrame:SetScale(1)
+                            RuneFrame:ClearAllPoints()
+                            RuneFrame:SetPoint("TOP", "PlayerFrame", "BOTTOM", 54, 20)
+                        end
                     </OnUpdate>
                 </Scripts>
             </Frame>
@@ -117,7 +118,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                 <BarColor r="0.1" g="0.5" b="0"/>
                 <Scripts>
                     <OnLoad>
-                            this:SetFrameLevel(this:GetFrameLevel());
+                        self:SetFrameLevel(self:GetFrameLevel());
                     </OnLoad>
                 </Scripts>
             </StatusBar>
@@ -138,7 +139,6 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                                 <Offset x="1" y="-1"/>
                                 <Color r="0" g="0" b="0"/>
                             </Shadow>
-
                         </FontString>
                         <FontString name="$parentHP" inherits="NumberFontNormal">
                             <Anchors>
@@ -204,18 +204,19 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                 </Layers>
                 <Scripts>
                     <OnLoad>
-                            this:SetFrameLevel(this:GetFrameLevel() + 1);
+                        self:SetFrameLevel(self:GetFrameLevel() + 1);
                     </OnLoad>
                 </Scripts>
             </Frame>
         </Frames>
         <Scripts>
             <OnUpdate>
-                    EUF_PlayerFramePosition_Update();
+                EUF_PlayerFramePosition_Update(self,button);
             </OnUpdate>
         </Scripts>
     </Frame>
-    <!-- Pet Frame -->
+
+<!-- Pet Frame -->
     <Frame name="EUF_PetFrame" parent="PetFrame">
         <Layers>
             <Layer level="OVERLAY">
@@ -252,11 +253,12 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
             </Layer>
         </Layers>
     </Frame>
-    <!-- TargetFrame -->
+
+<!-- TargetFrame -->
     <Frame name="EUF_TargetFrame" parent="TargetFrame">
         <Size x="200" y="150"/>
         <Anchors>
-            <Anchor point="TOPLEFT" relativePoint="TOPLEFT"/>
+            <Anchor point="TOPLEFT" relativePoint="TOPLEFT" />
         </Anchors>
         <Layers>
             <Layer level="OVERLAY">
@@ -268,7 +270,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                     </Anchors>
                     <Color r="1" g="1" b="1" a="0.9"/>
                     <Shadow>
-                        <Offset x="1" y="-1"/>
+                            <Offset x="1" y="-1"/>
                         <Color r="0" g="0" b="0"/>
                     </Shadow>
                 </FontString>
@@ -280,7 +282,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                     </Anchors>
                     <Color r="1" g="1" b="1" a="0.9"/>
                     <Shadow>
-                        <Offset x="1" y="-1"/>
+                            <Offset x="1" y="-1"/>
                         <Color r="0" g="0" b="0"/>
                     </Shadow>
                 </FontString>
@@ -292,7 +294,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                     </Anchors>
                     <Color r="1" g="0.75" b="0"/>
                     <Shadow>
-                        <Offset x="1" y="-1"/>
+                            <Offset x="1" y="-1"/>
                         <Color r="0" g="0" b="0"/>
                     </Shadow>
                 </FontString>
@@ -312,10 +314,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
         </Layers>
         <Scripts>
             <OnLoad>
-                    this:SetFrameLevel("3");
+                self:SetFrameLevel("3");
             </OnLoad>
         </Scripts>
     </Frame>
+
     <Frame name="TargetPortraitDamage" parent="TargetFrame" toplevel="true" movable="false" frameStrata="HIGH">
         <Frames>
             <Frame setAllPoints="true">
@@ -323,7 +326,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                     <Layer level="OVERLAY">
                         <FontString name="TargetHitIndicator" hidden="true" inherits="NumberFontNormalHuge">
                             <Anchors>
-                                <Anchor point="CENTER" relativeTo="TargetPortrait" relativePoint="CENTER">
+                                <Anchor point="CENTER" relativeTo="TargetFramePortrait" relativePoint="CENTER">
                                     <Offset>
                                         <AbsDimension x="0" y="0"/>
                                     </Offset>
@@ -336,19 +339,20 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
         </Frames>
         <Scripts>
             <OnLoad>
-                    this:RegisterEvent("UNIT_COMBAT");
-                    this:RegisterEvent("PLAYER_TARGET_CHANGED");
-                    CombatFeedback_Initialize(self, TargetHitIndicator, 28);
+                self:RegisterEvent("UNIT_COMBAT");
+                self:RegisterEvent("PLAYER_TARGET_CHANGED");
+                CombatFeedback_Initialize(self, TargetHitIndicator, 28);
             </OnLoad>
             <OnEvent>
-                    TargetHitIndicator_OnEvent(self, event);
+                TargetHitIndicator_OnEvent(self, event,...);
             </OnEvent>
             <OnUpdate>
-                    TargetHitIndicator_OnUpdate(self, elapsed);
+                TargetHitIndicator_OnUpdate(self, elapsed);
             </OnUpdate>
         </Scripts>
     </Frame>
-    <!-- Party Frame -->
+
+<!-- Party Frame -->
     <Frame name="EUF_PartyFrameTemplate" frameStrata="BACKGROUND" virtual="true">
         <Size x="75" y="21"/>
         <Anchors>
@@ -419,6 +423,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
             </Layer>
         </Layers>
     </Frame>
+
     <Frame name="EUF_PartyFrame1" inherits="EUF_PartyFrameTemplate" parent="PartyMemberFrame1" id="1"/>
     <Frame name="EUF_PartyFrame2" inherits="EUF_PartyFrameTemplate" parent="PartyMemberFrame2" id="2"/>
     <Frame name="EUF_PartyFrame3" inherits="EUF_PartyFrameTemplate" parent="PartyMemberFrame3" id="3"/>

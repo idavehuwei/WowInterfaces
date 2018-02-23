@@ -10,7 +10,18 @@ function ToggleFramerate(benchmark)
 		FramerateLabel:Show();
 		FramerateText:Show();
 	end
+	ToggleMapFramerate();
 	WorldFrame.fpsTime = 0;
+end
+
+function ToggleMapFramerate()
+	if ( FramerateText:IsShown() and WORLDMAP_SETTINGS.size ~= WORLDMAP_WINDOWED_SIZE ) then
+		MapFramerateLabel:Show();
+		MapFramerateText:Show();	
+	else
+		MapFramerateLabel:Hide();
+		MapFramerateText:Hide();	
+	end
 end
 
 function WorldFrame_OnLoad(self)
@@ -22,7 +33,9 @@ function WorldFrame_OnUpdate(self, elapsed)
 		local timeLeft = self.fpsTime - elapsed
 		if ( timeLeft <= 0 ) then
 			self.fpsTime = FRAMERATE_FREQUENCY;
-			FramerateText:SetFormattedText("%.1f", GetFramerate());
+			local framerate = GetFramerate();
+			FramerateText:SetFormattedText("%.1f", framerate);
+			MapFramerateText:SetFormattedText("%.1f", framerate);
 		else
 			self.fpsTime = timeLeft;
 		end
@@ -30,7 +43,7 @@ function WorldFrame_OnUpdate(self, elapsed)
 	-- Process dialog onUpdates if the map is up or the ui is hidden
 	local dialog;
 	for i = 1, STATICPOPUP_NUMDIALOGS, 1 do
-		dialog = getglobal("StaticPopup"..i);
+		dialog = _G["StaticPopup"..i];
 		if ( dialog and dialog:IsShown() and not dialog:IsVisible() ) then
 			StaticPopup_OnUpdate(dialog, elapsed);
 		end
@@ -39,7 +52,7 @@ function WorldFrame_OnUpdate(self, elapsed)
 	-- Process breathbar onUpdates if the map is up or the ui is hidden
 	local bar;
 	for i=1, MIRRORTIMER_NUMTIMERS do
-		bar = getglobal("MirrorTimer"..i);
+		bar = _G["MirrorTimer"..i];
 		if ( bar and bar:IsShown() and not bar:IsVisible() ) then
 			MirrorTimerFrame_OnUpdate(bar, elapsed);
 		end

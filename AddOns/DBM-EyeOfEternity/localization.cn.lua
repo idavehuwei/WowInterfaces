@@ -1,4 +1,8 @@
-﻿if GetLocale() ~= "zhCN" then return end
+﻿-- author: callmejames @《凤凰之翼》 一区藏宝海湾
+-- commit by: yaroot <yaroot AT gmail.com>
+
+
+if GetLocale() ~= "zhCN" then return end
 
 local L
 
@@ -8,44 +12,33 @@ local L
 L = DBM:GetModLocalization("Malygos")
 
 L:SetGeneralLocalization({
-	name = "玛里苟斯"
+	name 			= "玛里苟斯"
 })
 
 L:SetWarningLocalization({
-	WarningSpark		= "力量火花 出现了",
-	WarningVortex		= "旋涡",
-	WarningBreathSoon	= "深呼吸 即将到来",
-	WarningBreath		= "深呼吸!",
-	WarningSurge		= "力量奔腾: >%s<",
-	WarningVortexSoon	= "旋涡 即将到来",
-	WarningSurgeYou		= "你中了力量奔腾!"
+	WarningSpark		= "能量火花 出现了",
+	WarningBreathSoon	= "奥术吐息 即将到来",
+	WarningBreath		= "奥术吐息"
 })
 
 L:SetTimerLocalization({
-	TimerSpark		= "下一个火花",
-	TimerVortex		= "旋涡",
-	TimerBreath		= "深呼吸",
-	TimerVortexCD		= "旋涡冷却"
+	TimerSpark		= "下一次 能量火花",
+	TimerBreath		= "下一次 奥术吐息"
 })
 
 L:SetOptionLocalization({
-	WarningSpark		= "显示力量火花警告",
-	WarningVortex		= "显示旋涡警告",
-	WarningBreathSoon	= "显示深呼吸的预先警告",
-	WarningBreath		= "显示深呼吸警告",
-	WarningSurge		= "显示力量奔腾警告",
-	TimerSpark		= "显示力量火花定时器",
-	TimerVortex		= "显示旋涡定时器",
-	TimerBreath		= "显示深呼吸定时器",
-	TimerVortexCD		= "显示旋涡的冷却定时器 (不准确)",
-	WarningVortexSoon	= "显示旋涡的预先警告 (不准确)",
-	WarningSurgeYou		= "当你中了力量奔腾时显示特别警告"
+	WarningSpark		= "为能量火花显示警报",
+	WarningBreathSoon	= "为奥术吐息显示预先警报",
+	WarningBreath		= "为奥术吐息显示警报",
+	TimerSpark		= "为下一次 能量火花显示计时条",
+	TimerBreath		= "为下一次 奥术吐息显示计时条"
 })
 
 L:SetMiscLocalization({
-	YellPull		= "我的耐心到此为止了。我要亲自消灭你们!",
-	EmoteSpark		= "一个力量火花从附近的裂缝中形成。",
+	YellPull		= "我的耐心到此为止了。我要亲自消灭你们！",
+	EmoteSpark		= "附近的裂隙中冒出了一团能量火花！",
 	YellPhase2		= "我原本只是想尽快结束你们的生命",
-	EmoteBreath		= "只要我的龙息尚存，你们就毫无机会!",
-	YellPhase3		= "现在你们幕后的主使终于出现"
+	EmoteBreath		= "%s深深地吸了一口气。",
+	YellBreath		= "在我的龙息之下，一切都将荡然无存！",
+	YellPhase3		= "现在你们幕后的主使终于出现了"
 })

@@ -10,17 +10,26 @@ end
 
 function HybridScrollFrame_OnValueChanged (self, value)
 	HybridScrollFrame_SetOffset(self, value);
+	HybridScrollFrame_UpdateButtonStates(self, value);
+end
+	
+function HybridScrollFrame_UpdateButtonStates(self, currValue)
+	if ( not currValue ) then
+		currValue = self.scrollBar:GetValue();
+	end
 	
 	self.scrollUp:Enable();
 	self.scrollDown:Enable();
 
 	local minVal, maxVal = self.scrollBar:GetMinMaxValues();
-	if ( value >= maxVal ) then		
+	if ( currValue >= maxVal ) then
+		self.scrollBar.thumbTexture:Show();
 		if ( self.scrollDown ) then
 			self.scrollDown:Disable()
 		end
 	end
-	if ( value <= minVal ) then
+	if ( currValue <= minVal ) then
+		self.scrollBar.thumbTexture:Show();
 		if ( self.scrollUp ) then
 			self.scrollUp:Disable();
 		end
@@ -46,7 +55,7 @@ function HybridScrollFrameScrollButton_OnUpdate (self, elapsed)
 	if ( self.timeSinceLast >= ( self.updateInterval or 0.08 ) ) then
 		if ( not IsMouseButtonDown("LeftButton") ) then
 			self:SetScript("OnUpdate", nil);
-		elseif ( MouseIsOver(self) ) then
+		elseif ( self:IsMouseOver() ) then
 			local parent = self.parent or self:GetParent():GetParent();
 			HybridScrollFrame_OnMouseWheel (parent, self.direction, (self.stepSize or parent.buttonHeight/3));
 			self.timeSinceLast = 0;
@@ -67,7 +76,7 @@ function HybridScrollFrameScrollButton_OnClick (self, button, down)
 	end
 end
 
-function HybridScrollFrame_Update (self, numElements, totalHeight, displayedHeight)
+function HybridScrollFrame_Update (self, totalHeight, displayedHeight)
 	local range = totalHeight - self:GetHeight();
 	if ( range > 0 and self.scrollBar ) then
 		local minVal, maxVal = self.scrollBar:GetMinMaxValues();
@@ -81,13 +90,21 @@ function HybridScrollFrame_Update (self, numElements, totalHeight, displayedHeig
 		else
 			self.scrollBar:SetMinMaxValues(0, range)
 		end
+		self.scrollBar:Enable();
+		HybridScrollFrame_UpdateButtonStates(self);
 		self.scrollBar:Show();
 	elseif ( self.scrollBar ) then
 		self.scrollBar:SetValue(0);
-		self.scrollBar:Hide();
+		if ( self.scrollBar.doNotHide ) then
+			self.scrollBar:Disable();
+			self.scrollUp:Disable();
+			self.scrollDown:Disable();
+			self.scrollBar.thumbTexture:Hide();
+		else
+			self.scrollBar:Hide();
+		end
 	end
 	
-	self.numElements = numElements;
 	self.range = range;
 	self.scrollChild:SetHeight(displayedHeight);
 	self:UpdateScrollChildRect();
@@ -137,7 +154,7 @@ function HybridScrollFrame_SetOffset (self, offset)
 			scrollHeight = math.abs(offset - largeButtonTop);		
 		end
 	else	
-		element = offset / buttonHeight
+		element = offset / buttonHeight;
 		overflow = element - math.floor(element);
 		scrollHeight = overflow * buttonHeight;
 	end

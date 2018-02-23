@@ -17,6 +17,10 @@ LAST_ITEM_COUNT = 0;
 LAST_ITEM_START_BID = 0;
 LAST_ITEM_BUYOUT = 0;
 
+local BROWSE_PARAM_INDEX_PAGE = 7;
+local PRICE_TYPE_UNIT = 1;
+local PRICE_TYPE_STACK = 2;
+
 AuctionSort = { };
 
 -- owner sorts
@@ -201,6 +205,22 @@ StaticPopupDialogs["BUYOUT_AUCTION"] = {
 	exclusive = 1,
 	hideOnEscape = 1
 };
+StaticPopupDialogs["BID_AUCTION"] = {
+	text = BID_AUCTION_CONFIRMATION,
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function(self)
+		PlaceAuctionBid(AuctionFrame.type, GetSelectedAuctionItem(AuctionFrame.type), MoneyInputFrame_GetCopper(BrowseBidPrice));
+	end,
+	OnShow = function(self)
+		MoneyFrame_Update(self.moneyFrame, MoneyInputFrame_GetCopper(BrowseBidPrice));
+	end,
+	hasMoneyFrame = 1,
+	showAlert = 1,
+	timeout = 0,
+	exclusive = 1,
+	hideOnEscape = 1
+};
 StaticPopupDialogs["CANCEL_AUCTION"] = {
 	text = CANCEL_AUCTION_CONFIRMATION,
 	button1 = ACCEPT,
@@ -232,18 +252,23 @@ function AuctionFrame_OnLoad (self)
 	AuctionsBuyoutText:SetText(BUYOUT_PRICE.." |cff808080("..OPTIONAL..")|r");
 
 	-- Set focus rules
+	AuctionsStackSizeEntry.prevFocus = BuyoutPriceCopper;
+	AuctionsStackSizeEntry.nextFocus = AuctionsNumStacksEntry;
+	AuctionsNumStacksEntry.prevFocus = AuctionsStackSizeEntry;
+	AuctionsNumStacksEntry.nextFocus = StartPriceGold;
+	
 	MoneyInputFrame_SetPreviousFocus(BrowseBidPrice, BrowseMaxLevel);
 	MoneyInputFrame_SetNextFocus(BrowseBidPrice, BrowseName);
 
 	MoneyInputFrame_SetPreviousFocus(BidBidPrice, BidBidPriceCopper);
 	MoneyInputFrame_SetNextFocus(BidBidPrice, BidBidPriceGold);
 
-	MoneyInputFrame_SetPreviousFocus(StartPrice, BuyoutPriceCopper);
+	MoneyInputFrame_SetPreviousFocus(StartPrice, AuctionsNumStacksEntry);
 	MoneyInputFrame_SetNextFocus(StartPrice, BuyoutPriceGold);
 
 	MoneyInputFrame_SetPreviousFocus(BuyoutPrice, StartPriceCopper);
-	MoneyInputFrame_SetNextFocus(BuyoutPrice, StartPriceGold);
-
+	MoneyInputFrame_SetNextFocus(BuyoutPrice, AuctionsStackSizeEntry);
+	
 	-- Init search dot count
 	AuctionFrameBrowse.dotCount = 0;
 	AuctionFrameBrowse.isSearchingThrottle = 0;
@@ -257,7 +282,7 @@ function AuctionFrame_OnLoad (self)
 
 	AuctionFrameAuctions.page = 0;
 	FauxScrollFrame_SetOffset(AuctionsScrollFrame,0);
-	GetOwnerAuctionItems(AuctionFrameAuctions.page)
+	GetOwnerAuctionItems(AuctionFrameAuctions.page);
 end
 
 function AuctionFrame_Show()
@@ -279,8 +304,8 @@ function AuctionFrame_Show()
 		FauxScrollFrame_SetOffset(AuctionsScrollFrame,0);
 		GetOwnerAuctionItems(AuctionFrameAuctions.page)
 
-		BrowsePrevPageButton.isEnabled = nil;
-		BrowseNextPageButton.isEnabled = nil;
+		BrowsePrevPageButton.isEnabled = false;
+		BrowseNextPageButton.isEnabled = false;
 		
 		if ( not AuctionFrame:IsShown() ) then
 			CloseAuctionHouse();
@@ -314,20 +339,22 @@ function AuctionFrameTab_OnClick(self, index)
 		AuctionFrameTop:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Browse-Top");
 		AuctionFrameTopRight:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Browse-TopRight");
 		AuctionFrameBotLeft:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Browse-BotLeft");
-		AuctionFrameBot:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Browse-Bot");
-		AuctionFrameBotRight:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Browse-BotRight");
+		AuctionFrameBot:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Auction-Bot");
+		AuctionFrameBotRight:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Bid-BotRight");
 		AuctionFrameBrowse:Show();
 		AuctionFrame.type = "list";
+		SetAuctionsTabShowing(false);
 	elseif ( index == 2 ) then
 		-- Bids tab
 		AuctionFrameTopLeft:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Bid-TopLeft");
-		AuctionFrameTop:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Bid-Top");
-		AuctionFrameTopRight:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Bid-TopRight");
+		AuctionFrameTop:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Auction-Top");
+		AuctionFrameTopRight:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Auction-TopRight");
 		AuctionFrameBotLeft:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Bid-BotLeft");
-		AuctionFrameBot:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Bid-Bot");
+		AuctionFrameBot:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Auction-Bot");
 		AuctionFrameBotRight:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Bid-BotRight");
 		AuctionFrameBid:Show();
 		AuctionFrame.type = "bidder";
+		SetAuctionsTabShowing(false);
 	elseif ( index == 3 ) then
 		-- Auctions tab
 		AuctionFrameTopLeft:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Auction-TopLeft");
@@ -337,6 +364,7 @@ function AuctionFrameTab_OnClick(self, index)
 		AuctionFrameBot:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Auction-Bot");
 		AuctionFrameBotRight:SetTexture("Interface\\AuctionFrame\\UI-AuctionFrame-Auction-BotRight");
 		AuctionFrameAuctions:Show();
+		SetAuctionsTabShowing(true);
 	end
 end
 
@@ -484,18 +512,51 @@ function AuctionFrame_OnClickSortColumn(sortTable, sortColumn)
 	end
 end
 
-function AuctionFrameBrowse_Search(page)
-	-- If there's a page argument then use that page in the query, otherwise set the page to 0
-	if ( not page ) then
+local prevBrowseParams;
+local function AuctionFrameBrowse_SearchHelper(...)
+	local text, minLevel, maxLevel, invType, class, subclass, page, usable, rarity = ...;
+
+	if ( not prevBrowseParams ) then
+		-- if we are doing a search for the first time then create the browse param cache
+		prevBrowseParams = { };
+	else
+		-- if we have already done a browse then see if any of the params have changed (except for the page number)
+		local param;
+		for i = 1, select('#', ...) do
+			if ( i ~= BROWSE_PARAM_INDEX_PAGE and select(i, ...) ~= prevBrowseParams[i] ) then
+				-- if we detect a change then we want to reset the page number back to the first page
+				page = 0;
+				AuctionFrameBrowse.page = page;
+				break;
+			end
+		end
+	end
+
+	QueryAuctionItems(text, minLevel, maxLevel, invType, class, subclass, page, usable, rarity);
+
+	-- store this query's params so we can compare them with the next set of params we get
+	for i = 1, select('#', ...) do
+		if ( i == BROWSE_PARAM_INDEX_PAGE ) then
+			prevBrowseParams[i] = page;
+		else
+			prevBrowseParams[i] = select(i, ...);
+		end
+	end
+end
+
+function AuctionFrameBrowse_Search()
+	if ( not AuctionFrameBrowse.page ) then
 		AuctionFrameBrowse.page = 0;
 	end
-	QueryAuctionItems(BrowseName:GetText(), BrowseMinLevel:GetText(), BrowseMaxLevel:GetText(), AuctionFrameBrowse.selectedInvtypeIndex, AuctionFrameBrowse.selectedClassIndex, AuctionFrameBrowse.selectedSubclassIndex, AuctionFrameBrowse.page, IsUsableCheckButton:GetChecked(), UIDropDownMenu_GetSelectedValue(BrowseDropDown));
+
+	AuctionFrameBrowse_SearchHelper(BrowseName:GetText(), BrowseMinLevel:GetText(), BrowseMaxLevel:GetText(), AuctionFrameBrowse.selectedInvtypeIndex, AuctionFrameBrowse.selectedClassIndex, AuctionFrameBrowse.selectedSubclassIndex, AuctionFrameBrowse.page, IsUsableCheckButton:GetChecked(), UIDropDownMenu_GetSelectedValue(BrowseDropDown));
+
 	-- Start "searching" messaging
 	AuctionFrameBrowse.isSearching = 1;
 end
 
 function BrowseSearchButton_OnUpdate(self, elapsed)
-	if (CanSendAuctionQuery("list")) then
+	if ( CanSendAuctionQuery("list") ) then
 		self:Enable();
 		if ( BrowsePrevPageButton.isEnabled ) then
 			BrowsePrevPageButton:Enable();
@@ -732,9 +793,7 @@ function AuctionFrameBrowse_Update()
 			if ( not name ) then	--Bug  145328
 				button:Hide();
 				-- If the last button is empty then set isLastSlotEmpty var
-				if ( i == NUM_BROWSE_TO_DISPLAY ) then
-					isLastSlotEmpty = 1;
-				end
+				isLastSlotEmpty = (i == NUM_BROWSE_TO_DISPLAY);
 			end
 			duration = GetAuctionItemTimeLeft("list", offset + i);
 
@@ -858,20 +917,8 @@ function AuctionFrameBrowse_Update()
 	-- Update scrollFrame
 	-- If more than one page of auctions show the next and prev arrows when the scrollframe is scrolled all the way down
 	if ( totalAuctions > NUM_AUCTION_ITEMS_PER_PAGE ) then
-		if ( AuctionFrameBrowse.page == 0 ) then
---			BrowsePrevPageButton:Disable();
-			BrowsePrevPageButton.isEnabled = nil;
-		else
---			BrowsePrevPageButton:Enable();
-			BrowsePrevPageButton.isEnabled = 1;
-		end
-		if ( AuctionFrameBrowse.page == (ceil(totalAuctions/NUM_AUCTION_ITEMS_PER_PAGE) - 1) ) then
---			BrowseNextPageButton:Disable();
-			BrowseNextPageButton.isEnabled = nil;
-		else
---			BrowseNextPageButton:Enable();
-			BrowseNextPageButton.isEnabled = 1;
-		end
+		BrowsePrevPageButton.isEnabled = (AuctionFrameBrowse.page ~= 0);
+		BrowseNextPageButton.isEnabled = (AuctionFrameBrowse.page ~= (ceil(totalAuctions/NUM_AUCTION_ITEMS_PER_PAGE) - 1));
 		if ( isLastSlotEmpty ) then
 			BrowseSearchCountText:Show();
 			local itemsMin = AuctionFrameBrowse.page * NUM_AUCTION_ITEMS_PER_PAGE + 1;
@@ -884,8 +931,8 @@ function AuctionFrameBrowse_Update()
 		-- Artifically inflate the number of results so the scrollbar scrolls one extra row
 		numBatchAuctions = numBatchAuctions + 1;
 	else
-		BrowsePrevPageButton:Disable();
-		BrowseNextPageButton:Disable();
+		BrowsePrevPageButton.isEnabled = false;
+		BrowseNextPageButton.isEnabled = false;
 		BrowseSearchCountText:Hide();
 	end
 	FauxScrollFrame_Update(BrowseScrollFrame, numBatchAuctions, NUM_BROWSE_TO_DISPLAY, AUCTIONS_BUTTON_HEIGHT);
@@ -939,9 +986,7 @@ function AuctionFrameBid_Update()
 		if ( index > numBatchAuctions ) then
 			button:Hide();
 			-- If the last button is empty then set isLastSlotEmpty var
-			if ( i == NUM_BIDS_TO_DISPLAY ) then
-				isLastSlotEmpty = 1;
-			end
+			isLastSlotEmpty = (i == NUM_BIDS_TO_DISPLAY);
 		else
 			button:Show();
 			buttonName = "BidButton"..i;
@@ -1078,22 +1123,46 @@ end
 
 function AuctionFrameAuctions_OnLoad(self)
 	self:RegisterEvent("AUCTION_OWNED_LIST_UPDATE");
-
+	self:RegisterEvent("AUCTION_MULTISELL_START");
+	self:RegisterEvent("AUCTION_MULTISELL_UPDATE");
+	self:RegisterEvent("AUCTION_MULTISELL_FAILURE");
 	-- set default sort
 	AuctionFrame_SetSort("owner", "duration", false);
 
-	AuctionsRadioButton_OnClick(nil, nil, nil, 2);
+	UIDropDownMenu_DisableDropDown(PriceDropDown);
 end
 
 function AuctionFrameAuctions_OnEvent(self, event, ...)
 	if ( event == "AUCTION_OWNED_LIST_UPDATE" ) then
 		AuctionFrameAuctions_Update();
+	elseif ( event == "AUCTION_MULTISELL_START" ) then
+		AuctionsCreateAuctionButton:Disable();
+		MoneyInputFrame_ClearFocus(StartPrice);
+		MoneyInputFrame_ClearFocus(BuyoutPrice);
+		AuctionsStackSizeEntry:ClearFocus();
+		AuctionsNumStacksEntry:ClearFocus();
+		AuctionsBlockFrame:Show();
+		AuctionProgressBar:SetMinMaxValues(0, arg1);
+		AuctionProgressBar:SetValue(0.01);		-- TEMPORARY
+		AuctionProgressBarText:SetFormattedText(AUCTION_CREATING, 0, arg1);
+		local _, iconTexture =  GetAuctionSellItemInfo();
+		AuctionProgressBarIcon:SetTexture(iconTexture);
+		AuctionProgressFrame:Show();
+	elseif ( event == "AUCTION_MULTISELL_UPDATE" ) then
+		AuctionProgressBar:SetValue(arg1);
+		AuctionProgressBarText:SetFormattedText(AUCTION_CREATING, arg1, arg2);
+		if ( arg1 == arg2 ) then
+			AuctionsBlockFrame:Hide();
+			AuctionProgressFrame.fadeOut = true;
+		end
+	elseif ( event == "AUCTION_MULTISELL_FAILURE" ) then
+		AuctionsBlockFrame:Hide();
+		AuctionProgressFrame:Hide();
 	end
 end
 
 function AuctionFrameAuctions_OnShow()
 	AuctionsTitle:SetFormattedText(AUCTION_TITLE, UnitName("player"));
-	--AuctionsRadioButton_OnClick(2);
 	--MoneyFrame_Update("AuctionsDepositMoneyFrame", 0);
 	AuctionsFrameAuctions_ValidateAuction();
 	-- So the get auctions query is only run once per session, after that you only get updates
@@ -1129,9 +1198,7 @@ function AuctionFrameAuctions_Update()
 		if ( index > (numBatchAuctions + (NUM_AUCTION_ITEMS_PER_PAGE * AuctionFrameAuctions.page)) ) then
 			auction:Hide();
 			-- If the last button is empty then set isLastSlotEmpty var
-			if ( i == NUM_AUCTIONS_TO_DISPLAY ) then
-				isLastSlotEmpty = 1;
-			end
+			isLastSlotEmpty = (i == NUM_AUCTIONS_TO_DISPLAY);
 		else
 			auction:Show();
 			
@@ -1304,48 +1371,136 @@ function AuctionsButton_OnClick(button)
 	AuctionFrameAuctions_Update();
 end
 
-function AuctionsRadioButton_OnClick(self, pushed, down, index)
-	if ( self and not index ) then
-		index = self:GetID();
+function PriceDropDown_OnLoad(self)
+	UIDropDownMenu_Initialize(self, PriceDropDown_Initialize);
+	if ( not AuctionFrameAuctions.priceType ) then
+		AuctionFrameAuctions.priceType = PRICE_TYPE_STACK;
 	end
-	
-	PlaySound("igMainMenuOptionCheckBoxOn");
-	AuctionsShortAuctionButton:SetChecked(nil);
-	AuctionsMediumAuctionButton:SetChecked(nil);
-	AuctionsLongAuctionButton:SetChecked(nil);
-	if ( index == 1 ) then
-		AuctionsShortAuctionButton:SetChecked(1);
-		AuctionFrameAuctions.duration = 720;
-	elseif ( index == 2 ) then
-		AuctionsMediumAuctionButton:SetChecked(1);
-		AuctionFrameAuctions.duration = 1440;
-	else
-		AuctionsLongAuctionButton:SetChecked(1);
-		AuctionFrameAuctions.duration = 2880;
+	UIDropDownMenu_SetSelectedValue(PriceDropDown, AuctionFrameAuctions.priceType);
+	UIDropDownMenu_SetWidth(PriceDropDown, 80);
+end
+
+function PriceDropDown_Initialize()
+	local info = UIDropDownMenu_CreateInfo();
+
+	info.text = AUCTION_PRICE_PER_ITEM;
+	info.value = PRICE_TYPE_UNIT;
+	info.checked = nil;
+	info.func = PriceDropDown_OnClick;
+	UIDropDownMenu_AddButton(info);
+
+	info.text = AUCTION_PRICE_PER_STACK;
+	info.value = PRICE_TYPE_STACK;
+	info.checked = nil;
+	info.func = PriceDropDown_OnClick;
+	UIDropDownMenu_AddButton(info);
+end
+
+function PriceDropDown_OnClick(self)
+	AuctionFrameAuctions.priceType = self.value;
+	UIDropDownMenu_SetSelectedValue(PriceDropDown, self.value);
+	local startPrice = MoneyInputFrame_GetCopper(StartPrice);
+	local buyoutPrice = MoneyInputFrame_GetCopper(BuyoutPrice);	
+	local stackSize = AuctionsStackSizeEntry:GetNumber();	
+	if ( stackSize > 1 ) then
+		if ( self.value == PRICE_TYPE_UNIT ) then
+			MoneyInputFrame_SetCopper(StartPrice, math.floor(startPrice / stackSize));
+			MoneyInputFrame_SetCopper(BuyoutPrice, math.floor(buyoutPrice / stackSize));
+		else
+			MoneyInputFrame_SetCopper(StartPrice, startPrice * stackSize);
+			MoneyInputFrame_SetCopper(BuyoutPrice, buyoutPrice * stackSize);
+		end
 	end
+end
+
+function DurationDropDown_OnLoad(self)
+	UIDropDownMenu_Initialize(self, DurationDropDown_Initialize);
+	if ( not AuctionFrameAuctions.duration ) then
+		AuctionFrameAuctions.duration = 2;
+	end
+	UIDropDownMenu_SetSelectedValue(DurationDropDown, AuctionFrameAuctions.duration);
+	UIDropDownMenu_SetWidth(DurationDropDown, 80);
+end
+
+function DurationDropDown_Initialize()
+	local info = UIDropDownMenu_CreateInfo();
+
+	info.text = AUCTION_DURATION_ONE;
+	info.value = 1;
+	info.checked = nil;
+	info.func = DurationDropDown_OnClick;
+	UIDropDownMenu_AddButton(info);
+
+	info.text = AUCTION_DURATION_TWO;
+	info.value = 2;
+	info.checked = nil;
+	info.func = DurationDropDown_OnClick;
+	UIDropDownMenu_AddButton(info);
+
+	info.text = AUCTION_DURATION_THREE;
+	info.value = 3;
+	info.checked = nil;
+	info.func = DurationDropDown_OnClick;
+	UIDropDownMenu_AddButton(info);
+end
+
+function DurationDropDown_OnClick(self)
+	AuctionFrameAuctions.duration = self.value;
+	UIDropDownMenu_SetSelectedValue(DurationDropDown, self.value);
 	UpdateDeposit();
 end
 
 function UpdateDeposit()
-	MoneyFrame_Update("AuctionsDepositMoneyFrame", CalculateAuctionDeposit(AuctionFrameAuctions.duration));
+	MoneyFrame_Update("AuctionsDepositMoneyFrame", CalculateAuctionDeposit(AuctionFrameAuctions.duration, AuctionsStackSizeEntry:GetNumber() * AuctionsNumStacksEntry:GetNumber()));
 end
 
 function AuctionSellItemButton_OnEvent(self, event, ...)
 	if ( event == "NEW_AUCTION_UPDATE") then
-		local name, texture, count, quality, canUse, price = GetAuctionSellItemInfo();
+		local name, texture, count, quality, canUse, price, pricePerUnit, stackCount, totalCount = GetAuctionSellItemInfo();
 		AuctionsItemButton:SetNormalTexture(texture);
+		AuctionsItemButton.stackCount = stackCount;
+		AuctionsItemButton.totalCount = totalCount;
+		AuctionsItemButton.pricePerUnit = pricePerUnit;
 		AuctionsItemButtonName:SetText(name);
-		if ( count > 1 ) then
-			AuctionsItemButtonCount:SetText(count);
+		local color = ITEM_QUALITY_COLORS[quality];
+		AuctionsItemButtonName:SetVertexColor(color.r, color.g, color.b);
+		if ( totalCount > 1 ) then
+			AuctionsItemButtonCount:SetText(totalCount);
 			AuctionsItemButtonCount:Show();
-		else
+			AuctionsStackSizeEntry:Show();
+			AuctionsStackSizeMaxButton:Show();
+			AuctionsNumStacksEntry:Show();
+			AuctionsNumStacksMaxButton:Show();
+			UIDropDownMenu_EnableDropDown(PriceDropDown);
+			UpdateMaximumButtons();
+		else	
 			AuctionsItemButtonCount:Hide();
+			AuctionsStackSizeEntry:Hide();
+			AuctionsStackSizeMaxButton:Hide();
+			AuctionsNumStacksEntry:Hide();
+			AuctionsNumStacksMaxButton:Hide();
+			-- checking for count of 1 so when a stack of 2 or more is removed by the user, we don't reset to "per item"
+			-- totalCount will be 0 when the sell item is removed
+			if ( totalCount == 1 ) then
+				AuctionFrameAuctions.priceType = PRICE_TYPE_UNIT;
+				UIDropDownMenu_SetSelectedValue(PriceDropDown, PRICE_TYPE_UNIT);
+				UIDropDownMenu_SetText(PriceDropDown, AUCTION_PRICE_PER_ITEM);
+			end
+			UIDropDownMenu_DisableDropDown(PriceDropDown);
 		end
-		if ( name == LAST_ITEM_AUCTIONED and count == LAST_ITEM_COUNT) then
+		AuctionsStackSizeEntry:SetNumber(count);
+		AuctionsNumStacksEntry:SetNumber(1);
+		if ( name == LAST_ITEM_AUCTIONED and count == LAST_ITEM_COUNT ) then
 			MoneyInputFrame_SetCopper(StartPrice, LAST_ITEM_START_BID);
 			MoneyInputFrame_SetCopper(BuyoutPrice, LAST_ITEM_BUYOUT);
 		else
-			MoneyInputFrame_SetCopper(StartPrice, max(100, floor(price * 1.5)));
+			if ( UIDropDownMenu_GetSelectedValue(PriceDropDown) == 1 and stackCount > 0 ) then
+				-- unit price
+				MoneyInputFrame_SetCopper(StartPrice, max(100, floor(pricePerUnit * 1.5)));
+				
+			else
+				MoneyInputFrame_SetCopper(StartPrice, max(100, floor(price * 1.5)));
+			end
 			MoneyInputFrame_SetCopper(BuyoutPrice, 0);
 			if ( name ) then
 				LAST_ITEM_AUCTIONED = name;
@@ -1355,6 +1510,7 @@ function AuctionSellItemButton_OnEvent(self, event, ...)
 			end
 		end
 		UpdateDeposit();
+		AuctionsFrameAuctions_ValidateAuction();
 	end
 end
 
@@ -1365,18 +1521,26 @@ end
 
 function AuctionsFrameAuctions_ValidateAuction()
 	AuctionsCreateAuctionButton:Disable();
-	AuctionsBuyoutErrorText:Hide();
+	AuctionsBuyoutText:SetTextColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
+	AuctionsBuyoutError:Hide();
 	-- No item
 	if ( not GetAuctionSellItemInfo() ) then
 		return;
 	end
 	-- Buyout price is less than the start price
 	if ( MoneyInputFrame_GetCopper(BuyoutPrice) > 0 and MoneyInputFrame_GetCopper(StartPrice) > MoneyInputFrame_GetCopper(BuyoutPrice) ) then
-		AuctionsBuyoutErrorText:Show();
+		AuctionsBuyoutText:SetTextColor(RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b);
+		AuctionsBuyoutError:Show();
 		return;
 	end
 	-- Start price is 0 or greater than the max allowed
 	if ( MoneyInputFrame_GetCopper(StartPrice) < 1 or MoneyInputFrame_GetCopper(StartPrice) > MAXIMUM_BID_PRICE) then
+		return;
+	end
+	-- The stack size is greater than total count
+	local stackCount = AuctionsItemButton.stackCount or 0;
+	local totalCount = AuctionsItemButton.totalCount or 0;
+	if ( AuctionsStackSizeEntry:GetNumber() == 0 or AuctionsStackSizeEntry:GetNumber() > stackCount or AuctionsNumStacksEntry:GetNumber() == 0 or (AuctionsStackSizeEntry:GetNumber() * AuctionsNumStacksEntry:GetNumber() > totalCount) ) then
 		return;
 	end
 	AuctionsCreateAuctionButton:Enable();
@@ -1466,6 +1630,7 @@ end
 -- Function to close popups if another auction item is selected
 function CloseAuctionStaticPopups()
 	StaticPopup_Hide("BUYOUT_AUCTION");
+	StaticPopup_Hide("BID_AUCTION");
 	StaticPopup_Hide("CANCEL_AUCTION");
 end
 
@@ -1474,5 +1639,57 @@ function AuctionsCreateAuctionButton_OnClick()
 	LAST_ITEM_BUYOUT = MoneyInputFrame_GetCopper(BuyoutPrice);
 	DropCursorMoney();
 	PlaySound("LOOTWINDOWCOINSOUND");
-	StartAuction(MoneyInputFrame_GetCopper(StartPrice), MoneyInputFrame_GetCopper(BuyoutPrice), AuctionFrameAuctions.duration);
+	local startPrice = MoneyInputFrame_GetCopper(StartPrice);
+	local buyoutPrice = MoneyInputFrame_GetCopper(BuyoutPrice);
+	if ( AuctionFrameAuctions.priceType == PRICE_TYPE_UNIT ) then
+		startPrice = startPrice * AuctionsStackSizeEntry:GetNumber();
+		buyoutPrice = buyoutPrice * AuctionsStackSizeEntry:GetNumber();
+	end
+	StartAuction(startPrice, buyoutPrice, AuctionFrameAuctions.duration, AuctionsStackSizeEntry:GetNumber(), AuctionsNumStacksEntry:GetNumber());
+end
+
+function SetMaxStackSize()
+	local stackCount = AuctionsItemButton.stackCount;
+	local totalCount = AuctionsItemButton.totalCount;
+	if ( totalCount and totalCount > 0 ) then
+		if ( totalCount > stackCount ) then
+			AuctionsStackSizeEntry:SetNumber(stackCount);
+			AuctionsNumStacksEntry:SetNumber(math.floor(totalCount / stackCount));
+		else
+			AuctionsStackSizeEntry:SetNumber(totalCount);
+			AuctionsNumStacksEntry:SetNumber(1);
+		end
+	else
+		AuctionsStackSizeEntry:SetNumber("");
+		AuctionsNumStacksEntry:SetNumber("");	
+	end
+end
+
+function UpdateMaximumButtons()
+	local stackCount = AuctionsItemButton.stackCount;
+	local totalCount = AuctionsItemButton.totalCount;
+	local stackSize = AuctionsStackSizeEntry:GetNumber();
+	if ( stackSize ~= min(totalCount, stackCount) ) then
+		AuctionsStackSizeMaxButton:Enable();
+	else
+		AuctionsStackSizeMaxButton:Disable();
+	end
+	if ( AuctionsNumStacksEntry:GetNumber() ~= math.floor(totalCount / stackSize) ) then
+		AuctionsNumStacksMaxButton:Enable();
+	else
+		AuctionsNumStacksMaxButton:Disable();
+	end
+end
+
+function AuctionProgressFrame_OnUpdate(self)
+	if ( self.fadeOut ) then
+		local alpha = self:GetAlpha() - CASTING_BAR_ALPHA_STEP;
+		if ( alpha > 0 ) then
+			self:SetAlpha(alpha);
+		else			
+			self.fadeOut = nil;
+			self:Hide();
+			self:SetAlpha(1);
+		end
+	end
 end

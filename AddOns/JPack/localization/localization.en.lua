@@ -12,7 +12,6 @@ local L = _G.JPackLocale
 L.TYPE_BAG = "Bag"
 L.TYPE_FISHWEAPON = "Fishing Poles"
 L.TYPE_MISC = "Miscellaneous" -- subType of [Mining Pick] id:2901
-L.TYPE_CONSUMABLE = "Consumables"
 
 JPACK_ORDER={"Hearthstone","##Mounts","Mining Pick","Skinning Knife","Fishing Pole","#Fishing Poles",
 "#Weapon","#Armor","#Weapon##Other","#Armor##Other","#Recipe",

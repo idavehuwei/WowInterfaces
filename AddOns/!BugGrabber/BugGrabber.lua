@@ -1,5 +1,5 @@
 ﻿--
--- $Id: BugGrabber.lua 138 2008-12-31 05:09:34Z arrowmaster $
+-- $Id: BugGrabber.lua 152 2010-07-03 00:15:19Z rabbit $
 --
 -- The BugSack and BugGrabber team is:
 -- Current Developer: Rabbit
@@ -62,11 +62,11 @@ elseif GetLocale() == "deDE" then
 	ERROR_INDEX = "Der zur Verfügung gestellte Index muß eine Zahl sein."
 	ERROR_UNKNOWN_INDEX = "Der Index %d existiert nicht in der geladenen Fehlerliste."
 	STARTUP_ERRORS = "Es gab %d Fehler beim Start:"
-	STARTUP_ERRORS_MANY = "Es gab %d Fehler beim Start, verwende bitte /buggrabber <nummer> um sie aufzulisten."
-	UNIQUE_CAPTURE = "BugGrabber hat einen einzigartigen Error aufgezeichnet:\n%s\n---"
-	--ADDON_CALL_PROTECTED = "[%s] AddOn '%s' hat versucht die geschützte Funktion '%s' aufzurufen."
-	--ADDON_CALL_PROTECTED_MATCH = "^%[(.*)%] (AddOn '.*' hat versucht die geschützte Funktion '.*' aufzurufen.)$"
-	ADDON_DISABLED = "|cffffff7fBugGrabber|r und |cffffff7f%s|r können nicht zusammen laufen, |cffffff7f%s|r wurde deshalb deaktiviert. Wenn Du möchtest, kann du WoW nun schließen, |cffffff7fBugGrabber|r deaktivieren und |cffffff7f%s|r erneut aktivieren."
+	STARTUP_ERRORS_MANY = "Es gab %d Fehler beim Start, verwende bitte /buggrabber <Anzahl> um sie aufzulisten."
+	UNIQUE_CAPTURE = "BugGrabber hat einen einzigartigen Fehler aufgezeichnet:\n%s\n---"
+	ADDON_CALL_PROTECTED = "[%s] AddOn '%s' hat versucht die geschützte Funktion '%s' aufzurufen."
+	ADDON_CALL_PROTECTED_MATCH = "^%[(.*)%] (AddOn '.*' hat versucht die geschützte Funktion '.*' aufzurufen.)$"
+	ADDON_DISABLED = "|cffffff7fBugGrabber|r und |cffffff7f%s|r können nicht zusammen laufen, |cffffff7f%s|r wurde deshalb deaktiviert. Du kannst jetzt WoW schließen, |cffffff7fBugGrabber|r deaktivieren und |cffffff7f%s|r erneut aktivieren."
 	BUGGRABBER_STOPPED = "|cffffff7fBugGrabber|r hat die Aufzeichnung von Fehlern gestoppt, weil mehr als %d Fehler pro Sekunde erzeugt wurden. Die Aufzeichnung wird in %d Sekunden fortgesetzt."
 	BUGGRABBER_RESUMING = "|cffffff7fBugGrabber|r zeichnet nun wieder Fehler auf."
 elseif GetLocale() == "esES" then
@@ -87,15 +87,28 @@ elseif GetLocale() == "zhTW" then
 	USAGE = "用法：/buggrabber <1-%d>。"
 	ERROR_INDEX = "提供的索引值必須是數字。"
 	ERROR_UNKNOWN_INDEX = "提供的索引值「%d」不是正確的。"
-	STARTUP_ERRORS = "在啟動時發生%d個錯誤:"
+	STARTUP_ERRORS = "在啟動時發生%d個錯誤："
 	STARTUP_ERRORS_MANY = "在啟動時發生%d個錯誤，請使用 /buggrabber <索引值> 來列出。"
-	UNIQUE_CAPTURE = "捕捉到新的錯誤:\n%s\n---"
---	no need to translate ADDON_CALL_PROTECTED
---	no need to translate ADDON_CALL_PROTECTED_MATCH
-	ADDON_DISABLED = "|cffffff7fBugGrabber|r 和 |cffffff7f%s|r 不能共存。|cffffff7f%s|r 已停用。你可在插件介面停用 |cffffff7fBugGrabber|r，再用 |cffffff7f%s|r。"
+	UNIQUE_CAPTURE = "捕捉到新的錯誤：\n%s\n---"
+	ADDON_CALL_PROTECTED = "[%s] 插件 '%s' 嘗試調用保護功能 '%s'。"
+	ADDON_CALL_PROTECTED_MATCH = "^%[(.*)%] (插件 '.*' 嘗試調用保護功能 '.*'.)$"
+	ADDON_DISABLED = "|cffffff7fBugGrabber|r 和 |cffffff7f%s|r 不能共存。|cffffff7f%s|r 已停用。可在插件介面停用 |cffffff7fBugGrabber|r，再用 |cffffff7f%s|r。"
 	BUGGRABBER_STOPPED = "|cffffff7fBugGrabber|r 現正暫停，因為每秒捕捉到超過%d個錯誤。它會在%d秒後重新開始。"
 	BUGGRABBER_RESUMING = "|cffffff7fBugGrabber|r 已重新開始。"
-	elseif GetLocale() == "ruRU" then
+elseif GetLocale() == "zhCN" then
+	CMD_CREATED = "发现一个错误，用 /buggrabber 列出这个错误。"
+	USAGE = "用法：/buggrabber <1-%d>。"
+	ERROR_INDEX = "提供的索引值必须是数字。"
+	ERROR_UNKNOWN_INDEX = "提供的索引值「%d」不是正确的。"
+	STARTUP_ERRORS = "在启动时发生%d个错误："
+	STARTUP_ERRORS_MANY = "在启动时发生%d个错误，请使用 /buggrabber <索引值>来列出。"
+	UNIQUE_CAPTURE = "BugGrabber 捕捉到新的错误：\n%s\n---"
+	ADDON_CALL_PROTECTED = "[%s] 插件 '%s' 尝试调用保护功能 '%s'。"
+	ADDON_CALL_PROTECTED_MATCH = "^%[(.*)%] (插件 '.*' 尝试调用保护功能 '.*'.)$"
+	ADDON_DISABLED = "|cffffff7fBugGrabber|r 和 |cffffff7f%s|r 不能共存。|cffffff7f%s|r 已停用。可在插件界面停用 |cffffff7fBugGrabber|r 再用 |cffffff7f%s|r。"
+	BUGGRABBER_STOPPED = "|cffffff7fBugGrabber|r 现正暂停，因为每秒捕捉到超过%d个错误。它会在%d秒后重新开始。"
+	BUGGRABBER_RESUMING = "|cffffff7fBugGrabber|r 已重新开始。"
+elseif GetLocale() == "ruRU" then
 	CMD_CREATED = "Ошибка была обнаружена, спользуйте /buggrabber чтобы напечатать ее."
 	USAGE = "Использование: /buggrabber <1-%d>."
 	ERROR_INDEX = "Предоставленный индекс должен быть числом"
@@ -108,6 +121,19 @@ elseif GetLocale() == "zhTW" then
 	ADDON_DISABLED = "|cffffff7fBugGrabber|r и |cffffff7f%s|r не может существовать вместе, |cffffff7f%s|r был неисправный. если хотите выдите из WoW nun отключите неисправный аддон, |cffffff7fBugGrabber|r повторно запустил аддон|cffffff7f%s|r."
 	BUGGRABBER_STOPPED = "|cffffff7fBugGrabber|r прекратил захватытвать ошибки, так как он захватил больше %d ошибок  в секунду. Захват возобновиться в течении %d Секунд."
 	BUGGRABBER_RESUMING = "|cffffff7fBugGrabber|r захватил ошибки снова."
+elseif GetLocale() == "frFR" then
+	CMD_CREATED = "Une erreur a été détectée, tapez /buggrabber pour l'afficher."
+	USAGE = "Utilisation: /buggrabber <1-%d>."
+	ERROR_INDEX = "L'élément donné doit être un nombre."
+	ERROR_UNKNOWN_INDEX = "L'élément %d n'existe pas dans la table d'erreurs chargée."
+	STARTUP_ERRORS = "Il y a eu %d erreurs au démarrage:"
+	STARTUP_ERRORS_MANY = "Il y a eu %d erreurs au démarrage, merci d'utiliser /buggrabber <nombre> pour les afficher."
+	--UNIQUE_CAPTURE = "BugGrabber a capturé une seule erreur:\n%s\n---"
+	ADDON_CALL_PROTECTED = "[%s] L'AddOn '%s' a tenté d'appeler la fonction protégée '%s'."
+	ADDON_CALL_PROTECTED_MATCH = "^%[(.*)%] (L'AddOn '.*' a tenté d'appeler la fonction protégée '.*'.)$"
+	ADDON_DISABLED = "|cffffff7fBugGrabber|r et |cffffff7f%s|r ne peuvent pas être lancés en même temps. |cffffff7f%s|r a été désactivé. Si vous le souhaitez, vous pouvez vous déconnecter, désactiver |cffffff7fBugGrabber|r et réactiver |cffffff7f%s|r."
+	BUGGRABBER_STOPPED = "|cffffff7fBugGrabber|r a cessé de capturer des erreurs, car plus de %d erreurs ont été capturées par seconde. La capture sera reprise dans %d secondes."
+	BUGGRABBER_RESUMING = "|cffffff7fBugGrabber|r capture les erreurs à nouveau."
 end
 
 local _G = getfenv(0)
@@ -128,7 +154,6 @@ local slashCmdErrorList = {}
 
 local isBugGrabbedRegistered = false
 local callbacks = nil
-local ae2 = nil
 local function setupCallbacks()
 	if not callbacks and LibStub and LibStub("CallbackHandler-1.0", true) then
 		callbacks = LibStub("CallbackHandler-1.0"):New(BugGrabber)
@@ -139,18 +164,10 @@ local function setupCallbacks()
 			if eventname == "BugGrabber_BugGrabbed" then isBugGrabbedRegistered = false end
 		end
 	end
-	if not ae2 and LibStub and LibStub("AceEvent-2.0", true) then
-		ae2 = LibStub("AceEvent-2.0", true)
-	end
 end
 local function triggerEvent(...)
-	if not callbacks or not ae2 then setupCallbacks() end
+	if not callbacks then setupCallbacks() end
 	if callbacks then callbacks:Fire(...) end
-	if ae2 then ae2:TriggerEvent(...) end
-end
-
-local function print(text)
-	DEFAULT_CHAT_FRAME:AddMessage(text)
 end
 
 local function slashHandler(index)
@@ -192,7 +209,7 @@ local function createSlashCmd()
 	_G["SLASH_"..name.."1"] = "/buggrabber"
 
 	slashCmdCreated = true
-	if not isBugGrabbedRegistered and (not ae2 or (ae2 and not ae2:IsEventRegistered("BugGrabber_BugGrabbed"))) then
+	if not isBugGrabbedRegistered then
 		print(CMD_CREATED)
 	end
 end
@@ -216,11 +233,11 @@ local function saveError(message, errorType)
 		while m:len() > 980 and chunks <= maxChunks do
 			local q
 			q, m = m:sub(1, 980), m:sub(981)
-			table.insert(oe.message, q)
+			oe.message[#oe.message + 1] = q
 			chunks = chunks + 1
 		end
 		if m:len() > 980 then m = m:sub(1, 980) end
-		table.insert(oe.message, m)
+		oe.message[#oe.message + 1] = m
 	end
 
 	-- Insert the error into the correct database if it's not there already.
@@ -231,7 +248,7 @@ local function saveError(message, errorType)
 	if type(oe_message) == "table" then
 		oe_message = oe_message[1]
 	end
-	for i, err in ipairs(db) do
+	for i, err in next, db do
 		local err_message = err.message
 		if type(err_message) == "table" then
 			err_message = err_message[1]
@@ -255,12 +272,7 @@ local function saveError(message, errorType)
 	-- If the error was not found in the current session, append it to the
 	-- database.
 	if not found then
-		table.insert(db, oe)
-
-		-- Save only the last <limit> errors (otherwise the SV gets too big)
-		if #db > BugGrabberDB.limit then
-			table.remove(db, 1)
-		end
+		BugGrabber:StoreError(oe)
 	end
 
 	-- Trigger event.
@@ -269,9 +281,19 @@ local function saveError(message, errorType)
 		triggerEvent(e, oe)
 
 		if not found then
-			table.insert(slashCmdErrorList, oe)
+			slashCmdErrorList[#slashCmdErrorList + 1] = oe
 			createSlashCmd()
 		end
+	end
+end
+
+function BugGrabber:StoreError(errorObject)
+	local db = BugGrabber:GetDB()
+	db[#db + 1] = errorObject
+
+	-- Save only the last <limit> errors (otherwise the SV gets too big)
+	if #db > BugGrabberDB.limit then
+		table.remove(db, 1)
 	end
 end
 
@@ -294,6 +316,7 @@ end
 -- Error handler
 local function grabError(err)
 	if paused then return end
+	err = tostring(err)
 
 	-- Get the full backtrace
 	local real =
@@ -433,6 +456,11 @@ local function grabError(err)
 
 	errorsSinceLastReset = errorsSinceLastReset + 1
 
+	local locals = debuglocals(real and 4 or 3)
+	if locals then
+		errmsg = errmsg .. "\nLocals:|r\n" .. locals
+	end
+
 	-- Store the error
 	saveError(errmsg, errorType)
 end
@@ -461,6 +489,10 @@ end
 -- Determine the proper DB and return it
 function BugGrabber:GetDB()
 	return BugGrabberDB.save and BugGrabberDB.errors or stateErrorDatabase
+end
+
+function BugGrabber:GetSessionId()
+	return BugGrabberDB.session
 end
 
 -- Simple setters/getters for settings, meant to be accessed by BugSack
@@ -567,7 +599,7 @@ local function addonLoaded(addon)
 		local sv = BugGrabberDB
 		if type(sv.session) ~= "number" then sv.session = 0 end
 		if type(sv.errors) ~= "table" then sv.errors = {} end
-		if type(sv.limit) ~= "number" then sv.limit = math.ceil(MAX_BUGGRABBER_ERRORS / 2) end
+		if type(sv.limit) ~= "number" then sv.limit = 50 end
 		if type(sv.save) ~= "boolean" then sv.save = true end
 		if type(sv.throttle) ~= "boolean" then sv.throttle = true end
 

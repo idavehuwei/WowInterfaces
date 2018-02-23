@@ -93,7 +93,7 @@ function MovieFrame_PlayNextMovie(self)
 end
 
 function MovieFrame_OnShow(self)
-	self:EnableSubtitles(GetMovieSubtitles());
+	self:EnableSubtitles(GetCVarBool("movieSubtitle"));
 	HideCursor();
 	if ( GetMovieResolution() < 1024 ) then
 		self.resolution = 1;	-- Low resolution

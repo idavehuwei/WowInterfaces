@@ -1,6 +1,6 @@
 local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-local BabbleBoss = LibStub("LibBabble-Boss-3.0"):GetLookupTable();
-local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
+local BabbleBoss = AtlasLoot_GetLocaleLibBabble("LibBabble-Boss-3.0")
+local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 
 -- Index
 --- Dungeons & Raids
@@ -972,7 +972,7 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		Prev = "CFRSlaveMennu";
 		Next = "CFRSlaveQuagmirran";
 	};
-	
+
 	AtlasLoot_Data["CFRSlaveQuagmirran"] = {
 		{ 1, 27796, "", "=q3=Mana-Etched Spaulders", "=ds=#s3#, #a1# (D3)", "", "5.24%"};
 		{ 2, 27713, "", "=q3=Pauldrons of Desolation", "=ds=#s3#, #a3# (D3)", "", "10.70%"};
@@ -1724,6 +1724,7 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 5, 28521, "", "=q4=Mitts of the Treemender", "=ds=#s9#, #a2#", "", "13.16%"};
 		{ 6, 28520, "", "=q4=Gloves of Centering", "=ds=#s9#, #a3#", "", "13.16%"};
 		{ 7, 28519, "", "=q4=Gloves of Quickening", "=ds=#s9#, #a3#", "", "14.22%"};
+		{ 8, 28512, "", "=q4=Bracers of Justice", "=ds=#s8#, #a4#", "", "15%"};
 		{ 9, 28518, "", "=q4=Iron Gauntlets of the Maiden", "=ds=#s9#, #a4#", "", "12.63%"};
 		{ 16, 28516, "", "=q4=Barbed Choker of Discipline", "=ds=#s2#", "", "11.48%"};
 		{ 17, 28523, "", "=q4=Totem of Healing Rains", "=ds=#s16#, #w15#", "", "14.58%"};
@@ -3117,7 +3118,7 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 	};
 
 	AtlasLoot_Data["SunOffensive2"] = {
-        { 1, 0, "INV_Misc_Statue_04", "=q6=#r4#", ""};
+		{ 1, 0, "INV_Misc_Statue_04", "=q6=#r4#", ""};
 		{ 2, 35769, "", "=q4=Design: Forceful Seaspray Emerald", "=ds=#p12# (375)"};
 		{ 3, 35768, "", "=q4=Design: Quick Lionseye", "=ds=#p12# (375)"};
 		{ 4, 35767, "", "=q4=Design: Reckless Pyrestone", "=ds=#p12# (375)"};
@@ -3149,7 +3150,7 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 	};
 
 	AtlasLoot_Data["SunOffensive3"] = {
-        { 1, 0, "INV_Misc_Statue_04", "=q6=#r5#", ""};
+		{ 1, 0, "INV_Misc_Statue_04", "=q6=#r5#", ""};
 		{ 2, 34678, "", "=q4=Shattered Sun Pendant of Acumen", "=ds=#s2#"};
 		{ 3, 34679, "", "=q4=Shattered Sun Pendant of Might", "=ds=#s2#"};
 		{ 4, 34680, "", "=q4=Shattered Sun Pendant of Resolve", "=ds=#s2#"};
@@ -3633,19 +3634,19 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		---------------------------------------------------------------
 
 	AtlasLoot_Data["Hellfire"] = {
-		{ 1, 27833, "", "=q3=Band of the Victor", "=ds=15 #factionoutlandPvP#"};
-		{ 2, 27786, "", "=q3=Barbed Deep Peridot", "=ds=10 #factionoutlandPvP#"};
-		{ 3, 28360, "", "=q3=Mighty Blood Garnet", "=ds=10 #factionoutlandPvP#"};
+		{ 1, 27833, "", "=q3=Band of the Victor", "=ds=15 #markthrallmarhhold#"};
+		{ 2, 27786, "", "=q3=Barbed Deep Peridot", "=ds=10 #markthrallmarhhold#"};
+		{ 3, 28360, "", "=q3=Mighty Blood Garnet", "=ds=10 #markthrallmarhhold#"};
 		{ 5, 0, "INV_BannerPVP_02", "=q6=#m7#", ""};
 		{ 6, 24520, "", "=q1=Honor Hold Favor", "=ds=5 #markhhold#"};
 		{ 7, 24579, "", "=q1=Mark of Honor Hold", "=ds=#m18#"};
-		{ 16, 27830, "", "=q3=Circlet of the Victor", "=ds=15 #factionoutlandPvP#"};
-		{ 17, 27785, "", "=q3=Notched Deep Peridot", "=ds=10 #factionoutlandPvP#"};
-		{ 18, 27777, "", "=q3=Stark Blood Garnet", "=ds=10 #factionoutlandPvP#"};
+		{ 16, 27830, "", "=q3=Circlet of the Victor", "=ds=15 #markthrallmarhhold#"};
+		{ 17, 27785, "", "=q3=Notched Deep Peridot", "=ds=10 #markthrallmarhhold#"};
+		{ 18, 27777, "", "=q3=Stark Blood Garnet", "=ds=10 #markthrallmarhhold#"};
 		{ 20, 0, "INV_BannerPVP_01", "=q6=#m6#", ""};
 		{ 21, 24522, "", "=q1=Thrallmar Favor", "=ds=5 #markthrallmar#"};
 		{ 22, 24581, "", "=q1=Mark of Thrallmar", "=ds=#m19#"};
-		Back = "PVPMENU";
+		Back = "PVPMENU2";
 	};
 
 		----------------------------------
@@ -3677,7 +3678,7 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 27, 32071, "", "=q1=Recipe: Elixir of Ironskin", "=ds=#p1# (330)", "2 #halaaresearch#", ""};
 		{ 29, 26044, "", "=q2=Halaa Research Token", "=ds=#m17#"};
 		Next = "Nagrand2";
-		Back = "PVPMENU";
+		Back = "PVPMENU2";
 	};
 
 	AtlasLoot_Data["Nagrand2"] = {
@@ -3693,7 +3694,7 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 21, 30570, "", "=q2=Arkadian Claymore", "=ds=#h2#, #w10#"};
 		{ 22, 30568, "", "=q2=The Sharp Cookie", "=ds=#w11#"};
 		Prev = "Nagrand1";
-		Back = "PVPMENU";
+		Back = "PVPMENU2";
 	};
 
 		------------------------------------------------
@@ -3719,7 +3720,7 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 21, 28758, "", "=q3=Exorcist's Mail Helm", "=ds=#a3# #s1#", "18 #spiritshard#", ""};
 		{ 22, 28559, "", "=q3=Exorcist's Plate Helm", "=ds=#a4# #s1#", "18 #spiritshard#", ""};
 		{ 25, 32948, "", "=q1=Auchenai Mana Potion", "=ds=#e2#", "2 #spiritshard#", ""};
-		Back = "PVPMENU";
+		Back = "PVPMENU2";
 	};
 
 		-------------------------------------------------
@@ -3727,18 +3728,18 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		-------------------------------------------------
 
 	AtlasLoot_Data["Zangarmarsh"] = {
-		{ 1, 27990, "", "=q3=Idol of Savagery", "=ds=#w14#", "15 #factionoutlandPvP#", ""};
-		{ 2, 27984, "", "=q3=Totem of Impact", "=ds=#w15#", "15 #factionoutlandPvP#", ""};
-		{ 3, 27922, "", "=q3=Mark of Defiance", "=ds=#s14#", "30 #factionoutlandPvP#", ""};
-		{ 4, 27929, "", "=q3=Terminal Edge", "=ds=#w11#", "15 #factionoutlandPvP#", ""};
-		{ 5, 27939, "", "=q3=Incendic Rod", "=ds=#w12#", "15 #factionoutlandPvP#", ""};
+		{ 1, 27990, "", "=q3=Idol of Savagery", "=ds=#w14#", "15 #markthrallmarhhold#", ""};
+		{ 2, 27984, "", "=q3=Totem of Impact", "=ds=#w15#", "15 #markthrallmarhhold#", ""};
+		{ 3, 27922, "", "=q3=Mark of Defiance", "=ds=#s14#", "30 #markthrallmarhhold#", ""};
+		{ 4, 27929, "", "=q3=Terminal Edge", "=ds=#w11#", "15 #markthrallmarhhold#", ""};
+		{ 5, 27939, "", "=q3=Incendic Rod", "=ds=#w12#", "15 #markthrallmarhhold#", ""};
 		{ 7, 24579, "", "=q1=Mark of Honor Hold", "=ds=#m18#"};
-		{ 16, 27983, "", "=q3=Libram of Zeal", "=ds=#w16#", "15 #factionoutlandPvP#", ""};
-		{ 17, 27920, "", "=q3=Mark of Conquest", "=ds=#s14#", "30 #factionoutlandPvP#", ""};
-		{ 18, 27927, "", "=q3=Mark of Vindication", "=ds=#s14#", "30 #factionoutlandPvP#", ""};
-		{ 19, 27930, "", "=q3=Splintermark", "=ds=#w2#", "15 #factionoutlandPvP#", ""};
+		{ 16, 27983, "", "=q3=Libram of Zeal", "=ds=#w16#", "15 #markthrallmarhhold#", ""};
+		{ 17, 27920, "", "=q3=Mark of Conquest", "=ds=#s14#", "30 #markthrallmarhhold#", ""};
+		{ 18, 27927, "", "=q3=Mark of Vindication", "=ds=#s14#", "30 #markthrallmarhhold#", ""};
+		{ 19, 27930, "", "=q3=Splintermark", "=ds=#w2#", "15 #markthrallmarhhold#", ""};
 		{ 22, 24581, "", "=q1=Mark of Thrallmar", "=ds=#m19#"};
-		Back = "PVPMENU";
+		Back = "PVPMENU2";
 	};
 
 		-------------------------------------
@@ -3860,58 +3861,98 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		----------------------------------
 		--- PvP Level 70 - Accessories ---
 		----------------------------------
-
-	AtlasLoot_Data["PvP70Accessories1"] = {
-		{ 1, 0, "INV_BannerPVP_02", "=q6=#m7#", ""};
-		{ 2, 37864, "", "=q4=Medallion of the Alliance", "=ds=", "40000 #alliance#"};
-		{ 3, 25829, "", "=q4=Talisman of the Alliance", "=ds=", "22950 #alliance# 10 #eos#"};
-		{ 4, 28235, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
-		{ 5, 28237, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
-		{ 6, 28238, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
-		{ 7, 28236, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
-		{ 8, 30349, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
-		{ 9, 28234, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
-		{ 10, 30351, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
-		{ 11, 30348, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
-		{ 12, 30350, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
-		{ 13, 28247, "", "=q3=Band of Dominance", "=ds=", "9547 #alliance# 10 #av#"};
-		{ 14, 28246, "", "=q3=Band of Triumph", "=ds=", "9547 #alliance# 10 #av#"};
-		{ 16, 0, "INV_BannerPVP_01", "=q6=#m6#", ""};
-		{ 17, 37865, "", "=q4=Medallion of the Horde", "=ds=", "40000 #horde#"};
-		{ 18, 24551, "", "=q4=Talisman of the Horde", "=ds=", "22950 #horde# 10 #eos#"};
-		{ 19, 28241, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
-		{ 20, 28243, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
-		{ 21, 28239, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
-		{ 22, 28242, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
-		{ 23, 30346, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
-		{ 24, 28240, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
-		{ 25, 30345, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
-		{ 26, 30343, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
-		{ 27, 30344, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
-		{ 28, 28247, "", "=q3=Band of Dominance", "=ds=", "9547 #horde# 10 #av#"};
-		{ 29, 28246, "", "=q3=Band of Triumph", "=ds=", "9547 #horde# 10 #av#"};
+		
+	AtlasLoot_Data["PvP70Accessories1_A"] = {
+		{ 1, 28235, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
+		{ 2, 28237, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
+		{ 3, 28238, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
+		{ 4, 28236, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
+		{ 5, 30349, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
+		{ 6, 28234, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
+		{ 7, 30351, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
+		{ 8, 30348, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
+		{ 9, 30350, "", "=q3=Medallion of the Alliance", "=ds=", "8000 #alliance#"};
+		{ 11, 31853, "", "=q1=Major Combat Healing Potion", "=ds=", "200 #faction#"};
+		{ 12, 31839, "", "=q1=Major Combat Healing Potion", "=ds=", "200 #faction#"};
+		{ 13, 31855, "", "=q1=Major Combat Mana Potion", "=ds=", "200 #faction#"};
+		{ 14, 31841, "", "=q1=Major Combat Mana Potion", "=ds=", "200 #faction#"};
+		{ 15, 32453, "", "=q1=Star's Tears", "=ds=", "1 #gold# 8 #faction#"};
+		{ 16, 37864, "", "=q4=Medallion of the Alliance", "=ds=", "40000 #alliance#"};
+		{ 17, 25829, "", "=q4=Talisman of the Alliance", "=ds=", "23000 #alliance#"};
+		{ 19, 28120, "", "=q4=Gleaming Ornate Dawnstone", "=ds=", "6885 #faction#"};
+		{ 20, 28119, "", "=q4=Smooth Ornate Dawnstone", "=ds=", "6885 #faction#"};
+		{ 21, 28362, "", "=q4=Bold Ornate Ruby", "=ds=", "6885 #faction#"};
+		{ 22, 28118, "", "=q4=Runed Ornate Ruby", "=ds=", "6885 #faction#"};
+		{ 23, 28363, "", "=q4=Inscribed Ornate Topaz", "=ds=", "8500 #faction#"};
+		{ 24, 28123, "", "=q4=Potent Ornate Topaz", "=ds=", "8500 #faction#"};
+		{ 26, 31838, "", "=q1=Major Combat Healing Potion", "=ds=", "200 #faction#"};
+		{ 27, 31852, "", "=q1=Major Combat Healing Potion", "=ds=", "200 #faction#"};
+		{ 28, 31840, "", "=q1=Major Combat Mana Potion", "=ds=", "200 #faction#"};
+		{ 29, 31854, "", "=q1=Major Combat Mana Potion", "=ds=", "200 #faction#"};
 		Next = "PvP70Accessories2";
-		Back = "LEVEL70PVPREWARDS";
+		Back = "PVPMENU";
 	};
 
+	AtlasLoot_Data["PvP70Accessories1_H"] = {
+		{ 1, 28241, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
+		{ 2, 28243, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
+		{ 3, 28239, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
+		{ 4, 28242, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
+		{ 5, 30346, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
+		{ 6, 28240, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
+		{ 7, 30345, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
+		{ 8, 30343, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
+		{ 9, 30344, "", "=q3=Medallion of the Horde", "=ds=", "8000 #horde#"};
+		{ 11, 31853, "", "=q1=Major Combat Healing Potion", "=ds=", "200 #faction#"};
+		{ 12, 31839, "", "=q1=Major Combat Healing Potion", "=ds=", "200 #faction#"};
+		{ 13, 31855, "", "=q1=Major Combat Mana Potion", "=ds=", "200 #faction#"};
+		{ 14, 31841, "", "=q1=Major Combat Mana Potion", "=ds=", "200 #faction#"};
+		{ 15, 32453, "", "=q1=Star's Tears", "=ds=", "1 #gold# 8 #faction#"};
+		{ 16, 37865, "", "=q4=Medallion of the Horde", "=ds=", "40000 #horde#"};
+		{ 17, 24551, "", "=q4=Talisman of the Horde", "=ds=", "23000 #horde#"};
+		{ 19, 28120, "", "=q4=Gleaming Ornate Dawnstone", "=ds=", "6885 #faction#"};
+		{ 20, 28119, "", "=q4=Smooth Ornate Dawnstone", "=ds=", "6885 #faction#"};
+		{ 21, 28362, "", "=q4=Bold Ornate Ruby", "=ds=", "6885 #faction#"};
+		{ 22, 28118, "", "=q4=Runed Ornate Ruby", "=ds=", "6885 #faction#"};
+		{ 23, 28363, "", "=q4=Inscribed Ornate Topaz", "=ds=", "8500 #faction#"};
+		{ 24, 28123, "", "=q4=Potent Ornate Topaz", "=ds=", "8500 #faction#"};
+		{ 26, 31838, "", "=q1=Major Combat Healing Potion", "=ds=", "200 #faction#"};
+		{ 27, 31852, "", "=q1=Major Combat Healing Potion", "=ds=", "200 #faction#"};
+		{ 28, 31840, "", "=q1=Major Combat Mana Potion", "=ds=", "200 #faction#"};
+		{ 29, 31854, "", "=q1=Major Combat Mana Potion", "=ds=", "200 #faction#"};
+		Next = "PvP70Accessories2";
+		Back = "PVPMENU";
+	};
+	
 	AtlasLoot_Data["PvP70Accessories2"] = {
-		{ 1, 28362, "", "=q4=Bold Ornate Ruby", "=ds=", "6885 #faction#"};
-		{ 2, 28119, "", "=q4=Smooth Ornate Dawnstone", "=ds=", "6885 #faction#"};
-		{ 3, 28363, "", "=q4=Inscribed Ornate Topaz", "=ds=", "8500 #faction#"};
-		{ 5, 31853, "", "=q1=Major Combat Healing Potion", "=ds=", "2 #wsg#"};
-		{ 6, 31839, "", "=q1=Major Combat Healing Potion", "=ds=", "2 #av#"};
-		{ 7, 31855, "", "=q1=Major Combat Mana Potion", "=ds=", "2 #wsg#"};
-		{ 8, 31841, "", "=q1=Major Combat Mana Potion", "=ds=", "2 #av#"};
-		{ 9, 32453, "", "=q1=Star's Tears", "=ds=", "25 #silver# 2 #faction#"};
-		{ 16, 28118, "", "=q4=Runed Ornate Ruby", "=ds=", "6885 #faction#"};
-		{ 17, 28120, "", "=q4=Gleaming Ornate Dawnstone", "=ds=", "6885 #faction#"};
-		{ 18, 28123, "", "=q4=Potent Ornate Topaz", "=ds=", "8500 #faction#"};
-		{ 20, 31838, "", "=q1=Major Combat Healing Potion", "=ds=", "2 #ab#"};
-		{ 21, 31852, "", "=q1=Major Combat Healing Potion", "=ds=", "2 #eos#"};
-		{ 22, 31840, "", "=q1=Major Combat Mana Potion", "=ds=", "2 #ab#"};
-		{ 23, 31854, "", "=q1=Major Combat Mana Potion", "=ds=", "2 #eos#"};
-		Prev = "PvP70Accessories1";
-		Back = "LEVEL70PVPREWARDS";
+		{ 1, 28378, "", "=q4=Sergeant's Heavy Cape", "=ds=", "8000 #faction#"};
+		{ 2, 28377, "", "=q4=Sergeant's Heavy Cloak", "=ds=", "8000 #faction#"};
+		{ 4, 44431, "", "=q4=Cloak of Certain Reprieve", "=ds=", "21000 #faction#"};
+		{ 5, 41591, "", "=q4=Sergeant's Reinforced Cape", "=ds=", "21000 #faction#"};
+		{ 6, 41592, "", "=q4=The Gladiator's Resolution", "=ds=", "21000 #faction#"};
+		{ 7, 44429, "", "=q4=Volanthius Shroud", "=ds=", "21000 #faction#"};
+		{ 9, 41588, "", "=q4=Battlemaster's Aggression", "=ds=", "36000 #faction#"};
+		{ 10, 41587, "", "=q4=Battlemaster's Celerity", "=ds=", "36000 #faction#"};
+		{ 11, 41590, "", "=q4=Battlemaster's Courage", "=ds=", "36000 #faction#"};
+		{ 12, 41589, "", "=q4=Battlemaster's Resolve", "=ds=", "36000 #faction#"};
+		{ 14, 28247, "", "=q3=Band of Dominance", "=ds=", "10000 #alliance#"};
+		{ 15, 28246, "", "=q3=Band of Triumph", "=ds=", "10000 #alliance#"};
+		{ 16, 35132, "", "=q4=Guardian's Pendant of Conquest", "=ds=", "16000 #faction#"};
+		{ 17, 35133, "", "=q4=Guardian's Pendant of Dominance", "=ds=", "16000 #faction#"};
+		{ 18, 37929, "", "=q4=Guardian's Pendant of Reprieve", "=ds=", "16000 #faction#"};
+		{ 19, 35134, "", "=q4=Guardian's Pendant of Salvation", "=ds=", "16000 #faction#"};
+		{ 20, 37928, "", "=q4=Guardian's Pendant of Subjugation", "=ds=", "16000 #faction#"};
+		{ 21, 35135, "", "=q4=Guardian's Pendant of Triumph", "=ds=", "16000 #faction#"};
+		{ 23, 35129, "", "=q4=Guardian's Band of Dominance", "=ds=", "16000 #faction#"};
+		{ 24, 35130, "", "=q4=Guardian's Band of Salvation", "=ds=", "16000 #faction#"};
+		{ 25, 37927, "", "=q4=Guardian's Band of Subjugation", "=ds=", "16000 #faction#"};
+		{ 26, 35131, "", "=q4=Guardian's Band of Triumph", "=ds=", "16000 #faction#"};
+		{ 27, 33853, "", "=q4=Vindicator's Band of Dominance", "=ds=", "12000 #faction#"};
+		{ 28, 33918, "", "=q4=Vindicator's Band of Salvation", "=ds=", "12000 #faction#"};
+		{ 29, 35320, "", "=q4=Vindicator's Band of Subjugation", "=ds=", "12000 #faction#"};
+		{ 30, 33919, "", "=q4=Vindicator's Band of Triumph", "=ds=", "12000 #faction#"};
+		Prev = "PvP70Accessories1_A";
+		Back = "PVPMENU";
 	};
 
 		------------------------------------
@@ -3919,107 +3960,64 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		------------------------------------
 
 	AtlasLoot_Data["PvP70NonSet1"] = {
-		{ 1, 28378, "", "=q4=Sergeant's Heavy Cape", "=ds=", "7548 #faction# 20 #ab#"};
-		{ 2, 28377, "", "=q4=Sergeant's Heavy Cloak", "=ds=", "7548 #faction# 20 #ab#"};
-		{ 4, 44431, "", "=q4=Cloak of Certain Reprieve", "=ds=", "20000 #faction# 20 #ab#"};
-		{ 5, 41591, "", "=q4=Sergeant's Reinforced Cape", "=ds=", "20000 #faction# 20 #ab#"};
-		{ 6, 41592, "", "=q4=The Gladiator's Resolution", "=ds=", "20000 #faction# 20 #ab#"};
-		{ 7, 44429, "", "=q4=Volanthius Shroud", "=ds=", "20000 #faction# 20 #ab#"};
-		{ 16, 35132, "", "=q4=Guardian's Pendant of Conquest", "=ds=", "15300 #faction# 10 #eos#"};
-		{ 17, 35133, "", "=q4=Guardian's Pendant of Dominance", "=ds=", "15300 #faction# 10 #eos#"};
-		{ 18, 37929, "", "=q4=Guardian's Pendant of Reprieve", "=ds=", "15300 #faction# 10 #eos#"};
-		{ 19, 35134, "", "=q4=Guardian's Pendant of Salvation", "=ds=", "15300 #faction# 10 #eos#"};
-		{ 20, 37928, "", "=q4=Guardian's Pendant of Subjugation", "=ds=", "15300 #faction# 10 #eos#"};
-		{ 21, 35135, "", "=q4=Guardian's Pendant of Triumph", "=ds=", "15300 #faction# 10 #eos#"};
-		{ 23, 33920, "", "=q4=Vindicator's Pendant of Conquest", "=ds=", "11934 #faction# 10 #eos#"};
-		{ 24, 33921, "", "=q4=Vindicator's Pendant of Dominance", "=ds=", "11934 #faction# 10 #eos#"};
-		{ 25, 35317, "", "=q4=Vindicator's Pendant of Reprieve", "=ds=", "11934 #faction# 10 #eos#"};
-		{ 26, 33922, "", "=q4=Vindicator's Pendant of Salvation", "=ds=", "11934 #faction# 10 #eos#"};
-		{ 27, 35319, "", "=q4=Vindicator's Pendant of Subjugation", "=ds=", "11934 #faction# 10 #eos#"};
-		{ 28, 33923, "", "=q4=Vindicator's Pendant of Triumph", "=ds=", "11934 #faction# 10 #eos#"};
+		{ 1, 35168, "", "=q4=Guardian's Dreadweave Cuffs", "=ds=", "13000 #faction#"};
+		{ 2, 35153, "", "=q4=Guardian's Dreadweave Belt", "=ds=", "18000 #faction#"};
+		{ 3, 35138, "", "=q4=Guardian's Dreadweave Stalkers", "=ds=", "18000 #faction#"};
+		{ 5, 35174, "", "=q4=Guardian's Mooncloth Cuffs", "=ds=", "13000 #faction#"};
+		{ 6, 35159, "", "=q4=Guardian's Mooncloth Belt", "=ds=", "18000 #faction#"};
+		{ 7, 35144, "", "=q4=Guardian's Mooncloth Slippers", "=ds=", "18000 #faction#"};
+		{ 9, 35179, "", "=q4=Guardian's Silk Cuffs", "=ds=", "13000 #faction#"};
+		{ 10, 35164, "", "=q4=Guardian's Silk Belt", "=ds=", "18000 #faction#"};
+		{ 11, 35149, "", "=q4=Guardian's Silk Footguards", "=ds=", "18000 #faction#"};
+		{ 16, 35167, "", "=q4=Guardian's Dragonhide Bracers", "=ds=", "13000 #faction#"};
+		{ 17, 35152, "", "=q4=Guardian's Dragonhide Belt", "=ds=", "18000 #faction#"};
+		{ 18, 35137, "", "=q4=Guardian's Dragonhide Boots", "=ds=", "18000 #faction#"};
+		{ 20, 35169, "", "=q4=Guardian's Kodohide Bracers", "=ds=", "13000 #faction#"};
+		{ 21, 35154, "", "=q4=Guardian's Kodohide Belt", "=ds=", "18000 #faction#"};
+		{ 22, 35139, "", "=q4=Guardian's Kodohide Boots", "=ds=", "18000 #faction#"};
+		{ 24, 35171, "", "=q4=Guardian's Leather Bracers", "=ds=", "13000 #faction#"};
+		{ 25, 35156, "", "=q4=Guardian's Leather Belt", "=ds=", "18000 #faction#"};
+		{ 26, 35141, "", "=q4=Guardian's Leather Boots", "=ds=", "18000 #faction#"};
+		{ 28, 35180, "", "=q4=Guardian's Wyrmhide Bracers", "=ds=", "13000 #faction#"};
+		{ 29, 35165, "", "=q4=Guardian's Wyrmhide Belt", "=ds=", "18000 #faction#"};
+		{ 30, 35150, "", "=q4=Guardian's Wyrmhide Boots", "=ds=", "18000 #faction#"};
 		Next = "PvP70NonSet2";
-		Back = "PVP70NONSETEPICS";
+		Back = "PVPMENU";
 	};
 
 	AtlasLoot_Data["PvP70NonSet2"] = {
-		{ 1, 41588, "", "=q4=Battlemaster's Aggression", "=ds=", "35000 #faction# 40 #av#"};
-		{ 2, 41587, "", "=q4=Battlemaster's Celerity", "=ds=", "35000 #faction# 40 #av#"};
-		{ 3, 41590, "", "=q4=Battlemaster's Courage", "=ds=", "35000 #faction# 40 #av#"};
-		{ 4, 41589, "", "=q4=Battlemaster's Resolve", "=ds=", "35000 #faction# 40 #av#"};
-		{ 16, 35129, "", "=q4=Guardian's Band of Dominance", "=ds=", "15300 #faction# 10 #av#"};
-		{ 17, 35130, "", "=q4=Guardian's Band of Salvation", "=ds=", "15300 #faction# 10 #av#"};
-		{ 18, 37927, "", "=q4=Guardian's Band of Subjugation", "=ds=", "15300 #faction# 10 #av#"};
-		{ 19, 35131, "", "=q4=Guardian's Band of Triumph", "=ds=", "15300 #faction# 10 #av#"};
-		{ 21, 33853, "", "=q4=Vindicator's Band of Dominance", "=ds=", "11934 #faction# 10 #av#"};
-		{ 22, 33918, "", "=q4=Vindicator's Band of Salvation", "=ds=", "11934 #faction# 10 #av#"};
-		{ 23, 33919, "", "=q4=Vindicator's Band of Triumph", "=ds=", "11934 #faction# 10 #av#"};
-		{ 24, 35320, "", "=q4=Vindicator's Band of Subjugation", "=ds=", "11934 #faction# 10 #av#"};
+		{ 1, 35166, "", "=q4=Guardian's Chain Bracers", "=ds=", "13000 #faction#"};
+		{ 2, 35151, "", "=q4=Guardian's Chain Girdle", "=ds=", "18000 #faction#"};
+		{ 3, 35136, "", "=q4=Guardian's Chain Sabatons", "=ds=", "18000 #faction#"};
+		{ 5, 35172, "", "=q4=Guardian's Linked Bracers", "=ds=", "13000 #faction#"};
+		{ 6, 35157, "", "=q4=Guardian's Linked Girdle", "=ds=", "18000 #faction#"};
+		{ 7, 35142, "", "=q4=Guardian's Linked Sabatons", "=ds=", "18000 #faction#"};
+		{ 9, 35173, "", "=q4=Guardian's Mail Bracers", "=ds=", "13000 #faction#"};
+		{ 10, 35158, "", "=q4=Guardian's Mail Girdle", "=ds=", "18000 #faction#"};
+		{ 11, 35143, "", "=q4=Guardian's Mail Sabatons", "=ds=", "18000 #faction#"};
+		{ 13, 35177, "", "=q4=Guardian's Ringmail Bracers", "=ds=", "13000 #faction#"};
+		{ 14, 35162, "", "=q4=Guardian's Ringmail Girdle", "=ds=", "18000 #faction#"};
+		{ 15, 35147, "", "=q4=Guardian's Ringmail Sabatons", "=ds=", "18000 #faction#"};
+		{ 16, 35170, "", "=q4=Guardian's Lamellar Bracers", "=ds=", "13000 #faction#"};
+		{ 17, 35155, "", "=q4=Guardian's Lamellar Belt", "=ds=", "18000 #faction#"};
+		{ 18, 35140, "", "=q4=Guardian's Lamellar Greaves", "=ds=", "18000 #faction#"};
+		{ 20, 35175, "", "=q4=Guardian's Ornamented Bracers", "=ds=", "13000 #faction#"};
+		{ 21, 35160, "", "=q4=Guardian's Ornamented Belt", "=ds=", "18000 #faction#"};
+		{ 22, 35145, "", "=q4=Guardian's Ornamented Greaves", "=ds=", "18000 #faction#"};
+		{ 24, 35176, "", "=q4=Guardian's Plate Bracers", "=ds=", "13000 #faction#"};
+		{ 25, 35161, "", "=q4=Guardian's Plate Belt", "=ds=", "18000 #faction#"};
+		{ 26, 35146, "", "=q4=Guardian's Plate Greaves", "=ds=", "18000 #faction#"};
+		{ 28, 35178, "", "=q4=Guardian's Scaled Bracers", "=ds=", "13000 #faction#"};
+		{ 29, 35163, "", "=q4=Guardian's Scaled Belt", "=ds=", "18000 #faction#"};
+		{ 30, 35148, "", "=q4=Guardian's Scaled Greaves", "=ds=", "18000 #faction#"};
 		Prev = "PvP70NonSet1";
-		Next = "PvP70NonSet3";
-		Back = "PVP70NONSETEPICS";
-	};
-
-	AtlasLoot_Data["PvP70NonSet3"] = {
-		{ 1, 35168, "", "=q4=Guardian's Dreadweave Cuffs", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 2, 35153, "", "=q4=Guardian's Dreadweave Belt", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 3, 35138, "", "=q4=Guardian's Dreadweave Stalkers", "=ds=", "17850 #faction# 40 #eos#"};
-		{ 5, 35174, "", "=q4=Guardian's Mooncloth Cuffs", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 6, 35159, "", "=q4=Guardian's Mooncloth Belt", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 7, 35144, "", "=q4=Guardian's Mooncloth Slippers", "=ds=", "17850 #faction# 40 #eos#"};
-		{ 9, 35179, "", "=q4=Guardian's Silk Cuffs", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 10, 35164, "", "=q4=Guardian's Silk Belt", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 11, 35149, "", "=q4=Guardian's Silk Footguards", "=ds=", "17850 #faction# 40 #eos#"};
-		{ 16, 35167, "", "=q4=Guardian's Dragonhide Bracers", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 17, 35152, "", "=q4=Guardian's Dragonhide Belt", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 18, 35137, "", "=q4=Guardian's Dragonhide Boots", "=ds=", "17850 #faction# 40 #eos#"};
-		{ 20, 35169, "", "=q4=Guardian's Kodohide Bracers", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 21, 35154, "", "=q4=Guardian's Kodohide Belt", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 22, 35139, "", "=q4=Guardian's Kodohide Boots", "=ds=", "17850 #faction# 40 #eos#"};
-		{ 24, 35171, "", "=q4=Guardian's Leather Bracers", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 25, 35156, "", "=q4=Guardian's Leather Belt", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 26, 35141, "", "=q4=Guardian's Leather Boots", "=ds=", "17850 #faction# 40 #eos#"};
-		{ 28, 35180, "", "=q4=Guardian's Wyrmhide Bracers", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 29, 35165, "", "=q4=Guardian's Wyrmhide Belt", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 30, 35150, "", "=q4=Guardian's Wyrmhide Boots", "=ds=", "17850 #faction# 40 #eos#"};
-		Prev = "PvP70NonSet2";
-		Next = "PvP70NonSet4";
-		Back = "PVP70NONSETEPICS";
-	};
-
-
-	AtlasLoot_Data["PvP70NonSet4"] = {
-		{ 1, 35166, "", "=q4=Guardian's Chain Bracers", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 2, 35151, "", "=q4=Guardian's Chain Girdle", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 3, 35136, "", "=q4=Guardian's Chain Sabatons", "=ds=", "17850 #faction# 40 #eos#"};
-		{ 5, 35172, "", "=q4=Guardian's Linked Bracers", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 6, 35157, "", "=q4=Guardian's Linked Girdle", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 7, 35142, "", "=q4=Guardian's Linked Sabatons", "=ds=", "17850 #faction# 40 #eos#"};
-		{ 9, 35173, "", "=q4=Guardian's Mail Bracers", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 10, 35158, "", "=q4=Guardian's Mail Girdle", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 11, 35143, "", "=q4=Guardian's Mail Sabatons", "=ds=", "17850 #faction# 40 #eos#"};
-		{ 13, 35177, "", "=q4=Guardian's Ringmail Bracers", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 14, 35162, "", "=q4=Guardian's Ringmail Girdle", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 15, 35147, "", "=q4=Guardian's Ringmail Sabatons", "=ds=", "17850 #faction# 40 #eos#"};
-		{ 16, 35170, "", "=q4=Guardian's Lamellar Bracers", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 17, 35155, "", "=q4=Guardian's Lamellar Belt", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 18, 35140, "", "=q4=Guardian's Lamellar Greaves", "=ds=", "17850 #faction# 40 #eos#"};
-		{ 20, 35175, "", "=q4=Guardian's Ornamented Bracers", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 21, 35160, "", "=q4=Guardian's Ornamented Belt", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 22, 35145, "", "=q4=Guardian's Ornamented Greaves", "=ds=", "17850 #faction# 40 #eos#"};
-		{ 24, 35176, "", "=q4=Guardian's Plate Bracers", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 25, 35161, "", "=q4=Guardian's Plate Belt", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 26, 35146, "", "=q4=Guardian's Plate Greaves", "=ds=", "17850 #faction# 40 #eos#"};
-		{ 28, 35178, "", "=q4=Guardian's Scaled Bracers", "=ds=", "11794 #faction# 20 #wsg#"};
-		{ 29, 35163, "", "=q4=Guardian's Scaled Belt", "=ds=", "17850 #faction# 40 #ab#"};
-		{ 30, 35148, "", "=q4=Guardian's Scaled Greaves", "=ds=", "17850 #faction# 40 #eos#"};
-		Prev = "PvP70NonSet3";
-		Back = "PVP70NONSETEPICS";
+		Back = "PVPMENU";
 	};
 
 		--------------------------
 		--- Arena - Armor Sets ---
 		--------------------------
-		
+
 	AtlasLoot_Data["ArenaDruidFeral"] = {
 		{ 1, 0, "Ability_Druid_Maul", "=q6=#arenas1_1#", "=q1=#m21# #e15#"};
 		{ 2, 28127, "", "=q4=Gladiator's Dragonhide Helm", "=ds=#s1#"};
@@ -4027,27 +4025,27 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 28130, "", "=q4=Gladiator's Dragonhide Tunic", "=ds=#s5#"};
 		{ 5, 28126, "", "=q4=Gladiator's Dragonhide Gloves", "=ds=#s9#"};
 		{ 6, 28128, "", "=q4=Gladiator's Dragonhide Legguards", "=ds=#s11#"};
-		{ 8, 0, "Ability_Druid_Maul", "=q6=#arenas1_1#", "=q1=#m22# #e15#"};
-		{ 9, 31968, "", "=q4=Merciless Gladiator's Dragonhide Helm", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 31971, "", "=q4=Merciless Gladiator's Dragonhide Spaulders", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 31972, "", "=q4=Merciless Gladiator's Dragonhide Tunic", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 31967, "", "=q4=Merciless Gladiator's Dragonhide Gloves", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 31969, "", "=q4=Merciless Gladiator's Dragonhide Legguards", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Ability_Druid_Maul", "=q6=#arenas1_1#", ""};
-		{ 17, 33672, "", "=q4=Vengeful Gladiator's Dragonhide Helm", "=ds=", "1500 #arena#", ""};
-		{ 18, 33674, "", "=q4=Vengeful Gladiator's Dragonhide Spaulders", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33675, "", "=q4=Vengeful Gladiator's Dragonhide Tunic", "=ds=", "1500 #arena#", ""};
-		{ 20, 33671, "", "=q4=Vengeful Gladiator's Dragonhide Gloves", "=ds=", "900 #arena#", ""};
-		{ 21, 33673, "", "=q4=Vengeful Gladiator's Dragonhide Legguards", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Ability_Druid_Maul", "=q6=#arenas1_1#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 31968, "", "=q4=Merciless Gladiator's Dragonhide Helm", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 31971, "", "=q4=Merciless Gladiator's Dragonhide Spaulders", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 31972, "", "=q4=Merciless Gladiator's Dragonhide Tunic", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 31967, "", "=q4=Merciless Gladiator's Dragonhide Gloves", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 31969, "", "=q4=Merciless Gladiator's Dragonhide Legguards", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Ability_Druid_Maul", "=q6=#arenas1_1#", "=q1=#m36#"};
+		{ 17, 33672, "", "=q4=Vengeful Gladiator's Dragonhide Helm", "=ds=#s1#", ""};
+		{ 18, 33674, "", "=q4=Vengeful Gladiator's Dragonhide Spaulders", "=ds=#s3#", ""};
+		{ 19, 33675, "", "=q4=Vengeful Gladiator's Dragonhide Tunic", "=ds=#s5#", ""};
+		{ 20, 33671, "", "=q4=Vengeful Gladiator's Dragonhide Gloves", "=ds=#s9#", ""};
+		{ 21, 33673, "", "=q4=Vengeful Gladiator's Dragonhide Legguards", "=ds=#s11#", ""};
 		{ 23, 0, "Ability_Druid_Maul", "=q6=#arenas1_1#", ""};
-		{ 24, 34999, "", "=q4=Brutal Gladiator's Dragonhide Helm", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35001, "", "=q4=Brutal Gladiator's Dragonhide Spaulders", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35002, "", "=q4=Brutal Gladiator's Dragonhide Tunic", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 34999, "", "=q4=Brutal Gladiator's Dragonhide Helm", "=ds=", "1875 #arena#", ""};
+		{ 25, 35001, "", "=q4=Brutal Gladiator's Dragonhide Spaulders", "=ds=", "1500 #arena#", ""};
+		{ 26, 35002, "", "=q4=Brutal Gladiator's Dragonhide Tunic", "=ds=", "1875 #arena#", ""};
 		{ 27, 34998, "", "=q4=Brutal Gladiator's Dragonhide Gloves", "=ds=", "1125 #arena#", ""};
-		{ 28, 35000, "", "=q4=Brutal Gladiator's Dragonhide Legguards", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35000, "", "=q4=Brutal Gladiator's Dragonhide Legguards", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
-	
+
 	AtlasLoot_Data["ArenaDruidBalance"] = {
 		{ 1, 0, "Spell_Nature_InsectSwarm", "=q6=#arenas1_2#", "=q1=#m21# #e15#"};
 		{ 2, 28137, "", "=q4=Gladiator's Wyrmhide Helm", "=ds=#s1#"};
@@ -4055,24 +4053,24 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 28140, "", "=q4=Gladiator's Wyrmhide Tunic", "=ds=#s5#"};
 		{ 5, 28136, "", "=q4=Gladiator's Wyrmhide Gloves", "=ds=#s9#"};
 		{ 6, 28138, "", "=q4=Gladiator's Wyrmhide Legguards", "=ds=#s11#"};
-		{ 8, 0, "Spell_Nature_InsectSwarm", "=q6=#arenas1_2#", "=q1=#m22# #e15#"};
-		{ 9, 32057, "", "=q4=Merciless Gladiator's Wyrmhide Helm", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 32059, "", "=q4=Merciless Gladiator's Wyrmhide Spaulders", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 32060, "", "=q4=Merciless Gladiator's Wyrmhide Tunic", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 32056, "", "=q4=Merciless Gladiator's Wyrmhide Gloves", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 32058, "", "=q4=Merciless Gladiator's Wyrmhide Legguards", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Spell_Nature_InsectSwarm", "=q6=#arenas1_2#", ""};
-		{ 17, 33768, "", "=q4=Vengeful Gladiator's Wyrmhide Helm", "=ds=", "1500 #arena#", ""};
-		{ 18, 33770, "", "=q4=Vengeful Gladiator's Wyrmhide Spaulders", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33771, "", "=q4=Vengeful Gladiator's Wyrmhide Tunic", "=ds=", "1500 #arena#", ""};
-		{ 20, 33767, "", "=q4=Vengeful Gladiator's Wyrmhide Gloves", "=ds=", "900 #arena#", ""};
-		{ 21, 33769, "", "=q4=Vengeful Gladiator's Wyrmhide Legguards", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Spell_Nature_InsectSwarm", "=q6=#arenas1_2#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 32057, "", "=q4=Merciless Gladiator's Wyrmhide Helm", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 32059, "", "=q4=Merciless Gladiator's Wyrmhide Spaulders", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 32060, "", "=q4=Merciless Gladiator's Wyrmhide Tunic", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 32056, "", "=q4=Merciless Gladiator's Wyrmhide Gloves", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 32058, "", "=q4=Merciless Gladiator's Wyrmhide Legguards", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Spell_Nature_InsectSwarm", "=q6=#arenas1_2#", "=q1=#m36#"};
+		{ 17, 33768, "", "=q4=Vengeful Gladiator's Wyrmhide Helm", "=ds=#s1#", ""};
+		{ 18, 33770, "", "=q4=Vengeful Gladiator's Wyrmhide Spaulders", "=ds=#s3#", ""};
+		{ 19, 33771, "", "=q4=Vengeful Gladiator's Wyrmhide Tunic", "=ds=#s5#", ""};
+		{ 20, 33767, "", "=q4=Vengeful Gladiator's Wyrmhide Gloves", "=ds=#s9#", ""};
+		{ 21, 33769, "", "=q4=Vengeful Gladiator's Wyrmhide Legguards", "=ds=#s11#", ""};
 		{ 23, 0, "Spell_Nature_InsectSwarm", "=q6=#arenas1_2#", ""};
-		{ 24, 35112, "", "=q4=Brutal Gladiator's Wyrmhide Helm", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35114, "", "=q4=Brutal Gladiator's Wyrmhide Spaulders", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35115, "", "=q4=Brutal Gladiator's Wyrmhide Tunic", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35112, "", "=q4=Brutal Gladiator's Wyrmhide Helm", "=ds=", "1875 #arena#", ""};
+		{ 25, 35114, "", "=q4=Brutal Gladiator's Wyrmhide Spaulders", "=ds=", "1500 #arena#", ""};
+		{ 26, 35115, "", "=q4=Brutal Gladiator's Wyrmhide Tunic", "=ds=", "1875 #arena#", ""};
 		{ 27, 35111, "", "=q4=Brutal Gladiator's Wyrmhide Gloves", "=ds=", "1125 #arena#", ""};
-		{ 28, 35113, "", "=q4=Brutal Gladiator's Wyrmhide Legguards", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35113, "", "=q4=Brutal Gladiator's Wyrmhide Legguards", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
 
@@ -4083,24 +4081,24 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 31379, "", "=q4=Gladiator's Kodohide Tunic", "=ds=#s5#"};
 		{ 5, 31375, "", "=q4=Gladiator's Kodohide Gloves", "=ds=#s9#"};
 		{ 6, 31377, "", "=q4=Gladiator's Kodohide Legguards", "=ds=#s11#"};
-		{ 8, 0, "Spell_Nature_Regeneration", "=q6=#arenas1_3#", "=q1=#m22# #e15#"};
-		{ 9, 31988, "", "=q4=Merciless Gladiator's Kodohide Helm", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 31990, "", "=q4=Merciless Gladiator's Kodohide Spaulders", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 31991, "", "=q4=Merciless Gladiator's Kodohide Tunic", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 31987, "", "=q4=Merciless Gladiator's Kodohide Gloves", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 31989, "", "=q4=Merciless Gladiator's Kodohide Legguards", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Spell_Nature_Regeneration", "=q6=#arenas1_3#", ""};
-		{ 17, 33691, "", "=q4=Vengeful Gladiator's Kodohide Helm", "=ds=", "1500 #arena#", ""};
-		{ 18, 33693, "", "=q4=Vengeful Gladiator's Kodohide Spaulders", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33694, "", "=q4=Vengeful Gladiator's Kodohide Tunic", "=ds=", "1500 #arena#", ""};
-		{ 20, 33690, "", "=q4=Vengeful Gladiator's Kodohide Gloves", "=ds=", "900 #arena#", ""};
-		{ 21, 33692, "", "=q4=Vengeful Gladiator's Kodohide Legguards", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Spell_Nature_Regeneration", "=q6=#arenas1_3#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 31988, "", "=q4=Merciless Gladiator's Kodohide Helm", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 31990, "", "=q4=Merciless Gladiator's Kodohide Spaulders", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 31991, "", "=q4=Merciless Gladiator's Kodohide Tunic", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 31987, "", "=q4=Merciless Gladiator's Kodohide Gloves", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 31989, "", "=q4=Merciless Gladiator's Kodohide Legguards", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Spell_Nature_Regeneration", "=q6=#arenas1_3#", "=q1=#m36#"};
+		{ 17, 33691, "", "=q4=Vengeful Gladiator's Kodohide Helm", "=ds=#s1#", ""};
+		{ 18, 33693, "", "=q4=Vengeful Gladiator's Kodohide Spaulders", "=ds=#s3#", ""};
+		{ 19, 33694, "", "=q4=Vengeful Gladiator's Kodohide Tunic", "=ds=#s5#", ""};
+		{ 20, 33690, "", "=q4=Vengeful Gladiator's Kodohide Gloves", "=ds=#s9#", ""};
+		{ 21, 33692, "", "=q4=Vengeful Gladiator's Kodohide Legguards", "=ds=#s11#", ""};
 		{ 23, 0, "Spell_Nature_Regeneration", "=q6=#arenas1_3#", ""};
-		{ 24, 35023, "", "=q4=Brutal Gladiator's Kodohide Helm", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35025, "", "=q4=Brutal Gladiator's Kodohide Spaulders", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35026, "", "=q4=Brutal Gladiator's Kodohide Tunic", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35023, "", "=q4=Brutal Gladiator's Kodohide Helm", "=ds=", "1875 #arena#", ""};
+		{ 25, 35025, "", "=q4=Brutal Gladiator's Kodohide Spaulders", "=ds=", "1500 #arena#", ""};
+		{ 26, 35026, "", "=q4=Brutal Gladiator's Kodohide Tunic", "=ds=", "1875 #arena#", ""};
 		{ 27, 35022, "", "=q4=Brutal Gladiator's Kodohide Gloves", "=ds=", "1125 #arena#", ""};
-		{ 28, 35024, "", "=q4=Brutal Gladiator's Kodohide Legguards", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35024, "", "=q4=Brutal Gladiator's Kodohide Legguards", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
 
@@ -4111,27 +4109,27 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 28334, "", "=q4=Gladiator's Chain Armor", "=ds=#s5#"};
 		{ 5, 28335, "", "=q4=Gladiator's Chain Gauntlets", "=ds=#s9#"};
 		{ 6, 28332, "", "=q4=Gladiator's Chain Leggings", "=ds=#s11#"};
-		{ 8, 0, "Ability_Hunter_RunningShot", "=q6=#arenas2#", "=q1=#m22# #e15#"};
-		{ 9, 31962, "", "=q4=Merciless Gladiator's Chain Helm", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 31964, "", "=q4=Merciless Gladiator's Chain Spaulders", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 31960, "", "=q4=Merciless Gladiator's Chain Armor", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 31961, "", "=q4=Merciless Gladiator's Chain Gauntlets", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 31963, "", "=q4=Merciless Gladiator's Chain Leggings", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Ability_Hunter_RunningShot", "=q6=#arenas2#", ""};
-		{ 17, 33666, "", "=q4=Vengeful Gladiator's Chain Helm", "=ds=", "1500 #arena#", ""};
-		{ 18, 33668, "", "=q4=Vengeful Gladiator's Chain Spaulders", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33664, "", "=q4=Vengeful Gladiator's Chain Armor", "=ds=", "1500 #arena#", ""};
-		{ 20, 33665, "", "=q4=Vengeful Gladiator's Chain Gauntlets", "=ds=", "900 #arena#", ""};
-		{ 21, 33667, "", "=q4=Vengeful Gladiator's Chain Leggings", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Ability_Hunter_RunningShot", "=q6=#arenas2#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 31962, "", "=q4=Merciless Gladiator's Chain Helm", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 31964, "", "=q4=Merciless Gladiator's Chain Spaulders", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 31960, "", "=q4=Merciless Gladiator's Chain Armor", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 31961, "", "=q4=Merciless Gladiator's Chain Gauntlets", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 31963, "", "=q4=Merciless Gladiator's Chain Leggings", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Ability_Hunter_RunningShot", "=q6=#arenas2#", "=q1=#m36#"};
+		{ 17, 33666, "", "=q4=Vengeful Gladiator's Chain Helm", "=ds=#s1#", ""};
+		{ 18, 33668, "", "=q4=Vengeful Gladiator's Chain Spaulders", "=ds=#s3#", ""};
+		{ 19, 33664, "", "=q4=Vengeful Gladiator's Chain Armor", "=ds=#s5#", ""};
+		{ 20, 33665, "", "=q4=Vengeful Gladiator's Chain Gauntlets", "=ds=#s9#", ""};
+		{ 21, 33667, "", "=q4=Vengeful Gladiator's Chain Leggings", "=ds=#s11#", ""};
 		{ 23, 0, "Ability_Hunter_RunningShot", "=q6=#arenas2#", ""};
-		{ 24, 34992, "", "=q4=Brutal Gladiator's Chain Helm", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 34994, "", "=q4=Brutal Gladiator's Chain Spaulders", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 34990, "", "=q4=Brutal Gladiator's Chain Armor", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 34992, "", "=q4=Brutal Gladiator's Chain Helm", "=ds=", "1875 #arena#", ""};
+		{ 25, 34994, "", "=q4=Brutal Gladiator's Chain Spaulders", "=ds=", "1500 #arena#", ""};
+		{ 26, 34990, "", "=q4=Brutal Gladiator's Chain Armor", "=ds=", "1875 #arena#", ""};
 		{ 27, 34991, "", "=q4=Brutal Gladiator's Chain Gauntlets", "=ds=", "1125 #arena#", ""};
-		{ 28, 34993, "", "=q4=Brutal Gladiator's Chain Leggings", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 34993, "", "=q4=Brutal Gladiator's Chain Leggings", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
-	
+
 	AtlasLoot_Data["ArenaMage"] = {
 		{ 1, 0, "Spell_Frost_IceStorm", "=q6=#arenas3#", "=q1=#m21# #e15#"};
 		{ 2, 25855, "", "=q4=Gladiator's Silk Cowl", "=ds=#s1#"};
@@ -4139,27 +4137,27 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 25856, "", "=q4=Gladiator's Silk Raiment", "=ds=#s5#"};
 		{ 5, 25857, "", "=q4=Gladiator's Silk Handguards", "=ds=#s9#"};
 		{ 6, 25858, "", "=q4=Gladiator's Silk Trousers", "=ds=#s11#"};
-		{ 8, 0, "Spell_Frost_IceStorm", "=q6=#arenas3#", "=q1=#m22# #e15#"};
-		{ 9, 32048, "", "=q4=Merciless Gladiator's Silk Cowl", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 32047, "", "=q4=Merciless Gladiator's Silk Amice", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 32050, "", "=q4=Merciless Gladiator's Silk Raiment", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 32049, "", "=q4=Merciless Gladiator's Silk Handguards", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 32051, "", "=q4=Merciless Gladiator's Silk Trousers", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Spell_Frost_IceStorm", "=q6=#arenas3#", ""};
-		{ 17, 33758, "", "=q4=Vengeful Gladiator's Silk Cowl", "=ds=", "1500 #arena#", ""};
-		{ 18, 33757, "", "=q4=Vengeful Gladiator's Silk Amice", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33760, "", "=q4=Vengeful Gladiator's Silk Raiment", "=ds=", "1500 #arena#", ""};
-		{ 20, 33759, "", "=q4=Vengeful Gladiator's Silk Handguards", "=ds=", "900 #arena#", ""};
-		{ 21, 33761, "", "=q4=Vengeful Gladiator's Silk Trousers", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Spell_Frost_IceStorm", "=q6=#arenas3#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 32048, "", "=q4=Merciless Gladiator's Silk Cowl", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 32047, "", "=q4=Merciless Gladiator's Silk Amice", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 32050, "", "=q4=Merciless Gladiator's Silk Raiment", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 32049, "", "=q4=Merciless Gladiator's Silk Handguards", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 32051, "", "=q4=Merciless Gladiator's Silk Trousers", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Spell_Frost_IceStorm", "=q6=#arenas3#", "=q1=#m36#"};
+		{ 17, 33758, "", "=q4=Vengeful Gladiator's Silk Cowl", "=ds=#s1#", ""};
+		{ 18, 33757, "", "=q4=Vengeful Gladiator's Silk Amice", "=ds=#s3#", ""};
+		{ 19, 33760, "", "=q4=Vengeful Gladiator's Silk Raiment", "=ds=#s5#", ""};
+		{ 20, 33759, "", "=q4=Vengeful Gladiator's Silk Handguards", "=ds=#s9#", ""};
+		{ 21, 33761, "", "=q4=Vengeful Gladiator's Silk Trousers", "=ds=#s11#", ""};
 		{ 23, 0, "Spell_Frost_IceStorm", "=q6=#arenas3#", ""};
-		{ 24, 35097, "", "=q4=Brutal Gladiator's Silk Cowl", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35096, "", "=q4=Brutal Gladiator's Silk Amice", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35099, "", "=q4=Brutal Gladiator's Silk Raiment", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35097, "", "=q4=Brutal Gladiator's Silk Cowl", "=ds=", "1875 #arena#", ""};
+		{ 25, 35096, "", "=q4=Brutal Gladiator's Silk Amice", "=ds=", "1500 #arena#", ""};
+		{ 26, 35099, "", "=q4=Brutal Gladiator's Silk Raiment", "=ds=", "1875 #arena#", ""};
 		{ 27, 35098, "", "=q4=Brutal Gladiator's Silk Handguards", "=ds=", "1125 #arena#", ""};
-		{ 28, 35100, "", "=q4=Brutal Gladiator's Silk Trousers", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35100, "", "=q4=Brutal Gladiator's Silk Trousers", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
-	
+
 	AtlasLoot_Data["ArenaPaladinProtection"] = {
 		{ 1, 0, "Spell_Holy_SealOfMight", "=q6=#arenas4_1#", "=q1=#m21# #e15#"};
 		{ 2, 27704, "", "=q4=Gladiator's Lamellar Helm", "=ds=#s1#"};
@@ -4167,27 +4165,27 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 27702, "", "=q4=Gladiator's Lamellar Chestpiece", "=ds=#s5#"};
 		{ 5, 27703, "", "=q4=Gladiator's Lamellar Gauntlets", "=ds=#s9#"};
 		{ 6, 27705, "", "=q4=Gladiator's Lamellar Legguards", "=ds=#s11#"};
-		{ 8, 0, "Spell_Holy_SealOfMight", "=q6=#arenas4_1#", "=q1=#m22# #e15#"};
-		{ 9, 31997, "", "=q4=Merciless Gladiator's Lamellar Helm", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 31996, "", "=q4=Merciless Gladiator's Lamellar Shoulders", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 31992, "", "=q4=Merciless Gladiator's Lamellar Chestpiece", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 31993, "", "=q4=Merciless Gladiator's Lamellar Gauntlets", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 31995, "", "=q4=Merciless Gladiator's Lamellar Legguards", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Spell_Holy_SealOfMight", "=q6=#arenas4_1#", ""};
-		{ 17, 33697, "", "=q4=Vengeful Gladiator's Lamellar Helm", "=ds=", "1500 #arena#", ""};
-		{ 18, 33699, "", "=q4=Vengeful Gladiator's Lamellar Shoulders", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33695, "", "=q4=Vengeful Gladiator's Lamellar Chestpiece", "=ds=", "1500 #arena#", ""};
-		{ 20, 33696, "", "=q4=Vengeful Gladiator's Lamellar Gauntlets", "=ds=", "900 #arena#", ""};
-		{ 21, 33698, "", "=q4=Vengeful Gladiator's Lamellar Legguards", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Spell_Holy_SealOfMight", "=q6=#arenas4_1#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 31997, "", "=q4=Merciless Gladiator's Lamellar Helm", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 31996, "", "=q4=Merciless Gladiator's Lamellar Shoulders", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 31992, "", "=q4=Merciless Gladiator's Lamellar Chestpiece", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 31993, "", "=q4=Merciless Gladiator's Lamellar Gauntlets", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 31995, "", "=q4=Merciless Gladiator's Lamellar Legguards", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Spell_Holy_SealOfMight", "=q6=#arenas4_1#", "=q1=#m36#"};
+		{ 17, 33697, "", "=q4=Vengeful Gladiator's Lamellar Helm", "=ds=#s1#", ""};
+		{ 18, 33699, "", "=q4=Vengeful Gladiator's Lamellar Shoulders", "=ds=#s3#", ""};
+		{ 19, 33695, "", "=q4=Vengeful Gladiator's Lamellar Chestpiece", "=ds=#s5#", ""};
+		{ 20, 33696, "", "=q4=Vengeful Gladiator's Lamellar Gauntlets", "=ds=#s9#", ""};
+		{ 21, 33698, "", "=q4=Vengeful Gladiator's Lamellar Legguards", "=ds=#s11#", ""};
 		{ 23, 0, "Spell_Holy_SealOfMight", "=q6=#arenas4_1#", ""};
-		{ 24, 35029, "", "=q4=Brutal Gladiator's Lamellar Helm", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35031, "", "=q4=Brutal Gladiator's Lamellar Shoulders", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35027, "", "=q4=Brutal Gladiator's Lamellar Chestpiece", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35029, "", "=q4=Brutal Gladiator's Lamellar Helm", "=ds=", "1875 #arena#", ""};
+		{ 25, 35031, "", "=q4=Brutal Gladiator's Lamellar Shoulders", "=ds=", "1500 #arena#", ""};
+		{ 26, 35027, "", "=q4=Brutal Gladiator's Lamellar Chestpiece", "=ds=", "1875 #arena#", ""};
 		{ 27, 35028, "", "=q4=Brutal Gladiator's Lamellar Gauntlets", "=ds=", "1125 #arena#", ""};
-		{ 28, 35030, "", "=q4=Brutal Gladiator's Lamellar Legguards", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35030, "", "=q4=Brutal Gladiator's Lamellar Legguards", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
-	
+
 	AtlasLoot_Data["ArenaPaladinRetribution"] = {
 		{ 1, 0, "Spell_Holy_AuraOfLight", "=q6=#arenas4_2#", "=q1=#m21# #e15#"};
 		{ 2, 27881, "", "=q4=Gladiator's Scaled Helm", "=ds=#s1#"};
@@ -4195,27 +4193,27 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 27879, "", "=q4=Gladiator's Scaled Chestpiece", "=ds=#s5#"};
 		{ 5, 27880, "", "=q4=Gladiator's Scaled Gauntlets", "=ds=#s9#"};
 		{ 6, 27882, "", "=q4=Gladiator's Scaled Legguards", "=ds=#s11#"};
-		{ 8, 0, "Spell_Holy_AuraOfLight", "=q6=#arenas4_2#", "=q1=#m22# #e15#"};
-		{ 9, 32041, "", "=q4=Merciless Gladiator's Scaled Helm", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 32043, "", "=q4=Merciless Gladiator's Scaled Shoulders", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 32039, "", "=q4=Merciless Gladiator's Scaled Chestpiece", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 32040, "", "=q4=Merciless Gladiator's Scaled Gauntlets", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 32042, "", "=q4=Merciless Gladiator's Scaled Legguards", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Spell_Holy_AuraOfLight", "=q6=#arenas4_2#", ""};
-		{ 17, 33751, "", "=q4=Vengeful Gladiator's Scaled Helm", "=ds=", "1500 #arena#", ""};
-		{ 18, 33753, "", "=q4=Vengeful Gladiator's Scaled Shoulders", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33749, "", "=q4=Vengeful Gladiator's Scaled Chestpiece", "=ds=", "1500 #arena#", ""};
-		{ 20, 33750, "", "=q4=Vengeful Gladiator's Scaled Gauntlets", "=ds=", "900 #arena#", ""};
-		{ 21, 33752, "", "=q4=Vengeful Gladiator's Scaled Legguards", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Spell_Holy_AuraOfLight", "=q6=#arenas4_2#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 32041, "", "=q4=Merciless Gladiator's Scaled Helm", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 32043, "", "=q4=Merciless Gladiator's Scaled Shoulders", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 32039, "", "=q4=Merciless Gladiator's Scaled Chestpiece", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 32040, "", "=q4=Merciless Gladiator's Scaled Gauntlets", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 32042, "", "=q4=Merciless Gladiator's Scaled Legguards", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Spell_Holy_AuraOfLight", "=q6=#arenas4_2#", "=q1=#m36#"};
+		{ 17, 33751, "", "=q4=Vengeful Gladiator's Scaled Helm", "=ds=#s1#", ""};
+		{ 18, 33753, "", "=q4=Vengeful Gladiator's Scaled Shoulders", "=ds=#s3#", ""};
+		{ 19, 33749, "", "=q4=Vengeful Gladiator's Scaled Chestpiece", "=ds=#s5#", ""};
+		{ 20, 33750, "", "=q4=Vengeful Gladiator's Scaled Gauntlets", "=ds=#s9#", ""};
+		{ 21, 33752, "", "=q4=Vengeful Gladiator's Scaled Legguards", "=ds=#s11#", ""};
 		{ 23, 0, "Spell_Holy_AuraOfLight", "=q6=#arenas4_2#", ""};
-		{ 24, 35090, "", "=q4=Brutal Gladiator's Scaled Helm", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35092, "", "=q4=Brutal Gladiator's Scaled Shoulders", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35088, "", "=q4=Brutal Gladiator's Scaled Chestpiece", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35090, "", "=q4=Brutal Gladiator's Scaled Helm", "=ds=", "1875 #arena#", ""};
+		{ 25, 35092, "", "=q4=Brutal Gladiator's Scaled Shoulders", "=ds=", "1500 #arena#", ""};
+		{ 26, 35088, "", "=q4=Brutal Gladiator's Scaled Chestpiece", "=ds=", "1875 #arena#", ""};
 		{ 27, 35089, "", "=q4=Brutal Gladiator's Scaled Gauntlets", "=ds=", "1125 #arena#", ""};
-		{ 28, 35091, "", "=q4=Brutal Gladiator's Scaled Legguards", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35091, "", "=q4=Brutal Gladiator's Scaled Legguards", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
-	
+
 	AtlasLoot_Data["ArenaPaladinHoly"] = {
 		{ 1, 0, "Spell_Holy_HolyBolt", "=q6=#arenas4_3#", "=q1=#m21# #e15#"};
 		{ 2, 31616, "", "=q4=Gladiator's Ornamented Headcover", "=ds=#s1#"};
@@ -4223,27 +4221,27 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 31613, "", "=q4=Gladiator's Ornamented Chestguard", "=ds=#s5#"};
 		{ 5, 31614, "", "=q4=Gladiator's Ornamented Gloves", "=ds=#s9#"};
 		{ 6, 31618, "", "=q4=Gladiator's Ornamented Legplates", "=ds=#s11#"};
-		{ 8, 0, "Spell_Holy_HolyBolt", "=q6=#arenas4_3#", "=q1=#m22# #e15#"};
-		{ 9, 32022, "", "=q4=Merciless Gladiator's Ornamented Headcover", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 32024, "", "=q4=Merciless Gladiator's Ornamented Spaulders", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 32020, "", "=q4=Merciless Gladiator's Ornamented Chestguard", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 32021, "", "=q4=Merciless Gladiator's Ornamented Gloves", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 32023, "", "=q4=Merciless Gladiator's Ornamented Legplates", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Spell_Holy_HolyBolt", "=q6=#arenas4_3#", ""};
-		{ 17, 33724, "", "=q4=Vengeful Gladiator's Ornamented Headcover", "=ds=", "1500 #arena#", ""};
-		{ 18, 33726, "", "=q4=Vengeful Gladiator's Ornamented Spaulders", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33722, "", "=q4=Vengeful Gladiator's Ornamented Chestguard", "=ds=", "1500 #arena#", ""};
-		{ 20, 33723, "", "=q4=Vengeful Gladiator's Ornamented Gloves", "=ds=", "900 #arena#", ""};
-		{ 21, 33725, "", "=q4=Vengeful Gladiator's Ornamented Legplates", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Spell_Holy_HolyBolt", "=q6=#arenas4_3#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 32022, "", "=q4=Merciless Gladiator's Ornamented Headcover", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 32024, "", "=q4=Merciless Gladiator's Ornamented Spaulders", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 32020, "", "=q4=Merciless Gladiator's Ornamented Chestguard", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 32021, "", "=q4=Merciless Gladiator's Ornamented Gloves", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 32023, "", "=q4=Merciless Gladiator's Ornamented Legplates", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Spell_Holy_HolyBolt", "=q6=#arenas4_3#", "=q1=#m36#"};
+		{ 17, 33724, "", "=q4=Vengeful Gladiator's Ornamented Headcover", "=ds=#s1#", ""};
+		{ 18, 33726, "", "=q4=Vengeful Gladiator's Ornamented Spaulders", "=ds=#s3#", ""};
+		{ 19, 33722, "", "=q4=Vengeful Gladiator's Ornamented Chestguard", "=ds=#s5#", ""};
+		{ 20, 33723, "", "=q4=Vengeful Gladiator's Ornamented Gloves", "=ds=#s9#", ""};
+		{ 21, 33725, "", "=q4=Vengeful Gladiator's Ornamented Legplates", "=ds=#s11#", ""};
 		{ 23, 0, "Spell_Holy_HolyBolt", "=q6=#arenas4_3#", ""};
-		{ 24, 35061, "", "=q4=Brutal Gladiator's Ornamented Headcover", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35063, "", "=q4=Brutal Gladiator's Ornamented Spaulders", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35059, "", "=q4=Brutal Gladiator's Ornamented Chestguard", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35061, "", "=q4=Brutal Gladiator's Ornamented Headcover", "=ds=", "1875 #arena#", ""};
+		{ 25, 35063, "", "=q4=Brutal Gladiator's Ornamented Spaulders", "=ds=", "1500 #arena#", ""};
+		{ 26, 35059, "", "=q4=Brutal Gladiator's Ornamented Chestguard", "=ds=", "1875 #arena#", ""};
 		{ 27, 35060, "", "=q4=Brutal Gladiator's Ornamented Gloves", "=ds=", "1125 #arena#", ""};
-		{ 28, 35062, "", "=q4=Brutal Gladiator's Ornamented Legplates", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35062, "", "=q4=Brutal Gladiator's Ornamented Legplates", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
-	
+
 	AtlasLoot_Data["ArenaPriestShadow"] = {
 		{ 1, 0, "Spell_Shadow_AntiShadow", "=q6=#arenas5_1#", "=q1=#m21# #e15#"};
 		{ 2, 27708, "", "=q4=Gladiator's Satin Hood", "=ds=#s1#"};
@@ -4251,27 +4249,27 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 27711, "", "=q4=Gladiator's Satin Robe", "=ds=#s5#"};
 		{ 5, 27707, "", "=q4=Gladiator's Satin Gloves", "=ds=#s9#"};
 		{ 6, 27709, "", "=q4=Gladiator's Satin Leggings", "=ds=#s11#"};
-		{ 8, 0, "Spell_Shadow_AntiShadow", "=q6=#arenas5_1#", "=q1=#m22# #e15#"};
-		{ 9, 32035, "", "=q4=Merciless Gladiator's Satin Hood", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 32037, "", "=q4=Merciless Gladiator's Satin Mantle", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 32038, "", "=q4=Merciless Gladiator's Satin Robe", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 32034, "", "=q4=Merciless Gladiator's Satin Gloves", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 32036, "", "=q4=Merciless Gladiator's Satin Leggings", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Spell_Shadow_AntiShadow", "=q6=#arenas5_1#", ""};
-		{ 17, 33745, "", "=q4=Vengeful Gladiator's Satin Hood", "=ds=", "1500 #arena#", ""};
-		{ 18, 33747, "", "=q4=Vengeful Gladiator's Satin Mantle", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33748, "", "=q4=Vengeful Gladiator's Satin Robe", "=ds=", "1500 #arena#", ""};
-		{ 20, 33744, "", "=q4=Vengeful Gladiator's Satin Gloves", "=ds=", "900 #arena#", ""};
-		{ 21, 33746, "", "=q4=Vengeful Gladiator's Satin Leggings", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Spell_Shadow_AntiShadow", "=q6=#arenas5_1#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 32035, "", "=q4=Merciless Gladiator's Satin Hood", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 32037, "", "=q4=Merciless Gladiator's Satin Mantle", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 32038, "", "=q4=Merciless Gladiator's Satin Robe", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 32034, "", "=q4=Merciless Gladiator's Satin Gloves", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 32036, "", "=q4=Merciless Gladiator's Satin Leggings", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Spell_Shadow_AntiShadow", "=q6=#arenas5_1#", "=q1=#m36#"};
+		{ 17, 33745, "", "=q4=Vengeful Gladiator's Satin Hood", "=ds=#s1#", ""};
+		{ 18, 33747, "", "=q4=Vengeful Gladiator's Satin Mantle", "=ds=#s3#", ""};
+		{ 19, 33748, "", "=q4=Vengeful Gladiator's Satin Robe", "=ds=#s5#", ""};
+		{ 20, 33744, "", "=q4=Vengeful Gladiator's Satin Gloves", "=ds=#s9#", ""};
+		{ 21, 33746, "", "=q4=Vengeful Gladiator's Satin Leggings", "=ds=#s11#", ""};
 		{ 23, 0, "Spell_Shadow_AntiShadow", "=q6=#arenas5_1#", ""};
-		{ 24, 35084, "", "=q4=Brutal Gladiator's Satin Hood", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35086, "", "=q4=Brutal Gladiator's Satin Mantle", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35087, "", "=q4=Brutal Gladiator's Satin Robe", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35084, "", "=q4=Brutal Gladiator's Satin Hood", "=ds=", "1875 #arena#", ""};
+		{ 25, 35086, "", "=q4=Brutal Gladiator's Satin Mantle", "=ds=", "1500 #arena#", ""};
+		{ 26, 35087, "", "=q4=Brutal Gladiator's Satin Robe", "=ds=", "1875 #arena#", ""};
 		{ 27, 35083, "", "=q4=Brutal Gladiator's Satin Gloves", "=ds=", "1125 #arena#", ""};
-		{ 28, 35085, "", "=q4=Brutal Gladiator's Satin Leggings", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35085, "", "=q4=Brutal Gladiator's Satin Leggings", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
-	
+
 	AtlasLoot_Data["ArenaPriestHoly"] = {
 		{ 1, 0, "Spell_Holy_PowerWordShield", "=q6=#arenas5_2#", "=q1=#m21# #e15#"};
 		{ 2, 31410, "", "=q4=Gladiator's Mooncloth Hood", "=ds=#s1#"};
@@ -4279,24 +4277,24 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 31413, "", "=q4=Gladiator's Mooncloth Robe", "=ds=#s5#"};
 		{ 5, 31409, "", "=q4=Gladiator's Mooncloth Gloves", "=ds=#s9#"};
 		{ 6, 31411, "", "=q4=Gladiator's Mooncloth Leggings", "=ds=#s11#"};
-		{ 8, 0, "Spell_Holy_PowerWordShield", "=q6=#arenas5_2#", "=q1=#m22# #e15#"};
-		{ 9, 32016, "", "=q4=Merciless Gladiator's Mooncloth Hood", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 32018, "", "=q4=Merciless Gladiator's Mooncloth Mantle", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 32019, "", "=q4=Merciless Gladiator's Mooncloth Robe", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 32015, "", "=q4=Merciless Gladiator's Mooncloth Gloves", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 32017, "", "=q4=Merciless Gladiator's Mooncloth Leggings", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Spell_Holy_PowerWordShield", "=q6=#arenas5_2#", ""};
-		{ 17, 33718, "", "=q4=Vengeful Gladiator's Mooncloth Hood", "=ds=", "1500 #arena#", ""};
-		{ 18, 33720, "", "=q4=Vengeful Gladiator's Mooncloth Mantle", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33721, "", "=q4=Vengeful Gladiator's Mooncloth Robe", "=ds=", "1500 #arena#", ""};
-		{ 20, 33717, "", "=q4=Vengeful Gladiator's Mooncloth Gloves", "=ds=", "900 #arena#", ""};
-		{ 21, 33719, "", "=q4=Vengeful Gladiator's Mooncloth Leggings", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Spell_Holy_PowerWordShield", "=q6=#arenas5_2#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 32016, "", "=q4=Merciless Gladiator's Mooncloth Hood", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 32018, "", "=q4=Merciless Gladiator's Mooncloth Mantle", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 32019, "", "=q4=Merciless Gladiator's Mooncloth Robe", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 32015, "", "=q4=Merciless Gladiator's Mooncloth Gloves", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 32017, "", "=q4=Merciless Gladiator's Mooncloth Leggings", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Spell_Holy_PowerWordShield", "=q6=#arenas5_2#", "=q1=#m36#"};
+		{ 17, 33718, "", "=q4=Vengeful Gladiator's Mooncloth Hood", "=ds=#s1#", ""};
+		{ 18, 33720, "", "=q4=Vengeful Gladiator's Mooncloth Mantle", "=ds=#s3#", ""};
+		{ 19, 33721, "", "=q4=Vengeful Gladiator's Mooncloth Robe", "=ds=#s5#", ""};
+		{ 20, 33717, "", "=q4=Vengeful Gladiator's Mooncloth Gloves", "=ds=#s9#", ""};
+		{ 21, 33719, "", "=q4=Vengeful Gladiator's Mooncloth Leggings", "=ds=#s11#", ""};
 		{ 23, 0, "Spell_Holy_PowerWordShield", "=q6=#arenas5_2#", ""};
-		{ 24, 35054, "", "=q4=Brutal Gladiator's Mooncloth Hood", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35056, "", "=q4=Brutal Gladiator's Mooncloth Mantle", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35057, "", "=q4=Brutal Gladiator's Mooncloth Robe", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35054, "", "=q4=Brutal Gladiator's Mooncloth Hood", "=ds=", "1875 #arena#", ""};
+		{ 25, 35056, "", "=q4=Brutal Gladiator's Mooncloth Mantle", "=ds=", "1500 #arena#", ""};
+		{ 26, 35057, "", "=q4=Brutal Gladiator's Mooncloth Robe", "=ds=", "1875 #arena#", ""};
 		{ 27, 35053, "", "=q4=Brutal Gladiator's Mooncloth Gloves", "=ds=", "1125 #arena#", ""};
-		{ 28, 35055, "", "=q4=Brutal Gladiator's Mooncloth Leggings", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35055, "", "=q4=Brutal Gladiator's Mooncloth Leggings", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
 
@@ -4307,27 +4305,27 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 25831, "", "=q4=Gladiator's Leather Tunic", "=ds=#s5#"};
 		{ 5, 25834, "", "=q4=Gladiator's Leather Gloves", "=ds=#s9#"};
 		{ 6, 25833, "", "=q4=Gladiator's Leather Legguards", "=ds=#s11#"};
-		{ 8, 0, "Ability_BackStab", "=q6=#arenas6#", "=q1=#m22# #e15#"};
-		{ 9, 31999, "", "=q4=Merciless Gladiator's Leather Helm", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 32001, "", "=q4=Merciless Gladiator's Leather Spaulders", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 32002, "", "=q4=Merciless Gladiator's Leather Tunic", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 31998, "", "=q4=Merciless Gladiator's Leather Gloves", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 32000, "", "=q4=Merciless Gladiator's Leather Legguards", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Ability_BackStab", "=q6=#arenas6#", ""};
-		{ 17, 33701, "", "=q4=Vengeful Gladiator's Leather Helm", "=ds=", "1500 #arena#", ""};
-		{ 18, 33703, "", "=q4=Vengeful Gladiator's Leather Spaulders", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33704, "", "=q4=Vengeful Gladiator's Leather Tunic", "=ds=", "1500 #arena#", ""};
-		{ 20, 33700, "", "=q4=Vengeful Gladiator's Leather Gloves", "=ds=", "900 #arena#", ""};
-		{ 21, 33702, "", "=q4=Vengeful Gladiator's Leather Legguards", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Ability_BackStab", "=q6=#arenas6#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 31999, "", "=q4=Merciless Gladiator's Leather Helm", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 32001, "", "=q4=Merciless Gladiator's Leather Spaulders", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 32002, "", "=q4=Merciless Gladiator's Leather Tunic", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 31998, "", "=q4=Merciless Gladiator's Leather Gloves", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 32000, "", "=q4=Merciless Gladiator's Leather Legguards", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Ability_BackStab", "=q6=#arenas6#", "=q1=#m36#"};
+		{ 17, 33701, "", "=q4=Vengeful Gladiator's Leather Helm", "=ds=#s1#", ""};
+		{ 18, 33703, "", "=q4=Vengeful Gladiator's Leather Spaulders", "=ds=#s3#", ""};
+		{ 19, 33704, "", "=q4=Vengeful Gladiator's Leather Tunic", "=ds=#s5#", ""};
+		{ 20, 33700, "", "=q4=Vengeful Gladiator's Leather Gloves", "=ds=#s9#", ""};
+		{ 21, 33702, "", "=q4=Vengeful Gladiator's Leather Legguards", "=ds=#s11#", ""};
 		{ 23, 0, "Ability_BackStab", "=q6=#arenas6#", ""};
-		{ 24, 35033, "", "=q4=Brutal Gladiator's Leather Helm", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35035, "", "=q4=Brutal Gladiator's Leather Spaulders", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35036, "", "=q4=Brutal Gladiator's Leather Tunic", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35033, "", "=q4=Brutal Gladiator's Leather Helm", "=ds=", "1875 #arena#", ""};
+		{ 25, 35035, "", "=q4=Brutal Gladiator's Leather Spaulders", "=ds=", "1500 #arena#", ""};
+		{ 26, 35036, "", "=q4=Brutal Gladiator's Leather Tunic", "=ds=", "1875 #arena#", ""};
 		{ 27, 35032, "", "=q4=Brutal Gladiator's Leather Gloves", "=ds=", "1125 #arena#", ""};
-		{ 28, 35034, "", "=q4=Brutal Gladiator's Leather Legguards", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35034, "", "=q4=Brutal Gladiator's Leather Legguards", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
-	
+
 	AtlasLoot_Data["ArenaWarlockDemonology"] = {
 		{ 1, 0, "Spell_Shadow_CurseOfTounges", "=q6=#arenas8_1#", "=q1=#m21# #e15#"};
 		{ 2, 24553, "", "=q4=Gladiator's Dreadweave Hood", "=ds=#s1#"};
@@ -4335,27 +4333,27 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 24552, "", "=q4=Gladiator's Dreadweave Robe", "=ds=#s5#"};
 		{ 5, 24556, "", "=q4=Gladiator's Dreadweave Gloves", "=ds=#s9#"};
 		{ 6, 24555, "", "=q4=Gladiator's Dreadweave Leggings", "=ds=#s11#"};
-		{ 8, 0, "Spell_Shadow_CurseOfTounges", "=q6=#arenas8_1#", "=q1=#m22# #e15#"};
-		{ 9, 31974, "", "=q4=Merciless Gladiator's Dreadweave Hood", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 31976, "", "=q4=Merciless Gladiator's Dreadweave Mantle", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 31977, "", "=q4=Merciless Gladiator's Dreadweave Robe", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 31973, "", "=q4=Merciless Gladiator's Dreadweave Gloves", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 31975, "", "=q4=Merciless Gladiator's Dreadweave Leggings", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Spell_Shadow_CurseOfTounges", "=q6=#arenas8_1#", ""};
-		{ 17, 33677, "", "=q4=Vengeful Gladiator's Dreadweave Hood", "=ds=", "1500 #arena#", ""};
-		{ 18, 33679, "", "=q4=Vengeful Gladiator's Dreadweave Mantle", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33680, "", "=q4=Vengeful Gladiator's Dreadweave Robe", "=ds=", "1500 #arena#", ""};
-		{ 20, 33676, "", "=q4=Vengeful Gladiator's Dreadweave Gloves", "=ds=", "900 #arena#", ""};
-		{ 21, 33678, "", "=q4=Vengeful Gladiator's Dreadweave Leggings", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Spell_Shadow_CurseOfTounges", "=q6=#arenas8_1#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 31974, "", "=q4=Merciless Gladiator's Dreadweave Hood", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 31976, "", "=q4=Merciless Gladiator's Dreadweave Mantle", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 31977, "", "=q4=Merciless Gladiator's Dreadweave Robe", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 31973, "", "=q4=Merciless Gladiator's Dreadweave Gloves", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 31975, "", "=q4=Merciless Gladiator's Dreadweave Leggings", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Spell_Shadow_CurseOfTounges", "=q6=#arenas8_1#", "=q1=#m36#"};
+		{ 17, 33677, "", "=q4=Vengeful Gladiator's Dreadweave Hood", "=ds=#s1#", ""};
+		{ 18, 33679, "", "=q4=Vengeful Gladiator's Dreadweave Mantle", "=ds=#s3#", ""};
+		{ 19, 33680, "", "=q4=Vengeful Gladiator's Dreadweave Robe", "=ds=#s5#", ""};
+		{ 20, 33676, "", "=q4=Vengeful Gladiator's Dreadweave Gloves", "=ds=#s9#", ""};
+		{ 21, 33678, "", "=q4=Vengeful Gladiator's Dreadweave Leggings", "=ds=#s11#", ""};
 		{ 23, 0, "Spell_Shadow_CurseOfTounges", "=q6=#arenas8_1#", ""};
-		{ 24, 35004, "", "=q4=Brutal Gladiator's Dreadweave Hood", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35006, "", "=q4=Brutal Gladiator's Dreadweave Mantle", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35007, "", "=q4=Brutal Gladiator's Dreadweave Robe", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35004, "", "=q4=Brutal Gladiator's Dreadweave Hood", "=ds=", "1875 #arena#", ""};
+		{ 25, 35006, "", "=q4=Brutal Gladiator's Dreadweave Mantle", "=ds=", "1500 #arena#", ""};
+		{ 26, 35007, "", "=q4=Brutal Gladiator's Dreadweave Robe", "=ds=", "1875 #arena#", ""};
 		{ 27, 35003, "", "=q4=Brutal Gladiator's Dreadweave Gloves", "=ds=", "1125 #arena#", ""};
-		{ 28, 35005, "", "=q4=Brutal Gladiator's Dreadweave Leggings", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35005, "", "=q4=Brutal Gladiator's Dreadweave Leggings", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
-	
+
 	AtlasLoot_Data["ArenaWarlockDestruction"] = {
 		{ 1, 0, "Spell_Shadow_CurseOfTounges", "=q6=#arenas8_2#", "=q1=#m21# #e15#"};
 		{ 2, 30187, "", "=q4=Gladiator's Felweave Cowl", "=ds=#s1#"};
@@ -4363,27 +4361,26 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 30200, "", "=q4=Gladiator's Felweave Raiment", "=ds=#s5#"};
 		{ 5, 30188, "", "=q4=Gladiator's Felweave Handguards", "=ds=#s9#"};
 		{ 6, 30201, "", "=q4=Gladiator's Felweave Trousers", "=ds=#s11#"};
-		{ 8, 0, "Spell_Shadow_CurseOfTounges", "=q6=#arenas8_2#", "=q1=#m22# #e15#"};
-		{ 9, 31980, "", "=q4=Merciless Gladiator's Felweave Cowl", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 31979, "", "=q4=Merciless Gladiator's Felweave Amice", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 31982, "", "=q4=Merciless Gladiator's Felweave Raiment", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 31981, "", "=q4=Merciless Gladiator's Felweave Handguards", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 31983, "", "=q4=Merciless Gladiator's Felweave Trousers", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Spell_Shadow_CurseOfTounges", "=q6=#arenas8_2#", ""};
-		{ 17, 33683, "", "=q4=Vengeful Gladiator's Felweave Cowl", "=ds=", "1500 #arena#", ""};
-		{ 18, 33682, "", "=q4=Vengeful Gladiator's Felweave Amice", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33685, "", "=q4=Vengeful Gladiator's Felweave Raiment", "=ds=", "1500 #arena#", ""};
-		{ 20, 33684, "", "=q4=Vengeful Gladiator's Felweave Handguards", "=ds=", "900 #arena#", ""};
-		{ 21, 33686, "", "=q4=Vengeful Gladiator's Felweave Trousers", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Spell_Shadow_CurseOfTounges", "=q6=#arenas8_2#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 31980, "", "=q4=Merciless Gladiator's Felweave Cowl", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 31979, "", "=q4=Merciless Gladiator's Felweave Amice", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 31982, "", "=q4=Merciless Gladiator's Felweave Raiment", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 31981, "", "=q4=Merciless Gladiator's Felweave Handguards", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 31983, "", "=q4=Merciless Gladiator's Felweave Trousers", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Spell_Shadow_CurseOfTounges", "=q6=#arenas8_2#", "=q1=#m36#"};
+		{ 17, 33683, "", "=q4=Vengeful Gladiator's Felweave Cowl", "=ds=#s1#", ""};
+		{ 18, 33682, "", "=q4=Vengeful Gladiator's Felweave Amice", "=ds=#s3#", ""};
+		{ 19, 33685, "", "=q4=Vengeful Gladiator's Felweave Raiment", "=ds=#s5#", ""};
+		{ 20, 33684, "", "=q4=Vengeful Gladiator's Felweave Handguards", "=ds=#s9#", ""};
+		{ 21, 33686, "", "=q4=Vengeful Gladiator's Felweave Trousers", "=ds=#s11#", ""};
 		{ 23, 0, "Spell_Shadow_CurseOfTounges", "=q6=#arenas8_2#", ""};
-		{ 24, 35010, "", "=q4=Brutal Gladiator's Felweave Cowl", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35009, "", "=q4=Brutal Gladiator's Felweave Amice", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35012, "", "=q4=Brutal Gladiator's Felweave Raiment", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35010, "", "=q4=Brutal Gladiator's Felweave Cowl", "=ds=", "1875 #arena#", ""};
+		{ 25, 35009, "", "=q4=Brutal Gladiator's Felweave Amice", "=ds=", "1500 #arena#", ""};
+		{ 26, 35012, "", "=q4=Brutal Gladiator's Felweave Raiment", "=ds=", "1875 #arena#", ""};
 		{ 27, 35011, "", "=q4=Brutal Gladiator's Felweave Handguards", "=ds=", "1125 #arena#", ""};
-		{ 28, 35013, "", "=q4=Brutal Gladiator's Felweave Trousers", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35013, "", "=q4=Brutal Gladiator's Felweave Trousers", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
-
 
 	AtlasLoot_Data["ArenaShamanEnhancement"] = {
 		{ 1, 0, "Spell_FireResistanceTotem_01", "=q6=#arenas7_1#", "=q1=#m21# #e15#"};
@@ -4392,27 +4389,27 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 25997, "", "=q4=Gladiator's Linked Armor", "=ds=#s5#"};
 		{ 5, 26000, "", "=q4=Gladiator's Linked Gauntlets", "=ds=#s9#"};
 		{ 6, 26001, "", "=q4=Gladiator's Linked Leggings", "=ds=#s11#"};
-		{ 8, 0, "Spell_FireResistanceTotem_01", "=q6=#arenas7_1#", "=q1=#m22# #e15#"};
-		{ 9, 32006, "", "=q4=Merciless Gladiator's Linked Helm", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 32008, "", "=q4=Merciless Gladiator's Linked Spaulders", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 32004, "", "=q4=Merciless Gladiator's Linked Armor", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 32005, "", "=q4=Merciless Gladiator's Linked Gauntlets", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 32007, "", "=q4=Merciless Gladiator's Linked Leggings", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Spell_FireResistanceTotem_01", "=q6=#arenas7_1#", ""};
-		{ 17, 33708, "", "=q4=Vengeful Gladiator's Linked Helm", "=ds=", "1500 #arena#", ""};
-		{ 18, 33710, "", "=q4=Vengeful Gladiator's Linked Spaulders", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33706, "", "=q4=Vengeful Gladiator's Linked Armor", "=ds=", "1500 #arena#", ""};
-		{ 20, 33707, "", "=q4=Vengeful Gladiator's Linked Gauntlets", "=ds=", "900 #arena#", ""};
-		{ 21, 33709, "", "=q4=Vengeful Gladiator's Linked Leggings", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Spell_FireResistanceTotem_01", "=q6=#arenas7_1#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 32006, "", "=q4=Merciless Gladiator's Linked Helm", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 32008, "", "=q4=Merciless Gladiator's Linked Spaulders", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 32004, "", "=q4=Merciless Gladiator's Linked Armor", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 32005, "", "=q4=Merciless Gladiator's Linked Gauntlets", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 32007, "", "=q4=Merciless Gladiator's Linked Leggings", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Spell_FireResistanceTotem_01", "=q6=#arenas7_1#", "=q1=#m36#"};
+		{ 17, 33708, "", "=q4=Vengeful Gladiator's Linked Helm", "=ds=#s1#", ""};
+		{ 18, 33710, "", "=q4=Vengeful Gladiator's Linked Spaulders", "=ds=#s3#", ""};
+		{ 19, 33706, "", "=q4=Vengeful Gladiator's Linked Armor", "=ds=#s5#", ""};
+		{ 20, 33707, "", "=q4=Vengeful Gladiator's Linked Gauntlets", "=ds=#s9#", ""};
+		{ 21, 33709, "", "=q4=Vengeful Gladiator's Linked Leggings", "=ds=#s11#", ""};
 		{ 23, 0, "Spell_FireResistanceTotem_01", "=q6=#arenas7_1#", ""};
-		{ 24, 35044, "", "=q4=Brutal Gladiator's Linked Helm", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35046, "", "=q4=Brutal Gladiator's Linked Spaulders", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35042, "", "=q4=Brutal Gladiator's Linked Armor", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35044, "", "=q4=Brutal Gladiator's Linked Helm", "=ds=", "1875 #arena#", ""};
+		{ 25, 35046, "", "=q4=Brutal Gladiator's Linked Spaulders", "=ds=", "1500 #arena#", ""};
+		{ 26, 35042, "", "=q4=Brutal Gladiator's Linked Armor", "=ds=", "1875 #arena#", ""};
 		{ 27, 35043, "", "=q4=Brutal Gladiator's Linked Gauntlets", "=ds=", "1125 #arena#", ""};
-		{ 28, 35045, "", "=q4=Brutal Gladiator's Linked Leggings", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35045, "", "=q4=Brutal Gladiator's Linked Leggings", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
-	
+
 	AtlasLoot_Data["ArenaShamanElemental"] = {
 		{ 1, 0, "Spell_Nature_Lightning", "=q6=#arenas7_2#", "=q1=#m21# #e15#"};
 		{ 2, 27471, "", "=q4=Gladiator's Mail Helm", "=ds=#s1#"};
@@ -4420,24 +4417,24 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 27469, "", "=q4=Gladiator's Mail Armor", "=ds=#s5#"};
 		{ 5, 27470, "", "=q4=Gladiator's Mail Gauntlets", "=ds=#s9#"};
 		{ 6, 27472, "", "=q4=Gladiator's Mail Leggings", "=ds=#s11#"};
-		{ 8, 0, "Spell_Nature_Lightning", "=q6=#arenas7_2#", "=q1=#m22# #e15#"};
-		{ 9, 32011, "", "=q4=Merciless Gladiator's Mail Helm", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 32013, "", "=q4=Merciless Gladiator's Mail Spaulders", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 32009, "", "=q4=Merciless Gladiator's Mail Armor", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 32010, "", "=q4=Merciless Gladiator's Mail Gauntlets", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 32012, "", "=q4=Merciless Gladiator's Mail Leggings", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Spell_Nature_Lightning", "=q6=#arenas7_2#", ""};
-		{ 17, 33713, "", "=q4=Vengeful Gladiator's Mail Helm", "=ds=", "1500 #arena#", ""};
-		{ 18, 33715, "", "=q4=Vengeful Gladiator's Mail Spaulders", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33711, "", "=q4=Vengeful Gladiator's Mail Armor", "=ds=", "1500 #arena#", ""};
-		{ 20, 33712, "", "=q4=Vengeful Gladiator's Mail Gauntlets", "=ds=", "900 #arena#", ""};
-		{ 21, 33714, "", "=q4=Vengeful Gladiator's Mail Leggings", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Spell_Nature_Lightning", "=q6=#arenas7_2#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 32011, "", "=q4=Merciless Gladiator's Mail Helm", "=ds=#s1#", ""};
+		{ 10, 32013, "", "=q4=Merciless Gladiator's Mail Spaulders", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 32009, "", "=q4=Merciless Gladiator's Mail Armor", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 32010, "", "=q4=Merciless Gladiator's Mail Gauntlets", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 32012, "", "=q4=Merciless Gladiator's Mail Leggings", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Spell_Nature_Lightning", "=q6=#arenas7_2#", "=q1=#m36#"};
+		{ 17, 33713, "", "=q4=Vengeful Gladiator's Mail Helm", "=ds=#s1#", ""};
+		{ 18, 33715, "", "=q4=Vengeful Gladiator's Mail Spaulders", "=ds=#s3#", ""};
+		{ 19, 33711, "", "=q4=Vengeful Gladiator's Mail Armor", "=ds=#s5#", ""};
+		{ 20, 33712, "", "=q4=Vengeful Gladiator's Mail Gauntlets", "=ds=#s9#", ""};
+		{ 21, 33714, "", "=q4=Vengeful Gladiator's Mail Leggings", "=ds=#s11#", ""};
 		{ 23, 0, "Spell_Nature_Lightning", "=q6=#arenas7_2#", ""};
-		{ 24, 35050, "", "=q4=Brutal Gladiator's Mail Helm", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35052, "", "=q4=Brutal Gladiator's Mail Spaulders", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35048, "", "=q4=Brutal Gladiator's Mail Armor", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35050, "", "=q4=Brutal Gladiator's Mail Helm", "=ds=", "1875 #arena#", ""};
+		{ 25, 35052, "", "=q4=Brutal Gladiator's Mail Spaulders", "=ds=", "1500 #arena#", ""};
+		{ 26, 35048, "", "=q4=Brutal Gladiator's Mail Armor", "=ds=", "1875 #arena#", ""};
 		{ 27, 35049, "", "=q4=Brutal Gladiator's Mail Gauntlets", "=ds=", "1125 #arena#", ""};
-		{ 28, 35051, "", "=q4=Brutal Gladiator's Mail Leggings", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35051, "", "=q4=Brutal Gladiator's Mail Leggings", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
 
@@ -4448,24 +4445,24 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 31396, "", "=q4=Gladiator's Ringmail Armor", "=ds=#s5#"};
 		{ 5, 31397, "", "=q4=Gladiator's Ringmail Gauntlets", "=ds=#s9#"};
 		{ 6, 31406, "", "=q4=Gladiator's Ringmail Leggings", "=ds=#s11#"};
-		{ 8, 0, "Spell_Nature_HealingWaveGreater", "=q6=#arenas7_3#", "=q1=#m22# #e15#"};
-		{ 9, 32031, "", "=q4=Merciless Gladiator's Ringmail Helm", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 32033, "", "=q4=Merciless Gladiator's Ringmail Spaulders", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 32029, "", "=q4=Merciless Gladiator's Ringmail Armor", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 32030, "", "=q4=Merciless Gladiator's Ringmail Gauntlets", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 32032, "", "=q4=Merciless Gladiator's Ringmail Leggings", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Spell_Nature_HealingWaveGreater", "=q6=#arenas7_3#", ""};
-		{ 17, 33740, "", "=q4=Vengeful Gladiator's Ringmail Helm", "=ds=", "1500 #arena#", ""};
-		{ 18, 33742, "", "=q4=Vengeful Gladiator's Ringmail Spaulders", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33738, "", "=q4=Vengeful Gladiator's Ringmail Armor", "=ds=", "1500 #arena#", ""};
-		{ 20, 33739, "", "=q4=Vengeful Gladiator's Ringmail Gauntlets", "=ds=", "900 #arena#", ""};
-		{ 21, 33741, "", "=q4=Vengeful Gladiator's Ringmail Leggings", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Spell_Nature_HealingWaveGreater", "=q6=#arenas7_3#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 32031, "", "=q4=Merciless Gladiator's Ringmail Helm", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 32033, "", "=q4=Merciless Gladiator's Ringmail Spaulders", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 32029, "", "=q4=Merciless Gladiator's Ringmail Armor", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 32030, "", "=q4=Merciless Gladiator's Ringmail Gauntlets", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 32032, "", "=q4=Merciless Gladiator's Ringmail Leggings", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Spell_Nature_HealingWaveGreater", "=q6=#arenas7_3#", "=q1=#m36#"};
+		{ 17, 33740, "", "=q4=Vengeful Gladiator's Ringmail Helm", "=ds=#s1#", ""};
+		{ 18, 33742, "", "=q4=Vengeful Gladiator's Ringmail Spaulders", "=ds=#s3#", ""};
+		{ 19, 33738, "", "=q4=Vengeful Gladiator's Ringmail Armor", "=ds=#s5#", ""};
+		{ 20, 33739, "", "=q4=Vengeful Gladiator's Ringmail Gauntlets", "=ds=#s9#", ""};
+		{ 21, 33741, "", "=q4=Vengeful Gladiator's Ringmail Leggings", "=ds=#s11#", ""};
 		{ 23, 0, "Spell_Nature_HealingWaveGreater", "=q6=#arenas7_3#", ""};
-		{ 24, 35079, "", "=q4=Brutal Gladiator's Ringmail Helm", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35081, "", "=q4=Brutal Gladiator's Ringmail Spaulders", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35077, "", "=q4=Brutal Gladiator's Ringmail Armor", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35079, "", "=q4=Brutal Gladiator's Ringmail Helm", "=ds=", "1875 #arena#", ""};
+		{ 25, 35081, "", "=q4=Brutal Gladiator's Ringmail Spaulders", "=ds=", "1500 #arena#", ""};
+		{ 26, 35077, "", "=q4=Brutal Gladiator's Ringmail Armor", "=ds=", "1875 #arena#", ""};
 		{ 27, 35078, "", "=q4=Brutal Gladiator's Ringmail Gauntlets", "=ds=", "1125 #arena#", ""};
-		{ 28, 35080, "", "=q4=Brutal Gladiator's Ringmail Leggings", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35080, "", "=q4=Brutal Gladiator's Ringmail Leggings", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
 	};
 
@@ -4476,135 +4473,25 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 4, 24544, "", "=q4=Gladiator's Plate Chestpiece", "=ds=#s5#"};
 		{ 5, 24549, "", "=q4=Gladiator's Plate Gauntlets", "=ds=#s9#"};
 		{ 6, 24547, "", "=q4=Gladiator's Plate Legguards", "=ds=#s11#"};
-		{ 8, 0, "Ability_Warrior_BattleShout", "=q6=#arenas9#", "=q1=#m22# #e15#"};
-		{ 9, 30488, "", "=q4=Merciless Gladiator's Plate Helm", "=ds=", "14500 #faction# 30 #av#", ""};
-		{ 10, 30490, "", "=q4=Merciless Gladiator's Plate Shoulders", "=ds=", "11250 #faction# 20 #ab#", ""};
-		{ 11, 30486, "", "=q4=Merciless Gladiator's Plate Chestpiece", "=ds=", "14500 #faction# 30 #ab#", ""};
-		{ 12, 30487, "", "=q4=Merciless Gladiator's Plate Gauntlets", "=ds=", "10500 #faction# 20 #av#", ""};
-		{ 13, 30489, "", "=q4=Merciless Gladiator's Plate Legguards", "=ds=", "14500 #faction# 30 #wsg#", ""};
-		{ 16, 0, "Ability_Warrior_BattleShout", "=q6=#arenas9#", ""};
-		{ 17, 33730, "", "=q4=Vengeful Gladiator's Plate Helm", "=ds=", "1500 #arena#", ""};
-		{ 18, 33732, "", "=q4=Vengeful Gladiator's Plate Shoulders", "=ds=", "1200 #arena# #reqrating# 1950", ""};
-		{ 19, 33728, "", "=q4=Vengeful Gladiator's Plate Chestpiece", "=ds=", "1500 #arena#", ""};
-		{ 20, 33729, "", "=q4=Vengeful Gladiator's Plate Gauntlets", "=ds=", "900 #arena#", ""};
-		{ 21, 33731, "", "=q4=Vengeful Gladiator's Plate Legguards", "=ds=", "1500 #arena#", ""};
+		{ 8, 0, "Ability_Warrior_BattleShout", "=q6=#arenas9#", "=q1=#m22#/#m23# #e15#"};
+		{ 9, 30488, "", "=q4=Merciless Gladiator's Plate Helm", "=ds=#s1#", "15000 #faction#"};
+		{ 10, 30490, "", "=q4=Merciless Gladiator's Plate Shoulders", "=ds=#s3#", "13000 #faction#"};
+		{ 11, 30486, "", "=q4=Merciless Gladiator's Plate Chestpiece", "=ds=#s5#", "15000 #faction#"};
+		{ 12, 30487, "", "=q4=Merciless Gladiator's Plate Gauntlets", "=ds=#s9#", "12000 #faction#"};
+		{ 13, 30489, "", "=q4=Merciless Gladiator's Plate Legguards", "=ds=#s11#", "15000 #faction#"};
+		{ 16, 0, "Ability_Warrior_BattleShout", "=q6=#arenas9#", "=q1=#m36#"};
+		{ 17, 33730, "", "=q4=Vengeful Gladiator's Plate Helm", "=ds=#s1#", ""};
+		{ 18, 33732, "", "=q4=Vengeful Gladiator's Plate Shoulders", "=ds=#s3#", ""};
+		{ 19, 33728, "", "=q4=Vengeful Gladiator's Plate Chestpiece", "=ds=#s5#", ""};
+		{ 20, 33729, "", "=q4=Vengeful Gladiator's Plate Gauntlets", "=ds=#s9#", ""};
+		{ 21, 33731, "", "=q4=Vengeful Gladiator's Plate Legguards", "=ds=#s11#", ""};
 		{ 23, 0, "Ability_Warrior_BattleShout", "=q6=#arenas9#", ""};
-		{ 24, 35068, "", "=q4=Brutal Gladiator's Plate Helm", "=ds=", "1875 #arena# #reqrating# 1700", ""};
-		{ 25, 35070, "", "=q4=Brutal Gladiator's Plate Shoulders", "=ds=", "1500 #arena# #reqrating# 2200", ""};
-		{ 26, 35066, "", "=q4=Brutal Gladiator's Plate Chestpiece", "=ds=", "1875 #arena# #reqrating# 1600", ""};
+		{ 24, 35068, "", "=q4=Brutal Gladiator's Plate Helm", "=ds=", "1875 #arena#", ""};
+		{ 25, 35070, "", "=q4=Brutal Gladiator's Plate Shoulders", "=ds=", "1500 #arena#", ""};
+		{ 26, 35066, "", "=q4=Brutal Gladiator's Plate Chestpiece", "=ds=", "1875 #arena#", ""};
 		{ 27, 35067, "", "=q4=Brutal Gladiator's Plate Gauntlets", "=ds=", "1125 #arena#", ""};
-		{ 28, 35069, "", "=q4=Brutal Gladiator's Plate Legguards", "=ds=", "1875 #arena# #reqrating# 1550", ""};
+		{ 28, 35069, "", "=q4=Brutal Gladiator's Plate Legguards", "=ds=", "1875 #arena#", ""};
 		Back = "ARENASET";
-	};
-
-		--------------------------------
-		--- Arena Season 2 - Weapons ---
-		--------------------------------
-
-	AtlasLoot_Data["Arena2Weapons1"] = {
-		{ 1, 32028, "", "=q4=Merciless Gladiator's Right Ripper", "=ds=", "18000 #faction# 20 #eos#", ""};
-		{ 2, 32003, "", "=q4=Merciless Gladiator's Left Ripper", "=ds=", "9000 #faction# 20 #eos#", ""};
-		{ 3, 32053, "", "=q4=Merciless Gladiator's Spellblade", "=ds=", "25200 #faction# 20 #eos#", ""};
-		{ 4, 32044, "", "=q4=Merciless Gladiator's Shanker", "=ds=", "18000 #faction# 20 #eos#", ""};
-		{ 5, 32046, "", "=q4=Merciless Gladiator's Shiv", "=ds=", "9000 #faction# 20 #eos#", ""};
-		{ 6, 32052, "", "=q4=Merciless Gladiator's Slicer", "=ds=", "18000 #faction# 20 #eos#", ""};
-		{ 7, 32027, "", "=q4=Merciless Gladiator's Quickblade", "=ds=", "9000 #faction# 20 #eos#", ""};
-		{ 8, 31984, "", "=q4=Merciless Gladiator's Greatsword", "=ds=", "27000 #faction# 40 #av#", ""};
-		{ 9, 31965, "", "=q4=Merciless Gladiator's Cleaver", "=ds=", "18000 #faction# 20 #eos#", ""};
-		{ 10, 31985, "", "=q4=Merciless Gladiator's Hacker", "=ds=", "9000 #faction# 20 #eos#", ""};
-		{ 11, 31966, "", "=q4=Merciless Gladiator's Decapitator", "=ds=", "27000 #faction# 40 #av#", ""};
-		{ 12, 32963, "", "=q4=Merciless Gladiator's Gavel", "=ds=", "25200 #faction# 20 #eos#", ""};
-		{ 13, 32964, "", "=q4=Merciless Gladiator's Salvation", "=ds=", "25200 #faction# 20 #eos#", ""};
-		{ 14, 32026, "", "=q4=Merciless Gladiator's Pummeler", "=ds=", "18000 #faction# 20 #eos#", ""};
-		{ 15, 31958, "", "=q4=Merciless Gladiator's Bonecracker", "=ds=", "9000 #faction# 20 #eos#", ""};
-		{ 16, 31959, "", "=q4=Merciless Gladiator's Bonegrinder", "=ds=", "27000 #faction# 40 #av#", ""};
-		{ 17, 32014, "", "=q4=Merciless Gladiator's Maul", "=ds=", "27000 #faction# 40 #av#", ""};
-		{ 18, 32025, "", "=q4=Merciless Gladiator's Painsaw", "=ds=", "27000 #faction# 40 #av#", ""};
-		{ 19, 32055, "", "=q4=Merciless Gladiator's War Staff", "=ds=", "27000 #faction# 40 #av#", ""};
-		{ 20, 33313, "", "=q4=Merciless Gladiator's Barrier", "=ds=", "15000 #faction# 20 #eos#", ""};
-		{ 21, 33309, "", "=q4=Merciless Gladiator's Redoubt", "=ds=", "15000 #faction# 20 #eos#", ""};
-		{ 22, 32045, "", "=q4=Merciless Gladiator's Shield Wall", "=ds=", "15000 #faction# 20 #eos#", ""};
-		{ 23, 32054, "", "=q4=Merciless Gladiator's War Edge", "=ds=", "8000 #faction# 10 #eos#", ""};
-		{ 24, 31986, "", "=q4=Merciless Gladiator's Crossbow of the Phoenix", "=ds=", "27000 #faction# 40 #av#", ""};
-		{ 25, 32962, "", "=q4=Merciless Gladiator's Touch of Defeat", "=ds=", "8000 #faction# 10 #eos#", ""};
-		{ 26, 31978, "", "=q4=Merciless Gladiator's Endgame", "=ds=", "9000 #faction# 20 #eos#", ""};
-		{ 27, 32961, "", "=q4=Merciless Gladiator's Reprieve", "=ds=", "9000 #faction# 20 #eos#", ""};
-		Next = "Arena2Weapons2";
-		Back = "LEVEL70PVPREWARDS";
-	};
-
-	AtlasLoot_Data["Arena2Weapons2"] = {
-		{ 1, 33946, "", "=q4=Merciless Gladiator's Idol of Resolve", "=ds=", "8000 #faction# 10 #eos#", ""};
-		{ 2, 33943, "", "=q4=Merciless Gladiator's Idol of Steadfastness", "=ds=", "8000 #faction# 10 #eos#", ""};
-		{ 3, 33076, "", "=q4=Merciless Gladiator's Idol of Tenacity", "=ds=", "8000 #faction# 10 #eos#", ""};
-		{ 4, 33937, "", "=q4=Merciless Gladiator's Libram of Fortitude", "=ds=", "8000 #faction# 10 #eos#", ""};
-		{ 5, 33077, "", "=q4=Merciless Gladiator's Libram of Justice", "=ds=", "8000 #faction# 10 #eos#", ""};
-		{ 6, 33949, "", "=q4=Merciless Gladiator's Libram of Vengeance", "=ds=", "8000 #faction# 10 #eos#", ""};
-		{ 7, 33940, "", "=q4=Merciless Gladiator's Totem of Indomitability", "=ds=", "8000 #faction# 10 #eos#", ""};
-		{ 8, 33952, "", "=q4=Merciless Gladiator's Totem of Survival", "=ds=", "8000 #faction# 10 #eos#", ""};
-		{ 9, 33078, "", "=q4=Merciless Gladiator's Totem of the Third Wind", "=ds=", "8000 #faction# 10 #eos#", ""};
-		Prev = "Arena2Weapons1";
-		Back = "LEVEL70PVPREWARDS";
-	};
-
-		--------------------------------
-		--- Arena Season 3 - Weapons ---
-		--------------------------------
-
-	AtlasLoot_Data["Arena3Weapons1"] = {
-		{ 1, 33737, "", "=q4=Vengeful Gladiator's Right Ripper", "=ds=", "2100 #arena# #reqrating# 1800", ""};
-		{ 2, 33705, "", "=q4=Vengeful Gladiator's Left Ripper", "=ds=", "900 #arena# #reqrating# 1800", ""};
-		{ 3, 34016, "", "=q4=Vengeful Gladiator's Left Render", "=ds=", "900 #arena# #reqrating# 1800", ""};
-		{ 4, 33763, "", "=q4=Vengeful Gladiator's Spellblade", "=ds=", "2520 #arena# #reqrating# 1800", ""};
-		{ 5, 33754, "", "=q4=Vengeful Gladiator's Shanker", "=ds=", "2100 #arena# #reqrating# 1800", ""};
-		{ 6, 33801, "", "=q4=Vengeful Gladiator's Mutilator", "=ds=", "900 #arena# #reqrating# 1800", ""};
-		{ 7, 33756, "", "=q4=Vengeful Gladiator's Shiv", "=ds=", "900 #arena# #reqrating# 1800", ""};
-		{ 8, 33762, "", "=q4=Vengeful Gladiator's Slicer", "=ds=", "2100 #arena# #reqrating# 1800", ""};
-		{ 9, 33734, "", "=q4=Vengeful Gladiator's Quickblade", "=ds=", "900 #arena# #reqrating# 1800", ""};
-		{ 10, 33688, "", "=q4=Vengeful Gladiator's Greatsword", "=ds=", "3000 #arena# #reqrating# 1800", ""};
-		{ 11, 33669, "", "=q4=Vengeful Gladiator's Cleaver", "=ds=", "2100 #arena# #reqrating# 1800", ""};
-		{ 12, 34015, "", "=q4=Vengeful Gladiator's Chopper", "=ds=", "900 #arena# #reqrating# 1800", ""};
-		{ 13, 33689, "", "=q4=Vengeful Gladiator's Hacker", "=ds=", "900 #arena# #reqrating# 1800", ""};
-		{ 14, 33670, "", "=q4=Vengeful Gladiator's Decapitator", "=ds=", "3000 #arena# #reqrating# 1800", ""};
-		{ 15, 34014, "", "=q4=Vengeful Gladiator's Waraxe", "=ds=", "800 #arena#", ""};
-		{ 16, 33687, "", "=q4=Vengeful Gladiator's Gavel", "=ds=", "2520 #arena# #reqrating# 1800", ""};
-		{ 17, 33743, "", "=q4=Vengeful Gladiator's Salvation", "=ds=", "2520 #arena# #reqrating# 1800", ""};
-		{ 18, 33733, "", "=q4=Vengeful Gladiator's Pummeler", "=ds=", "2100 #arena# #reqrating# 1800", ""};
-		{ 19, 33662, "", "=q4=Vengeful Gladiator's Bonecracker", "=ds=", "2520 #arena# #reqrating# 1800", ""};
-		{ 20, 33663, "", "=q4=Vengeful Gladiator's Bonegrinder", "=ds=", "3000 #arena# #reqrating# 1800", ""};
-		{ 21, 33727, "", "=q4=Vengeful Gladiator's Painsaw", "=ds=", "3000 #arena# #reqrating# 1800", ""};
-		{ 22, 34540, "", "=q4=Vengeful Gladiator's Battle Staff", "=ds=", "3000 #arena# #reqrating# 1800", ""};
-		{ 23, 33716, "", "=q4=Vengeful Gladiator's Staff", "=ds=", "3000 #arena# #reqrating# 1800", ""};
-		{ 24, 33766, "", "=q4=Vengeful Gladiator's War Staff", "=ds=", "3000 #arena# #reqrating# 1800", ""};
-		Next = "Arena3Weapons2";
-		Back = "LEVEL70PVPREWARDS";
-	};
-
-	AtlasLoot_Data["Arena3Weapons2"] = {
-		{ 1, 33661, "", "=q4=Vengeful Gladiator's Barrier", "=ds=", "1500 #arena# #reqrating# 1800", ""};
-		{ 2, 33735, "", "=q4=Vengeful Gladiator's Redoubt", "=ds=", "1500 #arena# #reqrating# 1800", ""};
-		{ 3, 33755, "", "=q4=Vengeful Gladiator's Shield Wall", "=ds=", "1500 #arena# #reqrating# 1800", ""};
-		{ 4, 33765, "", "=q4=Vengeful Gladiator's War Edge", "=ds=", "800 #arena#", ""};
-		{ 5, 34529, "", "=q4=Vengeful Gladiator's Longbow", "=ds=", "3000 #arena# #reqrating# 1800", ""};
-		{ 6, 33006, "", "=q4=Vengeful Gladiator's Heavy Crossbow", "=ds=", "3000 #arena# #reqrating# 1800", ""};
-		{ 7, 34530, "", "=q4=Vengeful Gladiator's Rifle", "=ds=", "3000 #arena# #reqrating# 1800", ""};
-		{ 8, 34059, "", "=q4=Vengeful Gladiator's Baton of Light", "=ds=", "800 #arena#", ""};
-		{ 9, 34066, "", "=q4=Vengeful Gladiator's Piercing Touch", "=ds=", "800 #arena#", ""};
-		{ 10, 33764, "", "=q4=Vengeful Gladiator's Touch of Defeat", "=ds=", "800 #arena#", ""};
-		{ 11, 33681, "", "=q4=Vengeful Gladiator's Endgame", "=ds=", "900 #arena#", ""};
-		{ 12, 34033, "", "=q4=Vengeful Gladiator's Grimoire", "=ds=", "900 #arena#", ""};
-		{ 13, 33736, "", "=q4=Vengeful Gladiator's Reprieve", "=ds=", "900 #arena#", ""};
-		{ 16, 33947, "", "=q4=Vengeful Gladiator's Idol of Resolve", "=ds=", "800 #arena#", ""};
-		{ 17, 33944, "", "=q4=Vengeful Gladiator's Idol of Steadfastness", "=ds=", "800 #arena#", ""};
-		{ 18, 33841, "", "=q4=Vengeful Gladiator's Idol of Tenacity", "=ds=", "800 #arena#", ""};
-		{ 19, 33938, "", "=q4=Vengeful Gladiator's Libram of Fortitude", "=ds=", "800 #arena#", ""};
-		{ 20, 33842, "", "=q4=Vengeful Gladiator's Libram of Justice", "=ds=", "800 #arena#", ""};
-		{ 21, 33950, "", "=q4=Vengeful Gladiator's Libram of Vengeance", "=ds=", "800 #arena#", ""};
-		{ 22, 33941, "", "=q4=Vengeful Gladiator's Totem of Indomitability", "=ds=", "800 #arena#", ""};
-		{ 23, 33953, "", "=q4=Vengeful Gladiator's Totem of Survival", "=ds=", "800 #arena#", ""};
-		{ 24, 33843, "", "=q4=Vengeful Gladiator's Totem of the Third Wind", "=ds=", "800 #arena#", ""};
-		Prev = "Arena3Weapons1";
-		Back = "LEVEL70PVPREWARDS";
 	};
 
 		--------------------------------
@@ -4612,62 +4499,62 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		--------------------------------
 
 	AtlasLoot_Data["Arena4Weapons1"] = {
-		{ 1, 35076, "", "=q4=Brutal Gladiator's Right Ripper", "=ds=", "2625 #arena# #reqrating# 2050", ""};
-		{ 2, 35038, "", "=q4=Brutal Gladiator's Left Ripper", "=ds=", "1125 #arena# #reqrating# 2050", ""};
-		{ 3, 35037, "", "=q4=Brutal Gladiator's Left Render", "=ds=", "1125 #arena# #reqrating# 2050", ""};
-		{ 4, 35102, "", "=q4=Brutal Gladiator's Spellblade", "=ds=", "3150 #arena# #reqrating# 2050", ""};
-		{ 5, 37739, "", "=q4=Brutal Gladiator's Blade of Alacrity", "=ds=", "3150 #arena# #reqrating# 2050", ""};
-		{ 6, 35093, "", "=q4=Brutal Gladiator's Shanker", "=ds=", "2625 #arena# #reqrating# 2050", ""};
-		{ 7, 35058, "", "=q4=Brutal Gladiator's Mutilator", "=ds=", "1125 #arena# #reqrating# 2050", ""};
-		{ 8, 35095, "", "=q4=Brutal Gladiator's Shiv", "=ds=", "1125 #arena# #reqrating# 2050", ""};
-		{ 9, 35101, "", "=q4=Brutal Gladiator's Slicer", "=ds=", "2625 #arena# #reqrating# 2050", ""};
-		{ 10, 35072, "", "=q4=Brutal Gladiator's Quickblade", "=ds=", "1125 #arena# #reqrating# 2050", ""};
-		{ 11, 35015, "", "=q4=Brutal Gladiator's Greatsword", "=ds=", "3750 #arena# #reqrating# 2050", ""};
-		{ 12, 34996, "", "=q4=Brutal Gladiator's Cleaver", "=ds=", "2625 #arena# #reqrating# 2050", ""};
-		{ 13, 34995, "", "=q4=Brutal Gladiator's Chopper", "=ds=", "1125 #arena# #reqrating# 2050", ""};
-		{ 14, 36737, "", "=q4=Brutal Gladiator's Hatchet", "=ds=", "1000 #arena# #reqrating# 2050", ""};
-		{ 15, 35017, "", "=q4=Brutal Gladiator's Hacker", "=ds=", "1125 #arena# #reqrating# 2050", ""};
-		{ 16, 34997, "", "=q4=Brutal Gladiator's Decapitator", "=ds=", "3750 #arena# #reqrating# 2050", ""};
-		{ 17, 35110, "", "=q4=Brutal Gladiator's Waraxe", "=ds=", "1000 #arena# #reqrating# 2050", ""};
-		{ 18, 35014, "", "=q4=Brutal Gladiator's Gavel", "=ds=", "3150 #arena# #reqrating# 2050", ""};
-		{ 19, 35082, "", "=q4=Brutal Gladiator's Salvation", "=ds=", "3150 #arena# #reqrating# 2050", ""};
-		{ 20, 37740, "", "=q4=Brutal Gladiator's Swift Judgement", "=ds=", "3150 #arena# #reqrating# 2050", ""};
-		{ 21, 35071, "", "=q4=Brutal Gladiator's Pummeler", "=ds=", "2625 #arena# #reqrating# 2050", ""};
-		{ 22, 34988, "", "=q4=Brutal Gladiator's Bonecracker", "=ds=", "3150 #arena# #reqrating# 2050", ""};
-		{ 23, 34989, "", "=q4=Brutal Gladiator's Bonegrinder", "=ds=", "3750 #arena# #reqrating# 2050", ""};
-		{ 24, 35064, "", "=q4=Brutal Gladiator's Painsaw", "=ds=", "3750 #arena# #reqrating# 2050", ""};
-		{ 25, 34987, "", "=q4=Brutal Gladiator's Battle Staff", "=ds=", "3750 #arena# #reqrating# 2050", ""};
-		{ 26, 35103, "", "=q4=Brutal Gladiator's Staff", "=ds=", "3750 #arena# #reqrating# 2050", ""};
-		{ 27, 35109, "", "=q4=Brutal Gladiator's War Staff", "=ds=", "3750 #arena# #reqrating# 2050", ""};
+		{ 1, 35076, "", "=q4=Brutal Gladiator's Right Ripper", "=ds=#h3#, #w13#", "2625 #arena#", ""};
+		{ 2, 35038, "", "=q4=Brutal Gladiator's Left Ripper", "=ds=#h4#, #w13#", "1125 #arena#", ""};
+		{ 3, 35037, "", "=q4=Brutal Gladiator's Left Render", "=ds=#h4#, #w13#", "1125 #arena#", ""};
+		{ 4, 35102, "", "=q4=Brutal Gladiator's Spellblade", "=ds=#h3#, #w4#", "3150 #arena#", ""};
+		{ 5, 37739, "", "=q4=Brutal Gladiator's Blade of Alacrity", "=ds=#h3#, #w4#", "3150 #arena#", ""};
+		{ 6, 35093, "", "=q4=Brutal Gladiator's Shanker", "=ds=#h1#, #w4#", "2625 #arena#", ""};
+		{ 7, 35058, "", "=q4=Brutal Gladiator's Mutilator", "=ds=#h4#, #w4#", "1125 #arena#", ""};
+		{ 8, 35095, "", "=q4=Brutal Gladiator's Shiv", "=ds=#h4#, #w4#", "1125 #arena#", ""};
+		{ 9, 35101, "", "=q4=Brutal Gladiator's Slicer", "=ds=#h1#, #w10#", "2625 #arena#", ""};
+		{ 10, 35072, "", "=q4=Brutal Gladiator's Quickblade", "=ds=#h4#, #w10#", "1125 #arena#", ""};
+		{ 11, 35015, "", "=q4=Brutal Gladiator's Greatsword", "=ds=#h2#, #w10#", "3750 #arena#", ""};
+		{ 12, 34996, "", "=q4=Brutal Gladiator's Cleaver", "=ds=#h1#, #w1#", "2625 #arena#", ""};
+		{ 13, 34995, "", "=q4=Brutal Gladiator's Chopper", "=ds=#h4#, #w1#", "1125 #arena#", ""};
+		{ 14, 36737, "", "=q4=Brutal Gladiator's Hatchet", "=ds=#h4#, #w1#", "650 #arena#", ""};
+		{ 15, 35017, "", "=q4=Brutal Gladiator's Hacker", "=ds=#h4#, #w1#", "1125 #arena#", ""};
+		{ 16, 34997, "", "=q4=Brutal Gladiator's Decapitator", "=ds=#h2#, #w1#", "3750 #arena#", ""};
+		{ 17, 35110, "", "=q4=Brutal Gladiator's Waraxe", "=ds=#h3#, #w1#", "650 #arena#", ""};
+		{ 18, 35014, "", "=q4=Brutal Gladiator's Gavel", "=ds=#h3#, #w6#", "3150 #arena#", ""};
+		{ 19, 35082, "", "=q4=Brutal Gladiator's Salvation", "=ds=#h3#, #w6#", "3150 #arena#", ""};
+		{ 20, 37740, "", "=q4=Brutal Gladiator's Swift Judgement", "=ds=#h3#, #w6#", "3150 #arena#", ""};
+		{ 21, 35071, "", "=q4=Brutal Gladiator's Pummeler", "=ds=#h1#, #w6#", "2625 #arena#", ""};
+		{ 22, 34988, "", "=q4=Brutal Gladiator's Bonecracker", "=ds=#h4#, #w6#", "3150 #arena#", ""};
+		{ 23, 34989, "", "=q4=Brutal Gladiator's Bonegrinder", "=ds=#h2#, #w6#", "3750 #arena#", ""};
+		{ 24, 35064, "", "=q4=Brutal Gladiator's Painsaw", "=ds=#w7#", "3750 #arena#", ""};
+		{ 25, 34987, "", "=q4=Brutal Gladiator's Battle Staff", "=ds=#w9#", "3750 #arena#", ""};
+		{ 26, 35103, "", "=q4=Brutal Gladiator's Staff", "=ds=#w9#", "3750 #arena#", ""};
+		{ 27, 35109, "", "=q4=Brutal Gladiator's War Staff", "=ds=#w9#", "3750 #arena#", ""};
 		Next = "Arena4Weapons2";
-		Back = "LEVEL70PVPREWARDS";
+		Back = "PVPMENU";
 	};
 
 	AtlasLoot_Data["Arena4Weapons2"] = {
-		{ 1, 34986, "", "=q4=Brutal Gladiator's Barrier", "=ds=", "1875 #arena# #reqrating# 2050", ""};
-		{ 2, 35073, "", "=q4=Brutal Gladiator's Redoubt", "=ds=", "1875 #arena# #reqrating# 2050", ""};
-		{ 3, 35094, "", "=q4=Brutal Gladiator's Shield Wall", "=ds=", "1875 #arena# #reqrating# 2050", ""};
-		{ 4, 35108, "", "=q4=Brutal Gladiator's War Edge", "=ds=", "1000 #arena#", ""};
-		{ 5, 35047, "", "=q4=Brutal Gladiator's Longbow", "=ds=", "3750 #arena# #reqrating# 2050", ""};
-		{ 6, 35018, "", "=q4=Brutal Gladiator's Heavy Crossbow", "=ds=", "3750 #arena# #reqrating# 2050", ""};
-		{ 7, 35075, "", "=q4=Brutal Gladiator's Rifle", "=ds=", "3750 #arena# #reqrating# 2050", ""};
-		{ 8, 34985, "", "=q4=Brutal Gladiator's Baton of Light", "=ds=", "1000 #arena#", ""};
-		{ 9, 35065, "", "=q4=Brutal Gladiator's Piercing Touch", "=ds=", "1000 #arena#", ""};
-		{ 10, 35107, "", "=q4=Brutal Gladiator's Touch of Defeat", "=ds=", "1000 #arena#", ""};
-		{ 11, 35008, "", "=q4=Brutal Gladiator's Endgame", "=ds=", "1125 #arena#", ""};
-		{ 12, 35016, "", "=q4=Brutal Gladiator's Grimoire", "=ds=", "1125 #arena#", ""};
-		{ 13, 35074, "", "=q4=Brutal Gladiator's Reprieve", "=ds=", "1125 #arena#", ""};
-		{ 16, 35019, "", "=q4=Brutal Gladiator's Idol of Resolve", "=ds=", "1000 #arena#", ""};
-		{ 17, 35020, "", "=q4=Brutal Gladiator's Idol of Steadfastness", "=ds=", "1000 #arena#", ""};
-		{ 18, 35021, "", "=q4=Brutal Gladiator's Idol of Tenacity", "=ds=", "1000 #arena#", ""};
-		{ 19, 35039, "", "=q4=Brutal Gladiator's Libram of Fortitude", "=ds=", "1000 #arena#", ""};
-		{ 20, 35040, "", "=q4=Brutal Gladiator's Libram of Justice", "=ds=", "1000 #arena#", ""};
-		{ 21, 35041, "", "=q4=Brutal Gladiator's Libram of Vengeance", "=ds=", "1000 #arena#", ""};
-		{ 22, 35104, "", "=q4=Brutal Gladiator's Totem of Indomitability", "=ds=", "1000 #arena#", ""};
-		{ 23, 35105, "", "=q4=Brutal Gladiator's Totem of Survival", "=ds=", "1000 #arena#", ""};
-		{ 24, 35106, "", "=q4=Brutal Gladiator's Totem of the Third Wind", "=ds=", "1000 #arena#", ""};
+		{ 1, 34986, "", "=q4=Brutal Gladiator's Barrier", "=ds=#w8#", "1875 #arena#", ""};
+		{ 2, 35073, "", "=q4=Brutal Gladiator's Redoubt", "=ds=#w8#", "1875 #arena#", ""};
+		{ 3, 35094, "", "=q4=Brutal Gladiator's Shield Wall", "=ds=#w8#", "1875 #arena#", ""};
+		{ 4, 35108, "", "=q4=Brutal Gladiator's War Edge", "=ds=#w11#", "1000 #arena#", ""};
+		{ 5, 35047, "", "=q4=Brutal Gladiator's Longbow", "=ds=#w2#", "3750 #arena#", ""};
+		{ 6, 35018, "", "=q4=Brutal Gladiator's Heavy Crossbow", "=ds=#w3#", "3750 #arena#", ""};
+		{ 7, 35075, "", "=q4=Brutal Gladiator's Rifle", "=ds=#w5#", "3750 #arena#", ""};
+		{ 8, 34985, "", "=q4=Brutal Gladiator's Baton of Light", "=ds=#w12#", "1000 #arena#", ""};
+		{ 9, 35065, "", "=q4=Brutal Gladiator's Piercing Touch", "=ds=#w12#", "1000 #arena#", ""};
+		{ 10, 35107, "", "=q4=Brutal Gladiator's Touch of Defeat", "=ds=#w12#", "1000 #arena#", ""};
+		{ 11, 35008, "", "=q4=Brutal Gladiator's Endgame", "=ds=#s15#", "1125 #arena#", ""};
+		{ 12, 35016, "", "=q4=Brutal Gladiator's Grimoire", "=ds=#s15#", "1125 #arena#", ""};
+		{ 13, 35074, "", "=q4=Brutal Gladiator's Reprieve", "=ds=#s15#", "1125 #arena#", ""};
+		{ 16, 35019, "", "=q4=Brutal Gladiator's Idol of Resolve", "=ds=#w14#", "1000 #arena#", ""};
+		{ 17, 35020, "", "=q4=Brutal Gladiator's Idol of Steadfastness#w14#", "=ds=", "1000 #arena#", ""};
+		{ 18, 35021, "", "=q4=Brutal Gladiator's Idol of Tenacity", "=ds=#w14#", "1000 #arena#", ""};
+		{ 19, 35039, "", "=q4=Brutal Gladiator's Libram of Fortitude", "=ds=#w16#", "1000 #arena#", ""};
+		{ 20, 35040, "", "=q4=Brutal Gladiator's Libram of Justice", "=ds=#w16#", "1000 #arena#", ""};
+		{ 21, 35041, "", "=q4=Brutal Gladiator's Libram of Vengeance", "=ds=#w16#", "1000 #arena#", ""};
+		{ 22, 35104, "", "=q4=Brutal Gladiator's Totem of Indomitability", "=ds=#w15#", "1000 #arena#", ""};
+		{ 23, 35105, "", "=q4=Brutal Gladiator's Totem of Survival", "=ds=#w15#", "1000 #arena#", ""};
+		{ 24, 35106, "", "=q4=Brutal Gladiator's Totem of the Third Wind", "=ds=#w15#", "1000 #arena#", ""};
 		Prev = "Arena4Weapons1";
-		Back = "LEVEL70PVPREWARDS";
+		Back = "PVPMENU";
 	};
 
 	--------------------------
@@ -4777,11 +4664,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		Prev = "DS3Mail";
 		Back = "DS3SET";
 	};
-	
+
 		----------------------------
 		--- Tier 4/Tier 5/Tier 6 ---
 		----------------------------
-		
+
 	AtlasLoot_Data["T456DruidFeral"] = {
 		{ 1, 0, "Ability_Druid_Maul", "=q6=#t4s1_1#", "=ec1=#m21#"};
 		{ 2, 29098, "", "=q4=Stag-Helm of Malorne", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -4802,11 +4689,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34444, "", "=q4=Thunderheart Wristguards", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 31034, "", "=q4=Thunderheart Gauntlets", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34556, "", "=q4=Thunderheart Waistguard", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 31044, "", "=q4=Thunderheart Leggings", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 31044, "", "=q4=Thunderheart Leggings", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34573, "", "=q4=Thunderheart Treads", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-	
+
 	AtlasLoot_Data["T456DruidRestoration"] = {
 		{ 1, 0, "Spell_Nature_Regeneration", "=q6=#t4s1_2#", "=ec1=#m21#"};
 		{ 2, 29086, "", "=q4=Crown of Malorne", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -4827,11 +4714,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34445, "", "=q4=Thunderheart Bracers", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 31032, "", "=q4=Thunderheart Gloves", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34554, "", "=q4=Thunderheart Belt", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 31045, "", "=q4=Thunderheart Legguards", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 31045, "", "=q4=Thunderheart Legguards", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34571, "", "=q4=Thunderheart Boots", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-	
+
 	AtlasLoot_Data["T456DruidBalance"] = {
 		{ 1, 0, "Spell_Nature_InsectSwarm", "=q6=#t4s1_3#", "=ec1=#m21#"};
 		{ 2, 29093, "", "=q4=Antlers of Malorne", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -4852,11 +4739,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34446, "", "=q4=Thunderheart Bands", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 31035, "", "=q4=Thunderheart Handguards", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34555, "", "=q4=Thunderheart Cord", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 31046, "", "=q4=Thunderheart Pants", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 31046, "", "=q4=Thunderheart Pants", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34572, "", "=q4=Thunderheart Footwraps", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-		
+
 	AtlasLoot_Data["T456Hunter"] = {
 		{ 1, 0, "Ability_Hunter_RunningShot", "=q6=#t4s2#", "=ec1=#m21#"};
 		{ 2, 29081, "", "=q4=Demon Stalker Greathelm", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -4877,11 +4764,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34443, "", "=q4=Gronnstalker's Bracers", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 31001, "", "=q4=Gronnstalker's Gloves", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34549, "", "=q4=Gronnstalker's Belt", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 31005, "", "=q4=Gronnstalker's Leggings", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 31005, "", "=q4=Gronnstalker's Leggings", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34570, "", "=q4=Gronnstalker's Boots", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-	
+
 	AtlasLoot_Data["T456Mage"] = {
 		{ 1, 0, "Spell_Frost_IceStorm", "=q6=#t4s3#", "=ec1=#m21#"};
 		{ 2, 29076, "", "=q4=Collar of the Aldor", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -4902,7 +4789,7 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34447, "", "=q4=Bracers of the Tempest", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 31055, "", "=q4=Gloves of the Tempest", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34557, "", "=q4=Belt of the Tempest", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 31058, "", "=q4=Leggings of the Tempest", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 31058, "", "=q4=Leggings of the Tempest", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34574, "", "=q4=Boots of the Tempest", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
@@ -4927,11 +4814,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34433, "", "=q4=Lightbringer Wristguards", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 30985, "", "=q4=Lightbringer Handguards", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34488, "", "=q4=Lightbringer Waistguard", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 30995, "", "=q4=Lightbringer Legguards", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 30995, "", "=q4=Lightbringer Legguards", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34560, "", "=q4=Lightbringer Greaves", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-	
+
 	AtlasLoot_Data["T456PaladinRetribution"] = {
 		{ 1, 0, "Spell_Holy_AuraOfLight", "=q6=#t4s4_2#", "=ec1=#m21#"};
 		{ 2, 29073, "", "=q4=Justicar Crown", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -4952,11 +4839,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34431, "", "=q4=Lightbringer Bands", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 30982, "", "=q4=Lightbringer Gauntlets", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34485, "", "=q4=Lightbringer Girdle", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 30993, "", "=q4=Lightbringer Greaves", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 30993, "", "=q4=Lightbringer Greaves", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34561, "", "=q4=Lightbringer Boots", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-	
+
 	AtlasLoot_Data["T456PaladinHoly"] = {
 		{ 1, 0, "Spell_Holy_HolyBolt", "=q6=#t4s4_3#", "=ec1=#m21#"};
 		{ 2, 29061, "", "=q4=Justicar Diadem", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -4977,11 +4864,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34432, "", "=q4=Lightbringer Bracers", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 30983, "", "=q4=Lightbringer Gloves", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34487, "", "=q4=Lightbringer Belt", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 30994, "", "=q4=Lightbringer Leggings", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 30994, "", "=q4=Lightbringer Leggings", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34559, "", "=q4=Lightbringer Treads", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-	
+
 	AtlasLoot_Data["T456PriestHoly"] = {
 		{ 1, 0, "Spell_Holy_PowerWordShield", "=q6=#t4s5_1#", "=ec1=#m21#"};
 		{ 2, 29049, "", "=q4=Light-Collar of the Incarnate", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -5002,11 +4889,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34435, "", "=q4=Cuffs of Absolution", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 31060, "", "=q4=Gloves of Absolution", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34527, "", "=q4=Belt of Absolution", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 31068, "", "=q4=Breeches of Absolution", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 31068, "", "=q4=Breeches of Absolution", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34562, "", "=q4=Boots of Absolution", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-	
+
 	AtlasLoot_Data["T456PriestShadow"] = {
 		{ 1, 0, "Spell_Shadow_AntiShadow", "=q6=#t4s5_2#", "=ec1=#m21#"};
 		{ 2, 29058, "", "=q4=Soul-Collar of the Incarnate", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -5027,11 +4914,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34434, "", "=q4=Bracers of Absolution", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 31061, "", "=q4=Handguards of Absolution", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34528, "", "=q4=Cord of Absolution", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 31067, "", "=q4=Leggings of Absolution", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 31067, "", "=q4=Leggings of Absolution", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34563, "", "=q4=Treads of Absolution", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-	
+
 	AtlasLoot_Data["T456Rogue"] = {
 		{ 1, 0, "Ability_BackStab", "=q6=#t4s6#", "=ec1=#m21#"};
 		{ 2, 29044, "", "=q4=Netherblade Facemask", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -5052,11 +4939,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34448, "", "=q4=Slayer's Bracers", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 31026, "", "=q4=Slayer's Handguards", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34558, "", "=q4=Slayer's Belt", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 31029, "", "=q4=Slayer's Legguards", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 31029, "", "=q4=Slayer's Legguards", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34575, "", "=q4=Slayer's Boots", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-	
+
 	AtlasLoot_Data["T456ShamanEnhancement"] = {
 		{ 1, 0, "Spell_FireResistanceTotem_01", "=q6=#t4s7_1#", "=ec1=#m21#"};
 		{ 2, 29040, "", "=q4=Cyclone Helm", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -5069,7 +4956,7 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 10, 30194, "", "=q4=Cataclysm Shoulderplates", "=ds="..BabbleBoss["Void Reaver"].." ("..BabbleZone["The Eye"]..")"};
 		{ 11, 30185, "", "=q4=Cataclysm Chestplate", "=ds="..BabbleBoss["Kael'thas Sunstrider"].." ("..BabbleZone["The Eye"]..")"};
 		{ 12, 30189, "", "=q4=Cataclysm Gauntlets", "=ds="..BabbleBoss["Leotheras the Blind"].." ("..BabbleZone["Serpentshrine Cavern"]..")"};
-		{ 13, 30192, "", "=q4=Cataclysm Legplates", "=ds="..BabbleBoss["Fathom-Lord Karathress"].." ("..BabbleZone["Serpentshrine Cavern"]..")"};
+		{ 13, 30192, "", "=q4=Cataclysm Leggings", "=ds="..BabbleBoss["Fathom-Lord Karathress"].." ("..BabbleZone["Serpentshrine Cavern"]..")"};
 		{ 16, 0, "Spell_FireResistanceTotem_01", "=q6=#t6s7_1#", "=ec1=#m23#"};
 		{ 17, 31015, "", "=q4=Skyshatter Cover", "=ds="..BabbleBoss["Archimonde"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 18, 31024, "", "=q4=Skyshatter Pauldrons", "=ds="..BabbleBoss["Mother Shahraz"].." ("..BabbleZone["Black Temple"]..")"};
@@ -5077,11 +4964,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34439, "", "=q4=Skyshatter Wristguards", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 31011, "", "=q4=Skyshatter Grips", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34545, "", "=q4=Skyshatter Girdle", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 31021, "", "=q4=Skyshatter Pants", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 31021, "", "=q4=Skyshatter Pants", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34567, "", "=q4=Skyshatter Greaves", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-	
+
 	AtlasLoot_Data["T456ShamanRestoration"] = {
 		{ 1, 0, "Spell_Nature_HealingWaveGreater", "=q6=#t4s7_2#", "=ec1=#m21#"};
 		{ 2, 29028, "", "=q4=Cyclone Headdress", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -5102,11 +4989,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34438, "", "=q4=Skyshatter Bracers", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 31007, "", "=q4=Skyshatter Gloves", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34543, "", "=q4=Skyshatter Belt", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 31019, "", "=q4=Skyshatter Leggings", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 31019, "", "=q4=Skyshatter Leggings", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34565, "", "=q4=Skyshatter Boots", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-	
+
 	AtlasLoot_Data["T456ShamanElemental"] = {
 		{ 1, 0, "Spell_Nature_Lightning", "=q6=#t4s7_3#", "=ec1=#m21#"};
 		{ 2, 29035, "", "=q4=Cyclone Faceguard", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -5127,11 +5014,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34437, "", "=q4=Skyshatter Bands", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 31008, "", "=q4=Skyshatter Gauntlets", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34542, "", "=q4=Skyshatter Cord", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 31020, "", "=q4=Skyshatter Legguards", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 31020, "", "=q4=Skyshatter Legguards", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34566, "", "=q4=Skyshatter Treads", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-	
+
 	AtlasLoot_Data["T456Warlock"] = {
 		{ 1, 0, "Spell_Shadow_CurseOfTounges", "=q6=#t4s8#", "=ec1=#m21#"};
 		{ 2, 28963, "", "=q4=Voidheart Crown", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -5152,11 +5039,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34436, "", "=q4=Bracers of the Malefic", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 31050, "", "=q4=Gloves of the Malefic", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34541, "", "=q4=Belt of the Malefic", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 31053, "", "=q4=Leggings of the Malefic", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 31053, "", "=q4=Leggings of the Malefic", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34564, "", "=q4=Boots of the Malefic", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-	
+
 	AtlasLoot_Data["T456WarriorProtection"] = {
 		{ 1, 0, "INV_Shield_05", "=q6=#t4s9_1#", "=ec1=#m21#"};
 		{ 2, 29011, "", "=q4=Warbringer Greathelm", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -5177,11 +5064,11 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34442, "", "=q4=Onslaught Wristguards", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 30970, "", "=q4=Onslaught Handguards", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34547, "", "=q4=Onslaught Waistguard", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 30978, "", "=q4=Onslaught Legguards", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 30978, "", "=q4=Onslaught Legguards", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34568, "", "=q4=Onslaught Boots", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};
-	
+
 	AtlasLoot_Data["T456WarriorFury"] = {
 		{ 1, 0, "Ability_Warrior_BattleShout", "=q6=#t4s9_2#", "=ec1=#m21#"};
 		{ 2, 29021, "", "=q4=Warbringer Battle-Helm", "=ds="..BabbleBoss["Prince Malchezaar"].." ("..BabbleZone["Karazhan"]..")"};
@@ -5202,7 +5089,7 @@ local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
 		{ 20, 34441, "", "=q4=Onslaught Bracers", "=ds="..BabbleBoss["Kalecgos"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		{ 21, 30969, "", "=q4=Onslaught Gauntlets", "=ds="..BabbleBoss["Azgalor"].." ("..BabbleZone["Hyjal Summit"]..")"};
 		{ 22, 34546, "", "=q4=Onslaught Belt", "=ds="..BabbleBoss["Brutallus"].." ("..BabbleZone["Sunwell Plateau"]..")"};
-		{ 23, 30977, "", "=q4=Onslaught Greaves", "=ds="..BabbleBoss["Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
+		{ 23, 30977, "", "=q4=Onslaught Greaves", "=ds="..BabbleBoss["The Illidari Council"].." ("..BabbleZone["Black Temple"]..")"};
 		{ 24, 34569, "", "=q4=Onslaught Treads", "=ds="..BabbleBoss["Felmyst"].." ("..BabbleZone["Sunwell Plateau"]..")"};
 		Back = "T456SET";
 	};

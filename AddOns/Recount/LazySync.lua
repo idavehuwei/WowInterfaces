@@ -1,7 +1,7 @@
 LibStub:GetLibrary("AceComm-3.0"):Embed(Recount)
 LibStub:GetLibrary("AceSerializer-3.0"):Embed(Recount)
 
-local revision = tonumber(string.sub("$Revision: 1032 $", 12, -3))
+local revision = tonumber(string.sub("$Revision: 1085 $", 12, -3))
 local Recount = _G.Recount
 if Recount.Version < revision then Recount.Version = revision end
 
@@ -31,6 +31,17 @@ local PARTY_GUARDIAN_FLAGS = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJEC
 local PARTY_PET_FLAGS = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_REACTION_FRIENDLY + COMBATLOG_OBJECT_CONTROL_PLAYER + COMBATLOG_OBJECT_TYPE_PET
 local PARTY_GUARDIAN_OWNER_FLAGS = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_REACTION_FRIENDLY + COMBATLOG_OBJECT_CONTROL_PLAYER + COMBATLOG_OBJECT_TYPE_PLAYER
 
+-- Bandaid for raid messages no longer failing silently, so we make it shut up.
+local oldSendCommMessage = Recount.SendCommMessage
+function Recount.SendCommMessage(self,a,b,channel,...)
+	if channel == "RAID" and GetNumRaidMembers() > 0 and select(2, IsInInstance()) ~= "pvp" then
+		Recount:DPrint("A "..a.." "..channel)
+		oldSendCommMessage(self,a,b,channel,...)
+	elseif channel ~= "RAID" then
+		Recount:DPrint("B "..a.." "..channel)
+		oldSendCommMessage(self,a,b,channel,...)
+	end
+end
 
 -- Elsia: Generic Sync code here
 

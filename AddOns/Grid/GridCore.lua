@@ -1,81 +1,28 @@
--- GridCore.lua
--- insert boilerplate here
+--[[--------------------------------------------------------------------
+	GridCore.lua
+----------------------------------------------------------------------]]
 
---{{{ Libraries
+local _, ns = ...
 
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+if not ns.L then ns.L = { } end
+local L = setmetatable(ns.L, {
+	__index = function(t, k)
+		t[k] = k
+		return k
+	end
+})
+
 local waterfall = AceLibrary:HasInstance("Waterfall-1.0") and AceLibrary("Waterfall-1.0")
 
-local check_libraries
-do
-	local global_libs = {
-		"AceLibrary",
-		"LibStub",
-		-- "DoesNotExist-Global",
-	}
-
-	local ace2_libs = {
-		"AceLocale-2.2",
-		"AceOO-2.0",
-		"Dewdrop-2.0",
-		"Waterfall-1.0",
-		-- "DoesNotExist-Ace2",
-	}
-
-	local libstub_libs = {
-		"LibBabble-Class-3.0",
-		"LibGratuity-3.0",
-		"LibHealComm-3.0",
-		"LibSharedMedia-3.0",
-		-- "DoesNotExist-LibStub",
-	}
-
-	function check_libraries ()
-		local missing = {}
-
-		for _, name in ipairs(global_libs) do
-			if not _G[name] then
-				table.insert(missing, name)
-			end
-		end
-
-		for _, name in ipairs(ace2_libs) do
-			if not AceLibrary:HasInstance(name) then
-				table.insert(missing, name)
-			end
-		end
-
-		for _, name in ipairs(libstub_libs) do
-			if not LibStub:GetLibrary(name, true) then
-				table.insert(missing, name)
-			end
-		end
-
-		if #missing > 0 then
-			local message = ("Grid was unable to find the following libraries:\n%s"):format(table.concat(missing, ", "))
-
-			StaticPopupDialogs["GRID_MISSING_LIBS"] = {
-				text = message,
-				button1 = "Okay",
-				timeout = 0,
-				whileDead = 1,
-			}
-
-			StaticPopup_Show("GRID_MISSING_LIBS")
-		end
-	end
-end
-
---}}}
---{{{ Grid
 --{{{  Initialization
 
-Grid = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceDebug-2.0", "AceModuleCore-2.0", "AceConsole-2.0", "FuBarPlugin-2.0")
+local Grid = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceDebug-2.0", "AceModuleCore-2.0", "AceConsole-2.0")
 Grid:SetModuleMixins("AceDebug-2.0", "AceEvent-2.0", "AceModuleCore-2.0")
 Grid:RegisterDB("GridDB")
 Grid.debugFrame = ChatFrame1
 
-Grid.check_libraries = check_libraries
+_G.Grid = Grid
+Grid.L = L
 
 --{{{ AceOptions table
 
@@ -103,20 +50,12 @@ if waterfall then
 		name = L["Configure"],
 		desc = L["Configure Grid"],
 		guiHidden = true,
-		func = function () 
-				   waterfall:Open("Grid")
-		       end,
+		func = function()
+				waterfall:Open("Grid")
+		end,
 	}
-	
+
 	waterfall:Register("Grid", "aceOptions", Grid.options, "title", "Grid Configuration")
-	
-	function Grid:OnClick ()
-		if waterfall:IsOpen("Grid") then
-			waterfall:Close("Grid")
-		else
-			waterfall:Open("Grid")
-		end
-	end
 end
 
 --}}}
@@ -124,19 +63,8 @@ end
 
 Grid.defaults = {
 	debug = false,
+	minimap = { },
 }
-
---}}}
---{{{ FuBar settings
-
-Grid.name                   = "Grid"
-Grid.hasIcon                = true
-Grid.defaultMinimapPosition = 240
-Grid.cannotDetachTooltip    = true
-Grid.independentProfile     = true
-Grid.defaultPosition        = "RIGHT"
-Grid.hideWithoutStandby     = true
-Grid.OnMenuRequest          = Grid.options
 
 --}}}
 --}}}
@@ -186,17 +114,13 @@ function Grid.modulePrototype:RegisterModule(name, module)
 		module.db = self.core:AcquireDBNamespace(name)
 	end
 
-	if module.options == nil then
+	if module.extraOptions and not module.options then
 		module.options = {
 			type = "group",
-			name = (module.menuName or module.name),
+			name = module.menuName or module.name,
 			desc = string.format(L["Options for %s."], module.name),
 			args = {},
 		}
-
-	end
-
-	if module.extraOptions then
 		for name, option in pairs(module.extraOptions) do
 			module.options.args[name] = option
 		end
@@ -233,7 +157,7 @@ function Grid.modulePrototype:ADDON_LOADED(addon)
 	local name = GetAddOnMetadata(addon, "X-".. self.name .. "Module")
 	if not name then return end
 
-	local module = getglobal(name)
+	local module = (Grid:GetModule(self.name):HasModule(name) and Grid:GetModule(self.name):GetModule(name)) or _G[name]
 	if not module or not module.name then return end
 
 	module.external = true
@@ -243,9 +167,57 @@ end
 
 --}}}
 
+local activeTalentGroup
+
 function Grid:OnInitialize()
-	self:RegisterDefaults('profile', Grid.defaults )
-	self:RegisterChatCommand({'/grid'}, self.options )
+	self:RegisterDefaults("profile", Grid.defaults)
+	self:RegisterChatCommand("/grid", self.options)
+
+	local function NoDualSpec()
+		return GetNumTalentGroups() == 1
+	end
+
+	self.options.args.profile.args.choose.order = 1
+	self.options.args.profile.args.other.order = 2
+	self.options.args.profile.args.copy.order = 3
+	self.options.args.profile.args.delete.order = 4
+	self.options.args.profile.args.reset.order = 5
+
+	self.options.args.profile.args.spacer = {
+		type = "header",
+		order = 6,
+		disabled = true,
+		hidden = NoDualSpec,
+	}
+	self.options.args.profile.args.dualEnabled = {
+		name = L["Enable dual profile"],
+		desc = L["Automatically swap profiles when switching talent specs."],
+		type = "toggle",
+		order = 7,
+		get = function() return self.db.char.enabled end,
+		set = function(enabled)
+			if enabled and not self.db.char.talentGroup then
+				self.db.char.talentGroup = activeTalentGroup
+				self.db.char.profile = self:GetProfile()
+				self.db.char.enabled = true
+			else
+				self.db.char.enabled = enabled
+				self:CheckDualSpecState()
+			end
+		end,
+		hidden = NoDualSpec,
+	}
+	self.options.args.profile.args.dualProfile = {
+		name = L["Dual profile"],
+		desc = L["Select the profile to swap with the current profile when switching talent specs."],
+		type = "text",
+		order = 8,
+		get = function() return self.db.char.profile or self:GetProfile() end,
+		set = function(value) self.db.char.profile = value end,
+		validate = self["acedb-profile-list"],
+		hidden = NoDualSpec,
+		disabled = function() return not self.db.char.enabled end,
+	}
 
 	-- we need to save debugging state over sessions :(
 	self.debugging = self.db.profile.debug
@@ -253,26 +225,49 @@ function Grid:OnInitialize()
 	self:AddModuleDebugMenu(self)
 
 	self:RegisterModules()
-	
-	-- rename FuBar menu to avoid confusion
-	-- this should be added to FuBarPlugin btw.
-	if not FuBar then
-		self.OnMenuRequest.args.hide.guiName = L["Hide minimap icon"]
-		self.OnMenuRequest.args.hide.desc = L["Hide minimap icon"]
-	end
-	
+
 	self:RegisterEvent("ADDON_LOADED")
 end
 
 function Grid:OnEnable()
-	check_libraries()
-
 	self:RegisterEvent("ADDON_LOADED")
-	self:EnableModules()
+	-- Removed by Sharak@BigFoot
+	-- self:EnableModules()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+
 	self:TriggerEvent("Grid_Enabled")
+
+	activeTalentGroup = GetActiveTalentGroup()
+	self:CheckDualSpecState()
+	self:RegisterEvent("PLAYER_TALENT_UPDATE")
+	
+	-- Removed by Sharak@BigFoot
+	-- self:TriggerEvent("Grid_Enabled")
+
+	-- Added by Sharak@BigFoot
+	Grid:Disable();
+end
+
+-- Added by Sharak@BigFoot
+function Grid:Enable()
+	self:Debug("Enable")
+	self:EnableModules()
+	self:TriggerEvent("Grid_Enabled")
+
+	self:PLAYER_ENTERING_WORLD()
+
+	local unit
+	for unit in GridRoster:IterateRoster(false) do
+		GridStatus:TriggerEvent("Grid_UnitChanged", unit.name, unit.unitid)
+	end
+end
+
+function Grid:Disable()
+	self:Debug("Disable")
+	self:TriggerEvent("Grid_Disabled")
+	self:DisableModules()
 end
 
 StaticPopupDialogs["GRID_DISABLED"] = {
@@ -292,7 +287,7 @@ end
 
 function Grid:OnProfileEnable()
 	self.debugging = self.db.profile.debug
-	self:Debug("Loaded profile", "(", self:GetProfile(),")")
+	self:Debug("Loaded profile", "(", self:GetProfile(), ")")
 	self:ResetModules()
 end
 
@@ -324,13 +319,13 @@ function Grid:AddModuleDebugMenu(module)
 		type = "toggle",
 		name = module.name,
 		desc = string.format(L["Toggle debugging for %s."], module.name),
-		get = function ()
-			      return module.db.profile.debug
-		      end,
-		set = function (v)
-			      module.db.profile.debug = v
-			      module.debugging = v
-		      end,
+		get = function()
+			return module.db.profile.debug
+		end,
+		set = function(v)
+			module.db.profile.debug = v
+			module.debugging = v
+		end,
 	}
 
 end
@@ -348,11 +343,23 @@ function Grid:DisableModules()
 end
 
 function Grid:ResetModules()
-    for name,module in self:IterateModules() do
-	self:Debug("Resetting " .. name)
-	module.db = self:AcquireDBNamespace(name)
-	module:Reset()
-    end
+	for name, module in self:IterateModules() do
+		self:Debug("Resetting " .. name)
+		module.db = self:AcquireDBNamespace(name)
+		module:Reset()
+	end
+end
+
+function Grid:CheckDualSpecState()
+	if self.db.char.enabled and self.db.char.talentGroup ~= activeTalentGroup then
+		local currentProfile = self:GetProfile()
+		local newProfile = self.db.char.profile
+		self.db.char.talentGroup = activeTalentGroup
+		if newProfile ~= currentProfile then
+			self:SetProfile(newProfile)
+			self.db.char.profile = currentProfile
+		end
+	end
 end
 
 --{{{ Event handlers
@@ -376,6 +383,14 @@ function Grid:PLAYER_REGEN_ENABLED()
 	end
 end
 
+function Grid:PLAYER_TALENT_UPDATE()
+	local newTalentGroup = GetActiveTalentGroup()
+	if activeTalentGroup ~= newTalentGroup then
+		activeTalentGroup = newTalentGroup
+		self:CheckDualSpecState()
+	end
+end
+
 function Grid:ADDON_LOADED(addon)
 	local name = GetAddOnMetadata(addon, "X-".. self.name .. "Module")
 	if not name then return end
@@ -388,5 +403,4 @@ function Grid:ADDON_LOADED(addon)
 	self:RegisterModule(module.name, module)
 end
 
---}}}
 --}}}

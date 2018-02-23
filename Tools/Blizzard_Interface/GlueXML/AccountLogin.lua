@@ -13,7 +13,7 @@ function AccountLogin_OnLoad(self)
 	self:RegisterEvent("SCANDLL_FINISHED");
 
 	local versionType, buildType, version, internalVersion, date = GetBuildInfo();
-	AccountLoginVersion:SetFormattedText(VERSION_TEMPLATE, versionType, version, internalVersion, RELEASE_BUILD, date);
+	AccountLoginVersion:SetFormattedText(VERSION_TEMPLATE, versionType, version, internalVersion, buildType, date);
 
 	-- Color edit box backdrops
 	local backdropColor = DEFAULT_TOOLTIP_COLOR;
@@ -21,6 +21,8 @@ function AccountLogin_OnLoad(self)
 	AccountLoginAccountEdit:SetBackdropColor(backdropColor[4], backdropColor[5], backdropColor[6]);
 	AccountLoginPasswordEdit:SetBackdropBorderColor(backdropColor[1], backdropColor[2], backdropColor[3]);
 	AccountLoginPasswordEdit:SetBackdropColor(backdropColor[4], backdropColor[5], backdropColor[6]);
+	AccountLoginTokenEdit:SetBackdropBorderColor(backdropColor[1], backdropColor[2], backdropColor[3]);
+	AccountLoginTokenEdit:SetBackdropColor(backdropColor[4], backdropColor[5], backdropColor[6]);
 	TokenEnterDialogBackgroundEdit:SetBackdropBorderColor(backdropColor[1], backdropColor[2], backdropColor[3]);
 	TokenEnterDialogBackgroundEdit:SetBackdropColor(backdropColor[4], backdropColor[5], backdropColor[6]);
 
@@ -29,9 +31,9 @@ function AccountLogin_OnLoad(self)
 	
 	if (IsStreamingTrial()) then
 		AccountLoginCinematicsButton:Disable();
-		AccountLogin:SetModel("Interface\\Glues\\Models\\UI_MainMenu\\UI_MainMenu.mdx");
+		AccountLogin:SetModel("Interface\\Glues\\Models\\UI_MainMenu\\UI_MainMenu.m2");
 	else
-		AccountLogin:SetModel("Interface\\Glues\\Models\\UI_MainMenu_Northrend\\UI_MainMenu_Northrend.mdx");
+		AccountLogin:SetModel("Interface\\Glues\\Models\\UI_MainMenu_Northrend\\UI_MainMenu_Northrend.m2");
 	end
 end
 
@@ -54,6 +56,12 @@ function AccountLogin_OnShow(self)
 	
 	AccountLoginAccountEdit:SetText(accountName);
 	AccountLoginPasswordEdit:SetText("");
+	AccountLoginTokenEdit:SetText("");
+	if ( accountName and accountName ~= "" and GetUsesToken() ) then
+		AccountLoginTokenEdit:Show()
+	else
+		AccountLoginTokenEdit:Hide()
+	end
 	
 	AccountLogin_SetupAccountListDDL();
 	
@@ -61,6 +69,12 @@ function AccountLogin_OnShow(self)
 		AccountLogin_FocusAccountName();
 	else
 		AccountLogin_FocusPassword();
+	end
+	
+	if( IsTrialAccount() ) then
+		AccountLoginUpgradeAccountButton:Show();
+	else
+		AccountLoginUpgradeAccountButton:Hide();
 	end
 
 	ACCOUNT_MSG_NUM_AVAILABLE = 0;
@@ -135,12 +149,12 @@ function AccountLogin_OnEvent(event, arg1, arg2, arg3)
 			GlueDialog:Hide();
 			AccountLoginUI:Show();
 		else
-			AccountLogin.hackURL = getglobal("SCANDLL_URL_"..arg1);
+			AccountLogin.hackURL = _G["SCANDLL_URL_"..arg1];
 			AccountLogin.hackName = arg2;
 			AccountLogin.hackType = arg1;
-			local formatString = getglobal("SCANDLL_MESSAGE_"..arg1);
+			local formatString = _G["SCANDLL_MESSAGE_"..arg1];
 			if ( arg3 == 1 ) then
-				formatString = getglobal("SCANDLL_MESSAGE_HACKNOCONTINUE");
+				formatString = _G["SCANDLL_MESSAGE_HACKNOCONTINUE"];
 			end
 			local msg = format(formatString, AccountLogin.hackName, AccountLogin.hackURL);
 			if ( arg3 == 1 ) then
@@ -162,6 +176,7 @@ function AccountLogin_Login()
 		SetSavedAccountName(AccountLoginAccountEdit:GetText());
 	else
 		SetSavedAccountName("");
+		SetUsesToken(false);
 	end
 end
 
@@ -170,8 +185,8 @@ function AccountLogin_TOS()
 		PlaySound("gsLoginNewAccount");
 		AccountLoginUI:Hide();
 		TOSFrame:Show();
+		TOSScrollFrameScrollBar:SetValue(0);		
 		TOSScrollFrame:Show();
-		TOSScrollFrameScrollBar:SetValue(0);
 		TOSFrameTitle:SetText(TOS_FRAME_TITLE);
 		TOSText:Show();
 	end
@@ -187,6 +202,11 @@ function AccountLogin_LaunchCommunitySite()
 	LaunchURL(COMMUNITY_URL);
 end
 
+function CharacterSelect_UpgradeAccount()
+	PlaySound("gsLoginNewAccount");
+	LaunchURL(AUTH_NO_TIME_URL);
+end
+
 function AccountLogin_Credits()
 	CreditsFrame.creditsType = 3;
 	PlaySound("gsTitleCredits");
@@ -196,10 +216,8 @@ end
 function AccountLogin_Cinematics()
 	if ( not GlueDialog:IsShown() ) then
 		PlaySound("gsLoginNewAccount");
-		if ( GetClientExpansionLevel() == 3 ) then
-			GlueDialog_Show("CINEMATICS_3");
-		elseif ( GetClientExpansionLevel() == 2 ) then
-			GlueDialog_Show("CINEMATICS_2");
+		if ( CinematicsFrame.numMovies > 1 ) then
+			CinematicsFrame:Show();
 		else
 			MovieFrame.version = 1;
 			SetGlueScreen("movie");
@@ -315,7 +333,7 @@ function AccountLogin_ShowUserAgreements()
 end
 
 function AccountLogin_UpdateAcceptButton(scrollFrame, isAcceptedFunc, noticeType)
-	local scrollbar = getglobal(scrollFrame:GetName().."ScrollBar");
+	local scrollbar = _G[scrollFrame:GetName().."ScrollBar"];
 	local min, max = scrollbar:GetMinMaxValues();
 
 	-- HACK: scrollbars do not handle max properly
@@ -379,7 +397,7 @@ end
 function VirtualKeypadFrame_OnEvent(event, ...)
 	if ( event == "PLAYER_ENTER_PIN" ) then
 		for i=1, 10 do
-			getglobal("VirtualKeypadButton"..i):SetText(select(i,...));
+			_G["VirtualKeypadButton"..i]:SetText(select(i,...));
 		end							
 	end
 	-- Randomize location to prevent hacking (yeah right)
@@ -432,11 +450,11 @@ function VirtualKeypad_UpdateButtons()
 	end
 	if ( numNumbers >= MAX_PIN_LENGTH ) then
 		for i=1, MAX_PIN_LENGTH do
-			getglobal("VirtualKeypadButton"..i):Disable();
+			_G["VirtualKeypadButton"..i]:Disable();
 		end
 	else
 		for i=1, MAX_PIN_LENGTH do
-			getglobal("VirtualKeypadButton"..i):Enable();
+			_G["VirtualKeypadButton"..i]:Enable();
 		end
 	end
 end
@@ -477,6 +495,16 @@ end
 
 function TokenEntryOkayButton_OnEvent(self, event)
 	if (event == "PLAYER_ENTER_TOKEN") then
+		if ( AccountLoginSaveAccountName:GetChecked() ) then
+			if ( GetUsesToken() ) then
+				if ( AccountLoginTokenEdit:GetText() ~= "" ) then
+					TokenEntered(AccountLoginTokenEdit:GetText());
+					return;
+				end
+			else
+				SetUsesToken(true);
+			end
+		end
 		self:Show();
 	end
 end
@@ -579,7 +607,7 @@ end
 ACCOUNTNAME_BUTTON_HEIGHT = 20;
 
 function WoWAccountSelect_OnVerticalScroll (self, offset)
-	local scrollbar = getglobal(self:GetName().."ScrollBar");
+	local scrollbar = _G[self:GetName().."ScrollBar"];
 	scrollbar:SetValue(offset);
 	WoWAccountSelectDialogBackgroundContainerScrollFrame.offset = floor((offset / ACCOUNTNAME_BUTTON_HEIGHT) + 0.5);
 	WoWAccountSelect_Update();
@@ -591,7 +619,7 @@ function WoWAccountSelect_Update()
 	
 	local offset = WoWAccountSelectDialogBackgroundContainerScrollFrame.offset;
 	for index=1, MAX_ACCOUNTS_DISPLAYED do
-		local button = getglobal("WoWAccountSelectDialogBackgroundContainerButton" .. index);
+		local button = _G["WoWAccountSelectDialogBackgroundContainerButton" .. index];
 		local name, regionID = GetGameAccountInfo(index + offset);
 		button:SetButtonState("NORMAL");
 		button.BG_Highlight:Hide();
@@ -660,9 +688,11 @@ AccountList = {};
 function AccountLogin_SetupAccountListDDL()
 	if ( GetSavedAccountName() ~= "" and GetSavedAccountList() ~= "" ) then
 		AccountLoginPasswordEdit:SetPoint("BOTTOM", 0, 255);
+		AccountLoginLoginButton:SetPoint("BOTTOM", 0, 150);
 		AccountLoginDropDown:Show();
 	else
 		AccountLoginPasswordEdit:SetPoint("BOTTOM", 0, 275);
+		AccountLoginLoginButton:SetPoint("BOTTOM", 0, 170);
 		AccountLoginDropDown:Hide();
 		return;
 	end
@@ -682,3 +712,31 @@ function AccountLogin_SetupAccountListDDL()
 	end
 end
 
+function CinematicsFrame_OnLoad(self)
+	local numMovies = GetClientExpansionLevel();
+	CinematicsFrame.numMovies = numMovies;
+	if ( numMovies < 2 ) then
+		return;
+	end
+	
+	for i = 1, numMovies do
+		_G["CinematicsButton"..i]:Show();
+	end
+	CinematicsBackground:SetHeight(numMovies * 40 + 70);
+end
+
+function CinematicsFrame_OnKeyDown(key)
+	if ( key == "PRINTSCREEN" ) then
+		Screenshot();
+	else
+		PlaySound("igMainMenuOptionCheckBoxOff");
+		CinematicsFrame:Hide();
+	end	
+end
+
+function Cinematics_PlayMovie(self)
+	CinematicsFrame:Hide();
+	PlaySound("gsTitleOptionOK");
+	MovieFrame.version = self:GetID();
+	SetGlueScreen("movie");
+end

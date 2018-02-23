@@ -179,7 +179,7 @@
 					<OnClick>
 						local link=GetTradeSkillListLink();
 						if (not ChatEdit_InsertLink(link) ) then
-							ChatFrameEditBox:Show();
+							ChatEdit_GetLastActiveWindow():Show();
 							ChatEdit_InsertLink(link);
 						end
 					</OnClick>
@@ -402,7 +402,7 @@
 						</Anchors>
 						<Scripts>
 							<OnLoad>
-								getglobal(self:GetName()):SetText(ALL);
+								_G[self:GetName()]:SetText(ALL);
 							</OnLoad>
 							<OnClick function="TradeSkillCollapseAllButton_OnClick"/>
 						</Scripts>

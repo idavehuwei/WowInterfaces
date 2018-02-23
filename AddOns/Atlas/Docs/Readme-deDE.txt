@@ -1,6 +1,5 @@
 Atlas, ein World-of-Warcraft-Instanzkarten-Browser
-Copyright 2005 - 2009 Dan Gilbert
-Schreib mir an: loglow@gmail.com
+Copyright 2005-2010 Dan Gilbert <dan.b.gilbert@gmail.com>
 
 
 
@@ -8,86 +7,32 @@ Schreib mir an: loglow@gmail.com
 = Über Atlas =
 ===============
 
-Aus irgendeinem Grund entschied sich Blizzard, wunderschöne Karten aller Gegenden in Azeroth einzuführen außer von Instanzen. Man kann zwar die direkte Umgebung in der Minimap sehen, aber nie eine Übersicht über den gesamten Dungeon. Hier kommt Atlas ins Spiel. Der Kern von Atlas ist im Grunde nur ein Bildbetrachter. Wie auch immer, es ist eben dieses Bild, was Atlas wertvoll macht: ein Karte für jede Instanz im Spiel. Desweiteren sind die Karten mit Markierungen von Bosspositionen und anderen Punkten von Interesse versehen. Atlas beeinhaltet außerdem Karten von Schlachtfeldern, Dungeon-Standorte, Flugwege und Schlachtzugsbosse.
+Atlas ist ein Addon für World of Warcraft, welches detaillierte Karten für jede Instanz des Spiels beinhaltet. Ursprünglich hatte Blizzard gar keine Instanzkarten ins Spiel eingebaut. Nach ein paar Jahren hat Blizzard diese nun jedoch mit dem Addon Wrath of the Lich King eingeführt, allerdings nur für die neuen Instanzen. Diese offiziellen Karten entsprechen dem gleichen handschriftlichen Stil der Weltkarten. Im Gegensatz dazu sind die in Atlas enthaltenen Karten aus dem Kartenmaterial der Minimap abgeleitet, welches detaillierter, genauer und farbenfroher ist. Sie können Sich dies wie den Unterschied zwischen einer Straßenkarte und einem Satellitenbild vorstellen.
 
-Nach der Installation von Atlas wirst du ein neues Icon an der Minimap bemerken, das wie ein Stück eines kleinen Globusses aussieht (mit Rechtsklick kann man das Icon um die Minimap bewegen). Klicke auf das Icon, um das Atlashauptfenster zu öffnen, welches die Karten und die Legenden enthält. Alternativ kann man auch den Slash-Befehl /atlas benutzen. Die Menüs an der oberen Kante des Fensters ermöglichen dir, durch die Karten zu navigieren. Ebenso lässt sich das Atlasfenster auf dem Bildschirm verschieben. Um das Fenster zu sperren, benutze das kleine Schloss in der rechten oberen Ecke.
-An der Unterkante der Legende sind ein kleines Textfeld sowie ein Suchen- und ein Leeren-Knopf. Gib einen Teil eines Wortes in die Zeile ein und betätige den Suchknopf, dann werden die Einträge der Legende nur noch auf das reduziert, was deiner Eingabe entspricht. Denke daran, dass die Suche nur für die Einträge der gerade angewählten Karte funktioniert und nicht für alle Karten in der Datenbank. Während das für Instanzen mit nur wenigen Einträgen wie dem Flammenschlund nicht sinnvoll ist, wird die Funktion bei sehr vielen Einträgen wie in den Schwarzfelstiefen oder im AtlasMajorCities-Plugin nützlich. Wenn du die gesamte Liste zurückhaben willst, klicke einfach auf Leeren.
+Des Weiteren enthält Atlas im Gegensatz zu den eingebauten Karten detaillierte und exakte Informationen über alle Kreaturen, NPCs, Objekte und Ereignisse, welche in der jeweiligen Instanz anzutreffen sind. Es werden auch allgemeine Informationen über die Zone gegeben, wie der Standort, Stufenanforderungen, Spieleranzahl, zu erfüllende Zugangsanforderungen und verbundene Fraktionen. Alle Eingänge, Ausgänge, Portale und Verbindungen sind eindeutig beschriftet. Da das Spiel sehr viele Instanzen beinhaltet, können Sie diese nach Typ, Stufe, Anzahl der Spieler, Kontinent oder Erweiterung anzeigen lassen.
 
-
-
-
-=================
-= Konfiguration =
-=================
-
-Atlas hat ein paar einfache Einstellungen, erreichbar durch den Optionen-Knopf in der oberen rechte Ecke des Hauptfensters, oder mit dem Slash-Befehl /atlas options. Ein paar der Einstellungen sind nicht selbsterklärend, daher folgen nun ein paar Informationen über sie. Die "Automatische Auswahl" erkennt die Instanz, in der du dich befindest, und wählt diese an, wenn du den Atlas öffnest. Dieses Feature funktioniert nicht in Instanzen, die mehr als eine Karte haben, wie der Schwarzfelsspitze, dem Düsterbruch oder vielen der Scherbenweltinstanzen. In diesem Fall wählt Atlas die Karte, die als letzte ausgewählt worden ist. "Rechtsklick für Weltkarte" öffnet die Weltkarte, wenn du irgendwo im Atlasfenster rechtsklickst. Das ist nützlich, wenn du schnell zwischen Atlas und Weltkarte wechseln willst. "Fenster im Bildschirm festhalten" sperrt das Atlasfenster, so dass es nicht mehr von dem Platz auf dem Bildschirm wegbewegt werden kann. Die übrigen Optionen sind ziemlich eindeutig. Der Reset-Knopf ist hilfreich, wenn das Fenster komplett aus dem Bildschirm geschoben wurde und du es nicht mehr zurückbekommst.
+Schlussendlich besitzt Atlas einige optionale Komponenten, welche weitere Karten hinzufügen. Sie enthalten Außenweltschlachtzüge, globale Transportmittelkarten, Instanz-Standortkarten und Schlachtfeldkarten. Jede optionale Komponente kann aktiviert, deaktiviert oder entfernt werden. Es gibt auch einige Atlaserweiterungen von Drittanbietern, welche die Funktionalität von Atlas weiter ergänzen. AtlasLoot ist die wohl bekannteste und versorgt Sie mit detaillierten Drop- und Gegenstandsinformationen der jeweiligen Bosse. Es gibt allerdings auch Pakete für Questinformationen und größere Städte.
 
 
 
-=================
-= Atlas-Plugins =
-=================
+=============
+= Ressourcen =
+=============
 
-Atlas hat ein eingebautes Pluginsystem, das es ermöglicht, einfach Kartenpakete hinzuzufügen. Im Grunde wird Atlas mit vier dieser Plugins ausgeliefert (für Schlachtfelder, Dungeon-Standorte, Flugwege und Schlachtzugsbosse). Wenn du daran interessiert bist, ein eigenes Kartenpaket zu machen, schlage ich vor, mit einem dieser Vieren als Vorlage anzufangen. Du kannst mich kontaktieren oder in den Atlasforen posten, wenn du Hilfe brauchst, in jedem Fall empfehle ich, zunächst so gut wie möglich vorher nach Lösungen zu suchen. Desweiteren gibt es mehrere Atlasplugins, die mehr als nur zusätzliche Karten sind. Atlasloot zeigt den möglichen Loot eines jeden Bosses, und Atlasquest zeigt die Quests für die Instanzen. Beachte, dass diese Plugins nicht von mir entwickelt worden sind; sie haben ihre eigenen Projektleiter.
-
-
-
-========================
-= Vor der Installation =
-========================
-
-* Sämtliche früheren Versionen von Atlas müssen vor der Installation entfernt werden.
-* Atlasplugins (AtlasLoot, AtlasQuest, etc.), die für eine frühere Version von Atlas geschrieben wurden, müssen gelöscht werden.
-* Kartenpakete, die Daviesh für Atlas 1.8.6 zu Verfügung gestellt hat, müssen vor der Installation gelöscht werden (sie sind jetzt sowieso unnötig).
-
-
-
-================
-= Installation =
-================
-
-* Entpacke das Paket in deinen World-of-Warcraft-Ordner.
-* Deine Zip-Software muss die Verzeichnisstrukturen beibehalten.
-* Wenn du Probleme hast, schau bitte in die Atlas-FAQ:
-* http://www.atlasmod.com/phpBB3/viewtopic.php?t=3
-
-
-
-===============
-= Integration =
-===============
-
-* LibDataBroker (LDB)
-* Titan Panel
-* myAddOns
-* CTMod
-* Cosmos
-
-
-
-===========
-= Website =
-===========
-
+Die offizielle Atlas Webseite:
 http://www.atlasmod.com/
 
+Für Fragen oder Unterstützung besuchen Sie bitte das Forum:
+http://www.atlasmod.com/phpBB3/
+
+Sie können mich auch direkt kontaktieren:
+dan.b.gilbert@gmail.com
+
 
 
 ===========
-= Kontakt =
-===========
-
-Name: Dan Gilbert
-E-Mail: loglow@gmail.com
-AIM: dan5981
-
-
-
-==========
 = Lizenz =
-==========
+===========
 
 Atlas ist unter der GNU General Public License (GPL) veröffentlicht.
-Für den gesamten Lizenztext siehe: gpl-v2.txt
-
-
+Für den gesamten Lizenztext siehe: gpl-v2-deDE.txt

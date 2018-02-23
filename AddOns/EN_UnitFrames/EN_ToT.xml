@@ -1,16 +1,16 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\FrameXML\UI.xsd">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
     <Script file="EN_ToT.lua"/>
-    <!-- General -->
+
+<!-- General -->
     <Frame name="ETT_GENERAL" parent="UIParent">
         <Scripts>
             <OnUpdate>
-                    ETT_OnUpdate(event);
+                ETT_OnUpdate(self, elapsed);
             </OnUpdate>
         </Scripts>
     </Frame>
-    <Button name="ETT_TargetTargetFrameTemplate" parent="UIParent" toplevel="true" virtual="true" movable="true"
-            inherits="SecureUnitButtonTemplate">
+
+    <Button name="ETT_TargetTargetFrameTemplate" parent="UIParent" toplevel="true" virtual="true" movable="true" inherits="SecureUnitButtonTemplate">
         <Size>
             <AbsDimension x="96" y="48"/>
         </Size>
@@ -104,6 +104,7 @@
             </Frame>
         </Frames>
     </Button>
+
     <Button name="ETT_TargetTargetFrame" inherits="ETT_TargetTargetFrameTemplate">
         <Anchors>
             <Anchor point="TOP" relativeTo="TargetFrame" relativePoint="BOTTOM">
@@ -114,24 +115,20 @@
         </Anchors>
         <Scripts>
             <OnUpdate>
-                    ETT_TargetTargetFrame_OnUpdate();
+                ETT_TargetTargetFrame_OnUpdate(self, elapsed);
             </OnUpdate>
-            <!--OnMouseDown>
-                TargetUnit("targettarget");
-            </OnMouseDown-->
             <OnLoad>
-                    this:RegisterForClicks("AnyUp");
-                    this:RegisterForDrag("LeftButton");
-                    ETT_TargetTargetFrame_OnLoad();
+                ETT_TargetTargetFrame_OnLoad(self);
             </OnLoad>
             <OnDragStart>
-                    ETT_TargetTargetFrame_DragStart(arg1);
+                ETT_TargetTargetFrame_DragStart(self, button);
             </OnDragStart>
             <OnDragStop>
-                    ETT_TargetTargetFrame_DragStop(arg1);
+                ETT_TargetTargetFrame_DragStop(self, button);
             </OnDragStop>
         </Scripts>
     </Button>
+
     <Button name="ETT_TargetTargetTargetFrame" inherits="ETT_TargetTargetFrameTemplate">
         <Anchors>
             <Anchor point="TOP" relativeTo="ETT_TargetTargetFrame" relativePoint="BOTTOM">
@@ -142,13 +139,10 @@
         </Anchors>
         <Scripts>
             <OnUpdate>
-                    ETT_TargetTargetTargetFrame_OnUpdate();
+                ETT_TargetTargetTargetFrame_OnUpdate(self, elapsed);
             </OnUpdate>
-            <!--OnMouseDown>
-                TargetUnit("targettargettarget");
-            </OnMouseDown-->
             <OnLoad>
-                    ETT_TargetTargetTargetFrame_OnLoad();
+                ETT_TargetTargetTargetFrame_OnLoad(self);
             </OnLoad>
         </Scripts>
     </Button>

@@ -1,4 +1,4 @@
-
+if GetLocale()~='zhCN' then return end
 local M = MerInspect;
 local MerInspect_Enable = false;
 M:RegisterEvent("ADDON_LOADED");
@@ -18,7 +18,7 @@ end
 -- 考虑到玩家脱装备与穿装备时的运算量，该处不做处理。
 function M:UNIT_INVENTORY_CHANGED(unit)
 	if (self.Config.MerInspectEnable and (unit == "player" or unit == InspectFrame.unit)) then
-		self:DisplayInvenrotyInfo(unit);
+		self:DisplayInventoryInfo(unit);
 	end
 end
 
@@ -79,8 +79,8 @@ function M:CreateMainFrame()
 	self.tooltip = CreateFrame("GameTooltip", "MerInspectTooltip", UIParent, "GameTooltipTemplate");
 	
 	--talent Frame
-	local frame = self:CreateFrame("MerInspectTalent", InspectPaperDollFrame, 110, 56, 2, 32, 0);
-	frame:SetPoint("TOPLEFT", InspectPaperDollFrame, "TOPLEFT", 184, -260);
+	local frame = self:CreateFrame("MerInspectTalent", InspectPaperDollFrame, 110, 68, 2, 32, 0);
+	frame:SetPoint("BOTTOMLEFT", InspectPaperDollFrame, "BOTTOMLEFT", 71, 135);
 	frame.icon1 = frame:CreateTexture(nil, "BORDER");
 	frame.icon1:SetWidth(24) frame.icon1:SetHeight(24);
 	frame.icon1:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark");
@@ -90,11 +90,11 @@ function M:CreateMainFrame()
 
 	--pvp Frame
 	frame = self:CreateFrame("MerInspectPVP", InspectPaperDollFrame, 110, 68, 3, 2);
-	frame:SetPoint("TOPLEFT", MerInspectTalent, "BOTTOMLEFT", 0, 2);
+	frame:SetPoint("BOTTOMRIGHT", InspectPaperDollFrame, "BOTTOMRIGHT", -85, 135);
 	frame.title:SetText("PVP:");
 	
 	--resistance	
-	frame = CreateFrame("Frame", "MerInspectRES", InspectPaperDollFrame);
+--[[	frame = CreateFrame("Frame", "MerInspectRES", InspectPaperDollFrame);
 	frame:SetWidth(40); frame:SetHeight(1);
 	frame:SetPoint("TOPRIGHT", InspectPaperDollFrame, "TOPLEFT", 297, -77);
 	local texture = "Interface\\PaperDollInfoFrame\\UI-Character-ResistanceIcons"
@@ -112,11 +112,11 @@ function M:CreateMainFrame()
 		frame["button"..i].tooltip = getglobal("RESISTANCE" .. tooltip[i] .. "_NAME");
 		frame["button"..i].tooltipSubtext = format(formatText, getglobal("RESISTANCE_TYPE" .. tooltip[i]));
 		frame["button"..i]:SetPoint("TOPRIGHT", getglobal("MerInspectRESbutton" .. (i - 1)) or frame, "BOTTOMRIGHT", 0, -1);
-	end
+	end]]
 	--base effect
-	frame = self:CreateFrame("MerInspectBase", InspectPaperDollFrame, 110, 122, 7, 4)
+--[[	frame = self:CreateFrame("MerInspectBase", InspectPaperDollFrame, 110, 122, 7, 4)
 	frame:SetPoint("TOPLEFT", InspectPaperDollFrame, "TOPLEFT", 73, -260)
-	frame.title:SetText(self.loc.base)
+	frame.title:SetText(self.loc.base)]]
 end
 
 function MerInspect_Toggle(switch)
@@ -129,8 +129,8 @@ function MerInspect_Toggle(switch)
 		InspectModelFrame:SetHeight(215);		
 		MerInspectTalent:Show();
 		MerInspectPVP:Show();
-		MerInspectRES:Show();	
-		MerInspectBase:Show();		
+		--MerInspectRES:Show();	
+	--	MerInspectBase:Show();		
 	else
 		M.Config.MerInspectEnable = false;
 		M:UnregisterEvent("UNIT_INVENTORY_CHANGED");
@@ -141,8 +141,8 @@ function MerInspect_Toggle(switch)
 		InspectModelFrame:Show();
 		MerInspectTalent:Hide();
 		MerInspectPVP:Hide();
-		MerInspectRES:Hide();
-		MerInspectBase:Hide();
+	--	MerInspectRES:Hide();
+	--	MerInspectBase:Hide();
 	end
 end
 

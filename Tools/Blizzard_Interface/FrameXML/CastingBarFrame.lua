@@ -2,7 +2,7 @@ CASTING_BAR_ALPHA_STEP = 0.05;
 CASTING_BAR_FLASH_STEP = 0.2;
 CASTING_BAR_HOLD_TIME = 1;
 
-function CastingBarFrame_OnLoad (self, unit, showTradeSkills)
+function CastingBarFrame_OnLoad (self, unit, showTradeSkills, showShield)
 	self:RegisterEvent("UNIT_SPELLCAST_START");
 	self:RegisterEvent("UNIT_SPELLCAST_STOP");
 	self:RegisterEvent("UNIT_SPELLCAST_FAILED");
@@ -11,16 +11,19 @@ function CastingBarFrame_OnLoad (self, unit, showTradeSkills)
 	self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START");
 	self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE");
 	self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP");
+	self:RegisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE");
+	self:RegisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE");
 	self:RegisterEvent("PLAYER_ENTERING_WORLD");
 
 	self.unit = unit;
 	self.showTradeSkills = showTradeSkills;
+	self.showShield = showShield;
 	self.casting = nil;
 	self.channeling = nil;
 	self.holdTime = 0;
 	self.showCastbar = true;
 
-	local barIcon = getglobal(self:GetName().."Icon");
+	local barIcon = _G[self:GetName().."Icon"];
 	if ( barIcon ) then
 		barIcon:Hide();
 	end
@@ -63,13 +66,14 @@ function CastingBarFrame_OnEvent (self, event, ...)
 	end
 	
 	local selfName = self:GetName();
-	local barSpark = getglobal(selfName.."Spark");
-	local barText = getglobal(selfName.."Text");
-	local barFlash = getglobal(selfName.."Flash");
-	local barIcon = getglobal(selfName.."Icon");
-
+	local barSpark = _G[selfName.."Spark"];
+	local barText = _G[selfName.."Text"];
+	local barFlash = _G[selfName.."Flash"];
+	local barIcon = _G[selfName.."Icon"];
+	local barBorder = _G[selfName.."Border"];
+	local barBorderShield = _G[selfName.."BorderShield"];
 	if ( event == "UNIT_SPELLCAST_START" ) then
-		local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, castID = UnitCastingInfo(unit);
+		local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unit);
 		if ( not name or (not self.showTradeSkills and isTradeSkill)) then
 			self:Hide();
 			return;
@@ -95,6 +99,19 @@ function CastingBarFrame_OnEvent (self, event, ...)
 		self.castID = castID;
 		self.channeling = nil;
 		self.fadeOut = nil;
+		if ( barBorderShield ) then
+			if ( self.showShield and notInterruptible ) then
+				barBorderShield:Show();
+				if ( barBorder ) then
+					barBorder:Hide();
+				end
+			else
+				barBorderShield:Hide();
+				if ( barBorder ) then
+					barBorder:Show();
+				end
+			end
+		end
 		if ( self.showCastbar ) then
 			self:Show();
 		end
@@ -170,7 +187,7 @@ function CastingBarFrame_OnEvent (self, event, ...)
 			end
 		end
 	elseif ( event == "UNIT_SPELLCAST_CHANNEL_START" ) then
-		local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill = UnitChannelInfo(unit);
+		local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo(unit);
 		if ( not name or (not self.showTradeSkills and isTradeSkill)) then
 			-- if there is no name, there is no bar
 			self:Hide();
@@ -196,6 +213,19 @@ function CastingBarFrame_OnEvent (self, event, ...)
 		self.casting = nil;
 		self.channeling = 1;
 		self.fadeOut = nil;
+		if ( barBorderShield ) then
+			if ( self.showShield and notInterruptible ) then
+				barBorderShield:Show();
+				if ( barBorder ) then
+					barBorder:Hide();
+				end
+			else
+				barBorderShield:Hide();
+				if ( barBorder ) then
+					barBorder:Show();
+				end
+			end
+		end
 		if ( self.showCastbar ) then
 			self:Show();
 		end
@@ -212,12 +242,26 @@ function CastingBarFrame_OnEvent (self, event, ...)
 			self:SetMinMaxValues(0, self.maxValue);
 			self:SetValue(self.value);
 		end
+	elseif ( self.showShield and event == "UNIT_SPELLCAST_INTERRUPTIBLE" ) then
+		if ( barBorderShield ) then
+			barBorderShield:Hide();
+			if ( barBorder ) then
+				barBorder:Show();
+			end
+		end
+	elseif ( self.showShield and event == "UNIT_SPELLCAST_NOT_INTERRUPTIBLE" ) then
+		if ( barBorderShield ) then
+			barBorderShield:Show();
+			if ( barBorder ) then
+				barBorder:Hide();
+			end
+		end
 	end
 end
 
 function CastingBarFrame_OnUpdate (self, elapsed)
-	local barSpark = getglobal(self:GetName().."Spark");
-	local barFlash = getglobal(self:GetName().."Flash");
+	local barSpark = _G[self:GetName().."Spark"];
+	local barFlash = _G[self:GetName().."Flash"];
 
 	if ( self.casting ) then
 		self.value = self.value + elapsed;

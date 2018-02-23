@@ -23,6 +23,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			<AbsValue val="12"/>
 		</FontHeight>
 	</Font>
+	<Font name="SystemFont_Outline" font="Fonts\ZYKai_C.TTF" outline="NORMAL" virtual="true">
+		<FontHeight>
+			<AbsValue val="15"/>
+		</FontHeight>
+	</Font>	
 	<Font name="SystemFont_Shadow_Small" font="Fonts\ZYKai_T.TTF" virtual="true">
 		<Shadow>
 			<Offset>
@@ -66,6 +71,17 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			<AbsValue val="14"/>
 		</FontHeight>
 	</Font>
+	<Font name="SystemFont_Shadow_Med2" font="Fonts\ZYKai_T.TTF" virtual="true">
+		<Shadow>
+			<Offset>
+				<AbsDimension x="1" y="-1"/>
+			</Offset>
+			<Color r="0" g="0" b="0"/>
+		</Shadow>
+		<FontHeight>
+			<AbsValue val="16"/>
+		</FontHeight>
+	</Font>	
 	<Font name="SystemFont_Med3" font="Fonts\ZYKai_T.TTF" virtual="true">
 		<FontHeight>
 			<AbsValue val="13"/>
@@ -96,6 +112,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		</Shadow>
 		<FontHeight>
 			<AbsValue val="17"/>
+		</FontHeight>
+	</Font>
+	<Font name="SystemFont_Huge1" font="Fonts\ZYKai_T.TTF" virtual="true">
+		<FontHeight>
+			<AbsValue val="20"/>
 		</FontHeight>
 	</Font>
 	<Font name="SystemFont_Shadow_Huge1" font="Fonts\ZYKai_T.TTF" virtual="true">
@@ -261,6 +282,51 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		</Shadow>
 		<Color r="1.0" g="1.0" b="1.0"/>
 	</Font>
+	
+	<Font name="FriendsFont_Normal" font="Fonts\ZYKai_T.TTF" virtual="true">
+		<Shadow>
+			<Offset>
+				<AbsDimension x="1" y="-1"/>
+			</Offset>
+			<Color r="0" g="0" b="0"/>
+		</Shadow>
+		<FontHeight>
+			<AbsValue val="15"/>
+		</FontHeight>
+	</Font>
+	<Font name="FriendsFont_Small" font="Fonts\ZYKai_T.TTF" virtual="true">
+		<Shadow>
+			<Offset>
+				<AbsDimension x="1" y="-1"/>
+			</Offset>
+			<Color r="0" g="0" b="0"/>
+		</Shadow>
+		<FontHeight>
+			<AbsValue val="13"/>
+		</FontHeight>
+	</Font>
+	<Font name="FriendsFont_Large" font="Fonts\ZYKai_T.TTF" virtual="true">
+		<Shadow>
+			<Offset>
+				<AbsDimension x="1" y="-1"/>
+			</Offset>
+			<Color r="0" g="0" b="0"/>
+		</Shadow>
+		<FontHeight>
+			<AbsValue val="17"/>
+		</FontHeight>
+	</Font>
+	<Font name="FriendsFont_UserText" font="Fonts\ZYHei.TTF" virtual="true">
+		<Shadow>
+			<Offset>
+				<AbsDimension x="1" y="-1"/>
+			</Offset>
+			<Color r="0" g="0" b="0"/>
+		</Shadow>
+		<FontHeight>
+			<AbsValue val="11"/>
+		</FontHeight>
+	</Font>	
 </Ui>
 
 

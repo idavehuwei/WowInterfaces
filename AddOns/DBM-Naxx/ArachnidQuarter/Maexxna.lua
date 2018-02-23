@@ -1,9 +1,8 @@
-local mod = DBM:NewMod("Maexxna", "DBM-Naxx", 1)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Maexxna", "DBM-Naxx", 1)
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 180 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2943 $"):sub(12, -3))
 mod:SetCreatureID(15952)
-mod:SetZone()
 
 mod:RegisterCombat("combat")
 
@@ -14,13 +13,13 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnWebWrap		= mod:NewAnnounce("WarningWebWrap", 2, 28622)
-local warnWebSpraySoon	= mod:NewAnnounce("WarningWebSpraySoon", 1, 29484)
-local warnWebSprayNow	= mod:NewAnnounce("WarningWebSprayNow", 3, 29484)
+local warnWebWrap		= mod:NewTargetAnnounce(28622, 2)
+local warnWebSpraySoon	= mod:NewSoonAnnounce(29484, 1)
+local warnWebSprayNow	= mod:NewSpellAnnounce(29484, 3)
 local warnSpidersSoon	= mod:NewAnnounce("WarningSpidersSoon", 2, 17332)
 local warnSpidersNow	= mod:NewAnnounce("WarningSpidersNow", 4, 17332)
 
-local timerWebSpray		= mod:NewTimer(40.5, "TimerWebSpray", 29484)
+local timerWebSpray		= mod:NewNextTimer(40.5, 29484)
 local timerSpider		= mod:NewTimer(30, "TimerSpider", 17332)
 
 function mod:OnCombatStart(delay)
@@ -31,8 +30,16 @@ function mod:OnCombatStart(delay)
 	timerSpider:Start(30 - delay)
 end
 
+function mod:OnCombatEnd(wipe)
+	if not wipe then
+		if DBM.Bars:GetBar(L.ArachnophobiaTimer) then
+			DBM.Bars:CancelBar(L.ArachnophobiaTimer) 
+		end	
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 28622 then -- Web Wrap
+	if args:IsSpellID(28622) then -- Web Wrap
 		warnWebWrap:Show(args.destName)
 		if args.destName == UnitName("player") then
 			SendChatMessage(L.YellWebWrap, "YELL")
@@ -41,8 +48,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 29484 	  -- Web Spray (10)
-	or args.spellId == 54125 then -- Web Spray (25)
+	if args:IsSpellID(29484, 54125) then -- Web Spray
 		warnWebSprayNow:Show()
 		warnWebSpraySoon:Schedule(35.5)
 		timerWebSpray:Start()

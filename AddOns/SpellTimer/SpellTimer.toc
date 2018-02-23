@@ -1,10 +1,10 @@
-## Interface: 30100
-## Title: Spell Timer
-## Notes: Dispaly some timer with progress bar to remind user how long the spells will remains.
-## Title-zhCN: [战斗] 法术计时器 SpellTimer
-## Notes-zhCN: 显示一些计时器提醒用户这些法术还剩下多少时间。
-## Title-zhTW: [戰鬥] 法術計時器 SpellTimer
-## Notes-zhTW: 顯示一些計時器提醒用戶這些法術還剩下多少時間。
+﻿## Interface: 30300
+## Title: [BF] Spell Timer
+## Title-zhCN: [大脚]法术计时器
+## Title-zhTW: [大腳]法術計時器
+## Notes: |cffbc8f8fDispaly some timer with progress bar to remind user how long the spells will remains.|r
+## Notes-zhCN: |cff00ff00SpellTimer|r                                             |cffbc8f8f显示一些计时器提醒用户这些法术还剩下多少时间。|r
+## Notes-zhTW: |cff00ff00SpellTimer|r                                             |cffbc8f8f顯示一些計時器提醒用戶這些法術還剩下多少時間。|r
 ## Dependencies: BigFoot
 ## X-Revision: BigFoot
 ## LoadOnDemand: 1

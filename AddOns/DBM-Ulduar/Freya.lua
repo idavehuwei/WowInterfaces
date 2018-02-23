@@ -1,94 +1,133 @@
-local mod = DBM:NewMod("Freya", "DBM-Ulduar")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Freya", "DBM-Ulduar")
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1175 $"):sub(12, -3))
-mod:SetZone()
+mod:SetRevision(("$Revision: 4133 $"):sub(12, -3))
 
 mod:SetCreatureID(32906)
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.YellKill)
+mod:SetUsedIcons(6, 7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
+	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
--- Trash: 33430 Guardian Lasher (so ne blume)
--- 33355 (nymphe)
--- 33354 (baum)
+-- Trash: 33430 Guardian Lasher (flower)
+-- 33355 (nymph)
+-- 33354 (tree)
 
 --
 -- Elder Stonebark (ground tremor / fist of stone)
 -- Elder Brightleaf (unstable sunbeam)
 
+local warnPhase2			= mod:NewPhaseAnnounce(2, 3)
+local warnSimulKill			= mod:NewAnnounce("WarnSimulKill", 1)
+local warnFury				= mod:NewTargetAnnounce(63571, 2)
+local warnRoots				= mod:NewTargetAnnounce(62438, 2)
 
-mod:AddBoolOption("HealthFrame", true)
+local specWarnFury			= mod:NewSpecialWarningYou(63571)
+local specWarnTree		= mod:NewSpecialWarning("WarningTree")
+local specWarnTremor		= mod:NewSpecialWarningCast(62859)	-- Hard mode
+local specWarnBeam			= mod:NewSpecialWarningMove(62865)	-- Hard mode
 
-local warnPhase2		= mod:NewAnnounce("WarnPhase2", 3)
-local warnSimulKill		= mod:NewAnnounce("WarnSimulKill", 1)
-local warnFury			= mod:NewAnnounce("WarnFury", 2, 63571)
-local warnRoots			= mod:NewAnnounce("WarnRoots", 2, 63601)
-
-local specWarnFury		= mod:NewSpecialWarning("SpecWarnFury")
-
-local enrage 			= mod:NewEnrageTimer(600)
-
+local enrage 				= mod:NewBerserkTimer(600)
 local timerAlliesOfNature	= mod:NewNextTimer(60, 62678)
 local timerSimulKill		= mod:NewTimer(12, "TimerSimulKill")
-local timerFury			= mod:NewTargetTimer(10, 63571)
-local timerTremorCD 		= mod:NewCDTimer(28, 62859) 
-local warnTremor		= mod:NewSpecialWarning("WarningTremor")	-- Hardmode
-local specWarnBeam		= mod:NewSpecialWarning("UnstableEnergy")		-- Hardmode
+local timerFury				= mod:NewTargetTimer(10, 63571)
+local timerTremorCD 		= mod:NewCDTimer(28, 62859)
 
+local sndWOP				= mod:NewSound(nil, "SoundWOP", true)
+
+mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("PlaySoundOnFury")
 
-local adds = {}
-
+local adds		= {}
+local rootedPlayers 	= {}
+local altIcon 		= true
+local killTime		= 0
+local iconId		= 6
 
 function mod:OnCombatStart(delay)
 	enrage:Start()
 	table.wipe(adds)
 end
 
-function mod:OnCombatEnd()
+function mod:OnCombatEnd(wipe)
 	DBM.BossHealth:Hide()
-end
-
-
-function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 62519 then
-		warnPhase2:Show()
+	if not wipe then
+		if DBM.Bars:GetBar(L.TrashRespawnTimer) then
+			DBM.Bars:CancelBar(L.TrashRespawnTimer) 
+		end	
 	end
 end
 
+local function showRootWarning()
+	warnRoots:Show(table.concat(rootedPlayers, "< >"))
+	table.wipe(rootedPlayers)
+end
+
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 62437 or args.spellId == 62859 then
-		warnTremor:Show()
+	if args:IsSpellID(62437, 62859) then
+		specWarnTremor:Show()
+		sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\stopcast.mp3")
 		timerTremorCD:Start()
 	end
 end 
 
-
-local altIcon = true
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 62678 then -- Summon Allies of Nature
+	if args:IsSpellID(62678) then -- Summon Allies of Nature
 		timerAlliesOfNature:Start()
-	elseif args.spellId == 63571 or args.spellId == 62589 then -- Nature's Fury
+	elseif args:IsSpellID(63571, 62589) then -- Nature's Fury
 		altIcon = not altIcon	--Alternates between Skull and X
 		self:SetIcon(args.destName, altIcon and 7 or 8, 10)
 		warnFury:Show(args.destName)
-		if args.destName == UnitName("player") then -- only cast on players; no need to check destFlags
+		if args:IsPlayer() then -- only cast on players; no need to check destFlags
 			if self.Options.PlaySoundOnFury then
-				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\extrasounds\\runout.mp3")
 			end
 			specWarnFury:Show()
 		end
 		timerFury:Start(args.destName)
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(62861, 62438) then
+		iconId = iconId - 1
+		self:SetIcon(args.destName, iconId, 15)
+		table.insert(rootedPlayers, args.destName)
+		self:Unschedule(showRootWarning)
+		if #rootedPlayers >= 3 then
+			showRootWarning()
+		else
+			self:Schedule(0.5, showRootWarning)
+		end
+
+	elseif args:IsSpellID(62451, 62865) and args:IsPlayer() then
+		specWarnBeam:Show()
+		sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\runaway.mp3")
+	end 
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args.spellId == 62519 then
+		warnPhase2:Show()
+	elseif args:IsSpellID(62861, 62438) then
+		self:RemoveIcon(args.destName)
+		iconId = iconId + 1
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg == L.TreeYell or msg:find(L.TreeYell) then
+		specWarnTree:Show()
+		sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\killtree.mp3")
 	end
 end
 
@@ -105,7 +144,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
-local killTime = 0
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 33202 or cid == 32916 or cid == 32919 then
@@ -128,38 +166,3 @@ function mod:UNIT_DIED(args)
 	end
 
 end
-
-
-local rootedPlayers = {}
-local function showRootWarning()
-	warnRoots:Show(table.concat(rootedPlayers, "< >"))
-	table.wipe(rootedPlayers)
-end
-
-local iconId = 6
-function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62861 or args.spellId == 62438 then
-		iconId = iconId - 1
-		self:SetIcon(args.destName, iconId, 15)
-		table.insert(rootedPlayers, args.destName)
-		self:Unschedule(showRootWarning)
-		if #rootedPlayers >= 3 then
-			showRootWarning()
-		else
-			self:Schedule(0.5, showRootWarning)
-		end
-
-	elseif (args.spellId == 62451 or args.spellId == 62865) and args.destName == UnitName("player")  then
-		specWarnBeam:Show()
-	end 
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 62861 or args.spellId == 62438 then
-		self:RemoveIcon(args.destName)
-		iconId = iconId + 1
-	end
-end
-
-
-

@@ -239,6 +239,7 @@ function PlayerTalentFrame_OnLoad(self)
 	self:RegisterEvent("PLAYER_LEVEL_UP");
 	self:RegisterEvent("PLAYER_TALENT_UPDATE");
 	self:RegisterEvent("PET_TALENT_UPDATE");
+	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED");
 	self.unit = "player";
 	self.inspect = false;
 	self.pet = false;
@@ -252,8 +253,8 @@ function PlayerTalentFrame_OnLoad(self)
 	for i = 1, MAX_NUM_TALENTS do
 		button = _G["PlayerTalentFrameTalent"..i];
 		if ( button ) then
-			button:SetScript("OnEvent", PlayerTalentFrameTalent_OnEvent);
 			button:SetScript("OnClick", PlayerTalentFrameTalent_OnClick);
+			button:SetScript("OnEvent", PlayerTalentFrameTalent_OnEvent);
 			button:SetScript("OnEnter", PlayerTalentFrameTalent_OnEnter);
 		end
 	end
@@ -362,6 +363,8 @@ function PlayerTalentFrame_OnEvent(self, event, ...)
 			local level = ...;
 			PlayerTalentFrame_Update(level);
 		end
+	elseif ( event == "ACTIVE_TALENT_GROUP_CHANGED" ) then
+		MainMenuBar_ToPlayerArt(MainMenuBarArtFrame);
 	end
 end
 
@@ -526,6 +529,31 @@ function PlayerTalentFrameActivateButton_OnClick(self)
 	end
 end
 
+function PlayerTalentFrameActivateButton_OnShow(self)
+	self:RegisterEvent("CURRENT_SPELL_CAST_CHANGED");
+	PlayerTalentFrameActivateButton_Update();
+end
+
+function PlayerTalentFrameActivateButton_OnHide(self)
+	self:UnregisterEvent("CURRENT_SPELL_CAST_CHANGED");
+end
+
+function PlayerTalentFrameActivateButton_OnEvent(self, event, ...)
+	PlayerTalentFrameActivateButton_Update();
+end
+
+function PlayerTalentFrameActivateButton_Update()
+	local spec = selectedSpec and specs[selectedSpec];
+	if ( spec and PlayerTalentFrameActivateButton:IsShown() ) then
+		-- if the activation spell is being cast currently, disable the activate button
+		if ( IsCurrentSpell(TALENT_ACTIVATION_SPELLS[spec.talentGroup]) ) then
+			PlayerTalentFrameActivateButton:Disable();
+		else
+			PlayerTalentFrameActivateButton:Enable();
+		end
+	end
+end
+
 function PlayerTalentFrameResetButton_OnEnter(self)
 	GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 	GameTooltip:SetText(TALENT_TOOLTIP_RESETTALENTGROUP);
@@ -662,7 +690,7 @@ function PlayerTalentFrameTab_OnClick(self)
 end
 
 function PlayerTalentFrameTab_OnEnter(self)
-	if ( self.textWidth and self.textWidth > self:GetTextWidth() ) then
+	if ( self.textWidth and self.textWidth > self:GetFontString():GetWidth() ) then	--We're ellipsizing.
 		GameTooltip:SetOwner(self, "ANCHOR_BOTTOM");
 		GameTooltip:SetText(self:GetText());
 	end

@@ -1,4 +1,4 @@
-﻿## Interface: 30100
+﻿## Interface: 30300
 ## Title: [|cffFF3300Core|r] Addon Control Panel
 ## Title-zhCN: [|cffFF3300核心|r] 插件管理 ACP
 ## Title-zhTW: [|cffFF3300核心|r] 插件管理 ACP

@@ -46,17 +46,17 @@ local function OnLeave()
 end
 
 function BuildButton(parent, width, height, point1, point2, point3)
-	local f = CreateFrame('Button', nil, parent, 'UIPanelButtonTemplate')
-
+	local f = CreateFrame('Button', nil, parent, 'UIPanelButtonTemplate')		
+	
 	f:SetWidth(width)
 	f:SetHeight(height)
 	f:SetPoint(point1, point2, point3)
 	f:SetText(L['Pack'])
 	f:SetScript('OnMouseUP', OnClick)
-
+	
 	f:SetScript('OnEnter', OnEnter)
 	f:SetScript('OnLeave', OnLeave)
-
+	
 	return f
 end
 
@@ -78,11 +78,11 @@ function addon:PLAYER_LOGIN()
 			i = i + 1
 		end
 		return
-
+		
 	elseif IsAddOnLoaded('Baggins') then
 		BuildButton(BagginsBag1, 45, 20, 'TOPRIGHT', -30, -6)
 		BuildButton(BagginsBag12, 45, 20, 'TOPRIGHT', -30, -6)
-
+		
 	-- you should look into DataBroker display on Bagnon
 	--[[elseif IsAddOnLoaded('Bagnon') then
 		local id = 1
@@ -95,17 +95,17 @@ function addon:PLAYER_LOGIN()
 	elseif IsAddOnLoaded('BaudBag') then
 		BuildButton(BBCont1_1, 45, 20, 'TOPRIGHT', -40, 20)
 		BuildButton(BBCont2_1, 45, 20, 'TOPRIGHT', -40, 20)
-
+		
 	elseif IsAddOnLoaded('Combuctor') then
 		CombuctorFrame1Search:SetPoint('TOPRIGHT',-166,-44)
 		CombuctorFrame2Search:SetPoint('TOPRIGHT',-166,-44)
 		BuildButton(CombuctorFrame1, 45, 25, 'TOPRIGHT', -50, -40)
 		BuildButton(CombuctorFrame2, 45, 20, 'TOPRIGHT', -50, -40)
-
+		
 	elseif IsAddOnLoaded('MyInventory') then
 		BuildButton(MyInventoryFrame, 45, 20, 'TOPRIGHT', -15, -35)
 		BuildButton(MyBankFrame, 45, 20, 'TOPRIGHT', -15, -35)
-
+		
 	elseif IsAddOnLoaded('OneBag3') or IsAddOnLoaded('OneBank3') then
 		if IsAddOnLoaded('OneBag3') then
 			BuildButton(OneBagFrame, 60, 20, 'TOPRIGHT', -102, -11)
@@ -113,12 +113,12 @@ function addon:PLAYER_LOGIN()
 		if IsAddOnLoaded('OneBank3') then
 			BuildButton(OneBankFrame, 60, 20, 'TOPRIGHT', -102, -11)
 		end
-
+		
 	else
 		BuildButton(ContainerFrame1, 45, 20, 'TOPRIGHT', -10, -28)
 		BuildButton(BankFrame, 45, 20, 'TOPRIGHT', -50, -15)
 	end
-
+	
 	if JPack.DEV_MOD then addon:RegisterEvent('ADDON_LOADED') end
 end
 

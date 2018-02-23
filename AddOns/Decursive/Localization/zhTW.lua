@@ -1,7 +1,7 @@
 --[[
     This file is part of Decursive.
     
-    Decursive (v 2.4.2_beta_6-12-g708f71e) add-on for World of Warcraft UI
+    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
     Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/?to=decursive.php )
 
     This is the continued work of the original Decursive (v1.9.4) by Quu
@@ -26,23 +26,40 @@
 -------------------------------------------------------------------------------
 
 --[=[
---			YOUR ATTENTION PLEASE
+--                      YOUR ATTENTION PLEASE
 --
---	   !!!!!!! TRANSLATORS TRANSLATORS TRANSLATORS !!!!!!!
+--         !!!!!!! TRANSLATORS TRANSLATORS TRANSLATORS !!!!!!!
 --
 --    Thank you very much for your interest in translating Decursive.
 --    Do not edit those files. Use the localization interface available at the following address:
 --
---	################################################################
---	#  http://wow.curseforge.com/projects/decursive/localization/  #
---	################################################################
+--      ################################################################
+--      #  http://wow.curseforge.com/projects/decursive/localization/  #
+--      ################################################################
 --
 --    Your translations made using this interface will be automatically included in the next release.
 --
 --]=]
 
+-- big ugly scary fatal error message display function {{{
+if not DcrFatalError then
+-- the beautiful error popup : {{{ -
+StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
+    text = "|cFFFF0000Decursive Error:|r\n%s",
+    button1 = "OK",
+    OnAccept = function()
+        return false;
+    end,
+    timeout = 0,
+    whileDead = 1,
+    hideOnEscape = 1,
+    showAlert = 1,
+    }; -- }}}
+DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
+end
+-- }}}
 if not DcrLoadedFiles or not DcrLoadedFiles["enUS.lua"] then
-    if not DcrCorrupted then message("Decursive installation is corrupted! (enUS.lua not loaded)"); end;
+    if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (enUS.lua not loaded)"); end;
     DcrCorrupted = true;
     return;
 end
@@ -50,7 +67,7 @@ end
 local L = LibStub("AceLocale-3.0"):NewLocale("Decursive", "zhTW");
 
 if not L then
-    DcrLoadedFiles["zhTW.lua"] = "2.4.2_beta_6-12-g708f71e";
+    DcrLoadedFiles["zhTW.lua"] = "2.4.5-3-g6a02387";
     return;
 end;
 
@@ -84,18 +101,28 @@ L["COLORSTATUS"] = "設定當玩家狀態是 '%s' 時的 MUF 顏色."
 L["CTRL"] = "Ctrl"
 L["CURE_PETS"] = "檢測並淨化寵物"
 L["CURSE"] = "詛咒"
-L["DEBUG_REPORT_HEADER"] = [=[|cFF11FF33請報告此視窗的內容給 Archarodim@teaser.fr|r
+L["DEBUG_REPORT_HEADER"] = [=[|cFF11FF33請報告此視窗的內容給 Archarodim+DcrReport@teaser.fr|r
 |cFF009999（使用 CTRL+A 選擇所有 CTRL+C 復制文本到剪切板）|r
-如果發現 Decursive 任何奇怪的行為也一并報告。
-]=]
+如果發現 Decursive 任何奇怪的行為也一并報告。]=]
 L["DECURSIVE_DEBUG_REPORT"] = "**** |cFFFF0000Decursive 除錯報告|r ****"
 L["DECURSIVE_DEBUG_REPORT_NOTIFY"] = "一個出錯報告可用！輸入 |cFFFF0000/dcr report|r 查看"
 L["DECURSIVE_DEBUG_REPORT_SHOW"] = "除錯報告可用！"
 L["DECURSIVE_DEBUG_REPORT_SHOW_DESC"] = "顯示作者需要看到的除錯報告…"
 L["DEFAULT_MACROKEY"] = "NONE"
+L["DEV_VERSION_ALERT"] = [=[您正在使用的是開發版本的 Decursive 。
+
+如果不想參加測試新功能與修復，得到遊戲中的除錯報告，發送問題給作者之後“不要使用此版本”並從 Curse.com下載最新的“穩定”版本。
+
+這條消息只將在版本更新中顯示一次
+
+使用開發版本 Decursive 的玩家開始遊戲顯示此提示。]=]
+L["DEV_VERSION_EXPIRED"] = [=[此開發版 Decursive 已過期。
+請從 CURSE.COM 下載最新的開發版或使用當前穩定版。
+謝謝！ ^_^
+關於：當用戶使用過期的開發版 Decursive 登錄時每次顯示。]=]
 L["DISABLEWARNING"] = [=[Decursive已停用!
 
-如欲啟用, 輸入 |cFFFFAA44/DCR STANDBY|r]=]
+如欲啟用, 輸入 |cFFFFAA44/DCR ENABLE|r]=]
 L["DISEASE"] = "疾病"
 L["DONOT_BL_PRIO"] = "不添加優先名單的玩家到排除名單"
 L["FAILEDCAST"] = "|cFF22FFFF%s %s|r |cFFAA0000對|r %s釋放失敗\\n|cFF00AAAA%s|r"
@@ -161,6 +188,15 @@ L["OPT_CREATE_VIRTUAL_DEBUFF_DESC"] = "讓你看到當負面效果發生時的�
 L["OPT_CUREPETS_DESC"] = "寵物會被顯示出來也可淨化。"
 L["OPT_CURINGOPTIONS"] = "淨化選項"
 L["OPT_CURINGOPTIONS_DESC"] = "設定淨化選項。"
+L["OPT_CURINGOPTIONS_EXPLANATION"] = [=[	
+選擇你想要治療的傷害類型，未經檢查的類型將被 Decursive 完全忽略。
+
+綠色數字確定優先的傷害。這一優先事項將影響幾方面：
+- 如果一個玩家獲得許多類型的減益效果，Decursive將優先顯示。
+- 滑鼠按鈕點擊將治療減益（第一法術是左鍵點擊，第二法術是右鍵點擊，等等…）
+
+所有這一切的說明文檔（請見）：
+http://www.wowace.com/addons/decursive/]=]
 L["OPT_CURINGORDEROPTIONS"] = "淨化順序設定"
 L["OPT_CURSECHECK_DESC"] = "選取後你可以看見並解除被詛咒的玩家。"
 L["OPT_DEBCHECKEDBYDEF"] = [=[
@@ -174,6 +210,10 @@ L["OPT_DISABLEMACROCREATION_DESC"] = "Decursive 巨集將不再創建和保留"
 L["OPT_DISEASECHECK_DESC"] = "選取後你可以看見並治療生病的玩家。"
 L["OPT_DISPLAYOPTIONS"] = "顯示設定"
 L["OPT_DONOTBLPRIO_DESC"] = "設定到優先清單的玩家不會被移入排除清單中。"
+L["OPT_ENABLEDEBUG"] = "啟用除錯"
+L["OPT_ENABLEDEBUG_DESC"] = "啟用除錯輸出"
+L["OPT_FILTEROUTCLASSES_FOR_X"] = "在戰鬥中指定的職業%q將被忽略。"
+L["OPT_GENERAL"] = "一般選項"
 L["OPT_GROWDIRECTION"] = "反向顯示 MUFs"
 L["OPT_GROWDIRECTION_DESC"] = "MUFs 會從尾巴開始顯示。"
 L["OPT_HIDELIVELIST_DESC"] = "如果未被隱藏則顯示清單，列出中了負面效果的人。"
@@ -254,6 +294,10 @@ L["OPT_SHOWMFS"] = "在螢幕上顯示 micro units Frame (MUF)"
 L["OPT_SHOWMFS_DESC"] = "如果你要在螢幕上按按鍵清除就必須點選這個設定。"
 L["OPT_SHOWMINIMAPICON"] = "迷你地圖圖標"
 L["OPT_SHOWMINIMAPICON_DESC"] = "啟用迷你地圖小圖標"
+L["OPT_SHOW_STEALTH_STATUS"] = [=[顯示潛行狀態
+使 MUFs 隱形狀態顯示的選項]=]
+L["OPT_SHOW_STEALTH_STATUS_DESC"] = [=[當玩家前行時，他的 MUF 將有一個特殊的顏色
+描述 SHOW_STEALTH_STATUS 選項]=]
 L["OPT_SHOWTOOLTIP_DESC"] = "在即時清單跟 MUFs 上顯示負面效果的小提示。"
 L["OPT_STICKTORIGHT"] = "將 MUF 視窗向右對齊"
 L["OPT_STICKTORIGHT_DESC"] = "設定這個選項將會使 MUF 視窗由右邊向左邊成長"
@@ -304,4 +348,4 @@ L["UNITSTATUS"] = "玩家狀態: "
 
 
 
-DcrLoadedFiles["zhTW.lua"] = "2.4.2_beta_6-12-g708f71e";
+DcrLoadedFiles["zhTW.lua"] = "2.4.5-3-g6a02387";

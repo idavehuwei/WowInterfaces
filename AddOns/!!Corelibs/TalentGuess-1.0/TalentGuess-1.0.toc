@@ -1,6 +1,0 @@
-## Interface: 20400
-## Title: Lib: TalentGuess-1.0
-## Notes: Attempts to figure out enemy talents by using spells used and buffs gained.
-## Author: Mayen
-
-TalentGuess-1.0.xml

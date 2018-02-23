@@ -86,6 +86,10 @@ L["Crusade Card"] = "暗月卡:聖戰"
 L["Vengeance Card"] = "暗月卡:復仇"
 L["Madness Card"] = "暗月卡:瘋狂"
 L["Wrath Card"] = "暗月卡:狂怒"
+L["Illusion Card"] = "暗月卡:幻象"
+L["Berserker! Card"] = "暗月卡:狂戰士!"
+L["Greatness Card"] = "暗月卡:崇高"
+L["Death Card"] = "暗月卡:死亡"
 
 -- Sources
 L["Drop"] = "掉落"
@@ -97,6 +101,9 @@ L["UBRS"] = "黑石塔上層"
 L["LBRS"] = "黑石塔下層"
 	
 L["Heroic"] = "英雄模式"
+	
+L["(10 Man)"] = "10人"
+L["(25 Man)"] = "25人"
 	
 -- Tier Sets
 L["Tier 1 Set"] = "T1 套裝"
@@ -110,6 +117,10 @@ L["Tier 7.10 Set"] = "T7 10人套裝"
 L["Tier 7.25 Set"] = "T7 25人套裝"
 L["Tier 8.10 Set"] = "T8 10人套裝"
 L["Tier 8.25 Set"] = "T8 25人套裝"
+L["Tier 9.10 Set"] = "T9 10人套裝"
+L["Tier 9.25 Set"] = "T9 25人套裝"
+L["Tier 10.10 Set"] = "T10 10人套裝"
+L["Tier 10.25 Set"] = "T10 25人套裝"
 	
 -- Arena Sets
 L["Arena - Season 1 Set"] = "競技場 - 第一季套裝"
@@ -119,6 +130,9 @@ L["Arena - Season 4 Set"] = "競技場 - 第四季套裝"
 L["Arena - Season 5 Tier 1 Set"] = "競技場 - 第五季套裝一"
 L["Arena - Season 5 Tier 2 Set"] = "競技場 - 第五季套裝二"
 L["Arena - Season 5 Tier 3 Set"] = "競技場 - 第五季套裝三"
+L["Arena - Season 6 Set"] = "競技場 - 第六季套裝"
+L["Arena - Season 7 Set"] = "競技場 - 第七季套裝"
+L["Arena - Season 8 Set"] = "競技場 - 第八季套裝"
 	
 L["%d%% alc/vol (%d proof)"] = " 濃度%d%% (%d度)"
 L[" (%d tickets)"] = " (%d張票)"
@@ -158,6 +172,7 @@ L["Reagent"] = "職業施法材料"
 L["Tradeskill"] = "交易技能"
 	
 L["Trash Mobs"] = "小怪掉落"
+L["Gunship Battle"] = "砲艇戰"
 
 -- Timed Reward Chest
 L["Timed Reward Chest1"] = "限時任務獎勵箱子 1"

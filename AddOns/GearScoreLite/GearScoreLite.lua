@@ -6,62 +6,55 @@
 -------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------
-local L = {};
+
 if (GetLocale() == "zhCN") then
-	L["GearScore"] = "装备评分";
-	L["GearScore: "] = "装备评分: ";
-	L["(iLevel: "] = "(物品等级: ";
-	L["YourScore: "] = "你的评分: ";
-	L["HunterScore: "] = "猎人评分: ";
+	GS_TITLE_TEXT = "大脚评分(GS): ";
+	GS_TOOLTIP_PREFIX = "◇ ";
+	GS_TOOLTIP_SUFFIX = "";
+	GS_FONT_NAME = "Fonts\\ZYKai_T.TTF";
+	GS_FONT_SIZE = 14;
+	GS_FONT_SIZE2 = 12;
 elseif (GetLocale() == "zhTW") then
-	L["GearScore"] = "裝備評分";
-	L["GearScore: "] = "裝備評分: ";
-	L["(iLevel: "] = "(物品等級: ";
-	L["YourScore: "] = "你的評分: ";
-	L["HunterScore: "] = "獵人評分: ";
+	GS_TITLE_TEXT = "大腳評分(GS): ";
+	GS_TOOLTIP_PREFIX = "◇ ";
+	GS_TOOLTIP_SUFFIX = "";
+	GS_FONT_NAME = "Fonts\\blei00d.TTF";
+	GS_FONT_SIZE = 14;
+	GS_FONT_SIZE2 = 14;
 else
-	L["GearScore"] = "GearScore";
-	L["GearScore: "] = "GearScore: ";
-	L["(iLevel: "] = "(iLevel: ";
-	L["YourScore: "] = "YourScore: ";
-	L["HunterScore: "] = "HunterScore: ";
+	GS_FONT_NAME = "Fonts\\FRIZQT__.TTF";
+	GS_FONT_SIZE = 10;
+	GS_FONT_SIZE2 = 10;
+	GS_TOOLTIP_PREFIX = "";
+	GS_TOOLTIP_SUFFIX = "";
+	GS_TITLE_TEXT = "GearScore: ";
 end
 
 function GearScore_OnEvent(GS_Nil, GS_EventName, GS_Prefix, GS_AddonMessage, GS_Whisper, GS_Sender)
 	if ( GS_EventName == "PLAYER_REGEN_ENABLED" ) then GS_PlayerIsInCombat = false; return; end
 	if ( GS_EventName == "PLAYER_REGEN_DISABLED" ) then GS_PlayerIsInCombat = true; return; end
 	if ( GS_EventName == "PLAYER_EQUIPMENT_CHANGED" ) then
-		local MyGearScore = GearScore_GetScore(UnitName("player"), "player");
+	    local MyGearScore = GearScore_GetScore(UnitName("player"), "player");
 		local Red, Blue, Green = GearScore_GetQuality(MyGearScore)
-    		PersonalGearScore:SetText(MyGearScore); 
-		PersonalGearScore:SetTextColor(Red, Green, Blue, 1)
+    	PersonalGearScore:SetText(MyGearScore); PersonalGearScore:SetTextColor(Red, Green, Blue, 1)
   	end
 	if ( GS_EventName == "ADDON_LOADED" ) then
 		if ( GS_Prefix == "GearScoreLite" ) then
-      			if not ( GS_Settings ) then	GS_Settings = GS_DefaultSettings end
-			if not ( GS_Data ) then GS_Data = {}; end; 
-			if not ( GS_Data[GetRealmName()] ) then
-				GS_Data[GetRealmName()] = { ["Players"] = {} };
-			end
+      		if not ( GS_Settings ) then	GS_Settings = GS_DefaultSettings end
+			if not ( GS_Data ) then GS_Data = {}; end; if not ( GS_Data[GetRealmName()] ) then GS_Data[GetRealmName()] = { ["Players"] = {} }; end
   			for i, v in pairs(GS_DefaultSettings) do if not ( GS_Settings[i] ) then GS_Settings[i] = GS_DefaultSettings[i]; end; end
-		end
+        end
 	end
 end
 -------------------------- Get Mouseover Score -----------------------------------
 function GearScore_GetScore(Name, Target)
 	if ( UnitIsPlayer(Target) ) then
-		local PlayerClass, PlayerEnglishClass = UnitClass(Target);
-		local GearScore = 0;
-		local PVPScore = 0;
-		local ItemCount = 0;
-		local LevelTotal = 0;
-		local TitanGrip = 1; 
-		local TempEquip = {}; 
-		local TempPVPScore = 0
+	    local PlayerClass, PlayerEnglishClass = UnitClass(Target);
+		local GearScore = 0; local PVPScore = 0; local ItemCount = 0; local LevelTotal = 0; local TitanGrip = 1; local TempEquip = {}; local TempPVPScore = 0
 
 		if ( GetInventoryItemLink(Target, 16) ) and ( GetInventoryItemLink(Target, 17) ) then
-      			local ItemName, ItemLink, ItemRarity, ItemLevel, ItemMinLevel, ItemType, ItemSubType, ItemStackCount, ItemEquipLoc, ItemTexture = GetItemInfo(GetInventoryItemLink(Target, 16))
-			if ( ItemEquipLoc == "INVTYPE_2HWEAPON" ) then TitanGrip = 0.5; end
+      		local ItemName, ItemLink, ItemRarity, ItemLevel, ItemMinLevel, ItemType, ItemSubType, ItemStackCount, ItemEquipLoc, ItemTexture = GetItemInfo(GetInventoryItemLink(Target, 16))
+            if ( ItemEquipLoc == "INVTYPE_2HWEAPON" ) then TitanGrip = 0.5; end
 		end
 
 		if ( GetInventoryItemLink(Target, 17) ) then
@@ -69,18 +62,17 @@ function GearScore_GetScore(Name, Target)
 			if ( ItemEquipLoc == "INVTYPE_2HWEAPON" ) then TitanGrip = 0.5; end
 			TempScore, ItemLevel = GearScore_GetItemScore(GetInventoryItemLink(Target, 17));
 			if ( PlayerEnglishClass == "HUNTER" ) then TempScore = TempScore * 0.3164; end
-			GearScore = GearScore + TempScore * TitanGrip;
-			ItemCount = ItemCount + 1; LevelTotal = LevelTotal + ItemLevel;
+			GearScore = GearScore + TempScore * TitanGrip;	ItemCount = ItemCount + 1; LevelTotal = LevelTotal + ItemLevel
 		end
 		
 		for i = 1, 18 do
 			if ( i ~= 4 ) and ( i ~= 17 ) then
-        			ItemLink = GetInventoryItemLink(Target, i)
-        			GS_ItemLinkTable = {}
+        		ItemLink = GetInventoryItemLink(Target, i)
+        		GS_ItemLinkTable = {}
 				if ( ItemLink ) then
-        				local ItemName, ItemLink, ItemRarity, ItemLevel, ItemMinLevel, ItemType, ItemSubType, ItemStackCount, ItemEquipLoc, ItemTexture = GetItemInfo(ItemLink)
-        				if ( GS_Settings["Detail"] == 1 ) then GS_ItemLinkTable[i] = ItemLink; end
-     					TempScore = GearScore_GetItemScore(ItemLink);
+        			local ItemName, ItemLink, ItemRarity, ItemLevel, ItemMinLevel, ItemType, ItemSubType, ItemStackCount, ItemEquipLoc, ItemTexture = GetItemInfo(ItemLink)
+        			if ( GS_Settings["Detail"] == 1 ) then GS_ItemLinkTable[i] = ItemLink; end
+     				TempScore = GearScore_GetItemScore(ItemLink);
 					if ( i == 16 ) and ( PlayerEnglishClass == "HUNTER" ) then TempScore = TempScore * 0.3164; end
 					if ( i == 18 ) and ( PlayerEnglishClass == "HUNTER" ) then TempScore = TempScore * 5.3224; end
 					if ( i == 16 ) then TempScore = TempScore * TitanGrip; end
@@ -91,10 +83,9 @@ function GearScore_GetScore(Name, Target)
 		if ( GearScore <= 0 ) and ( Name ~= UnitName("player") ) then
 			GearScore = 0; return 0,0;
 		elseif ( Name == UnitName("player") ) and ( GearScore <= 0 ) then
-		    GearScore = 0; 
-		end
-		if ( ItemCount == 0 ) then LevelTotal = 0; end		    
-		return floor(GearScore), floor(LevelTotal/ItemCount)
+		    GearScore = 0; end
+	if ( ItemCount == 0 ) then LevelTotal = 0; end		    
+	return floor(GearScore), floor(LevelTotal/ItemCount)
 	end
 end
 
@@ -164,16 +155,16 @@ function GearScore_HookSetUnit(arg1, arg2)
 	if ( MouseOverGearScore ) and ( MouseOverGearScore > 0 ) and ( GS_Settings["Player"] == 1 ) then 
 		local Red, Blue, Green = GearScore_GetQuality(MouseOverGearScore)
 		if ( GS_Settings["Level"] == 1 ) then 
-			GameTooltip:AddDoubleLine(L["GearScore: "]..MouseOverGearScore, L["(iLevel: "]..MouseOverAverage..")", Red, Green, Blue, Red, Green, Blue)
+			GameTooltip:AddDoubleLine(GS_TOOLTIP_PREFIX .. GS_TITLE_TEXT..MouseOverGearScore .. GS_TOOLTIP_SUFFIX, "(iLevel: "..MouseOverAverage..")", Red, Green, Blue, Red, Green, Blue)
 		else
-			GameTooltip:AddLine(L["GearScore: "]..MouseOverGearScore, Red, Green, Blue)
+			GameTooltip:AddLine(GS_TOOLTIP_PREFIX .. GS_TITLE_TEXT..MouseOverGearScore .. GS_TOOLTIP_SUFFIX, Red, Green, Blue)
 		end
 		if ( GS_Settings["Compare"] == 1 ) then
 			local MyGearScore = GearScore_GetScore(UnitName("player"), "player");
 			local TheirGearScore = MouseOverGearScore
-			if ( MyGearScore  > TheirGearScore  ) then GameTooltip:AddDoubleLine(L["YourScore: "]..MyGearScore  , "(+"..(MyGearScore - TheirGearScore  )..")", 0,1,0, 0,1,0); end
-			if ( MyGearScore   < TheirGearScore   ) then GameTooltip:AddDoubleLine(L["YourScore: "]..MyGearScore, "(-"..(TheirGearScore - MyGearScore  )..")", 1,0,0, 1,0,0); end	
-			if ( MyGearScore   == TheirGearScore   ) then GameTooltip:AddDoubleLine(L["YourScore: "]..MyGearScore  , "(+0)", 0,1,1,0,1,1); end	
+			if ( MyGearScore  > TheirGearScore  ) then GameTooltip:AddDoubleLine("YourScore: "..MyGearScore  , "(+"..(MyGearScore - TheirGearScore  )..")", 0,1,0, 0,1,0); end
+			if ( MyGearScore   < TheirGearScore   ) then GameTooltip:AddDoubleLine("YourScore: "..MyGearScore, "(-"..(TheirGearScore - MyGearScore  )..")", 1,0,0, 1,0,0); end	
+			if ( MyGearScore   == TheirGearScore   ) then GameTooltip:AddDoubleLine("YourScore: "..MyGearScore  , "(+0)", 0,1,1,0,1,1); end	
 		end
 		if ( GS_Settings["Special"] == 1 ) and ( GS_Special[Name] ) then GameTooltip:AddLine(GS_Special[GS_Special[Name].Type], 1, 0, 0 ); end
 	end
@@ -187,14 +178,14 @@ function GearScore_SetDetails(tooltip, Name)
   	for i = 1,18 do
   	    if not ( i == 4 ) then
     		local ItemName, ItemLink, ItemRarity, ItemLevel, ItemMinLevel, ItemType, ItemSubType, ItemStackCount, ItemEquipLoc, ItemTexture = GetItemInfo(GS_ItemLinkTable[i])
-		if ( ItemLink ) then
-			local GearScore, ItemLevel, ItemType, Red, Green, Blue = GearScore_GetItemScore(ItemLink)
-			--local Red, Green, Blue = GearScore_GetQuality((floor(((ItemLevel - Table[ItemRarity].A) / Table[ItemRarity].B) * 1 * 1.8618)) * 11.25 )
-			if ( GearScore ) and ( i ~= 4 ) then
+			if ( ItemLink ) then
+				local GearScore, ItemLevel, ItemType, Red, Green, Blue = GearScore_GetItemScore(ItemLink)
+				--local Red, Green, Blue = GearScore_GetQuality((floor(((ItemLevel - Table[ItemRarity].A) / Table[ItemRarity].B) * 1 * 1.8618)) * 11.25 )
+				if ( GearScore ) and ( i ~= 4 ) then
     			   	local Add = ""
-	        		if ( GS_Settings["Level"] == 1 ) then Add = L["(iLevel: "]..tostring(ItemLevel)..")"; end
-    	         			tooltip:AddDoubleLine("["..ItemName.."]", tostring(GearScore)..Add, GS_Rarity[ItemRarity].Red, GS_Rarity[ItemRarity].Green, GS_Rarity[ItemRarity].Blue, Red, Blue, Green)
-        			end
+	        		if ( GS_Settings["Level"] == 1 ) then Add = " (iLevel "..tostring(ItemLevel)..")"; end
+    	         	tooltip:AddDoubleLine("["..ItemName.."]", tostring(GearScore)..Add, GS_Rarity[ItemRarity].Red, GS_Rarity[ItemRarity].Green, GS_Rarity[ItemRarity].Blue, Red, Blue, Green)
+        		end
 			end
 		end
 	end
@@ -220,23 +211,23 @@ function GearScore_HookItem(ItemName, ItemLink, Tooltip)
 	local ItemScore, ItemLevel, EquipLoc, Red, Green, Blue, PVPScore, ItemEquipLoc = GearScore_GetItemScore(ItemLink);
  	if ( ItemScore >= 0 ) then
 		if ( GS_Settings["Item"] == 1 ) then
-  			if ( ItemLevel ) and ( GS_Settings["Level"] == 1 ) then Tooltip:AddDoubleLine(L["GearScore: "]..ItemScore, "(iLevel "..ItemLevel..")", Red, Blue, Green, Red, Blue, Green);
+  			if ( ItemLevel ) and ( GS_Settings["Level"] == 1 ) then Tooltip:AddDoubleLine("大脚评分: "..ItemScore, "(iLevel "..ItemLevel..")", Red, Blue, Green, Red, Blue, Green);
 				if ( PlayerEnglishClass == "HUNTER" ) then
 					if ( ItemEquipLoc == "INVTYPE_RANGEDRIGHT" ) or ( ItemEquipLoc == "INVTYPE_RANGED" ) then
-						Tooltip:AddLine(L["HunterScore: "]..floor(ItemScore * 5.3224), Red, Blue, Green)
+						Tooltip:AddLine("HunterScore: "..floor(ItemScore * 5.3224), Red, Blue, Green)
 					end
 					if ( ItemEquipLoc == "INVTYPE_2HWEAPON" ) or ( ItemEquipLoc == "INVTYPE_WEAPONMAINHAND" ) or ( ItemEquipLoc == "INVTYPE_WEAPONOFFHAND" ) or ( ItemEquipLoc == "INVTYPE_WEAPON" ) or ( ItemEquipLoc == "INVTYPE_HOLDABLE" )  then
-						Tooltip:AddLine(L["HunterScore: "]..floor(ItemScore * 0.3164), Red, Blue, Green)
+						Tooltip:AddLine("HunterScore: "..floor(ItemScore * 0.3164), Red, Blue, Green)
 					end
 				end
 			else
-				Tooltip:AddLine(L["GearScore: "]..ItemScore, Red, Blue, Green)
+				Tooltip:AddLine(GS_TOOLTIP_PREFIX .. GS_TITLE_TEXT..ItemScore..GS_TOOLTIP_SUFFIX, Red, Blue, Green)
 				if ( PlayerEnglishClass == "HUNTER" ) then
 					if ( ItemEquipLoc == "INVTYPE_RANGEDRIGHT" ) or ( ItemEquipLoc == "INVTYPE_RANGED" ) then
-						Tooltip:AddLine(L["HunterScore: "]..floor(ItemScore * 5.3224), Red, Blue, Green)
+						Tooltip:AddLine("HunterScore: "..floor(ItemScore * 5.3224), Red, Blue, Green)
 					end
 					if ( ItemEquipLoc == "INVTYPE_2HWEAPON" ) or ( ItemEquipLoc == "INVTYPE_WEAPONMAINHAND" ) or ( ItemEquipLoc == "INVTYPE_WEAPONOFFHAND" ) or ( ItemEquipLoc == "INVTYPE_WEAPON" ) or ( ItemEquipLoc == "INVTYPE_HOLDABLE" )  then
-						Tooltip:AddLine(L["HunterScore: "]..floor(ItemScore * 0.3164), Red, Blue, Green)
+						Tooltip:AddLine("HunterScore: "..floor(ItemScore * 0.3164), Red, Blue, Green)
 					end
 				end
     		end
@@ -244,7 +235,7 @@ function GearScore_HookItem(ItemName, ItemLink, Tooltip)
   		end
 	else
 	    if ( GS_Settings["Level"] == 1 ) and ( ItemLevel ) then
-	        Tooltip:AddLine(L["iLevel "]..ItemLevel)
+	        Tooltip:AddLine("iLevel "..ItemLevel)
 		end
     end
 end
@@ -253,8 +244,7 @@ function MyPaperDoll()
 	if ( GS_PlayerIsInCombat ) then return; end
 	local MyGearScore = GearScore_GetScore(UnitName("player"), "player");
 	local Red, Blue, Green = GearScore_GetQuality(MyGearScore)
-	PersonalGearScore:SetText(MyGearScore); 
-	PersonalGearScore:SetTextColor(Red, Green, Blue, 1)
+    PersonalGearScore:SetText(MyGearScore); PersonalGearScore:SetTextColor(Red, Green, Blue, 1)
 end
 -------------------------------------------------------------------------------
 
@@ -268,20 +258,17 @@ function GS_MANSET(Command)
     if ( strlower(Command) == "item" ) then GS_Settings["Item"] = GS_ItemSwitch[GS_Settings["Item"]]; if ( GS_Settings["Item"] == 1 ) or ( GS_Settings["Item"] == 3 ) then print("Item Scores: On"); else print("Item Scores: Off"); end; return; end
 	if ( strlower(Command) == "level" ) then GS_Settings["Level"] = GS_Settings["Level"] * -1; if ( GS_Settings["Level"] == 1 ) then print ("Item Levels: On"); else print ("Item Levels: Off"); end; return; end
 	if ( strlower(Command) == "compare" ) then GS_Settings["Compare"] = GS_Settings["Compare"] * -1; if ( GS_Settings["Compare"] == 1 ) then print ("Comparisons: On"); else print ("Comparisons: Off"); end; return; end
-	--print("GearScore: Unknown Command. Type '/gs' for a list of options")
+	print("GearScore: Unknown Command. Type '/gs' for a list of options")
 end
 
 function GS_Toggle(tog)
 	if tog then
 		GS_Settings["Player"] = 1
 		GS_Settings["Item"] = 1
-		PersonalGearScore:Show()
-		GearScore2:Show()
 	else
 		GS_Settings["Player"] = 0
 		GS_Settings["Item"] = 0
-		PersonalGearScore:Hide()
-		GearScore2:Hide()
+
 	end
 end
 
@@ -299,19 +286,21 @@ ShoppingTooltip1:HookScript("OnTooltipSetItem", GearScore_HookCompareItem)
 ShoppingTooltip2:HookScript("OnTooltipSetItem", GearScore_HookCompareItem2)
 ItemRefTooltip:HookScript("OnTooltipSetItem", GearScore_HookRefItem)
 PaperDollFrame:HookScript("OnShow", MyPaperDoll)
-PaperDollFrame:CreateFontString("PersonalGearScore")
 
-PersonalGearScore:SetFont("Fonts\\FRIZQT__.TTF", 12)
-PersonalGearScore:SetText("GS: 0")
-PersonalGearScore:SetPoint("BOTTOMRIGHT",PaperDollFrame,"TOPRIGHT",-89,-250)
+PaperDollFrame:CreateFontString("PersonalGearScore")
+PersonalGearScore:SetFont(GS_FONT_NAME, GS_FONT_SIZE)
+PersonalGearScore:SetPoint("BOTTOMRIGHT",PaperDollFrame,"TOPRIGHT",-89,-262)
+PersonalGearScore:SetText(GS_TITLE_TEXT .. "0")
 PersonalGearScore:Show()
+
 PaperDollFrame:CreateFontString("GearScore2")
-GearScore2:SetFont(STANDARD_TEXT_FONT, 12)
-GearScore2:SetText(L["GearScore"])
-GearScore2:SetPoint("BOTTOMRIGHT",PaperDollFrame,"TOPRIGHT",-89,-262)
+GearScore2:SetFont(GS_FONT_NAME, GS_FONT_SIZE2)
+GearScore2:SetText(GS_TITLE_TEXT)
+GearScore2:SetPoint("BOTTOMRIGHT",PaperDollFrame,"TOPRIGHT",-89,-250)
 GearScore2:Show()
 
-function GearScore_OnEnter(Name, ItemSlot, Argument)	
+function GearScore_OnEnter(Name, ItemSlot, Argument)
+	
 	if  UnitName("target") and UnitName("target") ~= GS_LastNotified then 
 		NotifyInspect("target"); 
 		GS_LastNotified = UnitName("target"); 

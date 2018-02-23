@@ -1,4 +1,4 @@
-ATLASLOOTFU_LEFTCLICK = "|cff1eff00Left-Click|r Browse Loot Tables";
+﻿ATLASLOOTFU_LEFTCLICK = "|cff1eff00Left-Click|r Browse Loot Tables";
 ATLASLOOTFU_SHIFTCLICK = "|cffff0000Shift-Click|r View Options";
 ATLASLOOTFU_LEFTDRAG = "|cffccccccLeft-Click + Drag|r Move Minimap Button";
 
@@ -11,7 +11,7 @@ end
 if (GetLocale() == "frFR") then
     ATLASLOOTFU_LEFTCLICK = "|cff1eff00Clic-Gauche|r Parcourir les tables de butin";
     ATLASLOOTFU_SHIFTCLICK = "|cffff0000Shift-Clic|r Affiche les Options";
-    ATLASLOOTFU_LEFTDRAG = "|cffccccccClic-Gauche + Maintenir|r Minimap-Button bewegen";
+    ATLASLOOTFU_LEFTDRAG = "|cffccccccClic-Gauche + Maintenir|r Déplacer l'icone de la minimap";
 end
 
 if (GetLocale() == "ruRU") then

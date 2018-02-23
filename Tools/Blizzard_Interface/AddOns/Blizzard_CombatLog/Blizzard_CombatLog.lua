@@ -171,6 +171,7 @@ COMBATLOG_EVENT_LIST = {
 	["UNIT_DESTROYED"] = true,
 	["SPELL_BUILDING_DAMAGE"] = true,
 	["SPELL_BUILDING_HEAL"] = true,
+	["UNIT_DISSIPATES"] = true,
 };
 
 COMBATLOG_FLAG_LIST = {
@@ -366,25 +367,6 @@ local CombatLog_Object_IsA = CombatLog_Object_IsA
 local CombatLogQuickButtonFrame, CombatLogQuickButtonFrameProgressBar, CombatLogQuickButtonFrameTexture
 _G.CombatLogQuickButtonFrame = CreateFrame("Frame", "CombatLogQuickButtonFrame", UIParent)
 
--- For debugging, remove for final commit
-local function debug(...)
-	local a,b,c,d,e,f,g,h,i,j,k = ...
-	if select("#", ...) == 1 then
-		b, a = a, "%s"		
-	end
-	ChatFrame1:AddMessage(a:format(
-		tostring(b),
-		tostring(c),
-		tostring(d),
-		tostring(e),
-		tostring(f),
-		tostring(g),
-		tostring(i),
-		tostring(j),
-		tostring(k)
-	))
-end
-
 local Blizzard_CombatLog_Update_QuickButtons
 local Blizzard_CombatLog_Filters
 local Blizzard_CombatLog_CurrentSettings
@@ -464,7 +446,8 @@ Blizzard_CombatLog_Filter_Defaults = {
 					      --["DAMAGE_SPLIT"] = true,
 					      ["PARTY_KILL"] = true,
 					      ["UNIT_DIED"] = true,
-					      ["UNIT_DESTROYED"] = true
+					      ["UNIT_DESTROYED"] = true,
+					      ["UNIT_DISSIPATES"] = true
 					};
 					sourceFlags = {
 						[COMBATLOG_FILTER_MINE] = true,
@@ -513,7 +496,8 @@ Blizzard_CombatLog_Filter_Defaults = {
 					      --["DAMAGE_SPLIT"] = true,
 					      ["PARTY_KILL"] = true,
 					      ["UNIT_DIED"] = true,
-					      ["UNIT_DESTROYED"] = true
+					      ["UNIT_DESTROYED"] = true,
+					      ["UNIT_DISSIPATES"] = true
 					};
 					sourceFlags = nil;
 					destFlags = {
@@ -614,7 +598,8 @@ Blizzard_CombatLog_Filter_Defaults = {
 					eventList = {
 						["PARTY_KILL"] = true,
 						["UNIT_DIED"] = true,
-						["UNIT_DESTROYED"] = true
+						["UNIT_DESTROYED"] = true,
+						["UNIT_DISSIPATES"] = true
 					};
 					sourceFlags = Blizzard_CombatLog_GenerateFullFlagList(true);
 					destFlags = nil;
@@ -623,7 +608,8 @@ Blizzard_CombatLog_Filter_Defaults = {
 					eventList = {
 						["PARTY_KILL"] = true,
 						["UNIT_DIED"] = true,
-						["UNIT_DESTROYED"] = true
+						["UNIT_DESTROYED"] = true,
+						["UNIT_DISSIPATES"] = true
 					};
 					sourceFlags = nil;
 					destFlags = Blizzard_CombatLog_GenerateFullFlagList(true);
@@ -1161,10 +1147,10 @@ do
 			[6] = {
 				text = "Other";
 				hasArrow = true;
-				checked = function() return Blizzard_CombatLog_HasEvent (Blizzard_CombatLog_CurrentSettings, "PARTY_KILL", "UNIT_DIED", "UNIT_DESTROYED", "DAMAGE_SPLIT", "ENVIRONMENTAL_DAMAGE" ); end;
+				checked = function() return Blizzard_CombatLog_HasEvent (Blizzard_CombatLog_CurrentSettings, "PARTY_KILL", "UNIT_DIED", "UNIT_DESTROYED", "UNIT_DISSIPATES", "DAMAGE_SPLIT", "ENVIRONMENTAL_DAMAGE" ); end;
 				keepShownOnClick = true;
 				func = function ( self, arg1, arg2, checked )
-					Blizzard_CombatLog_MenuHelper ( checked, "PARTY_KILL", "UNIT_DIED", "UNIT_DESTROYED", "DAMAGE_SPLIT", "ENVIRONMENTAL_DAMAGE"  );
+					Blizzard_CombatLog_MenuHelper ( checked, "PARTY_KILL", "UNIT_DIED", "UNIT_DESTROYED", "UNIT_DISSIPATES", "DAMAGE_SPLIT", "ENVIRONMENTAL_DAMAGE"  );
 				end;
 				menuList = {
 					[1] = {
@@ -1177,10 +1163,10 @@ do
 					};
 					[2] = {
 						text = "Deaths";
-						checked = function() return Blizzard_CombatLog_HasEvent (Blizzard_CombatLog_CurrentSettings, "UNIT_DIED", "UNIT_DESTROYED"); end;
+						checked = function() return Blizzard_CombatLog_HasEvent (Blizzard_CombatLog_CurrentSettings, "UNIT_DIED", "UNIT_DESTROYED", "UNIT_DISSIPATES"); end;
 						keepShownOnClick = true;
 						func = function ( self, arg1, arg2, checked )
-							Blizzard_CombatLog_MenuHelper ( checked, "UNIT_DIED", "UNIT_DESTROYED" );
+							Blizzard_CombatLog_MenuHelper ( checked, "UNIT_DIED", "UNIT_DESTROYED", "UNIT_DISSIPATES" );
 						end;
 					};
 					[3] = {
@@ -1508,7 +1494,7 @@ end
 do
 	function Blizzard_CombatLog_CreateUnitMenu(unitName, unitGUID, special)
 		local displayName = unitName;
-		if ( (unitGUID == UnitGUID("player")) and (getglobal("COMBAT_LOG_UNIT_YOU_ENABLED") == "1") ) then
+		if ( (unitGUID == UnitGUID("player")) and (_G["COMBAT_LOG_UNIT_YOU_ENABLED"] == "1") ) then
 			displayName = UNIT_YOU;
 		end
 		local unitMenu = {
@@ -1773,7 +1759,7 @@ function Blizzard_CombatLog_SpellMenuClick(action, spellName, spellId, eventType
 			v.eventList[eventType] = false;
 		end
 	elseif ( action == "LINK" ) then
-		if ( ChatFrameEditBox:IsVisible() ) then
+		if ( ChatEdit_GetActiveWindow() ) then
 			ChatEdit_InsertLink(GetSpellLink(spellId));
 		else
 			ChatFrame_OpenChat(GetSpellLink(spellId));
@@ -1963,7 +1949,8 @@ local function CombatLog_String_DamageResultString( resisted, blocked, absorbed,
 	-- Result String formatting
 	local useOverhealing = overhealing and overhealing > 0;
 	local useOverkill = overkill and overkill > 0;
-	if ( resisted or blocked or absorbed or critical or glancing or crushing or useOverhealing or useOverkill) then
+	local useAbsorbed = absorbed and absorbed > 0;
+	if ( resisted or blocked or critical or glancing or crushing or useOverhealing or useOverkill or useAbsorbed) then
 		resultStr = nil;
 		
 		if ( resisted ) then
@@ -1980,7 +1967,7 @@ local function CombatLog_String_DamageResultString( resisted, blocked, absorbed,
 				resultStr = format(TEXT_MODE_A_STRING_RESULT_BLOCK, blocked);
 			end
 		end
-		if ( absorbed ) then
+		if ( useAbsorbed ) then
 			if ( resultStr ) then
 				resultStr = resultStr.." "..format(TEXT_MODE_A_STRING_RESULT_ABSORB, absorbed);
 			else
@@ -2341,7 +2328,7 @@ function CombatLog_OnEvent(filterSettings, timestamp, event, sourceGUID, sourceN
 			valueEnabled = false;
 		elseif ( event == "SPELL_HEAL" or event == "SPELL_BUILDING_HEAL") then 
 			-- Did the heal crit?
-			amount, overhealing, critical = select(4, ...);
+			amount, overhealing, absorbed, critical = select(4, ...);
 			
 			-- Parse the result string
 			resultStr = CombatLog_String_DamageResultString( resisted, blocked, absorbed, critical, glancing, crushing, overhealing, textMode, spellId, overkill );
@@ -2411,7 +2398,7 @@ function CombatLog_OnEvent(filterSettings, timestamp, event, sourceGUID, sourceN
 				amount = amount - overkill;
 			elseif ( event == "SPELL_PERIODIC_HEAL" ) then
 				-- Did the heal crit?
-				amount, overhealing, critical = select(4, ...);
+				amount, overhealing, absorbed, critical = select(4, ...);
 				
 				-- Parse the result string
 				resultStr = CombatLog_String_DamageResultString( resisted, blocked, absorbed, critical, glancing, crushing, overhealing, textMode, spellId, overkill );
@@ -2436,8 +2423,8 @@ function CombatLog_OnEvent(filterSettings, timestamp, event, sourceGUID, sourceN
 				valueType = 2;
 
 				-- Result String
-				--resultStr = getglobal(textModeString .. "RESULT");
-				--resultStr = strreplace(resultStr,"$resultString", getglobal("ACTION_"..event.."_RESULT")); 
+				--resultStr = _G[textModeString .. "RESULT"];
+				--resultStr = strreplace(resultStr,"$resultString", _G["ACTION_"..event.."_RESULT"]); 
 
 				-- Disable appropriate sections
 				if ( not resultStr ) then
@@ -2453,7 +2440,7 @@ function CombatLog_OnEvent(filterSettings, timestamp, event, sourceGUID, sourceN
 				valueType = 2;
 
 				-- Result String
-				resultStr = _G["ACTION_SPELL_PERIODIC_LEECH_RESULT"]; --"($extraAmount $powerType Gained)"
+				resultStr = format(_G["ACTION_SPELL_PERIODIC_LEECH_RESULT"], nil, nil, nil, nil, nil, nil, nil, CombatLog_String_PowerType(powerType), nil, extraAmount) --"($extraAmount $powerType Gained)"
 
 				-- Disable appropriate sections
 				if ( not resultStr ) then
@@ -2469,8 +2456,8 @@ function CombatLog_OnEvent(filterSettings, timestamp, event, sourceGUID, sourceN
 				amount, powerType = select(4, ...);
 				
 				-- Parse the result string
-				--resultStr = getglobal(textModeString .. "RESULT");
-				--resultStr = strreplace(resultStr,"$resultString", getglobal("ACTION_"..event.."_RESULT")); 
+				--resultStr = _G[textModeString .. "RESULT"];
+				--resultStr = strreplace(resultStr,"$resultString", _G["ACTION_"..event.."_RESULT"]); 
 
 				if ( not resultStr ) then
 					resultEnabled = false
@@ -2545,7 +2532,7 @@ function CombatLog_OnEvent(filterSettings, timestamp, event, sourceGUID, sourceN
 			valueType = 2;
 
 			-- Result String
-			resultStr = _G["ACTION_SPELL_LEECH_RESULT"];
+			resultStr = format(_G["ACTION_SPELL_LEECH_RESULT"], nil, nil, nil, nil, nil, nil, nil, CombatLog_String_PowerType(powerType), nil, extraAmount)
 
 			-- Disable appropriate sections
 			if ( not resultStr ) then
@@ -2724,18 +2711,25 @@ function CombatLog_OnEvent(filterSettings, timestamp, event, sourceGUID, sourceN
 			
 			amount = amount - overkill;
 		elseif ( event == "RANGE_MISSED" ) then 
-			-- Damage standard
-			missType = select(4, ...);
+			spellName = ACTION_RANGED;
+
+			-- Miss type
+			missType, amountMissed = select(4,...);
 
 			-- Result String
-			resultStr = _G["ACTION_RANGE_MISSED_"..missType];
-			
+			if( missType == "RESIST" or missType == "BLOCK" or missType == "ABSORB" ) then
+				resultStr = format(_G["TEXT_MODE_A_STRING_RESULT_"..missType], amountMissed);
+			else
+				resultStr = _G["ACTION_RANGE_MISSED_"..missType];
+			end
+
 			-- Miss Type
 			if ( settings.fullText and missType ) then
 				event = format("%s_%s", event, missType);
 			end
 
 			-- Disable appropriate sections
+			nameIsNotSpell = true;
 			valueEnabled = false;
 			resultEnabled = true;
 		end
@@ -2794,7 +2788,7 @@ function CombatLog_OnEvent(filterSettings, timestamp, event, sourceGUID, sourceN
 		resultEnabled = false;
 		sourceEnabled = false;
 		
-	elseif ( event == "UNIT_DIED" or event == "UNIT_DESTROYED" ) then
+	elseif ( event == "UNIT_DIED" or event == "UNIT_DESTROYED" or event == "UNIT_DISSIPATES" ) then
 		-- Swap Source with Dest
 		sourceName = destName;
 		sourceGUID = destGUID;
@@ -2859,6 +2853,15 @@ function CombatLog_OnEvent(filterSettings, timestamp, event, sourceGUID, sourceN
 			formatStringEvent = formatStringEvent.."_NO_DEST";
 		end
 
+				
+		if (event=="DAMAGE_SPLIT" and resultStr) then
+			if (amount == 0) then
+				formatStringEvent = "ACTION_DAMAGE_SPLIT_ABSORBED_FULL_TEXT";			
+			else
+				formatStringEvent = "ACTION_DAMAGE_SPLIT_RESULT_FULL_TEXT";		
+			end
+		end 
+		
 		-- Get the special cased string
 		if ( _G[formatStringEvent] ) then
 			formatString = _G[formatStringEvent];
@@ -3141,7 +3144,11 @@ function CombatLog_OnEvent(filterSettings, timestamp, event, sourceGUID, sourceN
 		end
 		if ( abilityColor ) then
 			abilityColor = CombatLog_Color_FloatToText(abilityColor);
-			spellNameStr = format("|c%s%s|r", abilityColor, spellName);
+			if ( itemId ) then
+				spellNameStr = spellName;
+			else
+				spellNameStr = format("|c%s%s|r", abilityColor, spellName);
+			end
 		end
 	end
 
@@ -3198,8 +3205,10 @@ function CombatLog_OnEvent(filterSettings, timestamp, event, sourceGUID, sourceN
 		end
 
 		-- Spell name braces
-		if ( spellName and settings.spellBraces ) then 
-			spellNameStr = format(TEXT_MODE_A_STRING_BRACE_SPELL, braceColor, spellNameStr, braceColor);
+		if ( spellName and settings.spellBraces ) then
+			if ( not itemId ) then
+				spellNameStr = format(TEXT_MODE_A_STRING_BRACE_SPELL, braceColor, spellNameStr, braceColor);
+			end
 		end
 		if ( extraSpellName and settings.spellBraces ) then 
 			extraSpellNameStr = format(TEXT_MODE_A_STRING_BRACE_SPELL, braceColor, extraSpellNameStr, braceColor);
@@ -3231,7 +3240,7 @@ function CombatLog_OnEvent(filterSettings, timestamp, event, sourceGUID, sourceN
 			spellString = format(TEXT_MODE_A_STRING_SPELL, spellId, originalEvent, spellNameStr, spellId);
 		end
 	end
-
+	
 	if ( actionString ) then
 		actionString = format(TEXT_MODE_A_STRING_ACTION, originalEvent, actionStr);
 	end
@@ -3423,10 +3432,6 @@ end
 -- BUG: Since we're futzing with the frame height, the combat log tab fades out on hover while other tabs remain faded in. This bug is in the stock version, as well.
 
 local function Blizzard_CombatLog_AdjustCombatLogHeight()
-	if ( SIMPLE_CHAT == "1" ) then
-		return;
-	end
-
 	-- This prevents improper positioning of the frame due to the scale not yet being set.
 	-- This whole method of resizing the frame and extending the background to preserve visual continuity really screws with repositioning after
 	-- a reload. I'm not sure it's going to work well in the long run.
@@ -3476,14 +3481,22 @@ function Blizzard_CombatLog_QuickButtonFrame_OnLoad(self)
 	COMBATLOG:SetScript("OnShow", function(self)
 		CombatLogQuickButtonFrame_Custom:Show()
 		--Blizzard_CombatLog_AdjustCombatLogHeight()
+		COMBATLOG:RegisterEvent("COMBAT_LOG_EVENT");
+		-- select a filter for the user only the first time it's shown
+		if ( not self.loaded ) then
+			Blizzard_CombatLog_QuickButton_OnClick(Blizzard_CombatLog_Filters.currentFilter);
+			self.loaded = true;
+		end
 		return show and show(self)
 	end)
-
 	COMBATLOG:SetScript("OnHide", function(self)
 		CombatLogQuickButtonFrame_Custom:Hide()
 		-- Blizzard_CombatLog_AdjustCombatLogHeight()
+		COMBATLOG:UnregisterEvent("COMBAT_LOG_EVENT");
 		return hide and hide(self)
 	end)	
+	
+	FCF_SetButtonSide(COMBATLOG, COMBATLOG.buttonSide, true);
 end
 
 local oldFCF_DockUpdate = FCF_DockUpdate;
@@ -3544,7 +3557,7 @@ end
 -- Players may also get all sorts of errors on trying to click on these new linktypes before
 -- Blizzard_CombatLog gets loaded.
 local oldSetItemRef = SetItemRef;
-function SetItemRef(link, text, button)
+function SetItemRef(link, text, button, chatFrame)
 
 	if ( strsub(link, 1, 4) == "unit") then
 		local _, guid, name = strsplit(":", link);
@@ -3600,7 +3613,7 @@ function SetItemRef(link, text, button)
 			return;
 		end
 	end
-	oldSetItemRef(link, text, button);
+	oldSetItemRef(link, text, button, chatFrame);
 end
 
 function Blizzard_CombatLog_Update_QuickButtons()
@@ -3608,7 +3621,14 @@ function Blizzard_CombatLog_Update_QuickButtons()
 	local buttonName, button, textWidth;
 	local buttonIndex = 1;
 	-- subtract the width of the dropdown button
-	local maxWidth = (COMBATLOG:GetRight()-COMBATLOG:GetLeft())-31;	--Hacky hacky because GetWidth goes crazy when it is docked
+	local clogleft, clogright = COMBATLOG:GetRight(), COMBATLOG:GetLeft();
+	local maxWidth;
+	if ( clogleft and clogright ) then
+		maxWidth = (COMBATLOG:GetRight()-COMBATLOG:GetLeft())-31;	--Hacky hacky because GetWidth goes crazy when it is docked
+	else
+		maxWidth = COMBATLOG:GetWidth() - 31;
+	end
+	
 	local totalWidth = 0;
 	local padding = 13;
 	local showMoreQuickButtons = true;
@@ -3655,7 +3675,7 @@ function Blizzard_CombatLog_Update_QuickButtons()
 
 	-- Hide remaining buttons
 	repeat
-		button = getglobal(baseName.."Button"..buttonIndex);
+		button = _G[baseName.."Button"..buttonIndex];
 		if ( button ) then
 			button:Hide();
 		end

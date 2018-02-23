@@ -6,6 +6,18 @@ local Quixote = LibStub("LibQuixote-2.0")
 -- local C = Cartographer
 local CQI = Cartographer_QuestInfo
 
+WorldMapFrame:HookScript("OnShow", function()
+	if (QuestLogFrame:IsShown()) then
+		QuestLogFrame:Hide();
+	end
+end);
+
+QuestLogFrame:HookScript("OnShow", function()
+	if (WorldMapFrame:IsShown()) then
+		WorldMapFrame:Hide();
+	end
+end);
+
 -------------------------------------------------------------------
 
 ----
@@ -66,8 +78,8 @@ function CQI:Hook_QuestLog_UpdateQuestDetails()
 	if q.objs then
 		local obj_type = q.daily and "obj-daily" or "obj"
 		for i = 1, 9 do
-			local q_string = getglobal("QuestLogObjective"..i)
-			if q_string:IsVisible() and q.objs[i] and q.objs[i].npcs then
+			local q_string = getglobal("QuestInfoObjective"..i)
+			if q_string and q.objs[i] and q.objs[i].npcs then
 				local button = getglobal("CQI_ObjButton"..i)
 				button.CQI_Data = {
 					quest = q.title_full,
@@ -134,6 +146,8 @@ function CQI:OnButtonClick(this, button, data)
 	elseif zone_count > 1 then
 		self:OpenLocationFrame(map)
 	end
+
+	CQI.trackMode = true;
 end
 
 function CQI:OnButtonTooltip(this, data)
@@ -339,10 +353,10 @@ end
 local function ShowQuestTagOnGossip()
 	local buttonindex = 1
 	if GetGossipAvailableQuests() then
-		buttonindex = GossipLoop(buttonindex, false, GetGossipAvailableQuests())
+--		buttonindex = GossipLoop(buttonindex, false, GetGossipAvailableQuests())
 	end
 	if GetGossipActiveQuests() then
-		buttonindex = GossipLoop(buttonindex, true, GetGossipActiveQuests())
+--		buttonindex = GossipLoop(buttonindex, true, GetGossipActiveQuests())
 	end
 end
 

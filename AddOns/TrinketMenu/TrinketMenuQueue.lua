@@ -342,7 +342,7 @@ function TrinketMenu.ProcessAutoQueue(which)
 	icon:SetVertexColor(1,1,1)
 
 	local name
-	local ready = TrinketMenu.TrinketNearReady(GetInventoryItemLink("player",13+which))
+	local ready = TrinketMenu.TrinketNearReady(GetInventoryItemID("player",13+which))
 	if ready and TrinketMenu.CombatQueue[which] then
 		TrinketMenu.CombatQueue[which] = nil
 		TrinketMenu.UpdateCombatQueue()

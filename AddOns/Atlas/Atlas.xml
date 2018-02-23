@@ -1,8 +1,7 @@
 <!--
 
 	Atlas, a World of Warcraft instance map browser
-	Copyright 2005 - 2009 Dan Gilbert
-	Email me at loglow@gmail.com
+	Copyright 2005-2010 Dan Gilbert <dan.b.gilbert@gmail.com>
 
 	This file is part of Atlas.
 
@@ -525,29 +524,6 @@
 				AtlasFrame:StopMovingOrSizing();
 				Atlas_OnClick();
 			</OnMouseUp>
-		</Scripts>
-	</Frame>
-	<Frame name="Atlas_WorldMap_Frame" parent="WorldMapFrame" hidden="true">
-		<Layers>
-			<Layer level="OVERLAY">
-				<FontString name="$Parent_Text" inherits="GameFontHighlightSmall">
-					<Anchors>
-						<Anchor point="BOTTOM" relativeTo="WorldMapPositioningGuide">
-							<Offset>
-								<AbsDimension x="0" y="11"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
-		</Layers>
-		<Scripts>
-			<OnUpdate>
-				Atlas_WorldMap_OnUpdate(self, elapsed);
-			</OnUpdate>
-			<OnHide>
-				SetMapToCurrentZone();
-			</OnHide>
 		</Scripts>
 	</Frame>
 </Ui>

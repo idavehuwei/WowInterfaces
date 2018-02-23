@@ -1,111 +1,111 @@
 --==================================================
--- æ–‡ä»¶å: BEasyMenu.lua
--- æ—¥æœŸ: 2008å¹´5æœˆ21æ—¥
--- ä½œè€…: ç‹¬å­¤å‚²é›ª
--- æè¿°: æä¾›æŒ‰tableæ–¹å¼åˆ›å»ºä¸‹æ‹‰èœå•çš„åŠŸèƒ½.
--- ç‰ˆæƒæ‰€æœ‰: è‰¾æ³½æ‹‰æ–¯å›½å®¶åœ°ç†
+-- ÎÄ¼şÃû: BEasyMenu.lua 
+-- ÈÕÆÚ: 2008Äê5ÔÂ21ÈÕ
+-- ×÷Õß: ¶À¹Â°ÁÑ©
+-- ÃèÊö: Ìá¹©°´table·½Ê½´´½¨ÏÂÀ­²Ëµ¥µÄ¹¦ÄÜ.
+-- °æÈ¨ËùÓĞ: °¬ÔóÀ­Ë¹¹ú¼ÒµØÀí
 --===================================================
 --[[
-    â— ç®€è¦ä»‹ç»:
-        BEasyMenuå°†ç¹ççš„èœå•åˆ›å»ºå·¥ä½œå˜å¾—ç¨å¾®ç®€å•, æœ€é‡è¦çš„æ˜¯æˆ‘ä»¬å®Œå…¨å°†æ•°æ®ä¸è¡¨ç°åˆ†
-    ç¦»å¼€æ¥, ä¾¿äºå¼€å‘å’Œç»´æŠ¤.
+	¡ñ ¼òÒª½éÉÜ:
+		BEasyMenu½«·±ËöµÄ²Ëµ¥´´½¨¹¤×÷±äµÃÉÔÎ¢¼òµ¥, ×îÖØÒªµÄÊÇÎÒÃÇÍêÈ«½«Êı¾İÓë±íÏÖ·Ö
+	Àë¿ªÀ´, ±ãÓÚ¿ª·¢ºÍÎ¬»¤.
 
-    â— å¼€å‘æ–‡æ¡£:
-        1. åŸå‹: BEasyMenu_Register(parent, menuList)
-            å‚æ•°:
-                parent     - <Button> éœ€è¦è®¾ç½®å³é”®èœå•çš„æ¡†æ¶
-                menuList - <table>  åˆ›å»ºèœå•æ‰€éœ€è¦çš„è¡¨æ ¼(å…·ä½“å‚æ•°è§å)
-            æè¿°: è¯¥æ–¹æ³•æä¾›äº†ä¸€ç§ç®€å•çš„ç»™ç›®æ ‡æ¡†æ¶åˆ›å»ºå³é”®èœå•çš„åŠŸèƒ½.
+	¡ñ ¿ª·¢ÎÄµµ:
+		1. Ô­ĞÍ: BEasyMenu_Register(parent, menuList)
+		    ²ÎÊı:
+				parent     - <Button> ĞèÒªÉèÖÃÓÒ¼ü²Ëµ¥µÄ¿ò¼Ü
+				menuList - <table>  ´´½¨²Ëµ¥ËùĞèÒªµÄ±í¸ñ(¾ßÌå²ÎÊı¼ûºó)
+			ÃèÊö: ¸Ã·½·¨Ìá¹©ÁËÒ»ÖÖ¼òµ¥µÄ¸øÄ¿±ê¿ò¼Ü´´½¨ÓÒ¼ü²Ëµ¥µÄ¹¦ÄÜ.
 
-        2. åŸå‹: BEasyMenu(menuList, menuFrame, anchor, x, y, displayMode)
-            å‚æ•°:
-                menuList	  - <table>	åˆ›å»ºèœå•æ‰€éœ€è¦çš„è¡¨æ ¼
-                menuFrame - <Frame>	ç»§æ‰¿è‡ª"BDropDownMenuTemplate"æ¡†æ¶
-                anchor		  - <string>	å¯ä¸º"cursor"
-                x				  - <number> xè½´åç§», å½“anchorä¸º"cursor"æ—¶æ— æ•ˆ
-                y				  - <number> yè½´åç§», å½“anchorä¸º"cursor"æ—¶æ— æ•ˆ
-                displayMode - <string>	 å¯ä¸º"MENU"
-            æè¿°: è¯¥æ–¹æ³•æä¾›äº†æŒ‰ç…§è¡¨æ ¼æ•°æ®åˆ›å»ºä¸‹æ‹‰èœå•çš„åŠŸèƒ½. å»ºè®®ä½¿ç”¨BEasyMenu_Registeræ–¹æ³•åˆ›å»º
-                     å³é”®èœå•.
+		2. Ô­ĞÍ: BEasyMenu(menuList, menuFrame, anchor, x, y, displayMode)
+			²ÎÊı:
+				menuList	  - <table>	´´½¨²Ëµ¥ËùĞèÒªµÄ±í¸ñ
+				menuFrame - <Frame>	¼Ì³Ğ×Ô"BDropDownMenuTemplate"¿ò¼Ü
+				anchor		  - <string>	¿ÉÎª"cursor"
+				x				  - <number> xÖáÆ«ÒÆ, µ±anchorÎª"cursor"Ê±ÎŞĞ§
+				y				  - <number> yÖáÆ«ÒÆ, µ±anchorÎª"cursor"Ê±ÎŞĞ§
+				displayMode - <string>	 ¿ÉÎª"MENU"
+			ÃèÊö: ¸Ã·½·¨Ìá¹©ÁË°´ÕÕ±í¸ñÊı¾İ´´½¨ÏÂÀ­²Ëµ¥µÄ¹¦ÄÜ. ½¨ÒéÊ¹ÓÃBEasyMenu_Register·½·¨´´½¨
+					 ÓÒ¼ü²Ëµ¥.
 
-    â— ä¸€ä¸ªç®€å•çš„èœå•ä¾‹å­(æˆ‘ä¸ä¿è¯è¯¥ä¾‹å­èƒ½æ­£å¸¸å·¥ä½œ, æ›´å…·ä½“çš„ä¾‹å­å‚è§[ç‹¬å­¤å‚²é›ª]<<è¨æ»¡ç¥­å¸åŠ©æ‰‹>>Options.lua)
+	¡ñ Ò»¸ö¼òµ¥µÄ²Ëµ¥Àı×Ó(ÎÒ²»±£Ö¤¸ÃÀı×ÓÄÜÕı³£¹¤×÷, ¸ü¾ßÌåµÄÀı×Ó²Î¼û[¶À¹Â°ÁÑ©]<<ÈøÂú¼ÀË¾ÖúÊÖ>>Options.lua)
 
-    local DemoMenu = {
-        {
-            text = "ç‚¹æˆ‘ä¸«",
-            func = function()
-                message("è®©ä½ ç‚¹ä½ å°±ç‚¹å•Š!");
-            end,
-        },
-        {
-            text = "æˆ‘æœ‰ä¸‹çº§èœå•",
-            hasArrow = 1,
-            value = "menu2",	-- [å¿…é¡», è¯¥å˜é‡ç”¨äºè¯†åˆ«å­èœå•]
-            subMenu = {			-- [å¿…é¡»]
-                {
-                    text = "æˆ‘çš„äºŒçº§èœå•",
-                    level = 2,				-- [å¿…é¡»]
-                    func = function()
-                        message("äºŒçº§ä¹Ÿæ˜¯èœå•å•Š");
-                    end
-                },
-                {
-                    text = "æˆ‘å¯ä»¥é€‰é¢œè‰²å“¦",
-                    level = 2,				-- [å¿…é¡»]
-                    hasColorSwatch = 1, -- ä¸å¯ç”¨
-                },
-            },
-        },
-    };
-
-    BEasyMenu_Register(parent, DemoMenu);
+	local DemoMenu = {
+		{
+			text = "µãÎÒÑ¾",
+			func = function()
+				message("ÈÃÄãµãÄã¾Íµã°¡!");
+			end,
+		},
+		{
+			text = "ÎÒÓĞÏÂ¼¶²Ëµ¥",
+			hasArrow = 1,			
+			value = "menu2",	-- [±ØĞë, ¸Ã±äÁ¿ÓÃÓÚÊ¶±ğ×Ó²Ëµ¥]
+			subMenu = {			-- [±ØĞë]
+				{
+					text = "ÎÒµÄ¶ş¼¶²Ëµ¥",
+					level = 2,				-- [±ØĞë]
+					func = function()
+						message("¶ş¼¶Ò²ÊÇ²Ëµ¥°¡");
+					end
+				},
+				{
+					text = "ÎÒ¿ÉÒÔÑ¡ÑÕÉ«Å¶",
+					level = 2,				-- [±ØĞë]
+					hasColorSwatch = 1, -- ²»¿ÉÓÃ
+				},
+			},
+		},
+	};
+	
+	BEasyMenu_Register(parent, DemoMenu);
 ]]
 BEASY_MENU_INDEX = 1;
 
-function BEasyMenu(menuList, menuFrame, anchor, x, y, displayMode)
-    BDropDownMenu_Initialize(menuFrame, BEasyMenu_Initialize, displayMode, nil, menuList);
-    --BToggleDropDownMenu(1, nil, menuFrame, anchor, x, y, menuList);
+function BEasyMenu(menuList, menuFrame, anchor, x, y, displayMode)		
+	BDropDownMenu_Initialize(menuFrame, BEasyMenu_Initialize, displayMode, nil, menuList);
+	--BToggleDropDownMenu(1, nil, menuFrame, anchor, x, y, menuList);
 end
 
-function BEasyMenu_Initialize(frame, level, menuList)
-    if (type(menuList) == "table") then
-        local info =BDropDownMenu_CreateInfo();
-        for index = 1, #(menuList) do
-            info = menuList[index];
-            if (info.text) then
-                info.index = index;
-                info.level = info.level or 1;
-                if (level == info.level) then
-                    BDropDownMenu_AddButton(info, level);
-                else
-                    if (info.hasArrow and info.subMenu and BDROPDOWNMENU_MENU_VALUE == info.value) then
-                        BEasyMenu_Initialize(info.subMenu, level);
-                        return;
-                    end
-                end
-            end
-        end
-    end
+function BEasyMenu_Initialize(frame, level, menuList)		
+	if (type(menuList) == "table") then	
+		local info =BDropDownMenu_CreateInfo();	
+		for index = 1, #(menuList) do
+			info = menuList[index];		
+			if (info.text) then
+				info.index = index;
+				info.level = info.level or 1;
+				if (level == info.level) then				
+					BDropDownMenu_AddButton(info, level);	
+				else				
+					if (info.hasArrow and info.subMenu and BDROPDOWNMENU_MENU_VALUE == info.value) then					
+						BEasyMenu_Initialize(info.subMenu, level);
+						return;
+					end
+				end
+			end
+		end
+	end
 end
 
-function BEasyMenu_Register(parent, menuList)
-    parent:RegisterForClicks("LeftButtonDown", "LeftButtonUp", "RightButtonUp");
-    local name = parent:GetName() and parent:GetName() .. "MenuFrame" or "BigFootEasyMenu" .. BEASY_MENU_INDEX;
-    parent.menuFrame = parent.menuFrame or CreateFrame("Frame", name, parent, "UIDropDownMenuTemplate");
-    parent.menuFrame:Hide();
-    BEasyMenu(menuList, parent.menuFrame, "cursor", nil, nil, "MENU");
-    if (parent:GetScript("OnClick")) then
-        parent:HookScript("OnClick", function(self, button)
-            if (button == "RightButton") then
-                BToggleDropDownMenu(nil, nil, self.menuFrame, "cursor",  nil, nil, menuList);
-            end
-        end);
-    else
-        parent:SetScript("OnClick", function(self, button)
-            if (button == "RightButton") then
-                BToggleDropDownMenu(nil, nil, self.menuFrame, "cursor", nil, nil, menuList);
-            end
-        end);
-    end
-    BEASY_MENU_INDEX = BEASY_MENU_INDEX + 1;
+function BEasyMenu_Register(parent, menuList)	
+	parent:RegisterForClicks("LeftButtonDown", "LeftButtonUp", "RightButtonUp");
+	local name = parent:GetName() and parent:GetName() .. "MenuFrame" or "BigFootEasyMenu" .. BEASY_MENU_INDEX;
+	parent.menuFrame = parent.menuFrame or CreateFrame("Frame", name, parent, "UIDropDownMenuTemplate");
+	parent.menuFrame:Hide();
+	BEasyMenu(menuList, parent.menuFrame, "cursor", nil, nil, "MENU");
+	if (parent:GetScript("OnClick")) then
+		parent:HookScript("OnClick", function(self, button)			
+			if (button == "RightButton") then
+				BToggleDropDownMenu(nil, nil, self.menuFrame, "cursor",  nil, nil, menuList);
+			end
+		end);
+	else		
+		parent:SetScript("OnClick", function(self, button)	
+			if (button == "RightButton") then				
+				BToggleDropDownMenu(nil, nil, self.menuFrame, "cursor", nil, nil, menuList);
+			end
+		end);
+	end
+	BEASY_MENU_INDEX = BEASY_MENU_INDEX + 1;
 end

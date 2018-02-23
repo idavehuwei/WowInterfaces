@@ -111,7 +111,7 @@
 			<Layer level="BACKGROUND">
 				<FontString name="$parentText" inherits="GameFontHighlightSmall">
 					<Size>
-						<AbsDimension x="85" y="24"/>
+						<AbsDimension x="75" y="24"/>
 					</Size>
 				</FontString>
 			</Layer>
@@ -512,7 +512,7 @@
 			</OnLoad>
 			<OnShow>
 				PanelTemplates_TabResize(self, 0);
-				getglobal(self:GetName().."HighlightTexture"):SetWidth(self:GetTextWidth() + 30);
+				_G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 30);
 			</OnShow>
 			<OnClick>
 				WorldStateScoreFrameTab_OnClick(self, button, down);

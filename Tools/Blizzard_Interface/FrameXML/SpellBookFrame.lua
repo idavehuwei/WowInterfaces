@@ -382,6 +382,10 @@ function SpellButton_OnModifiedClick(self, button)
 		PickupSpell(id, SpellBookFrame.bookType);
 		return;
 	end
+	if ( IsModifiedClick("SELFCAST") ) then
+		CastSpell(id, SpellBookFrame.bookType, true);
+		return;
+	end
 end
 
 function SpellButton_OnDrag(self) 
@@ -624,7 +628,7 @@ function SpellBook_GetCurrentPage()
 	return currentPage, maxPages;
 end
 
-maxShines = 1;
+local maxShines = 1;
 shineGet = {}
 function SpellBook_GetAutoCastShine ()
 	local shine = shineGet[1];

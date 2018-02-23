@@ -154,4 +154,8 @@
 	<Font name="OptionsFontSmallLeft" inherits="OptionsFontSmall" justifyH="LEFT" virtual="true"/>
 	<Font name="OptionsFontHighlightSmallLeft" inherits="OptionsFontHighlightSmall" justifyH="LEFT" virtual="true"/>
 	<Font name="OptionsFontHighlightSmallLeftTop" inherits="OptionsFontHighlightSmallLeft" justifyV="TOP" virtual="true"/>
+	
+	<Font name="CharacterCreateTooltipFont" inherits="SystemFont_Outline_Med2" virtual="true">
+		<Color r="1.0" g="1.0" b="1.0"/>
+	</Font>
 </Ui>

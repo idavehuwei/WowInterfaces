@@ -1,6 +1,15 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+--[[--------------------------------------------------------------------
+	GridStatusAggro.lua
+	GridStatus module for tracking aggro/threat.
+----------------------------------------------------------------------]]
 
-GridStatusAggro = GridStatus:NewModule("GridStatusAggro")
+local _, ns = ...
+local L = ns.L
+
+local GridStatus = Grid:GetModule("GridStatus")
+local GridRoster = Grid:GetModule("GridRoster")
+
+local GridStatusAggro = GridStatus:NewModule("GridStatusAggro")
 GridStatusAggro.menuName = L["Aggro"]
 
 local function getthreatcolor(status)
@@ -15,8 +24,8 @@ GridStatusAggro.defaultDB = {
 	alert_aggro = {
 		text =  L["Aggro"],
 		enable = true,
-		color = { r = 0.055, g = 0.973, b = 1, a = 1 },
-		priority = 90,
+		color = { r = 1, g = 0, b = 0, a = 1 },
+		priority = 99,
 		range = false,
 		threat = false,
 		threatcolors = {
@@ -82,11 +91,11 @@ local aggroDynamicOptions = {
 local function setupmenu()
 	local args = GridStatus.options.args["alert_aggro"].args
 	local threat = GridStatusAggro.db.profile.alert_aggro.threat
-	
+
 	if not aggroDynamicOptions.aggroColor then
 		aggroDynamicOptions.aggroColor = args.color
 	end
-	
+
 	if threat then
         args.color = nil
         args[1] = aggroDynamicOptions[1]
@@ -138,6 +147,12 @@ function GridStatusAggro:OnStatusDisable(status)
 	end
 end
 
+function GridStatusAggro:Reset()
+	self.super.Reset(self)
+	self:UpdateAllUnits()
+	setupmenu()
+end
+
 function GridStatusAggro:UpdateAllUnits()
 	for guid, unitid in GridRoster:IterateRoster() do
 		self:UpdateUnit(unitid)
@@ -152,19 +167,19 @@ function GridStatusAggro:UpdateUnit(unitid)
 
 	local guid = UnitGUID(unitid)
 	local status = UnitThreatSituation(unitid)
-	
+
 	local settings = self.db.profile.alert_aggro
 	local threat = settings.threat
-	
+
 	if status and ((threat and (status > 0)) or (status > 1)) then
 		GridStatusAggro.core:SendStatusGained(guid, "alert_aggro",
-											  settings.priority,
-											  (settings.range and 40),
-											  (threat and settings.threatcolors[status] or settings.color),
-											  (threat and settings.threattexts[status] or settings.text),
-											  nil,
-											  nil,
-											  settings.icon)
+			settings.priority,
+			(settings.range and 40),
+			(threat and settings.threatcolors[status] or settings.color),
+			(threat and settings.threattexts[status] or settings.text),
+			nil,
+			nil,
+			settings.icon)
 	else
 		GridStatusAggro.core:SendStatusLost(guid, "alert_aggro")
 	end

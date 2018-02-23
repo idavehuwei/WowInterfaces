@@ -4,7 +4,7 @@ function BagSlotButton_UpdateChecked(self)
 	local isVisible = 0;
 	local frame;
 	for i=1, NUM_CONTAINER_FRAMES, 1 do
-		frame = getglobal("ContainerFrame"..i);
+		frame = _G["ContainerFrame"..i];
 		if ( (frame:GetID() == translatedID) and frame:IsShown() ) then
 			isVisible = 1;
 			break;
@@ -40,7 +40,7 @@ end
 function BackpackButton_UpdateChecked(self)
 	local isVisible = 0;
 	for i=1, NUM_CONTAINER_FRAMES, 1 do
-		local frame = getglobal("ContainerFrame"..i);
+		local frame = _G["ContainerFrame"..i];
 		if ( (frame:GetID() == 0) and frame:IsShown() ) then
 			isVisible = 1;
 			break;
@@ -156,6 +156,13 @@ function MainMenuBarBackpackButton_UpdateFreeSlots()
 		if ( bagFamily == 0 ) then
 			totalFree = totalFree + freeSlots;
 		end
+	end
+	
+	if ( totalFree == 3) then
+		TriggerTutorial(59);
+	end
+	if ( totalFree == 0) then
+		TriggerTutorial(58);
 	end
 
 	MainMenuBarBackpackButton.freeSlots = totalFree;

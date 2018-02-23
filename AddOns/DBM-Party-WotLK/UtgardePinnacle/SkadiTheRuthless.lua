@@ -1,39 +1,54 @@
-local mod = DBM:NewMod("SkadiTheRuthless", "DBM-Party-WotLK", 11)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("SkadiTheRuthless", "DBM-Party-WotLK", 11)
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 655 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 3592 $"):sub(12, -3))
 mod:SetCreatureID(26693)
-mod:SetZone()
+mod:SetMinSyncRevision(3108)
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("yell", L.Phase2)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START"
+	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warningPoison		= mod:NewAnnounce("WarningPoison", 2, 59331)
-local warningWhirlwind		= mod:NewAnnounce("WarningWhirlwind", 3, 59322)
-local timerPoison		= mod:NewTimer(12, "TimerPoison", 59331)
-local timerWhirlwindCD		= mod:NewTimer(30, "TimerWhirlwindCD", 59322)
+local warnPhase2		= mod:NewPhaseAnnounce(2)
+local warningPoison		= mod:NewTargetAnnounce(59331, 2)
+local warningWhirlwind	= mod:NewSpellAnnounce(59322, 3)
+local timerPoison		= mod:NewTargetTimer(12, 59331)
+local timerWhirlwindCD	= mod:NewCDTimer(23, 59322)
+
+local specWarnWhirlwind	= mod:NewSpecialWarningRun(59322)
+
+local timerAchieve		= mod:NewAchievementTimer(180, 1873, "TimerSpeedKill")
+
+local soundWhirlwind	= mod:NewSound(59322)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 59331 or args.spellId == 50255 then
-		warningPoison:Show(args.spellName, args.destName)
-		timerPoison:Start(args.spellName, args.destName)
+	if args:IsSpellID(59331, 50255) then
+		warningPoison:Show(args.destName)
+		timerPoison:Start(args.destName)
+	elseif args:IsSpellID(59322, 50228) then
+		warningWhirlwind:Show()
+		timerWhirlwindCD:Start()
+		specWarnWhirlwind:Show()
+		soundWhirlwind:Play()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 59331 or args.spellId == 50255 then
-		timerPoison:Cancel(args.spellName, args.destName)
+	if args:IsSpellID(59331, 50255) then
+		timerPoison:Cancel(args.destName)
 	end
 end
 
-function mod:SPELL_CAST_START(args)
-	if args.spellId == 59322 or args.spellId == 50228 then
-		warningWhirlwind:Show(args.spellName)
-		timerWhirlwindCD:Start(args.spellName)
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Phase2 or msg:find(L.Phase2) then
+		warnPhase2:Show()
+	elseif msg == L.CombatStart or msg:find(L.CombatStart) then
+		if mod:IsDifficulty("heroic5") then
+			timerAchieve:Start()
+		end
 	end
 end

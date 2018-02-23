@@ -20,6 +20,8 @@ ACHIEVEMENTUI_PROGRESSIVEWIDTH = 42;
 ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS = 4;
 
 ACHIEVEMENTUI_MAXCONTENTWIDTH = 330;
+local ACHIEVEMENTUI_FONTHEIGHT;						-- set in AchievementButton_OnLoad
+local ACHIEVEMENTUI_MAX_LINES_COLLAPSED = 3;		-- can show 3 lines of text when achievement is collapsed
 
 ACHIEVEMENTUI_DEFAULTSUMMARYACHIEVEMENTS = {6, 503, 116, 545, 1017};
 
@@ -120,7 +122,7 @@ function AchievementFrame_ForceUpdate ()
 end
 
 function AchievementFrameBaseTab_OnClick (id)
-	PanelTemplates_Tab_OnClick(getglobal("AchievementFrameTab"..id), AchievementFrame);
+	PanelTemplates_Tab_OnClick(_G["AchievementFrameTab"..id], AchievementFrame);
 	
 	local isSummary = false
 	if ( id == 1 ) then
@@ -168,7 +170,7 @@ function AchievementFrameComparisonTab_OnClick (id)
 	
 	AchievementFrameCategories_GetCategoryList(ACHIEVEMENTUI_CATEGORIES);
 	AchievementFrameCategories_Update();
-	PanelTemplates_Tab_OnClick(getglobal("AchievementFrameTab"..id), AchievementFrame);
+	PanelTemplates_Tab_OnClick(_G["AchievementFrameTab"..id], AchievementFrame);
 	
 	achievementFunctions.updateFunc();
 end
@@ -185,7 +187,7 @@ ACHIEVEMENTFRAME_SUBFRAMES = {
 function AchievementFrame_ShowSubFrame(...)
 	local subFrame, show;
 	for _, name in next, ACHIEVEMENTFRAME_SUBFRAMES  do
-		subFrame = getglobal(name);
+		subFrame = _G[name];
 		show = false;
 		for i=1, select("#", ...) do
 			if ( subFrame ==  select(i, ...)) then
@@ -355,7 +357,7 @@ function AchievementFrameCategories_Update ()
 		end
 	end
 	
-	HybridScrollFrame_Update(scrollFrame, numCategories, totalHeight, displayedHeight);
+	HybridScrollFrame_Update(scrollFrame, totalHeight, displayedHeight);
 	
 	return displayCategories;
 end
@@ -437,7 +439,7 @@ function AchievementFrameCategories_UpdateTooltip()
 	end
 	
 	for _, button in next, AchievementFrameCategoriesContainer.buttons do
-		if ( MouseIsOver(button) and button.showTooltipFunc ) then
+		if ( button:IsMouseOver() and button.showTooltipFunc ) then
 			button:showTooltipFunc();
 			break;
 		end
@@ -536,6 +538,16 @@ function AchievementFrameCategories_SelectButton (button)
 	achievementFunctions.updateFunc();
 end
 
+function AchievementFrameAchievements_OnShow()
+	if ( achievementFunctions.selectedCategory == FEAT_OF_STRENGTH_ID ) then
+		AchievementFrameFilterDropDown:Hide();
+		AchievementFrameHeaderRightDDLInset:Hide();
+	else
+		AchievementFrameFilterDropDown:Show();
+		AchievementFrameHeaderRightDDLInset:Show();	
+	end
+end
+
 function AchievementFrameCategories_ClearSelection ()
 	local buttons = AchievementFrameCategoriesContainer.buttons;
 	for _, button in next, buttons do
@@ -582,8 +594,8 @@ function AchievementCategoryButton_OnLoad (button)
 	
 	local buttonName = button:GetName();
 	
-	button.label = getglobal(buttonName .. "Label");
-	button.background = getglobal(buttonName.."Background");
+	button.label = _G[buttonName .. "Label"];
+	button.background = _G[buttonName.."Background"];
 end
 
 function AchievementCategoryButton_OnClick (button)
@@ -633,7 +645,7 @@ function AchievementFrameAchievements_OnEvent (self, event, ...)
 		local selection = AchievementFrameAchievements.selection;
 		AchievementFrameAchievements_ForceUpdate();
 		if ( AchievementFrameAchievementsContainer:IsShown() and selection == achievementID ) then
-			AchievementFrame_SelectAchievement(selection);
+			AchievementFrame_SelectAchievement(selection, true);
 		end
 		AchievementFrameHeaderPoints:SetText(GetTotalAchievementPoints());
 
@@ -643,6 +655,7 @@ function AchievementFrameAchievements_OnEvent (self, event, ...)
 			local button = AchievementFrameAchievementsObjectives:GetParent();
 			AchievementFrameAchievementsObjectives.id = nil;
 			AchievementButton_DisplayObjectives(button, id, button.completed);
+			AchievementFrameAchievements_Update();
 		else
 			AchievementFrameAchievementsObjectives.id = nil; -- Force redraw
 		end
@@ -705,7 +718,7 @@ function AchievementFrameAchievements_Update ()
 	local totalHeight = numAchievements * ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT;
 	totalHeight = totalHeight + (extraHeight - ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT);
 	
-	HybridScrollFrame_Update(scrollFrame, numAchievements, totalHeight, displayedHeight);
+	HybridScrollFrame_Update(scrollFrame, totalHeight, displayedHeight);
 
 	if ( selection ) then
 		AchievementFrameAchievements.selection = selection;
@@ -737,13 +750,15 @@ function AchievementFrameAchievements_ClearSelection ()
 	AchievementButton_ResetObjectives();
 	for _, button in next, AchievementFrameAchievements.buttons do
 		button:Collapse();
-		if ( not MouseIsOver(button) ) then
+		if ( not button:IsMouseOver() ) then
 			button.highlight:Hide();
 		end
 		button.selected = nil;
 		if ( not button.tracked:GetChecked() ) then
 			button.tracked:Hide();
 		end
+		button.description:Show();
+		button.hiddenDescription:Hide();
 	end
 	
 	AchievementFrameAchievements.selection = nil;
@@ -765,9 +780,9 @@ end
 
 function AchievementIcon_OnLoad (self)
 	local name = self:GetName();
-	self.bling = getglobal(name .. "Bling");
-	self.texture = getglobal(name .. "Texture");
-	self.frame = getglobal(name .. "Overlay");
+	self.bling = _G[name .. "Bling"];
+	self.texture = _G[name .. "Texture"];
+	self.frame = _G[name .. "Overlay"];
 	
 	self.Desaturate = AchievementIcon_Desaturate;
 	self.Saturate = AchievementIcon_Saturate;
@@ -785,8 +800,8 @@ end
 
 function AchievementShield_OnLoad (self)
 	local name = self:GetName();
-	self.icon = getglobal(name .. "Icon");
-	self.points = getglobal(name .. "Points");
+	self.icon = _G[name .. "Icon"];
+	self.points = _G[name .. "Points"];
 	
 	self.Desaturate = AchievementShield_Desaturate;
 	self.Saturate = AchievementShield_Saturate;
@@ -797,6 +812,7 @@ end
 ACHIEVEMENTBUTTON_DESCRIPTIONHEIGHT = 20;
 ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT = 84;
 ACHIEVEMENTBUTTON_CRITERIAROWHEIGHT = 15;
+ACHIEVEMENTBUTTON_METAROWHEIGHT = 14;
 ACHIEVEMENTBUTTON_MAXHEIGHT = 232;
 ACHIEVEMENTBUTTON_TEXTUREHEIGHT = 128;
 
@@ -837,8 +853,8 @@ function AchievementButton_Collapse (self)
 	self.collapsed = true;
 	AchievementButton_UpdatePlusMinusTexture(self);
 	self:SetHeight(ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT);	
-	getglobal(self:GetName() .. "Background"):SetTexCoord(0, 1, 1-(ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT / 256), 1);
-	getglobal(self:GetName() .. "Glow"):SetTexCoord(0, 1, 0, ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT / 128);
+	_G[self:GetName() .. "Background"]:SetTexCoord(0, 1, 1-(ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT / 256), 1);
+	_G[self:GetName() .. "Glow"]:SetTexCoord(0, 1, 0, ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT / 128);
 	
 	if ( not self.tracked:GetChecked() ) then
 		self.tracked:Hide();
@@ -853,16 +869,16 @@ function AchievementButton_Expand (self, height)
 	self.collapsed = nil;
 	AchievementButton_UpdatePlusMinusTexture(self);
 	self:SetHeight(height);
-	getglobal(self:GetName() .. "Background"):SetTexCoord(0, 1, max(0, 1-(height / 256)), 1);
-	getglobal(self:GetName() .. "Glow"):SetTexCoord(0, 1, 0, (height+5) / 128);
+	_G[self:GetName() .. "Background"]:SetTexCoord(0, 1, max(0, 1-(height / 256)), 1);
+	_G[self:GetName() .. "Glow"]:SetTexCoord(0, 1, 0, (height+5) / 128);
 end
 
 function AchievementButton_Saturate (self)
 	local name = self:GetName();
 	self.saturated = true;	
-	getglobal(name .. "TitleBackground"):SetTexCoord(0, 0.9765625, 0, 0.3125);
-	getglobal(name .. "Background"):SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal");
-	getglobal(name .. "Glow"):SetVertexColor(1.0, 1.0, 1.0);
+	_G[name .. "TitleBackground"]:SetTexCoord(0, 0.9765625, 0, 0.3125);
+	_G[name .. "Background"]:SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal");
+	_G[name .. "Glow"]:SetVertexColor(1.0, 1.0, 1.0);
 	self.icon:Saturate();
 	self.shield:Saturate();
 	self.shield.points:SetVertexColor(1, 1, 1);
@@ -877,9 +893,9 @@ end
 function AchievementButton_Desaturate (self)
 	local name = self:GetName();
 	self.saturated = nil;
-	getglobal(name .. "TitleBackground"):SetTexCoord(0, 0.9765625, 0.34375, 0.65625);
-	getglobal(name .. "Background"):SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal-Desaturated");
-	getglobal(name .. "Glow"):SetVertexColor(.22, .17, .13);
+	_G[name .. "TitleBackground"]:SetTexCoord(0, 0.9765625, 0.34375, 0.65625);
+	_G[name .. "Background"]:SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal-Desaturated");
+	_G[name .. "Glow"]:SetVertexColor(.22, .17, .13);
 	self.icon:Desaturate();
 	self.shield:Desaturate();
 	self.shield.points:SetVertexColor(.65, .65, .65);
@@ -893,23 +909,29 @@ end
 
 function AchievementButton_OnLoad (self)
 	local name = self:GetName();
-	
-	self.label = getglobal(name .. "Label");
-	self.description = getglobal(name .. "Description");
-	self.hiddenDescription = getglobal(name .. "HiddenDescription");
-	self.reward = getglobal(name .. "Reward");
-	self.rewardBackground = getglobal(name.."RewardBackground");
-	self.icon = getglobal(name .. "Icon");
-	self.shield = getglobal(name .. "Shield");
-	self.objectives = getglobal(name .. "Objectives");
-	self.highlight = getglobal(name .. "Highlight");
-	self.dateCompleted = getglobal(name .. "DateCompleted")
-	self.tracked = getglobal(name .. "Tracked");
-	self.check = getglobal(name .. "Check");
-	self.plusMinus = getglobal(name .. "PlusMinus");
+	self.label = _G[name .. "Label"];
+	self.description = _G[name .. "Description"];
+	self.hiddenDescription = _G[name .. "HiddenDescription"];
+	self.reward = _G[name .. "Reward"];
+	self.rewardBackground = _G[name.."RewardBackground"];
+	self.icon = _G[name .. "Icon"];
+	self.shield = _G[name .. "Shield"];
+	self.objectives = _G[name .. "Objectives"];
+	self.highlight = _G[name .. "Highlight"];
+	self.dateCompleted = _G[name .. "DateCompleted"]
+	self.tracked = _G[name .. "Tracked"];
+	self.check = _G[name .. "Check"];
+	self.plusMinus = _G[name .. "PlusMinus"];
 	
 	self.dateCompleted:ClearAllPoints();
 	self.dateCompleted:SetPoint("TOP", self.shield, "BOTTOM", -3, 6);
+	if ( not ACHIEVEMENTUI_FONTHEIGHT ) then
+		local _, fontHeight = self.description:GetFont();
+		ACHIEVEMENTUI_FONTHEIGHT = fontHeight;
+	end
+	self.description:SetHeight(ACHIEVEMENTUI_FONTHEIGHT * ACHIEVEMENTUI_MAX_LINES_COLLAPSED);
+	self.description:SetWidth(ACHIEVEMENTUI_MAXCONTENTWIDTH);			
+	self.hiddenDescription:SetWidth(ACHIEVEMENTUI_MAXCONTENTWIDTH);
 	
 	self:SetBackdropBorderColor(ACHIEVEMENTUI_REDBORDER_R, ACHIEVEMENTUI_REDBORDER_G, ACHIEVEMENTUI_REDBORDER_B, ACHIEVEMENTUI_REDBORDER_A);
 	self.Collapse = AchievementButton_Collapse;
@@ -926,7 +948,7 @@ end
 
 function AchievementButton_OnClick (self, ignoreModifiers)
 	if(IsModifiedClick() and not ignoreModifiers) then
-		if ( IsModifiedClick("CHATLINK") and ChatFrameEditBox:IsVisible() ) then
+		if ( IsModifiedClick("CHATLINK") and ChatEdit_GetActiveWindow() ) then
 			local achievementLink = GetAchievementLink(self.id);
 			if ( achievementLink ) then
 				ChatEdit_InsertLink(achievementLink);
@@ -939,7 +961,7 @@ function AchievementButton_OnClick (self, ignoreModifiers)
 	end
 
 	if ( self.selected ) then
-		if ( not MouseIsOver(self) ) then
+		if ( not self:IsMouseOver() ) then
 			self.highlight:Hide();
 		end
 		AchievementFrameAchievements_ClearSelection()
@@ -952,6 +974,9 @@ function AchievementButton_OnClick (self, ignoreModifiers)
 	AchievementButton_DisplayAchievement(self, achievementFunctions.selectedCategory, self.index, self.id);
 	HybridScrollFrame_ExpandButton(AchievementFrameAchievementsContainer, ((self.index - 1) * ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT), self:GetHeight());
 	AchievementFrameAchievements_Update();
+	if ( not ignoreModifiers ) then
+		AchievementFrameAchievements_AdjustSelection();
+	end
 end
 
 function AchievementButton_ToggleTracking (id)
@@ -964,10 +989,7 @@ function AchievementButton_ToggleTracking (id)
 	
 	local count = GetNumTrackedAchievements();
 	
-	if ( WatchFrame_GetRemainingSpace() < WatchFrame_GetHeightNeededForAchievement(id) ) then
-		UIErrorsFrame:AddMessage(OBJECTIVES_WATCH_TOO_MANY, 1.0, 0.1, 0.1, 1.0);
-		return
-	elseif ( count >= WATCHFRAME_MAXACHIEVEMENTS ) then
+	if ( count >= WATCHFRAME_MAXACHIEVEMENTS ) then
 		UIErrorsFrame:AddMessage(format(ACHIEVEMENT_WATCH_TOO_MANY, WATCHFRAME_MAXACHIEVEMENTS), 1.0, 0.1, 0.1, 1.0);
 		return;
 	end
@@ -993,7 +1015,7 @@ function AchievementButton_DisplayAchievement (button, category, achievement, se
 	else
 		button:Show();
 	end
-		
+
 	button.index = achievement;
 	button.element = true;
 	
@@ -1014,15 +1036,9 @@ function AchievementButton_DisplayAchievement (button, category, achievement, se
 		else
 			button.shield.icon:SetTexture([[Interface\AchievementFrame\UI-Achievement-Shields-NoPoints]]);
 		end
-	
 		button.description:SetText(description);
 		button.hiddenDescription:SetText(description);
-		if ( button.hiddenDescription:GetWidth() > ACHIEVEMENTUI_MAXCONTENTWIDTH ) then
-			button.description:SetWidth(ACHIEVEMENTUI_MAXCONTENTWIDTH);
-		else
-			button.description:SetWidth(0);
-		end
-	
+		button.numLines = ceil(button.hiddenDescription:GetHeight() / ACHIEVEMENTUI_FONTHEIGHT);
 		button.icon.texture:SetTexture(icon);
 		if ( completed and not button.completed ) then
 			button.completed = true;
@@ -1083,10 +1099,12 @@ function AchievementButton_DisplayAchievement (button, category, achievement, se
 		end
 	elseif ( button.selected ) then
 		button.selected = nil;
-		if ( not MouseIsOver(button) ) then
+		if ( not button:IsMouseOver() ) then
 			button.highlight:Hide();
 		end
 		button:Collapse();
+		button.description:Show();
+		button.hiddenDescription:Hide();
 	end
 	
 	return id;
@@ -1116,13 +1134,13 @@ function AchievementButton_DisplayObjectives (button, id, completed)
 		local ACHIEVEMENTMODE_CRITERIA = 1;
 		if ( objectives.mode == ACHIEVEMENTMODE_CRITERIA ) then
 			if ( objectives:GetHeight() > 0 ) then
-				objectives:SetPoint("TOP", "$parentDescription", "BOTTOM", 0, -8);
+				objectives:SetPoint("TOP", "$parentHiddenDescription", "BOTTOM", 0, -8);
 				objectives:SetPoint("LEFT", "$parentIcon", "RIGHT", -5, 0);
 				objectives:SetPoint("RIGHT", "$parentShield", "LEFT", -10, 0);
 			end
 			height = ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT + objectives:GetHeight();
 		else
-			objectives:SetPoint("TOP", 0, -50);
+			objectives:SetPoint("TOP", "$parentHiddenDescription", "BOTTOM", 0, -8);
 			height = ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT + objectives:GetHeight();
 		end
 	elseif ( completed and GetPreviousAchievement(id) ) then
@@ -1132,7 +1150,7 @@ function AchievementButton_DisplayObjectives (button, id, completed)
 		AchievementButton_ResetMiniAchievements();
 		AchievementButton_ResetMetas();
 		AchievementObjectives_DisplayProgressiveAchievement(objectives, id);
-		objectives:SetPoint("TOP", 0, -50);
+		objectives:SetPoint("TOP", "$parentHiddenDescription", "BOTTOM", 0, -8);
 		height = ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT + objectives:GetHeight();
 	else
 		objectives:SetHeight(0);	
@@ -1142,16 +1160,21 @@ function AchievementButton_DisplayObjectives (button, id, completed)
 		AchievementButton_ResetMetas();
 		AchievementObjectives_DisplayCriteria(objectives, id);
 		if ( objectives:GetHeight() > 0 ) then
-			objectives:SetPoint("TOP", "$parentDescription", "BOTTOM", 0, -8);
+			objectives:SetPoint("TOP", "$parentHiddenDescription", "BOTTOM", 0, -8);
 			objectives:SetPoint("LEFT", "$parentIcon", "RIGHT", -5, -25);
 			objectives:SetPoint("RIGHT", "$parentShield", "LEFT", -10, 0);
 		end
 		height = ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT + objectives:GetHeight();
 	end
 
-	if ( height ~= ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT ) then		
-		local descriptionHeight = button.description:GetHeight();
+	if ( height ~= ACHIEVEMENTBUTTON_COLLAPSEDHEIGHT or button.numLines > ACHIEVEMENTUI_MAX_LINES_COLLAPSED ) then		
+		button.hiddenDescription:Show();
+		button.description:Hide();
+		local descriptionHeight = button.hiddenDescription:GetHeight();
 		height = height + descriptionHeight - ACHIEVEMENTBUTTON_DESCRIPTIONHEIGHT;
+		if ( button.reward:IsShown() ) then
+			height = height + 4;
+		end
 	end
 	
 	objectives.id = id;
@@ -1297,7 +1320,7 @@ function AchievementObjectives_DisplayProgressiveAchievement (objectivesFrame, i
 		
 		miniAchievement:Show();
 		miniAchievement:SetParent(objectivesFrame);
-		getglobal(miniAchievement:GetName() .. "Icon"):SetTexture(iconpath);
+		_G[miniAchievement:GetName() .. "Icon"]:SetTexture(iconpath);
 		if ( index == 1 ) then
 			miniAchievement:SetPoint("TOPLEFT", objectivesFrame, "TOPLEFT", -4, -4);
 		elseif ( index == 7 ) then
@@ -1495,7 +1518,7 @@ function AchievementObjectives_DisplayCriteria (objectivesFrame, id)
 			criteria:ClearAllPoints();
 			if ( textStrings == 1 ) then
 				if ( numCriteria == 1 ) then
-					criteria:SetPoint("TOP", objectivesFrame, "TOP", 0, 0);
+					criteria:SetPoint("TOP", objectivesFrame, "TOP", -14, 0);
 				else
 					criteria:SetPoint("TOPLEFT", objectivesFrame, "TOPLEFT", 0, 0);
 				end
@@ -1539,7 +1562,13 @@ function AchievementObjectives_DisplayCriteria (objectivesFrame, id)
 
 	if ( textStrings > 0 and progressBars > 0 ) then
 		-- If we have text criteria and progressBar criteria, display the progressBar criteria first and position the textStrings under them.
-		criteriaTable[1]:SetPoint("TOP", progressBarTable[progressBars], "BOTTOM", 0, -4);
+		criteriaTable[1]:ClearAllPoints();
+		if ( textStrings == 1 ) then
+			criteriaTable[1]:SetPoint("TOP", progressBarTable[progressBars], "BOTTOM", -14, -4);
+		else
+			criteriaTable[1]:SetPoint("TOP", progressBarTable[progressBars], "BOTTOM", 0, -4);
+			criteriaTable[1]:SetPoint("LEFT", objectivesFrame, "LEFT", 0, 0);
+		end		
 	elseif ( textStrings > 1 ) then
 		-- Figure out if we can make multiple columns worth of criteria instead of one long one
 		local numColumns = floor(ACHIEVEMENTUI_MAXCONTENTWIDTH/maxCriteriaWidth);
@@ -1565,8 +1594,12 @@ function AchievementObjectives_DisplayCriteria (objectivesFrame, id)
 			numRows = ceil(numRows/numColumns);
 		end
 	end
-	
-	objectivesFrame:SetHeight(numRows * ACHIEVEMENTBUTTON_CRITERIAROWHEIGHT);
+
+	if ( metas > 0 ) then
+		objectivesFrame:SetHeight(numRows * ACHIEVEMENTBUTTON_METAROWHEIGHT + 10);
+	else
+		objectivesFrame:SetHeight(numRows * ACHIEVEMENTBUTTON_CRITERIAROWHEIGHT);
+	end
 	objectivesFrame.mode = ACHIEVEMENTMODE_CRITERIA;
 end
 
@@ -1664,7 +1697,7 @@ function AchievementFrameStats_Update ()
 			button:Hide();
 		end
 	end
-	HybridScrollFrame_Update(scrollFrame, statCount, totalHeight, displayedHeight);
+	HybridScrollFrame_Update(scrollFrame, totalHeight, displayedHeight);
 end
 
 function AchievementFrameStats_SetStat(button, category, index, colorIndex, isSummary)
@@ -1753,13 +1786,13 @@ end
 
 function AchievementStatButton_OnLoad(self, parentFrame)
 	local name = self:GetName();
-	self.background = getglobal(name.."BG");
-	self.left = getglobal(name.."HeaderLeft");
-	self.middle = getglobal(name.."HeaderMiddle");
-	self.right = getglobal(name.."HeaderRight");
-	self.text = getglobal(name.."Text");
-	self.title = getglobal(name.."Title");
-	self.value = getglobal(name.."Value");
+	self.background = _G[name.."BG"];
+	self.left = _G[name.."HeaderLeft"];
+	self.middle = _G[name.."HeaderMiddle"];
+	self.right = _G[name.."HeaderRight"];
+	self.text = _G[name.."Text"];
+	self.title = _G[name.."Title"];
+	self.value = _G[name.."Value"];
 	self.value:SetVertexColor(1, 0.97, 0.6);
 	parentFrame.buttons = parentFrame.buttons or {};
 	tinsert(parentFrame.buttons, self);
@@ -1812,7 +1845,7 @@ function AchievementFrameSummary_UpdateAchievements(...)
 				button:SetPoint("TOPLEFT",AchievementFrameSummaryAchievementsHeader, "BOTTOMLEFT", 18, 2 );
 				button:SetPoint("TOPRIGHT",AchievementFrameSummaryAchievementsHeader, "BOTTOMRIGHT", -18, 2 );
 			else
-				anchorTo = getglobal("AchievementFrameSummaryAchievement"..i-1);
+				anchorTo = _G["AchievementFrameSummaryAchievement"..i-1];
 				button:SetPoint("TOPLEFT",anchorTo, "BOTTOMLEFT", 0, 3 );
 				button:SetPoint("TOPRIGHT",anchorTo, "BOTTOMRIGHT", 0, 3 );
 			end
@@ -1898,7 +1931,7 @@ end
 
 function AchievementFrameSummaryAchievement_OnLoad(self)
 	AchievementComparisonPlayerButton_OnLoad(self);
-	self.highlight = getglobal(self:GetName().."Highlight");
+	self.highlight = _G[self:GetName().."Highlight"];
 	AchievementFrameSummaryAchievements.buttons = AchievementFrameSummaryAchievements.buttons or {};
 	tinsert(AchievementFrameSummaryAchievements.buttons, self);
 	self:Saturate();
@@ -1948,10 +1981,10 @@ function AchievementFrameSummaryCategory_OnLoad (self)
 	self:SetMinMaxValues(0, 100);
 	self:SetValue(0);
 	local name = self:GetName();
-	self.text = getglobal(name .. "Text");
+	self.text = _G[name .. "Text"];
 	
 	local categoryName = GetCategoryInfo(self:GetID());
-	getglobal(name .. "Label"):SetText(categoryName);
+	_G[name .. "Label"]:SetText(categoryName);
 end
 
 function AchievementFrame_GetCategoryTotalNumAchievements (id, showAll)
@@ -1989,8 +2022,8 @@ function AchievementFrameSummaryCategory_OnHide (self)
 	self:UnregisterEvent("ACHIEVEMENT_EARNED");
 end
 
-function AchievementFrame_SelectAchievement(id)
-	if ( not AchievementFrame:IsShown() ) then
+function AchievementFrame_SelectAchievement(id, forceSelect)
+	if ( not AchievementFrame:IsShown() and not forceSelect ) then
 		return;
 	end
 	
@@ -2069,7 +2102,8 @@ function AchievementFrame_SelectAchievement(id)
 		if ( not shown ) then
 			local _, maxVal = AchievementFrameCategoriesContainerScrollBar:GetMinMaxValues();
 			if ( AchievementFrameCategoriesContainerScrollBar:GetValue() == maxVal ) then
-				assert(false)
+				--assert(false)
+				return;
 			else
 				HybridScrollFrame_OnMouseWheel(AchievementFrameCategoriesContainer, -1);
 			end			
@@ -2078,7 +2112,8 @@ function AchievementFrame_SelectAchievement(id)
 		-- Remove me if everything's working fine
 		i = i + 1;
 		if ( i > 100 ) then
-			assert(false);
+			--assert(false);
+			return;
 		end
 	end		
 	
@@ -2107,10 +2142,66 @@ function AchievementFrame_SelectAchievement(id)
 			AchievementFrameAchievementsContainerScrollBar:SetValue(newHeight);
 		else
 			if ( AchievementFrameAchievementsContainerScrollBar:GetValue() == maxVal ) then
-				assert(false, "Failed to find achievement " .. id .. " while jumping!")
+				--assert(false, "Failed to find achievement " .. id .. " while jumping!")
+				return;
 			else
 				HybridScrollFrame_OnMouseWheel(AchievementFrameAchievementsContainer, -1);
 			end			
+		end
+	end
+end
+
+function AchievementFrameAchievements_FindSelection()
+	local _, maxVal = AchievementFrameAchievementsContainerScrollBar:GetMinMaxValues();
+	local scrollHeight = AchievementFrameAchievementsContainer:GetHeight();
+	local newHeight = 0;
+	AchievementFrameAchievementsContainerScrollBar:SetValue(0);	
+	while ( not shown ) do
+		for _, button in next, AchievementFrameAchievementsContainer.buttons do
+			if ( button.selected ) then
+				newHeight = AchievementFrameAchievementsContainerScrollBar:GetValue() + AchievementFrameAchievementsContainer:GetTop() - button:GetTop();
+				newHeight = min(newHeight, maxVal);
+				AchievementFrameAchievementsContainerScrollBar:SetValue(newHeight);					
+				return;
+			end
+		end		
+		if ( AchievementFrameAchievementsContainerScrollBar:GetValue() == maxVal ) then		
+			return;
+		else
+			newHeight = newHeight + scrollHeight;
+			newHeight = min(newHeight, maxVal);
+			AchievementFrameAchievementsContainerScrollBar:SetValue(newHeight);
+		end
+	end
+end
+
+function AchievementFrameAchievements_AdjustSelection()
+	local selectedButton;	
+	-- check if selection is visible
+	for _, button in next, AchievementFrameAchievementsContainer.buttons do
+		if ( button.selected ) then
+			selectedButton = button;
+			break;
+		end
+	end	
+	
+	if ( not selectedButton ) then
+		AchievementFrameAchievements_FindSelection();
+	else
+		local newHeight;
+		if ( selectedButton:GetTop() > AchievementFrameAchievementsContainer:GetTop() ) then
+			newHeight = AchievementFrameAchievementsContainerScrollBar:GetValue() + AchievementFrameAchievementsContainer:GetTop() - selectedButton:GetTop();
+		elseif ( selectedButton:GetBottom() < AchievementFrameAchievementsContainer:GetBottom() ) then
+			if ( selectedButton:GetHeight() > AchievementFrameAchievementsContainer:GetHeight() ) then
+				newHeight = AchievementFrameAchievementsContainerScrollBar:GetValue() + AchievementFrameAchievementsContainer:GetTop() - selectedButton:GetTop();
+			else
+				newHeight = AchievementFrameAchievementsContainerScrollBar:GetValue() + AchievementFrameAchievementsContainer:GetBottom() - selectedButton:GetBottom();
+			end
+		end
+		if ( newHeight ) then
+			local _, maxVal = AchievementFrameAchievementsContainerScrollBar:GetMinMaxValues();
+			newHeight = min(newHeight, maxVal);
+			AchievementFrameAchievementsContainerScrollBar:SetValue(newHeight);					
 		end
 	end
 end
@@ -2348,7 +2439,7 @@ function AchievementFrameComparison_Update ()
 		AchievementFrameComparison_DisplayAchievement(buttons[i], category, achievementIndex);
 	end
 	
-	HybridScrollFrame_Update(scrollFrame, numAchievements, buttonHeight*numAchievements, buttonHeight*numButtons);
+	HybridScrollFrame_Update(scrollFrame, buttonHeight*numAchievements, buttonHeight*numButtons);
 end
 
 ACHIEVEMENTCOMPARISON_PLAYERSHIELDFONT1 = GameFontNormal;
@@ -2376,7 +2467,7 @@ function AchievementFrameComparison_DisplayAchievement (button, category, index)
 		local player = button.player;
 		local friend = button.friend;
 		
-		local friendCompleted, friendMonth, friendDay, friendYear = GetAchievementComparisonInfo(id, 1);
+		local friendCompleted, friendMonth, friendDay, friendYear = GetAchievementComparisonInfo(id);
 		player.label:SetText(name);		
 	
 		player.description:SetText(description);
@@ -2489,25 +2580,25 @@ function AchievementFrameComparison_UpdateStats ()
 		end
 		displayedHeight = displayedHeight+button:GetHeight();
 	end
-	HybridScrollFrame_Update(scrollFrame, statCount, totalHeight, displayedHeight);
+	HybridScrollFrame_Update(scrollFrame, totalHeight, displayedHeight);
 end
 
 function AchievementFrameComparisonStat_OnLoad (self)
 	local name = self:GetName();
-	self.background = getglobal(name.."BG");
-	self.left = getglobal(name.."HeaderLeft");
-	self.middle = getglobal(name.."HeaderMiddle");
-	self.right = getglobal(name.."HeaderRight");
-	self.left2 = getglobal(name.."HeaderLeft2");
-	self.middle2 = getglobal(name.."HeaderMiddle2");
-	self.right2 = getglobal(name.."HeaderRight2");
-	self.text = getglobal(name.."Text");
-	self.title = getglobal(name.."Title");
-	self.value = getglobal(name.."Value");
+	self.background = _G[name.."BG"];
+	self.left = _G[name.."HeaderLeft"];
+	self.middle = _G[name.."HeaderMiddle"];
+	self.right = _G[name.."HeaderRight"];
+	self.left2 = _G[name.."HeaderLeft2"];
+	self.middle2 = _G[name.."HeaderMiddle2"];
+	self.right2 = _G[name.."HeaderRight2"];
+	self.text = _G[name.."Text"];
+	self.title = _G[name.."Title"];
+	self.value = _G[name.."Value"];
 	self.value:SetVertexColor(1, 0.97, 0.6);
-	self.friendValue = getglobal(name.."ComparisonValue");
+	self.friendValue = _G[name.."ComparisonValue"];
 	self.friendValue:SetVertexColor(1, 0.97, 0.6);
-	self.mouseover = getglobal(name.. "Mouseover");
+	self.mouseover = _G[name.. "Mouseover"];
 end
 
 function AchievementFrameComparisonStats_SetStat (button, category, index, colorIndex, isSummary)
@@ -2619,9 +2710,9 @@ end
 
 function AchievementComparisonPlayerButton_Saturate (self)
 	local name = self:GetName();
-	getglobal(name .. "TitleBackground"):SetTexCoord(0, 0.9765625, 0, 0.3125);
-	getglobal(name .. "Background"):SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal");
-	getglobal(name .. "Glow"):SetVertexColor(1.0, 1.0, 1.0);
+	_G[name .. "TitleBackground"]:SetTexCoord(0, 0.9765625, 0, 0.3125);
+	_G[name .. "Background"]:SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal");
+	_G[name .. "Glow"]:SetVertexColor(1.0, 1.0, 1.0);
 	self.icon:Saturate();
 	self.shield:Saturate();
 	self.shield.points:SetVertexColor(1, 1, 1);
@@ -2633,9 +2724,9 @@ end
 
 function AchievementComparisonPlayerButton_Desaturate (self)
 	local name = self:GetName();
-	getglobal(name .. "TitleBackground"):SetTexCoord(0, 0.9765625, 0.34375, 0.65625);
-	getglobal(name .. "Background"):SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal-Desaturated");
-	getglobal(name .. "Glow"):SetVertexColor(.22, .17, .13);
+	_G[name .. "TitleBackground"]:SetTexCoord(0, 0.9765625, 0.34375, 0.65625);
+	_G[name .. "Background"]:SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal-Desaturated");
+	_G[name .. "Glow"]:SetVertexColor(.22, .17, .13);
 	self.icon:Desaturate();
 	self.shield:Desaturate();
 	self.shield.points:SetVertexColor(.65, .65, .65);
@@ -2648,12 +2739,12 @@ end
 function AchievementComparisonPlayerButton_OnLoad (self)
 	local name = self:GetName();
 	
-	self.label = getglobal(name .. "Label");
-	self.description = getglobal(name .. "Description");
-	self.icon = getglobal(name .. "Icon");
-	self.shield = getglobal(name .. "Shield");
-	self.dateCompleted = getglobal(name .. "DateCompleted");
-	self.titleBar = getglobal(name .. "TitleBackground");
+	self.label = _G[name .. "Label"];
+	self.description = _G[name .. "Description"];
+	self.icon = _G[name .. "Icon"];
+	self.shield = _G[name .. "Shield"];
+	self.dateCompleted = _G[name .. "DateCompleted"];
+	self.titleBar = _G[name .. "TitleBackground"];
 	
 	self:SetBackdropBorderColor(ACHIEVEMENTUI_REDBORDER_R, ACHIEVEMENTUI_REDBORDER_G, ACHIEVEMENTUI_REDBORDER_B, ACHIEVEMENTUI_REDBORDER_A);
 	self.Saturate = AchievementComparisonPlayerButton_Saturate;
@@ -2667,9 +2758,9 @@ end
 
 function AchievementComparisonFriendButton_Saturate (self)
 	local name = self:GetName();
-	getglobal(name .. "TitleBackground"):SetTexCoord(0.3, 0.575, 0, 0.3125);
-	getglobal(name .. "Background"):SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal");
-	getglobal(name .. "Glow"):SetVertexColor(1.0, 1.0, 1.0);
+	_G[name .. "TitleBackground"]:SetTexCoord(0.3, 0.575, 0, 0.3125);
+	_G[name .. "Background"]:SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal");
+	_G[name .. "Glow"]:SetVertexColor(1.0, 1.0, 1.0);
 	self.icon:Saturate();
 	self.shield:Saturate();
 	self.shield.points:SetVertexColor(1, 1, 1);
@@ -2679,9 +2770,9 @@ end
 
 function AchievementComparisonFriendButton_Desaturate (self)
 	local name = self:GetName();
-	getglobal(name .. "TitleBackground"):SetTexCoord(0.3, 0.575, 0.34375, 0.65625);
-	getglobal(name .. "Background"):SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal-Desaturated");
-	getglobal(name .. "Glow"):SetVertexColor(.22, .17, .13);
+	_G[name .. "TitleBackground"]:SetTexCoord(0.3, 0.575, 0.34375, 0.65625);
+	_G[name .. "Background"]:SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal-Desaturated");
+	_G[name .. "Glow"]:SetVertexColor(.22, .17, .13);
 	self.icon:Desaturate();
 	self.shield:Desaturate();
 	self.shield.points:SetVertexColor(.65, .65, .65);
@@ -2692,9 +2783,9 @@ end
 function AchievementComparisonFriendButton_OnLoad (self)
 	local name = self:GetName();
 	
-	self.status = getglobal(name .. "Status");
-	self.icon = getglobal(name .. "Icon");
-	self.shield = getglobal(name .. "Shield");
+	self.status = _G[name .. "Status"];
+	self.icon = _G[name .. "Icon"];
+	self.shield = _G[name .. "Shield"];
 	
 	self:SetBackdropBorderColor(ACHIEVEMENTUI_REDBORDER_R, ACHIEVEMENTUI_REDBORDER_G, ACHIEVEMENTUI_REDBORDER_B, ACHIEVEMENTUI_REDBORDER_A);
 	self.Saturate = AchievementComparisonFriendButton_Saturate;
@@ -2785,14 +2876,14 @@ ACHIEVEMENT_TEXTURES_TO_LOAD = {
 
 function AchievementFrame_ClearTextures()
 	for k, v in pairs(ACHIEVEMENT_TEXTURES_TO_LOAD) do
-		getglobal(v.name):SetTexture(nil);
+		_G[v.name]:SetTexture(nil);
 	end
 end
 
 function AchievementFrame_LoadTextures()
 	for k, v in pairs(ACHIEVEMENT_TEXTURES_TO_LOAD) do
 		if ( v.file ) then
-			getglobal(v.name):SetTexture(v.file);
+			_G[v.name]:SetTexture(v.file);
 		end
 	end
 end

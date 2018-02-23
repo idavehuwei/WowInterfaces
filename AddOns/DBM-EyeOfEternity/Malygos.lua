@@ -1,13 +1,8 @@
-local mod = DBM:NewMod("Malygos", "DBM-EyeOfEternity")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Malygos", "DBM-EyeOfEternity")
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 458 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 3726 $"):sub(12, -3))
 mod:SetCreatureID(28859)
-mod:SetZone()
-
-mod:SetModelScale(0.3)
---mod:SetModelMoveSpeed(3.0)
-mod:SetModelOffset(0, -0.95, 0)
 
 mod:RegisterCombat("yell", L.YellPull)
 
@@ -18,21 +13,21 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warnSpark			= mod:NewAnnounce("WarningSpark", 1, 59381)
-local warnVortex		= mod:NewAnnounce("WarningVortex", 3, 56105)
-local warnBreathInc		= mod:NewAnnounce("WarningBreathSoon", 3, 60071)
-local warnBreath		= mod:NewAnnounce("WarningBreath", 4, 60071)
-local warnSurge			= mod:NewAnnounce("WarningSurge", 2, 60936)
-local warnVortexSoon	= mod:NewAnnounce("WarningVortexSoon", 4, 56105)
+local warnSpark			= mod:NewAnnounce("WarningSpark", 2, 59381)
+local warnVortex		= mod:NewSpellAnnounce(56105, 3)
+local warnVortexSoon	= mod:NewSoonAnnounce(56105, 2)
+local warnBreathInc		= mod:NewAnnounce("WarningBreathSoon", 3, 60072)
+local warnBreath		= mod:NewAnnounce("WarningBreath", 4, 60072)
+local warnSurge			= mod:NewTargetAnnounce(60936, 3)
 
-local timerSpark	= mod:NewTimer(30, "TimerSpark", 59381)
-local timerVortex	= mod:NewTimer(11, "TimerVortex", 56105)
-local timerBreath	= mod:NewTimer(59, "TimerBreath", 60071)
-local timerVortexCD	= mod:NewTimer(60, "TimerVortexCD", 56105)
+local specWarnSurge		= mod:NewSpecialWarningYou(60936)
 
-local specWarnSurge = mod:NewSpecialWarning("WarningSurgeYou")
-
-local enrageTimer	= mod:NewEnrageTimer(615)
+local enrageTimer		= mod:NewBerserkTimer(615)
+local timerSpark		= mod:NewTimer(30, "TimerSpark", 59381)
+local timerVortex		= mod:NewCastTimer(11, 56105)
+local timerVortexCD		= mod:NewNextTimer(60, 56105)
+local timerBreath		= mod:NewTimer(59, "TimerBreath", 60072)
+local timerAchieve      = mod:NewAchievementTimer(360, 1875, "TimerSpeedKill")
 
 local guids = {}
 local surgeTargets = {}
@@ -45,19 +40,20 @@ end
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
+	timerAchieve:Start(-delay)
 	table.wipe(guids)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg == L.EmoteSpark then
+	if msg == L.EmoteSpark or msg:find(L.EmoteSpark) then
 		self:SendSync("Spark")
-	elseif msg == L.EmoteBreath then
+	elseif msg == L.EmoteBreath or msg:find(L.EmoteBreath) then
 		self:SendSync("Breath")
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 56105 then
+	if args:IsSpellID(56105) then
 		timerVortexCD:Start()
 		warnVortexSoon:Schedule(54)
 		warnVortex:Show()
@@ -71,7 +67,7 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg:sub(0, L.YellPhase2:len()) == L.YellPhase2 then
 		self:SendSync("Phase2")
-	elseif msg == L.YellBreath then
+	elseif msg == L.YellBreath or msg:find(L.YellBreath) then
 		self:SendSync("BreathSoon")
 	elseif msg:sub(0, L.YellPhase3:len()) == L.YellPhase3 then
 		self:SendSync("Phase3")
@@ -84,7 +80,7 @@ local function announceTargets(self)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 60936 or args.spellId == 57407 then
+	if args:IsSpellID(60936, 57407) then
 		local target = guids[args.destGUID or 0]
 		if target then
 			surgeTargets[#surgeTargets + 1] = target

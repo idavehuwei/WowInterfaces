@@ -13,7 +13,7 @@ TipTacDropDowns.FontFlags = {
 TipTacDropDowns.AnchorType = {
 	[TTDD_AnchorType_Normal] = "normal",
 	[TTDD_AnchorType_Mouse] = "mouse",
-	[TTDD_AnchorType_ParentAnchor] = "parent",
+	[TTDD_AnchorType_Parent] = "parent",
 };
 
 TipTacDropDowns.AnchorPos = {
@@ -30,9 +30,9 @@ TipTacDropDowns.AnchorPos = {
 
 TipTacDropDowns.BarTextFormat = {
 	[TTDD_BarText_None] = "none",
-	[TTDD_BarText_Percent] = "percent",
+	[TTDD_BarText_Percentage] = "percent",
 	[TTDD_BarText_Values] = "value",
-	[TTDD_BarText_Auto] = "auto",
+	[TTDD_BarText_Auto_Values] = "auto",
 	[TTDD_BarText_Deficit] = "deficit",
 };
 
@@ -60,23 +60,20 @@ end;
 
 local LibSharedMediaSubstitute = not LSM and {
 	["font"] = {
-		["Friz Quadrata TT"] = "Fonts\\FRIZQT__.TTF",
-		["Arial Narrow"] = "Fonts\\ARIALN.TTF",
-		["Skurri"] = "Fonts\\SKURRI.TTF",
-		["Morpheus"] = "Fonts\\MORPHEUS.TTF",
+TTDD_Font
 	},
 	["background"] = {
-		["Blizzard Tooltip"] = "Interface\\Tooltips\\UI-Tooltip-Background",
-		["Solid"] = "Interface\\Buttons\\WHITE8X8",
+		[TTDD_Blizzard_Tooltip] = "Interface\\Tooltips\\UI-Tooltip-Background",
+		[TTDD_Solid] = "Interface\\Buttons\\WHITE8X8",
 	},
 	["border"] = {
-		["None"] = "Interface\\None",
-		["Blizzard Dialog"]  = "Interface\\DialogFrame\\UI-DialogBox-Border",
-		["Blizzard Tooltip"] = "Interface\\Tooltips\\UI-Tooltip-Border",
-		["Solid"] = "Interface\\Buttons\\WHITE8X8",
+		[TTDD_None] = "Interface\\None",
+		[TTDD_Dialog]  = "Interface\\DialogFrame\\UI-DialogBox-Border",
+		[TTDD_Tooltip] = "Interface\\Tooltips\\UI-Tooltip-Border",
+		[TTDD_Solid] = "Interface\\Buttons\\WHITE8X8",
 	},
 	["statusbar"] = {
-		["Blizzard StatusBar"] = "Interface\\TargetingFrame\\UI-StatusBar",
+		[TTDD_StatusBar] = "Interface\\TargetingFrame\\UI-StatusBar",
 	},
 } or nil;
 
@@ -107,7 +104,7 @@ end
 
 local layout_presets = {
 	-- TipTac Layout
-	[TTDD_Layout_TTNewStyle] = {
+	[TTDD_Layout_NewStyle] = {
 		showTarget = "last",
 		targetYouText = TT_TargetYOU,
 
@@ -154,7 +151,7 @@ local layout_presets = {
 		powerBar = false,
 	},
 	-- TipTac Layout
-	[TTDD_Layout_Default] = {
+	[TTDD_Layout_OldStyle] = {
 		showTarget = "second",
 		targetYouText = TT_TargetYOU,
 
@@ -197,7 +194,7 @@ local layout_presets = {
 	-- TipBuddy Layout
 	["TipBuddy"] = {
 		showTarget = "first",
-		targetYouText = TT_TargetYOU,
+		targetYouText = TT_TargetYOU1,
 
 		tipBackdropBG = "Interface\\Tooltips\\UI-Tooltip-Background",
 		tipBackdropEdge = "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -262,7 +259,7 @@ local layout_presets = {
 	-- Solid Border Layout
 	["Solid Border"] = {
 		showTarget = "last",
-		targetYouText = TT_TargetYOU,
+		targetYouText = TT_TargetYOU2,
 
 		tipBackdropBG = "Interface\\Buttons\\WHITE8X8",
 		tipBackdropEdge = "Interface\\Buttons\\WHITE8X8",
@@ -276,64 +273,6 @@ local layout_presets = {
 		colorNameByClass = false,
 		classColoredBorder = true,
 	},
-	["AshType(Like zTip)"] = {
-		anchorWorldTipType = "mouse",
-		anchorWorldUnitType = "mouse",
-		mouseOffsetX = 35,
-		mouseOffsetY = -25,
-		anchorWorldUnitPoint = "TOPLEFT",
-		anchorWorldTipPoint = "BOTTOMLEFT",
-		iconAnchor = "BOTTOMLEFT",
-		iconRaid = true,
-		iconFaction = true,
-		iconCombat = true,
-		iconSize = 20,
-		
-		showTarget = "last",
-		targetYouText = TT_TargetYOU,
-
-		tipBackdropBG = "Interface\\Buttons\\WHITE8X8",
-		tipBackdropEdge = "Interface\\Tooltips\\UI-Tooltip-Border",
-		backdropEdgeSize = 14,
-		backdropInsets = 2.5,
-		tipColor = { 0.1, 0.1, 0.2, 1.0 },
-		tipBorderColor = { 0.3, 0.3, 0.4, 1.0 },
-		gradientTip = true,
-		gradientColor = { 0.8, 0.8, 0.8, 0.2 },
-
-		reactColoredBackdrop = false,
-
-		colSameGuild = "|cffff32ff",
-		colRace = "|cffffffff",
-		colLevel = "|cffc0c0c0",
-
-		colorNameByClass = false,
-		classColoredBorder = false,
-
-		barFontFace = "Fonts\\ARIALN.TTF",
-		barFontSize = 10,
-		barFontFlags = "OUTLINE",
-		barHeight = 6,
-
-		classification_normal = "%s ",
-		classification_elite = TT_Elite,
-		classification_worldboss = TT_WorldBoss,
-		classification_rare = TT_Rare,
-		classification_rareelite = TT_RareElite,
-
-		overrideFade = true,
-		preFadeTime = 0.1,
-		fadeTime = 0.1,
-		hideWorldTips = true,
-
-		hideDefaultBar = true,
-		healthBar = true,
-		healthBarClassColor = true,
-		healthBarText = "percent",
-		healthBarColor = { 0.3, 0.9, 0.3, 1 },
-		manaBar = false,
-		powerBar = false,
-	},
 };
 
 local function LoadLayout_SelectValue(dropDown,entry,index)
@@ -341,12 +280,12 @@ local function LoadLayout_SelectValue(dropDown,entry,index)
 		cfg[name] = value;
 	end
 	TipTac:ApplySettings();
-	dropDown.label:SetText(TTOD_Layouttext_LoadedText);
+	dropDown.label:SetText(TT_Layout_Loaded);
 end
 
 local function DeleteLayout_SelectValue(dropDown,entry,index)
 	layout_presets[entry.value] = nil;
-	dropDown.label:SetText(TTOD_Layouttext_LayoutDeleted);
+	dropDown.label:SetText(TT_Layout_Deleted);
 end
 
 function TipTacDropDowns.LoadLayout_Init(dropDown,list)
@@ -356,7 +295,7 @@ function TipTacDropDowns.LoadLayout_Init(dropDown,list)
 		tbl = list[#list + 1];
 		tbl.text = name; tbl.value = name;
 	end
-	dropDown.label:SetText(TTOD_Layouttext_PickLayout);
+	dropDown.label:SetText(TT_Pick_Layout);
 end
 
 function TipTacDropDowns.DeleteLayout_Init(dropDown,list)
@@ -366,5 +305,5 @@ function TipTacDropDowns.DeleteLayout_Init(dropDown,list)
 		tbl = list[#list + 1];
 		tbl.text = name; tbl.value = name;
 	end
-	dropDown.label:SetText(TTOD_Layouttext_DeleteLayout);
+	dropDown.label:SetText(TT_Delete_Layout);
 end

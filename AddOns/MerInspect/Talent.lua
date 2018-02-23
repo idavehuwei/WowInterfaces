@@ -1,4 +1,4 @@
-
+if GetLocale()~='zhCN' then return end
 local M = MerInspect;
 
 function M:ScanUnitTalent(unit, class, race, level, inspect)
@@ -86,12 +86,14 @@ function M:INSPECT_TALENT_READY()
 		end
 		race = strupper(race);
 
-		self:UpdateTalentFrame(unit);	
-		self:UpdateMainFrame(unit, class, race, level, true);
+		self:UpdateTalentFrame();	
+	--	self:UpdateMainFrame(unit, class, race, level, true);
 	end
 end
  
-function M:UpdateTalentFrame(unit)
+function M:UpdateTalentFrame()
+	
+
 	local name, iconTexture, point, point1, point2, point3
 	point1 = select(3, GetTalentTabInfo(1,true,nil,GetActiveTalentGroup(true)));
 	point2 = select(3, GetTalentTabInfo(2,true,nil,GetActiveTalentGroup(true)));

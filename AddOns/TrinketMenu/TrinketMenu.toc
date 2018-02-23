@@ -1,9 +1,11 @@
-## Interface: 30100
-## Title: TrinketMenu
-## Title-zhCN: [辅助] 饰品管理 TrinketMenu
+﻿## Interface: 30300
+## Title: Trinket Menu
+## Title-zhCN: [大脚][集]饰品管理
+## Title-zhTW: [大腳][集]飾品管理
+## Notes: |cffbc8f8fAddOn to manage trinkets.|r
+## Notes-zhCN: |cff00ff00TrinketMenu|r                                             |cffbc8f8f方便地管理饰品。|r
+## Notes-zhTW: |cff00ff00TrinketMenu|r                                             |cffbc8f8f方便地管理飾品。|r
 ## Author: Gello
-## Notes: AddOn to manage trinkets
-## Notes-zhCN: 方便地管理饰品。
 ## SavedVariables: TrinketMenuOptions
 ## SavedVariablesPerCharacter: TrinketMenuPerOptions, TrinketMenuQueue
 ## LoadOnDemand: 1

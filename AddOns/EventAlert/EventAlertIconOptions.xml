@@ -9,7 +9,7 @@
         </Size>
 
         <Anchors>
-            <Anchor point="LEFT" relativepoint="RIGHT"/>
+			<Anchor point="LEFT" relativepoint="RIGHT"/>
         </Anchors>
 
         <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
@@ -41,7 +41,7 @@
                     </Anchors>
                 </Texture>
 
-                <FontString inherits="GameFontNormal" text="EA_POSITION_OPTION">
+                <FontString inherits="GameFontNormal" text="EA_ICON_POSITION_OPTION">
                     <Anchors>
                         <Anchor point="TOP" relativeTo="EA_Icon_Options_Frame_Header">
                             <Offset>
@@ -57,7 +57,7 @@
 
         <Frames>
 
-            <CheckButton name="$parent_LockFrame" inherits="OptionsCheckButtonTemplate">
+        	<CheckButton name="$parent_LockFrame" inherits="OptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT">
                         <Offset>
@@ -87,7 +87,7 @@
             </CheckButton>
 
 
-            <Slider name="$parent_IconSize" inherits="OptionsSliderTemplate">
+			<Slider name="$parent_IconSize" inherits="OptionsSliderTemplate">
                 <Anchors>
                     <Anchor point="TOP" relativePoint="CENTER">
                         <Offset>
@@ -98,10 +98,10 @@
                 <Scripts>
                     <OnLoad>
                         getglobal(this:GetName().."Text"):SetText(EA_ICON_SIZE);
-                        getglobal(this:GetName().."High"):SetText(EA_ICON_SIZE_BIG);
-                        getglobal(this:GetName().."Low"):SetText(EA_ICON_SIZE_SMALL);
+                        getglobal(this:GetName().."High"):SetText(EA_LARGE);
+                        getglobal(this:GetName().."Low"):SetText(EA_SMALL);
                         this:SetMinMaxValues(30.0,90.0);
-                        this:SetValueStep(5.0);
+                        this:SetValueStep(30.0);
                     </OnLoad>
                     <OnValueChanged>
                         EA_Config.IconSize = this:GetValue();
@@ -126,9 +126,10 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText(EA_HOR_SPACE);
-                        getglobal(this:GetName().."High"):SetText(EA_HOR_SPACE_MORE);
-                        getglobal(this:GetName().."Low"):SetText(EA_HOR_SPACE_LESS);
+
+                        getglobal(this:GetName().."Text"):SetText(EA_HORIZON_SPACING);
+                        getglobal(this:GetName().."High"):SetText(EA_MORE);
+                        getglobal(this:GetName().."Low"):SetText(EA_LESS);
                         this:SetMinMaxValues(-200.0,200.0);
                         this:SetValueStep(1.0);
                     </OnLoad>
@@ -155,9 +156,9 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText(EA_VER_SPACE);
-                        getglobal(this:GetName().."High"):SetText(EA_VER_SPACE_MORE);
-                        getglobal(this:GetName().."Low"):SetText(EA_VER_SPACE_LESS);
+                        getglobal(this:GetName().."Text"):SetText(EA_VERTICAL_SPACING);
+                        getglobal(this:GetName().."High"):SetText(EA_MORE);
+                        getglobal(this:GetName().."Low"):SetText(EA_LESS);
                         this:SetMinMaxValues(-200.0,200.0);
                         this:SetValueStep(1.0);
                     </OnLoad>
@@ -174,7 +175,7 @@
                 </Scripts>
             </Slider>
 
-            <Button name="$parent_ToggleAlertFrame" inherits="OptionsButtonTemplate" text="EA_TOOGLE_VISIBLE">
+            <Button name="$parent_ToggleAlertFrame" inherits="OptionsButtonTemplate" text="EA_TOGGLE_ALERT_FRAME">
                 <Anchors>
                     <Anchor point="CENTER" relativePoint="BOTTOM">
                         <Offset>
@@ -183,8 +184,8 @@
                     </Anchor>
                 </Anchors>
                 <Size>
-                    <AbsDimension x="175" y="21"/>
-                </Size>
+		            <AbsDimension x="175" y="21"/>
+        		</Size>
                 <Scripts>
                     <OnClick>
                         PlaySound("gsTitleOptionOK");
@@ -193,7 +194,7 @@
                 </Scripts>
             </Button>
 
-            <Button name="$parent_ResetAlertPosition" inherits="OptionsButtonTemplate" text="EA_RESET_POSITION">
+            <Button name="$parent_ResetAlertPosition" inherits="OptionsButtonTemplate" text="EA_RESET_FRAME_POS">
                 <Anchors>
                     <Anchor point="CENTER" relativeTo="$parent_ToggleAlertFrame" relativePoint="BOTTOM">
                         <Offset>
@@ -202,8 +203,8 @@
                     </Anchor>
                 </Anchors>
                 <Size>
-                    <AbsDimension x="150" y="21"/>
-                </Size>
+		            <AbsDimension x="150" y="21"/>
+        		</Size>
                 <Scripts>
                     <OnClick>
                         PlaySound("gsTitleOptionOK");
@@ -215,15 +216,15 @@
 
         <Scripts>
             <OnLoad>
-                this:RegisterForDrag("LeftButton");
+	            this:RegisterForDrag("LeftButton");
                 EA_Icon_Options_OnLoad();
             </OnLoad>
-            <OnMouseDown>
-                EA_Icon_Options_Frame_MouseDown(button);
-            </OnMouseDown>
-            <OnMouseUp>
-                EA_Icon_Options_Frame_MouseUp(button);
-            </OnMouseUp>
+        	<OnMouseDown>
+	        	EA_Icon_Options_Frame_MouseDown(button);
+	      	</OnMouseDown>
+	      	<OnMouseUp>
+	        	EA_Icon_Options_Frame_MouseUp(button);
+	      	</OnMouseUp>
         </Scripts>
 </Frame>
 

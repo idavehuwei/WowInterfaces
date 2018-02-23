@@ -1,8 +1,7 @@
 <!--
 
 	Atlas, a World of Warcraft instance map browser
-	Copyright 2005 - 2009 Dan Gilbert
-	Email me at loglow@gmail.com
+	Copyright 2005-2010 Dan Gilbert <dan.b.gilbert@gmail.com>
 
 	This file is part of Atlas.
 
@@ -138,23 +137,6 @@
 					</OnLoad>
 					<OnClick>
 						AtlasOptions_CtrlToggle();
-					</OnClick>
-				</Scripts>
-			</CheckButton>
-			<CheckButton name="$ParentCoords" inherits="InterfaceOptionsSmallCheckButtonTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset>
-							<AbsDimension x="15" y="-160"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						getglobal(this:GetName().."Text"):SetText(ATLAS_OPTIONS_COORDS);
-					</OnLoad>
-					<OnClick>
-						AtlasOptions_CoordsToggle();
 					</OnClick>
 				</Scripts>
 			</CheckButton>

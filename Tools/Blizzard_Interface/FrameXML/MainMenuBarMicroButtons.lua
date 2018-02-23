@@ -18,6 +18,7 @@ function MicroButtonTooltipText(text, action)
 end
 
 function UpdateMicroButtons()
+	local playerLevel = UnitLevel("player");
 	if ( CharacterFrame:IsShown() ) then
 		CharacterMicroButton:SetButtonState("PUSHED", 1);
 		CharacterMicroButton_SetPushed();
@@ -35,7 +36,12 @@ function UpdateMicroButtons()
 	if ( PlayerTalentFrame and PlayerTalentFrame:IsShown() ) then
 		TalentMicroButton:SetButtonState("PUSHED", 1);
 	else
-		TalentMicroButton:SetButtonState("NORMAL");
+		if ( playerLevel < TalentMicroButton.minLevel ) then
+			TalentMicroButton:Disable();
+		else
+			TalentMicroButton:Enable();
+			TalentMicroButton:SetButtonState("NORMAL");
+		end
 	end
 
 	if ( QuestLogFrame:IsShown() ) then
@@ -55,12 +61,17 @@ function UpdateMicroButtons()
 		MainMenuMicroButton_SetNormal();
 	end
 
-	if ( PVPParentFrame:IsShown() ) then
+	if ( PVPParentFrame:IsShown() and (not PVPFrame_IsJustBG())) then
 		PVPMicroButton:SetButtonState("PUSHED", 1);
 		PVPMicroButton_SetPushed();
 	else
-		PVPMicroButton:SetButtonState("NORMAL");
-		PVPMicroButton_SetNormal();
+		if ( playerLevel < PVPMicroButton.minLevel ) then
+			PVPMicroButton:Disable();
+		else
+			PVPMicroButton:Enable();
+			PVPMicroButton:SetButtonState("NORMAL");
+			PVPMicroButton_SetNormal();
+		end
 	end
 	
 	if ( FriendsFrame:IsShown() ) then
@@ -69,10 +80,15 @@ function UpdateMicroButtons()
 		SocialsMicroButton:SetButtonState("NORMAL");
 	end
 
-	if ( LFGParentFrame:IsShown() ) then
-		LFGMicroButton:SetButtonState("PUSHED", 1);
+	if ( LFDParentFrame:IsShown() ) then
+		LFDMicroButton:SetButtonState("PUSHED", 1);
 	else
-		LFGMicroButton:SetButtonState("NORMAL");
+		if ( playerLevel < LFDMicroButton.minLevel ) then
+			LFDMicroButton:Disable();
+		else
+			LFDMicroButton:Enable();
+			LFDMicroButton:SetButtonState("NORMAL");
+		end
 	end
 
 	if ( HelpFrame:IsShown() ) then
@@ -84,7 +100,12 @@ function UpdateMicroButtons()
 	if ( AchievementFrame and AchievementFrame:IsShown() ) then
 		AchievementMicroButton:SetButtonState("PUSHED", 1);
 	else
-		AchievementMicroButton:SetButtonState("NORMAL");
+		if ( HasCompletedAnyAchievement() and CanShowAchievementUI() ) then
+			AchievementMicroButton:Enable();
+			AchievementMicroButton:SetButtonState("NORMAL");
+		else
+			AchievementMicroButton:Disable();
+		end
 	end
 
 	-- Keyring microbutton
@@ -95,23 +116,21 @@ function UpdateMicroButtons()
 	end
 end
 
-function AchievementMicroButton_Update()
-	if ( not CanShowAchievementUI() ) then
-		AchievementMicroButton:Hide();
-		QuestLogMicroButton:SetPoint("BOTTOMLEFT", AchievementMicroButton, "BOTTOMLEFT", 0, 0);
+function AchievementMicroButton_OnEvent(self, event, ...)
+	if ( event == "UPDATE_BINDINGS" ) then
+		AchievementMicroButton.tooltipText = MicroButtonTooltipText(ACHIEVEMENT_BUTTON, "TOGGLEACHIEVEMENT");
 	else
-		AchievementMicroButton:Show();
-		QuestLogMicroButton:SetPoint("BOTTOMLEFT", AchievementMicroButton, "BOTTOMRIGHT", -3, 0);
+		UpdateMicroButtons();
 	end
 end
 
 function CharacterMicroButton_OnLoad(self)
-	SetPortraitTexture(MicroButtonPortrait, "player");
 	self:SetNormalTexture("Interface\\Buttons\\UI-MicroButtonCharacter-Up");
 	self:SetPushedTexture("Interface\\Buttons\\UI-MicroButtonCharacter-Down");
 	self:SetHighlightTexture("Interface\\Buttons\\UI-MicroButton-Hilight");
 	self:RegisterEvent("UNIT_PORTRAIT_UPDATE");
 	self:RegisterEvent("UPDATE_BINDINGS");
+	self:RegisterEvent("PLAYER_ENTERING_WORLD");
 	self.tooltipText = MicroButtonTooltipText(CHARACTER_BUTTON, "TOGGLECHARACTER0");
 	self.newbieText = NEWBIE_TOOLTIP_CHARACTER;
 end
@@ -123,6 +142,8 @@ function CharacterMicroButton_OnEvent(self, event, ...)
 			SetPortraitTexture(MicroButtonPortrait, unit);
 		end
 		return;
+	elseif ( event == "PLAYER_ENTERING_WORLD" ) then
+		SetPortraitTexture(MicroButtonPortrait, "player");
 	elseif ( event == "UPDATE_BINDINGS" ) then
 		self.tooltipText = MicroButtonTooltipText(CHARACTER_BUTTON, "TOGGLECHARACTER0");
 	end
@@ -151,23 +172,14 @@ end
 --Talent button specific functions
 function TalentMicroButton_OnEvent(self, event, ...)
 	if ( event == "PLAYER_LEVEL_UP" ) then
-		UpdateTalentButton();
-		if ( not CharacterFrame:IsShown() ) then
+		local level = ...;
+		UpdateMicroButtons();
+		if ( not CharacterFrame:IsShown() and level >= SHOW_TALENT_LEVEL) then
 			SetButtonPulse(self, 60, 1);
 		end
 	elseif ( event == "UNIT_LEVEL" or event == "PLAYER_ENTERING_WORLD" ) then
-		UpdateTalentButton();
+		UpdateMicroButtons();
 	elseif ( event == "UPDATE_BINDINGS" ) then
 		self.tooltipText =  MicroButtonTooltipText(TALENTS_BUTTON, "TOGGLETALENTS");
-	end
-end
-
-function UpdateTalentButton()
-	if ( UnitLevel("player") < 10 ) then
-		TalentMicroButton:Hide();
-		AchievementMicroButton:SetPoint("BOTTOMLEFT", "TalentMicroButton", "BOTTOMLEFT", 0, 0);
-	else	
-		TalentMicroButton:Show();
-		AchievementMicroButton:SetPoint("BOTTOMLEFT", "TalentMicroButton", "BOTTOMRIGHT", -2, 0);
 	end
 end

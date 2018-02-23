@@ -1,8 +1,7 @@
 --[[
 
 	Atlas, a World of Warcraft instance map browser
-	Copyright 2005, 2008 Dan Gilbert
-	Email me at loglow@gmail.com
+	Copyright 2005-2010 Dan Gilbert <dan.b.gilbert@gmail.com>
 
 	This file is part of Atlas.
 
@@ -35,47 +34,28 @@ if ( GetLocale() == "esES" ) then
 AtlasORLocale = {
 
 	["Ancient Skull Pile"] = "Montón de cráneos antiguos";
-	["Ashenvale"] = "Vallefresno";
-	["Azshara"] = "Azshara";
 	["Azuregos"] = "Azuregos";
-	["Blackwind Landing"] = "Blackwind Landing"; --FALTA
-	["Blackwind Valley"] = "Valle Vientonegro";
-	["Blasted Lands"] = "Las Tierras Devastadas";
-	["Bough Shadow"] = "Talloumbrío";
 	["Darkscreecher Akkarai"] = "Estridador oscuro Akkarai";
 	["Doom Lord Kazzak"] = "Señor Apocalíptico Kazzak";
 	["Doomwalker"] = "Caminante del Destino";
 	["Dragons of Nightmare"] = "Dragones de la Pesadilla";
-	["Dream Bough"] = "Rama Oniria";
 	["Dreamroarer"] = "Bramasueños";
 	["Dreamstalker"] = "Acechasueños";
 	["Dreamtracker"] = "Rastreasueños";
-	["Duskwood"] = "Bosque del Ocaso";
 	["Emeriss"] = "Emeriss";
-	["Feralas"] = "Feralas";
-	["Forge Camp: Mageddon"] = "Campamento Forja: Mageddon";
-	["Forge Camp: Rage"] = "Campamento Forja: Ira";
 	["Gezzarak the Huntress"] = "Gezzarak la Cazadora";
-	["Graveyard"] = "Cementerio";
 	["Grella <Skyguard Quartermaster>"] = "Grella <Intendente de la Guardia del cielo>";
 	["Hazzik"] = "Hazzik";
 	["Hazzik's Package"] = "Paquete de Hazzik";
-	["Hellfire Peninsula"] = "Península de Fuego Infernal";
-	["Highlord Kruul"] = "Alto Señor Kruul";
-	["Invasion Point: Annihilator"] = "Punto de invasión: Aniquilador";
 	["Karrog"] = "Karrog";
 	["Lethlas"] = "Lethlas";
 	["Lethon"] = "Lethon";
-	["Nethergarde Keep"] = "Castillo de Nethergarde";
 	["Outdoor Raid Encounters"] = "Encuentros de banda";
 	["Phantim"] = "Fantím";
 	["Random"] = "Aleatorio";
 	["Rothos"] = "Rothos";
 	["Sahaak <Keeper of Scrolls>"] = "Sahaak <Vigilante de pergaminos>";
-	["Seradane"] = "Seradane";
 	["Severin <Skyguard Medic>"] = "Severin <Médico de la Guardia del cielo>";
-	["Shadowmoon Valley"] = "Valle Sombraluna";
-	["Skettis"] = "Skettis";
 	["Skull Pile"] = "Montón de cráneos";
 	["Sky Commander Adaris"] = "Comandante del cielo Adaris";
 	["Sky Sergeant Doryn"] = "Sargento del cielo Doryn";
@@ -87,11 +67,7 @@ AtlasORLocale = {
 	["Talonpriest Skizzik"] = "Sacerdote de la garra Skizzik";
 	["Talonpriest Zellek"] = "Sacerdote de la garra Zellek";
 	["Terokk"] = "Terokk";
-	["Terokkar Forest"] = "Bosque de Terokkar";
 	["The Dragons"] = "Los Dragones";
-	["The Hinterlands"] = "Tierras del Interior";
-	["Thrallmar"] = "Thrallmar";
-	["Twilight Grove"] = "Arboleda del Crepúsculo";
 	["Vakkiz the Windrager"] = "Vakkiz el Furibundo del Viento";
 	["Various"] = "Varios";
 	["Ysondre"] = "Ysondre";

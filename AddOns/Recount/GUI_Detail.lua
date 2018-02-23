@@ -4,7 +4,7 @@ local L = AceLocale:GetLocale( "Recount" )
 local me={}
 local Epsilon=0.000000000000000001
 
-local revision = tonumber(string.sub("$Revision: 1039 $", 12, -3))
+local revision = tonumber(string.sub("$Revision: 1091 $", 12, -3))
 local Recount = _G.Recount
 if Recount.Version < revision then Recount.Version = revision end
 
@@ -676,8 +676,10 @@ local SummaryDamageTypes={
 	"Arcane",
 	"Fire",
 	"Frost",
+	"Frostfire",
 	"Holy",
 	"Nature",
+	"Naturefire",
 	"Shadow",
 }
 
@@ -773,8 +775,10 @@ local SummaryActive={
 	Arcane=false,
 	Fire=false,
 	Frost=false,
+	Frostfire=false,
 	Holy=false,
 	Nature=false,
+	Naturefire=false,
 	Shadow=false,
 }
 
@@ -1086,14 +1090,20 @@ function me:CreateSummaryMode()
 	theFrame.Frost=me:CreateSummaryColumn(L["Frost"],{0.5,0.5,1.0})
 	theFrame.Frost:SetPoint("TOPLEFT",theFrame.Fire,"TOPRIGHT",2,0)
 
+	theFrame.Frostfire=me:CreateSummaryColumn(L["Frostfire"],{1.0,0.647,0.0})
+	theFrame.Frostfire:SetPoint("TOPLEFT",theFrame.Frost,"TOPRIGHT",2,0)
+
 	theFrame.Holy=me:CreateSummaryColumn(L["Holy"],{1.0,1.0,0.5})
-	theFrame.Holy:SetPoint("TOPLEFT",theFrame.Frost,"TOPRIGHT",2,0)
+	theFrame.Holy:SetPoint("TOPLEFT",theFrame.Frostfire,"TOPRIGHT",2,0)
 
 	theFrame.Nature=me:CreateSummaryColumn(L["Nature"],{0.5,1.0,0.5})
 	theFrame.Nature:SetPoint("TOPLEFT",theFrame.Holy,"TOPRIGHT",2,0)
 
+	theFrame.Naturefire=me:CreateSummaryColumn(L["Naturefire"],{1.0,1.0,0.0})
+	theFrame.Naturefire:SetPoint("TOPLEFT",theFrame.Nature,"TOPRIGHT",2,0)
+
 	theFrame.Shadow=me:CreateSummaryColumn(L["Shadow"],{0.5,0.1,0.7})
-	theFrame.Shadow:SetPoint("TOPLEFT",theFrame.Nature,"TOPRIGHT",2,0)
+	theFrame.Shadow:SetPoint("TOPLEFT",theFrame.Naturefire,"TOPRIGHT",2,0)
 
 	--Damage Data
 	theFrame.Damage=CreateFrame("Frame",nil,theFrame)

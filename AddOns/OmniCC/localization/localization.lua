@@ -1,9 +1,17 @@
 --[[
-	OmniCC Localization File
-		English (default language)
+	OmniCC localization - English
 --]]
 
-OMNICC_LOCALS = {}
+OMNICC_LOCALS = {} --should be done in the US locale file, only
+
 local L = OMNICC_LOCALS
-L.UpgradeIncompatible = "Upgrading from an incompatible version. Default settings loaded"
+--[[
+if not GetLocale() == 'enUS' then
+	return
+end
+--]]
+
 L.Updated = "Updated to v%s"
+L.None = NONE
+L.Pulse = "Pulse"
+L.Shine = "Shine"

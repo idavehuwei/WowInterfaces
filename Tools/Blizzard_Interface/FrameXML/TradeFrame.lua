@@ -1,5 +1,6 @@
 MAX_TRADE_ITEMS = 7;
 MAX_TRADABLE_ITEMS = 6;
+TRADE_ENCHANT_SLOT = MAX_TRADE_ITEMS;
 
 function TradeFrame_OnLoad(self)
 	self:RegisterEvent("TRADE_CLOSED");
@@ -8,10 +9,12 @@ function TradeFrame_OnLoad(self)
 	self:RegisterEvent("TRADE_TARGET_ITEM_CHANGED");
 	self:RegisterEvent("TRADE_PLAYER_ITEM_CHANGED");
 	self:RegisterEvent("TRADE_ACCEPT_UPDATE");
+	self:RegisterEvent("TRADE_POTENTIAL_BIND_ENCHANT");
 end
 
 function TradeFrame_OnShow(self)
 	self.acceptState = 0;
+	TradeFrameTradeButton.enabled = TradeFrameTradeButton:IsEnabled();
 	TradeFrame_UpdateMoney();
 end
 
@@ -24,16 +27,25 @@ function TradeFrame_OnEvent(self, event, ...)
 			return;
 		end
 
-		TradeFrameTradeButton:Enable();
+		TradeFrameTradeButton_Enable();
 		TradeFrame_Update();
 	elseif ( event == "TRADE_CLOSED" ) then
 		HideUIPanel(self);
+		StaticPopup_Hide("TRADE_POTENTIAL_BIND_ENCHANT");
 	elseif ( event == "TRADE_TARGET_ITEM_CHANGED" ) then
 		TradeFrame_UpdateTargetItem(arg1);
 	elseif ( event == "TRADE_PLAYER_ITEM_CHANGED" ) then
 		TradeFrame_UpdatePlayerItem(arg1);
 	elseif ( event == "TRADE_ACCEPT_UPDATE" ) then
 		TradeFrame_SetAcceptState(arg1, arg2);
+	elseif ( event == "TRADE_POTENTIAL_BIND_ENCHANT" ) then
+		-- leaving this commented here so people know how to interpret arg1
+		--local canBecomeBound = arg1;
+		if ( arg1 ) then
+			StaticPopup_Show("TRADE_POTENTIAL_BIND_ENCHANT");
+		else
+			StaticPopup_Hide("TRADE_POTENTIAL_BIND_ENCHANT");
+		end
 	end
 end
 
@@ -54,10 +66,10 @@ end
 
 function TradeFrame_UpdatePlayerItem(id)
 	local name, texture, numItems, isUsable, enchantment = GetTradePlayerItemInfo(id);
-	local buttonText = getglobal("TradePlayerItem"..id.."Name");
+	local buttonText = _G["TradePlayerItem"..id.."Name"];
 	
 	-- See if its the enchant slot
-	if ( id == 7 ) then
+	if ( id == TRADE_ENCHANT_SLOT ) then
 		if ( name ) then
 			if ( enchantment ) then
 				buttonText:SetText(GREEN_FONT_COLOR_CODE..enchantment..FONT_COLOR_CODE_CLOSE);		
@@ -67,11 +79,10 @@ function TradeFrame_UpdatePlayerItem(id)
 		else
 			buttonText:SetText("");
 		end
-		
 	else
 		buttonText:SetText(name);
 	end
-	local tradeItemButton = getglobal("TradePlayerItem"..id.."ItemButton");
+	local tradeItemButton = _G["TradePlayerItem"..id.."ItemButton"];
 	SetItemButtonTexture(tradeItemButton, texture);
 	SetItemButtonCount(tradeItemButton, numItems);
 	if ( texture ) then
@@ -83,9 +94,9 @@ end
 
 function TradeFrame_UpdateTargetItem(id)
 	local name, texture, numItems, quality, isUsable, enchantment = GetTradeTargetItemInfo(id);
-	local buttonText = getglobal("TradeRecipientItem"..id.."Name");
+	local buttonText = _G["TradeRecipientItem"..id.."Name"];
 	-- See if its the enchant slot
-	if ( id == 7 ) then
+	if ( id == TRADE_ENCHANT_SLOT ) then
 		if ( name ) then
 			if ( enchantment ) then
 				buttonText:SetText(GREEN_FONT_COLOR_CODE..enchantment..FONT_COLOR_CODE_CLOSE);		
@@ -99,8 +110,8 @@ function TradeFrame_UpdateTargetItem(id)
 	else
 		buttonText:SetText(name);
 	end
-	local tradeItemButton = getglobal("TradeRecipientItem"..id.."ItemButton");
-	local tradeItem = getglobal("TradeRecipientItem"..id);
+	local tradeItemButton = _G["TradeRecipientItem"..id.."ItemButton"];
+	local tradeItem = _G["TradeRecipientItem"..id];
 	SetItemButtonTexture(tradeItemButton, texture);
 	SetItemButtonCount(tradeItemButton, numItems);
 	if ( isUsable or not name ) then
@@ -119,11 +130,11 @@ function TradeFrame_SetAcceptState(playerState, targetState)
 	if ( playerState == 1 ) then
 		TradeHighlightPlayer:Show();
 		TradeHighlightPlayerEnchant:Show();
-		TradeFrameTradeButton:Disable();
+		TradeFrameTradeButton_Disable();
 	else
 		TradeHighlightPlayer:Hide();
 		TradeHighlightPlayerEnchant:Hide();
-		TradeFrameTradeButton:Enable();
+		TradeFrameTradeButton_Enable();
 	end
 	if ( targetState == 1 ) then
 		TradeHighlightRecipient:Show();
@@ -166,10 +177,10 @@ function TradeFrame_UpdateMoney()
 		copper = GetPlayerTradeMoney();
 		MoneyInputFrame_SetCopper(TradePlayerInputMoneyFrame, copper);
 		--MoneyInputFrame_SetTextColor(TradePlayerInputMoneyFrame, RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b);
-		TradeFrameTradeButton:Disable();
+		TradeFrameTradeButton_Disable();
 	else
 		--MoneyInputFrame_SetTextColor(TradePlayerInputMoneyFrame, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
-		TradeFrameTradeButton:Enable();
+		TradeFrameTradeButton_Enable();
 	end
 	SetTradeMoney(copper);
 end
@@ -177,10 +188,38 @@ end
 function TradeFrame_GetAvailableSlot()
 	local tradeItemButton;
 	for i=1, MAX_TRADABLE_ITEMS do
-		tradeItemButton = getglobal("TradePlayerItem"..i.."ItemButton");
+		tradeItemButton = _G["TradePlayerItem"..i.."ItemButton"];
 		if ( not tradeItemButton.hasItem ) then
 			return i;
 		end
 	end
 	return nil;
 end
+
+function TradeFrameTradeButton_Enable()
+	local self = TradeFrameTradeButton;
+	if ( StaticPopup_Visible("TRADE_POTENTIAL_BIND_ENCHANT") ) then
+		self.enabled = true;
+	else
+		self:Enable();
+	end
+end
+
+function TradeFrameTradeButton_Disable()
+	local self = TradeFrameTradeButton;
+	if ( StaticPopup_Visible("TRADE_POTENTIAL_BIND_ENCHANT") ) then
+		self.enabled = false;
+	else
+		self:Disable();
+	end
+end
+
+function TradeFrameTradeButton_SetToEnabledState()
+	local self = TradeFrameTradeButton;
+	if ( self.enabled ) then
+		self:Enable();
+	else
+		self:Disable();
+	end
+end
+

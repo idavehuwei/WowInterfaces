@@ -1,21 +1,24 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-E:\PROGRA~1\Altova\XMLSpy2006\UI.xsd">
-	<Script file="locale.lua"/>
-	<Script file="BFMData.tw.lua"/>
-	<Script file="BFMData.cn.lua"/>
-	<Script file="BigFootMark.lua"/>
-	<Button name="MapMarkTemplate" hidden="true" virtual="true">
+C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+<Script file = "locale.lua"/>
+<Script file = "BFMData.tw.lua"/>
+<Script file = "BFMData.cn.lua"/>
+<Script file = "BigFootMark.lua"/>
+
+
+	<Button name="MapMarkTemplate" hidden = "true" virtual ="true">
 		<Size>
-			<AbsDimension x="20" y="20"/>
+			<AbsDimension x="30" y="30"/>
 		</Size>
 		<Anchors>
 			<Anchor point="CENTER"/>
 		</Anchors>
 		<Layers>
+		
 			<Layer level="ARTWORK">
-				<Texture name="$parentIcon" file="Interface\AddOns\icon\BigFootMark\NodeNormal">
+				<Texture name="$parentIcon" file="Interface\AddOns\MapPlus\NodeNormal">
 					<Size>
-						<AbsDimension x="20" y="20"/>
+						<AbsDimension x="25" y="25"/>
 					</Size>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -28,38 +31,40 @@ E:\PROGRA~1\Altova\XMLSpy2006\UI.xsd">
 				self:SetFrameLevel(self:GetFrameLevel() + 4);
 			</OnLoad>
 			<OnEnter>
-				MapMarkPoint_OnEnter(self);
+				MapMarkPoint_OnEnter(self);			
 			</OnEnter>
 			<OnLeave>
 				MapMarkPoint_OnLeave(self);
 			</OnLeave>
 		</Scripts>
-		<HighlightTexture alphaMode="ADD" file="Interface\AddOns\BigFootMark\icon\NodeHighlight"/>
+		<HighlightTexture alphaMode="ADD" file="Interface\AddOns\MapPlus\NodeHighlight"/>
+		
 	</Button>
-	<Frame name="MapPlusDDList" frameStrata="HIGH" inherits="UIDropDownMenuTemplate" parent="WorldMapDetailFrame" hidden="true">
+	
+	<Frame name = "MapPlusDDList" frameStrata="HIGH" inherits="UIDropDownMenuTemplate" parent= "WorldMapDetailFrame" hidden="true">
 		<Anchors>
 			<Anchor point="TOPRIGHT">
 				<Offset>
-					<AbsDimension x="-18" y="-3"/>
+					<AbsDimension x="20	" y="-3"/>
 				</Offset>
 			</Anchor>
 		</Anchors>
 		<Scripts>
 			<OnLoad>
 				self:SetFrameLevel(self:GetFrameLevel() + 4);
-				UIDropDownMenu_SetWidth(this,100);
-				UIDropDownMenu_SetButtonWidth(this,120);
+				UIDropDownMenu_SetWidth(self,100);
+				UIDropDownMenu_SetButtonWidth(self,120);
 			</OnLoad>
 		</Scripts>
 	</Frame>
-	<CheckButton name="MapMarkCheckButton" frameStrata="HIGH" parent="WorldMapDetailFrame" hidden="true">
+	<CheckButton name = "MapMarkCheckButton" frameStrata="HIGH" parent= "WorldMapDetailFrame" hidden="true">
 		<Size>
 			<AbsDimension x="22" y="22"/>
 		</Size>
 		<Anchors>
 			<Anchor point="TOPRIGHT">
 				<Offset>
-					<AbsDimension x="-154" y="-8"/>
+					<AbsDimension x="-116" y="-8"/>
 				</Offset>
 			</Anchor>
 		</Anchors>
@@ -102,14 +107,20 @@ E:\PROGRA~1\Altova\XMLSpy2006\UI.xsd">
 		<Scripts>
 			<OnLoad>
 				self:SetFrameLevel(self:GetFrameLevel() + 4);
-				self:SetChecked(1)
-				MapMarkToggleEnable(self:GetChecked())
 			</OnLoad>
+			<OnShow>
+				local checked = 	BigFootMarkDB.showMarks
+
+				self:SetChecked(checked)
+				MapMarkToggleEnable(self:GetChecked())
+			</OnShow>
 			<OnClick>
 				MapMarkToggleEnable(self:GetChecked())
+				BigFootMarkDB.showMarks = self:GetChecked()
 			</OnClick>
 		</Scripts>
 	</CheckButton>
+	
 	<GameTooltip name="BFMTooltip" frameStrata="HIGH" hidden="false" toplevel="true" parent="WorldMapFrame" inherits="GameTooltipTemplate">
 		<Scripts>
 			<OnLoad>

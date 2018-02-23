@@ -2,6 +2,18 @@ MAX_NUM_GLUE_DIALOG_BUTTONS = 3;
 
 GlueDialogTypes = { };
 
+GlueDialogTypes["SYSTEM_INCOMPATIBLE_SSE"] = {
+	text = SYSTEM_INCOMPATIBLE_SSE,
+	button1 = OKAY,
+	html = 1,
+	showAlert = 1,
+	escapeHides = true,
+	OnAccept = function ()
+	end,
+	OnCancel = function()
+	end,
+}
+
 GlueDialogTypes["CANCEL_RESET_SETTINGS"] = {
 	text = CANCEL_RESET_SETTINGS,
 	button1 = OKAY,
@@ -130,7 +142,7 @@ GlueDialogTypes["PARENTAL_CONTROL"] = {
 		StatusDialogClick();
 	end,
 	OnAccept = function()
-		LaunchURL(getglobal(GlueDialog.data));
+		LaunchURL(AUTH_NO_TIME_URL);
 	end,
 	OnCancel = function()
 		StatusDialogClick();
@@ -155,6 +167,18 @@ GlueDialogTypes["CANCEL"] = {
 		StatusDialogClick();
 	end,
 	OnCancel = function()
+	end,
+}
+
+GlueDialogTypes["QUEUED_WITH_FCM"] = {
+	text = "",
+	button1 = CANCEL,
+	button2 = QUEUE_FCM_BUTTON,
+	OnAccept = function()
+		StatusDialogClick();
+	end,
+	OnCancel = function()
+		LaunchURL(QUEUE_FCM_URL)
 	end,
 }
 
@@ -193,8 +217,27 @@ GlueDialogTypes["OKAY_HTML"] = {
 	end,
 }
 
-GlueDialogTypes["CONFIRM_PCC"] = {
-	text = CONFIRM_PCC,
+GlueDialogTypes["OKAY_HTML_EXIT"] = {
+	text = "",
+	button1 = OKAY,
+	button2 = EXIT_GAME,
+	html = 1,
+	OnShow = function()
+		if ( VirtualKeypadFrame:IsShown() ) then
+			VirtualKeypadFrame:Hide();
+			CancelLogin();
+		end
+	end,
+	OnAccept = function()
+		StatusDialogClick();
+	end,
+	OnCancel = function()
+		AccountLogin_Exit();
+	end,
+}
+
+GlueDialogTypes["CONFIRM_PAID_SERVICE"] = {
+	text = CONFIRM_PAID_SERVICE,
 	button1 = DONE,
 	button2 = CANCEL,
 	OnAccept = function()
@@ -209,7 +252,7 @@ GlueDialogTypes["OKAY_WITH_URL"] = {
 	button1 = HELP,
 	button2 = OKAY,
 	OnAccept = function()
-		LaunchURL(getglobal(GlueDialog.data));
+		LaunchURL(_G[GlueDialog.data]);
 	end,
 	OnCancel = function()
 		StatusDialogClick();
@@ -246,47 +289,6 @@ GlueDialogTypes["CONNECTION_HELP_HTML"] = {
 		ConnectionHelpFrame:Show();
 	end,
 	OnCancel = function()
-	end,
-}
-
-GlueDialogTypes["CINEMATICS_2"] = {
-	text = CINEMATICS,
-	button1 = WORLD_OF_WARCRAFT,
-	button2 = BURNING_CRUSADE,
-	displayVertical = true,
-	escapeHides = true,
-	hideSound = "igMainMenuOptionCheckBoxOff",
-
-	OnAccept = function()
-		MovieFrame.version = 1;
-		SetGlueScreen("movie");
-	end,
-	OnCancel = function()
-		MovieFrame.version = 2;
-		SetGlueScreen("movie");
-	end,
-}
-
-GlueDialogTypes["CINEMATICS_3"] = {
-	text = CINEMATICS,
-	button1 = WORLD_OF_WARCRAFT,
-	button2 = BURNING_CRUSADE,
-	button3 = WRATH_OF_THE_LICH_KING,
-	displayVertical = true,
-	escapeHides = true,
-	hideSound = "igMainMenuOptionCheckBoxOff",
-
-	OnAccept = function()
-		MovieFrame.version = 1;
-		SetGlueScreen("movie");
-	end,
-	OnCancel = function()
-		MovieFrame.version = 2;
-		SetGlueScreen("movie");
-	end,
-	OnAlt = function()
-		MovieFrame.version = 3;
-		SetGlueScreen("movie");
 	end,
 }
 
@@ -351,7 +353,7 @@ GlueDialogTypes["SCANDLL_HACKFOUND"] = {
 	html = 1,
 	showAlert = 1,
 	OnAccept = function()
-		local formatString = getglobal("SCANDLL_MESSAGE_"..AccountLogin.hackType.."FOUND_CONFIRM");
+		local formatString = _G["SCANDLL_MESSAGE_"..AccountLogin.hackType.."FOUND_CONFIRM"];
 		GlueDialog_Show("SCANDLL_HACKFOUND_CONFIRM", format(formatString, AccountLogin.hackName, AccountLogin.hackURL));
 	end,
 	OnCancel = function()
@@ -645,7 +647,7 @@ end
 
 function GlueDialog_OnUpdate(self, elapsed)
 	for i=1, MAX_NUM_GLUE_DIALOG_BUTTONS do
-		button = getglobal( "GlueDialogButton"..i );
+		button = _G[ "GlueDialogButton"..i ];
 		if ( button and (CURRENT_GLUE_SCREEN == "login") or (CURRENT_GLUE_SCREEN == "realmwizard") or CURRENT_GLUE_SCREEN == "movie" ) then
 			button:SetNormalTexture("Interface\\Glues\\Common\\Glue-Panel-Button-Up-Blue");
 			button:SetPushedTexture("Interface\\Glues\\Common\\Glue-Panel-Button-Down-Blue");

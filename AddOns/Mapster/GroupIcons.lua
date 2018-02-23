@@ -7,13 +7,14 @@ local Mapster = LibStub("AceAddon-3.0"):GetAddon("Mapster")
 local L = LibStub("AceLocale-3.0"):GetLocale("Mapster")
 
 local MODNAME = "GroupIcons"
-local GroupIcons = Mapster:NewModule(MODNAME, "AceEvent-3.0")
+local GroupIcons = Mapster:NewModule(MODNAME, "AceEvent-3.0", "AceHook-3.0")
 
 local fmt = string.format
 local sub = string.sub
 local find = string.find
 
 local _G = _G
+
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local UnitClass = UnitClass
@@ -51,7 +52,7 @@ local function getOptions()
 			}
 		}
 	end
-	
+
 	return options
 end
 
@@ -65,7 +66,7 @@ function GroupIcons:OnEnable()
 	if CUSTOM_CLASS_COLORS then
 		RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS
 	end
-	
+
 	if not IsAddOnLoaded("Blizzard_BattlefieldMinimap") then
 		self:RegisterEvent("ADDON_LOADED", function(event, addon)
 			if addon == "Blizzard_BattlefieldMinimap" then
@@ -78,6 +79,7 @@ function GroupIcons:OnEnable()
 		FixBattlefieldUnits(true)
 	end
 	FixWorldMapUnits(true)
+	self:RawHook("WorldMapUnit_Update", true)
 end
 
 function GroupIcons:OnDisable()
@@ -137,7 +139,7 @@ local grouptex = path .. "Group%d"
 function UpdateUnitIcon(tex, unit)
 	-- sanity check
 	if not (tex and unit) then return end
-	
+
 	-- grab the class filename
 	local _, fileName = UnitClass(unit)
 	if not fileName then return end
@@ -148,7 +150,7 @@ function UpdateUnitIcon(tex, unit)
 		if not subgroup then return end
 		tex:SetTexture(fmt(grouptex, subgroup))
 	end
-	
+
 	-- color the texture
 	-- either by flash color
 	local t = RAID_CLASS_COLORS[fileName]
@@ -176,4 +178,8 @@ function UpdateUnitIcon(tex, unit)
 	else --fallback grey, you never know what happens
 		tex:SetVertexColor(0.8, 0.8, 0.8)
 	end
+end
+
+function GroupIcons:WorldMapUnit_Update(unitFrame)
+	UpdateUnitIcon(unitFrame.icon, unitFrame.unit)
 end

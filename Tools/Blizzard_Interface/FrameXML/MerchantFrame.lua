@@ -82,13 +82,13 @@ function MerchantFrame_UpdateMerchantInfo()
 	local name, texture, price, quantity, numAvailable, isUsable, extendedCost;
 	for i=1, MERCHANT_ITEMS_PER_PAGE, 1 do
 		local index = (((MerchantFrame.page - 1) * MERCHANT_ITEMS_PER_PAGE) + i);
-		local itemButton = getglobal("MerchantItem"..i.."ItemButton");
-		local merchantButton = getglobal("MerchantItem"..i);
-		local merchantMoney = getglobal("MerchantItem"..i.."MoneyFrame");
-		local merchantAltCurrency = getglobal("MerchantItem"..i.."AltCurrencyFrame");
+		local itemButton = _G["MerchantItem"..i.."ItemButton"];
+		local merchantButton = _G["MerchantItem"..i];
+		local merchantMoney = _G["MerchantItem"..i.."MoneyFrame"];
+		local merchantAltCurrency = _G["MerchantItem"..i.."AltCurrencyFrame"];
 		if ( index <= numMerchantItems ) then
 			name, texture, price, quantity, numAvailable, isUsable, extendedCost = GetMerchantItemInfo(index);
-			getglobal("MerchantItem"..i.."Name"):SetText(name);
+			_G["MerchantItem"..i.."Name"]:SetText(name);
 			SetItemButtonCount(itemButton, quantity);
 			SetItemButtonStock(itemButton, numAvailable);
 			SetItemButtonTexture(itemButton, texture);
@@ -158,9 +158,9 @@ function MerchantFrame_UpdateMerchantInfo()
 			itemButton:Hide();
 			SetItemButtonNameFrameVertexColor(merchantButton, 0.5, 0.5, 0.5);
 			SetItemButtonSlotVertexColor(merchantButton,0.4, 0.4, 0.4);
-			getglobal("MerchantItem"..i.."Name"):SetText("");
-			getglobal("MerchantItem"..i.."MoneyFrame"):Hide();
-			getglobal("MerchantItem"..i.."AltCurrencyFrame"):Hide();
+			_G["MerchantItem"..i.."Name"]:SetText("");
+			_G["MerchantItem"..i.."MoneyFrame"]:Hide();
+			_G["MerchantItem"..i.."AltCurrencyFrame"]:Hide();
 		end
 	end
 
@@ -239,7 +239,7 @@ function MerchantFrame_UpdateAltCurrency(index, i)
 	-- update Alt Currency Frame with itemValues
 	if ( itemCount > 0 ) then
 		for i=1, MAX_ITEM_COST, 1 do
-			button = getglobal(frameName.."Item"..i);
+			button = _G[frameName.."Item"..i];
 			button.index = index;
 			button.item = i;
 
@@ -263,7 +263,7 @@ function MerchantFrame_UpdateAltCurrency(index, i)
 		end
 	else
 		for i=1, MAX_ITEM_COST, 1 do
-			getglobal(frameName.."Item"..i):Hide();
+			_G[frameName.."Item"..i]:Hide();
 		end
 	end
 end
@@ -290,16 +290,16 @@ function MerchantFrame_UpdateBuybackInfo()
 	local itemButton, buybackButton;
 	local buybackName, buybackTexture, buybackPrice, buybackQuantity, buybackNumAvailable, buybackIsUsable;
 	for i=1, BUYBACK_ITEMS_PER_PAGE do
-		itemButton = getglobal("MerchantItem"..i.."ItemButton");
-		buybackButton = getglobal("MerchantItem"..i);
-		getglobal("MerchantItem"..i.."AltCurrencyFrame"):Hide();
+		itemButton = _G["MerchantItem"..i.."ItemButton"];
+		buybackButton = _G["MerchantItem"..i];
+		_G["MerchantItem"..i.."AltCurrencyFrame"]:Hide();
 		if ( i <= numBuybackItems ) then
 			buybackName, buybackTexture, buybackPrice, buybackQuantity, buybackNumAvailable, buybackIsUsable = GetBuybackItemInfo(i);
-			getglobal("MerchantItem"..i.."Name"):SetText(buybackName);
+			_G["MerchantItem"..i.."Name"]:SetText(buybackName);
 			SetItemButtonCount(itemButton, buybackQuantity);
 			SetItemButtonStock(itemButton, buybackNumAvailable);
 			SetItemButtonTexture(itemButton, buybackTexture);
-			getglobal("MerchantItem"..i.."MoneyFrame"):Show();
+			_G["MerchantItem"..i.."MoneyFrame"]:Show();
 			MoneyFrame_Update("MerchantItem"..i.."MoneyFrame", buybackPrice);
 			itemButton:SetID(i);
 			itemButton:Show();
@@ -317,8 +317,8 @@ function MerchantFrame_UpdateBuybackInfo()
 		else
 			SetItemButtonNameFrameVertexColor(buybackButton, 0.5, 0.5, 0.5);
 			SetItemButtonSlotVertexColor(buybackButton,0.4, 0.4, 0.4);
-			getglobal("MerchantItem"..i.."Name"):SetText("");
-			getglobal("MerchantItem"..i.."MoneyFrame"):Hide();
+			_G["MerchantItem"..i.."Name"]:SetText("");
+			_G["MerchantItem"..i.."MoneyFrame"]:Hide();
 			itemButton:Hide();
 		end
 	end
@@ -384,7 +384,7 @@ function MerchantItemButton_OnClick(self, button)
 		-- Is merchant frame
 		if ( button == "LeftButton" ) then
 			if ( MerchantFrame.refundItem ) then
-				if ( ContainerFrame_GetExtendedPriceString(MerchantFrame.refundItem)) then
+				if ( ContainerFrame_GetExtendedPriceString(MerchantFrame.refundItem, MerchantFrame.refundItemEquipped)) then
 					-- a confirmation dialog has been shown
 					return;
 				end
@@ -437,7 +437,7 @@ function MerchantItemButton_OnEnter(button)
 	GameTooltip:SetOwner(button, "ANCHOR_RIGHT");
 	if ( MerchantFrame.selectedTab == 1 ) then
 		GameTooltip:SetMerchantItem(button:GetID());
-		GameTooltip_ShowCompareItem();
+		GameTooltip_ShowCompareItem(GameTooltip);
 		MerchantFrame.itemHover = button:GetID();
 	else
 		GameTooltip:SetBuybackItem(button:GetID());
@@ -469,15 +469,15 @@ function MerchantFrame_ConfirmExtendedItemCost(itemButton, quantity)
 		local factionGroup = UnitFactionGroup("player");
 		if ( factionGroup ) then	
 			pointsTexture = "Interface\\PVPFrame\\PVP-Currency-"..factionGroup;
-			itemsString = " |T" .. pointsTexture .. ":0:0:0:-1|t" ..  honorPoints .. " " .. HONOR_POINTS;
+			itemsString = " |T" .. pointsTexture .. ":0:0:0:-1|t" .. format(MERCHANT_HONOR_POINTS, honorPoints);
 		end
 	end
 	if ( arenaPoints and arenaPoints ~= 0 ) then
 		if ( itemsString ) then
 			-- adding an extra space here because it looks nicer
-			itemsString = itemsString .. "  |TInterface\\PVPFrame\\PVP-ArenaPoints-Icon:0:0:0:-1|t" .. arenaPoints .. " " .. ARENA_POINTS;
+			itemsString = itemsString .. "  |TInterface\\PVPFrame\\PVP-ArenaPoints-Icon:0:0:0:-1|t" .. format(MERCHANT_ARENA_POINTS, arenaPoints);
 		else
-			itemsString = " |TInterface\\PVPFrame\\PVP-ArenaPoints-Icon:0:0:0:-1|t" .. arenaPoints .. " " .. ARENA_POINTS;
+			itemsString = " |TInterface\\PVPFrame\\PVP-ArenaPoints-Icon:0:0:0:-1|t" .. format(MERCHANT_ARENA_POINTS, arenaPoints);
 		end
 	end
 	
@@ -506,6 +506,16 @@ function MerchantFrame_ConfirmExtendedItemCost(itemButton, quantity)
 	local itemName, _, itemQuality = GetItemInfo(itemButton.link);
 	local r, g, b = GetItemQualityColor(itemQuality);
 	StaticPopup_Show("CONFIRM_PURCHASE_TOKEN_ITEM", itemsString, "", {["texture"] = itemButton.texture, ["name"] = itemName, ["color"] = {r, g, b, 1}, ["link"] = itemButton.link, ["index"] = index, ["count"] = count * quantity});
+end
+
+function MerchantFrame_ResetRefundItem()
+	MerchantFrame.refundItem = nil;
+	MerchantFrame.refundItemEquipped = nil;
+end
+
+function MerchantFrame_SetRefundItem(item, isEquipped)
+	MerchantFrame.refundItem = item;
+	MerchantFrame.refundItemEquipped = isEquipped;
 end
 
 function MerchantFrame_ConfirmHighCostItem(itemButton, quantity)

@@ -202,9 +202,9 @@
 	<Button name="CQI_ObjButton7" inherits="CQI_ObjButtonTemplate" parent="QuestLogDetailScrollChildFrame" id="7"/>
 	<Button name="CQI_ObjButton8" inherits="CQI_ObjButtonTemplate" parent="QuestLogDetailScrollChildFrame" id="8"/>
 	<Button name="CQI_ObjButton9" inherits="CQI_ObjButtonTemplate" parent="QuestLogDetailScrollChildFrame" id="9"/>
-	
+
 	<!-- 可接任务查询 -->
-	<Button name="CQI_MapButton1" parent="WorldMapDetailFrame" frameStrata="HIGH" id="1">
+	<Button name="CQI_MapButton1" parent="WorldMapButton" frameStrata="HIGH" id="1">
 		<Size><AbsDimension x="32" y="32"/></Size>
 		<Anchors>
 			<Anchor point="TOPRIGHT">
@@ -230,7 +230,7 @@
 	</Button>
 
 	<!-- 进行中任务查询 -->
-	<Button name="CQI_MapButton2" parent="WorldMapDetailFrame" frameStrata="HIGH" id="2">
+	<Button name="CQI_MapButton2" parent="WorldMapButton" frameStrata="HIGH" id="2">
 		<Size><AbsDimension x="32" y="32"/></Size>
 		<Anchors>
 			<Anchor point="TOPRIGHT" relativeTo="CQI_MapButton1" relativePoint="BOTTOMRIGHT">
@@ -256,7 +256,7 @@
 	</Button>
 
 	<!-- 追踪任务查询 -->
-	<Button name="CQI_MapButton3" parent="WorldMapDetailFrame" frameStrata="HIGH" id="3">
+	<Button name="CQI_MapButton3" parent="WorldMapButton" frameStrata="HIGH" id="3">
 		<Size><AbsDimension x="32" y="32"/></Size>
 		<Anchors>
 			<Anchor point="TOPRIGHT" relativeTo="CQI_MapButton2" relativePoint="BOTTOMRIGHT">
@@ -282,7 +282,7 @@
 	</Button>
 
 	<!-- 删除任务标记 -->
-	<Button name="CQI_MapButton4" parent="WorldMapDetailFrame" frameStrata="HIGH" id="4">
+	<Button name="CQI_MapButton4" parent="WorldMapButton" frameStrata="HIGH" id="4">
 		<Size><AbsDimension x="32" y="32"/></Size>
 		<Anchors>
 			<Anchor point="TOPRIGHT" relativeTo="CQI_MapButton3" relativePoint="BOTTOMRIGHT">

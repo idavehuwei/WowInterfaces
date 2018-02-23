@@ -1,8 +1,7 @@
 ﻿--[[
 
 	Atlas, a World of Warcraft instance map browser
-	Copyright 2005 - 2009 Dan Gilbert
-	Email me at loglow@gmail.com
+	Copyright 2005-2010 Dan Gilbert <dan.b.gilbert@gmail.com>
 
 	This file is part of Atlas.
 
@@ -43,32 +42,21 @@ AtlasBGLocale = {
 	["White"] = "Weiß";
 
 	--Places
-	["Alterac Mountains"] = "Alteracgebirge";
-	["Alterac Valley"] = "Alteractal"; ["AV"] = "AV";
-	["Arathi Basin"] = "Arathibecken"; ["AB"] = "AB";
-	["Arathi Highlands"] = "Arathihochland";
-	["Ashenvale"] = "Eschental";
-	["Dragonblight"] = "Drachenöde";
-	["Eastern Kingdoms"] = "Östliche Königreiche";
+	["AV"] = "AV"; -- Alterac Valley
+	["AB"] = "AB"; -- Arathi Basin
 	["Eye of the Storm"] = "Auge des Sturms"; ["EotS"] = "Auge";
-	["Hillsbrad Foothills"] = "Vorgebirge des Hügellands";
-	["Kalimdor"] = "Kalimdor";
-	["Netherstorm"] = "Nethersturm";
-	["Outland"] = "Scherbenwelt";
-	["Strand of the Ancients"] = "Strand der Uralten"; ["SotA"] = "SdU";
-	["The Barrens"] = "Brachland";
-	["Warsong Gulch"] = "Kriegshymnenschlucht"; ["WSG"] = "WS";
+    	["IoC"] = "Insel";-- Isle of Conquest
+	["SotA"] = "SdU"; -- Strand of the Ancients
+	["WSG"] = "WS"; -- Warsong Gulch
 
 	--Alterac Valley (North)
 	["Stormpike Guard"] = "Sturmlanzengarde";
-	["Dun Baldar"] = "Dun Baldar";
 	["Vanndar Stormpike <Stormpike General>"] = "Vanndar Sturmlanze <General der Sturmlanzen>";
 	["Dun Baldar North Marshal"] = "Marschall der Nordtruppen von Dun Baldar";
 	["Dun Baldar South Marshal"] = "Marschall der Südtruppen von Dun Baldar";
 	["Icewing Marshal"] = "Marschall der Eisschwingentruppen";
 	["Stonehearth Marshal"] = "Marschall der Steinbruchtruppen";
 	["Prospector Stonehewer"] = "Ausgrabungsleiter Steinhauer";
-	["Irondeep Mine"] = "Eisenschachtmine";
 	["Morloch"] = "Morloch";
 	["Umi Thorson"] = "Umi Thorson";
 	["Keetar"] = "Keetar";
@@ -93,21 +81,14 @@ AtlasBGLocale = {
 	["Dun Baldar South Bunker"] = "Südbunker von Dun Baldar";
 	["Corporal Noreg Stormpike"] = "Korporal Noreg Sturmlanze";
 	["Gaelden Hammersmith <Stormpike Supply Officer>"] = "Gaelden Hammerschmied <Versorgungsoffizier der Sturmlanzen>";
-	["Stormpike Graveyard"] = "Friedhof der Sturmlanzen";
-	["Icewing Cavern"] = "Eisschwingenhöhle";
 	["Stormpike Banner"] = "Banner der Sturmlanzen";
 	["Stormpike Lumber Yard"] = "Sägewerk der Sturmlanzen";
 	["Wing Commander Jeztor"] = "Schwadronskommandant Jeztor";--omitted from AVS
-	["Icewing Bunker"] = "Eisschwingenbunker";
 	["Wing Commander Guse"] = "Schwadronskommandant Guse";--omitted from AVS
-	["Stonehearth Graveyard"] = "Steinbruchfriedhof";
 	["Stormpike Ram Rider Commander"] = "Kommandant der Sturmlanzenwidderreiter";
-	["Stonehearth Outpost"] = "Steinbruchaußenposten";
 	["Captain Balinda Stonehearth <Stormpike Captain>"] = "Hauptmann Balinda Steinbruch <Hauptmann der Sturmlanzen>";
-	["Snowfall Graveyard"] = "Schneewehenfriedhof";
 	["Ichman's Beacon"] = "Ichmans Signal";
 	["Mulverick's Beacon"] = "Mulvericks Signal";
-	["Stonehearth Bunker"] = "Steinbruchbunker";
 	["Ivus the Forest Lord"] = "Ivus der Waldfürst";
 	["Western Crater"] = "Westlicher Krater";
 	["Vipore's Beacon"] = "Vipores Signal";
@@ -121,7 +102,6 @@ AtlasBGLocale = {
 
 	--Alterac Valley (South)
 	["Frostwolf Clan"] = "Frostwolfklan";
-	["Frostwolf Keep"] = "Burg Frostwolf";
 	["Drek'Thar <Frostwolf General>"] = "Drek'Thar <General der Frostwölfe>";
 	["Duros"] = "Duros";
 	["Drakan"] = "Drakan";
@@ -130,16 +110,12 @@ AtlasBGLocale = {
 	["Tower Point Warmaster"] = "Kriegsmeister der Turmstellung";
 	["Iceblood Warmaster"] = "Kriegsmeister der Eisbluttruppen";
 	["Lokholar the Ice Lord"] = "Lokholar der Eislord";
-	["Iceblood Garrison"] = "Eisblutgarnison";
 	["Captain Galvangar <Frostwolf Captain>"] = "Hauptmann Galvangar <Hauptmann der Frostwölfe>";
 	["Iceblood Tower"] = "Eisblutturm";
-	["Iceblood Graveyard"] = "Eisblutfriedhof";
 	["Tower Point"] = "Turmstellung";
-	["Coldtooth Mine"] = "Eisbeißermine";
 	["Taskmaster Snivvle"] = "Zuchtmeister Schnuffel";
 	["Masha Swiftcut"] = "Masha Schnellstreich";
 	["Aggi Rumblestomp"] = "Aggi Polterbein";
-	["Frostwolf Graveyard"] = "Friedhof der Frostwölfe";
 	["Jotek"] = "Jotek";
 	["Smith Regzar"] = "Schmied Regzar";
 	["Primalist Thurloga"] = "Primalist Thurloga";
@@ -150,33 +126,27 @@ AtlasBGLocale = {
 	["West Frostwolf Tower"] = "Westlicher Frostwolfturm";
 	["East Frostwolf Tower"] = "Östlicher Frostwolfturm";
 	["Frostwolf Relief Hut"] = "Heilerhütte der Frostwölfe";
-	["Wildpaw Cavern"] = "Höhle der Wildpfoten";
 	["Frostwolf Banner"] = "Banner der Frostwölfe";
 
 	--Arathi Basin
 	["The Defilers"] = "Die Entweihten";
 	["The League of Arathor"] = "Der Bund von Arathor";
-	["Trollbane Hall"] = "Trollbanns Halle";
-	["Defiler's Den"] = "Die entweihte Feste";
-	["Stables"] = "Ställe";
-	["Gold Mine"] = "Goldmine";
-	["Smithy"] = "Schmiede";
-	["Lumber Mill"] = "Sägewerk";
-	["Farm"] = "Hof";
-
-	--Warsong Gulch
-	["Warsong Outriders"] = "Kriegshymnenklan";
-	["Silverwing Sentinels"] = "Schildwachen der Silberschwingen";
-	["Silverwing Hold"] = "Feste der Silberschwingen";
-	["Warsong Lumber Mill"] = "Sägewerk des Kriegshymnenklans";
 
 	--Eye of the Storm
-	["Graveyard"] = "Friedhof";
 	["Flag"] = "Flagge";
-	["Mage Tower"] = "Magierturm";
-	["Draenei Ruins"] = "Draeneiruinen";
-	["Fel Reaver Ruins"] = "Teufelshäscherruinen";
-	["Blood Elf Tower"] = "Blutelfenturm";
+
+	--Isle of Conquest
+    	["The Refinery"] = "Die Raffinerie";
+    	["The Docks"] = "Die Docks";
+    	["The Workshop"] = "Die Belagerungswerkstatt";
+    	["The Hangar"] = "Der Hangar";
+    	["The Quarry"] = "Der Steinbruch";
+    	["Contested Graveyards"] = "Umkämpfte Friedhöfe";
+    	["Horde Graveyard"] = "Horde Friedhof";
+    	["Alliance Graveyard"] = "Allianz Friedhof";
+    	["Gates are marked with red bars."] = "Tore sind mit roten Balken makiert.";
+    	["Overlord Agmar"] = "Oberanführer Agmar";
+    	["High Commander Halford Wyrmbane <7th Legion>"] = "Hochkommandant Halford Wyrmbann <7. Legion>";
 
 	--Strand of the Ancients
 	["Attacking Team"] = "Angreifende Fraktion";
@@ -188,6 +158,56 @@ AtlasBGLocale = {
 	["Titan Relic"] = "Relikt der Titanen";
 	["Gates are marked with their colors."] = "Tore sind in ihren Farben eingezeichnet.";
 
+	--Warsong Gulch
+	["Warsong Outriders"] = "Kriegshymnenklan";
+	["Silverwing Sentinels"] = "Schildwachen der Silberschwingen";
+
+	-- Hellfire Peninsula PvP 
+	["Hellfire Fortifications"] = "Befestigung des Höllenfeuers";
+	
+	-- Zangarmarsh PvP
+	["West Beacon"] = "Westliches Leuchtsignal";
+	["East Beacon"] = "Östliches Leuchtsignal";
+	["Twinspire Graveyard"] = "Friedhof der Zwillingsspitze";
+	["Alliance Field Scout"] = "Feldspäher der Allianz";
+	["Horde Field Scout"] = "Feldspäher der Horde";
+	
+	-- Terokkar Forest PvP
+	["Auchindoun Spirit Towers"] = "Auchindoun Geistertürme";
+
+	-- Halaa
+	["Wyvern Camp"] = "Flügeldrachenlager";
+	["Quartermaster Jaffrey Noreliqe"] = "Rüstmeister Jaffrey Keinespuhr";
+	["Quartermaster Davian Vaclav"] = "Rüstmeister Davian Watzlav";
+	["Chief Researcher Amereldine"] = "Forschungsleiterin Amereldine";
+	["Chief Researcher Kartos"] = "Forschungsleiter Kartos";
+	["Aldraan <Blade Merchant>"] = "Aldraan <Klingenhändler>";
+	["Banro <Ammunition>"] = "Banro <Munition>";
+	["Cendrii <Food & Drink>"] = "Cendrii <Speis & Trank>";
+	["Coreiel <Blade Merchant>"] = "Coreiel <Klingenhändlerin>";
+	["Embelar <Food & Drink>"] = "Embelar <Speis & Trank>";
+	["Tasaldan <Ammunition>"] = "Tasaldan <Munition>";
+
+	-- Wintergrasp
+	["Fortress Vihecal Workshop (E)"] = "Fahrzeugwerkstatt der Feste (O)";
+	["Fortress Vihecal Workshop (W)"] = "Fahrzeugwerkstatt der Feste (W)";
+	["Sunken Ring Vihecal Workshop"] = "Fahrzeugwerkstatt des versunkenen Rings";
+	["Broken Temple Vihecal Workshop"] = "Fahrzeugwerkstatt des zerbrochenen Tempels";
+	["Eastspark Vihecale Workshop"] = "Fahrzeugwerkstatt Ostfunk";
+	["Westspark Vihecale Workshop"] = "Fahrzeugwerkstatt Westfunk";
+	["Wintergrasp Graveyard"] = "Friedhof der Festung";
+	["Sunken Ring Graveyard"] = "Friedhof des versunkenen Rings";
+	["Broken Temple Graveyard"] = "Friedhof des zerbrochenen Tempels";
+	["Southeast Graveyard"] = "Südöstlicher Friedhof";
+	["Southwest Graveyard"] = "Südwestlicher Friedhof";
+
+	-- Eastern Plaguelands - Game of Tower
+	["A Game of Towers"] = "Türme einnehmen";
+
+	-- Silithus - The Silithyst Must Flow
+	["The Silithyst Must Flow"] = "Silithyst sammeln";
+	["Alliance's Camp"] = "Allianzlager";
+	["Horde's Camp"] = "Hordelager";
 };
 
 end

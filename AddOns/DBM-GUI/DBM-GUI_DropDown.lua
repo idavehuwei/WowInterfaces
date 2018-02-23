@@ -1,33 +1,40 @@
--- **********************************************************
--- **           Deadly Boss Mods - GUI Dropdowns           **
--- **             http://www.deadlybossmods.com            **
--- **********************************************************
+-- *********************************************************
+-- **               Deadly Boss Mods - GUI                **
+-- **            http://www.deadlybossmods.com            **
+-- *********************************************************
 --
 -- This addon is written and copyrighted by:
---    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
 --    * Paul Emmerich (Tandanu @ EU-Aegwynn) (DBM-Core)
--- 
+--    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
+--
 -- The localizations are written by:
---    * enGB/enUS: Tandanu
---    * deDE: Nitram/Tandanu
---    * (add your names here!)
+--    * enGB/enUS: Tandanu				http://www.deadlybossmods.com
+--    * deDE: Tandanu					http://www.deadlybossmods.com
+--    * zhCN: Diablohu					http://wow.gamespot.com.cn
+--    * ruRU: BootWin					bootwin@gmail.com
+--    * zhTW: Hman						herman_c1@hotmail.com
+--    * zhTW: Azael/kc10577				kc10577@hotmail.com
+--    * koKR: BlueNyx					bluenyx@gmail.com
+--    * esES: Interplay/1nn7erpLaY      http://www.1nn7erpLaY.com
 --
 -- Special thanks to:
 --    * Arta (DBM-Party)
--- 
+--    * Omegal @ US-Whisperwind (some patches, and DBM-Party updates)
+--    * Tennberg (a lot of fixes in the enGB/enUS localization)
+--
 --
 -- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
--- All included textures and sounds are copyrighted by their respective owners.
+-- All included textures and sounds are copyrighted by their respective owners, license information for these media files can be found in the modules that make use of them.
 --
 --
 --  You are free:
---    * to Share — to copy, distribute, display, and perform the work
---    * to Remix — to make derivative works
+--    * to Share - to copy, distribute, display, and perform the work
+--    * to Remix - to make derivative works
 --  Under the following conditions:
---    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).
+--    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work). (A link to http://www.deadlybossmods.com is sufficient)
 --    * Noncommercial. You may not use this work for commercial purposes.
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
-
+--
 
 do 
 	local MAX_BUTTONS = 10
@@ -39,8 +46,8 @@ do
 		insets={left=11, right=12, top=12, bottom=11}
 	});
 	TabFrame1:EnableMouseWheel(1)
-	TabFrame1:SetScript("OnMouseWheel", function(self, arg1) 
-		if arg1 > 0 then  -- scroll up
+	TabFrame1:SetScript("OnMouseWheel", function(self, delta) 
+		if delta > 0 then  -- scroll up
 			self.offset = self.offset - 1
 			if self.offset < 0 then
 				self.offset = 0
@@ -72,7 +79,7 @@ do
 		if self:GetParent().dropdown.callfunc then
 			self:GetParent().dropdown.callfunc(self.entry.value)
 		end
-		getglobal(self:GetParent().dropdown:GetName().."Text"):SetText(self.entry.text)
+		_G[self:GetParent().dropdown:GetName().."Text"]:SetText(self.entry.text)
 	end
 
 	TabFrame1.buttons = {}
@@ -120,6 +127,11 @@ do
 					BackDropTable.bgFile = values[i+self.offset].texture
 					self.buttons[i]:SetBackdrop(BackDropTable)
 				end
+				if values[i+self.offset].font then
+					_G[self.buttons[i]:GetName().."NormalText"]:SetFont(values[i+self.offset].font, values[i+self.offset].fontsize or 14)
+				else
+					_G[self.buttons[i]:GetName().."NormalText"]:SetFont(STANDARD_TEXT_FONT, 10)
+				end
 				self.buttons[i]:Show()
 			else
 				self.buttons[i]:Hide()
@@ -146,6 +158,7 @@ do
 			self.buttons[i]:Hide()
 			self.buttons[i]:SetBackdrop(nil)
 			self.buttons[i]:SetWidth(default_button_width)
+			_G[self.buttons[i]:GetName().."NormalText"]:SetFontObject(GameFontHighlightSmall)
 		end
 		self:SetWidth(default_button_width+22)
 		self:Hide()
@@ -168,8 +181,8 @@ do
 		dropdown.values = values
 		dropdown.callfunc = callfunc
 		dropdown:SetWidth((width or 120)+30)	-- required to fix some setpoint problems
-		getglobal(dropdown:GetName().."Middle"):SetWidth(width or 120)
-		getglobal(dropdown:GetName().."Button"):SetScript("OnClick", function(self)
+		_G[dropdown:GetName().."Middle"]:SetWidth(width or 120)
+		_G[dropdown:GetName().."Button"]:SetScript("OnClick", function(self)
 			PlaySound("igMainMenuOptionCheckBoxOn")
 			if TabFrame1:IsShown() then
 				TabFrame1:HideMenu()
@@ -184,7 +197,7 @@ do
 
 		for k,v in next, dropdown.values do
 			if v.value ~= nil and v.value == selected or v.text == selected then
-				getglobal(dropdown:GetName().."Text"):SetText(v.text)
+				_G[dropdown:GetName().."Text"]:SetText(v.text)
 				dropdown.value = v.value
 				dropdown.text = v.text
 			end

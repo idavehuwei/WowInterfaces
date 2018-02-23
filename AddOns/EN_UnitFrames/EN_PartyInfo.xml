@@ -1,17 +1,18 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
     <Script file="EN_PartyInfo.lua"/>
+
     <Frame name="EUF_PartyInfo_General" parent="UIParent" hidden="true">
         <Scripts>
             <OnLoad>
-                    EUF_PartyInfo_OnLoad()
+                EUF_PartyInfo_OnLoad(self)
             </OnLoad>
             <OnEvent>
-                    EUF_PartyInfo_OnEvent(event);
+                EUF_PartyInfo_OnEvent(self,event,...);
             </OnEvent>
         </Scripts>
     </Frame>
-    <!-- Party Frame -->
+
+<!-- Party Frame -->
     <Frame name="EUF_PartyInfoTemplate" frameStrata="MEDIUM" virtual="true" hidden="true">
         <Size>
             <AbsDimension x="220" y="100"/>
@@ -57,6 +58,4 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
     <Frame name="EUF_PartyInfo2" inherits="EUF_PartyInfoTemplate" parent="PartyMemberFrame2" hidden="false" id="2"/>
     <Frame name="EUF_PartyInfo3" inherits="EUF_PartyInfoTemplate" parent="PartyMemberFrame3" hidden="false" id="3"/>
     <Frame name="EUF_PartyInfo4" inherits="EUF_PartyInfoTemplate" parent="PartyMemberFrame4" hidden="false" id="4"/>
-
-
 </Ui>

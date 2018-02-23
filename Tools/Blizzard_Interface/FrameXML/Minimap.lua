@@ -1,4 +1,4 @@
-MINIMAPPING_TIMER = 5;
+MINIMAPPING_TIMER = 5.5;
 MINIMAPPING_FADE_TIMER = 0.5;
 
 MINIMAP_RECORDING_INDICATOR_ON = false;
@@ -23,18 +23,6 @@ function ToggleMinimap()
 		Minimap:Show();
 	end
 	UpdateUIPanelPositions();
-end
-
-function Minimap_OnShow (self)
-	MinimapToggleButton:SetNormalTexture("Interface\\Buttons\\UI-Panel-CollapseButton-Up");
-	MinimapToggleButton:SetPushedTexture("Interface\\Buttons\\UI-Panel-CollapseButton-Down");
-	MinimapToggleButton:SetDisabledTexture("Interface\\Buttons\\UI-Panel-CollapseButton-Disabled");
-end
-
-function Minimap_OnHide (self)
-	MinimapToggleButton:SetNormalTexture("Interface\\Buttons\\UI-Panel-ExpandButton-Up");
-	MinimapToggleButton:SetPushedTexture("Interface\\Buttons\\UI-Panel-ExpandButton-Down");
-	MinimapToggleButton:SetDisabledTexture("Interface\\Buttons\\UI-Panel-ExpandButton-Disabled");
 end
 
 function Minimap_Update()
@@ -113,10 +101,8 @@ function MinimapPing_OnUpdate(self, elapsed)
 	local timer = self.timer or 0;
 	if ( timer > 0 ) then
 		timer = timer - elapsed;
-		if ( timer <= 0 ) then
+		if ( not self.fadeOut and timer <= MINIMAPPING_FADE_TIMER ) then
 			MinimapPing_FadeOut();
-		else
-			Minimap_SetPing(Minimap:GetPingPosition());
 		end
 		local percentage = timer - floor(timer)
 		MinimapPingSpinner:SetRotation(percentage * math.pi/2);
@@ -124,14 +110,14 @@ function MinimapPing_OnUpdate(self, elapsed)
 		percentage = mod(timer, MINIMAPPING_TIMER/7);
 		MinimapPingExpander:SetHeight(MINIMAP_EXPANDER_MAXSIZE * (1 - percentage));
 		MinimapPingExpander:SetWidth(MINIMAP_EXPANDER_MAXSIZE * (1 - percentage));
-		
+
 		self.timer = timer;
-	elseif ( self.fadeOut ) then
+	end
+	if ( self.fadeOut ) then
 		local fadeOutTimer = self.fadeOutTimer - elapsed;
 
 		if ( fadeOutTimer > 0 ) then
-			-- Minimap_SetPing(Minimap:GetPingPosition());
-			MinimapPing:SetAlpha((255 * (fadeOutTimer/MINIMAPPING_FADE_TIMER)) / 255);
+			MinimapPing:SetAlpha(fadeOutTimer/MINIMAPPING_FADE_TIMER);
 		else
 			MinimapPing.fadeOut = nil;
 			MinimapPing:Hide();
@@ -209,37 +195,159 @@ function Minimap_ZoomOut()
 	MinimapZoomOut:Click();
 end
 
-function MiniMapMeetingStoneFrame_OnEnter(self)
-	GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT");
-	MiniMapMeetingStoneFrame_FormatTooltip(GetLFGStatusText());
+function EyeTemplate_OnUpdate(self, elapsed)
+	AnimateTexCoords(self.texture, 512, 256, 64, 64, 29, elapsed)
 end
 
-function MiniMapMeetingStoneFrame_FormatTooltip(...)
-	local text;
-	-- If looking for more
-	if ( select(1, ...) ) then
-		GameTooltip:SetText(LFM_TITLE, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
-		text = select(3, ...);
+function EyeTemplate_StartAnimating(eye)
+	eye:SetScript("OnUpdate", EyeTemplate_OnUpdate);
+end
+
+function EyeTemplate_StopAnimating(eye)
+	eye:SetScript("OnUpdate", nil);
+	if ( eye.texture.frame ) then
+		eye.texture.frame = 1;	--To start the animation over.
+	end
+	eye.texture:SetTexCoord(0, 0.125, 0, .25);
+end
+
+function MiniMapLFG_UpdateIsShown()
+	local mode, submode = GetLFGMode();
+	if ( mode ) then
+		MiniMapLFGFrame:Show();
+		if ( mode == "queued" or mode == "listed" or mode == "rolecheck" ) then
+			EyeTemplate_StartAnimating(MiniMapLFGFrame.eye);
+		else
+			EyeTemplate_StopAnimating(MiniMapLFGFrame.eye);
+		end
 	else
-		-- Otherwise looking for group
-		GameTooltip:SetText(LFG_TITLE, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
-		local numCriteria = select(2, ...)+2;
-		text = "";
-		for i=3, numCriteria do
-			if ( select(i, ...) ~= "" ) then
-				text = text..select(i, ...).."\n";
-			end
+		MiniMapLFGFrame:Hide();
+	end
+end
+
+function MiniMapLFGFrame_TeleportIn()
+	LFGTeleport(false);
+end
+
+function MiniMapLFGFrame_TeleportOut()
+	LFGTeleport(true);
+end
+
+function MiniMapLFGFrameDropDown_Update()
+	local info = UIDropDownMenu_CreateInfo();
+	
+	local mode, submode = GetLFGMode();
+
+	--This one can appear in addition to others, so we won't just check the mode.
+	if ( IsPartyLFG() ) then
+		local addButton = false;
+		if ( IsInLFGDungeon() ) then
+			info.text = TELEPORT_OUT_OF_DUNGEON;
+			info.func = MiniMapLFGFrame_TeleportOut;
+			addButton = true;
+		elseif ((GetNumPartyMembers() > 0) or (GetNumRaidMembers() > 0)) then
+			info.text = TELEPORT_TO_DUNGEON;
+			info.func = MiniMapLFGFrame_TeleportIn;
+			addButton = true;
+		end
+		if ( addButton ) then
+			UIDropDownMenu_AddButton(info);
 		end
 	end
-	GameTooltip:AddLine(text);
-	GameTooltip:Show();
+	
+	if ( mode == "proposal" and submode == "unaccepted" ) then
+		info.text = ENTER_DUNGEON;
+		info.func = AcceptProposal;
+		UIDropDownMenu_AddButton(info);
+		
+		info.text = LEAVE_QUEUE;
+		info.func = RejectProposal;
+		UIDropDownMenu_AddButton(info);
+	elseif ( mode == "queued" ) then
+		info.text = LEAVE_QUEUE;
+		info.func = LeaveLFG;
+		info.disabled = (submode == "unempowered");
+		UIDropDownMenu_AddButton(info);
+	elseif ( mode == "listed" ) then
+		if ((GetNumPartyMembers() > 0) or (GetNumRaidMembers() > 0)) then
+			info.text = UNLIST_MY_GROUP;
+		else
+			info.text = UNLIST_ME;
+		end
+		info.func = LeaveLFG;
+		info.disabled = (submode == "unempowered");
+		UIDropDownMenu_AddButton(info);
+	end
+end
+
+function MiniMapLFGFrame_OnClick(self, button)
+	local mode, submode = GetLFGMode();
+	if ( button == "RightButton" or mode == "lfgparty" or mode == "abandonedInDungeon") then
+		--Display dropdown
+		PlaySound("igMainMenuOpen");
+		--Weird hack so that the popup isn't under the queued status window (bug 184001)
+		local yOffset;
+		if ( mode == "queued" ) then
+			MiniMapLFGFrameDropDown.point = "BOTTOMRIGHT";
+			MiniMapLFGFrameDropDown.relativePoint = "TOPLEFT";
+			yOffset = 0;
+		else
+			MiniMapLFGFrameDropDown.point = nil;
+			MiniMapLFGFrameDropDown.relativePoint = nil;
+			yOffset = -5;
+		end
+		ToggleDropDownMenu(1, nil, MiniMapLFGFrameDropDown, "MiniMapLFGFrame", 0, yOffset);
+	elseif ( mode == "proposal" ) then
+		if ( not LFDDungeonReadyPopup:IsShown() ) then
+			PlaySound("igCharacterInfoTab");
+			StaticPopupSpecial_Show(LFDDungeonReadyPopup);
+		end
+	elseif ( mode == "queued" or mode == "rolecheck" ) then
+		ToggleLFDParentFrame();
+	elseif ( mode == "listed" ) then
+		ToggleLFRParentFrame();
+	end
+end
+
+function MiniMapLFGFrame_OnEnter(self)
+	local mode, submode = GetLFGMode();
+	if ( mode == "queued" ) then
+		LFDSearchStatus:Show();
+	elseif ( mode == "proposal" ) then
+		GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+		GameTooltip:SetText(LOOKING_FOR_DUNGEON);
+		GameTooltip:AddLine(DUNGEON_GROUP_FOUND_TOOLTIP, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1);
+		GameTooltip:AddLine(" ");
+		GameTooltip:AddLine(CLICK_HERE_FOR_MORE_INFO, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1);
+		GameTooltip:Show();
+	elseif ( mode == "rolecheck" ) then
+		GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+		GameTooltip:SetText(LOOKING_FOR_DUNGEON);
+		GameTooltip:AddLine(ROLE_CHECK_IN_PROGRESS_TOOLTIP, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1);
+		GameTooltip:Show();
+	elseif ( mode == "listed" ) then
+		GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+		GameTooltip:SetText(LOOKING_FOR_RAID);
+		GameTooltip:AddLine(YOU_ARE_LISTED_IN_LFR, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1);
+		GameTooltip:Show();
+	elseif ( mode == "lfgparty" ) then
+		GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+		GameTooltip:SetText(LOOKING_FOR_DUNGEON);
+		GameTooltip:AddLine(YOU_ARE_IN_DUNGEON_GROUP, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1);
+		GameTooltip:Show();
+	end
+end
+
+function MiniMapLFGFrame_OnLeave(self)
+	GameTooltip:Hide();
+	LFDSearchStatus:Hide();
 end
 
 function MinimapButton_OnMouseDown(self, button)
 	if ( self.isDown ) then
 		return;
 	end
-	local button = getglobal(self:GetName().."Icon");
+	local button = _G[self:GetName().."Icon"];
 	local point, relativeTo, relativePoint, offsetX, offsetY = button:GetPoint();
 	button:SetPoint(point, relativeTo, relativePoint, offsetX+1, offsetY-1);
 	self.isDown = 1;
@@ -248,7 +356,7 @@ function MinimapButton_OnMouseUp(self)
 	if ( not self.isDown ) then
 		return;
 	end
-	local button = getglobal(self:GetName().."Icon");
+	local button = _G[self:GetName().."Icon"];
 	local point, relativeTo, relativePoint, offsetX, offsetY = button:GetPoint();
 	button:SetPoint(point, relativeTo, relativePoint, offsetX-1, offsetY+1);
 	self.isDown = nil;
@@ -370,4 +478,60 @@ end
 
 function MiniMapTrackingShineFadeOut()
 	UIFrameFadeOut(MiniMapTrackingButtonShine, 0.5);
+end
+						
+local selectedRaidDifficulty;
+local allowedRaidDifficulty;
+function MiniMapInstanceDifficulty_OnEvent(self)
+	local _, instanceType, difficulty, _, maxPlayers, playerDifficulty, isDynamicInstance = GetInstanceInfo();
+	if ( ( instanceType == "party" or instanceType == "raid" ) and not ( difficulty == 1 and maxPlayers == 5 ) ) then		
+		local isHeroic = false;
+		if ( instanceType == "party" and difficulty == 2 ) then
+			isHeroic = true;
+		elseif ( instanceType == "raid" ) then
+			if ( isDynamicInstance ) then
+				selectedRaidDifficulty = difficulty;
+				if ( playerDifficulty == 1 ) then
+					if ( selectedRaidDifficulty <= 2 ) then
+						selectedRaidDifficulty = selectedRaidDifficulty + 2;
+					end
+					isHeroic = true;
+				end
+				-- if modified difficulty is normal then you are allowed to select heroic, and vice-versa
+				if ( selectedRaidDifficulty == 1 ) then
+					allowedRaidDifficulty = 3;
+				elseif ( selectedRaidDifficulty == 2 ) then
+					allowedRaidDifficulty = 4;
+				elseif ( selectedRaidDifficulty == 3 ) then
+					allowedRaidDifficulty = 1;
+				elseif ( selectedRaidDifficulty == 4 ) then
+					allowedRaidDifficulty = 2;
+				end
+				allowedRaidDifficulty = "RAID_DIFFICULTY"..allowedRaidDifficulty;
+			elseif ( difficulty > 2 ) then
+				isHeroic = true;
+			end
+		end
+
+		MiniMapInstanceDifficultyText:SetText(maxPlayers);
+		-- the 1 looks a little off when text is centered
+		local xOffset = 0;
+		if ( maxPlayers >= 10 and maxPlayers <= 19 ) then
+			xOffset = -1;
+		end
+		if ( isHeroic ) then
+			MiniMapInstanceDifficultyTexture:SetTexCoord(0, 0.25, 0.0703125, 0.4140625);
+			MiniMapInstanceDifficultyText:SetPoint("CENTER", xOffset, -9);
+		else
+			MiniMapInstanceDifficultyTexture:SetTexCoord(0, 0.25, 0.5703125, 0.9140625);
+			MiniMapInstanceDifficultyText:SetPoint("CENTER", xOffset, 5);
+		end
+		self:Show();
+	else
+		self:Hide();
+	end
+end
+
+function _GetPlayerDifficultyMenuOptions()
+	return selectedRaidDifficulty, allowedRaidDifficulty;
 end

@@ -1,7 +1,7 @@
 ﻿--[[
     This file is part of Decursive.
     
-    Decursive (v 2.4.2_beta_6-12-g708f71e) add-on for World of Warcraft UI
+    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
     Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/?to=decursive.php )
 
     This is the continued work of the original Decursive (v1.9.4) by Quu
@@ -27,23 +27,40 @@
 -------------------------------------------------------------------------------
 
 --[=[
---			YOUR ATTENTION PLEASE
+--                      YOUR ATTENTION PLEASE
 --
---	   !!!!!!! TRANSLATORS TRANSLATORS TRANSLATORS !!!!!!!
+--         !!!!!!! TRANSLATORS TRANSLATORS TRANSLATORS !!!!!!!
 --
 --    Thank you very much for your interest in translating Decursive.
 --    Do not edit those files. Use the localization interface available at the following address:
 --
---	################################################################
---	#  http://wow.curseforge.com/projects/decursive/localization/  #
---	################################################################
+--      ################################################################
+--      #  http://wow.curseforge.com/projects/decursive/localization/  #
+--      ################################################################
 --
 --    Your translations made using this interface will be automatically included in the next release.
 --
 --]=]
 
+-- big ugly scary fatal error message display function {{{
+if not DcrFatalError then
+-- the beautiful error popup : {{{ -
+StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
+    text = "|cFFFF0000Decursive Error:|r\n%s",
+    button1 = "OK",
+    OnAccept = function()
+        return false;
+    end,
+    timeout = 0,
+    whileDead = 1,
+    hideOnEscape = 1,
+    showAlert = 1,
+    }; -- }}}
+DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
+end
+-- }}}
 if not DcrLoadedFiles or not DcrLoadedFiles["enUS.lua"] then
-    if not DcrCorrupted then message("Decursive installation is corrupted! (enUS.lua not loaded)"); end;
+    if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (enUS.lua not loaded)"); end;
     DcrCorrupted = true;
     return;
 end
@@ -51,17 +68,17 @@ end
 local L = LibStub("AceLocale-3.0"):NewLocale("Decursive", "zhCN");
 
 if not L then
-    DcrLoadedFiles["zhCN.lua"] = "2.4.2_beta_6-12-g708f71e";
+    DcrLoadedFiles["zhCN.lua"] = "2.4.5-3-g6a02387";
     return;
 end;
 
 L["ABOLISH_CHECK"] = "在施法前检测是否需要净化"
-L["ABSENT"] = "不存在 (%s)"
-L["AFFLICTEDBY"] = "受 %s 影响"
-L["ALT"] = "ALt"
-L["AMOUNT_AFFLIC"] = "实时列表显示人数: "
-L["ANCHOR"] = "一键驱散 文字定位点"
-L["BINDING_NAME_DCRMUFSHOWHIDE"] = "显示或隐藏微单元面板(MUF)"
+L["ABSENT"] = "不存在 （%s）"
+L["AFFLICTEDBY"] = "受%s影响"
+L["ALT"] = "Alt"
+L["AMOUNT_AFFLIC"] = "实时列表显示人数："
+L["ANCHOR"] = "Decursive 文字定位点"
+L["BINDING_NAME_DCRMUFSHOWHIDE"] = "显示或隐藏微单元面板（MUF）"
 L["BINDING_NAME_DCRPRADD"] = "将目标加入优先列表"
 L["BINDING_NAME_DCRPRCLEAR"] = "清空优先列表"
 L["BINDING_NAME_DCRPRLIST"] = "显示优先列表明细条目"
@@ -81,30 +98,39 @@ L["CLEAR_SKIP"] = "C"
 L["COLORALERT"] = "预警颜色"
 L["COLORCHRONOS"] = "秒表"
 L["COLORCHRONOS_DESC"] = "设置秒表颜色"
-L["COLORSTATUS"] = "设定当玩家状态是'%s'时微单元面板(MUF)的颜色"
+L["COLORSTATUS"] = "设定当玩家状态是'%s'时微单元面板（MUF）的颜色"
 L["CTRL"] = "Ctrl"
 L["CURE_PETS"] = "检测并净化宠物"
 L["CURSE"] = "诅咒"
-L["DEBUG_REPORT_HEADER"] = [=[|cFF11FF33请报告此窗口的内容给 Archarodim@teaser.fr|r
+L["DEBUG_REPORT_HEADER"] = [=[|cFF11FF33请报告此窗口的内容给 Archarodim+DcrReport@teaser.fr|r
 |cFF009999（使用 CTRL+A 选择所有 CTRL+C 复制文本到剪切板）|r
-如果发现 Decursive 任何奇怪的行为也一并报告。
-
-]=]
+如果发现 Decursive 任何奇怪的行为也一并报告。]=]
 L["DECURSIVE_DEBUG_REPORT"] = "**** |cFFFF0000Decursive 除错报告|r ****"
 L["DECURSIVE_DEBUG_REPORT_NOTIFY"] = "一个除错报告可用！输入 |cFFFF0000/dcr report|r 查看"
 L["DECURSIVE_DEBUG_REPORT_SHOW"] = "除错报告可用！"
 L["DECURSIVE_DEBUG_REPORT_SHOW_DESC"] = "显示作者需要看到的除错报告…"
-L["DEFAULT_MACROKEY"] = "NONE"
+L["DEFAULT_MACROKEY"] = "`"
+L["DEV_VERSION_ALERT"] = [=[您正在使用的是开发版本的 Decursive 。
+
+如果不想参加测试新功能与修复，得到游戏中的除错报告，发送问题给作者之后“不要使用此版本”并从 Curse.com 下载最新的“稳定”版本。
+
+这条消息只将在版本更新中显示一次
+
+使用开发版本 Decursive 的玩家开始游戏显示此提示。]=]
+L["DEV_VERSION_EXPIRED"] = [=[此开发版 Decursive 已过期。
+请从 CURSE.COM 下载最新的开发版或使用当前稳定版。
+谢谢！ ^_^
+关于：当用户使用过期的开发版 Decursive 登录时每次显示。]=]
 L["DISABLEWARNING"] = [=[Decursive 已被禁用！
 
-要重新启用，输入 |cFFFFAA44/DCR STANDBY|r]=]
+要重新启用，输入 |cFFFFAA44/DCR ENABLE|r]=]
 L["DISEASE"] = "疾病"
 L["DONOT_BL_PRIO"] = "不将优先列表中的玩家加入黑名单"
 L["FAILEDCAST"] = [=[|cFF22FFFF%s %s|r |cFFAA0000未能施放于|r %s
 |cFF00AAAA%s|r]=]
 L["FOCUSUNIT"] = "设为焦点"
-L["FUBARMENU"] = "Fubar选项"
-L["FUBARMENU_DESC"] = "Fubar的相关设定"
+L["FUBARMENU"] = "FuBar 选项"
+L["FUBARMENU_DESC"] = "FuBar 的相关设定"
 L["GLOR1"] = "纪念 Glorfindal"
 L["GLOR2"] = "献给匆匆离我们而去的 Bertrand；他将永远被我们所铭记。"
 L["GLOR3"] = "纪念 Bertrand（１９６９－２００７）"
@@ -114,7 +140,7 @@ L["HANDLEHELP"] = "拖拽移动 MUF"
 L["HIDE_LIVELIST"] = "隐藏实时列表"
 L["HIDE_MAIN"] = "隐藏状态条"
 L["HLP_LEFTCLICK"] = "鼠标左键"
-L["HLP_LL_ONCLICK_TEXT"] = "由于BLZ禁用函数的缘故，点击实时列表已经不能驱散负面效果了"
+L["HLP_LL_ONCLICK_TEXT"] = "由于暴雪禁用函数的缘故，点击实时列表已经不能驱散负面效果了"
 L["HLP_MIDDLECLICK"] = "鼠标中键"
 L["HLP_NOTHINGTOCURE"] = "没有可处理的负面效果！"
 L["HLP_RIGHTCLICK"] = "鼠标右键"
@@ -144,14 +170,14 @@ L["OPT_ADDDEBUFFFHIST"] = "新增一个最近受到的负面效果"
 L["OPT_ADDDEBUFFFHIST_DESC"] = "从历史记录中新增一个负面效果"
 L["OPT_ADDDEBUFF_USAGE"] = "<负面效果名称>"
 L["OPT_ADVDISP"] = "高级显示选项"
-L["OPT_ADVDISP_DESC"] = "允许分别设置面板和边框的透明度，以及MUF的间距。"
-L["OPT_AFFLICTEDBYSKIPPED"] = "%s 受到 %s 的影响，但将被忽略。"
+L["OPT_ADVDISP_DESC"] = "允许分别设置面板和边框的透明度，以及 MUF 的间距。"
+L["OPT_AFFLICTEDBYSKIPPED"] = "%s受到%s的影响，但将被忽略。"
 L["OPT_ALWAYSIGNORE"] = "不在战斗状态时也忽略"
 L["OPT_ALWAYSIGNORE_DESC"] = "选中后不在状态时此负面效果也会被忽略。"
 L["OPT_AMOUNT_AFFLIC_DESC"] = "设置实时列表显示的最大玩家数目。"
 L["OPT_ANCHOR_DESC"] = "设置自定义信息面板的定位点。"
 L["OPT_AUTOHIDEMFS"] = "自动隐藏"
-L["OPT_AUTOHIDEMFS_DESC"] = "选择何时自动隐藏微单元面板(MUF)"
+L["OPT_AUTOHIDEMFS_DESC"] = "选择何时自动隐藏微单元面板（MUF）"
 L["OPT_BLACKLENTGH_DESC"] = "设置被暂时加入黑名单的玩家在名单中停留的时间。"
 L["OPT_BORDERTRANSP"] = "边框透明度"
 L["OPT_BORDERTRANSP_DESC"] = "设置边框的透明度。"
@@ -164,11 +190,22 @@ L["OPT_CREATE_VIRTUAL_DEBUFF_DESC"] = "让你看看出现负面效果时的界�
 L["OPT_CUREPETS_DESC"] = "宠物也会被检查和净化。"
 L["OPT_CURINGOPTIONS"] = "净化选项"
 L["OPT_CURINGOPTIONS_DESC"] = "关于净化过程的选项设置。"
+L["OPT_CURINGOPTIONS_EXPLANATION"] = [=[
+选择你想要治疗的伤害类型，未经检查的类型将被 Decursive 完全忽略。
+
+绿色数字确定优先的伤害。这一优先事项将影响几方面：
+- 如果一个玩家获得许多类型的减益效果，Decursive 将优先显示。
+- 鼠标按钮点击将治疗减益（第一法术是左键点击，第二法术是右键点击，等等…）
+
+所有这一切的说明文档（请见）：
+http://www.wowace.com/addons/decursive/]=]
 L["OPT_CURINGORDEROPTIONS"] = "净化顺序设置"
 L["OPT_CURSECHECK_DESC"] = "选中后你将可以查看和净化受到诅咒效果影响的玩家。"
 L["OPT_DEBCHECKEDBYDEF"] = [=[
 
-默认被选中]=]
+默认被选中
+
+]=]
 L["OPT_DEBUFFENTRY_DESC"] = "选择在战斗中哪些受到此负面效果影响的职业将被忽略。"
 L["OPT_DEBUFFFILTER"] = "负面效果过滤"
 L["OPT_DEBUFFFILTER_DESC"] = "根据名称和职业选择在战斗中要过滤掉的负面效果"
@@ -177,15 +214,19 @@ L["OPT_DISABLEMACROCREATION_DESC"] = "Decursive 宏将不再创建和保留"
 L["OPT_DISEASECHECK_DESC"] = "选中后你将可以查看和净化受到疾病效果影响的玩家。"
 L["OPT_DISPLAYOPTIONS"] = "显示选项"
 L["OPT_DONOTBLPRIO_DESC"] = "优先列表中的玩家不会被加入黑名单。"
+L["OPT_ENABLEDEBUG"] = "启用除错"
+L["OPT_ENABLEDEBUG_DESC"] = "启用除错输出"
+L["OPT_FILTEROUTCLASSES_FOR_X"] = "在战斗中指定的职业%q将被忽略。"
+L["OPT_GENERAL"] = "一般选项"
 L["OPT_GROWDIRECTION"] = "反向显示 MUF"
 L["OPT_GROWDIRECTION_DESC"] = "MUF将从下向上显示。"
 L["OPT_HIDELIVELIST_DESC"] = "显示所有受到负面效果影响的玩家列表。"
 L["OPT_HIDEMFS_GROUP"] = "单人/小队"
-L["OPT_HIDEMFS_GROUP_DESC"] = "不在团队中时隐藏微单元面板(MUF)"
+L["OPT_HIDEMFS_GROUP_DESC"] = "不在团队中时隐藏微单元面板（MUF）"
 L["OPT_HIDEMFS_NEVER"] = "从不"
 L["OPT_HIDEMFS_NEVER_DESC"] = "从不隐藏"
 L["OPT_HIDEMFS_SOLO"] = "单人"
-L["OPT_HIDEMFS_SOLO_DESC"] = "在没有组队或者团队时隐藏微单元面板(MUF)"
+L["OPT_HIDEMFS_SOLO_DESC"] = "在没有组队或者团队时隐藏微单元面板（MUF）"
 L["OPT_IGNORESTEALTHED_DESC"] = "处于潜行状态的玩家会被忽略。"
 L["OPTION_MENU"] = "选项设置"
 L["OPT_LIVELIST"] = "实时列表"
@@ -201,10 +242,10 @@ L["OPT_MACROBIND_DESC"] = [=[绑定一键驱散宏的按键。
 
 按你想設定的按键后按 'Enter' 键保存设置(鼠标需要移动到编辑区域之外)]=]
 L["OPT_MACROOPTIONS"] = "宏选项"
-L["OPT_MACROOPTIONS_DESC"] = "有关Decursive创建的宏的选项设置"
+L["OPT_MACROOPTIONS_DESC"] = "有关 Decursive 创建的宏的选项设置"
 L["OPT_MAGICCHARMEDCHECK_DESC"] = "选中后你将可以查看和净化受到魔法诱惑效果影响的玩家。"
 L["OPT_MAGICCHECK_DESC"] = "选中后你将可以查看和净化受到不良魔法效果影响的玩家。"
-L["OPT_MAXMFS"] = "最大MUF数"
+L["OPT_MAXMFS"] = "最大单位数"
 L["OPT_MAXMFS_DESC"] = "设置在屏幕上显示的MUF的个数。"
 L["OPT_MESSAGES"] = "信息设置"
 L["OPT_MESSAGES_DESC"] = "关于提示信息的选项设置。"
@@ -216,11 +257,11 @@ L["OPT_MFREFRESHRATE_DESC"] = "每两次刷新之间的时间间隔"
 L["OPT_MFREFRESHSPEED"] = "刷新速度"
 L["OPT_MFREFRESHSPEED_DESC"] = "设置每次刷新多少个MUF。"
 L["OPT_MFSCALE"] = "MUF 缩放比例"
-L["OPT_MFSCALE_DESC"] = "设置微单元面板(MUF)的大小。"
-L["OPT_MFSETTINGS"] = "微单元面板(MUF) 选项"
-L["OPT_MFSETTINGS_DESC"] = "关于微单元面板(MUF)的选项设置。"
+L["OPT_MFSCALE_DESC"] = "设置微单元面板（MUF）的大小。"
+L["OPT_MFSETTINGS"] = "微单元面板（MUF）选项"
+L["OPT_MFSETTINGS_DESC"] = "关于微单元面板（MUF）的选项设置。"
 L["OPT_MUFSCOLORS"] = "颜色"
-L["OPT_MUFSCOLORS_DESC"] = "更改关于微单元面板(MUF)的颜色"
+L["OPT_MUFSCOLORS_DESC"] = "更改关于微单元面板（MUF）的颜色"
 L["OPT_NOKEYWARN"] = "没有映射按键"
 L["OPT_NOKEYWARN_DESC"] = "没有映射按键"
 L["OPT_PLAYSOUND_DESC"] = "有玩家受到负面效果影响时播放声音提示。"
@@ -228,12 +269,13 @@ L["OPT_POISONCHECK_DESC"] = "选中后你将可以查看和净化受到中毒效
 L["OPT_PRINT_CUSTOM_DESC"] = "提示信息将显示在自定义聊天窗口中。"
 L["OPT_PRINT_ERRORS_DESC"] = "错误信息将被显示。"
 L["OPT_PROFILERESET"] = "正在重置选项设置方案……"
-L["OPT_RANDOMORDER_DESC"] = "随机净化玩家(不推荐使用)。"
+L["OPT_RANDOMORDER_DESC"] = "随机净化玩家（不推荐使用）。"
 L["OPT_READDDEFAULTSD"] = "重新加入缺省负面效果"
 L["OPT_READDDEFAULTSD_DESC1"] = [=[向列表中加入所有缺失的默认负面效果。
 你的自定义项目不会丢失]=]
 L["OPT_READDDEFAULTSD_DESC2"] = "所有缺省负面效果都已加入列表。"
-L["OPT_REMOVESKDEBCONF"] = "你确定要将“%s”从不良状态忽略列表中删除吗？"
+L["OPT_REMOVESKDEBCONF"] = [=[你确定要将“%s”
+从不良状态忽略列表中删除吗？]=]
 L["OPT_REMOVETHISDEBUFF"] = "删除"
 L["OPT_REMOVETHISDEBUFF_DESC"] = "从忽略列表中删除“%s”。"
 L["OPT_RESETDEBUFF"] = "重置"
@@ -246,7 +288,7 @@ L["OPT_RESTPROFILECONF"] = "你确定要将选项设置方案“(%s) %s”恢复
 L["OPT_REVERSE_LIVELIST_DESC"] = "实时列表将从下往上显示。"
 L["OPT_SCANLENGTH_DESC"] = "设置实时检测的时间间隔。"
 L["OPT_SHOWBORDER"] = "显示职业彩色边框"
-L["OPT_SHOWBORDER_DESC"] = "MUF边框将会显示出代表该玩家职业的颜色。"
+L["OPT_SHOWBORDER_DESC"] = "MUF 边框将会显示出代表该玩家职业的颜色。"
 L["OPT_SHOWCHRONO"] = "显示计时"
 L["OPT_SHOWCHRONO_DESC"] = "显示单位受到不良效果的时间"
 L["OPT_SHOWHELP"] = "显示帮助信息"
@@ -255,16 +297,18 @@ L["OPT_SHOWMFS"] = "在屏幕上显示 MUF"
 L["OPT_SHOWMFS_DESC"] = "如果你要打地鼠就必須选择这项。"
 L["OPT_SHOWMINIMAPICON"] = "迷你地图图标"
 L["OPT_SHOWMINIMAPICON_DESC"] = "开启或关闭迷你地图图标。"
-L["OPT_SHOWTOOLTIP_DESC"] = "在实时列表以及微单元面板(MUF)上显示信息提示。"
-L["OPT_STICKTORIGHT"] = "将微单元面板(MUF)向右对齐"
-L["OPT_STICKTORIGHT_DESC"] = "这个选项将会使微单元面板(MUF)向右对齐"
+L["OPT_SHOW_STEALTH_STATUS"] = "显示潜行状态"
+L["OPT_SHOW_STEALTH_STATUS_DESC"] = "当玩家前行时，他的 MUF 将有一个特殊的颜色"
+L["OPT_SHOWTOOLTIP_DESC"] = "在实时列表以及微单元面板（MUF）上显示信息提示。"
+L["OPT_STICKTORIGHT"] = "将微单元面板（MUF）向右对齐"
+L["OPT_STICKTORIGHT_DESC"] = "这个选项将会使微单元面板（MUF）向右对齐"
 L["OPT_TIECENTERANDBORDER"] = "绑定面板和边框的透明度"
 L["OPT_TIECENTERANDBORDER_OPT"] = "选中时边框的透明度为面板的一半。"
 L["OPT_TIE_LIVELIST_DESC"] = "实时列表将和状态条一起 显示/隐藏。"
 L["OPT_TIEXYSPACING"] = "绑定水平和垂直间距。"
-L["OPT_TIEXYSPACING_DESC"] = "MUF之间的水平和垂直间距相同。"
-L["OPT_UNITPERLINES"] = "每行MUF数"
-L["OPT_UNITPERLINES_DESC"] = "设置每行最多可显示MUF的个数。"
+L["OPT_TIEXYSPACING_DESC"] = "MUF 之间的水平和垂直间距相同。"
+L["OPT_UNITPERLINES"] = "每行单位数"
+L["OPT_UNITPERLINES_DESC"] = "设置每行最多可显示单元面板（MUF）的个数。"
 L["OPT_USERDEBUFF"] = "该负面效果不是<一键驱散>预设的效果之一"
 L["OPT_XSPACING"] = "水平距离"
 L["OPT_XSPACING_DESC"] = "设置 MUF 间的水平距离。"
@@ -281,19 +325,19 @@ L["PRIORITY_LIST"] = "设置 优先列表"
 L["PRIORITY_SHOW"] = "P"
 L["RANDOM_ORDER"] = "随机净化玩家"
 L["REVERSE_LIVELIST"] = "反向显示实时列表"
-L["SCAN_LENGTH"] = "实时检测时间间隔（秒）: "
+L["SCAN_LENGTH"] = "实时检测时间间隔（秒）："
 L["SHIFT"] = "Shift"
 L["SHOW_MSG"] = "如果需要显示状态条，请输入 /dcrshow。"
 L["SHOW_TOOLTIP"] = "在实时列表中显示信息提示"
-L["SKIP_LIST_STR"] = "设置 忽略列表"
+L["SKIP_LIST_STR"] = "Decursive 忽略列表"
 L["SKIP_SHOW"] = "S"
-L["SPELL_FOUND"] = "找到 %s 法术。"
+L["SPELL_FOUND"] = "找到%s法术！"
 L["STEALTHED"] = "已潜行"
 L["STR_CLOSE"] = "关闭"
-L["STR_DCR_PRIO"] = "优先列表"
-L["STR_DCR_SKIP"] = "忽略列表"
+L["STR_DCR_PRIO"] = "Decursive 优先"
+L["STR_DCR_SKIP"] = "Decursive 忽略"
 L["STR_GROUP"] = "小队"
-L["STR_OPTIONS"] = "设置选项"
+L["STR_OPTIONS"] = "Decursive 选项"
 L["STR_OTHER"] = "其他"
 L["STR_POP"] = "快速添加列表"
 L["STR_QUICK_POP"] = "快速添加器"
@@ -301,8 +345,8 @@ L["SUCCESSCAST"] = "%s %s|cFF00AA00成功施放于|r|cFF22FFFF %s|r。"
 L["TARGETUNIT"] = "设为目标"
 L["TIE_LIVELIST"] = "根据状态条是否可见 显示/隐藏 实时列表"
 L["TOOFAR"] = "太远"
-L["UNITSTATUS"] = "玩家状态: "
+L["UNITSTATUS"] = "玩家状态："
 
 
 
-DcrLoadedFiles["zhCN.lua"] = "2.4.2_beta_6-12-g708f71e";
+DcrLoadedFiles["zhCN.lua"] = "2.4.5-3-g6a02387";

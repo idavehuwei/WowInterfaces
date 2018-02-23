@@ -5,6 +5,8 @@ local OPTIONS_FARCLIP_MAX = 1277;
 
 local VIDEO_OPTIONS_CUSTOM_QUALITY = 6;
 
+local VIDEO_OPTIONS_COMPARISON_EPSILON = 0.000001;
+
 
 -- [[ Generic Video Options Panel ]] --
 
@@ -234,6 +236,7 @@ function VideoOptionsResolutionPanelResolutionDropDown_OnClick(self)
 	else
 		dropdown.newValue = value;
 	end
+	VideoOptionsFrameApply:Enable();
 end
 
 function VideoOptionsResolutionPanelRefreshDropDown_OnLoad(self)
@@ -305,6 +308,7 @@ function VideoOptionsResolutionPanelRefreshDropDown_OnClick(self)
 	else
 		dropdown.newValue = value;
 	end
+	VideoOptionsFrameApply:Enable();
 end
 
 function VideoOptionsResolutionPanelMultiSampleDropDown_OnLoad(self)
@@ -370,6 +374,7 @@ function VideoOptionsResolutionPanelMultiSampleDropDown_OnClick(self)
 	else
 		dropdown.newValue = value;
 	end
+	VideoOptionsFrameApply:Enable();
 end
 
 
@@ -485,7 +490,12 @@ function VideoOptionsEffectsPanel_GetVideoQuality ()
 					break;
 				end
 			elseif ( control.GetValue ) then
-				if ( control:GetValue() ~= value ) then
+				if ( not (abs(control:GetValue() - value) <= VIDEO_OPTIONS_COMPARISON_EPSILON) ) then
+					-- you may have been expecting ( control:GetValue() ~= value ) but here's why we can't use that:
+					-- 1) floating point error: if we set a value to 0.4 and the machine's floating point error results in the value being 0.40000000596046 instead,
+					--    we want those two values to be considered equal
+					-- 2) NaN/IND numbers: if for whatever reason a control gives us an NaN or IND number, any comparisons with those numbers will evaluate to false,
+					--    so we phrase the comparison inversely so NaN/IND comparisons result in a mismatch
 					mismatch = true;
 					break;
 				end
@@ -524,8 +534,10 @@ function VideoOptionsEffectsPanelSlider_OnValueChanged (self, value)
 	self.newValue = value;
 	if(self:GetParent():IsVisible()) then
 		VideoOptionsEffectsPanel_UpdateVideoQuality();
+		VideoOptionsFrameApply:Enable();
 	end
 end
+
 function VideoOptionsEffectsPanel_FixupQualityLevels ()
 	-- set the lowest and highest
 	for quality, controls in ipairs(GraphicsQualityLevels) do

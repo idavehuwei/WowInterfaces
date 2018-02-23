@@ -75,6 +75,9 @@ COMBAT_TEXT_TYPE_INFO["ENTERING_COMBAT"] = {r = 1, g = 0.1, b = 0.1, var = "COMB
 COMBAT_TEXT_TYPE_INFO["LEAVING_COMBAT"] = {r = 1, g = 0.1, b = 0.1, var = "COMBAT_TEXT_SHOW_COMBAT_STATE"};
 COMBAT_TEXT_TYPE_INFO["COMBO_POINTS"] = {r = 0.1, g = 0.1, b = 1, var = "COMBAT_TEXT_SHOW_COMBO_POINTS"};
 COMBAT_TEXT_TYPE_INFO["RUNE"] = {r = 0.1, g = 0.1, b = 1, var = "COMBAT_TEXT_SHOW_ENERGIZE"};
+COMBAT_TEXT_TYPE_INFO["PERIODIC_HEAL_ABSORB"] = {r = 0.1, g = 1, b = 0.1, show = 1};
+COMBAT_TEXT_TYPE_INFO["HEAL_CRIT_ABSORB"] = {r = 0.1, g = 1, b = 0.1, show = 1};
+COMBAT_TEXT_TYPE_INFO["HEAL_ABSORB"] = {r = 0.1, g = 1, b = 0.1, show = 1};
 
 COMBAT_TEXT_RUNE = {};
 COMBAT_TEXT_RUNE[1] = COMBAT_TEXT_RUNE_BLOOD;
@@ -187,7 +190,12 @@ function CombatText_OnEvent(self, event, ...)
 	end
 	-- See if we should display the message or not
 	if ( not info.show ) then
-		return;
+		-- When Resists aren't being shown, partial resists should display as Damage
+		if (info.var == "COMBAT_TEXT_SHOW_RESISTANCES" and arg3) then
+			messageType = "DAMAGE";
+		else
+			return;
+		end
 	end
 
 	local isStaggered = info.isStaggered;
@@ -197,6 +205,9 @@ function CombatText_OnEvent(self, event, ...)
 		displayType = "crit";
 		message = "-"..data;
 	elseif ( messageType == "DAMAGE" or messageType == "SPELL_DAMAGE" ) then
+		if (data == 0) then
+			return
+		end
 		message = "-"..data;
 	elseif ( messageType == "SPELL_CAST" ) then
 		message = "<"..data..">";
@@ -212,12 +223,25 @@ function CombatText_OnEvent(self, event, ...)
 		else
 			message = "+"..arg3;
 		end
+	elseif ( messageType == "HEAL_ABSORB" or messageType == "PERIODIC_HEAL_ABSORB") then
+		if ( COMBAT_TEXT_SHOW_FRIENDLY_NAMES == "1" and messageType == "HEAL_ABSORB" and UnitName(self.unit) ~= data ) then
+			message = "+"..arg3.." ["..data.."] "..format(ABSORB_TRAILER, arg4);
+		else
+			message = "+"..arg3.." "..format(ABSORB_TRAILER, arg4);
+		end
 	elseif ( messageType == "HEAL_CRIT" ) then
 		displayType = "crit";
 		if ( COMBAT_TEXT_SHOW_FRIENDLY_NAMES == "1" and UnitName(self.unit) ~= data ) then
 			message = "+"..arg3.." ["..data.."]";
 		else
 			message = "+"..arg3;
+		end
+	elseif ( messageType == "HEAL_CRIT_ABSORB" ) then
+		displayType = "crit";
+		if ( COMBAT_TEXT_SHOW_FRIENDLY_NAMES == "1" and UnitName(self.unit) ~= data ) then
+			message = "+"..arg3.." ["..data.."] "..format(ABSORB_TRAILER, arg4);
+		else
+			message = "+"..arg3.." "..format(ABSORB_TRAILER, arg4);
 		end
 	elseif ( messageType == "ENERGIZE" or messageType == "PERIODIC_ENERGIZE") then
 		if ( tonumber(data) > 0 ) then
@@ -237,39 +261,39 @@ function CombatText_OnEvent(self, event, ...)
 		end
 		message = "("..data.." "..arg3..")";
 	elseif ( messageType == "SPELL_MISS" ) then
-		message = MISS;
+		message = COMBAT_TEXT_MISS;
 	elseif ( messageType == "SPELL_DODGE" ) then
-		message = DODGE;
+		message = COMBAT_TEXT_DODGE;
 	elseif ( messageType == "SPELL_PARRY" ) then
-		message = PARRY;
+		message = COMBAT_TEXT_PARRY;
 	elseif ( messageType == "SPELL_EVADE" ) then
-		message = EVADE;
+		message = COMBAT_TEXT_EVADE;
 	elseif ( messageType == "SPELL_IMMUNE" ) then
-		message = IMMUNE;
+		message = COMBAT_TEXT_IMMUNE;
 	elseif ( messageType == "SPELL_DEFLECT" ) then
-		message = DEFLECT;
+		message = COMBAT_TEXT_DEFLECT;
 	elseif ( messageType == "SPELL_REFLECT" ) then
-		message = REFLECT;
-	elseif ( messageType == "BLOCK" or messageType == "SPELL_BLOCKED" ) then
+		message = COMBAT_TEXT_REFLECT;
+	elseif ( messageType == "BLOCK" or messageType == "SPELL_BLOCK" ) then
 		if ( arg3 ) then
 			-- Partial block
-			message = data.." "..format(BLOCK_TRAILER, arg3);
+			message = "-"..data.." "..format(BLOCK_TRAILER, arg3);
 		else
-			message = BLOCK;
+			message = COMBAT_TEXT_BLOCK;
 		end
-	elseif ( messageType == "ABSORB" or messageType == "SPELL_ABSORBED" ) then
-		if ( arg3 ) then
-			-- Partial block
-			message = data.." "..format(ABSORB_TRAILER, arg3);
+	elseif ( messageType == "ABSORB" or messageType == "SPELL_ABSORB" ) then
+		if ( arg3 and data > 0 ) then
+			-- Partial absorb
+			message = "-"..data.." "..format(ABSORB_TRAILER, arg3);
 		else
-			message = ABSORB;
+			message = COMBAT_TEXT_ABSORB;
 		end
 	elseif ( messageType == "RESIST" or messageType == "SPELL_RESIST" ) then
 		if ( arg3 ) then
 			-- Partial resist
-			message = data.." "..format(RESIST_TRAILER, arg3);
+			message = "-"..data.." "..format(RESIST_TRAILER, arg3);
 		else
-			message = RESIST;
+			message = COMBAT_TEXT_RESIST;
 		end
 	elseif ( messageType == "HONOR_GAINED" ) then
 		if ( tonumber(data) > 0 ) then
@@ -303,9 +327,9 @@ function CombatText_OnEvent(self, event, ...)
 			message = nil;
 		end
 	else 
-		message = getglobal("COMBAT_TEXT_"..messageType);
+		message = _G["COMBAT_TEXT_"..messageType];
 		if ( not message ) then
-			message = getglobal(messageType);
+			message = _G[messageType];
 		end
 	end
 
@@ -465,7 +489,7 @@ end
 function CombatText_GetAvailableString()
 	local string;
 	for i=1, NUM_COMBAT_TEXT_LINES do
-		string = getglobal("CombatText"..i);
+		string = _G["CombatText"..i];
 		if ( not string:IsShown() ) then
 			return string;
 		end 
@@ -482,7 +506,7 @@ end
 function CombatText_ClearAnimationList()
 	local string;
 	for i=1, NUM_COMBAT_TEXT_LINES do
-		string = getglobal("CombatText"..i);
+		string = _G["CombatText"..i];
 		string:SetAlpha(0);
 		string:Hide();
 		string:SetPoint("TOP", WorldFrame, "BOTTOM", COMBAT_TEXT_LOCATIONS.startX, COMBAT_TEXT_LOCATIONS.startY);
@@ -533,7 +557,7 @@ function CombatText_UpdateDisplayedMessages()
 	-- Update shown messages
 	for index, value in pairs(COMBAT_TEXT_TYPE_INFO) do
 		if ( value.var ) then
-			if ( getglobal(value.var) == "1" ) then
+			if ( _G[value.var] == "1" ) then
 				value.show = 1;
 			else
 				value.show = nil;

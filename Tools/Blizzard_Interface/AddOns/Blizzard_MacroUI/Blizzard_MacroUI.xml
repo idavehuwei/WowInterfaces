@@ -14,12 +14,26 @@
 			</OnDragStart>
 		</Scripts>
 	</CheckButton>
-	<CheckButton name="MacroPopupButtonTemplate" inherits="PopupButtonTemplate" virtual="true">
+	<CheckButton name="MacroPopupButtonTemplate" inherits="SimplePopupButtonTemplate" virtual="true">
 		<Scripts>
 			<OnClick>
 				MacroPopupButton_OnClick(self, button, down);
 			</OnClick>
 		</Scripts>
+		<NormalTexture name="$parentIcon" nonBlocking="true">
+			<Size>
+				<AbsDimension x="36" y="36"/>
+			</Size>
+			<Anchors>
+				<Anchor point="CENTER">
+					<Offset>
+						<AbsDimension x="0" y="-1"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</NormalTexture>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+		<CheckedTexture alphaMode="ADD" file="Interface\Buttons\CheckButtonHilight"/>
 	</CheckButton>
 	<Frame name="MacroFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
 		<Size>
@@ -272,7 +286,7 @@
 					</Anchor>
 				</Anchors>
 				<ScrollChild>
-					<EditBox name="MacroFrameText" multiLine="true" letters="255" autoFocus="false">
+					<EditBox name="MacroFrameText" multiLine="true" letters="255" autoFocus="false" countInvisibleLetters="true">
 						<Size>
 							<AbsDimension x="286" y="85"/>
 						</Size>
@@ -349,7 +363,7 @@
 				<Scripts>
 					<OnLoad>
 						PanelTemplates_TabResize(self, -15);
-						getglobal(self:GetName().."HighlightTexture"):SetWidth(self:GetTextWidth() + 31);
+						_G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 31);
 					</OnLoad>
 					<OnClick>
 						PanelTemplates_SetTab(MacroFrame, self:GetID());
@@ -371,7 +385,7 @@
 				<Scripts>
 					<OnLoad>
 						self:SetFormattedText(CHARACTER_SPECIFIC_MACROS, UnitName("player"));
-						getglobal(self:GetName().."HighlightTexture"):SetWidth(self:GetTextWidth() + 31);
+						_G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 31);
 						PanelTemplates_TabResize(self, -15, nil, 150);
 					</OnLoad>
 					<OnClick>
@@ -396,10 +410,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						DeleteMacro(MacroFrame.selectedMacro);
-						MacroFrame_OnLoad();
-						MacroFrame_Update();
-						MacroFrameText:ClearFocus();
+						MacroFrame_DeleteMacro();
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -529,7 +540,7 @@
 		<Frames>
 			<EditBox name="MacroPopupEditBox" letters="16" historyLines="0">
 				<Size>
-					<AbsDimension x="200" y="20"/>
+					<AbsDimension x="182" y="20"/>
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
@@ -797,7 +808,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						MacroPopupFrame_CancelEdit()
+						MacroPopupFrame_CancelEdit();
 						PlaySound("gsTitleOptionOK");
 					</OnClick>
 				</Scripts>

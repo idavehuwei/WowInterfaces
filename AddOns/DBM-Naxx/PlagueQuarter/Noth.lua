@@ -1,9 +1,8 @@
-local mod = DBM:NewMod("Noth", "DBM-Naxx", 3)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Noth", "DBM-Naxx", 3)
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 139 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2248 $"):sub(12, -3))
 mod:SetCreatureID(15954)
-mod:SetZone()
 
 mod:RegisterCombat("combat")
 
@@ -11,12 +10,12 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnTeleportNow		= mod:NewAnnounce("WarningTeleportNow", 3, 46573)
-local warnTeleportSoon		= mod:NewAnnounce("WarningTeleportSoon", 1, 46573)
-local warnCurse				= mod:NewAnnounce("WarningCurse", 2, 29213)
+local warnTeleportNow	= mod:NewAnnounce("WarningTeleportNow", 3, 46573)
+local warnTeleportSoon	= mod:NewAnnounce("WarningTeleportSoon", 1, 46573)
+local warnCurse			= mod:NewSpellAnnounce(29213, 2)
 
-local timerTeleport			= mod:NewTimer(90, "TimerTeleport", 46573)
-local timerTeleportBack		= mod:NewTimer(70, "TimerTeleportBack", 46573)
+local timerTeleport		= mod:NewTimer(90, "TimerTeleport", 46573)
+local timerTeleportBack	= mod:NewTimer(70, "TimerTeleportBack", 46573)
 
 local phase = 0
 
@@ -52,8 +51,7 @@ function mod:BackInRoom(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 29213		-- Curse of the Plaguebringer (10)
-	or args.spellId == 54835 then	-- Curse of the Plaguebringer (25)
+	if args:IsSpellID(29213, 54835) then	-- Curse of the Plaguebringer
 		warnCurse:Show()
 	end
 end

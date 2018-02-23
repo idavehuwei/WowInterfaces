@@ -3,7 +3,9 @@ local Graph = LibStub:GetLibrary("LibGraph-2.0")
 
 local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:GetLocale( "Recount" )
-local BC = LibStub("LibBabble-Class-3.0"):GetLookupTable()
+local BC = {} -- = LibStub("LibBabble-Class-3.0"):GetLookupTable()
+
+FillLocalizedClassList(BC, false) -- We are sexist here but not much of a choice, when there is no neutral
 
 -- Elsia: Note, most strings here haven't been localized. Need to grab all button and text labels here and put into localization registration.
 -- Just started with the color selection ones to give an example. See Recount.lua.
@@ -69,7 +71,7 @@ local ClassStrings={
 function me:LBC(Name) -- Allow localization of unit strings via Babble-Class
 	local CName = string.upper(Name)
 	if ClassStrings[CName] then -- Elsia: Only Babble what babble knows
-		return BC[Name]
+		return BC[CName]
 	else
 		return L[Name]
 	end
@@ -1076,7 +1078,7 @@ function me:SetupButtonOptions(parent)
 	
 	theFrame.ReportButton=CreateFrame("CheckButton",nil,theFrame)
 	me:ConfigureCheckbox(theFrame.ReportButton)
-	theFrame.ReportButton:SetPoint("TOPLEFT",theFrame,"TOPLEFT",8,-18-16)
+	theFrame.ReportButton:SetPoint("TOPLEFT",theFrame,"TOPLEFT",8,-15-16)
 	theFrame.ReportButton:SetScript("OnClick",function(this) if this:GetChecked() then this:SetChecked(true); Recount.db.profile.MainWindow.Buttons.ReportButton = true; Recount:SetupMainWindowButtons() else this:SetChecked(false); Recount.db.profile.MainWindow.Buttons.ReportButton = false; Recount:SetupMainWindowButtons() end end)
 
 	theFrame.Report_Icon=theFrame:CreateTexture(nil,"OVERLAY")
@@ -1089,24 +1091,9 @@ function me:SetupButtonOptions(parent)
 	theFrame.Report_Text:SetText(L["Report"])
 	theFrame.Report_Text:SetPoint("LEFT",theFrame.Report_Icon,"RIGHT",2,0)
 
-	theFrame.FileButton=CreateFrame("CheckButton",nil,theFrame)
-	me:ConfigureCheckbox(theFrame.FileButton)
-	theFrame.FileButton:SetPoint("TOP",theFrame.ReportButton,"BOTTOM",0,-2)
-	theFrame.FileButton:SetScript("OnClick",function(this) if this:GetChecked() then this:SetChecked(true); Recount.db.profile.MainWindow.Buttons.FileButton = true; Recount:SetupMainWindowButtons() else this:SetChecked(false); Recount.db.profile.MainWindow.Buttons.FileButton = false; Recount:SetupMainWindowButtons() end end)
-
-	theFrame.File_Icon=theFrame:CreateTexture(nil,"OVERLAY")
-	theFrame.File_Icon:SetWidth(16)
-	theFrame.File_Icon:SetHeight(16)
-	theFrame.File_Icon:SetTexture("Interface\\Buttons\\UI-GuildButton-PublicNote-Up.blp")
-	theFrame.File_Icon:SetPoint("LEFT",theFrame.FileButton,"RIGHT",2,0)
-
-	theFrame.File_Text=theFrame:CreateFontString(nil,"OVERLAY","GameFontNormal")
-	theFrame.File_Text:SetText(L["File"])
-	theFrame.File_Text:SetPoint("LEFT",theFrame.File_Icon,"RIGHT",2,0)
-
 	theFrame.ConfigButton=CreateFrame("CheckButton",nil,theFrame)
 	me:ConfigureCheckbox(theFrame.ConfigButton)
-	theFrame.ConfigButton:SetPoint("TOPLEFT",theFrame,"TOPLEFT",100,-18-16)
+	theFrame.ConfigButton:SetPoint("TOPLEFT",theFrame,"TOPLEFT",100,-15-16)
 	theFrame.ConfigButton:SetScript("OnClick",function(this) if this:GetChecked() then this:SetChecked(true); Recount.db.profile.MainWindow.Buttons.ConfigButton = true; Recount:SetupMainWindowButtons() else this:SetChecked(false); Recount.db.profile.MainWindow.Buttons.ConfigButton = false; Recount:SetupMainWindowButtons() end end)
 
 	theFrame.Config_Icon=theFrame:CreateTexture(nil,"OVERLAY")
@@ -1119,9 +1106,24 @@ function me:SetupButtonOptions(parent)
 	theFrame.Config_Text:SetText(L["Config"])
 	theFrame.Config_Text:SetPoint("LEFT",theFrame.Config_Icon,"RIGHT",2,0)
 
+	theFrame.FileButton=CreateFrame("CheckButton",nil,theFrame)
+	me:ConfigureCheckbox(theFrame.FileButton)
+	theFrame.FileButton:SetPoint("TOP",theFrame.ReportButton,"BOTTOM",0,3)
+	theFrame.FileButton:SetScript("OnClick",function(this) if this:GetChecked() then this:SetChecked(true); Recount.db.profile.MainWindow.Buttons.FileButton = true; Recount:SetupMainWindowButtons() else this:SetChecked(false); Recount.db.profile.MainWindow.Buttons.FileButton = false; Recount:SetupMainWindowButtons() end end)
+
+	theFrame.File_Icon=theFrame:CreateTexture(nil,"OVERLAY")
+	theFrame.File_Icon:SetWidth(16)
+	theFrame.File_Icon:SetHeight(16)
+	theFrame.File_Icon:SetTexture("Interface\\Buttons\\UI-GuildButton-PublicNote-Up.blp")
+	theFrame.File_Icon:SetPoint("LEFT",theFrame.FileButton,"RIGHT",2,0)
+
+	theFrame.File_Text=theFrame:CreateFontString(nil,"OVERLAY","GameFontNormal")
+	theFrame.File_Text:SetText(L["File"])
+	theFrame.File_Text:SetPoint("LEFT",theFrame.File_Icon,"RIGHT",2,0)
+
 	theFrame.ResetButton=CreateFrame("CheckButton",nil,theFrame)
 	me:ConfigureCheckbox(theFrame.ResetButton)
-	theFrame.ResetButton:SetPoint("TOP",theFrame.ConfigButton,"BOTTOM",0,-2)
+	theFrame.ResetButton:SetPoint("TOP",theFrame.ConfigButton,"BOTTOM",0,3)
 	theFrame.ResetButton:SetScript("OnClick",function(this) if this:GetChecked() then this:SetChecked(true); Recount.db.profile.MainWindow.Buttons.ResetButton = true; Recount:SetupMainWindowButtons() else this:SetChecked(false); Recount.db.profile.MainWindow.Buttons.ResetButton = false; Recount:SetupMainWindowButtons() end end)
 
 	theFrame.Reset_Icon=theFrame:CreateTexture(nil,"OVERLAY")
@@ -1136,7 +1138,7 @@ function me:SetupButtonOptions(parent)
 
 	theFrame.LeftButton=CreateFrame("CheckButton",nil,theFrame) -- Elsia: Added paging icon toggle support
 	me:ConfigureCheckbox(theFrame.LeftButton)
-	theFrame.LeftButton:SetPoint("TOP",theFrame.FileButton,"BOTTOM",0,-2)
+	theFrame.LeftButton:SetPoint("TOP",theFrame.FileButton,"BOTTOM",0,3)
 	theFrame.LeftButton:SetScript("OnClick",function(this) if this:GetChecked() then this:SetChecked(true); Recount.db.profile.MainWindow.Buttons.LeftButton = true; Recount:SetupMainWindowButtons() else this:SetChecked(false); Recount.db.profile.MainWindow.Buttons.LeftButton = false; Recount:SetupMainWindowButtons() end end)
 
 	theFrame.Left_Icon=theFrame:CreateTexture(nil,"OVERLAY")
@@ -1151,7 +1153,7 @@ function me:SetupButtonOptions(parent)
 
 	theFrame.RightButton=CreateFrame("CheckButton",nil,theFrame) -- Elsia: Added paging icon toggle support
 	me:ConfigureCheckbox(theFrame.RightButton)
-	theFrame.RightButton:SetPoint("TOP",theFrame.ResetButton,"BOTTOM",0,-2)
+	theFrame.RightButton:SetPoint("TOP",theFrame.ResetButton,"BOTTOM",0,3)
 	theFrame.RightButton:SetScript("OnClick",function(this) if this:GetChecked() then this:SetChecked(true); Recount.db.profile.MainWindow.Buttons.RightButton = true; Recount:SetupMainWindowButtons() else this:SetChecked(false); Recount.db.profile.MainWindow.Buttons.RightButton = false; Recount:SetupMainWindowButtons() end end)
 
 	theFrame.Right_Icon=theFrame:CreateTexture(nil,"OVERLAY")
@@ -1163,6 +1165,21 @@ function me:SetupButtonOptions(parent)
 	theFrame.Right_Text=theFrame:CreateFontString(nil,"OVERLAY","GameFontNormal")
 	theFrame.Right_Text:SetText(L["Next"])
 	theFrame.Right_Text:SetPoint("LEFT",theFrame.Right_Icon,"RIGHT",2,0)
+
+	theFrame.CloseButton=CreateFrame("CheckButton",nil,theFrame) -- Elsia: Added paging icon toggle support
+	me:ConfigureCheckbox(theFrame.CloseButton)
+	theFrame.CloseButton:SetPoint("TOP",theFrame.LeftButton,"BOTTOM",0,3)
+	theFrame.CloseButton:SetScript("OnClick",function(this) if this:GetChecked() then this:SetChecked(true); Recount.db.profile.MainWindow.Buttons.CloseButton = true; Recount:SetupMainWindowButtons() else this:SetChecked(false); Recount.db.profile.MainWindow.Buttons.CloseButton = false; Recount:SetupMainWindowButtons() end end)
+
+	theFrame.Close_Icon=theFrame:CreateTexture(nil,"OVERLAY")
+	theFrame.Close_Icon:SetWidth(16)
+	theFrame.Close_Icon:SetHeight(16)
+	theFrame.Close_Icon:SetTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Up.blp")
+	theFrame.Close_Icon:SetPoint("LEFT",theFrame.CloseButton,"RIGHT",2,0)
+
+	theFrame.Close_Text=theFrame:CreateFontString(nil,"OVERLAY","GameFontNormal")
+	theFrame.Close_Text:SetText(L["Close"])
+	theFrame.Close_Text:SetPoint("LEFT",theFrame.Close_Icon,"RIGHT",2,0)
 
 	local slider = CreateFrame("Slider", "Recount_ConfigWindow_RowHeight_Slider", theFrame,"OptionsSliderTemplate")
 	theFrame.RowHeightSlider=slider

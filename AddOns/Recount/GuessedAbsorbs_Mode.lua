@@ -8,13 +8,11 @@ if not Recount then return end --  Forget about this if no Recount is present
 
 local Recount = Recount
 
-local RecountGuessedAbsorbs = LibStub("AceAddon-3.0"):NewAddon("RecountGuessedAbsorbs", "AceEvent-3.0", "AceTimer-3.0","AceConsole-3.0")
+local RecountGuessedAbsorbs = Recount:NewModule("RecountGuessedAbsorbs", "AceEvent-3.0", "AceTimer-3.0","AceConsole-3.0")
 RecountGuessedAbsorbs.Version = tonumber(string.sub("$Revision: 17 $", 12, -3))
 
 local L = LibStub("AceLocale-3.0"):GetLocale("Recount")
 --local L = LibStub("AceLocale-3.0"):GetLocale("RecountGuessedAbsorbs")
---local L = LibStub("AceLocale-3.0"):GetLocale("RecountGuessedAbsorbs")
-
 
 local DetailTitles={}
 DetailTitles.GuessedAbsorbed={
@@ -251,7 +249,6 @@ function RecountGuessedAbsorbs:SpellAuraApplied(timestamp, eventtype, srcGUID, s
 			local sourceData=Recount.db2.combatants[srcName]
 			Recount:AddTableDataSum(sourceData,"ShieldedWho",dstName,spellName,1)
 		end
-
 	end
 end
 
@@ -316,8 +313,7 @@ function RecountGuessedAbsorbs:SpellDamage(timestamp, eventtype, srcGUID, srcNam
 		if absorbed then
 			HitType="Absorbed"
 		end--]]
-		if eventtype == "RANGE_DAMAGE" then spellSchool = school end
-
+		if eventtype == "RANGE_DAMAGE" then spellSchool = school end		
 		RecountGuessedAbsorbs:AddAbsorbData(srcName, dstName, spellName, Recount.SpellSchoolName[spellSchool], HitType, amount, resisted, srcGUID, srcFlags, dstGUID, dstFlags, spellId, blocked, absorbed, timestamp)
 	end
 end
@@ -406,7 +402,7 @@ function RecountGuessedAbsorbs:AddAbsorbData(source, victim, ability, element, h
 			Recount:AddTableDataStats(sourceData,"GuessedAbsorbed",spellName,victim,absorbed)
 			-----------------
 			-- Œ¸ ’“≤À„÷Œ¡∆
-			Recount:AddHealData(source, victim, spellName, "Hit", absorbed, 0,srcGUID,srcFlags,dstGUID,dstFlags, minspell, nil);
+			Recount:AddHealData(source, victim, spellName, "Hit", absorbed, 0,dstGUID,dstFlags, dstGUID,dstFlags,minspell, nil);
 		end
 	end
 end

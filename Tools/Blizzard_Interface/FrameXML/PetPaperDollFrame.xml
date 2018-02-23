@@ -199,6 +199,7 @@
 								TextStatusBar_UpdateTextString(self);
 								ShowTextStatusBarText(self);
 							</OnEnter>
+							<OnMinMaxChanged function="TextStatusBar_OnValueChanged"/>
 							<OnLeave function="HideTextStatusBarText"/>
 						</Scripts>
 						<BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
@@ -787,7 +788,7 @@
 						<Anchors>
 							<Anchor point="LEFT" relativeTo="CompanionButton3" relativePoint="RIGHT">
 								<Offset>
-									<AbsDimension x="4" y="0"/>
+									<AbsDimension x="5" y="0"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -805,7 +806,7 @@
 						<Anchors>
 							<Anchor point="LEFT" relativeTo="CompanionButton5" relativePoint="RIGHT">
 								<Offset>
-									<AbsDimension x="4" y="0"/>
+									<AbsDimension x="5" y="0"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -841,7 +842,7 @@
 						<Anchors>
 							<Anchor point="LEFT" relativeTo="CompanionButton9" relativePoint="RIGHT">
 								<Offset>
-									<AbsDimension x="4" y="0"/>
+									<AbsDimension x="5" y="0"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -859,7 +860,7 @@
 						<Anchors>
 							<Anchor point="LEFT" relativeTo="CompanionButton11" relativePoint="RIGHT">
 								<Offset>
-									<AbsDimension x="4" y="0"/>
+									<AbsDimension x="5" y="0"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -922,7 +923,7 @@
 				<Scripts>
 					<OnLoad>
 						PanelTemplates_TabResize(self, 0);
-						getglobal(self:GetName().."HighlightTexture"):SetWidth(self:GetTextWidth() + 31);
+						_G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 31);
 						self:SetFrameLevel(PetPaperDollFrameCompanionFrame:GetFrameLevel()+1);
 					</OnLoad>
 					<OnClick>
@@ -944,7 +945,7 @@
 				<Scripts>
 					<OnLoad>
 						PanelTemplates_TabResize(self, 0);
-						getglobal(self:GetName().."HighlightTexture"):SetWidth(self:GetTextWidth() + 31);
+						_G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 31);
 						self:SetFrameLevel(PetPaperDollFrameCompanionFrame:GetFrameLevel()+1);
 					</OnLoad>
 					<OnClick>
@@ -966,7 +967,7 @@
 				<Scripts>
 					<OnLoad>
 						PanelTemplates_TabResize(self, 0);
-						getglobal(self:GetName().."HighlightTexture"):SetWidth(self:GetTextWidth() + 31);
+						_G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 31);
 						self:SetFrameLevel(PetPaperDollFrameCompanionFrame:GetFrameLevel()+1);
 					</OnLoad>
 					<OnClick>

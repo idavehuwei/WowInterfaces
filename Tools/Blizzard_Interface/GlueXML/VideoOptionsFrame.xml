@@ -18,9 +18,13 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
+					<OnShow>
+						self:Disable();
+					</OnShow>				
 					<OnClick>
 						PlaySound("igMainMenuOptionCheckBoxOn");
 						VideoOptionsFrameOkay_OnClick(self, button, true);
+						self:Disable();
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -56,7 +60,7 @@
 							<AbsDimension x="16" y="8"/>
 						</Offset>
 					</Anchor>
-				</Anchors>
+			</Anchors>
 				<Scripts>
 					<OnClick>
 						PlaySound("igMainMenuOption");

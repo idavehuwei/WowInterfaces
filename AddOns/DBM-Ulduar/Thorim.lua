@@ -1,9 +1,9 @@
-local mod = DBM:NewMod("Thorim", "DBM-Ulduar")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Thorim", "DBM-Ulduar")
+local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1176 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4177 $"):sub(12, -3))
 mod:SetCreatureID(32865)
-mod:SetZone()
+mod:SetUsedIcons(8)
 
 mod:RegisterCombat("yell", L.YellPhase1)
 mod:RegisterKill("yell", L.YellKill)
@@ -15,24 +15,27 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE"
 )
 
-local enrageTimer		= mod:NewEnrageTimer(369)
+local warnPhase2				= mod:NewPhaseAnnounce(2, 1)
+local warnStormhammer			= mod:NewTargetAnnounce(62470, 2)
+local warnLightningCharge		= mod:NewSpellAnnounce(62466, 2)
+local warnUnbalancingStrike		= mod:NewTargetAnnounce(62130, 4)	-- nice blizzard, very new stuff, hmm or not? ^^ aq40 4tw :)
+local warningBomb				= mod:NewTargetAnnounce(62526, 4)
 
-local timerStormhammer		= mod:NewCastTimer(16, 62042)
-local timerLightningCharge 	= mod:NewCDTimer(16, 62466) 
-local timerUnbalancingStrike	= mod:NewCastTimer(21, 62130)
-local timerHardmode		= mod:NewTimer(175, "TimerHardmode", 62042)
+local specWarnOrb				= mod:NewSpecialWarningMove(62017)
 
-local warnPhase2		= mod:NewAnnounce("WarningPhase2", 1)
-local warnStormhammer		= mod:NewAnnounce("WarningStormhammer", 2, 62470)
-local warnLightningCharge	= mod:NewAnnounce("WarningLightningCharge", 2, 62466)
-local warnUnbalancingStrike	= mod:NewAnnounce("UnbalancingStrike", 4, 62130)	-- nice blizzard, very new stuff, hmm or not? ^^ aq40 4tw :)
-local warningBomb		= mod:NewAnnounce("WarningBomb", 4)
+mod:AddBoolOption("AnnounceFails", false, "announce")
 
-local specWarnOrb		= mod:NewSpecialWarning("LightningOrb")
+local enrageTimer				= mod:NewBerserkTimer(369)
+local timerStormhammer			= mod:NewCastTimer(16, 62042)
+local timerLightningCharge	 	= mod:NewCDTimer(16, 62466) 
+local timerUnbalancingStrike	= mod:NewCastTimer(26, 62130)
+local timerHardmode				= mod:NewTimer(175, "TimerHardmode", 62042)
 
-local lastcharge = {} 
+local sndWOP				= mod:NewSound(nil, "SoundWOP", true)
+
 mod:AddBoolOption("RangeFrame")
-mod:AddBoolOption("AnnounceFails", false, "announce") 
+
+local lastcharge				= {} 
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start()
@@ -68,45 +71,49 @@ end
 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62042 then 					-- Storm Hammer
+	if args:IsSpellID(62042) then 					-- Storm Hammer
 		warnStormhammer:Show(args.destName)
 
-	elseif args.spellId == 62130 then				-- Unbalancing Strike
+	elseif args:IsSpellID(62130) then				-- Unbalancing Strike
 		warnUnbalancingStrike:Show(args.destName)
-		
-	elseif args.spellId == 62526 or args.spellId == 62527 then	-- Runic Detonation - missing 10ppl ID
+		if mod:IsTank() or mod:IsHealer() then
+			sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\changemt.mp3")
+		end
+	elseif args:IsSpellID(62526, 62527) then	-- Runic Detonation
 		self:SetIcon(args.destName, 8, 5)
 		warningBomb:Show(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 62042 then 		-- Storm Hammer
+	if args:IsSpellID(62042) then 		-- Storm Hammer
 		timerStormhammer:Schedule(2)
-	elseif args.spellId == 62466 then   	-- Lightning Charge
+	elseif args:IsSpellID(62466) then   	-- Lightning Charge
+		warnLightningCharge:Show()
 		timerLightningCharge:Start()	
-	elseif args.spellId == 62130 then	-- Unbalancing Strike
+	elseif args:IsSpellID(62130) then	-- Unbalancing Strike
 		timerUnbalancingStrike:Start()
 	end
 end
 
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellPhase2 then		-- Bossfight (tank and spank)
+	if msg == L.YellPhase2 and mod:LatencyCheck() then		-- Bossfight (tank and spank)
 		self:SendSync("Phase2")
 	end
 end
 
 local spam = 0
 function mod:SPELL_DAMAGE(args)
-	if args.spellId == 62017 then -- Lightning Shock
+	if args:IsSpellID(62017) then -- Lightning Shock
 		if bit.band(args.destFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0
 		and bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
 		and GetTime() - spam > 5 then
 			spam = GetTime()
 			specWarnOrb:Show()
+			sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\runaway.mp3")
 		end
-	elseif self.Options.AnnounceFails and args.spellId == 62466 and DBM:GetRaidRank() >= 1 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
+	elseif self.Options.AnnounceFails and args:IsSpellID(62466) and DBM:GetRaidRank() >= 1 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
 		lastcharge[args.destName] = (lastcharge[args.destName] or 0) + 1
 		SendChatMessage(L.ChargeOn:format(args.destName), "RAID")
 	end
@@ -120,6 +127,3 @@ function mod:OnSync(event, arg)
 		enrageTimer:Start(300)
 	end
 end
-
-
-

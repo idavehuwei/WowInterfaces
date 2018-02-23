@@ -1,0 +1,33 @@
+BlizzFacade is a small add-on that allows the default interface to be skinned by ButtonFacade. Please note that this project is experimental and may cause minor display issues.
+
+   Project Page: http://www.wowace.com/projects/blizzfacade
+   Forum Thread: http://forums.wowace.com/showthread.php?t=16621
+
+- Options -
+
+* Access the options panel via the /blf slash command or through the Interface Options Window.
+* Buff Frame
+  * Optionally skin the default Buff Frame.
+* Action Bars
+  * Optionally skin each of the following action bars:
+    * Main Bar
+    * Stance Bar
+    * Pet Bar
+    * Multi-Action Bars
+    * Posses Bar
+    * Vehicle Bar
+
+- Installation -
+
+  1. Download the package.
+  2. Extract the package to your "World of Warcraft\Interface\AddOns" directory.
+
+  Note: You must have ButtonFacade installed to use this add-on.
+
+- Feedback -
+
+Please post comments in the BlizzFacade thread listed above or on the project page. For bug reports and suggestions, please post a ticket on the project page.
+
+- Translations -
+
+If you would like to help translate BlizzFacade, please use the localization system on the project page. Special thanks to those that have helped.

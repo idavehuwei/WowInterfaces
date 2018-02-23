@@ -1,5 +1,4 @@
-﻿--修訂日期：2009-08-19
---致謝：恰恰@语风、spippen0
+﻿--最后修訂日期：2011-05-06 by shines, 前一次修訂日期：2011-04-14 by 游云
 
 if GetLocale() == "zhTW" then
 	RaidAlerter_UIName				= "團隊報警系統";
@@ -29,67 +28,70 @@ if GetLocale() == "zhTW" then
 		[8]	= "{頭顱}",		--骷
 	};
 
-	--各種精煉藥劑Buff名稱文本（可局部匹配，但必須唯一）
+	--各種精鍊藥劑Buff名稱文本（可局部匹配，但必須唯一）
 	RaidAlerter_SuperFlask_TEXT = {
-		"精煉藥劑",
-		"撒塔斯",
-		"泰坦",
-		"萃取智慧",
-		"超級能量",
-		"多重抗性",
-		"強襲",
-		"防禦",
-		"法力恢復",
-		"盲目之光",
-		"炫彩驚奇",
-		"純淨死亡",
-		--WotLK精煉藥劑
+		--精鍊藥劑
+--		"撒塔斯",
+--		"泰坦",
+--		"萃取智慧",
+--		"超級能量",
+--		"多重抗性",
+--		"強襲",
+--		"防禦",
+--		"法力恢復",
+--		"盲目之光",
+--		"炫彩驚奇",
+--		"純淨死亡",
+		--WotLK精鍊藥劑
 		"冰霜巨龍",
-		"無盡烈怒",
+		"無盡怒火",
 		"石血",
 		"純淨魔精",
 		"次級強健",
+		"次級抗性精鍊",
+		"北方精鍊",
 	};
 
-	--包含精煉藥劑在內的各種強化藥劑Buff名稱文本（可局部匹配，但必須唯一）
+	--包含精鍊藥劑在內的各種強化藥劑Buff名稱文本（可局部匹配，但必須唯一）
 	RaidAlerter_ForceFlask_TEXT = {
-		--精煉藥劑
-		"精煉藥劑",
-		"撒塔斯",
-		"泰坦",
+		--精鍊藥劑
+--		"撒塔斯",
+--		"泰坦",
 		"萃取智慧",
-		"超級能量",
-		"多重抗性",
- 	 	"強襲",
- 	 	"防禦",
- 	 	"法力恢復",
-		"盲目之光",
-		"炫彩驚奇",
-		"純淨死亡",
-		--WotLK精煉藥劑
+--		"超級能量",
+--		"多重抗性",
+--		"強襲",
+--		"防禦",
+--		"法力恢復",
+--		"盲目之光",
+--		"炫彩驚奇",
+--		"純淨死亡",
+		--WotLK精鍊藥劑
 		"冰霜巨龍",
-		"無盡烈怒",
+		"無盡怒火",
 		"石血",
 		"純淨魔精",
 		"次級強健",
+		"次級抗性精鍊",
+		"北方精鍊",
 		--TBC藥劑
-		"鐵盾",
-		"猛擊",
-		"內行",
-		"極效力量",
-		"極效敏捷",
-		"極效防禦",
-		"魔化力量",
-		"治療能量",
-		"精通",
-		"極效冰霜之力",
-		"極效火燄之力",
-		"極效暗影之力",
-		"德萊尼智慧",
-		"極效魔血",
-		"強效秘法",
-		"貓鼬",
-		"極效堅韌",
+--		"鐵盾",
+--		"猛擊",
+--		"內行",
+--		"極效力量",
+--		"極效敏捷",
+--		"極效防禦",
+--		"魔化力量",
+--		"治療能量",
+--		"精通",
+--		"極效冰霜之力",
+--		"極效火燄之力",
+--		"極效暗影之力",
+--		"德萊尼智慧",
+--		"極效魔血",
+--		"強效秘法",
+--		"貓鼬",
+--		"極效堅韌",
 		--WotLK藥劑
 		"精準",
 		"致命之擊",
@@ -107,6 +109,15 @@ if GetLocale() == "zhTW" then
 		"古拉的",
 		"強力堅韌",
 		"強力敏捷",
+		--CTM新增
+		"鬼靈藥劑",
+		"納迦藥劑",
+		"眼鏡蛇藥劑",
+		"地核藥劑",
+		"不可置信精準藥劑",
+		"稜彩藥劑",
+		"非凡疾速藥水",
+		"精通藥劑",
 	};
 
 	--Boss清單默初始化為空，團隊中會自動更新BOSS列表以供血量通報使用。若需添加某些特定怪物，可參照下面的表格式在{}內加入準確名稱。
@@ -155,6 +166,11 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_HOUR					= "時";
 	RAL_TEXT_ARROW_L				= "←";
 	RAL_TEXT_ARROW_R				= "→";
+	RAL_TEXT_LOOT_FREE_FOR_ALL		= "自由拾取";
+	RAL_TEXT_LOOT_ROUND_ROBIN		= "輪流拾取";
+	RAL_TEXT_LOOT_MASTER_LOOTER		= "隊長分配";
+	RAL_TEXT_LOOT_GROUP_LOOT		= "隊伍分配";
+	RAL_TEXT_LOOT_NEED_BEFORE_GREED	= "需求優先";
 
 	RAL_TEXT_DRUID					= "德魯伊";
 	RAL_TEXT_HUNTER					= "獵人";
@@ -171,6 +187,7 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_ZONE_2					= "安其拉";
 	RAL_TEXT_ZONE_3					= "扭曲太空";
 	RAL_TEXT_ZONE_4					= "虛空風暴";
+	RAL_TEXT_ZONE_5					= "冬握湖";
 
 	RAL_TEXT_CPUMSG_1				= "設置完成！重載界面後即可生效。";
 	RAL_TEXT_CPUMSG_2				= "立即重載界面";
@@ -183,8 +200,9 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_FRAME_ON				= "開";
 	RAL_TEXT_FRAME_OFF				= "關";
 	RAL_TEXT_FRAME_1				= "(%s)不在團隊中";
-	RAL_TEXT_FRAME_2				= "(%s)%s人小隊";
+	RAL_TEXT_FRAME_2				= "(%s)%s人隊(%s:%s)";
 	RAL_TEXT_FRAME_3				= "(%s)(MP總%s%%)(治療%s%%)(死%s)";
+	RAL_TEXT_FRAME_4				= "(%s)%s人團(%s:%s)";
 
 	RAL_TEXT_TIP_1					= "當前戰鬥用時";
 	RAL_TEXT_TIP_2					= "本次戰鬥用時";
@@ -209,12 +227,20 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_TIP_21					= "檢查Buff";
 	RAL_TEXT_TIP_22					= "立即清理插件記憶體";
 	RAL_TEXT_TIP_23					= "血量危急自動喊話開關";
-	RAL_TEXT_TIP_24					= "按住Ctrl鍵移到狀態條上顯示";
+	RAL_TEXT_TIP_24					= "按住Ctrl鍵移到狀態條上顯示幫助";
 	RAL_TEXT_TIP_25					= "系統資源佔用";
 	RAL_TEXT_TIP_26					= "記憶體";
 	RAL_TEXT_TIP_27					= "CPU";
 	RAL_TEXT_TIP_28					= "秒";
 	RAL_TEXT_TIP_29					= "分";
+	RAL_TEXT_TIP_30					= "5人";
+	RAL_TEXT_TIP_31					= "10人";
+	RAL_TEXT_TIP_32					= "25人";
+	RAL_TEXT_TIP_33					= "普通";
+	RAL_TEXT_TIP_34					= "英雄";
+	RAL_TEXT_TIP_35					= "難度";
+	RAL_TEXT_TIP_36					= "%s人%s";
+	RAL_TEXT_TIP_37					= "動態";
 
 	RAL_TEXT_CMD_1					= "命令";
 	RAL_TEXT_CMD_2					= "或";
@@ -286,7 +312,7 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_FUNC_40				= "優先本地顯示";
 	RAL_TEXT_FUNC_41				= "預設：自動選擇（推薦）";
 	RAL_TEXT_FUNC_42				= "玩家生命危急自動喊話%s（界限=%s%%）";
-	RAL_TEXT_FUNC_43				= "狀態條已重置 - 屏幕位置正中；縮放比例%s";
+	RAL_TEXT_FUNC_43				= "狀態條已重置；縮放比例%s";
 	RAL_TEXT_FUNC_44				= "系統資源佔用提示";
 	RAL_TEXT_FUNC_45				= "狀態條懸停提示的CPU性能顯示";
 	RAL_TEXT_FUNC_46				= "插件記憶體清理優化完畢";
@@ -321,8 +347,8 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_CHECK_21				= "*全無*";
 	RAL_TEXT_CHECK_22				= "%s隊(%s)";
 	RAL_TEXT_CHECK_23				= "真言術韌";		--僅用於Buff檢查消息標題
-	RAL_TEXT_CHECK_24				= "未檢測到團隊助手(oRA2或CTRA)的MT設定！";
-	RAL_TEXT_CHECK_25				= "未檢測到團隊領袖或助理權限，所有警報將只在本機顯示";
+	RAL_TEXT_CHECK_24				= "未檢測到團隊的MT設定！";
+	RAL_TEXT_CHECK_25				= "未檢測到團隊領袖或助理權限，警報只能在本機顯示";
 	RAL_TEXT_CHECK_26				= "檢測到團隊助手已設定%sMT";
 	RAL_TEXT_CHECK_27				= "檢測警報發送權限OK！（團隊領袖L或助理A）";
 	RAL_TEXT_CHECK_28				= "**%s目標鎖定檢查**";
@@ -332,6 +358,9 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_CHECK_32				= "未知的職業名稱：%s";
 	RAL_TEXT_CHECK_33				= "%s人未選定敵對目標：";
 	RAL_TEXT_CHECK_34				= "%s人選定了相同標記：";
+	RAL_TEXT_CHECK_35				= "所有人均已有.";
+	RAL_TEXT_CHECK_36				= "(%s)人已有, (%s)人尚無.";
+	RAL_TEXT_CHECK_37				= "(共%s人無)";
 
 	RAL_TEXT_ALERT_1				= "**[仇恨!]%s"..RAL_TEXT_ARROW_R.."%s**";
 --	RAL_TEXT_ALERT_2				= "[%s]仇恨==>你!!!";
@@ -350,7 +379,7 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_ALERT_15				= "治療MP(%s%%)";
 --	RAL_TEXT_ALERT_16				= "**"..RAL_TEXT_ARROW_R.."%s"..RAL_TEXT_ARROW_L.."已開啟盾牆！注意治療！**";
 --	RAL_TEXT_ALERT_17				= "**"..RAL_TEXT_ARROW_R.."%s"..RAL_TEXT_ARROW_L.."已開啟破釜沉舟！注意治療！**";
-	RAL_TEXT_ALERT_16				= "**"..RAL_TEXT_ARROW_R.."%s"..RAL_TEXT_ARROW_L.."已開啟%s！注意治療！**";
+	RAL_TEXT_ALERT_16				= "**"..RAL_TEXT_ARROW_R.."%s"..RAL_TEXT_ARROW_L.."已施放%s！注意治療！**";
 	RAL_TEXT_ALERT_18				= "**靈魂石已綁定"..RAL_TEXT_ARROW_R.."%s**";
 	RAL_TEXT_ALERT_19				= "**%s對"..RAL_TEXT_ARROW_R.."%s"..RAL_TEXT_ARROW_L.."施放了誤導**";
 	RAL_TEXT_ALERT_20				= "**%s對"..RAL_TEXT_ARROW_R.."%s"..RAL_TEXT_ARROW_L.."施放了寧神射擊**";
@@ -375,6 +404,13 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_ALERT_39				= "**%s施放了"..RAL_TEXT_ARROW_R.."%s"..RAL_TEXT_ARROW_L.."！**";
 	RAL_TEXT_ALERT_40				= "你對%s的仇恨過高! 小心OT!";
 	RAL_TEXT_ALERT_41				= "**[高仇恨]%s（%s）**";
+	RAL_TEXT_ALERT_42				= "你可能需要啟用「正義之怒」Buff!";
+	RAL_TEXT_ALERT_43				= "無正義之怒";
+	RAL_TEXT_ALERT_44				= "**[%s]%s"..RAL_TEXT_ARROW_R.."%s**";
+	RAL_TEXT_ALERT_45				= "你可能需要啟用「心靈之火」Buff!";
+	RAL_TEXT_ALERT_46				= "無心靈之火";
+	RAL_TEXT_ALERT_47				= "你尚無充分進食Buff，可能需要坐下來吃魚!";
+	RAL_TEXT_ALERT_48				= "無充分進食";
 
 	RAL_TEXT_THREAT_INFO_01			= "*獲得仇恨*";
 	RAL_TEXT_THREAT_INFO_02			= "*仇恨消退*";
@@ -382,10 +418,32 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_THREAT_INFO_04			= "*高仇恨*";
 	RAL_TEXT_THREAT_INFO_05			= "*焦點"..RAL_TEXT_ARROW_R.."%s*";
 
+	--用SPELL_CREATE判定：各种召唤团队物件的法术名称文本（MATCH：0局部匹配，1完全匹配）
+	RAL_TEXT_RAIDSPELL_1 = {
+		{["TEXT"]="鮮魚宴",["MATCH"]=1,["TYPE"]="COOKFOOD",["DUR"]=180,},
+		{["TEXT"]="盛宴",["MATCH"]=1,["TYPE"]="COOKFOOD",["DUR"]=180,},
+		{["TEXT"]="炙烤龍肉盛宴",["MATCH"]=1,["TYPE"]="COOKFOOD",["DUR"]=180,},
+		{["TEXT"]="哥布林燒烤盛宴",["MATCH"]=1,["TYPE"]="COOKFOOD",["DUR"]=180,},
+		{["TEXT"]="海鮮珍饈盛宴",["MATCH"]=1,["TYPE"]="COOKFOOD",["DUR"]=180,},
+		{["TEXT"]="防護大鍋",["MATCH"]=0,["TYPE"]="ELIXIR",["DUR"]=180,},				--各種防護大鍋
+		{["TEXT"]="戰鬥大鍋",["MATCH"]=0,["TYPE"]="ELIXIR",["DUR"]=180,},				--戰鬥大鍋, 加大的戰鬥大鍋
+		{["TEXT"]="傳送門:",["MATCH"]=0,["TYPE"]="TRANS",["DUR"]=60,},				--各种传送门
+	};
+	--用SPELL_CAST_SUCCESS判定：各种召唤团队物件的法术名称文本（MATCH：0局部匹配，1完全匹配）
+	RAL_TEXT_RAIDSPELL_2 = {
+		{["TEXT"]="餐點儀式",["MATCH"]=1,["TYPE"]="SPELL",["DUR"]=0,},
+		{["TEXT"]="召喚儀式",["MATCH"]=1,["TYPE"]="SPELL",["DUR"]=0,},
+		{["TEXT"]="靈魂儀式",["MATCH"]=1,["TYPE"]="SPELL",["DUR"]=0,},
+		{["TEXT"]="吉福斯",["MATCH"]=1,["TYPE"]="REPAIR",["DUR"]=600,},
+		{["TEXT"]="廢料機器人",["MATCH"]=1,["TYPE"]="REPAIR",["DUR"]=300,},
+		{["TEXT"]="修理機器人",["MATCH"]=0,["TYPE"]="REPAIR",["DUR"]=600,},			--修理機器人74A型, 修理機器人110G型
+	};
+
 	RAL_TEXT_SPELL_1				= "盾牆";
 	RAL_TEXT_SPELL_2				= "破釜沉舟";
 	RAL_TEXT_SPELL_3				= "靈魂石復活";
 	RAL_TEXT_SPELL_4				= "誤導";
+	RAL_TEXT_SPELL_4_SPEC_1			= "偷天換日";
 	RAL_TEXT_SPELL_5				= "寧神射擊";
 	RAL_TEXT_SPELL_6				= "獵人印記";
 	RAL_TEXT_SPELL_7				= "神聖干涉";
@@ -417,6 +475,8 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_SPELL_33				= "冰錮堅韌";	--WLK DK盾墻技能
 	RAL_TEXT_SPELL_34				= "反魔法護罩";	--WLK DK自身減魔法傷害技能
 	RAL_TEXT_SPELL_35				= "反魔法力場";	--WLK DK減團隊魔法傷害技能
+	RAL_TEXT_SPELL_36				= "血族之裔";	--WLK DK破釜技能
+	RAL_TEXT_SPELL_37				= "魔法凝聚";
 
 	RAL_TEXT_BUFF_1					= "靈魂石復活";
 	RAL_TEXT_BUFF_2					= "獵人印記";
@@ -433,8 +493,9 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_BUFF_11				= "妖術";		--中了變形魔法的DEBUFF名稱，為簡化判定只做局部匹配
 	RAL_TEXT_BUFF_12				= "王者祝福";
 	RAL_TEXT_BUFF_13				= "強效王者祝福";
-	RAL_TEXT_BUFF_14				= "拯救祝福";
-	RAL_TEXT_BUFF_15				= "強效拯救祝福";
+	RAL_TEXT_BUFF_13_SPEC_1			= "遺忘諸王祝福"	----WLK制皮鼓Buff
+	RAL_TEXT_BUFF_14				= "庇護祝福";
+	RAL_TEXT_BUFF_15				= "強效庇護祝福";
 	RAL_TEXT_BUFF_16				= "智慧祝福";
 	RAL_TEXT_BUFF_17				= "強效智慧祝福";
 	RAL_TEXT_BUFF_17_SPEC_1			= "法力之泉";
@@ -443,6 +504,12 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_BUFF_19_SPEC_1			= "戰鬥怒吼";
 	RAL_TEXT_BUFF_20				= "獵豹形態";
 	RAL_TEXT_BUFF_21				= "正義之怒";
+	RAL_TEXT_BUFF_22				= "精神禱言";
+	RAL_TEXT_BUFF_23				= "神聖精神";
+	RAL_TEXT_BUFF_24				= "充分進食";
+	RAL_TEXT_BUFF_25				= "心靈之火";
+	RAL_TEXT_BUFF_26				= "梟獸形態";
+	RAL_TEXT_BUFF_27				= "生命之樹";
 
 	RAL_TEXT_MARCO_1				= "巨集語法簡介：";
 	RAL_TEXT_MARCO_2				= "舉例：";
@@ -455,13 +522,13 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_XML_2					= "檢查團隊成員是否已到場";
 	RAL_TEXT_XML_3					= "檢查Buff";
 	RAL_TEXT_XML_4					= "檢查團隊的常規增益效果";
-	RAL_TEXT_XML_5					= "包括：\n全團耐力、智力和野性\n全團王者（若聖騎≥1人）\n法系智慧、近戰力量（若聖騎≥2人）";
+	RAL_TEXT_XML_5					= "包括：\n全團耐力、智力和野性\n全團王者（聖騎≥1人）\n法系智慧、近戰力量（聖騎≥2人）\n全團庇護（聖騎≥3人）\n充分進食（已放置團隊烹飪食物時）";
 	RAL_TEXT_XML_6					= "檢查靈魂石";
 	RAL_TEXT_XML_7					= "檢查靈魂石是否已有綁定";
 	RAL_TEXT_XML_8					= "檢查MT目標";
 	RAL_TEXT_XML_9					= "檢查MT鎖定的目標";
 	RAL_TEXT_XML_10					= "可用於開怪前的檢查";
-	RAL_TEXT_XML_11					= "需團隊助手（如oRA2）設定MT";
+	RAL_TEXT_XML_11					= "需預先設定團隊MT：|r選中目標用命令|cFF00FF00/MT|r設定（|cFF00FF00/CLEARMT|r取消）；或者用oRA插件設置。";
 	RAL_TEXT_XML_12					= "檢查精煉藥劑";
 	RAL_TEXT_XML_13					= "檢查團隊的精煉藥劑狀態";
 	RAL_TEXT_XML_14					= "包括各種常用精煉藥劑";
@@ -512,7 +579,7 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_XML_58_1				= "戰士：盾牆\n聖騎士：聖佑術\n死亡騎士：冰錮堅韌、反魔法護罩、反魔法力場";
 	RAL_TEXT_XML_59					= "保命技能II";
 	RAL_TEXT_XML_60					= "通報加血類保命技能";
-	RAL_TEXT_XML_60_1				= "戰士：破釜沉舟\n德魯伊：求生本能";
+	RAL_TEXT_XML_60_1				= "戰士：破釜沉舟\n德魯伊：求生本能\n死亡騎士：血族之裔";
 	RAL_TEXT_XML_61					= "法術反射";
 	RAL_TEXT_XML_62					= "通報戰士的法術反射技能";
 	RAL_TEXT_XML_63					= "仇恨";
@@ -524,8 +591,8 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_XML_69					= "是否顯示你發出的密語通知";
 	RAL_TEXT_XML_70					= "獵人標記";
 	RAL_TEXT_XML_71					= "通報獵人印記技能";
-	RAL_TEXT_XML_72					= "獵人誤導";
-	RAL_TEXT_XML_73					= "通報獵人的誤導技能";
+	RAL_TEXT_XML_72					= "威脅轉移";
+	RAL_TEXT_XML_73					= "通報獵人的誤導和盜賊的偷天換日技能";
 	RAL_TEXT_XML_74					= "獵人寧神";
 	RAL_TEXT_XML_75					= "通報獵人的寧神射擊";
 	RAL_TEXT_XML_76					= "抵抗嘲諷";
@@ -544,7 +611,7 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_XML_89					= "此骷髏標記在戰鬥結束後會自動清除";
 	RAL_TEXT_XML_90					= "解除控制";
 	RAL_TEXT_XML_91					= "提醒解除控制";
-	RAL_TEXT_XML_92					= "TANK職業被控制結束後若仍處於\n變羊狀態則在團隊頻道通知";
+	RAL_TEXT_XML_92					= "在團隊頻道通知TANK職業被變形";
 	RAL_TEXT_XML_93					= "打破控制";
 	RAL_TEXT_XML_94					= "通報打破控制者";
 	RAL_TEXT_XML_95					= "包括羊、鎖、睡和冰";
@@ -592,4 +659,25 @@ if GetLocale() == "zhTW" then
 	RAL_TEXT_XML_137				= "1、當目標的目標轉向你時\n2、當焦點的目標轉向你時\n（僅在本機屏幕顯示，並非團隊警報）";
 	RAL_TEXT_XML_138				= "測試";
 	RAL_TEXT_XML_139				= "測試屏幕消息效果";
+	RAL_TEXT_XML_140				= "團隊物件";
+	RAL_TEXT_XML_141				= "通報召喚團隊物件的法術：";
+	RAL_TEXT_XML_142				= "";
+	RAL_TEXT_XML_143				= "充分進食";
+	RAL_TEXT_XML_144				= "通報未吃魚玩家";
+	RAL_TEXT_XML_145				= "檢測和通報充分進食的情況";
+	RAL_TEXT_XML_146				= "未進食密語";
+	RAL_TEXT_XML_147				= "啟用充分進食密語";
+	RAL_TEXT_XML_148				= "使用密語通知未進食玩家";
+	RAL_TEXT_XML_149				= "心靈之火";
+	RAL_TEXT_XML_150				= "通報心靈之火狀態";
+	RAL_TEXT_XML_151				= "檢測和通報牧師的心靈之火";
+	RAL_TEXT_XML_152				= "心靈之火密語";
+	RAL_TEXT_XML_153				= "啟用心靈之火密語";
+	RAL_TEXT_XML_154				= "使用密語通知未開開啟心靈之火玩家";
+	for i, v in pairs(RAL_TEXT_RAIDSPELL_1) do
+		RAL_TEXT_XML_142 = RAL_TEXT_XML_142..v["TEXT"].."\n";
+	end
+	for i, v in pairs(RAL_TEXT_RAIDSPELL_2) do
+		RAL_TEXT_XML_142 = RAL_TEXT_XML_142..v["TEXT"].."\n";
+	end
 end

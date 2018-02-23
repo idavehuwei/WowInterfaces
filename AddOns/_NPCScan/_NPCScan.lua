@@ -1,4 +1,4 @@
---[[****************************************************************************
+﻿--[[****************************************************************************
   * _NPCScan by Saiket                                                         *
   * _NPCScan.lua - Scans NPCs near you for specific rare NPC IDs.              *
   ****************************************************************************]]
@@ -28,14 +28,14 @@ me.OptionsDefault = {
 me.OptionsCharacterDefault = {
 	Version = me.Version;
 	NPCs = { -- Keys must be lowercase and trimmed, but don't have to match the NPC name
-		[ L.NPCS[ "Gondria" ]:trim():lower() ] = 33776;
-		[ L.NPCS[ "Skoll" ]:trim():lower() ] = 35189;
-		[ L.NPCS[ "Time-Lost Proto Drake" ]:trim():lower() ] = 32491;
+		[ L.NPCS[ "刚卓亚" ]:trim():lower() ] = 33776;
+		[ L.NPCS[ "史科尔" ]:trim():lower() ] = 35189;
+		[ L.NPCS[ "迷失的始祖幼龙" ]:trim():lower() ] = 32491;
 
-		[ L.NPCS[ "Dart" ]:trim():lower() ] = 14232;
-		[ L.NPCS[ "Takk the Leaper" ]:trim():lower() ] = 5842;
-		[ L.NPCS[ "Ravasaur Matriarch" ]:trim():lower() ] = 6581;
-		[ L.NPCS[ "Razormaw Matriarch" ]:trim():lower() ] = 1140;
+		[ L.NPCS[ "达尔特" ]:trim():lower() ] = 14232;
+		[ L.NPCS[ "“跳跃者”塔克" ]:trim():lower() ] = 5842;
+		[ L.NPCS[ "暴掠龙女王" ]:trim():lower() ] = 6581;
+		[ L.NPCS[ "刺喉雌龙" ]:trim():lower() ] = 1140;
 	};
 	Achievements = {}; -- Filled with all entries in me.Achievements
 };

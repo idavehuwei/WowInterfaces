@@ -149,8 +149,8 @@
 		</Frames>
 		<Scripts>
 			<OnLoad>
-				getglobal(self:GetName().."ScrollBarScrollDownButton"):Disable();
-				getglobal(self:GetName().."ScrollBarScrollUpButton"):Disable();
+				_G[self:GetName().."ScrollBarScrollDownButton"]:Disable();
+				_G[self:GetName().."ScrollBarScrollUpButton"]:Disable();
 				GlueScrollFrame_OnScrollRangeChanged(self);
 			</OnLoad>
 			<OnScrollRangeChanged>

@@ -1,13 +1,24 @@
-local BabbleClass = LibStub("LibBabble-Class-3.0"):GetLookupTable();
-local BabbleZone = LibStub("LibBabble-Zone-3.0"):GetLookupTable();
-local BabbleInventory = LibStub("LibBabble-Inventory-3.0"):GetLookupTable();
-local BabbleFaction = LibStub("LibBabble-Faction-3.0"):GetLookupTable();
 local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
+local BabbleInventory = AtlasLoot_GetLocaleLibBabble("LibBabble-Inventory-3.0")
+local BabbleFaction = AtlasLoot_GetLocaleLibBabble("LibBabble-Faction-3.0")
+local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
+
 
 	AtlasLoot_Data["REPMENU"] = {
 		{ 2, "REPMENU_ORIGINALWOW", "INV_Helmet_66", "=ds="..AL["Factions - Original WoW"], ""};
-		{ 3, "REPMENU_WOTLK", "INV_Fishingpole_03", "=ds="..AL["Factions - Wrath of the Lich King"], ""};
 		{ 17, "REPMENU_BURNINGCRUSADE", "INV_Misc_Ribbon_01", "=ds="..AL["Factions - Burning Crusade"], ""};
+		{ 4, "AllianceVanguard1", "spell_misc_hellifrepvphonorholdfavor", "=ds="..BabbleFaction["Alliance Vanguard"], "=q5="..BabbleFaction["Alliance"]};
+		{ 5, "WinterfinRetreat", "INV_Misc_Shell_04", "=ds="..BabbleFaction["Winterfin Retreat"], "=q5="..BabbleZone["Borean Tundra"]};
+		{ 6, "TheWyrmrestAccord", "achievement_reputation_wyrmresttemple", "=ds="..BabbleFaction["The Wyrmrest Accord"], "=q5="..BabbleZone["Dragonblight"]};
+		{ 7, "KnightsoftheEbonBlade", "achievement_reputation_knightsoftheebonblade", "=ds="..BabbleFaction["Knights of the Ebon Blade"], "=q5="..BabbleZone["Zul'Drak"].." / "..BabbleZone["Icecrown"]};
+		{ 8, "TheOracles", "inv_misc_head_murloc_01", "=ds="..BabbleFaction["The Oracles"], "=q5="..BabbleZone["Sholazar Basin"]};
+		{ 9, "TheSonsofHodir1", "Spell_Holy_DivinePurpose", "=ds="..BabbleFaction["The Sons of Hodir"], "=q5="..BabbleZone["The Storm Peaks"]};
+		{ 19, "HordeExpedition1", "spell_misc_hellifrepvpthrallmarfavor", "=ds="..BabbleFaction["Horde Expedition"], "=q5="..BabbleFaction["Horde"]};
+		{ 20, "TheKaluak", "INV_Fishingpole_03", "=ds="..BabbleFaction["The Kalu'ak"], "" };
+		{ 21, "KirinTor", "achievement_reputation_kirintor", "=ds="..BabbleFaction["Kirin Tor"], "=q5="..BabbleZone["Borean Tundra"].." / "..BabbleZone["Dalaran"]};
+		{ 22, "ArgentCrusade", "INV_Jewelry_Talisman_08", "=ds="..BabbleFaction["Argent Crusade"], "=q5="..BabbleZone["Zul'Drak"].." / "..BabbleZone["Icecrown"]};
+		{ 23, "FrenzyheartTribe", "ability_mount_whitedirewolf", "=ds="..BabbleFaction["Frenzyheart Tribe"], "=q5="..BabbleZone["Sholazar Basin"]};
+		{ 24, "AshenVerdict", "INV_Jewelry_Ring_85", "=ds="..BabbleFaction["The Ashen Verdict"], "=q5="..BabbleZone["Icecrown"]};
 	};
 
 	AtlasLoot_Data["REPMENU_ORIGINALWOW"] = {
@@ -65,5 +76,6 @@ local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
 		{ 19, "KirinTor", "achievement_reputation_kirintor", "=ds="..BabbleFaction["Kirin Tor"], "=q5="..BabbleZone["Borean Tundra"].." / "..BabbleZone["Dalaran"]};
 		{ 20, "ArgentCrusade", "INV_Jewelry_Talisman_08", "=ds="..BabbleFaction["Argent Crusade"], "=q5="..BabbleZone["Zul'Drak"].." / "..BabbleZone["Icecrown"]};
 		{ 21, "FrenzyheartTribe", "ability_mount_whitedirewolf", "=ds="..BabbleFaction["Frenzyheart Tribe"], "=q5="..BabbleZone["Sholazar Basin"]};
+		{ 22, "AshenVerdict", "INV_Jewelry_Ring_85", "=ds="..BabbleFaction["The Ashen Verdict"], "=q5="..BabbleZone["Icecrown"]};
 		Back = "REPMENU";
 	};

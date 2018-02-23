@@ -1,50 +1,66 @@
-## Interface: 30100
-## Title: [BF] BigFoot Base Library
-## Notes: The base library of BigFoot. Do not disable this mod please.
-## Title-zhCN: [大脚] 基本库
-## Notes-zhCN: 这是大脚的基本运行库，所有插件是依赖于该基本库的。请不要禁止该插件。
-## Title-zhTW: [大腳] 基本庫
-## Notes-zhTW: 這是大腳的基本運行庫，所有插件是依賴于該基本庫的。請不要禁止該插件。
-## SavedVariables: BigFoot_Config, BigFoot_Error
-## SavedVariablesPerCharacter: BigFoot_Frames
+﻿## Interface: 30300
+## Title: BigFoot Base Library
+## Title-zhCN: [大脚] |cff0055FF基本库|r
+## Title-zhTW: [大腳] |cff0055FF基本庫|r
+## Notes: |cffbc8f8fThe base library of BigFoot. Do not disable this mod please.|r
+## Notes-zhCN: |cff00ff00BigFoot|r                                             |cffbc8f8f这是大脚的基本运行库，所有插件都依赖于该基本库。|r|cffb70000请不要禁用该插件。|r
+## Notes-zhTW: |cff00ff00BigFoot|r                                             |cffbc8f8f這是大腳的基本運行庫，所有插件都依賴于該基本庫。|r|cffb70000請不要禁用該插件。|r
+## SavedVariables: BigFoot_Config, BigFoot_Error,MBBDB
+## SavedVariablesPerCharacter: BF_Frames_Config, BigFoot_Character
 ## X-Revision: BigFoot
-## Dependencies: !!Corelibs
 
 Library\BigFootLibrary.lua
+Library\BigFootUtils.lua
 Library\BigFootDS.lua
 Library\BigFootOO.lua
 Library\BigFootHook.lua
 Library\BigFootHash.lua
 Library\BigFootDebug.lua
 Library\BigFootInfo.lua
-Library\BigFootBag.lua
 Library\BigFootGUI.xml
 Library\BigFootGUI.lua
 Library\BigFootEvent.lua
 Library\BigFootScale.lua
-Library\BigFootUtils.lua
 Library\BDropDown\BDropDownMenu.xml
 Library\BigFootMath.lua
 Library\BigFootLocal.lua
 Library\BigFootSecureHook.lua
+Library\BigFootComm.lua
 
-ModManagement.xml
+AceLibs\modules.xml
+
+UI\ModManagement.xml
 UI\Widgets.xml
 BigFoot.xml
 BigFootSpells.lua
 BigFootReader.xml
 BigFootVersion.lua
-#BigFootError.xml
+version.en.lua
+version.tw.lua
+version.cn.lua
+BigFootBook.lua
+BigFootError.xml
+Mods\embed.xml
 
+Util\BagManagement.lua
+Util\DualFinding.lua
+Util\ActionBar.lua
+Util\Validation.lua
+Util\ScanQuestLog.lua
+Util\Patch.lua
+
+Config\BagManagement.lua
 Config\ConfigGlobals.lua
+Config\ActionBar.lua
+Config\DKP.lua
+Config\AKAD.lua
 Config\BagIntegration.lua
+Config\BuffMaster.lua
 Config\ChatEnhance.lua
 Config\BFTooltip.lua
 Config\SpellTimer.lua
 Config\InfoEnhance.lua
-Config\MailMod.lua
 Config\ClassMod.lua
-Config\BigFootQuest.lua
 Config\RaidToolkit.lua
 Config\MerInspect.lua
 Config\MobInfo.lua
@@ -61,9 +77,13 @@ Config\BUnitFrame.lua
 Config\BigFootGadget.lua
 Config\InfoBox.lua
 Config\MapToolkit.lua
-Config\PowerWatch.lua
+Config\SpellMonitor.lua
+Config\SellHelper.lua
+Config\RepairHelper.lua
+Config\PallyPower.lua
 Config\QuestEnhance.lua
-Config\DKP.lua
-
-BigFootPatch.lua
+Config\Secure.lua
+Config\MountEnhance.lua
+Config\TradeHelper.lua
+Config\PorEnhance.lua
 ..\Blizzard_InspectUI\InspectHonorFrame.xml

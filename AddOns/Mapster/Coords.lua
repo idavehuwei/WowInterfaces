@@ -1,5 +1,5 @@
---[[
-Copyright (c) 2008, Hendrik "Nevcairiel" Leppkes < h.leppkes@gmail.com >
+﻿--[[
+Copyright (c) 2009, Hendrik "Nevcairiel" Leppkes < h.leppkes@gmail.com >
 All rights reserved.
 ]]
 
@@ -75,14 +75,14 @@ local function getOptions()
 			},
 		}
 	end
-	
+
 	return options
 end
 
 function Coords:OnInitialize()
 	self.db = Mapster.db:RegisterNamespace(MODNAME, defaults)
 	db = self.db.profile
-	
+
 	self:SetEnabledState(Mapster:GetModuleEnabled(MODNAME))
 	Mapster:RegisterModuleOptions(MODNAME, getOptions, L["Coordinates"])
 end
@@ -90,16 +90,19 @@ end
 function Coords:OnEnable()
 	if not display then
 		display = CreateFrame("Frame", "Mapster_CoordsFrame", WorldMapFrame)
-		
+
 		cursortext = display:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-		cursortext:SetPoint("RIGHT", WorldMapFrame, "CENTER", -50, -367)
-		
 		playertext = display:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-		playertext:SetPoint("LEFT", WorldMapFrame, "CENTER", 50, -367)
+
+		self:UpdateMapsize(Mapster.miniMap)
 	end
 	display:SetScript("OnUpdate", OnUpdate)
-	display:Show()
-	
+	if Mapster.bordersVisible then
+		display:Show()
+	else
+		display:Hide()
+	end
+
 	self:Refresh()
 end
 
@@ -111,24 +114,44 @@ end
 function Coords:Refresh()
 	db = self.db.profile
 	if not self:IsEnabled() then return end
-	
+
 	local acc = tonumber(db.accuracy) or 1
 	text = texttemplate:format(acc, acc)
+end
+
+function Coords:UpdateMapsize(mini)
+	-- map was minimized, fix display position
+	if mini then
+		cursortext:SetPoint("BOTTOMLEFT", WorldMapPositioningGuide, "BOTTOM", 15, -2)
+		playertext:SetPoint("BOTTOMRIGHT", WorldMapPositioningGuide, "BOTTOM", -30, -2)
+	else
+		cursortext:SetPoint("BOTTOMLEFT", WorldMapPositioningGuide, "BOTTOM", 50, 10)
+		playertext:SetPoint("BOTTOMRIGHT", WorldMapPositioningGuide, "BOTTOM", -50, 10)
+	end
+end
+
+function Coords:BorderVisibilityChanged(visible)
+	if not display then return end
+	if visible then
+		display:Show()
+	else
+		display:Hide()
+	end
 end
 
 function MouseXY()
 	local left, top = WorldMapDetailFrame:GetLeft(), WorldMapDetailFrame:GetTop()
 	local width, height = WorldMapDetailFrame:GetWidth(), WorldMapDetailFrame:GetHeight()
 	local scale = WorldMapDetailFrame:GetEffectiveScale()
-	
+
 	local x, y = GetCursorPosition()
 	local cx = (x/scale - left) / width
 	local cy = (top - y/scale) / height
-	
+
 	if cx < 0 or cx > 1 or cy < 0 or cy > 1 then
 		return
 	end
-	
+
 	return cx, cy
 end
 
@@ -136,13 +159,13 @@ local cursor, player = L["Cursor"], L["Player"]
 function OnUpdate()
 	local cx, cy = MouseXY()
 	local px, py = GetPlayerMapPosition("player")
-	
+
 	if cx then
 		cursortext:SetFormattedText(text, cursor, 100 * cx, 100 * cy)
 	else
 		cursortext:SetText("")
 	end
-	
+
 	if px == 0 then
 		playertext:SetText("")
 	else

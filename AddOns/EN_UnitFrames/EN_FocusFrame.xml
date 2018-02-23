@@ -1,6 +1,6 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\FrameXML\UI.xsd">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
     <Script file="EN_FocusFrame.lua"/>
+
     <Button name="TgFocusDebuffButtonTemplate" virtual="true">
         <Size>
             <AbsDimension x="17" y="17"/>
@@ -22,7 +22,7 @@
                         </Anchor>
                     </Anchors>
                     <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
-                </Texture>
+                </Texture>    
                 <FontString name="$parentCount" inherits="NumberFontNormalSmall">
                     <Anchors>
                         <Anchor point="BOTTOMRIGHT">
@@ -60,6 +60,7 @@
             </OnLeave>
         </Scripts>
     </Button>
+
     <Button name="TgFocusBuffButtonTemplate" virtual="true">
         <Size>
             <AbsDimension x="21" y="21"/>
@@ -106,6 +107,7 @@
             </OnLeave>
         </Scripts>
     </Button>
+
     <Button name="TgFocusFrame" frameStrata="LOW" toplevel="true" movable="true" inherits="SecureUnitButtonTemplate" parent="UIParent" clampedToScreen="true">
         <Size>
             <AbsDimension x="232" y="100"/>
@@ -234,8 +236,6 @@
                         GameTooltip:Hide();
                     </OnLeave>
                 </Scripts>
-                <Frames>
-                </Frames>
             </Frame>
             <Frame name="TgFocusFrameTextureFrame" setAllPoints="true">
                 <Layers>
@@ -278,6 +278,15 @@
                                 <Anchor point="CENTER">
                                     <Offset>
                                         <AbsDimension x="-50" y="3"/>
+                                    </Offset>
+                                </Anchor>
+                            </Anchors>
+                        </FontString>
+                        <FontString name="TgFocusFrameHealthPercent" inherits="TextStatusBarText">
+                            <Anchors>
+                                <Anchor point="CENTER">
+                                    <Offset>
+                                        <AbsDimension x="-90" y="36"/>
                                     </Offset>
                                 </Anchor>
                             </Anchors>
@@ -446,8 +455,8 @@
         <Scripts>
             <OnLoad>
                 UnitFrame_Initialize(self, "focus", TgFocusName, TgFocusPortrait,
-                                 TgFocusFrameHealthBar, TgFocusFrameHealthBarText,
-                                 TgFocusFrameManaBar, TgFocusFrameManaBarText);
+                    TgFocusFrameHealthBar, TgFocusFrameHealthBarText,
+                    TgFocusFrameManaBar, TgFocusFrameManaBarText);
                 self.noTextPrefix = true;
                 TgFocusFrame_OnLoad(self);
             </OnLoad>
@@ -469,6 +478,7 @@
             </OnLeave>
         </Scripts>
     </Button>
+
     <Button name="TargetofTgFocusFrame" toplevel="true" movable="true" inherits="SecureUnitButtonTemplate" parent="TgFocusFrame" hidden="false">
         <Size>
             <AbsDimension x="93" y="45"/>
@@ -487,7 +497,7 @@
                         <AbsDimension x="46" y="15"/>
                     </Size>
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT">
+                        <Anchor point="BOTTOMLEFT">    
                             <Offset>
                                 <AbsDimension x="42" y="13"/>
                             </Offset>

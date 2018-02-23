@@ -1,119 +1,119 @@
 --==================================================
 -- BigFootPopRange.lua
--- æ—¥æœŸ: 2008å¹´5æœˆ23æ—¥
--- ä½œè€…: ç‹¬å­¤å‚²é›ª
--- æè¿°: æä¾›ä¸€ä¸ªå«Sliderçš„èŒƒå›´è°ƒèŠ‚å¯¹è¯æ¡†.
--- ç‰ˆæƒæ‰€æœ‰: è‰¾æ³½æ‹‰æ–¯å›½å®¶åœ°ç†
---==================================================
+-- ÈÕÆÚ: 2008Äê5ÔÂ23ÈÕ
+-- ×÷Õß: ¶À¹Â°ÁÑ©
+-- ÃèÊö: Ìá¹©Ò»¸öº¬SliderµÄ·¶Î§µ÷½Ú¶Ô»°¿ò. 
+-- °æÈ¨ËùÓĞ: °¬ÔóÀ­Ë¹¹ú¼ÒµØÀí
+--================================================== 
 --[[
-    â— ç®€è¦ä»‹ç»
-        æä¾›ä¸€ä¸ªç®€å•çš„Sliderå¼¹å‡ºå¯¹è¯æ¡†, æ»¡è¶³å¼¹å‡ºèœå•éœ€è¦èŒƒå›´è°ƒèŠ‚çš„è¦æ±‚.
+	¡ñ ¼òÒª½éÉÜ
+		Ìá¹©Ò»¸ö¼òµ¥µÄSliderµ¯³ö¶Ô»°¿ò, Âú×ãµ¯³ö²Ëµ¥ĞèÒª·¶Î§µ÷½ÚµÄÒªÇó.
 
-    â— å¼€å‘æ–‡æ¡£
-        åŸå‹: BigFoot_ShowPopRange(minV, maxV, value, step, showPrecent, func, onShow, onHide, tooltip)
-        å‚æ•°:
-            minV				- <number>	 ä¸‹é™å€¼
-            maxV			- <number>	 ä¸Šé™å€¼
-            value				- <number>	 å½“å‰å€¼
-            step				- <number>	 æ­¥å€¼
-            showPrecent	- <boolean>	 æ˜¯å¦æŒ‰ç™¾åˆ†æ¯”å½¢å¼æ˜¾ç¤º
-            func				- <function>	 å½“å€¼æ”¹å˜æ—¶è°ƒç”¨çš„æ–¹æ³•
-            onShow			- <function>	 å½“å¯¹è¯æ¡†æ˜¾ç¤ºæ—¶è°ƒç”¨çš„æ–¹æ³•
-            onHide			- <function>	 å½“å¯¹è¯æ¡†éšè—æ—¶è°ƒç”¨çš„æ–¹æ³•(å»ºè®®åœ¨è¿™é‡Œæ”¹å˜é…ç½®å˜é‡å€¼)
-            tooltip			- <function>  é¼ æ ‡æç¤ºæ–‡å­—
-        æè¿°: æä¾›ä¸€ä¸ªå«Sliderçš„èŒƒå›´è°ƒèŠ‚å¯¹è¯æ¡†.
-
-    â— ç®€è¦ç¤ºä¾‹
-        å‚è§[ç‹¬å­¤å‚²é›ª]<<è¨æ»¡ç¥­å¸åŠ©æ‰‹>>Options.luaæ–‡ä»¶.
+	¡ñ ¿ª·¢ÎÄµµ
+		Ô­ĞÍ: BigFoot_ShowPopRange(minV, maxV, value, step, showPrecent, func, onShow, onHide, tooltip)
+		²ÎÊı: 
+			minV				- <number>	 ÏÂÏŞÖµ
+			maxV			- <number>	 ÉÏÏŞÖµ
+			value				- <number>	 µ±Ç°Öµ
+			step				- <number>	 ²½Öµ
+			showPrecent	- <boolean>	 ÊÇ·ñ°´°Ù·Ö±ÈĞÎÊ½ÏÔÊ¾
+			func				- <function>	 µ±Öµ¸Ä±äÊ±µ÷ÓÃµÄ·½·¨
+			onShow			- <function>	 µ±¶Ô»°¿òÏÔÊ¾Ê±µ÷ÓÃµÄ·½·¨
+			onHide			- <function>	 µ±¶Ô»°¿òÒş²ØÊ±µ÷ÓÃµÄ·½·¨(½¨ÒéÔÚÕâÀï¸Ä±äÅäÖÃ±äÁ¿Öµ)
+			tooltip			- <function>  Êó±êÌáÊ¾ÎÄ×Ö
+		ÃèÊö: Ìá¹©Ò»¸öº¬SliderµÄ·¶Î§µ÷½Ú¶Ô»°¿ò. 
+	
+	¡ñ ¼òÒªÊ¾Àı
+		²Î¼û[¶À¹Â°ÁÑ©]<<ÈøÂú¼ÀË¾ÖúÊÖ>>Options.luaÎÄ¼ş.
 ]]
 
-local function BigFoot_CreatePopRange()
-    local frame = CreateFrame("Frame", "BigFoot_PopRangeFrame", UIParent);
-    tinsert(UISpecialFrames, "BigFoot_PopRangeFrame");
-    frame:SetWidth(280);
-    frame:SetHeight(100);
-    frame:SetToplevel(true);
-    frame:EnableMouse(true);
-    frame:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
-          edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32,
-          insets = { left = 11, right = 12, top = 12, bottom = 11}});
-    frame:SetPoint("TOP", UIParent, "TOP", 0, -120);
-    frame:Hide();
-    frame.slider = CreateFrame("Slider", "BigFoot_PopRangeSlider", frame, "OptionsSliderTemplate");
-    frame.slider.highText = getglobal("BigFoot_PopRangeSliderHigh");
-    frame.slider.lowText = getglobal("BigFoot_PopRangeSliderLow");
-    frame.slider.valueText = getglobal("BigFoot_PopRangeSliderText");
-    frame.slider.thumb = getglobal("BigFoot_PopRangeSliderThumb");
-    frame.slider:SetWidth(180);
-    frame.slider:SetPoint("TOP", frame, "TOP", 0, -30);
-    frame.slider:SetScript("OnValueChanged", function(self)
-        local value = self:GetValue();
-        frame.curV = value;
-        if (frame.showPrecent) then
-            self.valueText:SetText(format("%d%%",floor( value*100)));
-        else
-            self.valueText:SetText(value);
-        end
-        frame.func(value);
-    end);
-    frame.okay = CreateFrame("Button", "BigFoot_PopRangeOkay", frame, "UIPanelButtonTemplate2");
-    frame.okay:SetText(TEXT(OKAY));
-    frame.okay:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 30, 16 );
-    frame.okay:SetWidth(100);
-    frame.okay:SetScript("OnClick", function(self)
-        frame:Hide();
-    end);
-    frame.okay:Show();
-    frame.cancel = CreateFrame("Button", "BigFoot_PopRangeCancel", frame, "UIPanelButtonTemplate2");
-    frame.cancel:SetText(TEXT(CANCEL));
-    frame.cancel:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -30, 16);
-    frame.cancel:SetWidth(100);
-    frame.cancel:SetScript("OnClick", function(self)
-        frame.func(frame.preV);
-        frame:Hide();
-    end);
-    frame.cancel:Show();
-    frame:SetScript("OnShow", function(self)
-        PlaySound("igMainMenuClose");
-        if (self.onShow and type(self.onShow) == "function") then
-            self.onShow(self.curV);
-        end
-    end);
-    frame:SetScript("OnHide", function(self)
-        PlaySound("igMainMenuClose");
-        if (self.onHide and type(self.onHide) == "function") then
-            self.onHide(self.curV);
-        end
-    end);
-
-    return frame;
+local function BigFoot_CreatePopRange()	
+	local frame = CreateFrame("Frame", "BigFoot_PopRangeFrame", UIParent);
+	tinsert(UISpecialFrames, "BigFoot_PopRangeFrame");
+	frame:SetWidth(280);
+	frame:SetHeight(100);
+	frame:SetToplevel(true);
+	frame:EnableMouse(true);
+	frame:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background", 
+		  edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32, 
+		  insets = { left = 11, right = 12, top = 12, bottom = 11}});
+	frame:SetPoint("TOP", UIParent, "TOP", 0, -120);
+	frame:Hide();
+	frame.slider = CreateFrame("Slider", "BigFoot_PopRangeSlider", frame, "OptionsSliderTemplate");
+	frame.slider.highText = getglobal("BigFoot_PopRangeSliderHigh");
+	frame.slider.lowText = getglobal("BigFoot_PopRangeSliderLow");
+	frame.slider.valueText = getglobal("BigFoot_PopRangeSliderText");
+	frame.slider.thumb = getglobal("BigFoot_PopRangeSliderThumb");
+	frame.slider:SetWidth(180);
+	frame.slider:SetPoint("TOP", frame, "TOP", 0, -30);
+	frame.slider:SetScript("OnValueChanged", function(self)
+		local value = self:GetValue();
+		frame.curV = value;
+		if (frame.showPrecent) then
+			self.valueText:SetText(format("%d%%",floor( value*100)));
+		else
+			self.valueText:SetText(value);
+		end
+		frame.func(value);
+	end);	
+	frame.okay = CreateFrame("Button", "BigFoot_PopRangeOkay", frame, "UIPanelButtonTemplate2");
+	frame.okay:SetText(TEXT(OKAY));
+	frame.okay:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 30, 16 );
+	frame.okay:SetWidth(100);
+	frame.okay:SetScript("OnClick", function(self)
+		frame:Hide();
+	end);
+	frame.okay:Show();
+	frame.cancel = CreateFrame("Button", "BigFoot_PopRangeCancel", frame, "UIPanelButtonTemplate2");
+	frame.cancel:SetText(TEXT(CANCEL));
+	frame.cancel:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -30, 16);
+	frame.cancel:SetWidth(100);
+	frame.cancel:SetScript("OnClick", function(self)		
+		frame.func(frame.preV);
+		frame:Hide();
+	end);
+	frame.cancel:Show();
+	frame:SetScript("OnShow", function(self)
+		PlaySound("igMainMenuClose");
+		if (self.onShow and type(self.onShow) == "function") then
+			self.onShow(self.curV);
+		end
+	end);
+	frame:SetScript("OnHide", function(self)
+		PlaySound("igMainMenuClose");
+		if (self.onHide and type(self.onHide) == "function") then
+			self.onHide(self.curV);
+		end
+	end);
+	
+	return frame;
 end
 
-function BigFoot_ShowPopRange(minV, maxV, value, step, showPrecent, func, onShow, onHide, tooltip)
-    local frame = getglobal("BigFoot_PopRangeFrame") or BigFoot_CreatePopRange();
-    frame.onShow = onShow;
-    frame.onHide = onHide;
-    frame.func = func;
-    frame.preV = value or 0.5;
-    frame.curV = value or 0.5;
-    frame.minV = minV or 0;
-    frame.maxV = maxV or 1;
-    frame.step = step or 0.1;
-    frame.slider.tooltipText = tooltip;
-    frame.showPrecent = showPrecent or nil; -- [nil|true] nil - æŒ‰å€¼æ˜¾ç¤º, true - æŒ‰ç™¾åˆ†æ¯”æ˜¾ç¤º;
+function BigFoot_ShowPopRange(minV, maxV, value, step, showPrecent, func, onShow, onHide, tooltip)	
+	local frame = getglobal("BigFoot_PopRangeFrame") or BigFoot_CreatePopRange();
+	frame.onShow = onShow;
+	frame.onHide = onHide;
+	frame.func = func;	
+	frame.preV = value or 0.5;
+	frame.curV = value or 0.5;
+	frame.minV = minV or 0;
+	frame.maxV = maxV or 1;	
+	frame.step = step or 0.1;
+	frame.slider.tooltipText = tooltip;
+	frame.showPrecent = showPrecent or nil; -- [nil|true] nil - °´ÖµÏÔÊ¾, true - °´°Ù·Ö±ÈÏÔÊ¾; 
+	
+	frame.slider:SetValueStep(frame.step);
+	frame.slider:SetMinMaxValues(frame.minV, frame.maxV);
+	frame.slider:SetValue(frame.curV);
+	if (frame.showPrecent) then
+		frame.slider.valueText:SetText(format("%d%%", floor(frame.curV*100)));
+		frame.slider.highText:SetText(format("%d%%", floor(frame.maxV*100)));
+		frame.slider.lowText:SetText(format("%d%%", floor(frame.minV*100)));
+	else
+		frame.slider.valueText:SetText(floor(frame.curV/(frame.maxV - frame.minV)));
+		frame.slider.highText:SetText(frame.maxV);
+		frame.slider.lowText:SetText(frame.minV);
+	end
 
-    frame.slider:SetValueStep(frame.step);
-    frame.slider:SetMinMaxValues(frame.minV, frame.maxV);
-    frame.slider:SetValue(frame.curV);
-    if (frame.showPrecent) then
-        frame.slider.valueText:SetText(format("%d%%", floor(frame.curV*100)));
-        frame.slider.highText:SetText(format("%d%%", floor(frame.maxV*100)));
-        frame.slider.lowText:SetText(format("%d%%", floor(frame.minV*100)));
-    else
-        frame.slider.valueText:SetText(floor(frame.curV/(frame.maxV - frame.minV)));
-        frame.slider.highText:SetText(frame.maxV);
-        frame.slider.lowText:SetText(frame.minV);
-    end
-
-    frame:Show();
+	frame:Show();
 end

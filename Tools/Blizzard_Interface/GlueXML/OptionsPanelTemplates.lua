@@ -20,7 +20,6 @@ local tinsert = tinsert;
 local tonumber = tonumber;
 local tostring = tostring;
 local gsub = gsub;
-local setglobal = setglobal;
 
 
 -- [[ functions for OptionsPanelTemplates controls ]] --
@@ -123,7 +122,7 @@ function BlizzardOptionsPanel_CheckButton_OnClick (checkButton)
 	end
 
 	if ( checkButton.uvar ) then
-		setglobal(checkButton.uvar, setting);
+		_G[checkButton.uvar] = setting;
 	end
 
 	if ( checkButton.dependentControls ) then
@@ -379,11 +378,11 @@ function BlizzardOptionsPanel_SetupControl (control)
 			control.value = value;
 
 			if ( control.uvar ) then
-				setglobal(control.uvar, value);
+				_G[control.uvar] = value;
 			end
 
 			control.GetValue = function(self) return GetCVar(self.cvar); end
-			control.SetValue = function(self, value) self.value = value; BlizzardOptionsPanel_SetCVarSafe(self.cvar, value, self.event); if ( self.uvar ) then setglobal(self.uvar, value) end end
+			control.SetValue = function(self, value) self.value = value; BlizzardOptionsPanel_SetCVarSafe(self.cvar, value, self.event); if ( self.uvar ) then _G[self.uvar] = value end end
 			control.Disable = function (self) getmetatable(self).__index.Disable(self) _G[self:GetName().."Text"]:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b) end;
 			control.Enable = function (self)
 				getmetatable(self).__index.Enable(self);
@@ -400,10 +399,10 @@ function BlizzardOptionsPanel_SetupControl (control)
 					control.value = "0";
 				end
 				if ( control.uvar ) then
-					setglobal(control.uvar, value);
+					_G[control.uvar] = value;
 				end
 
-				control.SetValue = function(self, value) self.value = value; if ( self.uvar ) then setglobal(self.uvar, value); end end;
+				control.SetValue = function(self, value) self.value = value; if ( self.uvar ) then _G[self.uvar] = value; end end;
 				control.Disable = function (self) getmetatable(self).__index.Disable(self) _G[self:GetName().."Text"]:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b) end;
 				control.Enable = function (self)
 					getmetatable(self).__index.Enable(self);

@@ -1,4 +1,4 @@
-
+﻿
 -- This is a symbol available for people who need to know the locale (separate from GetLocale())
 LOCALE_zhCN = true;
 
@@ -34,17 +34,6 @@ function LocalizeFrames()
 		_G[tabName.."Text"]:SetPoint("CENTER", tabName, "CENTER", 0, 5);
 	end
 
-	--Adjust text positioning in friends frame tabs.
-	for i = 1, FRIENDS_TO_DISPLAY do
-		--Friends tab
-		_G["FriendsFrameFriendButton" .. i .. "ButtonText"]:SetPoint("TOPLEFT", 0, 4);
-	end
-
-	for i = 1, IGNORES_TO_DISPLAY do
-		--Ignore tab
-		_G["FriendsFrameIgnoreButton" .. i .. "ButtonText"]:SetPoint("TOPLEFT", 0, 5);
-	end
-
 	for i = 1, WHOS_TO_DISPLAY do
 		--Who tab
 		_G["WhoFrameButton" .. i .. "Name"]:SetPoint("TOPLEFT", 10, -2);
@@ -74,7 +63,7 @@ function LocalizeFrames()
 	end
 
 	-- Chat Editbox
-	ChatFrameEditBoxLanguage:Show();
+	ChatEdit_LanguageShow();
 
 	-- Honor stuff
 	HonorFrameCurrentSessionTitle:SetPoint("TOPLEFT", "HonorFrame", "TOPLEFT", 36, -111);
@@ -88,13 +77,10 @@ function LocalizeFrames()
 	HonorFrameLifeTimeTitle:SetPoint("TOPLEFT", "HonorFrameLastWeekTitle", "BOTTOMLEFT", 0, -60);
 	HonorFrameLifeTimeHK:SetPoint("TOPLEFT", "HonorFrameLifeTimeTitle", "BOTTOMLEFT", 10, 2);
 
-	-- RaidInfo Frame
-	RaidInfoSubheader:SetPoint("TOPLEFT", "RaidInfoHeader", "BOTTOMLEFT", 0, 0);
 
 	-- Quest Log
 	QuestLogQuestCount:SetPoint("TOPRIGHT", "QuestLogCountTopRight", "BOTTOMLEFT", 1, 6);
 	QuestLogDailyQuestCount:SetPoint("TOPLEFT", "QuestLogQuestCount", "BOTTOMLEFT", 0, 2);
-	QuestLogTrack:SetPoint("LEFT", "QuestLogExpandButtonFrame", "RIGHT", 15, 10);
 
 
 	local point, relativeTo, relativePoint, xOfs, yOfs;
@@ -124,6 +110,16 @@ function LocalizeFrames()
 
 	-- Reputation Watch Bar
 	ReputationWatchStatusBarText:SetFontObject(TextStatusBarText);
+
+	-- Set range indicator for ActionBar. The text on action buttons is switched as needed so changing it here is enough.
+	RANGE_INDICATOR = "•";
+	-- WatchFrame item button template sets the text to be RANGE_INDICATOR, so must iterate through any existing buttons
+	for i = 1, WATCHFRAME_NUM_ITEMS do
+		_G["WatchFrameItem"..i.."HotKey"]:SetText(RANGE_INDICATOR);
+	end
+
+	-- Fix money display everywhere
+	MONEY_TEXT_VADJUST = 2;	
 end
 
 

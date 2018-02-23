@@ -97,6 +97,11 @@ DCT_EVENT_FUNC = {
 	
 }
 
+local DCT_warriorPath = false
+local DCT_warriorIcon = {"a","a"}
+local DCT_warriorName = {"a","a"}
+
+
 --Blizzard APi calls
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
@@ -109,6 +114,8 @@ local GetTime = GetTime
 local GetPlayerBuff = GetPlayerBuff
 local GetPlayerBuffName = GetPlayerBuffName
 local CombatLog_Object_IsA = CombatLog_Object_IsA
+
+
 
 function DCT_Debug(msg)
 	-- 移除调试信息
@@ -157,7 +164,25 @@ security
 String - Indicates the security status of the AddOn. This is currently "INSECURE" for all user provided addons and "SECURE" for Blizzard_* AddOns. 
 ]]
 function DCT_OnLoad()
+	this:RegisterEvent("VARIABLES_LOADED")
+	this:RegisterEvent("ADDON_LOADED")
+	this:RegisterEvent("PLAYER_ENTERING_WORLD")
 	
+	DCT_EVENT_FUNC["COMBAT_LOG_EVENT_UNFILTERED"] = DCT_ProcCombatUnfiltered
+	DCT_EVENT_FUNC["COMBAT_TEXT_UPDATE"] = DCT_ProcCombatTextUpdata
+	DCT_EVENT_FUNC["UNIT_HEALTH"] = DCT_ProcHealth
+	DCT_EVENT_FUNC["UNIT_MANA"] = DCT_ProcMana
+	DCT_EVENT_FUNC["UNIT_COMBO_POINTS"] = DCT_ProcCP
+	DCT_EVENT_FUNC["PLAYER_REGEN_ENABLED"] = DCT_ProcLeaveCombat
+	DCT_EVENT_FUNC["PLAYER_REGEN_DISABLED"] = DCT_ProcEnterCombat	
+	
+	DCT_EVENT_FUNC["PLAYER_REGEN_ENABLED"] = DCT_ProcLeaveCombat
+
+	DCT_EVENT_FUNC["SPELL_UPDATE_COOLDOWN"] = DCT_ProcCooldown
+	
+	DCT_EVENT_FUNC["VARIABLES_LOADED"] = DCT_OnEvent
+	DCT_EVENT_FUNC["PLAYER_ENTERING_WORLD"] = DCT_OnEnteringWorld
+	DCT_EVENT_FUNC["ADDON_LOADED"] = DCT_OnEvent
 end
 
 function DCT_ReLoadFrame()
@@ -184,7 +209,6 @@ function DCT_ReLoadFrame()
 		
 	end
 end
-
 -- Add by dugu@bigfoot
 function DCT_Toggle(switch)
 	local self = getglobal("DCT_TEXT");
@@ -223,19 +247,23 @@ function DCT_Toggle(switch)
 		self:UnregisterEvent("SPELL_UPDATE_COOLDOWN")
 	end
 end
-
 function DCT_Init()
 	if (DCT_Registered == 1) then return;end
 	--DCT_Reset()
-	DCT_EVENT_FUNC["COMBAT_LOG_EVENT_UNFILTERED"] = DCT_ProcCombatUnfiltered
-	DCT_EVENT_FUNC["COMBAT_TEXT_UPDATE"] = DCT_ProcCombatTextUpdata
-	DCT_EVENT_FUNC["UNIT_HEALTH"] = DCT_ProcHealth
-	DCT_EVENT_FUNC["UNIT_MANA"] = DCT_ProcMana
-	DCT_EVENT_FUNC["UNIT_COMBO_POINTS"] = DCT_ProcCP
-	DCT_EVENT_FUNC["PLAYER_REGEN_ENABLED"] = DCT_ProcLeaveCombat
-	DCT_EVENT_FUNC["PLAYER_REGEN_DISABLED"] = DCT_ProcEnterCombat
-	DCT_EVENT_FUNC["SPELL_UPDATE_COOLDOWN"] = DCT_ProcCooldown	
 
+	
+	this:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	this:RegisterEvent("COMBAT_TEXT_UPDATE")
+	this:RegisterEvent("PLAYER_REGEN_ENABLED")
+	this:RegisterEvent("PLAYER_REGEN_DISABLED")
+	this:RegisterEvent("UNIT_COMBO_POINTS")
+	this:RegisterEvent("UNIT_HEALTH")
+	this:RegisterEvent("UNIT_MANA")
+	
+	--Cooldown
+	this:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
+	this:RegisterEvent("SPELL_UPDATE_COOLDOWN")
+	
 	if DCT_SAVE_PERCHAR and (not DCT_SAVE_PERCHAR["DCT_SaveVer"] or DCT_SAVE_PERCHAR["DCT_SaveVer"] < DCT_DEFAULT_CFG["DCT_SaveVer"]) then
 		DCT_SAVE_PERCHAR = nil
 		DCT_SAVE = nil
@@ -276,7 +304,7 @@ function DCT_Init()
 	
 	DCT_ReLoadFrame()
 	
-	DCT_ModLoad()
+	DCT_ModLoad()	
 end
 
 function DCT_RegistModOptionButton(funcStr)
@@ -286,7 +314,7 @@ function DCT_RegistModOptionButton(funcStr)
 	
 end
 
-function DCT_showMenu()
+function DCT_showMenu()	
 	if not DCT_optionsloaded then
 		DCT_optionsloaded = LoadAddOn("dct_options")
 	end
@@ -634,6 +662,22 @@ function DCT_SSC_Format_DisableAll()
 	dct_ssc_spell = false
 end
 
+function DCT_OnEnteringWorld()
+	--战士压制修正 spellID:7384,14895,17198,24407,32154,35892,37321,37529,43456,58516
+	--战士复仇修正 spellID:6572,6574,7379,8602
+	if select(2,UnitClass("player")) == "WARRIOR" then
+		DCT_warriorPath = true
+		DCT_warriorName[1],_,DCT_warriorIcon[1] = GetSpellInfo(7384)
+		DCT_warriorName[2],_,DCT_warriorIcon[2] = GetSpellInfo(6572)
+	end
+	--[[
+	local i
+	for i = 1,65535 do
+		if select(1,GetSpellInfo(i)) == "复仇" then
+			DCT_Debug(""..i)
+		end
+	end]]
+end
 
 function DCT_OnEvent(event, addon, ...)
 	if (event == "VARIABLES_LOADED") or ( event == "ADDON_LOADED" and string.lower(addon) == "dct" ) then
@@ -723,6 +767,7 @@ function DCT_ProcCombatTextUpdata(event, larg1, larg2, larg3)
 	local showId = 1
 	
 	if larg1 == "SPELL_ACTIVE" then
+		if DCT_warriorPath and (DCT_warriorName[1] == larg2 or DCT_warriorName[2] == larg2) then return;end
 		dct_spellName = larg2
 		dct_icon = select(3, GetSpellInfo(larg2))
 		showType = "DCT_SHOWACTIVE"
@@ -854,18 +899,20 @@ function DCT_ProcCombatUnfiltered(gevent, timestamp, combatevent, sourceGUID, so
 		end
 		return
 	end
-	--[[
-	if fromPlayer then
+	
+	if fromPlayer and DCT_warriorPath then
 		if suffixes == "MISSED"  then
 			dct_missType = select(DCT_PREFIXES[prefixes],...)
-			if UnitClass("player") == "WARRIOR" or dct_missType == "DODGE" then
-				
+			if dct_missType == "DODGE" then
+				dct_spellName = DCT_warriorName[1]
+				dct_icon = DCT_warriorIcon[1]
+				DCT_AddText("DCT_SHOWACTIVE",1,false,nil)			
 			end
 		end
-	end]]
+	end
 		
 	if toPlayer then
-		if suffixes == "DAMAGE" then		
+		if suffixes == "DAMAGE" or suffixes == "SPLIT" then		
 			dct_amount, dct_over, dct_school, dct_resisted, dct_blocked, dct_absorbed, dct_critical, dct_glancing, dct_crushing = select(DCT_PREFIXES[prefixes],...)
 			if prefixes == "SWING" then			
 				showType = "DCT_SHOWHIT"			
@@ -880,6 +927,11 @@ function DCT_ProcCombatUnfiltered(gevent, timestamp, combatevent, sourceGUID, so
 			elseif prefixes == "ENVIRONMENTAL" then
 				showType = "DCT_SHOWENVIRONMENTAL"
 				dct_environmentalType = dct_spellId
+			end
+			
+			if prefixes == "DAMAGE" then--"DAMAGE_SPLIT"
+				showType = "DCT_SHOWSPELL"
+				dct_icon = dct_spellId
 			end
 		
 			DCT_ProcBlock()
@@ -924,6 +976,12 @@ function DCT_ProcCombatUnfiltered(gevent, timestamp, combatevent, sourceGUID, so
 					if DCT_ReflectFlag > 3 then DCT_ReflectFlag = 1;end
 				end
 			end
+			
+			if DCT_warriorPath and (dct_missType == "BLOCK" or dct_missType == "DODGE" or dct_missType == "PARRY") then
+				dct_spellName = DCT_warriorName[2]
+				dct_icon = DCT_warriorIcon[2]
+				DCT_AddText("DCT_SHOWACTIVE",1,false,nil)
+			end
 		elseif suffixes == "HEAL" then
 			dct_amount, dct_over,dct_critical = select(DCT_PREFIXES[prefixes],...)
 			showType = "DCT_SHOWHEAL"
@@ -933,10 +991,10 @@ function DCT_ProcCombatUnfiltered(gevent, timestamp, combatevent, sourceGUID, so
 			dct_icon = dct_spellId
 			
 			--过量治疗处理
-			if UnitHealth("player") == UnitHealthMax("player") and DCT_Get("DCT_ZeroHp_off") == 1 then return;end
+			if dct_amount - dct_over == 0 and DCT_Get("DCT_ZeroHp_off") == 1 then return;end
 			if dct_over ~= 0 then
 				dct_patch_oh = dct_over
-				dct_amount = dct_amount - dct_patch_oh
+				dct_amount = dct_amount - dct_over
 				showId = 2
 			end
 			local ch,mh;
@@ -1004,6 +1062,13 @@ function DCT_ProcCombatUnfiltered(gevent, timestamp, combatevent, sourceGUID, so
 				dct_icon = dct_spellId
 				DCT_SSC_Format_Enable()
 				showType = "DCT_SHOWSHIELD"
+			end
+		elseif suffixes == "SPLIT" then
+			if prefixes == "DAMAGE" then
+				dct_amount, dct_over, dct_school, dct_resisted, dct_blocked, dct_absorbed, dct_critical, dct_glancing, dct_crushing = select(DCT_PREFIXES[prefixes],...)
+				dct_icon = dct_spellId
+				DCT_SSC_Format_Enable()
+				showType = "DCT_SHOWSPELL"
 			end
 		elseif suffixes == "DISPEL" then
 			dct_spellId, dct_spellName, dct_spellSchool,dct_auraType = select(DCT_PREFIXES[prefixes],...)
