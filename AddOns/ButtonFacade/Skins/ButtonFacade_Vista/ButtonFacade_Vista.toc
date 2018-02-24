@@ -1,4 +1,4 @@
-## Interface: 33000
+## Interface: 30300
 ## X-BigfootType: 1
 ## X-BigfootDesc: |cFF4488FF此模块依赖于 ButtonFacade 主模块|r  允许动态按钮皮肤插件。。
 ## Notes: |cff267EFFJiyll|r skins for Button Facade based on Vista.
