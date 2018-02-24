@@ -31,7 +31,7 @@ function TrinketMenu.LoadDefaults()
 		TinyTooltips = "OFF",		-- whether tooltips display only name and cooldown
 		SetColumns = "OFF",			-- whether number of columns in menu is chosen automatically
 		Columns = 4,				-- if SetColumns "ON", number of columns before menu wraps
-		ShowHotKeys = "OFF",		-- whether hotkeys show on trinkets
+		ShowHotKeys = "ON",		-- whether hotkeys show on trinkets
 		StopOnSwap = "OFF",			-- whether to stop auto queue on all manual swaps
 		RedRange = "OFF",			-- whether to monitor and red out out of range trinkets
 		MenuOnRight = "OFF",		-- whether to open menu with right-click
