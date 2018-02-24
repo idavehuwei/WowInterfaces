@@ -116,7 +116,7 @@ end
 
 local defaults = {
     profile = {
-        locked = false,
+        locked = true,
         mute = true,
         minimap = {},
         units = {
@@ -125,7 +125,7 @@ local defaults = {
                 point = "CENTER",
                 relPoint = "CENTER",
                 x = 0,
-                y = -100,
+                y = -200,
                 font = DefaultFontName,
                 fontSize = 24,
                 fontOutline = "",
@@ -239,7 +239,7 @@ local function checkTarget(ud)
         ud.useSound = not mute
         return true
     elseif UnitCanAssist("player", unit) then
-        ud.useSound = not mute and not ud.db.warnEnemyOnly 
+        ud.useSound = not mute and not ud.db.warnEnemyOnly
         return not ud.db.enemyOnly
     else
         ud.useSound = false
