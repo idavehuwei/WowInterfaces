@@ -349,7 +349,7 @@ GTFOData = {
 	},
 	["DataCode"] = "4",
 	["Active"] = 1,
-	["Volume"] = 3,
+	["Volume"] = 1,
 };
 
 StaticPopupDialogs["GTFO_POPUP_MESSAGE"] = {
