@@ -154,7 +154,7 @@ if (IsConfigurableAddOn("BuffMaster")) then
 		BUFFMASTER_SHOW_DETAIL_TIMELEFT,	-- text
 		nil,															-- tooltip
 		"BuffMasterShowDetailTimeLeft",								-- variable
-		nil,																-- default
+		1,																-- default
 		function (__arg)	
 			if (__arg == 1) then
 				if (not BigFoot_IsAddOnLoaded("BuffMaster")) then

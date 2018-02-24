@@ -145,7 +145,7 @@ if playerclass == "HUNTER" and( IsConfigurableAddOn("HunterAssist") or IsConfigu
 		ENABLE_AIMED_SHOT,
 		ENABLE_AIMED_SHOT_TOOLTIP,
 		"EnableAimedShot",
-		1,
+		0,
 		function (arg)
 			if (arg == 1) then
 				if (not BigFoot_IsAddOnLoaded("HunterAssist")) then
@@ -385,7 +385,7 @@ if ((playerclass == "WARRIOR" or playerclass == "PALADIN" ) and IsConfigurableAd
 		ENABLE_ATTACK_TIMER,
 		ENABLE_ATTACK_TIMER_TOOLTIP,
 		"EnableAttackTimer",
-		1,
+		0,
 		function (arg)
 			if (arg == 1) then
 				if (not BigFoot_IsAddOnLoaded("AttackTimer")) then

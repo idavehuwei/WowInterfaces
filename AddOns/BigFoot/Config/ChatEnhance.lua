@@ -60,7 +60,7 @@ if (IsConfigurableAddOn("BubbleChat")) then
 		BUBBLECHAT_ENABLE_TEXT,
 		BUBBLECHAT_ENABLE_TEXT_TOOLTIP,
 		"EnableBubbleChat",
-		1,
+		0,
 		function (arg)
 			if (arg == 1) then
 				if (not BigFoot_IsAddOnLoaded("BubbleChat")) then

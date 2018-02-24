@@ -143,7 +143,7 @@ ModManagement_RegisterCheckBox(
 	BIGFOOTGADGET_CHANGE_FONT,
 	BIGFOOTGADGET_CHANGE_FONT_TOOLTIP,
 	"ChangeBigFootFont",
-	1,
+	0,
 	function (arg)
 		if (arg == 1) then
 			BFGadget_FontName, BFGadget_FontHeight, BFGadget_FontFlags=NumberFontNormal:GetFont()
