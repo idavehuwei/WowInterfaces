@@ -1,0 +1,53 @@
+------------------------------------------------------------------------
+r327 | kagaro | 2010-09-26 05:52:36 +0000 (Sun, 26 Sep 2010) | 1 line
+Changed paths:
+   A /tags/v2.20 (from /trunk:326)
+
+GatherMate_Data: weekly update
+------------------------------------------------------------------------
+r326 | kagaro | 2010-09-26 05:52:34 +0000 (Sun, 26 Sep 2010) | 1 line
+Changed paths:
+   M /trunk/version
+
+GatherMate_Data: Weekly update
+------------------------------------------------------------------------
+r324 | kagaro | 2010-09-19 05:49:47 +0000 (Sun, 19 Sep 2010) | 1 line
+Changed paths:
+   M /trunk/HerbalismData.lua
+   M /trunk/MiningData.lua
+   M /trunk/version
+
+GatherMate_Data: Weekly update
+------------------------------------------------------------------------
+r322 | kagaro | 2010-09-12 05:50:00 +0000 (Sun, 12 Sep 2010) | 1 line
+Changed paths:
+   M /trunk/HerbalismData.lua
+   M /trunk/MiningData.lua
+   M /trunk/TreasureData.lua
+   M /trunk/version
+
+GatherMate_Data: Weekly update
+------------------------------------------------------------------------
+r320 | kagaro | 2010-09-05 05:43:12 +0000 (Sun, 05 Sep 2010) | 1 line
+Changed paths:
+   M /trunk/HerbalismData.lua
+   M /trunk/MiningData.lua
+   M /trunk/TreasureData.lua
+   M /trunk/version
+
+GatherMate_Data: Weekly update
+------------------------------------------------------------------------
+r318 | kagaro | 2010-08-29 05:43:24 +0000 (Sun, 29 Aug 2010) | 1 line
+Changed paths:
+   M /trunk/version
+
+GatherMate_Data: Weekly update
+------------------------------------------------------------------------
+r317 | kagaro | 2010-08-22 13:06:03 +0000 (Sun, 22 Aug 2010) | 1 line
+Changed paths:
+   M /trunk/HerbalismData.lua
+   M /trunk/MiningData.lua
+   M /trunk/TreasureData.lua
+
+GatherMate_Data: Weekly update
+------------------------------------------------------------------------

@@ -1,0 +1,12 @@
+tag v1.5.1
+9cff3909e1a5cdee76232d054022134d14a5302a
+phyber <phyber@wowace>
+2009-12-09 20:47:12 +0000
+
+Tagging as v1.5.1
+
+
+--------------------
+
+phyber:
+	- Fix for options not opening

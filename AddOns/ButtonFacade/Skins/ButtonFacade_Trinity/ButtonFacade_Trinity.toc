@@ -1,0 +1,12 @@
+﻿## Interface: 30300
+## X-BigfootType: 1
+## X-BigfootDesc: 给动作条加上各种个性化的边框和皮肤。
+## Title: ButtonFacade: |cff267EFFTrinity|r
+## Author: Maul
+## Note: Adornment skins by Tonedef of WoWInterface
+## Version: 30300.1
+## Notes: Trinty Skins for Button Facade
+## DefaultState: enabled
+## OptionalDeps: LibButtonFacade, ButtonFacade
+
+skins.lua

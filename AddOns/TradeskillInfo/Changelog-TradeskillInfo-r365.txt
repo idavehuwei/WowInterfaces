@@ -1,0 +1,22 @@
+------------------------------------------------------------------------
+r365 | nowhererx7 | 2010-09-05 02:03:02 +0000 (Sun, 05 Sep 2010) | 2 lines
+Changed paths:
+   M /trunk/TradeskillInfo.lua
+
+TradeskillInfo:
+- redo of r364; forgot that Wordpad destroys lua files
+------------------------------------------------------------------------
+r364 | nowhererx7 | 2010-09-04 23:34:30 +0000 (Sat, 04 Sep 2010) | 2 lines
+Changed paths:
+   M /trunk/TradeskillInfo.lua
+
+TradeskillInfo:
+- Fixes bug where auction-house coloring incorrectly shows that an alt can learn the recipe
+------------------------------------------------------------------------
+r363 | Zidomo | 2010-06-24 10:35:41 +0000 (Thu, 24 Jun 2010) | 2 lines
+Changed paths:
+   M /trunk/TradeskillInfoUI/TradeskillInfoUI.lua
+
+TradeskillInfo:
+- filthy, dirty hack to allow recipe & item linking from the UI again without bugging out in WoW 3.3.5. If your server is still on 3.3.3, stay with r362 until you get updated.
+------------------------------------------------------------------------

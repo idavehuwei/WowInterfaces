@@ -1,0 +1,17 @@
+## Interface: 30300
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 ButtonFacade 主模块|r  允许动态按钮皮肤插件。。
+## Title: ButtonFacade: |cff00ffffSvelte|r
+## Version: 1.1
+## Notes: Svelte Skin and MORE!
+## Author: Ferous
+## X-Email: ferous.wow@gmail.com
+## X-Website: ferous.wowinterface.com
+## X-Credits: StormFX, Caith, Sovereignty
+## Dependencies: ButtonFacade
+
+Svelte Shadow.lua
+Svelte.lua
+Square.lua
+Square Shadow.lua
+Pixel.lua

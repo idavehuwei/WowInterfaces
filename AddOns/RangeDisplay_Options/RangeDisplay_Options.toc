@@ -1,0 +1,22 @@
+## Interface: 30300
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 RangeDisplay|r 很龙猫的小地图插件。*嚼嚼嚼*这龙猫嚼了你的干草球～。
+## Title: RangeDisplay Options
+## Author: mitch0
+## Version: r311
+## Notes: Configuration options for RangeDisplay
+## OptionalDeps: AceGUI-3.0-SharedMediaWidgets
+## Dependencies: RangeDisplay
+## LoadOnDemand: 1
+## X-License: Public Domain
+## X-RelSite-WoWI: 7297
+## X-Curse-Packaged-Version: r311
+## X-Curse-Project-Name: RangeDisplay
+## X-Curse-Project-ID: range-display
+## X-Curse-Repository-ID: wow/range-display/mainline
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+localizations\localizations.xml
+Options.lua

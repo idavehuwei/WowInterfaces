@@ -1,0 +1,22 @@
+﻿## Interface: 30300
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 RaidAchievement 主模块|r  PhoenixStyle 奥杜尔模块。
+## Title: Raid|cff7fff7fAchievement|r - Naxxramas
+## Title-ruRU: Raid|cff7fff7fAchievement|r - Наксрамас
+## Author: Shurshik
+## Notes: RaidAchievement Naxxramas Module
+## Notes-ruRU: Модуль RaidAchievement - Наксрамас
+## Dependencies: RaidAchievement
+## LoadOnDemand: 1
+## SavedVariablesPerCharacter: nxraspisokon
+Localization\localization-enEN.lua
+Localization\localization-ruRU.lua
+Localization\localization-deDE.lua
+Localization\localization-frFR.lua
+Localization\localization-esES.lua
+Localization\localization-zhTW.lua
+Localization\localization-koKR.lua
+Localization\localization-zhCN.lua
+RaidAchievement_Naxxramas.lua
+RaidAchievement_Naxxramasbosses.lua
+RaidAchievement_Naxxramas.xml

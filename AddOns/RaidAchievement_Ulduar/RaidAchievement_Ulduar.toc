@@ -1,0 +1,21 @@
+﻿## Interface: 30300
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 RaidAchievement 主模块|r  PhoenixStyle 奥杜尔模块。
+## Title: Raid|cff7fff7fAchievement|r - Ulduar
+## Title-ruRU: Raid|cff7fff7fAchievement|r - Ульдуар
+## Author: Shurshik
+## Notes: RaidAchievement Ulduar Module
+## Notes-ruRU: Модуль RaidAchievement - Ульдуар
+## Dependencies: RaidAchievement
+## LoadOnDemand: 1
+## SavedVariablesPerCharacter: preaspisokon
+Localization\localization-enEN.lua
+Localization\localization-ruRU.lua
+Localization\localization-deDE.lua
+Localization\localization-frFR.lua
+Localization\localization-esES.lua
+Localization\localization-zhTW.lua
+Localization\localization-zhCN.lua
+RaidAchievement_Ulduar.lua
+RaidAchievement_Uldabosses.lua
+RaidAchievement_Ulduar.xml

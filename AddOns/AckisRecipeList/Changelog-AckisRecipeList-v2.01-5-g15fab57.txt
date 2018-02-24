@@ -1,0 +1,6 @@
+mike:
+	- Fix incorrect recipe data noted in ticket 1051
+	- Fix for ticket 1045
+	- ## X-Compatible-With: 30300
+John Pasula:
+	- Update some comments.

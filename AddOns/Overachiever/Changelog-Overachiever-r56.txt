@@ -1,0 +1,14 @@
+------------------------------------------------------------------------
+r56 | tuhljin | 2010-06-11 07:41:25 +0000 (Fri, 11 Jun 2010) | 2 lines
+Changed paths:
+   M /trunk/AchieveID.lua
+   M /trunk/GameTip.lua
+   M /trunk/Overachiever.toc
+   M /trunk/Overachiever_Tabs/Overachiever_Tabs.toc
+   M /trunk/Overachiever_Tabs/Suggestions.lua
+   M /trunk/Overachiever_Trade/Overachiever_Trade.toc
+   M /trunk/readme.txt
+
+- Suggestions Tab: Added suggestions for Trial of the Champion, Trial of the (Grand) Crusader, Icecrown Citadel, The Forge of Souls, Halls of Reflection, and Pit of Saron.
+- Non-Heroic versions of creatures should no longer trigger a "need to kill" reminder tooltip for Heroic achievements in most (if not all) cases.
+------------------------------------------------------------------------

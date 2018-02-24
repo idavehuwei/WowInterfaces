@@ -1,0 +1,22 @@
+## Interface: 30300
+## X-BigfootType: 1
+## X-BigfootDesc: |cFF4488FF此模块依赖于 Overachiever|r 使玩家寻求成就可以稍微轻松点的微调工具。。
+## Title: Overachiever - Tabs
+## Version: 0.54
+## Author: Tuhljin
+## Notes: Achievement frame tabs module.
+## LoadOnDemand: 1
+## LoadWith: Blizzard_AchievementUI
+## Dependencies: Overachiever
+## SavedVariables: Overachiever_Tabs_Settings
+## X-Child-Of: Overachiever
+## X-Curse-Packaged-Version: r56
+## X-Curse-Project-Name: Overachiever - achievement tools and tweaks
+## X-Curse-Project-ID: overachiever
+## X-Curse-Repository-ID: wow/overachiever/mainline
+
+localization.lua
+build.lua
+Search.lua
+Suggestions.lua
+Watch.lua

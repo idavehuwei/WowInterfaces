@@ -42,3 +42,6 @@ Locales.lua
 # Core
 Skins.lua
 Core.lua
+
+# Skins
+Skins\Skins.xml

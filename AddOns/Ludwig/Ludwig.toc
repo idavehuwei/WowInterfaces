@@ -1,0 +1,12 @@
+## Interface: 30300
+## X-BigfootType: 1
+## X-BigfootDesc: 物品数据库插件Ludwig，自定义搜索任意品质和用途的装备物品。在聊天框之输入“/lw”进入物品搜索界面。此外还支持在聊天框中输入“/lw 物品名字”来搜索所有匹配的装备物品。
+## Title: Ludwig
+## Author: Tuller
+## Notes: Item Database
+## Version: 1.8.7
+localization.lua
+db.lua
+slash.lua
+linkerator.lua
+ui.xml
