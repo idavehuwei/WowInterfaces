@@ -16,6 +16,31 @@ elseif GetLocale()  == "zhTW" then
     SetTranslations( "術士", "WARLOCK", "戰士", "WARRIOR", "獵人", "HUNTER", "法師", "MAGE", "牧師", "PRIEST", "德魯伊", "DRUID", "聖騎士", "PALADIN", "薩滿", "SHAMAN", "盜賊", "ROGUE", "死亡騎士", "DEATHKNIGHT", "術士", "WARLOCK", "戰士", "WARRIOR", "獵人", "HUNTER", "法師", "MAGE", "牧師", "PRIEST", "德魯伊", "DRUID", "聖騎士", "PALADIN", "薩滿", "SHAMAN", "盜賊", "ROGUE", "死亡騎士", "DEATHKNIGHT" )
 end
 
+FillLocalizedClassList = _G.FillLocalizedClassList
+do
+    if (FillLocalizedClassList == nil) then
+        function FillLocalizedClassList(classTable, isFemale)
+            if (classTable and type(classTable) == "table") then
+                classTable = nil;
+                classTable = {
+                    DEATHKNIGHT = "Death Knight",
+                    WARRIOR = "Warrior",
+                    ROGUE = "Rogue",
+                    MAGE = "Mage",
+                    PRIEST = "Priest",
+                    WARLOCK = "Warlock",
+                    HUNTER = "Hunter",
+                    SHAMAN = "Shaman",
+                    DRUID = "Druid",
+                    MONK = "Monk",
+                    PALADIN = "Paladin"
+                };
+            end
+        end
+    end
+end
+
+
 -----------------------------------
 -- 异步调用(安全的调用别的插件的函数)
 local AsynCallFuncs = {};

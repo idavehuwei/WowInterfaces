@@ -1,0 +1,16 @@
+## Interface: 30100
+## X-BigfootType: 1
+## X-BigfootDesc: 记录你完成过的所有任务。
+## Title: Every|cffffffffQuest|r2 Profession Quests
+## Notes: Contains a list of quests for Professions
+## Author: kandarz
+## X-Email: kandarz@gmail.com
+## Version: 1
+## LoadOnDemand: 1
+## X-Category: Quest
+## X-Curse-Packaged-Version: 2.2.10
+## X-Curse-Project-Name: EveryQuest
+## X-Curse-Project-ID: everyquest
+## X-Curse-Repository-ID: wow/everyquest/mainline
+
+Professions.lua
