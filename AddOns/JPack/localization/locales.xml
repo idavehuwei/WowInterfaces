@@ -6,6 +6,5 @@
 	<Script file="localization.kr.lua"/>
 	<Script file="localization.de.lua"/>
 	<Script file="localization.fr.lua"/>
-	<Script file="localization.es.lua"/>
 
 </Ui>

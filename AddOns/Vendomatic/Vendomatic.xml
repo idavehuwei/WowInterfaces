@@ -1,0 +1,1460 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\..\FrameXML\UI.xsd">
+
+<!-- TEMPLATES -->
+    <Font name="VendomaticNormalFontWhite" inherits="GameFontNormalLeft" virtual="true">
+        <Color r="1.0" g="1.0" b="1.0"/>
+    </Font>
+    <Button name="SellItemTemplate" hidden="false" virtual="true" multiLine="false">
+        <Size>
+            <AbsDimension x="158" y="16"/>
+        </Size>
+        <ButtonText name="$parentText">
+            <Size x="156" y="13"/>
+            <Anchors>
+                <Anchor point="LEFT">
+                    <Offset>
+                        <AbsDimension x="2" y="-2"/>
+                    </Offset>
+                </Anchor>
+            </Anchors>
+        </ButtonText>
+        <NormalFont style="VendomaticNormalFontWhite"/>
+        <HighlightFont style="GameFontHighlightLeft"/>
+        <DisabledFont style="GameFontDisableLeft"/>
+    </Button>
+    <Button name="StockItemTemplate" hidden="false" virtual="true" multiLine="false">
+        <Size>
+            <AbsDimension x="158" y="16"/>
+        </Size>
+        <ButtonText name="$parentText">
+            <Size x="156" y="13"/>
+            <Anchors>
+                <Anchor point="LEFT">
+                    <Offset>
+                        <AbsDimension x="2" y="-2"/>
+                    </Offset>
+                </Anchor>
+            </Anchors>
+        </ButtonText>
+        <NormalFont style="VendomaticNormalFontWhite"/>
+        <HighlightFont style="GameFontHighlightLeft"/>
+        <DisabledFont style="GameFontDisableLeft"/>
+    </Button>
+    <Button name="DragnDropFrame" hidden="false" virtual="true">
+        <Size>
+            <AbsDimension x="64" y="64"/>
+        </Size>
+    </Button>
+    <Frame name="VendomaticHighlightFrame" hidden="true">
+        <Size>
+            <AbsDimension x="179" y="16"/>
+        </Size>
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture name="VendomaticSkillHighlight" file="Interface\Buttons\UI-Listbox-Highlight"/>
+            </Layer>
+        </Layers>
+    </Frame>
+
+<!-- MINIMAP BUTTON -->
+    <Frame name="VendomaticButtonFrame" parent="Minimap" enableMouse="true" hidden="false" frameStrata="LOW" movable="true">
+        <Size>
+            <AbsDimension x="32" y="32"/>
+        </Size>
+        <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="Minimap" relativePoint="RIGHT">
+                <Offset>
+                    <AbsDimension x="-10" y="30"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Frames>
+            <Button name="VendomaticButton" movable="true">
+                <HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
+                <Size>
+                    <AbsDimension x="33" y="33"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="0" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer level="BORDER">
+                        <Texture name="$parentIcon" file="Interface\Icons\INV_Misc_Rabbit_2">
+                            <Size>
+                                <AbsDimension x="22" y="22"/>
+                            </Size>
+                            <Anchors>
+                                <Anchor point="CENTER">
+                                    <Offset>
+                                        <AbsDimension x="0" y="1"/>
+                                    </Offset>
+                                </Anchor>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                    <Layer level="OVERLAY">
+                        <Texture name="$parentBorder" file="Interface\Minimap\MiniMap-TrackingBorder">
+                            <Size>
+                                <AbsDimension x="60" y="60"/>
+                            </Size>
+                            <Anchors>
+                                <Anchor point="TOPLEFT"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnLoad>
+                        this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+                        this:RegisterForDrag("LeftButton");
+                    </OnLoad>
+                    <OnDragStart>
+                        this:StartMoving();
+                    </OnDragStart>
+                    <OnDragStop>
+                        this:StopMovingOrSizing();
+                    </OnDragStop>
+                    <OnClick>
+                        if (tostring(button) == "RightButton") then
+                            Vendomatic_Durability();
+                        end
+                    </OnClick>
+                    <OnDoubleClick>
+                        if (tostring(button) == "LeftButton") then
+                            if VendomaticFrame:IsVisible() then
+                                VendomaticFrame:Hide();
+                            else
+                                VendomaticFrame:Show();
+                            end
+                        end
+                    </OnDoubleClick>
+                    <OnEnter>
+                        VendomaticButton_OnEnter();
+                    </OnEnter>
+                    <OnLeave>
+                        GameTooltip:Hide();
+                    </OnLeave>
+                </Scripts>
+            </Button>
+        </Frames>
+    </Frame>
+
+<!-- ADDON FRAMES -->
+    <Frame name="VendomaticFrame" parent="UIParent" enableMouse="true" movable="true" frameStrata="LOW" hidden="true">
+        <Size x="205" y="32"/>
+        <Anchors>
+            <Anchor point="CENTER" relativeTo="UIParent">
+                <Offset x="0" y="-10"/>
+            </Anchor>
+        </Anchors>
+        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" title="true">
+            <BackgroundInsets>
+                <AbsInset left="4" right="4" top="2" bottom="4"/>
+            </BackgroundInsets>
+            <TileSize>
+                <AbsValue val="32"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="16"/>
+            </EdgeSize>
+        </Backdrop>
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString name="$parentText" inherits="GameFontNormalLarge" justifyH="CENTER" setAllPoints="true" text="Vend-o-matic 选项"/>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad>
+                Vendomatic_OnLoad(self);
+            </OnLoad>
+            <OnEvent>
+                Vendomatic_OnEvent(self, event, ...);
+            </OnEvent>
+            <OnMouseDown>
+                this:StartMoving();
+            </OnMouseDown>
+            <OnMouseUp>
+                this:StopMovingOrSizing();
+            </OnMouseUp>
+            <OnDragStop>
+                this:StopMovingOrSizing();
+            </OnDragStop>
+        </Scripts>
+    </Frame>
+    <Frame name="VendomaticOptionsFrame" parent="VendomaticFrame" enableMouse="true" movable="false" frameStrata="LOW" hidden ="false">
+        <Size x="275" y="240"/>
+        <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="VendomaticFrame">
+                <Offset x="0" y="5"/>
+            </Anchor>
+        </Anchors>
+        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" title="true">
+            <BackgroundInsets>
+                <AbsInset left="4" right="4" top="2" bottom="4"/>
+            </BackgroundInsets>
+            <TileSize>
+                <AbsValue val="32"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="16"/>
+            </EdgeSize>
+        </Backdrop>
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString name="$parentText" inherits="GameFontNormalLarge" justifyH="CENTER" setAllPoints="true" text="勾选来启用或禁用:">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="VendomaticOptionsFrame">
+                            <Offset x="20" y="-15"/>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <CheckButton name="$parent_CheckRepair" inherits="UICheckButtonTemplate" text="自动修理">
+                <Size>
+                    <AbsDimension x="25" y="25"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                        <Offset x="25" y="-50"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("自动修理");
+                        getglobal(this:GetName().."Text"):SetFontObject("GameFontNormal");
+                    </OnLoad>
+                    <OnClick>
+                        if (this:GetChecked()) then
+                            VendomaticOptions.autorepair = 1;
+                        elseif (not this:GetChecked()) then
+                            VendomaticOptions.autorepair = 0;
+                        end
+                    </OnClick>
+                    <OnShow>
+                        if VendomaticOptions.autorepair == 1 then
+                            getglobal(this:SetChecked(true));
+                        else
+                            getglobal(this:SetChecked(false));
+                        end
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parent_CheckSell" inherits="UICheckButtonTemplate" text="Auto sell" checked="true">
+                <Size x="25" y="25"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                        <Offset x="25" y="-100"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("自动出售");
+                        getglobal(this:GetName().."Text"):SetFontObject("GameFontNormal");
+                    </OnLoad>
+                    <OnClick>
+                        if (this:GetChecked()) then
+                            VendomaticOptions.autosell = 1;
+                        elseif (not this:GetChecked()) then
+                            VendomaticOptions.autosell = 0;
+                        end
+                    </OnClick>
+                    <OnShow>
+                        if VendomaticOptions.autosell == 1 then
+                            getglobal(this:SetChecked(true));
+                        else
+                            getglobal(this:SetChecked(false));
+                        end
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parent_CheckRestock" inherits="UICheckButtonTemplate" text="自动补购" checked="true">
+                <Size x="25" y="25"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                        <Offset x="25" y="-150"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("自动补购");
+                        getglobal(this:GetName().."Text"):SetFontObject("GameFontNormal");
+                    </OnLoad>
+                    <OnClick>
+                        if (this:GetChecked()) then
+                            VendomaticOptions.autorestock = 1;
+                        elseif (not this:GetChecked()) then
+                            VendomaticOptions.autorestock = 0;
+                        end
+                    </OnClick>
+                    <OnShow>
+                        if VendomaticOptions.autorestock == 1 then
+                            getglobal(this:SetChecked(true));
+                        else
+                            getglobal(this:SetChecked(false));
+                        end
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+            <Button name="$parent_RepairButton" inherits="UIPanelButtonTemplate" text="选项">
+                   <Size>
+                       <AbsDimension x="94" y="22"/>
+                  </Size>
+                  <Anchors>
+                      <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent" >
+                          <Offset x="140" y="-53"/>
+                      </Anchor>
+                 </Anchors>
+                 <Scripts>
+                     <OnClick>
+                         Vendomatic_OptionsSellFrame:Hide();
+                         Vendomatic_OptionsStockFrame:Hide();
+                         if Vendomatic_OptionsRepairFrame:IsVisible() then
+                             Vendomatic_OptionsRepairFrame:Hide();
+                         else
+                             Vendomatic_OptionsRepairFrame:Show();
+                         end
+                     </OnClick>
+                 </Scripts>
+              </Button>
+              <Button name="$parent_SellButton" inherits="UIPanelButtonTemplate" text="选项">
+                   <Size>
+                       <AbsDimension x="94" y="22"/>
+                  </Size>
+                  <Anchors>
+                      <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent" >
+                          <Offset x="140" y="-103"/>
+                      </Anchor>
+                 </Anchors>
+                 <Scripts>
+                     <OnClick>
+                         Vendomatic_OptionsStockFrame:Hide();
+                         Vendomatic_OptionsRepairFrame:Hide();
+                         if Vendomatic_OptionsSellFrame:IsVisible() then
+                             Vendomatic_OptionsSellFrame:Hide();
+                         else
+                             Vendomatic_OptionsSellFrame:Show();
+                         end
+                     </OnClick>
+                 </Scripts>
+              </Button>
+              <Button name="$parent_StockButton" inherits="UIPanelButtonTemplate" text="选项">
+                   <Size>
+                       <AbsDimension x="94" y="22"/>
+                  </Size>
+                  <Anchors>
+                      <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent" >
+                          <Offset x="140" y="-153"/>
+                      </Anchor>
+                 </Anchors>
+                 <Scripts>
+                     <OnClick>
+                         Vendomatic_OptionsRepairFrame:Hide();
+                         Vendomatic_OptionsSellFrame:Hide();
+                         if Vendomatic_OptionsStockFrame:IsVisible() then
+                             Vendomatic_OptionsStockFrame:Hide();
+                         else
+                             Vendomatic_OptionsStockFrame:Show();
+                         end
+                     </OnClick>
+                 </Scripts>
+              </Button>
+            <Button name="$parent_Button1" inherits="UIPanelButtonTemplate" text="关闭">
+                <Size>
+                    <AbsDimension x="94" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="BOTTOMRIGHT" relativeTo="VendomaticOptionsFrame" >
+                        <Offset x="-100" y="30"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        VendomaticFrame:Hide();
+                    </OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+        <Scripts>
+            <!--<OnKeyDown>
+                if (arg1 == "ESCAPE") then
+                    VendomaticFrame:Hide();
+                end
+            </OnKeyDown> -->
+        </Scripts>
+    </Frame>
+    <Frame name="Vendomatic_OptionsRepairFrame" parent="VendomaticFrame" enableMouse="true" movable="true" hidden="true">
+        <Size x="200" y="180"/>
+        <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="VendomaticOptionsFrame">
+                <Offset x="-5" y="0"/>
+            </Anchor>
+        </Anchors>
+        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" title="true">
+            <BackgroundInsets>
+                <AbsInset left="4" right="4" top="2" bottom="4"/>
+            </BackgroundInsets>
+            <TileSize>
+                <AbsValue val="32"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="16"/>
+            </EdgeSize>
+        </Backdrop>
+        <Frames>
+            <CheckButton name="$parent_RadioButton1" inherits="SendMailRadioButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                        <Offset x="20" y="-40"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("总是修理");
+                        getglobal(this:GetName().."Text"):SetFontObject("GameFontNormal");
+                        this:SetChecked(1) <!-- Default option -->
+                    </OnLoad>
+                    <OnClick>
+                        Vendomatic_OptionsRepairFrame_RadioButton2:SetChecked(nil);
+                        Vendomatic_OptionsRepairFrame_RadioButton3:SetChecked(nil);
+                        Vendomatic_OptionsRepairFrame_EditBox:Hide();
+                        Vendomatic_OptionsRepairFrame_TextPercentage:Hide();
+                        VendomaticOptions.repairtype = 1;
+                        this:SetChecked(1);
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parent_RadioButton2" inherits="SendMailRadioButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                        <Offset x="20" y="-60"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("总是询问");
+                        getglobal(this:GetName().."Text"):SetFontObject("GameFontNormal");
+                        this:SetChecked(nil); <!-- off -->
+                    </OnLoad>
+                    <OnClick>
+                        Vendomatic_OptionsRepairFrame_RadioButton1:SetChecked(nil);
+                        Vendomatic_OptionsRepairFrame_RadioButton3:SetChecked(nil);
+                        Vendomatic_OptionsRepairFrame_EditBox:Hide();
+                        Vendomatic_OptionsRepairFrame_TextPercentage:Hide();
+                        this:SetChecked(1);
+                        VendomaticOptions.repairtype = 2;
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parent_RadioButton3" inherits="SendMailRadioButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                        <Offset x="20" y="-80"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("修理阀值: ");
+                        getglobal(this:GetName().."Text"):SetFontObject("GameFontNormal");
+                        this:SetChecked(nil); <!-- off -->
+                    </OnLoad>
+                    <OnClick>
+                        Vendomatic_OptionsRepairFrame_RadioButton1:SetChecked(nil);
+                        Vendomatic_OptionsRepairFrame_RadioButton2:SetChecked(nil);
+                        this:SetChecked(1);
+                        Vendomatic_OptionsRepairFrame_EditBox:Show();
+                        Vendomatic_OptionsRepairFrame_TextPercentage:Show();
+                        VendomaticOptions.repairtype = 3;
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <EditBox name="Vendomatic_OptionsRepairFrame_EditBox" font="GameFontNormal" letters="2" numeric="true" multiLine="false" autoFocus="false" hidden="true">
+                <Size>
+                    <AbsDimension x="40" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                        <Offset x="50" y="-100"/>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer level="BACKGROUND">
+                        <Texture name="$parentLeft" file="Interface\Common\Common-Input-Border">
+                            <Size>
+                                <AbsDimension x="8" y="20"/>
+                            </Size>
+                            <Anchors>
+                                <Anchor point="TOPLEFT">
+                                    <Offset x="-5" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                            <TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
+                        </Texture>
+                        <Texture name="$parentRight" file="Interface\Common\Common-Input-Border">
+                            <Size>
+                                <AbsDimension x="8" y="20"/>
+                            </Size>
+                            <Anchors>
+                                <Anchor point="RIGHT">
+                                    <Offset x="0" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                            <TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
+                        </Texture>
+                        <Texture name="$parentMiddle" file="Interface\Common\Common-Input-Border">
+                            <Size>
+                                <AbsDimension x="0" y="20"/>
+                            </Size>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+                                <Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT"/>
+                            </Anchors>
+                            <TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
+                        </Texture>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnEnterPressed>
+                        if (self:GetText() ~= "") then
+                            VendomaticOptions.repairthreshold = tonumber(self:GetText());
+                        end
+                        self:ClearFocus();
+                    </OnEnterPressed>
+                    <OnEscapePressed function="EditBox_ClearFocus"/>
+                </Scripts>
+                <FontString inherits="ChatFontSmall"/>
+            </EditBox>
+            <Button name="$parent_Button1" inherits="UIPanelButtonTemplate" text="Close">
+                   <Size>
+                       <AbsDimension x="94" y="22"/>
+                  </Size>
+                  <Anchors>
+                      <Anchor point="TOPLEFT" relativePoint="BOTTOMRIGHT" relativeTo="Vendomatic_OptionsRepairFrame" >
+                          <Offset x="-100" y="30"/>
+                      </Anchor>
+                 </Anchors>
+                 <Scripts>
+                     <OnClick>
+                         Vendomatic_OptionsRepairFrame:Hide();
+                         if (Vendomatic_OptionsRepairFrame_EditBox:GetText() ~= "") then
+                            VendomaticOptions.repairthreshold = tonumber(Vendomatic_OptionsRepairFrame_EditBox:GetText());
+                        end
+                     </OnClick>
+                 </Scripts>
+             </Button>
+            <CheckButton name="$parent_CheckGuildRepair" inherits="UICheckButtonTemplate" text="使用公会资金自动修理">
+                <Size>
+                    <AbsDimension x="25" y="25"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                        <Offset x="20" y="-120"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("公会资金修理");
+                        getglobal(this:GetName().."Text"):SetFontObject("GameFontNormal");
+                    </OnLoad>
+                    <OnClick>
+                        if (this:GetChecked()) then
+                            VendomaticOptions.guildbankrepair = 1;
+                        elseif (not this:GetChecked()) then
+                            VendomaticOptions.guildbankrepair = 0;
+                        end
+                    </OnClick>
+                    <OnShow>
+                        if VendomaticOptions.guildbankrepair == 1 then
+                            getglobal(this:SetChecked(true));
+                        else
+                            getglobal(this:SetChecked(false));
+                        end
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+        </Frames>
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString name="$parentText" inherits="GameFontNormalLarge" justifyH="CENTER" setAllPoints="true" text="修理选项">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                            <Offset x="10" y="-8"/>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parent_TextPercentage" inherits="GameFontNormal" justifyH="CENTER" setAllPoints="true" text="%" hidden="true">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                            <Offset x="95" y="-104"/>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+    </Frame>
+    <Frame name="Vendomatic_OptionsSellFrame" parent="VendomaticFrame" enableMouse="true" movable="true" hidden="true">
+        <Size x="250" y="350"/>
+        <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="VendomaticOptionsFrame">
+                <Offset x="-5" y="0"/>
+            </Anchor>
+        </Anchors>
+        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" title="true">
+            <BackgroundInsets>
+                <AbsInset left="4" right="4" top="2" bottom="4"/>
+            </BackgroundInsets>
+            <TileSize>
+                <AbsValue val="32"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="16"/>
+            </EdgeSize>
+        </Backdrop>
+        <Frames>
+            <Button name="$parent_DropBox" hidden="false" parent="Vendomatic_OptionsSellFrame" inherits="ItemButtonTemplate" enableMouse="true">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="Vendomatic_OptionsSellFrame">
+                        <Offset x="25" y="-65"/>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer level="BACKGROUND">
+                        <Texture name="$parent_DropBackground" file="Interface\Buttons\UI-EmptySlot-Disabled" setAllPoints="true">
+                            <Size>
+                                <AbsDimension x="65" y="65"/>
+                            </Size>
+                            <Anchors>
+                                <Anchor point="CENTER">
+                                    <Offset x="0" y="-1"/>
+                                </Anchor>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnLoad>
+                        this:RegisterForDrag("LeftButton");
+                    </OnLoad>
+                    <OnReceiveDrag>
+                        VendoMatic_FrameDragSell();
+                    </OnReceiveDrag>
+                    <OnClick>
+                        if GetCursorInfo() then
+                            VendoMatic_FrameDragSell();
+                        end
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parent_ButtonClose" inherits="UIPanelButtonTemplate" text="关闭">
+                <Size>
+                    <AbsDimension x="94" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="Vendomatic_OptionsSellFrame" >
+                        <Offset x="-10" y="10"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        Vendomatic_OptionsSellFrame:Hide();
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parent_ButtonAdd" inherits="UIPanelButtonTemplate" text="添加">
+                <Size>
+                    <AbsDimension x="64" y="25"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="Vendomatic_OptionsSellFrame">
+                        <Offset x="25" y="-110"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        local Vendomatic_AddText = Vendomatic_OptionsSellFrame_DropBoxText:GetText();
+                        if Vendomatic_AddText ~= nil then
+                            if Vendomatic_AddText ~= "" and not Vendomatic_CheckExceptions(Vendomatic_AddText) then
+                                tinsert(VendomaticOptions.exceptions, Vendomatic_AddText);
+                                Vendomatic_SellFrameUpdate();
+                                Vendomatic_OptionsSellFrame_DropBoxIconTexture:SetTexture("");
+                                Vendomatic_OptionsSellFrame_DropBoxText:SetText("");
+                            end
+                        end
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentToggleButton" inherits="StockItemTemplate" text="bla">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent" >
+                        <Offset x="19" y="-152"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        if VendomaticOptions.listtype == 0 then
+                            Vendomatic_OptionsSellFrameToggleButtonText:SetText("|cff00ff00出售|r 这些物品");
+                            VendomaticOptions.listtype = 1;
+                        else
+                            Vendomatic_OptionsSellFrameToggleButtonText:SetText("|cffff0000保留|r 这些物品");
+                            VendomaticOptions.listtype = 0;
+                        end
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Frame name="SellItemFauxFrame" hidden="false">
+                <Size x="205" y="93"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="Vendomatic_OptionsSellFrame">
+                        <Offset x="19" y="-175"/>
+                    </Anchor>
+                </Anchors>
+                <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" title="true">
+                    <BackgroundInsets>
+                        <AbsInset left="2" right="4" top="4" bottom="4"/>
+                    </BackgroundInsets>
+                    <TileSize>
+                        <AbsValue val="32"/>
+                    </TileSize>
+                    <EdgeSize>
+                        <AbsValue val="14"/>
+                    </EdgeSize>
+                </Backdrop>
+                <Frames>
+                    <Button name="SellItemButton1" inherits="SellItemTemplate" text="[斜纹外衣]">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="SellItemFauxFrame" >
+                                <Offset x="10" y="-2"/>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                Vendomatic_HighlightFrame(self);
+                                SelectedSellItem = self:GetText();
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="SellItemButton2" inherits="SellItemTemplate" text="[斜纹裤子]">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="SellItemButton1" >
+                                <Offset x="0" y="0"/>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                Vendomatic_HighlightFrame(self);
+                                SelectedSellItem = self:GetText();
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="SellItemButton3" inherits="SellItemTemplate" text="[斜纹护腿]">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="SellItemButton2" >
+                                <Offset x="0" y="0"/>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                Vendomatic_HighlightFrame(self);
+                                SelectedSellItem = self:GetText();
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="SellItemButton4" inherits="SellItemTemplate" text="[斜纹罩帽]">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="SellItemButton3" >
+                                <Offset x="0" y="0"/>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                Vendomatic_HighlightFrame(self);
+                                SelectedSellItem = self:GetText();
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="SellItemButton5" inherits="SellItemTemplate" text="[斜纹腰带]">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="SellItemButton4" >
+                                <Offset x="0" y="0"/>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                Vendomatic_HighlightFrame(self);
+                                SelectedSellItem = self:GetText();
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                </Frames>
+            </Frame>
+            <Button name="SellItemFauxIncrementButton">
+                <Size>
+                    <AbsDimension x="27" y="27"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="SellItemFauxFrame">
+                        <Offset>
+                            <AbsDimension x="-25" y="2"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        Vendomatic_SellFrameMoveUp();
+                        VendomaticHighlightFrame:Hide();
+                    </OnClick>
+                </Scripts>
+                <NormalTexture file="Interface\Buttons\UI-ScrollBar-ScrollUpButton-Up"/>
+                <PushedTexture file="Interface\Buttons\UI-ScrollBar-ScrollUpButton-Down"/>
+                <DisabledTexture file="Interface\Buttons\UI-ScrollBar-ScrollUpButton-Disabled"/>
+                <HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+            </Button>
+            <Button name="SellItemFauxDecrementButton">
+                <Size>
+                    <AbsDimension x="27" y="27"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="SellItemFauxFrame">
+                        <Offset>
+                            <AbsDimension x="2" y="-3"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        Vendomatic_SellFrameMoveDown();
+                        VendomaticHighlightFrame:Hide();
+                    </OnClick>
+                </Scripts>
+                <NormalTexture file="Interface\Buttons\UI-ScrollBar-ScrollDownButton-Up"/>
+                <PushedTexture file="Interface\Buttons\UI-ScrollBar-ScrollDownButton-Down"/>
+                <DisabledTexture file="Interface\Buttons\UI-ScrollBar-ScrollDownButton-Disabled"/>
+                <HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+            </Button>
+            <CheckButton name="$parent_SellGreen" inherits="UICheckButtonTemplate" text="出售绿色物品">
+                <Size>
+                    <AbsDimension x="25" y="25"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent">
+                        <Offset x="10" y="10"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("出色绿色物品");
+                        getglobal(this:GetName().."Text"):SetFontObject("GameFontNormal");
+                    </OnLoad>
+                    <OnClick>
+                        if (this:GetChecked()) then
+                            VendomaticOptions.sellgreens = 1;
+                        elseif (not this:GetChecked()) then
+                            VendomaticOptions.sellgreens = 0;
+                        end
+                    </OnClick>
+                    <OnShow>
+                        if VendomaticOptions.sellgreens == 1 then
+                            getglobal(this:SetChecked(true));
+                        else
+                            getglobal(this:SetChecked(false));
+                        end
+                    </OnShow>
+                    <OnEnter>
+                        Vendomatic_GreenSellHelp();
+                    </OnEnter>
+                </Scripts>
+            </CheckButton>
+            <Button name="$parent_ButtonRemove" inherits="UIPanelButtonTemplate" text="移除">
+                <Size>
+                    <AbsDimension x="75" y="25"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="SellItemFauxFrame">
+                        <Offset x="10" y="-10"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        if SelectedSellItem ~= nil then
+                            ExceptionDelete(SelectedSellItem);
+                            SelectedSellItem = nil;
+                            VendomaticHighlightFrame:Hide();
+                            Vendomatic_SellFrameUpdate();
+                        end
+                    </OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnShow>
+                Vendomatic_SellFrameUpdate();
+                VendomaticHighlightFrame:SetParent("SellItemFauxFrame");
+                VendomaticHighlightFrame:Hide();
+            </OnShow>
+        </Scripts>
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString name="$parentText" inherits="GameFontNormalLarge" justifyH="CENTER" setAllPoints="true" text="物品列表">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                            <Offset x="10" y="-8"/>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentText" inherits="GameFontNormal" justifyH="CENTER" setAllPoints="true" text="拖动物品放到这">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                            <Offset x="20" y="-45"/>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parent_DropBoxText" inherits="VendomaticNormalFontWhite" justifyH="CENTER" setAllPoints="true" text="">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="Vendomatic_OptionsSellFrame">
+                            <Offset x="75" y="-75"/>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+    </Frame>
+    <Frame name="Vendomatic_OptionsStockFrame" parent="VendomaticFrame" enableMouse="true" movable="true" hidden="true">
+        <Size x="250" y="370"/>
+        <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="VendomaticOptionsFrame">
+                <Offset x="-5" y="0"/>
+            </Anchor>
+        </Anchors>
+        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" title="true">
+            <BackgroundInsets>
+                <AbsInset left="4" right="4" top="2" bottom="4"/>
+            </BackgroundInsets>
+            <TileSize>
+                <AbsValue val="32"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="16"/>
+            </EdgeSize>
+        </Backdrop>
+        <Frames>
+            <CheckButton name="$parent_CheckOverStock" inherits="UICheckButtonTemplate" text="库存过多">
+                <Size>
+                    <AbsDimension x="25" y="25"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent">
+                        <Offset x="10" y="10"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("库存过多");
+                        getglobal(this:GetName().."Text"):SetFontObject("GameFontNormal");
+                    </OnLoad>
+                    <OnClick>
+                        if (this:GetChecked()) then
+                            VendomaticOptions.overstock = 1;
+                        elseif (not this:GetChecked()) then
+                            VendomaticOptions.overstock = 0;
+                        end
+                    </OnClick>
+                    <OnShow>
+                        if VendomaticOptions.overstock == 1 then
+                            getglobal(this:SetChecked(true));
+                        else
+                            getglobal(this:SetChecked(false));
+                        end
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+            <Button name="$parent_DropBox" hidden="false" parent="Vendomatic_OptionsStockFrame" inherits="ItemButtonTemplate" enableMouse="true">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="Vendomatic_OptionsStockFrame">
+                        <Offset x="25" y="-65"/>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer level="BACKGROUND">
+                        <Texture name="$parent_DropBackground" file="Interface\Buttons\UI-EmptySlot-Disabled" setAllPoints="true">
+                            <Size>
+                                <AbsDimension x="65" y="65"/>
+                            </Size>
+                            <Anchors>
+                                <Anchor point="CENTER">
+                                    <Offset x="0" y="-1"/>
+                                </Anchor>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnLoad>
+                        this:RegisterForDrag("LeftButton");
+                    </OnLoad>
+                    <OnReceiveDrag>
+                        VendoMatic_FrameDragStock();
+                    </OnReceiveDrag>
+                    <OnClick>
+                        if GetCursorInfo() then
+                            VendoMatic_FrameDragStock();
+                        end
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parent_ButtonClose" inherits="UIPanelButtonTemplate" text="关闭">
+                <Size>
+                    <AbsDimension x="94" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="Vendomatic_OptionsStockFrame" >
+                        <Offset x="-10" y="10"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        Vendomatic_OptionsStockFrame:Hide();
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parent_ButtonAdd" inherits="UIPanelButtonTemplate" text="添加">
+                <Size>
+                    <AbsDimension x="64" y="25"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="Vendomatic_OptionsStockFrame">
+                        <Offset x="84" y="-133"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        local Vendomatic_AddText = Vendomatic_OptionsStockFrame_DropBoxText:GetText();
+                        if Vendomatic_AddText ~= nil and Vendomatic_OptionsStockFrame_EditBox ~= nil then
+                            if Vendomatic_AddText ~= "" and Vendomatic_OptionsStockFrame_EditBox ~= "" and not VendomaticOptions.reagentcount[Vendomatic_AddText] then
+                                local text = Vendomatic_OptionsStockFrame_EditBox:GetText();
+                                if text ~= nil and text ~= "" then
+                                    local stock_number_count = tonumber(text);
+                                    if stock_number_count > 0 then
+                                        tinsert(VendomaticOptions.reagents, Vendomatic_AddText);
+                                        VendomaticOptions.reagentcount[Vendomatic_AddText] = stock_number_count;
+                                        Vendomatic_OptionsStockFrame_EditBox:ClearFocus();
+                                        Vendomatic_OptionsStockFrame_EditBox:SetText("");
+                                        Vendomatic_OptionsStockFrame_DropBoxIconTexture:SetTexture("");
+                                        Vendomatic_OptionsStockFrame_DropBoxText:SetText("");
+                                        Vendomatic_StockFrameUpdate();
+                                    end
+                                end
+                            end
+                        end
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <EditBox name="$parent_EditBox" font="GameFontNormal" letters="5" numeric="true" multiLine="false" autoFocus="false">
+                <Size>
+                    <AbsDimension x="50" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                        <Offset x="25" y="-135"/>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer level="BACKGROUND">
+                        <Texture name="$parentLeft" file="Interface\Common\Common-Input-Border">
+                            <Size>
+                                <AbsDimension x="8" y="20"/>
+                            </Size>
+                            <Anchors>
+                                <Anchor point="TOPLEFT">
+                                    <Offset x="-5" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                            <TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
+                        </Texture>
+                        <Texture name="$parentRight" file="Interface\Common\Common-Input-Border">
+                            <Size>
+                                <AbsDimension x="8" y="20"/>
+                            </Size>
+                            <Anchors>
+                                <Anchor point="RIGHT">
+                                    <Offset x="0" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                            <TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
+                        </Texture>
+                        <Texture name="$parentMiddle" file="Interface\Common\Common-Input-Border">
+                            <Size>
+                                <AbsDimension x="0" y="20"/>
+                            </Size>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+                                <Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT"/>
+                            </Anchors>
+                            <TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
+                        </Texture>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnEnterPressed>
+                        self:ClearFocus();
+                        local Vendomatic_AddText = Vendomatic_OptionsStockFrame_DropBoxText:GetText();
+                        if Vendomatic_AddText ~= nil and Vendomatic_OptionsStockFrame_EditBox ~= nil then
+                            if Vendomatic_AddText ~= "" and Vendomatic_OptionsStockFrame_EditBox ~= "" and not VendomaticOptions.reagentcount[Vendomatic_AddText] then
+                                local text = Vendomatic_OptionsStockFrame_EditBox:GetText();
+                                if text ~= nil and text ~= "" then
+                                    local stock_number_count = tonumber(text);
+                                    if stock_number_count > 0 then
+                                        tinsert(VendomaticOptions.reagents, Vendomatic_AddText);
+                                        VendomaticOptions.reagentcount[Vendomatic_AddText] = stock_number_count;
+                                        Vendomatic_OptionsStockFrame_EditBox:ClearFocus();
+                                        Vendomatic_OptionsStockFrame_EditBox:SetText("");
+                                        Vendomatic_OptionsStockFrame_DropBoxIconTexture:SetTexture("");
+                                        Vendomatic_OptionsStockFrame_DropBoxText:SetText("");
+                                        Vendomatic_StockFrameUpdate();
+                                    end
+                                end
+                            end
+                        end
+                    </OnEnterPressed>
+                    <OnEscapePressed function="EditBox_ClearFocus"/>
+                </Scripts>
+                <FontString inherits="ChatFontSmall"/>
+            </EditBox>
+            <Frame name="StockItemFauxFrame" hidden="false">
+                <!-- y needs to be a product of 16, 5 * 16 = 80 -->
+                <Size x="205" y="93"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="Vendomatic_OptionsStockFrame">
+                        <Offset x="19" y="-189"/>
+                    </Anchor>
+                </Anchors>
+                <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" title="true">
+                    <BackgroundInsets>
+                        <AbsInset left="2" right="4" top="4" bottom="4"/>
+                    </BackgroundInsets>
+                    <TileSize>
+                        <AbsValue val="32"/>
+                    </TileSize>
+                    <EdgeSize>
+                        <AbsValue val="14"/>
+                    </EdgeSize>
+                </Backdrop>
+                <Frames>
+                    <Button name="StockItemButton1" inherits="StockItemTemplate" text="">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="StockItemFauxFrame" >
+                                <Offset x="10" y="-3"/>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnEnter>
+                                tooltiptext = StockItemButton1Text:GetText();
+                                GameTooltip:SetOwner(this, "ANCHOR_CURSOR", 120, 4);
+                                GameTooltip:SetText(tooltiptext);
+                                GameTooltip:AddLine("保留: ".. VendomaticOptions.reagentcount[tooltiptext], 1, 1, 1);
+                                GameTooltip:Show();
+                            </OnEnter>
+                            <OnLeave>
+                                GameTooltip:Hide();
+                            </OnLeave>
+                            <OnClick>
+                                Vendomatic_HighlightFrame(self);
+                                SelectedStockItem = self:GetText();
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="StockItemButton2" inherits="StockItemTemplate" text="">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="StockItemButton1" >
+                                <Offset x="0" y="0"/>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnEnter>
+                                tooltiptext = StockItemButton2Text:GetText();
+                                GameTooltip:SetOwner(this, "ANCHOR_CURSOR", 120, 4);
+                                GameTooltip:SetText(tooltiptext);
+                                GameTooltip:AddLine("保留: ".. VendomaticOptions.reagentcount[tooltiptext], 1, 1, 1);
+                                GameTooltip:Show();
+                            </OnEnter>
+                            <OnLeave>
+                                GameTooltip:Hide();
+                            </OnLeave>
+                            <OnClick>
+                                Vendomatic_HighlightFrame(self);
+                                SelectedStockItem = self:GetText();
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="StockItemButton3" inherits="StockItemTemplate" text="">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="StockItemButton2" >
+                                <Offset x="0" y="0"/>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnEnter>
+                                tooltiptext = StockItemButton3Text:GetText();
+                                GameTooltip:SetOwner(this, "ANCHOR_CURSOR", 120, 4);
+                                GameTooltip:SetText(tooltiptext);
+                                GameTooltip:AddLine("保留: ".. VendomaticOptions.reagentcount[tooltiptext], 1, 1, 1);
+                                GameTooltip:Show();
+                            </OnEnter>
+                            <OnLeave>
+                                GameTooltip:Hide();
+                            </OnLeave>
+                            <OnClick>
+                                Vendomatic_HighlightFrame(self);
+                                SelectedStockItem = self:GetText();
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="StockItemButton4" inherits="StockItemTemplate" text="">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="StockItemButton3" >
+                                <Offset x="0" y="0"/>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnEnter>
+                                tooltiptext = StockItemButton4Text:GetText();
+                                GameTooltip:SetOwner(this, "ANCHOR_CURSOR", 120, 4);
+                                GameTooltip:SetText(tooltiptext);
+                                GameTooltip:AddLine("保留: ".. VendomaticOptions.reagentcount[tooltiptext], 1, 1, 1);
+                                GameTooltip:Show();
+                            </OnEnter>
+                            <OnLeave>
+                                GameTooltip:Hide();
+                            </OnLeave>
+                            <OnClick>
+                                Vendomatic_HighlightFrame(self);
+                                SelectedStockItem = self:GetText();
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="StockItemButton5" inherits="StockItemTemplate" text="">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="StockItemButton4" >
+                                <Offset x="0" y="0"/>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnEnter>
+                                tooltiptext = StockItemButton5Text:GetText();
+                                GameTooltip:SetOwner(this, "ANCHOR_CURSOR", 120, 4);
+                                GameTooltip:SetText(tooltiptext);
+                                GameTooltip:AddLine("保留: ".. VendomaticOptions.reagentcount[tooltiptext], 1, 1, 1);
+                                GameTooltip:Show();
+                            </OnEnter>
+                            <OnLeave>
+                                GameTooltip:Hide();
+                            </OnLeave>
+                            <OnClick>
+                                Vendomatic_HighlightFrame(self);
+                                SelectedStockItem = self:GetText();
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                </Frames>
+            </Frame>
+            <Button name="StockItemFauxIncrementButton">
+                <Size>
+                    <AbsDimension x="27" y="27"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="StockItemFauxFrame">
+                        <Offset>
+                            <AbsDimension x="-25" y="2"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        Vendomatic_StockFrameMoveUp();
+                        VendomaticHighlightFrame:Hide();
+                    </OnClick>
+                </Scripts>
+                <NormalTexture file="Interface\Buttons\UI-ScrollBar-ScrollUpButton-Up"/>
+                <PushedTexture file="Interface\Buttons\UI-ScrollBar-ScrollUpButton-Down"/>
+                <DisabledTexture file="Interface\Buttons\UI-ScrollBar-ScrollUpButton-Disabled"/>
+                <HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+            </Button>
+            <Button name="StockItemFauxDecrementButton">
+                <Size>
+                    <AbsDimension x="27" y="27"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="StockItemFauxFrame">
+                        <Offset>
+                            <AbsDimension x="2" y="-3"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        Vendomatic_StockFrameMoveDown();
+                        VendomaticHighlightFrame:Hide();
+                    </OnClick>
+                </Scripts>
+                <NormalTexture file="Interface\Buttons\UI-ScrollBar-ScrollDownButton-Up"/>
+                <PushedTexture file="Interface\Buttons\UI-ScrollBar-ScrollDownButton-Down"/>
+                <DisabledTexture file="Interface\Buttons\UI-ScrollBar-ScrollDownButton-Disabled"/>
+                <HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+            </Button>
+            <Button name="$parent_ButtonRemove" inherits="UIPanelButtonTemplate" text="移除">
+                <Size>
+                    <AbsDimension x="75" y="25"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="StockItemFauxFrame">
+                        <Offset x="10" y="-10"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        if SelectedStockItem ~= nil then
+                            ReagentDelete(SelectedStockItem);
+                            SelectedStockItem = nil;
+                            VendomaticHighlightFrame:Hide();
+                            Vendomatic_StockFrameUpdate();
+                        end
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <!-- <Slider name="$parentVSlider" orientation="VERTICAL" minValue="0" maxValue="250" defaultValue="0" valueStep="1">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" relativeTo="StockItemFauxFrame">
+                        <Offset x="1" y="-14"/>
+                    </Anchor>
+                </Anchors>
+                <Size x="25" y="66"/>
+                <ThumbTexture name="$parent_ThumbTexture" file="Interface\Buttons\UI-ScrollBar-Knob">
+                    <Size x="25" y="25"/>
+                </ThumbTexture>
+                <Scripts>
+                    <OnValueChanged>
+                    </OnValueChanged>
+                </Scripts>
+            </Slider> -->
+        </Frames>
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString name="$parentText" inherits="GameFontNormalLarge" justifyH="CENTER" setAllPoints="true" text="补购列表">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                            <Offset x="10" y="-8"/>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentText" inherits="GameFontNormalLeft" justifyH="LEFT" setAllPoints="true" text="拖动物品到这">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                            <Offset x="20" y="-45"/>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentText" inherits="GameFontNormal" justifyH="CENTER" setAllPoints="true" text="输入要保持的数量:">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+                            <Offset x="20" y="-115"/>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parent_DropBoxText" inherits="VendomaticNormalFontWhite" justifyH="CENTER" setAllPoints="true" text="">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="Vendomatic_OptionsStockFrame">
+                            <Offset x="75" y="-75"/>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnShow>
+                Vendomatic_StockFrameUpdate();
+                VendomaticHighlightFrame:SetParent("StockItemFauxFrame");
+                VendomaticHighlightFrame:Hide();
+            </OnShow>
+        </Scripts>
+    </Frame>
+    <Frame name="Vendomatic_RepairConfirmation" parent="UIParent" enableMouse="true" movable="false" hidden="true">
+        <Size x="200" y="110"/>
+        <Anchors>
+            <Anchor point="CENTER" relativeTo="UIParent"/>
+        </Anchors>
+        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" title="true">
+            <BackgroundInsets>
+                <AbsInset left="4" right="4" top="2" bottom="4"/>
+            </BackgroundInsets>
+            <TileSize>
+                <AbsValue val="32"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="16"/>
+            </EdgeSize>
+        </Backdrop>
+        <Frames>
+            <Button name="$parent_ButtonAdd" inherits="UIPanelButtonTemplate" text="修理">
+                <Size>
+                    <AbsDimension x="64" y="25"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="Vendomatic_RepairConfirmation">
+                        <Offset x="28" y="-70"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        if CanGuildBankRepair() then
+                            RepairAllItems(1);
+                            print("|cffffd200Vend-o-matic|r: 使用公会资金修理所有物品: " .. Vendomatic_RepairConfirmationTextGold:GetText());
+                        else
+                            RepairAllItems();
+                            print("|cffffd200Vend-o-matic|r: 修理所有物品: " .. Vendomatic_RepairConfirmationTextGold:GetText());
+                        end
+                        Vendomatic_RepairConfirmationTextGold = "";
+                        Vendomatic_RepairConfirmation:Hide();
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parent_ButtonAdd" inherits="UIPanelButtonTemplate" text="取消">
+                <Size>
+                    <AbsDimension x="64" y="25"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent_ButtonAdd">
+                        <Offset x="80" y="0"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        Vendomatic_RepairConfirmation:Hide();
+                    </OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+        <Layers>
+            <Layer>
+                <FontString name="$parentTextConfirm" inherits="GameFontRedLarge" justifyH="CENTER" setAllPoints="true" text="修理确认">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="Vendomatic_RepairConfirmation">
+                                <Offset x="15" y="-14"/>
+                            </Anchor>
+                        </Anchors>
+                </FontString>
+                <FontString name="$parentTextGold" inherits="GameFontNormal" justifyH="CENTER" setAllPoints="true" text="gold">
+                        <Anchors>
+                            <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$parentTextConfirm">
+                                <Offset x="-10" y="-20"/>
+                            </Anchor>
+                        </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+    </Frame>
+</Ui>

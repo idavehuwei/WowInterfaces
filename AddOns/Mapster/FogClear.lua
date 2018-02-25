@@ -1040,7 +1040,7 @@ local defaults = {
 		colorR = 0.5,
 		colorG = 0.5,
 		colorB = 0.5,
-		colorA = 0.5,
+		colorA = 1,
 		debug = false
 	},
 	global = {

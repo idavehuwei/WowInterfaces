@@ -10,5 +10,4 @@
 ## X-Curse-Project-ID: jpack
 ## X-Curse-Repository-ID: wow/jpack/mainline
 
-localization.lua
 JPack_Ex.lua

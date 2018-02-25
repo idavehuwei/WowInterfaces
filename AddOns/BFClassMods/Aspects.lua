@@ -491,18 +491,20 @@ local function __OnButtonEnter(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 	end
 	local link
-	if not self.spellTable.ignoreSpell then
-		if self:GetAttribute("spell") then
-			GameTooltip:AddLine(self:GetAttribute("spell"));
-		elseif self:GetAttribute("item") then
-			GameTooltip:AddLine(self:GetAttribute("item"))
-		end
-	end
-	if self.spellTable.f then
-		for _,_line in ipairs(self.spellTable.f) do
-			GameTooltip:AddLine(_line)
-		end
-	end
+    if self.spellTable then
+        if not self.spellTable.ignoreSpell then
+            if self:GetAttribute("spell") then
+                GameTooltip:AddLine(self:GetAttribute("spell"));
+            elseif self:GetAttribute("item") then
+                GameTooltip:AddLine(self:GetAttribute("item"))
+            end
+        end
+        if self.spellTable.f then
+            for _,_line in ipairs(self.spellTable.f) do
+                GameTooltip:AddLine(_line)
+            end
+        end
+    end
 	if self.subList then
 		GameTooltip:AddLine(L["左键 - "]..L["施放技能"])
 		GameTooltip:AddLine(L["右键 - "]..L["展开菜单"])

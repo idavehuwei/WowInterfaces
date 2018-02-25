@@ -24,5 +24,4 @@ widget.lua
 ui.lua
 event.lua
 sys.lua
-MiDKPData.lua
 MiDKP.xml

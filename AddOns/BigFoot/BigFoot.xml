@@ -3,7 +3,6 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 	<Script file="BigFootGlobalString.lua"/>
 	<Script file="BigFoot.lua"/>
 	<Script file="BigFootAnim.lua"/>
-	<Script file="BigFootHash.lua"/>
 
 	<Frame name="BigFootMiniButtonDropDown" inherits="BDropDownMenuTemplate" id="1" hidden="true" parent="UIParent">
 		<Scripts>

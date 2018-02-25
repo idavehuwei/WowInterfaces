@@ -14,7 +14,6 @@ Library\BigFootUtils.lua
 Library\BigFootDS.lua
 Library\BigFootOO.lua
 Library\BigFootHook.lua
-Library\BigFootHash.lua
 Library\BigFootDebug.lua
 Library\BigFootInfo.lua
 Library\BigFootGUI.xml
@@ -34,7 +33,6 @@ UI\Widgets.xml
 BigFoot.xml
 BigFootSpells.lua
 BigFootReader.xml
-BigFootVersion.lua
 version.en.lua
 version.tw.lua
 version.cn.lua
@@ -59,7 +57,6 @@ Config\BuffMaster.lua
 Config\ChatEnhance.lua
 Config\BFTooltip.lua
 Config\SpellTimer.lua
-Config\InfoEnhance.lua
 Config\ClassMod.lua
 Config\RaidToolkit.lua
 Config\MerInspect.lua
@@ -68,9 +65,7 @@ Config\ActionButton.lua
 Config\AutoEquip.lua
 Config\TrinketMenu.lua
 Config\PartyMod.lua
-Config\TalentViewer.lua
 Config\ItemInfo.lua
-Config\BigFootGather.lua
 Config\ArenaMod.lua
 Config\CombatIndicator.lua
 Config\BUnitFrame.lua
