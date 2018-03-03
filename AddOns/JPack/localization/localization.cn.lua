@@ -10,6 +10,7 @@ local L = JPackLocale
 L.TYPE_BAG = "容器"
 L.TYPE_FISHWEAPON = "鱼竿"
 L.TYPE_MISC = "其它"
+L.TYPE_CONSUMABLE = "消耗品"
 
 JPACK_ORDER={"炉石","##坐骑","矿工锄","剥皮小刀","鱼竿","#鱼竿","#武器","#护甲",
 "#武器##其它","#护甲##其它","#配方","#任务","##元素","##金属和矿石","##草药",

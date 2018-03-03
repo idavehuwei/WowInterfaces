@@ -143,7 +143,7 @@ function Skillet:CreateTradeSkillWindow()
 
     local label = getglobal("SkilletFilterLabel");
     label:SetText(L["Filter"]);
-    
+
     local label = getglobal("SkilletSortLabel");
     label:SetText(L["Sorting"]);
 
@@ -912,7 +912,9 @@ function Skillet:UpdateDetailsWindow(skill_index)
     local s = self.stitch:GetItemDataByIndex(self.currentTrade, skill_index)
 
     -- Name of the skill
-    SkilletSkillName:SetText(s.name);
+    if (s ~= nil) then
+        SkilletSkillName:SetText(s.name);
+    end
     SkilletRecipeNotesButton:Show();
 
     -- Whether or not it is in cooldown.

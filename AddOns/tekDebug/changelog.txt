@@ -1,0 +1,8 @@
+3.0.1.3-Beta
+    Forgot LibStub
+    Embed update
+
+3.0.1.2-Beta
+    Remove OH and Dongle, completely standalone now
+    Also added optional LDB launcher (only if LDB is present)
+
