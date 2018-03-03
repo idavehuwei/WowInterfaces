@@ -1014,7 +1014,9 @@ function Ev_GameTooltip_SetSpell(this, id, type, ...)
     Old_GameTooltip_SetSpell(this, id, type, ...);
     local spell = GetSpellName(id, type);
     if spell then
-        local id = select(3, strfind(GetSpellLink(spell), "spell:(%d+)"))
+        local spell_str = GetSpellLink(spell)
+        if (spell_str == nil) then return; end
+        local id = select(3, strfind(spell_str, "spell:(%d+)"))
         _G[this:GetName().."TextLeft1"]:SetText(format("%s|c00c8c8c8(|c0000e8e8%s|c00c8c8c8)|r",spell, id))
     end
 end

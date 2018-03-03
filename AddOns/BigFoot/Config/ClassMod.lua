@@ -431,7 +431,7 @@ if playerclass == "DEATHKNIGHT" and IsConfigurableAddOn("BFClassMods") then
 		ENABLE_RUNE_ENHANCE,
 		nil,
 		"EnableRuneFrame",
-		1,
+		0,
 		function (arg)
 			if (arg == 1) then
 				if (not BigFoot_IsAddOnLoaded("BFClassMods")) then
@@ -474,7 +474,7 @@ if playerclass == "DEATHKNIGHT" and IsConfigurableAddOn("BFClassMods") then
 		ENABLE_ATTACK_TIMER,
 		ENABLE_ATTACK_TIMER_TOOLTIP,
 		"EnableAttackTimer",
-		1,
+		0,
 		function (arg)
 			if (arg == 1) then
 				if (not BigFoot_IsAddOnLoaded("AttackTimer")) then

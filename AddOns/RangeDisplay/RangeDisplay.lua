@@ -125,7 +125,7 @@ local defaults = {
                 point = "CENTER",
                 relPoint = "CENTER",
                 x = 0,
-                y = -200,
+                y = -260,
                 font = DefaultFontName,
                 fontSize = 24,
                 fontOutline = "",
@@ -202,7 +202,7 @@ local defaults = {
             },
             ["mouseover"] = {
                 enabled = true,
-                x = -5,
+                x = -20,
                 y = -40,
                 frameWidth = 70,
                 frameHeight = 26,

@@ -41,7 +41,7 @@ function Vendomatic_OnEvent(frame, event, ...)
             print("这是你第一次运行 |cffffd200Vend-o-matic|r. 请花一点时间配置一下这个插件.");
             VendomaticOptions = {};
             Vendomatic_FirstRun();
-            VendomaticFrame:Show();
+            --VendomaticFrame:Show();
         end
         if VendomaticOptions.hideminimapicon == 1 then
             VendomaticButtonFrame:Hide();
