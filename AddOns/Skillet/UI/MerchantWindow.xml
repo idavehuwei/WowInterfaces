@@ -42,7 +42,7 @@
                 <Anchors>
                     <Anchor point="TOP">
                         <Offset>
-                            <AbsDimension x="0" y="-10"/>
+                            <AbsDimension x="-50" y="-10"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
@@ -53,12 +53,12 @@
     <Frames>
         <Button name="$parentButton" inherits="GameMenuButtonTemplate" parent="SkilletMerchantBuyFrame" text="Buy Reagents">
           <Size>
-            <AbsDimension x="150" y="18"/>
+            <AbsDimension x="100" y="18"/>
           </Size>
           <Anchors>
             <Anchor point="TOP">
                 <Offset>
-                    <AbsDimension x="0" y="-25"/>
+                    <AbsDimension x="-50" y="-25"/>
                 </Offset>
             </Anchor>
           </Anchors>
