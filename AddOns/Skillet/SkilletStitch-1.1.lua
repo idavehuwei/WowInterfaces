@@ -61,26 +61,27 @@ local function squishlink(link)
     -- out: ffffff|13928|Grilled Squid
     local color, id, name = link:match("^|cff(......)|Hitem:(%d+):[^:]+:[^:]+:[^:]+:[^:]+:[^:]+:[^:]+:[^:]+:[^:]+|h%[([^%]]+)%]|h|r$")
     if id then
-        return color.."|"..id.."|"..name
+        return color .. "|" .. id .. "|" .. name
     else
         -- in:  |cffffffff|Henchant:7421|h[Runed Copper Rod]|h|r
         -- out: |-7421|Runed Copper Rod
         id, name = link:match("^|cffffd000|Henchant:(%d+)|h%[([^%]]+)%]|h|r$")
-        return "|-"..id.."|"..name
+        return "|-" .. id .. "|" .. name
     end
 end
+
 local function unsquishlink(link)
     -- in:  ffffff|13928|Grilled Squid
     -- out: |cffffffff|Hitem:13928:0:0:0:0:0:0:0|h[Grilled Squid]|h|r  ,false
     local color, id, name = link:match("^([^|].....)|(%d+)|(.+)$")
     if id then
-        return "|cff"..color.."|Hitem:"..id..":0:0:0:0:0:0:0:0|h["..name.."]|h|r", false
+        return "|cff" .. color .. "|Hitem:" .. id .. ":0:0:0:0:0:0:0:0|h[" .. name .. "]|h|r", false
     else
         -- in:  |-7421|Runed Copper Rod
         -- out: |cffffffff|Henchant:7421|h[Runed Copper Rod]|h|r ,true
         id, name = link:match("^|%-(%d+)|(.+)$")
         if id then
-            return "|cffffd000|Henchant:"..id.."|h["..name.."]|h|r",true
+            return "|cffffd000|Henchant:" .. id .. "|h[" .. name .. "]|h|r", true
         else
             return link
         end
@@ -95,7 +96,7 @@ local function get_reserved_reagent_count(link)
     local count = 0
 
     if reserved_reagents then
-        for i=#reserved_reagents, 1, -1 do
+        for i = #reserved_reagents, 1, -1 do
             if reserved_reagents[i].link == link then
                 count = reserved_reagents[i].count
                 break
@@ -107,20 +108,20 @@ local function get_reserved_reagent_count(link)
 end
 
 local itemmeta = {
-    __index = function(self,key)
+    __index = function(self, key)
         if key == "numcraftable" then
             local num = 1000
-            for _,v in ipairs(self) do
+            for _, v in ipairs(self) do
                 if v.vendor == false then
-                    local max = math.floor(v.num/v.needed)*self.nummade
+                    local max = math.floor(v.num / v.needed) * self.nummade
                     if max < num then
                         num = max
                     end
                 end
             end
             if num == 1000 then
-                for _,v in ipairs(self) do
-                    local max = math.floor(v.num/v.needed)*self.nummade
+                for _, v in ipairs(self) do
+                    local max = math.floor(v.num / v.needed) * self.nummade
                     if max < num then
                         num = max
                     end
@@ -129,17 +130,17 @@ local itemmeta = {
             return num
         elseif key == "numcraftablewbank" then
             local num = 1000
-            for _,v in ipairs(self) do
+            for _, v in ipairs(self) do
                 if v.vendor == false then
-                    local max = math.floor(v.numwbank/v.needed)*self.nummade
+                    local max = math.floor(v.numwbank / v.needed) * self.nummade
                     if max < num then
                         num = max
                     end
                 end
             end
             if num == 1000 then
-                for _,v in ipairs(self) do
-                    local max = math.floor(v.numwbank/v.needed)*self.nummade
+                for _, v in ipairs(self) do
+                    local max = math.floor(v.numwbank / v.needed) * self.nummade
                     if max < num then
                         num = max
                     end
@@ -148,17 +149,17 @@ local itemmeta = {
             return num
         elseif key == "numcraftablewalts" and alt_lookup_function then
             local num = 1000
-            for _,v in ipairs(self) do
+            for _, v in ipairs(self) do
                 if v.vendor == false then
-                    local max = math.floor(v.numwalts/v.needed)*self.nummade
+                    local max = math.floor(v.numwalts / v.needed) * self.nummade
                     if max < num then
                         num = max
                     end
                 end
             end
             if num == 1000 then
-                for _,v in ipairs(self) do
-                    local max = math.floor(v.numwalts/v.needed)*self.nummade
+                for _, v in ipairs(self) do
+                    local max = math.floor(v.numwalts / v.needed) * self.nummade
                     if max < num then
                         num = max
                     end
@@ -169,14 +170,14 @@ local itemmeta = {
     end
 }
 local reagentmeta = {
-    __index = function(self,key)
+    __index = function(self, key)
         local count = 0
         local reserved = get_reserved_reagent_count(self.link)
 
         if key == "num" then
             count = GetItemCount(self.link)
         elseif key == "numwbank" then
-            count = GetItemCount(self.link,true)
+            count = GetItemCount(self.link, true)
         elseif key == "numwalts" and alt_lookup_function ~= nil then
             count = alt_lookup_function(self.link) or 0
         end
@@ -184,14 +185,14 @@ local reagentmeta = {
         return math.max(0, count - reserved)
     end
 }
-local cache = setmetatable({},{
-    __index = function(self,prof)
+local cache = setmetatable({}, {
+    __index = function(self, prof)
         if prof == "UNKNOWN" then
             return
         end
-        self[prof] = setmetatable({},{
+        self[prof] = setmetatable({}, {
             __mode = 'v',
-            __index = function(self,key)
+            __index = function(self, key)
                 local l = AceLibrary("SkilletStitch-1.1")
                 if not l.data then
                     l.data = {}
@@ -225,7 +226,7 @@ function SkilletStitch:DecodeRecipe(datastring)
     local nameoverride, link, difficultychar, numcrafted, tools = itemchunk:match("^([^;]-);([^;]+);(%a)(%d+);([^;]-);$")
     local isenchant
 
-    link,isenchant = unsquishlink(link)
+    link, isenchant = unsquishlink(link)
     if nameoverride:len() == 0 then
         nameoverride = link:match("%|h%[([^%]]+)%]%|h")
     end
@@ -236,7 +237,7 @@ function SkilletStitch:DecodeRecipe(datastring)
     if isenchant then
         texture = "Interface\\Icons\\Spell_Holy_GreaterHeal"
     else
-        texture = select(10,GetItemInfo(link))
+        texture = select(10, GetItemInfo(link))
     end
 
     local s = setmetatable({
@@ -248,17 +249,17 @@ function SkilletStitch:DecodeRecipe(datastring)
         texture = texture,
         profession = prof,
         index = key,
-    },itemmeta)
+    }, itemmeta)
     for reagentnum, reagentlink in reagentchunk:gmatch("([^;]+);([^;]+);") do
         reagentlink = unsquishlink(reagentlink)
         local texture = select(10, GetItemInfo(reagentlink))
         local vendor = false
         if PT then
-            vendor = PT:ItemInSet(reagentlink,"Tradeskill.Mat.BySource.Vendor")
+            vendor = PT:ItemInSet(reagentlink, "Tradeskill.Mat.BySource.Vendor")
             if not vendor then vendor = false end
 
             -- Workaround for missing items in the Periodic table library that
-            local _,_,id = string.find(reagentlink, "|Hitem:(%d+):")
+            local _, _, id = string.find(reagentlink, "|Hitem:(%d+):")
             id = tonumber(id)
             if id == 30817 or id == 4539 or id == 38426 or id == 2593 or id == 34412 or id == 39354 then
                 -- 30817 == simple flour
@@ -266,18 +267,18 @@ function SkilletStitch:DecodeRecipe(datastring)
                 -- 38426 == Eternium Thread
                 -- 2593 == Flask of Port
                 -- 34412 == Sparkling Apple Cider
-				-- 39354 == Light Parchment 
+                -- 39354 == Light Parchment
                 vendor = true
             end
         end
 
-        table.insert(s,setmetatable({
+        table.insert(s, setmetatable({
             name = reagentlink:match("%|h%[([^%]]+)%]%|h"),
             link = reagentlink,
             needed = tonumber(reagentnum),
             texture = texture,
             vendor = vendor,
-        },reagentmeta))
+        }, reagentmeta))
     end
 
     return s
@@ -301,7 +302,7 @@ function SkilletStitch:SetReservedReagentsList(reagents)
 end
 
 function SkilletStitch:EnableDataGathering(addon)
-    assert(tostring(addon),"Usage: EnableDataGathering('addon')")
+    assert(tostring(addon), "Usage: EnableDataGathering('addon')")
     self.datagatheraddons[addon] = true
     self:RegisterEvent("TRADE_SKILL_SHOW")
     self:RegisterEvent("CHAT_MSG_SKILL")
@@ -316,7 +317,7 @@ function SkilletStitch:DisableDataGathering(addon)
         self.datagatheraddons = {}
         return
     end
-    assert(tostring(addon),"Usage: DisableDataGathering(['addon'])")
+    assert(tostring(addon), "Usage: DisableDataGathering(['addon'])")
     self.datagatheraddons[addon] = false
     if next(self.datagatheraddons) then
         return
@@ -327,10 +328,10 @@ function SkilletStitch:DisableDataGathering(addon)
 end
 
 function SkilletStitch:EnableQueue(addon)
-    assert(tostring(addon),"Usage: EnableQueue('addon')")
+    assert(tostring(addon), "Usage: EnableQueue('addon')")
     self.queueaddons[addon] = true
     self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "StopCastCheckUnit")
-    self:RegisterEvent("UNIT_SPELLCAST_FAILED",      "StopCastCheckUnit")
+    self:RegisterEvent("UNIT_SPELLCAST_FAILED", "StopCastCheckUnit")
     self:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED", "StopCastCheckUnit")
     if not self.queue then
         self.queue = {}
@@ -345,7 +346,7 @@ function SkilletStitch:DisableQueue(addon)
         self.queueenabled = false
         return
     end
-    assert(tostring(addon),"Usage: DisableDataGathering(['addon'])")
+    assert(tostring(addon), "Usage: DisableDataGathering(['addon'])")
     self.queueaddons[addon] = false
     if next(self.queueaddons) then
         return
@@ -358,15 +359,15 @@ function SkilletStitch:DisableQueue(addon)
 end
 
 function SkilletStitch:GetItemDataByIndex(profession, index)
-    assert(tonumber(index) and profession,"Usage: GetItemDataByIndex('profession', index)")
+    assert(tonumber(index) and profession, "Usage: GetItemDataByIndex('profession', index)")
     return cache[profession][index]
 end
 
-function SkilletStitch:GetItemDataByName(name,prof)
-    assert(tostring(name) ,"Usage: GetItemDataByName('name')")
-    for k,v in pairs(cache) do
-        if not prof or k==prof then
-            for l,w in pairs(v) do
+function SkilletStitch:GetItemDataByName(name, prof)
+    assert(tostring(name), "Usage: GetItemDataByName('name')")
+    for k, v in pairs(cache) do
+        if not prof or k == prof then
+            for l, w in pairs(v) do
                 if w.name == name then
                     return cache[k][l]
                 end
@@ -374,16 +375,16 @@ function SkilletStitch:GetItemDataByName(name,prof)
         end
     end
     name = string.gsub(name, "([%.%(%)%%%+%-%*%?%[%]%^%$])", "%%%1")
-    for k,v in pairs(self.data) do
-        if not prof or k==prof then
-            for l,w in pairs(v) do
+    for k, v in pairs(self.data) do
+        if not prof or k == prof then
+            for l, w in pairs(v) do
                 -- protection against old manufac savedvars, remove eventually
                 if type(w) ~= "string" then
                     ManufacPerCharDB = nil
                     error('Invalid DB, try reloading your ui.')
                 end
                 local chunk = w:match("^([^;]-;[^;]-;)")
-                if chunk:match("^"..name) or chunk:match("|"..name..";") then
+                if chunk:match("^" .. name) or chunk:match("|" .. name .. ";") then
                     return cache[k][l]
                 end
             end
@@ -393,16 +394,16 @@ end
 
 local result = {}
 function SkilletStitch:GetItemDataByPartialName(name)
-    for k,_ in pairs(result) do
+    for k, _ in pairs(result) do
         result[k] = nil
     end
-    assert(tostring(name),"Usage: GetItemDataByPartialName('name')")
+    assert(tostring(name), "Usage: GetItemDataByPartialName('name')")
     name = name:gsub("([%.%(%)%%%+%-%*%?%[%]%^%$])", "%%%1")
-    for k,v in pairs(self.data) do
-        for l,w in pairs(v) do
+    for k, v in pairs(self.data) do
+        for l, w in pairs(v) do
             local chunk = w:match("([^;]-;[^;]-;)")
-            if chunk:match("^"..name) or chunk:match("%|h%["..name.."%]%|h") then
-                table.insert(result,cache[k][l])
+            if chunk:match("^" .. name) or chunk:match("%|h%[" .. name .. "%]%|h") then
+                table.insert(result, cache[k][l])
             end
         end
     end
@@ -447,7 +448,7 @@ end
 -- Internal
 function SkilletStitch:SkilletStitch_AutoRescan()
     if InCombatLockdown() or IsTradeSkillLinked() then
-        -- Do not try to scan skills when in combat or if the 
+        -- Do not try to scan skills when in combat or if the
         -- skill has been linked in chat.
         return
     end
@@ -546,7 +547,7 @@ function SkilletStitch:AddToQueue(index, times)
 
     -- check to see if the item is already in the queue. If it is,
     -- then just increase the count
-    for _,s in pairs(self.queue) do
+    for _, s in pairs(self.queue) do
         if s.profession == recenttrade and s.index == index then
             found = true
             s.numcasts = s.numcasts + times
@@ -571,7 +572,7 @@ end
 function SkilletStitch:GetNumQueuedItems(index)
     local count = 0
 
-    for k,v in pairs(self.queue) do
+    for k, v in pairs(self.queue) do
         if v["index"] == index then
             count = count + tonumber(v["numcasts"])
         end
@@ -591,9 +592,9 @@ function SkilletStitch:ScanTrade()
 
     cache[prof] = nil
     local shred = false
-    for i=1,GetNumTradeSkills() do
+    for i = 1, GetNumTradeSkills() do
         local skillname, skilltype = GetTradeSkillInfo(i)
-        if skilltype~="header" and skillname then
+        if skilltype ~= "header" and skillname then
             local newstr
             local link = GetTradeSkillItemLink(i)
             if not link then
@@ -601,11 +602,11 @@ function SkilletStitch:ScanTrade()
             else
                 local v1, _, v2, _, v3, _, v4 = GetTradeSkillTools(i)
                 if v4 then
-                    v1 = v1..", "..v2..", "..v3..", "..v4
+                    v1 = v1 .. ", " .. v2 .. ", " .. v3 .. ", " .. v4
                 elseif v3 then
-                    v1 = v1..", "..v2..", "..v3
+                    v1 = v1 .. ", " .. v2 .. ", " .. v3
                 elseif v2 then
-                    v1 = v1..", "..v2
+                    v1 = v1 .. ", " .. v2
                 elseif v1 then
                     v1 = v1
                 end
@@ -615,18 +616,18 @@ function SkilletStitch:ScanTrade()
                 local minmade, maxmade = GetTradeSkillNumMade(i)
 
                 if linkname == skillname then
-                    newstr = ";"..link..";"..difficultyr[skilltype].. maxmade ..";"..(v1 or "")..";"
+                    newstr = ";" .. link .. ";" .. difficultyr[skilltype] .. maxmade .. ";" .. (v1 or "") .. ";"
                 else
-                    newstr = skillname..";"..link..";"..difficultyr[skilltype].. maxmade .. ";"..(v1 or "")..";"
+                    newstr = skillname .. ";" .. link .. ";" .. difficultyr[skilltype] .. maxmade .. ";" .. (v1 or "") .. ";"
                 end
-                for j=1,GetTradeSkillNumReagents(i) do
-                    local _, _, rcount, _ = GetTradeSkillReagentInfo(i,j)
-                    local link = GetTradeSkillReagentItemLink(i,j)
+                for j = 1, GetTradeSkillNumReagents(i) do
+                    local _, _, rcount, _ = GetTradeSkillReagentInfo(i, j)
+                    local link = GetTradeSkillReagentItemLink(i, j)
                     if not link then
                         shred = true
                     else
                         link = squishlink(link)
-                        newstr = newstr..rcount..";"..link..";"
+                        newstr = newstr .. rcount .. ";" .. link .. ";"
                     end
                 end
             end
@@ -636,16 +637,15 @@ function SkilletStitch:ScanTrade()
         end
     end
     if shred then
-        for k,v in pairs(self.data[prof]) do
+        for k, v in pairs(self.data[prof]) do
             self.data[prof][k] = nil
         end
         if not AceEvent:IsEventScheduled("SkilletStitch_AutoRescan") then
-            AceEvent:ScheduleEvent("SkilletStitch_AutoRescan", self.SkilletStitch_AutoRescan, 3,self)
+            AceEvent:ScheduleEvent("SkilletStitch_AutoRescan", self.SkilletStitch_AutoRescan, 3, self)
         end
     else
         AceEvent:TriggerEvent("SkilletStitch_Scan_Complete", prof)
     end
-
 end
 
 -- @function         SetAltCharacterItemLookupFunction

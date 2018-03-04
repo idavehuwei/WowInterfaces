@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-]]--
+]] --
 
 -- This file contains all the code I use to access recipe/tradeskill information
 
@@ -34,12 +34,12 @@ end
 function Skillet:GetItemIDFromLink(link)
     local id
     if link then
-        _,_,id = string.find(link, "|Hitem:(%d+):")
+        _, _, id = string.find(link, "|Hitem:(%d+):")
     end
 
     if link and not id then
         -- might be an enchant ...
-        _,_,id = string.find(link, "|Henchant:(%d+)|")
+        _, _, id = string.find(link, "|Henchant:(%d+)|")
     end
 
     if id then id = tonumber(id) end
@@ -115,7 +115,7 @@ end
 -- thing depending on whether or not this is a craft.
 function Skillet:GetTradeSkillLine()
     local tradeskillName, currentLevel, maxLevel = GetTradeSkillLine()
-    if(tradeskillName==nil) then
+    if (tradeskillName == nil) then
         tradeskillName = "";
     end
     return tradeskillName, currentLevel, maxLevel;
@@ -161,7 +161,7 @@ local function build_skills(self, name, prof, skill_index)
         count = #s
     }
 
-    for i=1, #s, 1 do
+    for i = 1, #s, 1 do
         table.insert(c, build_reagents(self, s, s[i]))
     end
 
@@ -169,7 +169,7 @@ local function build_skills(self, name, prof, skill_index)
 end
 
 local function build_profs(self, name, prof)
-    local c = {name = prof}
+    local c = { name = prof }
 
     for skill, _ in pairs(self.db.server.recipes[name][prof]) do
         if self.db.server.recipes[name][prof][skill] ~= nil then
@@ -181,7 +181,7 @@ local function build_profs(self, name, prof)
 end
 
 local function build_character(self, name)
-    local c = {name = name}
+    local c = { name = name }
 
     for prof, _ in pairs(self.db.server.recipes[name]) do
         if prof and prof ~= "" and prof ~= "UNKNOWN" then
@@ -218,18 +218,18 @@ end
 function Skillet:internal_GetCharacterProfessions(character_name)
     local chars = self:internal_GetCharacters()
 
-    for i=1, #chars, 1 do
+    for i = 1, #chars, 1 do
         if chars[i].name == character_name then
             return chars[i]
         end
     end
 end
 
-function  Skillet:internal_GetCharacterTradeskills(character_name, profession)
+function Skillet:internal_GetCharacterTradeskills(character_name, profession)
     local profs = self:internal_GetCharacterProfessions(character_name)
 
     if profs then
-        for i=1, #profs, 1 do
+        for i = 1, #profs, 1 do
             if profs[i].name == profession then
                 return profs[i]
             end
@@ -238,27 +238,26 @@ function  Skillet:internal_GetCharacterTradeskills(character_name, profession)
 end
 
 function Skillet:internal_GetCraftersForItem(itemId)
-	local crafters = nil
+    local crafters = nil
 
-	local chars = self:internal_GetCharacters()
-	for i=1, #chars, 1 do
-		local profs = self:internal_GetCharacterProfessions(chars[i].name)
-		local found = false
+    local chars = self:internal_GetCharacters()
+    for i = 1, #chars, 1 do
+        local profs = self:internal_GetCharacterProfessions(chars[i].name)
+        local found = false
 
-		for j=1,#profs,1 do
-			local skills = self:internal_GetCharacterTradeskills(chars[i].name, profs[j].name)
-			for k=1,#skills,1 do
-				if self:GetItemIDFromLink(skills[k].link) == itemId then
-					if not crafters then crafters = {} end
-					table.insert(crafters, chars[i].name)
-					found = true
-					break
-				end
-			end
-			if found then break end
-		end
+        for j = 1, #profs, 1 do
+            local skills = self:internal_GetCharacterTradeskills(chars[i].name, profs[j].name)
+            for k = 1, #skills, 1 do
+                if self:GetItemIDFromLink(skills[k].link) == itemId then
+                    if not crafters then crafters = {} end
+                    table.insert(crafters, chars[i].name)
+                    found = true
+                    break
+                end
+            end
+            if found then break end
+        end
+    end
 
-	end
-
-	return crafters
+    return crafters
 end

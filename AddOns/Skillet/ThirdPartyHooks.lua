@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-]]--
+]] --
 
 --[[
 
@@ -79,17 +79,16 @@ local function tradejunkie_custom_add()
         -- Override the default action of the button to attach it
         -- to our window, rather than the Blizzard trade skill window
         TJ_OpenButtonTradeSkill:SetScript("OnClick", function()
-           TradeJunkie_Attach("SkilletFrame")
-           TradeJunkieMain:SetPoint("TOPLEFT", "SkilletFrame", "TOPRIGHT", 0, 0)
+            TradeJunkie_Attach("SkilletFrame")
+            TradeJunkieMain:SetPoint("TOPLEFT", "SkilletFrame", "TOPRIGHT", 0, 0)
         end)
-
     end
 end
 
 local function armorcraft_custom_add()
     if AC_Craft and AC_UseButton and AC_ToggleButton then
         AC_Craft:SetParent("SkilletFrame")
-        AC_Craft:SetPoint("TOPLEFT","SkilletFrame","TOPRIGHT", 0, 0)
+        AC_Craft:SetPoint("TOPLEFT", "SkilletFrame", "TOPRIGHT", 0, 0)
         AC_Craft:SetAlpha(1.0)
     end
 end
@@ -122,7 +121,7 @@ function Skillet:AddButtonToTradeskillWindow(button)
     end
 
     -- See if this button has already been added ....
-    for i=1, #SkilletFrame.added_buttons, 1 do
+    for i = 1, #SkilletFrame.added_buttons, 1 do
         if SkilletFrame.added_buttons[i] == button then
             -- ... yup
             return SkilletFrame
@@ -132,7 +131,6 @@ function Skillet:AddButtonToTradeskillWindow(button)
     -- ... nope
     table.insert(SkilletFrame.added_buttons, button)
     return SkilletFrame
-
 end
 
 --
@@ -269,7 +267,7 @@ function Skillet:BeforeRecipeButtonShow(button, tradeskill, skill_index, list_of
     -- these tests are in here to make sure that I don't
     -- accidentally break the hooking code.
     assert(button, "Button cannot be nil")
-    assert(tradeskill  and tostring(tradeskill), "Tradeskill cannot be nil")
+    assert(tradeskill and tostring(tradeskill), "Tradeskill cannot be nil")
     assert(skill_index and tonumber(skill_index) and skill_index > 0, "Recipe index cannot be nil")
     assert(list_offset and tonumber(list_offset) and list_offset > 0, "List offset cannot be nil")
 
@@ -305,7 +303,7 @@ function Skillet:BeforeRecipeButtonHide(button, tradeskill, skill_index, list_of
     -- these tests are in here to make sure that I don't
     -- accidentally break the hooking code.
     assert(button, "Button cannot be nil")
-    assert(tradeskill  and tostring(tradeskill), "Tradeskill cannot be nil")
+    assert(tradeskill and tostring(tradeskill), "Tradeskill cannot be nil")
     assert(skill_index and tonumber(skill_index) and skill_index >= 0, "Recipe index cannot be nil")
     assert(list_offset and tonumber(list_offset) and list_offset >= 0, "List offset cannot be nil")
 
@@ -339,7 +337,7 @@ end
 --
 function Skillet:AddPreButtonShowCallback(method)
     assert(method and type(method) == "function",
-           "Usage: Skillet:AddPreButtonShowCallback(method). method must be a non-nil function")
+        "Usage: Skillet:AddPreButtonShowCallback(method). method must be a non-nil function")
     self:internal_AddPreButtonShowCallback(method)
 end
 
@@ -370,7 +368,7 @@ end
 --
 function Skillet:AddPreButtonHideCallback(method)
     assert(method and type(method) == "function",
-           "Usage: Skillet:AddPreButtonShowCallback(method). method must be a non-nil function")
+        "Usage: Skillet:AddPreButtonShowCallback(method). method must be a non-nil function")
     self:internal_AddPreButtonHideCallback(method)
 end
 

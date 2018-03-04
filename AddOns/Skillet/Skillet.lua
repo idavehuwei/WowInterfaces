@@ -16,16 +16,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-]]--
+]] --
 
 local MAJOR_VERSION = "1.13"
 local MINOR_VERSION = ("$Revision: 153 $"):match("%d+") or 1
 local DATE = string.gsub("$Date: 2008-10-26 19:38:21 +0000 (Sun, 26 Oct 2008) $", "^.-(%d%d%d%d%-%d%d%-%d%d).-$", "%1")
 
 Skillet = AceLibrary("AceAddon-2.0"):new("AceConsole-2.0", "AceEvent-2.0", "AceDB-2.0", "AceHook-2.1")
-Skillet.title   = "Skillet"
+Skillet.title = "Skillet"
 Skillet.version = MAJOR_VERSION .. "-" .. MINOR_VERSION
-Skillet.date    = DATE
+Skillet.date = DATE
 
 -- Pull it into the local namespace, it's faster to access that way
 local Skillet = Skillet
@@ -41,7 +41,7 @@ Skillet:RegisterDB("SkilletDB", "SkilletDBPC")
 Skillet:RegisterDefaults('profile', {
     -- user configurable options
     vendor_buy_button = true,
-    vendor_auto_buy   = false,
+    vendor_auto_buy = false,
     show_item_notes_tooltip = false,
     show_crafters_tooltip = true,
     show_detailed_recipe_tooltip = true,
@@ -52,7 +52,7 @@ Skillet:RegisterDefaults('profile', {
     display_shopping_list_at_auction = false,
     transparency = 1.0,
     scale = 1.0,
-} )
+})
 
 -- Options specific to a single character
 Skillet:RegisterDefaults('server', {
@@ -64,7 +64,7 @@ Skillet:RegisterDefaults('server', {
 
     -- notes added to items crafted or used in crafting.
     notes = {},
-} )
+})
 
 -- Options specific to a single character
 Skillet:RegisterDefaults('char', {
@@ -73,7 +73,7 @@ Skillet:RegisterDefaults('char', {
 
     -- Display alt's items in shopping list
     include_alts = true,
-} )
+})
 
 -- Localization
 local L = AceLibrary("AceLocale-2.2"):new("Skillet")
@@ -240,7 +240,10 @@ Skillet.options =
                     type = "range",
                     name = L["Transparency"],
                     desc = L["TRANSPARAENCYDESC"],
-                    min = 0.1, max = 1, step = 0.05, isPercent = true,
+                    min = 0.1,
+                    max = 1,
+                    step = 0.05,
+                    isPercent = true,
                     get = function()
                         return Skillet.db.profile.transparency
                     end,
@@ -254,7 +257,10 @@ Skillet.options =
                     type = "range",
                     name = L["Scale"],
                     desc = L["SCALEDESC"],
-                    min = 0.1, max = 1.25, step = 0.05, isPercent = true,
+                    min = 0.1,
+                    max = 1.25,
+                    step = 0.05,
+                    isPercent = true,
                     get = function()
                         return Skillet.db.profile.scale
                     end,
@@ -309,7 +315,6 @@ Skillet.options =
                 },
             },
         },
-
         about = {
             type = 'execute',
             name = L["About"],
@@ -328,7 +333,7 @@ Skillet.options =
                     AceLibrary("Waterfall-1.0"):Open("Skillet")
                 else
                     DEFAULT_CHAT_FRAME:AddMessage("|cff8888ffSkillet|r: Combat lockdown restriction." ..
-                                                  " Leave combat and try again.")
+                        " Leave combat and try again.")
                 end
             end,
             guiHidden = true,
@@ -343,7 +348,7 @@ Skillet.options =
                     Skillet:DisplayShoppingList(false)
                 else
                     DEFAULT_CHAT_FRAME:AddMessage("|cff8888ffSkillet|r: Combat lockdown restriction." ..
-                                                  " Leave combat and try again.")
+                        " Leave combat and try again.")
                 end
             end,
             order = 52
@@ -381,8 +386,7 @@ function Skillet:OnInitialize()
     -- Make sure this is done in initialize, not enable as we want the chat
     -- commands to be available even when the mod is disabled. Otherwise,
     -- how would the mod be enabled again?
-    self:RegisterChatCommand({"/skillet"}, self.options, "SKILLET")
-
+    self:RegisterChatCommand({ "/skillet" }, self.options, "SKILLET")
 end
 
 -- Returns the number of items across all characters, including the
@@ -426,9 +430,9 @@ function Skillet:OnEnable()
     -- as we consume reagents.
     self:RegisterEvent("SkilletStitch_Queue_Continue", "QueueChanged")
     self:RegisterEvent("SkilletStitch_Queue_Complete", "QueueChanged")
-    self:RegisterEvent("SkilletStitch_Queue_Add",      "QueueChanged")
+    self:RegisterEvent("SkilletStitch_Queue_Add", "QueueChanged")
 
-    self:RegisterEvent("SkilletStitch_Scan_Complete",  "ScanCompleted")
+    self:RegisterEvent("SkilletStitch_Scan_Complete", "ScanCompleted")
 
     self.hideUncraftableRecipes = false
     self.hideTrivialRecipes = false
@@ -455,14 +459,12 @@ function Skillet:OnEnable()
     self.stitch:EnableQueue("Skillet")
 
     AceLibrary("Waterfall-1.0"):Register("Skillet",
-                   "aceOptions", Skillet.options,
-                   "title",      L["Skillet Trade Skills"],
-                   "colorR",     0,
-                   "colorG",     0.7,
-                   "colorB",     0
-                   )
+        "aceOptions", Skillet.options,
+        "title", L["Skillet Trade Skills"],
+        "colorR", 0,
+        "colorG", 0.7,
+        "colorB", 0)
     AceLibrary("Waterfall-1.0"):Open("Skillet")
-
 end
 
 -- Called when the addon is disabled
@@ -482,7 +484,7 @@ local function is_known_trade_skill(name)
     -- the cached list of skills as this might also be a tradeskill that
     -- the user has just learned.
     local numSkills = GetNumSkillLines()
-    for skillIndex=1, numSkills do
+    for skillIndex = 1, numSkills do
         local skillName = GetSkillLineInfo(skillIndex)
         if skillName ~= nil and skillName == name then
             return true
@@ -504,11 +506,10 @@ local function is_supported_trade(parent)
     -- EnchantingSell does some odd things to the enchanting toggle,
     -- so expect some odd bug reports about this.
     if ESeller and ESeller:IsActive() and ESeller.db.char.DisableDefaultCraftFrame then
-         return false
+        return false
     end
 
     return is_known_trade_skill(name) and not IsTradeSkillLinked()
-
 end
 
 local scan_in_progress = false
@@ -566,7 +567,7 @@ end
 local function Skillet_rescan_skills()
     local numSkills = GetNumSkillLines()
     local skills = {}
-    for skillIndex=1, numSkills do
+    for skillIndex = 1, numSkills do
         local skillName = GetSkillLineInfo(skillIndex)
         if skillName ~= nil then
             skills[skillName] = skillName
@@ -659,9 +660,9 @@ function Skillet:BAG_UPDATE()
             AceEvent:ScheduleEvent("Skillet_rescan_bags", Skillet_rescan_bags, 0.25)
         end
     else
-       -- no trade window open, but something change, we will need to rescan
-       -- when the window is next opened.
-       need_rescan_on_open = true
+        -- no trade window open, but something change, we will need to rescan
+        -- when the window is next opened.
+        need_rescan_on_open = true
     end
 
     if MerchantFrame and MerchantFrame:IsVisible() then
@@ -703,7 +704,6 @@ function Skillet:UpdateTradeSkill()
 
         -- Load up any saved queued items for this profession
         self:LoadQueue(self.db.server.queues, new_trade)
-
     end
 end
 
@@ -897,7 +897,6 @@ function Skillet:SetItemNote(link, note)
     else
         self:Print("Error: Skillet:SetItemNote() could not determine item ID for " .. link);
     end
-
 end
 
 -- Adds the skillet notes text to the tooltip for a specified
@@ -917,7 +916,7 @@ function Skillet:AddItemNotesToTooltip(tooltip)
     end
 
     -- get item name
-    local name,link = tooltip:GetItem();
+    local name, link = tooltip:GetItem();
     if not link then return; end
 
     local id = self:GetItemIDFromLink(link);
@@ -925,7 +924,7 @@ function Skillet:AddItemNotesToTooltip(tooltip)
 
     if notes_enabled then
         local header_added = false
-        for player,notes_table in pairs(self.db.server.notes) do
+        for player, notes_table in pairs(self.db.server.notes) do
             local note = notes_table[id]
             if note then
                 if not header_added then
@@ -946,7 +945,7 @@ function Skillet:AddItemNotesToTooltip(tooltip)
             header_added = true
             local title_added = false
 
-            for i,name in ipairs(crafters) do
+            for i, name in ipairs(crafters) do
                 if not title_added then
                     title_added = true
                     tooltip:AddDoubleLine(L["Crafted By"], name)

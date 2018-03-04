@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-]]--
+]] --
 
 -- Handy utilities for Skillet UI methods.
 
@@ -33,10 +33,12 @@ local function createInfoBox()
     infoBox:SetBackdrop({
         bgFile = [[Interface\DialogFrame\UI-DialogBox-Background]],
         edgeFile = [[Interface\Tooltips\UI-Tooltip-Border]],
-        tile = true, tileSize = 16, edgeSize = 16,
+        tile = true,
+        tileSize = 16,
+        edgeSize = 16,
         insets = { left = 5, right = 5, top = 5, bottom = 5 }
     })
-    infoBox:SetBackdropColor(0,0,0,1)
+    infoBox:SetBackdropColor(0, 0, 0, 1)
 
     local text = infoBox:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
     infoBox.title = text
@@ -59,8 +61,8 @@ local function createInfoBox()
     end
 
     function infoBox:AddLine(left, right)
-        infoBox.lefts[#infoBox.lefts+1] = left
-        infoBox.rights[#infoBox.rights+1] = right
+        infoBox.lefts[#infoBox.lefts + 1] = left
+        infoBox.rights[#infoBox.rights + 1] = right
     end
 
     local infoBox_Show = infoBox.Show
@@ -79,7 +81,7 @@ local function createInfoBox()
 
                 -- Don't attach the first one until we know how big the rest of them are
                 if i > 1 then
-                    left:SetPoint("TOPRIGHT", self.textLefts[i-1], "BOTTOMRIGHT", 0, -5)
+                    left:SetPoint("TOPRIGHT", self.textLefts[i - 1], "BOTTOMRIGHT", 0, -5)
                 end
                 right:SetPoint("LEFT", left, "RIGHT", 5, 0)
             end
@@ -95,13 +97,12 @@ local function createInfoBox()
             if maxRightWidth < rightWidth then
                 maxRightWidth = rightWidth
             end
-
         end
 
         -- now attach buttons as needed
         self.textLefts[1]:SetPoint("TOPRIGHT", infoBox, "TOPLEFT", maxLeftWidth + 10, -35)
 
-        for i = #self.lefts+1, #self.textLefts do
+        for i = #self.lefts + 1, #self.textLefts do
             self.textLefts[i]:SetText('')
             self.textRights[i]:SetText('')
         end
@@ -120,9 +121,9 @@ end
 -- lower right corner only
 function Skillet:EnableResize(frame, min_width, min_height, refresh_method)
     -- lets play the resize me game!
-    frame:SetMinResize(min_width,min_height) -- magic numbers
+    frame:SetMinResize(min_width, min_height) -- magic numbers
     local sizer_se = CreateFrame("Frame", frame:GetName() .. "_SizerSoutheast", frame)
-    sizer_se:SetPoint("BOTTOMRIGHT",frame,"BOTTOMRIGHT",0,0)
+    sizer_se:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 0)
     sizer_se:SetWidth(25)
     sizer_se:SetHeight(25)
     sizer_se:EnableMouse()
@@ -146,24 +147,24 @@ function Skillet:EnableResize(frame, min_width, min_height, refresh_method)
     line1:SetHeight(14)
     line1:SetPoint("BOTTOMRIGHT", -4, 4)
     line1:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border")
-    local x = 0.1 * 14/17
-    line1:SetTexCoord(1/32 - x, 0.5, 1/32, 0.5 + x, 1/32, 0.5 - x, 1/32 + x, 0.5)
+    local x = 0.1 * 14 / 17
+    line1:SetTexCoord(1 / 32 - x, 0.5, 1 / 32, 0.5 + x, 1 / 32, 0.5 - x, 1 / 32 + x, 0.5)
 
     local line2 = sizer_se:CreateTexture(sizer_se:GetName() .. "_Line2", "BACKGROUND")
     line2:SetWidth(11)
     line2:SetHeight(11)
     line2:SetPoint("BOTTOMRIGHT", -4, 4)
     line2:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border")
-    local x = 0.1 * 11/17
-    line2:SetTexCoord(1/32 - x, 0.5, 1/32, 0.5 + x, 1/32, 0.5 - x, 1/32 + x, 0.5)
+    local x = 0.1 * 11 / 17
+    line2:SetTexCoord(1 / 32 - x, 0.5, 1 / 32, 0.5 + x, 1 / 32, 0.5 - x, 1 / 32 + x, 0.5)
 
     local line3 = sizer_se:CreateTexture(sizer_se:GetName() .. "_Line3", "BACKGROUND")
     line3:SetWidth(8)
     line3:SetHeight(8)
     line3:SetPoint("BOTTOMRIGHT", -4, 4)
     line3:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border")
-    local x = 0.1 * 8/17
-    line3:SetTexCoord(1/32 - x, 0.5, 1/32, 0.5 + x, 1/32, 0.5 - x, 1/32 + x, 0.5)
+    local x = 0.1 * 8 / 17
+    line3:SetTexCoord(1 / 32 - x, 0.5, 1 / 32, 0.5 + x, 1 / 32, 0.5 - x, 1 / 32 + x, 0.5)
 end
 
 --
@@ -182,8 +183,8 @@ function Skillet:ShowInventoryInfoPopup()
 
         local list = self.inventoryCheck:GetSupportedAddons()
         local text = list[1]
-        for i=2, #list, 1 do
-            text = text ..", " .. list[i]
+        for i = 2, #list, 1 do
+            text = text .. ", " .. list[i]
         end
         infoBox:AddLine(L["Supported Addons"], text)
 

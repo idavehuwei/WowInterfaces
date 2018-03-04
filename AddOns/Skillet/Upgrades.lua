@@ -16,12 +16,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-]]--
+]] --
 
 --[[
   Contains methods to upgrade Skillet from previous versions. This is
   for when I screw up the SavedVariables layout and need to fix it somehow.
-]]--
+]] --
 
 -- Runs all the update functions, should they be required
 function Skillet:UpgradeDataAndOptions()
@@ -64,11 +64,11 @@ function Skillet:UpgradeDataAndOptions()
     -- Wipe out any pre-1.6 created queues. They just don't have what we need.
     -- Specifically, they do no have the recipe links needed for checking queued
     -- items for tradeskills we don't have on this character
-    for player,playerqueues in pairs(self:GetAllQueues()) do
+    for player, playerqueues in pairs(self:GetAllQueues()) do
         -- check the queues for all professions
-        for _,queue in pairs(playerqueues) do
+        for _, queue in pairs(playerqueues) do
             if queue and #queue > 0 then
-                for i=#queue,1,-1 do
+                for i = #queue, 1, -1 do
                     if not queue[i].recipe then
                         table.remove(queue, i)
                     end
@@ -87,6 +87,5 @@ function Skillet:UpgradeDataAndOptions()
     if self.db.profile.show_crafters_tooltip == nil then
         self.db.profile.show_crafters_tooltip = true
     end
-
 end
 

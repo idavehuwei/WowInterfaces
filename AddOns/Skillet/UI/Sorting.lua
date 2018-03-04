@@ -16,16 +16,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-]]--
+]] --
 
 local L = AceLibrary("AceLocale-2.2"):new("Skillet")
 
 local skill_style_type = {
-    ["optimal"]         = { r = 1.00, g = 0.50, b = 0.25, level = 4},
-    ["medium"]          = { r = 1.00, g = 1.00, b = 0.00, level = 3},
-    ["easy"]            = { r = 0.25, g = 0.75, b = 0.25, level = 2},
-    ["trivial"]         = { r = 0.50, g = 0.50, b = 0.50, level = 1},
-    ["header"]          = { r = 1.00, g = 0.82, b = 0,    level = 0},
+    ["optimal"] = { r = 1.00, g = 0.50, b = 0.25, level = 4 },
+    ["medium"] = { r = 1.00, g = 1.00, b = 0.00, level = 3 },
+    ["easy"] = { r = 0.25, g = 0.75, b = 0.25, level = 2 },
+    ["trivial"] = { r = 0.50, g = 0.50, b = 0.50, level = 1 },
+    ["header"] = { r = 1.00, g = 0.82, b = 0, level = 0 },
 }
 
 -- list of possible sorting methods
@@ -34,7 +34,7 @@ local sorters = {}
 local recipe_sort_method = nil
 
 local function sort_recipe_by_name(tradeskill, a, b, stitch_left, stitch_right)
-    local  left_r = stitch_left  or Skillet.stitch:GetItemDataByIndex(tradeskill, a)
+    local left_r = stitch_left or Skillet.stitch:GetItemDataByIndex(tradeskill, a)
     local right_r = stitch_right or Skillet.stitch:GetItemDataByIndex(tradeskill, b)
 
     -- Theoretically, we should never get a nil here, but I'm
@@ -66,7 +66,7 @@ local function sort_recipe_by_difficulty(tradeskill, a, b, stitch_left, stitch_r
         return true
     end
 
-    local left  = skill_style_type[left_skillType].level
+    local left = skill_style_type[left_skillType].level
     local right = skill_style_type[right_skillType].level
 
     -- hardest recipes at the top
@@ -79,7 +79,7 @@ local function sort_recipe_by_difficulty(tradeskill, a, b, stitch_left, stitch_r
 end
 
 local function sort_by_required_level(tradeskill, a, b, stitch_left, stitch_right)
-    local  left_r = stitch_left  or Skillet.stitch:GetItemDataByIndex(tradeskill, a)
+    local left_r = stitch_left or Skillet.stitch:GetItemDataByIndex(tradeskill, a)
     local right_r = stitch_right or Skillet.stitch:GetItemDataByIndex(tradeskill, b)
 
     -- Theoretically, we should never get a nil here, but I'm
@@ -93,10 +93,10 @@ local function sort_by_required_level(tradeskill, a, b, stitch_left, stitch_righ
         return true
     end
 
-    left  = Skillet:GetLevelRequiredToUse(left_r.link)
+    left = Skillet:GetLevelRequiredToUse(left_r.link)
     right = Skillet:GetLevelRequiredToUse(right_r.link)
 
-    if not left  then  left = 0 end
+    if not left then left = 0 end
     if not right then right = 0 end
 
     if left == right then
@@ -108,7 +108,7 @@ local function sort_by_required_level(tradeskill, a, b, stitch_left, stitch_righ
 end
 
 local function sort_by_item_quality(tradeskill, a, b, stitch_left, stitch_right)
-    local  left_r = stitch_left  or Skillet.stitch:GetItemDataByIndex(tradeskill, a)
+    local left_r = stitch_left or Skillet.stitch:GetItemDataByIndex(tradeskill, a)
     local right_r = stitch_right or Skillet.stitch:GetItemDataByIndex(tradeskill, b)
 
     -- Theoretically, we should never get a nil here, but I'm
@@ -122,10 +122,10 @@ local function sort_by_item_quality(tradeskill, a, b, stitch_left, stitch_right)
         return true
     end
 
-     left = select(1, Skillet:GetQualityFromLink(left_r.link))
+    left = select(1, Skillet:GetQualityFromLink(left_r.link))
     right = select(1, Skillet:GetQualityFromLink(right_r.link))
 
-    if not left  then  left = 0 end
+    if not left then left = 0 end
     if not right then right = 0 end
 
     if left == right then
@@ -134,7 +134,6 @@ local function sort_by_item_quality(tradeskill, a, b, stitch_left, stitch_right)
     else
         return left < right
     end
-
 end
 
 local function NOSORT(tradeskill, a, b)
@@ -175,7 +174,7 @@ local function sort_recipes()
 
     local button_index = 1
     if Skillet:AreRecipesSorted() then
-        for i=1, num_skills, 1 do
+        for i = 1, num_skills, 1 do
             local _, skillType = Skillet:GetTradeSkillInfo(i)
             if skillType ~= "header" then
                 -- only add recipes, not headers. Headers are never displayed
@@ -185,15 +184,14 @@ local function sort_recipes()
             end
         end
 
-        table.sort(sorted_recipes, function(a,b)
+        table.sort(sorted_recipes, function(a, b)
             return recipe_sort_method(Skillet.currentTrade, a, b)
         end)
-
     end
 end
 
 local function set_sort_desc(toggle)
-    for _,entry in pairs(sorters) do
+    for _, entry in pairs(sorters) do
         if entry.sorter == recipe_sort_method then
             Skillet:SetTradeSkillOption(Skillet.currentTrade, "sortdesc-" .. entry.name, toggle)
         end
@@ -201,7 +199,7 @@ local function set_sort_desc(toggle)
 end
 
 local function is_sort_desc()
-    for _,entry in pairs(sorters) do
+    for _, entry in pairs(sorters) do
         if entry.sorter == recipe_sort_method then
             return Skillet:GetTradeSkillOption(Skillet.currentTrade, "sortdesc-" .. entry.name)
         end
@@ -228,21 +226,21 @@ end
 --
 function Skillet:internal_AddRecipeSorter(text, sorter)
     assert(text and tostring(text),
-           "Usage Skillet:AddRecipeSorter(text, sorter), text must be a string")
+        "Usage Skillet:AddRecipeSorter(text, sorter), text must be a string")
     assert(sorter and type(sorter) == "function",
-           "Usage Skillet:AddRecipeSorter(text, sorter), sorter must be a function")
-    table.insert(sorters, {["name"]=text, ["sorter"]=sorter})
+        "Usage Skillet:AddRecipeSorter(text, sorter), sorter must be a function")
+    table.insert(sorters, { ["name"] = text, ["sorter"] = sorter })
 end
 
 function Skillet:InitializeSorting()
     -- Default sorting methods
     -- We don't go through the public API for this as we want our methods
     -- to appear first in the list, no matter what.
-    table.insert(sorters, 1, {["name"]=L["None"], ["sorter"]=NOSORT})
-    table.insert(sorters, 2, {["name"]=L["By Name"], ["sorter"]=sort_recipe_by_name})
-    table.insert(sorters, 3, {["name"]=L["By Difficulty"], ["sorter"]=sort_recipe_by_difficulty})
-    table.insert(sorters, 4, {["name"]=L["By Level"], ["sorter"]=sort_by_required_level})
-    table.insert(sorters, 5, {["name"]=L["By Quality"], ["sorter"]=sort_by_item_quality})
+    table.insert(sorters, 1, { ["name"] = L["None"], ["sorter"] = NOSORT })
+    table.insert(sorters, 2, { ["name"] = L["By Name"], ["sorter"] = sort_recipe_by_name })
+    table.insert(sorters, 3, { ["name"] = L["By Difficulty"], ["sorter"] = sort_recipe_by_difficulty })
+    table.insert(sorters, 4, { ["name"] = L["By Level"], ["sorter"] = sort_by_required_level })
+    table.insert(sorters, 5, { ["name"] = L["By Quality"], ["sorter"] = sort_by_item_quality })
 
     recipe_sort_method = NOSORT
 
@@ -275,7 +273,6 @@ function Skillet:InitializeSorting()
     SkilletSortDescButton:SetScript("OnLeave", function()
         GameTooltip:Hide()
     end)
-
 end
 
 --
@@ -323,24 +320,23 @@ end
 -- called when the sort drop down is first loaded
 function Skillet:SortDropdown_OnLoad()
     UIDropDownMenu_Initialize(SkilletSortDropdown, Skillet.SortDropdown_Initialize)
-    SkilletSortDropdown.displayMode = "MENU"  -- changes the pop-up borders to be rounded instead of square
+    SkilletSortDropdown.displayMode = "MENU" -- changes the pop-up borders to be rounded instead of square
 
     -- Find out which sort method is selected
-    for i=1, #sorters, 1 do
+    for i = 1, #sorters, 1 do
         if recipe_sort_method == sorters[i].sorter then
             UIDropDownMenu_SetSelectedID(SkilletSortDropdown, i)
             break
         end
     end
-
 end
 
 -- Called when the sort drop down is displayed
 function Skillet:SortDropdown_OnShow()
     UIDropDownMenu_Initialize(SkilletSortDropdown, Skillet.SortDropdown_Initialize)
-    SkilletSortDropdown.displayMode = "MENU"  -- changes the pop-up borders to be rounded instead of square
+    SkilletSortDropdown.displayMode = "MENU" -- changes the pop-up borders to be rounded instead of square
 
-    for i=1, #sorters, 1 do
+    for i = 1, #sorters, 1 do
         if recipe_sort_method == sorters[i].sorter then
             UIDropDownMenu_SetSelectedID(SkilletSortDropdown, i)
             break
@@ -356,7 +352,7 @@ function Skillet:SortDropdown_Initialize()
 
     local info
     local i = 0
-    for i=1, #sorters, 1 do
+    for i = 1, #sorters, 1 do
         local entry = sorters[i]
         info = UIDropDownMenu_CreateInfo()
 
@@ -374,7 +370,6 @@ function Skillet:SortDropdown_Initialize()
 
     -- can't calls show_sort_toggle() here as the sort
     -- buttons have not been created yet
-
 end
 
 -- Called when the user selects an item in the sorting drop down
@@ -390,6 +385,4 @@ function Skillet:SortDropdown_OnClick()
 
     Skillet:ResortRecipes(force)
     Skillet:UpdateTradeSkillWindow()
-
-
 end

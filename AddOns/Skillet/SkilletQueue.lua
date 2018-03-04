@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-]]--
+]] --
 
 local AceEvent = AceLibrary("AceEvent-2.0")
 
@@ -30,7 +30,7 @@ local QUEUE_DEBUG = false
 -- inventory, but you can craft them, then they are added to the queue before the
 -- requested recipe.
 local function add_items_to_queue(skillIndex, recipe, count)
-    assert(tonumber(skillIndex) and recipe and tonumber(count),"Usage: add_items_to_queue(skillIndex, recipe, count)")
+    assert(tonumber(skillIndex) and recipe and tonumber(count), "Usage: add_items_to_queue(skillIndex, recipe, count)")
 
     -- if we need mats that are not in the inventory, but are craftable, add
     -- the mats to the queue first
@@ -41,7 +41,7 @@ local function add_items_to_queue(skillIndex, recipe, count)
 
     if Skillet.db.profile.queue_craftable_reagents then
         -- never more that 8 reagents
-        for i=1, 8, 1 do
+        for i = 1, 8, 1 do
             reagent = recipe[i]
 
             if not reagent then
@@ -49,14 +49,14 @@ local function add_items_to_queue(skillIndex, recipe, count)
             end
 
             local needed = (reagent.needed * count)
-            local   have = GetItemCount(reagent.link, true)
+            local have = GetItemCount(reagent.link, true)
 
             if QUEUE_DEBUG then
                 Skillet:Print("  have " .. have .. "x" .. reagent.link .. ", need " .. needed)
             end
 
             if have < needed then
-				-- see if we can make this! only scan current trade though.  (adding items to OTHER trades might also be interesting, but needs a bit of rewriting /mikk)
+                -- see if we can make this! only scan current trade though.  (adding items to OTHER trades might also be interesting, but needs a bit of rewriting /mikk)
                 local item = Skillet.stitch:GetItemDataByName(reagent.name, Skillet.currentTrade)
 
                 if item and item.link == reagent.link then
@@ -69,14 +69,14 @@ local function add_items_to_queue(skillIndex, recipe, count)
                     -- not prevent the error, but will help detect it and generate
                     -- more meaningful error
                     assert(recipe.link ~= item.link, "Recursive loop detected Recipe item: " ..
-                                                     recipe.link .. " has reagent " .. reagent.link)
+                        recipe.link .. " has reagent " .. reagent.link)
                     add_items_to_queue(item.index, item, (needed - have))
                 end
             end
         end
     end
 
-	Skillet.stitch:AddToQueue(skillIndex, count)
+    Skillet.stitch:AddToQueue(skillIndex, count)
 
     -- XXX: This is a bit hacky, try to think of something smarter
     Skillet:SaveQueue(Skillet.db.server.queues, Skillet.currentTrade)
@@ -107,42 +107,42 @@ end
 
 -- Queue the max number of craftable items for the currently selected skill
 function Skillet:QueueAllItems()
-	if self.currentTrade and self.selectedSkill then
-		local s = self.stitch:GetItemDataByIndex(self.currentTrade, self.selectedSkill)
+    if self.currentTrade and self.selectedSkill then
+        local s = self.stitch:GetItemDataByIndex(self.currentTrade, self.selectedSkill)
         if s then
             local factor = s.nummade or 1
-            local count = math.floor(s.numcraftable/factor) - self.stitch:GetNumQueuedItems(self.selectedSkill)
+            local count = math.floor(s.numcraftable / factor) - self.stitch:GetNumQueuedItems(self.selectedSkill)
             if count > 0 then
                 add_items_to_queue(self.selectedSkill, s, count)
             end
-			-- queued all that could be created, reset the create count
-			-- back down to 0
-			self:UpdateNumItemsSlider(0, false);
-		end
-	end
+            -- queued all that could be created, reset the create count
+            -- back down to 0
+            self:UpdateNumItemsSlider(0, false);
+        end
+    end
 end
 
 -- Adds the currently selected number of items to the queue
 function Skillet:QueueItems()
-	self.numItemsToCraft = SkilletItemCountInputBox:GetNumber();
+    self.numItemsToCraft = SkilletItemCountInputBox:GetNumber();
 
-	if self.numItemsToCraft > 0 then
-		if self.currentTrade and self.selectedSkill then
-			local s = self.stitch:GetItemDataByIndex(self.currentTrade, self.selectedSkill);
-			if s then
-				add_items_to_queue(self.selectedSkill, s, self.numItemsToCraft)
-			end
-		end
-	end
+    if self.numItemsToCraft > 0 then
+        if self.currentTrade and self.selectedSkill then
+            local s = self.stitch:GetItemDataByIndex(self.currentTrade, self.selectedSkill);
+            if s then
+                add_items_to_queue(self.selectedSkill, s, self.numItemsToCraft)
+            end
+        end
+    end
 end
 
 -- Queue and create the max number of craftable items for the currently selected skill
 function Skillet:CreateAllItems()
-	if self.currentTrade and self.selectedSkill then
-		local s = self.stitch:GetItemDataByIndex(self.currentTrade, self.selectedSkill);
+    if self.currentTrade and self.selectedSkill then
+        local s = self.stitch:GetItemDataByIndex(self.currentTrade, self.selectedSkill);
         if s then
             local factor = s.nummade or 1
-            local count = math.floor(s.numcraftable/factor) - self.stitch:GetNumQueuedItems(self.selectedSkill)
+            local count = math.floor(s.numcraftable / factor) - self.stitch:GetNumQueuedItems(self.selectedSkill)
             if count > 0 then
                 add_items_to_queue(self.selectedSkill, s, count)
                 self:ProcessQueue()
@@ -150,39 +150,39 @@ function Skillet:CreateAllItems()
             -- created all that could be created, reset the create count
             -- back down to 0
             self:UpdateNumItemsSlider(0, false)
-		end
-	end
+        end
+    end
 end
 
 -- Adds the currently selected number of items to the queue and then starts the queue
 function Skillet:CreateItems()
-	self.numItemsToCraft = SkilletItemCountInputBox:GetNumber();
+    self.numItemsToCraft = SkilletItemCountInputBox:GetNumber();
 
-	if self.numItemsToCraft > 0 then
-		if self.currentTrade and self.selectedSkill then
-			local s = self.stitch:GetItemDataByIndex(self.currentTrade, self.selectedSkill);
-			if s then
-				add_items_to_queue(self.selectedSkill, s, self.numItemsToCraft)
-				self:ProcessQueue();
-			end
-		end
-	end
+    if self.numItemsToCraft > 0 then
+        if self.currentTrade and self.selectedSkill then
+            local s = self.stitch:GetItemDataByIndex(self.currentTrade, self.selectedSkill);
+            if s then
+                add_items_to_queue(self.selectedSkill, s, self.numItemsToCraft)
+                self:ProcessQueue();
+            end
+        end
+    end
 end
 
 -- Starts Processing any items in the queue
 function Skillet:ProcessQueue()
-	local queue = self.stitch:GetQueueInfo()
-	if not queue then
-		return
-	end
+    local queue = self.stitch:GetQueueInfo()
+    if not queue then
+        return
+    end
 
-	self.stitch:ProcessQueue()
+    self.stitch:ProcessQueue()
 end
 
 -- Clears the current queue, this will not cancel an
 -- items currently being crafted.
 function Skillet:EmptyQueue()
-	self.stitch:ClearQueue()
+    self.stitch:ClearQueue()
     self:SaveQueue(self.db.server.queues, self.currentTrade)
 end
 
@@ -216,7 +216,7 @@ end
 
 -- Returns the list of queues for the specified player
 function Skillet:GetQueues(player)
-    assert(tostring(player),"Usage: GetQueues('player_name')")
+    assert(tostring(player), "Usage: GetQueues('player_name')")
 
     if not self.db.server.queues then
         return {}
@@ -238,7 +238,7 @@ end
 -- of "link". If "name" is already in the list, the count in updated,
 -- otherwise it is appended to the end of the list.
 local function update_queued_list(list, player, name, link, needed)
-    for i=1,#list,1 do
+    for i = 1, #list, 1 do
         if list[i]["name"] == name then
             list[i]["count"] = list[i]["count"] + needed
             if list[i].player and not string.find(list[i].player, player) then
@@ -249,8 +249,8 @@ local function update_queued_list(list, player, name, link, needed)
     end
 
     table.insert(list, {
-        ["name"]  = name,
-        ["link"]  = link,
+        ["name"] = name,
+        ["link"] = link,
         ["count"] = needed,
         ["player"] = player,
     })
@@ -272,17 +272,17 @@ end
 function Skillet:GetReagentsForQueuedRecipes(playername)
     local list = {}
 
-    for player,playerqueues in pairs(self:GetAllQueues()) do
+    for player, playerqueues in pairs(self:GetAllQueues()) do
         -- check the queues for all professions
         if not playername or playername == player then
-            for _,queue in pairs(playerqueues) do
+            for _, queue in pairs(playerqueues) do
                 -- this is what we need
                 if queue and #queue > 0 then
-                    for i=1,#queue,1 do
+                    for i = 1, #queue, 1 do
                         local recipe = self.stitch:DecodeRecipe(queue[i].recipe)
                         local count = queue[i]["numcasts"]
 
-                        for i=1, 8, 1 do
+                        for i = 1, 8, 1 do
                             -- no recipes have more than 8 reagents
                             local reagent = recipe[i]
                             if reagent then
@@ -292,7 +292,6 @@ function Skillet:GetReagentsForQueuedRecipes(playername)
                                 end
                             end
                         end
-
                     end
                 end
             end

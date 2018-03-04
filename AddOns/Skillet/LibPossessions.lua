@@ -16,15 +16,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-]]--
+]] --
 
 local MAJOR_VERSION = "LibPossessions"
 local MINOR_VERSION = tonumber(("$Revision: 164 $"):match("(%d+)"))
-local COMMON_API    = "Common API" -- do not localize
+local COMMON_API = "Common API" -- do not localize
 
 -- Ace addons will store realm data under "realm - faction"
 local playerrealm = GetRealmName():trim()
-local _,race = UnitRace("player")
+local _, race = UnitRace("player")
 local PLAYER = UnitName("player")
 local faction
 if race == "Orc" or race == "Scourge" or race == "Troll" or race == "Tauren" or race == "BloodElf" then
@@ -65,7 +65,7 @@ local function sanity_GetItemCount(item)
     if not owners then return 0 end
 
     local count = 0
-    for char,v in pairs(owners) do
+    for char, v in pairs(owners) do
         -- NB: We skip the current player. That info is dynamnic and should
         --     not be included in the values we return.
         if char ~= PLAYER then
@@ -74,9 +74,9 @@ local function sanity_GetItemCount(item)
                 count = count + ct
             end
         end
-     end
+    end
 
-     return count
+    return count
 end
 
 -- ========================================================================
@@ -92,7 +92,7 @@ local function bagnondb_GetItemCount(item)
         -- NB: We skip the current player. That info is dynamnic and should
         --     not be included in the values we return.
         if playerName ~= PLAYER then
-            for bag=0,NUM_BAG_SLOTS do
+            for bag = 0, NUM_BAG_SLOTS do
                 count = count + BagnonDB:GetItemCount(itemLink, bag, playerName)
             end
         end
@@ -111,7 +111,7 @@ local function characterinfostorage_GetItemCount(itemid)
     local count = 0
     local characters = CharacterInfoStorage:GetCharacters()
 
-    for _,name in pairs(characters) do
+    for _, name in pairs(characters) do
         -- NB: We skip the current player. That info is dynamnic and should
         --     not be included in the values we return.
         if name ~= PLAYER then
@@ -129,9 +129,9 @@ end
 local function bankitems_GetItemCount(itemid)
     local count = 0
 
-	-- List of bag numbers used internally by BankItems
-	-- Don't include bag 103 (contains items on AH)
-	local BAGNUMBERS = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 100, 101, 102, -2}
+    -- List of bag numbers used internally by BankItems
+    -- Don't include bag 103 (contains items on AH)
+    local BAGNUMBERS = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 100, 101, 102, -2 }
 
     -- kind of icky, this requires way too much knowledge about the
     -- internal structure of the BankItems data storage. This is extracted
@@ -150,22 +150,22 @@ local function bankitems_GetItemCount(itemid)
                 for num = 1, 28 do
                     if bankPlayer[num] then
                         local id = select(3, string.find(bankPlayer[num].link, "|Hitem:(%d+):"))
-						if tonumber(id) == itemid then
+                        if tonumber(id) == itemid then
                             count = count + (bankPlayer[num].count or 1)
                         end
                     end
                 end
                 for _, bagNum in ipairs(BAGNUMBERS) do
-                    local theBag = bankPlayer["Bag"..bagNum]
+                    local theBag = bankPlayer["Bag" .. bagNum]
                     if theBag then
                         local realSize = theBag.size
-						if bagNum == 101 or bagNum == 103 then
+                        if bagNum == 101 or bagNum == 103 then
                             realSize = #theBag
                         end
                         for bagItem = 1, realSize do
                             if theBag[bagItem] then
                                 local id = select(3, string.find(theBag[bagItem].link, "|Hitem:(%d+):"))
-								if tonumber(id) == itemid then
+                                if tonumber(id) == itemid then
                                     count = count + (theBag[bagItem].count or 1)
                                 end
                             end
@@ -173,7 +173,6 @@ local function bankitems_GetItemCount(itemid)
                     end
                 end
             end
-
         end -- player ~= PLAYER
     end
 
@@ -199,7 +198,7 @@ local function possessions_GetItemCount(itemid)
                 for _, item in pairs(bag) do
                     local id = item[0]
                     if id then
-                        _,_,id = string.find(id, "^(%d+):?")
+                        _, _, id = string.find(id, "^(%d+):?")
                         id = tonumber(id)
                         if itemid == id then
                             count = count + (item[3] or 0)
@@ -232,10 +231,10 @@ local function banklist_GetItemCount(itemid)
                 for _, itemData in pairs(bag) do
                     local id = itemData.id:match('item:(%d+)')
                     if id then
-                      id = tonumber(id)
-                      if id == itemid then
-                          count = count + (itemData.count or 0)
-                      end
+                        id = tonumber(id)
+                        if id == itemid then
+                            count = count + (itemData.count or 0)
+                        end
                     end
                 end
             end
@@ -267,8 +266,8 @@ local function oneview_GetItemCount(itemid)
                             local id = bag_itemId:match('item:(%d+)')
                             if id then id = tonumber(id) else id = -1 end
                             if id == itemid then
-                            if type(qty) == "string" then qty = tonumber(qty) end
-                            count = count + qty
+                                if type(qty) == "string" then qty = tonumber(qty) end
+                                count = count + qty
                             end
                         end
                     end
@@ -287,7 +286,7 @@ local ark_warned = false
 local function arkinventory_GetItemCount(itemid)
 
     local r = GetRealmName()
-    local f = UnitFactionGroup( "player" )
+    local f = UnitFactionGroup("player")
 
     if not ArkInventory.Const.TOC or ArkInventory.Const.TOC < 30000 then
         -- this is the old ark format
@@ -300,18 +299,18 @@ local function arkinventory_GetItemCount(itemid)
 
     local item_count_total = 0
 
-    for pid, pd in ArkInventory.spairs( ArkInventory.db.global.player.realm[r].faction[f].name ) do
+    for pid, pd in ArkInventory.spairs(ArkInventory.db.global.player.realm[r].faction[f].name) do
 
         -- NB: We skip the current player. That info is dynamic and should
         --     not be included in the values we return.
         if pd.info.name ~= PLAYER and pd.info.realm == r and pd.info.faction == f then
-            for l, ld in pairs( pd.location ) do
+            for l, ld in pairs(pd.location) do
                 if l ~= ArkInventory.Const.Location.Vault then
                     -- we don't want to include guild vaults
-                    for b, bd in pairs( ld.bag ) do
-                        for s, sd in pairs( bd.slot ) do
-                            if sd and sd.h then 
-                                local id = ArkInventory.ObjectStringDecodeItem( sd.h )
+                    for b, bd in pairs(ld.bag) do
+                        for s, sd in pairs(bd.slot) do
+                            if sd and sd.h then
+                                local id = ArkInventory.ObjectStringDecodeItem(sd.h)
                                 if id and itemid == tonumber(id) then
                                     -- print( sd.h .. " found [" .. sd.count .. "] in bag [" .. b .. "] slot [" .. s .. "] on [" .. pd.info.name .. "]" )
                                     item_count_total = item_count_total + sd.count
@@ -325,7 +324,6 @@ local function arkinventory_GetItemCount(itemid)
     end
 
     return item_count_total
-
 end
 
 -- ========================================================================
@@ -339,12 +337,12 @@ do
         if BagginsAnywhereBags.GetItemCount then
             return BagginsAnywhereBags:GetItemCount(itemid)
         end
-        
+
         if not warned then
             ChatFrame1:AddMessage(MAJOR_VERSION .. ": Baggins_AnywhereBags needs to be upgraded to be able to count items on alts. (BagginsAnywhereBags.GetItemCount is missing)")
             warned = true
         end
-        
+
         return 0
     end
 end
@@ -363,7 +361,7 @@ end
 _G.LibPossessions = LibPossessions
 
 -- And a place to cache item lookups, for speed.
-local cache = LibPossessions.cache or ( {n = 0} )
+local cache = LibPossessions.cache or ({ n = 0 })
 LibPossessions.cache = cache
 
 -- And the version of the library
@@ -374,15 +372,15 @@ LibPossessions.version = MAJOR_VERSION .. "-" .. MINOR_VERSION
 LibPossessions.supportedAddons = {
     -- GetInventoryCount might be nil and that would remove the entry
     -- [COMMON_API]                = (GetInventoryCount or ""),
-    ["CharacterInfoStorage"]    = characterinfostorage_GetItemCount,
-    ["Sanity2"]                 = sanity_GetItemCount,
-    ["BankItems"]               = bankitems_GetItemCount,
-    ["Possessions"]             = possessions_GetItemCount,
-    ["BankList"]                = banklist_GetItemCount,
-    ["Bagnon_Forever"]          = bagnondb_GetItemCount,
-    ["OneView"]                 = oneview_GetItemCount, -- Requires OneBag and OneBank as well.
-    ["ArkInventory"]            = arkinventory_GetItemCount,
-    ["Baggins_AnywhereBags"]    = baggins_GetItemCount,
+    ["CharacterInfoStorage"] = characterinfostorage_GetItemCount,
+    ["Sanity2"] = sanity_GetItemCount,
+    ["BankItems"] = bankitems_GetItemCount,
+    ["Possessions"] = possessions_GetItemCount,
+    ["BankList"] = banklist_GetItemCount,
+    ["Bagnon_Forever"] = bagnondb_GetItemCount,
+    ["OneView"] = oneview_GetItemCount, -- Requires OneBag and OneBank as well.
+    ["ArkInventory"] = arkinventory_GetItemCount,
+    ["Baggins_AnywhereBags"] = baggins_GetItemCount,
 }
 
 -- Currently selected inventory addon
@@ -399,7 +397,7 @@ local function find_supported_addon(lib)
             debug("Using common API")
             lib.inventoryAddon = COMMON_API
         else
-            for i=1, GetNumAddOns() do
+            for i = 1, GetNumAddOns() do
                 local name = GetAddOnInfo(i)
                 for k, v in pairs(lib.supportedAddons) do
                     if k == name and IsAddOnLoaded(name) then
@@ -471,7 +469,7 @@ end
 function LibPossessions:GetSupportedAddons()
     local addons = {}
 
-    for name,_ in pairs(self.supportedAddons) do
+    for name, _ in pairs(self.supportedAddons) do
         table.insert(addons, name)
     end
 
@@ -510,12 +508,12 @@ function LibPossessions:GetItemCount(item)
     if not cache[item] then
         -- Item is not yet cached. Cache it now. We only store counts for
         -- alts, which cannot change during the course of a session.
-        
+
         find_supported_addon(self)
 
         if self:IsAvailable() then
             local method = self.supportedAddons[self.inventoryAddon]
-            local ok,count = pcall(method, item)
+            local ok, count = pcall(method, item)
             if not ok then
                 -- if there was an error, the second return value from pcall
                 -- will be the error message.

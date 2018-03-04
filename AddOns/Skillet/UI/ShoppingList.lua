@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-]]--
+]] --
 
 --[[
 #
@@ -24,23 +24,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # of items that are required for queued receipes but are not currently
 # in the inventory
 #
-]]--
+]] --
 
 SKILLET_SHOPPING_LIST_HEIGHT = 16
 
 local L = AceLibrary("AceLocale-2.2"):new("Skillet")
 
 -- Stolen from the Waterfall Ace2 addon.
-local ControlBackdrop  = {
+local ControlBackdrop = {
     bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
     edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-    tile = true, tileSize = 16, edgeSize = 16,
+    tile = true,
+    tileSize = 16,
+    edgeSize = 16,
     insets = { left = 3, right = 3, top = 3, bottom = 3 }
 }
 local FrameBackdrop = {
     bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
     edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-    tile = true, tileSize = 16, edgeSize = 16,
+    tile = true,
+    tileSize = 16,
+    edgeSize = 16,
     insets = { left = 3, right = 3, top = 30, bottom = 3 }
 }
 
@@ -55,34 +59,34 @@ local function createShoppingListFrame(self)
     frame:SetBackdropColor(0.1, 0.1, 0.1)
 
     -- A title bar stolen from the Ace2 Waterfall window.
-    local r,g,b = 0, 0.7, 0; -- dark green
-    local titlebar = frame:CreateTexture(nil,"BACKGROUND")
-    local titlebar2 = frame:CreateTexture(nil,"BACKGROUND")
+    local r, g, b = 0, 0.7, 0; -- dark green
+    local titlebar = frame:CreateTexture(nil, "BACKGROUND")
+    local titlebar2 = frame:CreateTexture(nil, "BACKGROUND")
 
-    titlebar:SetPoint("TOPLEFT",frame,"TOPLEFT",3,-4)
-    titlebar:SetPoint("TOPRIGHT",frame,"TOPRIGHT",-3,-4)
+    titlebar:SetPoint("TOPLEFT", frame, "TOPLEFT", 3, -4)
+    titlebar:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -3, -4)
     titlebar:SetHeight(13)
 
-    titlebar2:SetPoint("TOPLEFT",titlebar,"BOTTOMLEFT",0,0)
-    titlebar2:SetPoint("TOPRIGHT",titlebar,"BOTTOMRIGHT",0,0)
+    titlebar2:SetPoint("TOPLEFT", titlebar, "BOTTOMLEFT", 0, 0)
+    titlebar2:SetPoint("TOPRIGHT", titlebar, "BOTTOMRIGHT", 0, 0)
     titlebar2:SetHeight(13)
 
-    titlebar:SetGradientAlpha("VERTICAL",r*0.6,g*0.6,b*0.6,1,r,g,b,1)
-    titlebar:SetTexture(r,g,b,1)
-    titlebar2:SetGradientAlpha("VERTICAL",r*0.9,g*0.9,b*0.9,1,r*0.6,g*0.6,b*0.6,1)
-    titlebar2:SetTexture(r,g,b,1)
+    titlebar:SetGradientAlpha("VERTICAL", r * 0.6, g * 0.6, b * 0.6, 1, r, g, b, 1)
+    titlebar:SetTexture(r, g, b, 1)
+    titlebar2:SetGradientAlpha("VERTICAL", r * 0.9, g * 0.9, b * 0.9, 1, r * 0.6, g * 0.6, b * 0.6, 1)
+    titlebar2:SetTexture(r, g, b, 1)
 
-    local title = CreateFrame("Frame",nil,frame)
-    title:SetPoint("TOPLEFT",titlebar,"TOPLEFT",0,0)
-    title:SetPoint("BOTTOMRIGHT",titlebar2,"BOTTOMRIGHT",0,0)
+    local title = CreateFrame("Frame", nil, frame)
+    title:SetPoint("TOPLEFT", titlebar, "TOPLEFT", 0, 0)
+    title:SetPoint("BOTTOMRIGHT", titlebar2, "BOTTOMRIGHT", 0, 0)
 
     local titletext = title:CreateFontString("SkilletShoppingListTitleText", "OVERLAY", "GameFontNormalLarge")
-    titletext:SetPoint("TOPLEFT",title,"TOPLEFT",0,0)
-    titletext:SetPoint("TOPRIGHT",title,"TOPRIGHT",0,0)
+    titletext:SetPoint("TOPLEFT", title, "TOPLEFT", 0, 0)
+    titletext:SetPoint("TOPRIGHT", title, "TOPRIGHT", 0, 0)
     titletext:SetHeight(26)
-    titletext:SetShadowColor(0,0,0)
-    titletext:SetShadowOffset(1,-1)
-    titletext:SetTextColor(1,1,1)
+    titletext:SetShadowColor(0, 0, 0)
+    titletext:SetShadowOffset(1, -1)
+    titletext:SetTextColor(1, 1, 1)
     titletext:SetText("Skillet: " .. L["Shopping List"])
 
     SkilletShowQueuesFromAllAltsText:SetText(L["Include alts"])
@@ -105,7 +109,7 @@ local function createShoppingListFrame(self)
         prefix = "shoppingListLocation_"
     }
     windowManger:RegisterConfig(frame, self.db.char, shoppingListLocation)
-    windowManger:RestorePosition(frame)  -- restores scale also
+    windowManger:RestorePosition(frame) -- restores scale also
     windowManger:MakeDraggable(frame)
 
     -- lets play the resize me game!
@@ -129,9 +133,9 @@ function Skillet:GetShoppingList(playername, includeBank)
     -- decrease counts by what we have on hand.
     -- work backwards so that removing items form the table
     -- does not screw up our indexing.
-    for i=#list, 1, -1 do
+    for i = #list, 1, -1 do
 
-        local link  = list[i].link
+        local link = list[i].link
         local count = list[i].count
 
         local have = GetItemCount(link, includeBank) or 0
@@ -141,7 +145,6 @@ function Skillet:GetShoppingList(playername, includeBank)
         else
             list[i]["count"] = list[i]["count"] - have
         end
-
     end
 
     return list
@@ -203,11 +206,11 @@ local function indexBank()
     for i = 1, GetContainerNumSlots(container), 1 do
         local item = GetContainerItemLink(container, i)
         if item then
-            local _,count = GetContainerItemInfo(container, i)
+            local _, count = GetContainerItemInfo(container, i)
             table.insert(bank, {
-                ["bag"]   = container,
-                ["slot"]  = i,
-                ["id"]  = Skillet:GetItemIDFromLink(item),
+                ["bag"] = container,
+                ["slot"] = i,
+                ["id"] = Skillet:GetItemIDFromLink(item),
                 ["count"] = count,
             })
         end
@@ -218,11 +221,11 @@ local function indexBank()
         for i = 1, GetContainerNumSlots(container), 1 do
             local item = GetContainerItemLink(container, i)
             if item then
-                local _,count = GetContainerItemInfo(container, i)
+                local _, count = GetContainerItemInfo(container, i)
                 table.insert(bank, {
-                    ["bag"]   = container,
-                    ["slot"]  = i,
-                    ["id"]  = Skillet:GetItemIDFromLink(item),
+                    ["bag"] = container,
+                    ["slot"] = i,
+                    ["id"] = Skillet:GetItemIDFromLink(item),
                     ["count"] = count,
                 })
             end
@@ -264,7 +267,7 @@ local function findBagForItem(item, count)
                 if bagitem then
                     if id == Skillet:GetItemIDFromLink(bagitem) then
                         -- found some of the same, it is a full stack or locked?
-                        local _, num_in_bag, locked  = GetContainerItemInfo(container, slot)
+                        local _, num_in_bag, locked = GetContainerItemInfo(container, slot)
                         local space_available = itemStackCount - num_in_bag
                         if space_available >= count and not locked then
                             return container
@@ -317,9 +320,9 @@ function Skillet:GetReagentsFromBank()
 
     indexBank()
 
-    for _,v in pairs(list) do
+    for _, v in pairs(list) do
         local id = self:GetItemIDFromLink(v.link)
-        for _,item in pairs(bank) do
+        for _, item in pairs(bank) do
             if item.id == id and item.count > 0 then
                 -- taking stuff from the bank should cause a bag update event
                 -- to be fired, which will in turn cause Skillet:UpdateShoppingListWindow()
@@ -342,11 +345,11 @@ end
 
 local num_buttons = 0
 local function get_button(i)
-    local button = getglobal("SkilletShoppingListButton"..i)
+    local button = getglobal("SkilletShoppingListButton" .. i)
     if not button then
-        button = CreateFrame("Button", "SkilletShoppingListButton"..i, SkilletShoppingListParent, "SkilletShoppingListItemButtonTemplate")
+        button = CreateFrame("Button", "SkilletShoppingListButton" .. i, SkilletShoppingListParent, "SkilletShoppingListItemButtonTemplate")
         button:SetParent(SkilletShoppingList)
-        button:SetPoint("TOPLEFT", "SkilletShoppingListButton"..(i-1), "BOTTOMLEFT")
+        button:SetPoint("TOPLEFT", "SkilletShoppingListButton" .. (i - 1), "BOTTOMLEFT")
     end
     return button
 end
@@ -372,32 +375,32 @@ function Skillet:UpdateShoppingListWindow(use_cached_recipes)
     button_count = math.floor(button_count)
 
     -- Update the scroll frame
-    FauxScrollFrame_Update(SkilletShoppingListList,         -- frame
-                           numItems,                        -- num items
-                           button_count,                    -- num to display
-                           SKILLET_SHOPPING_LIST_HEIGHT)    -- value step (item height)
+    FauxScrollFrame_Update(SkilletShoppingListList, -- frame
+        numItems, -- num items
+        button_count, -- num to display
+        SKILLET_SHOPPING_LIST_HEIGHT) -- value step (item height)
 
     -- Where in the list of items to start counting.
     local itemOffset = FauxScrollFrame_GetOffset(SkilletShoppingListList)
 
     local width = SkilletShoppingListList:GetWidth()
 
-    for i=1, button_count, 1 do
+    for i = 1, button_count, 1 do
         num_buttons = math.max(num_buttons, i)
 
         local itemIndex = i + itemOffset
 
         local button = get_button(i)
-        local count  = getglobal(button:GetName() .. "CountText")
-        local name   = getglobal(button:GetName() .. "NameText")
+        local count = getglobal(button:GetName() .. "CountText")
+        local name = getglobal(button:GetName() .. "NameText")
         local player = getglobal(button:GetName() .. "PlayerText")
 
         button:SetWidth(width)
 
         local button_width = width - 5
-        local count_width  = math.max(button_width * 0.1, 30)
+        local count_width = math.max(button_width * 0.1, 30)
         local player_width = math.max(button_width * 0.3, 100)
-        local name_width   = math.max(button_width - count_width - player_width, 125)
+        local name_width = math.max(button_width - count_width - player_width, 125)
 
         count:SetWidth(count_width)
         name:SetWidth(name_width)
@@ -410,7 +413,7 @@ function Skillet:UpdateShoppingListWindow(use_cached_recipes)
             name:SetText(self.cachedShoppingList[itemIndex].link)
             player:SetText(self.cachedShoppingList[itemIndex].player)
 
-            button.link  = self.cachedShoppingList[itemIndex].link
+            button.link = self.cachedShoppingList[itemIndex].link
             button.count = self.cachedShoppingList[itemIndex].count
 
             button:Show()
@@ -428,9 +431,9 @@ function Skillet:UpdateShoppingListWindow(use_cached_recipes)
 
 
     -- Hide any of the buttons that we created, but don't need right now
-    for i = button_count+1, num_buttons, 1 do
-       local button = get_button(i)
-       button:Hide()
+    for i = button_count + 1, num_buttons, 1 do
+        local button = get_button(i)
+        button:Hide()
     end
 end
 
@@ -461,7 +464,6 @@ function Skillet:internal_DisplayShoppingList(atBank)
 
     -- true == use cached recipes, we just loaded them after all
     self:UpdateShoppingListWindow(true)
-
 end
 
 -- Hides the shopping list window
