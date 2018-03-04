@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_9" project-jdk-name="Lua 5.1.4" project-jdk-type="Lua SDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="XMakeProjectSettings">
+    <option name="currentArchitecture" value="x86" />
+    <option name="workingDirectory" value="$PROJECT_DIR$" />
+  </component>
+</project>
