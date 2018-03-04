@@ -1,4 +1,4 @@
-local DEV_MOD = false
+local DEV_MOD = true
 local debug
 local debugf = tekDebug and tekDebug:GetFrame("JPack") --tekDebug
 if debugf then
@@ -11,6 +11,8 @@ end
 DEV_MOD = true
 --@end-debug@]===]
 
+local ItemLockedMaxRetry = 10
+local ItemsMoveInterval = 0.01
 
 --[[===================================
             Local
@@ -27,6 +29,7 @@ JPack.bagGroups = {}
 JPack.packingGroupIndex = 1
 JPack.packingBags = {}
 JPack.updatePeriod = .1
+JPack.ItemLockedRetry = 0
 
 local version = GetAddOnMetadata("JPack", "Version") or "alpha"
 JPack.version = version
@@ -183,7 +186,11 @@ local function getPerffix(item)
     if (item.rarity == 0) then
         return "00" .. s
     elseif (IsEquippableItem(item.name) and item.type ~= L.TYPE_BAG and item.subType ~= L.TYPE_FISHWEAPON) and item.subType ~= L.TYPE_MISC then
-        if (item.rarity <= 1) then
+        if (item.rarity <= 1) or (item.level < UnitLevel('player') * 0.9) then
+            return '02' .. s
+        end
+    elseif (item.type == L.TYPE_CONSUMABLE) then
+        if (item.level < UnitLevel('player') * 0.9) then
             return '01' .. s
         end
     end
@@ -478,8 +485,9 @@ bagTypes
 packingTypeIndex
 packingBags
 ]]
+local dummy_table = {}
 local function groupBags()
-    local ignored = JPACK_IGNORE_BAGS or {}
+    local ignored = JPACK_IGNORE_BAGS or dummy_table
     local bagTypes = {}
     bagTypes[L.TYPE_BAG] = {}
     if not ignored[0] then
@@ -640,6 +648,16 @@ local function GetLastItemIndex(items, key)
     return -1
 end
 
+local function stopPacking()
+    if JPack:GetScript "OnUpdate" then
+        JPack:SetScript("OnUpdate", nil)
+    end
+
+    if JPack.packupguildbank then
+        JPack:UnregisterEvent("GUILDBANKBAGSLOTS_CHANGED")
+    end
+end
+
 --[[
 移动一次, 返回是否继续
 ]]
@@ -647,6 +665,9 @@ local function moveOnce()
     local working = false
     local i = 1
     local lockCount = 0
+
+    if to == nil then return working; end
+
     while to[i] do
         local locked = isLocked(i)
         if (locked == nil) then locked = false end
@@ -654,6 +675,8 @@ local function moveOnce()
             lockCount = lockCount + 1
         end
         if (lockCount > JPACK_MAXMOVE_ONCE) then
+            print("moveOnce "..tostring(L["FAILED"]).." "..string.format(L["Item %s locked!"], to[i].link))
+            stopPacking();
             return true
         end
         if (current[i] == nil or to[i].name ~= current[i].name) then
@@ -675,6 +698,10 @@ local function moveOnce()
         i = i + 1
     end
     return working or lockCount > 0
+end
+
+local function moveOnceCaller(func)
+    func();
 end
 
 --堆叠一次，返回是否结束
@@ -706,7 +733,13 @@ local function stackOnce()
                         end
                     end
                 else
-                    complet = false
+                    if (JPack.ItemLockedRetry < ItemLockedMaxRetry) then
+                        complet = false;
+                        JPack.ItemLockedRetry = JPack.ItemLockedRetry + 1;
+                    else
+                        print(L["FAILED"] .. " " .. string.format(L["Item %s locked!"], item.link))
+                        stopPacking();
+                    end
                 end
             end
         end
@@ -784,15 +817,6 @@ end
         Events/slash..etc..
 =====================================]]
 
-local function stopPacking()
-    if JPack:GetScript "OnUpdate" then
-        JPack:SetScript("OnUpdate", nil)
-    end
-
-    if JPack.packupguildbank then
-        JPack:UnregisterEvent("GUILDBANKBAGSLOTS_CHANGED")
-    end
-end
 
 
 JPack.OnLoad = {}
@@ -892,11 +916,37 @@ function JPack:GBMoved(isTrue)
     end
 end
 
+local function MoveItems()
+    if not moveOnce() then
+        JPack.packingGroupIndex = JPack.packingGroupIndex + 1
+        debug("index", JPack.packingGroupIndex)
+        JPack.packingBags = JPack.bagGroups[JPack.packingGroupIndex]
+        debug("JPack.bagGroups . size = ", #JPack.bagGroups)
+        for i = 1, #JPack.bagGroups do
+            for j = 1, #JPack.bagGroups[i] do
+                debug("i", i, "j", j .. ":", JPack.bagGroups[i][j])
+            end
+        end
+        if (JPack.packingBags == nil) then
+            debug "PACKUP COMPLETE"
+            JPACK_STEP = JPACK_STOPPED
+            JPack.bagGroups = {}
+            print(L["COMPLETE"])
+            JPack:SetScript("OnUpdate", nil)
+            current = nil
+            to = nil
+        else
+            debug("Packing ", JPack.packingGroupIndex)
+            startPack()
+        end
+    end
+end
 
 --[[
     bag/bank packup
     onupdate script to move items
 ]]
+local waitTable = {};
 local elapsed = 0
 function JPack.OnUpdate(self, el)
     elapsed = elapsed + el
@@ -946,6 +996,7 @@ function JPack.OnUpdate(self, el)
     elseif JPACK_STEP == JPACK_STARTED then
         debug "普通整理"
         if stackOnce() then
+            JPack.ItemLockedRetry = 0;
             JPACK_STEP = JPACK_STACK_OVER
         end
     elseif (JPACK_STEP == JPACK_STACK_OVER) then
@@ -987,28 +1038,23 @@ function JPack.OnUpdate(self, el)
     elseif (JPACK_STEP == JPACK_PACKING) then
         --排序结束
         --移动物品
-        if not moveOnce() then
-            JPack.packingGroupIndex = JPack.packingGroupIndex + 1
-            debug("index", JPack.packingGroupIndex)
-            JPack.packingBags = JPack.bagGroups[JPack.packingGroupIndex]
-            debug("JPack.bagGroups . size = ", #JPack.bagGroups)
-            for i = 1, #JPack.bagGroups do
-                for j = 1, #JPack.bagGroups[i] do
-                    debug("i", i, "j", j .. ":", JPack.bagGroups[i][j])
-                end
-            end
-            if (JPack.packingBags == nil) then
-                debug "PACKUP COMPLETE"
-                JPACK_STEP = JPACK_STOPPED
-                JPack.bagGroups = {}
-                print(L["COMPLETE"])
-                JPack:SetScript("OnUpdate", nil)
-                current = nil
-                to = nil
-            else
-                debug("Packing ", JPack.packingGroupIndex)
-                startPack()
-            end
+        tinsert(waitTable, { ItemsMoveInterval, MoveItems, JPACK_STEP });
+--        MoveItems();
+    end
+
+    local count = #waitTable;
+    local i = 1;
+    while (i <= count) do
+        local waitRecord = tremove(waitTable, i);
+        local delay = tremove(waitRecord, 1);
+        local func = tremove(waitRecord, 1);
+        local step = tremove(waitRecord, 1);
+        if (delay > el) then
+            tinsert(waitTable, i, { delay - el, func, step });
+            i = i + 1;
+        else
+            count = count - 1;
+            func();
         end
     end
 end
@@ -1035,7 +1081,7 @@ SLASH_JPACK1 = "/jpack"
 SLASH_JPACK2 = "/jp"
 SlashCmdList.JPACK = function(msg)
     local a, b, c = strfind(msg, "(%S+)")
-    if not c then JPack:Pack(); return end
+    if not c then return JPack:Pack() end
     c = strlower(c)
     if (c == "asc") then
         JPack:Pack(nil, 1)

@@ -23,6 +23,8 @@ L["HELP"] = '输入"/jpack help"获取帮助.'
 L["COMPLETE"] = "整理完毕..."
 L["WARN"] = "请先拿掉你鼠标上的物品. 整理时不要抓起物品、金钱、法术."
 L["Unknown command"] = "未知命令"
+L["FAILED"] = "整理失败!"
+L["Item %s locked!"] = "物品 %s 被锁定!"
 
 -- Help info
 L["Slash command"] = "命令"
@@ -46,4 +48,4 @@ L["Shift + Left-Click"] = "Shift + 左键"
 L["Ctrl + Left-Click"] = "Ctrl + 左键"
 L["Shift + Right-Click"] = "Shift + 右键"
 L["Ctrl + Right-Click"] = "Ctrl + 右键"
-	
+

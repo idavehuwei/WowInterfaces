@@ -1,7 +1,7 @@
 --[=[
 	Language Localization: enUS
 	Translated by: name <email address>
-	
+
 	DO NOT DELETE THIS FILE
 ]=]
 
@@ -25,6 +25,8 @@ L["HELP"] = 'Type "/jpack help" for help.'
 L["COMPLETE"] = "Pack up complete..."
 L["WARN"] = "Please drop the item holding on your mouse. Don't click/hold item, money, skills while packing."
 L["Unknown command"] = "Unknown command"
+L["FAILED"] = "Pack up failed!"
+L["Item %s locked!"] = "Item %s locked!"
 
 -- Help info
 L["Slash command"] = "Slash command"
@@ -48,4 +50,4 @@ L["Shift + Left-Click"] = "Shift + Left-Click"
 L["Ctrl + Left-Click"] = "Ctrl + Left-Click"
 L["Shift + Right-Click"] = "Shift + Right-Click"
 L["Ctrl + Right-Click"] = "Ctrl + Right-Click"
-	
+
