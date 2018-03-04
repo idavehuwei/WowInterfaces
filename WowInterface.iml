@@ -6,7 +6,6 @@
       <sourceFolder url="file://$MODULE_DIR$/AddOns" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Tools/Blizzard_Interface" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Tools/wow_sdk" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/AddOns/Blizzard_AchievementUI" />
       <excludeFolder url="file://$MODULE_DIR$/AddOns/Blizzard_ArenaUI" />
       <excludeFolder url="file://$MODULE_DIR$/AddOns/Blizzard_AuctionUI" />

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Blizzard Library" type="Lua">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/Tools/Blizzard_Interface" />
+      <root url="file://$PROJECT_DIR$/Tools/wow_sdk" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
