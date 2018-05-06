@@ -35,7 +35,7 @@
       <excludeFolder url="file://$MODULE_DIR$/TargetingFrame" />
       <excludeFolder url="file://$MODULE_DIR$/Tools/lua-5.1.4" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Lua 5.1.4" jdkType="Lua SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Blizzard Library" level="project" />
   </component>

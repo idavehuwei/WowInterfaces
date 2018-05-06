@@ -59,6 +59,8 @@ local JPACK_GUILDBANK_COMPLETE = 11
 local JPACK_SPEC_BAG_OVER = 12
 local JPACK_STOPPED = 0
 
+local JPACK_LOCK_STOP = 0
+
 
 --[[===================================
             lib
@@ -656,6 +658,10 @@ local function stopPacking()
     if JPack.packupguildbank then
         JPack:UnregisterEvent("GUILDBANKBAGSLOTS_CHANGED")
     end
+
+    if JPACK_LOCK_STOP == 1 then
+        JPack:Pack()
+    end
 end
 
 --[[
@@ -676,6 +682,7 @@ local function moveOnce()
         end
         if (lockCount > JPACK_MAXMOVE_ONCE) then
             print("moveOnce "..tostring(L["FAILED"]).." "..string.format(L["Item %s locked!"], to[i].link))
+            JPACK_LOCK_STOP = 1;
             stopPacking();
             return true
         end
@@ -738,6 +745,7 @@ local function stackOnce()
                         JPack.ItemLockedRetry = JPack.ItemLockedRetry + 1;
                     else
                         print(L["FAILED"] .. " " .. string.format(L["Item %s locked!"], item.link))
+                        JPACK_LOCK_STOP = 1;
                         stopPacking();
                     end
                 end
@@ -852,6 +860,7 @@ end
 
 function JPack:BANKFRAME_CLOSED()
     JPack.bankOpened = false
+    JPACK_LOCK_STOP = 0;
     stopPacking()
 end
 
@@ -861,6 +870,7 @@ end
 
 function JPack:GUILDBANKFRAME_CLOSED()
     JPack.guildbankOpened = false
+    JPACK_LOCK_STOP = 0;
     if JPACK_STEP ~= JPACK_STOPPED and JPack.packupguildbank then stopPacking() end
 end
 
@@ -1094,6 +1104,7 @@ SlashCmdList.JPACK = function(msg)
     elseif (DEV_MOD and c == "gb" or c == "guildbank") then
         JPack:Pack(3)
     elseif (c == "stop") then
+        JPACK_LOCK_STOP = 0;
         stopPacking()
     elseif (c == "help") then
         local text = "%s - |cffffffff%s|r"
