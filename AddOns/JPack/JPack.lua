@@ -1,4 +1,4 @@
-local DEV_MOD = true
+local DEV_MOD = false
 local debug
 local debugf = tekDebug and tekDebug:GetFrame("JPack") --tekDebug
 if debugf then
@@ -659,7 +659,7 @@ local function stopPacking()
         JPack:UnregisterEvent("GUILDBANKBAGSLOTS_CHANGED")
     end
 
-    if JPACK_LOCK_STOP == 1 then
+    if (JPACK_LOCK_STOP == 1) then
         JPack:Pack()
     end
 end
@@ -681,7 +681,9 @@ local function moveOnce()
             lockCount = lockCount + 1
         end
         if (lockCount > JPACK_MAXMOVE_ONCE) then
-            print("moveOnce "..tostring(L["FAILED"]).." "..string.format(L["Item %s locked!"], to[i].link))
+            if (DEV_MOD) then
+                print("moveOnce "..tostring(L["FAILED"]).." "..string.format(L["Item %s locked!"], to[i].link))
+            end
             JPACK_LOCK_STOP = 1;
             stopPacking();
             return true
@@ -744,7 +746,9 @@ local function stackOnce()
                         complet = false;
                         JPack.ItemLockedRetry = JPack.ItemLockedRetry + 1;
                     else
-                        print(L["FAILED"] .. " " .. string.format(L["Item %s locked!"], item.link))
+                        if (DEV_MOD) then
+                            print(L["FAILED"] .. " " .. string.format(L["Item %s locked!"], item.link))
+                        end
                         JPACK_LOCK_STOP = 1;
                         stopPacking();
                     end
@@ -754,8 +758,6 @@ local function stackOnce()
     end
     return complet
 end
-
-
 
 --[[
         === GuildBank ===
@@ -802,31 +804,12 @@ local function GBstackOnce()
     return complet
 end
 
-
-
 -- TODO
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 --[[===================================
         Events/slash..etc..
 =====================================]]
-
-
-
 JPack.OnLoad = {}
 JPack.OnLoad_GB = {}
 
@@ -938,6 +921,10 @@ local function MoveItems()
             end
         end
         if (JPack.packingBags == nil) then
+            if (JPACK_LOCK_STOP == 1) then
+                JPack:Pack()
+                return;
+            end
             debug "PACKUP COMPLETE"
             JPACK_STEP = JPACK_STOPPED
             JPack.bagGroups = {}
@@ -1120,7 +1107,6 @@ SlashCmdList.JPACK = function(msg)
         print(format("%s: |cffff0000%s|r , %s", L["Unknown command"], c, L["HELP"]))
     end
 end
-
 
 --[[===================================
             API
