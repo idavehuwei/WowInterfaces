@@ -13,8 +13,6 @@ AtrL["SCAN_EXPLANATION"] ="扫描拍卖行是为了建立一个数据库以便�
 							.."警告：如果你的网速过低，扫描可能会导致你的连接中断。";
 
 
-
-
 AtrL["About Auctionator"] = "关于拍卖大师"
 AtrL["Active Items"] = "有效物品"
 AtrL["Add Item To List"] = "添加物品到清单"
@@ -148,6 +146,5 @@ AtrL["You may have no more than\n\n%d items on a shopping list."] = "你不能�
 AtrL["your auction on"] = "你的拍卖"
 AtrL["your most recent posting"] = "你最近拍卖"
 AtrL["yours"] = "你"
-
 
 end
