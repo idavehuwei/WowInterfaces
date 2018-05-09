@@ -921,10 +921,10 @@ local function MoveItems()
             end
         end
         if (JPack.packingBags == nil) then
-            if (JPACK_LOCK_STOP == 1) then
-                JPack:Pack()
-                return;
-            end
+--            if (JPACK_LOCK_STOP == 1) then
+--                JPack:Pack()
+--                return;
+--            end
             debug "PACKUP COMPLETE"
             JPACK_STEP = JPACK_STOPPED
             JPack.bagGroups = {}
