@@ -1,0 +1,18 @@
+------------------------------------
+	Quest Reward History
+------------------------------------
+
+v1.2.5
+ - Added Compatability with Watto to autosell Quest Reward items with the rest of Watto's Junk. Changing the Highlighted item will disable the Autosell function. (Requires Watto version 1.2 or higher!) Items in Watto's Autosell list will not survive a reload.
+
+v1.2
+ - Updated for Patch 3.3!
+
+v1.1
+ - Quest Reward will now always select the Champion's Purse from the Argent Tournament quests.
+ - Fixed a bug that would cause an error if none of the items had sell values.
+ - Also fixed a bug if two items had the same value.
+
+
+v1.0
+ - Initial Release

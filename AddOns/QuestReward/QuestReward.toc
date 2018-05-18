@@ -1,0 +1,10 @@
+## Interface: 30300
+## Title: Quest Reward
+## Author: Kjasi
+## Version: 1.2
+## Notes: Automatically Chooses the best Quest Reward, based on vendor value.
+## URL: None Yet
+## DefaultState: Enabled
+## LoadOnDemand: 0
+main.lua
+main.xml

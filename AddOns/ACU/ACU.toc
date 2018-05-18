@@ -1,0 +1,23 @@
+## Interface: 30300
+## Title: Addon Cpu Usage
+## Notes: Show how much your addons are using the CPU.
+## SavedVariables: AddonCpuUsageDB
+## SavedVariablesPerCharacter: AddonCpuUsageDBLocal
+## X-Curse-Packaged-Version: r0
+## X-Curse-Project-Name: AddOns CPU Usage
+## X-Curse-Project-ID: addons-cpu-usage
+## X-Curse-Repository-ID: wow/addons-cpu-usage/mainline
+
+## Dependencies: BigFoot
+
+#@no-lib-strip@
+Libs\libs.xml
+#@end-no-lib-strip@
+
+locales\enUS.lua
+locales\zhCN.lua
+
+panel.xml
+button.xml
+
+AddonCpuUsage.lua
