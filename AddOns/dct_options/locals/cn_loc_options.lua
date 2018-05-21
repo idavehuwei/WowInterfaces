@@ -12,7 +12,7 @@ DCT_SPEC_OPTION = "特定事件1"
 DCT_SPEC_OPTION2 = "特定事件2"
 
 DCT_BUTTON_RESET_LABEL = "恢复默认设置";
-DCT_BUTTON_RESET_TIP= "恢复默认设置";
+DCT_BUTTON_RESET_TIP = "恢复默认设置";
 DCT_BUTTON_SAVECUSTOM_LABEL = "保存个性设置"
 DCT_BUTTON_LOADCUSTOM_LABEL = "读取个性设置"
 
@@ -43,9 +43,9 @@ DCT_OptionCfg_Event.EventFrames["DCT_SHOWHONOR"].tooltipText = "显示你的荣�
 DCT_OptionCfg_Event.EventFrames["DCT_SHOWBUFF"].title = "有益效果获得"
 DCT_OptionCfg_Event.EventFrames["DCT_SHOWBUFF"].tooltipText = "显示你获得的有益效果"
 DCT_OptionCfg_Event.EventFrames["DCT_SHOWBUFFFADE"].title = "有益效果消失"
-DCT_OptionCfg_Event.EventFrames["DCT_SHOWBUFFFADE"].tooltipText = "显示你消失的有益效果"	
+DCT_OptionCfg_Event.EventFrames["DCT_SHOWBUFFFADE"].tooltipText = "显示你消失的有益效果"
 DCT_OptionCfg_Event.EventFrames["DCT_SHOWBUFFDOSE"].title = "有益效果叠加"
-DCT_OptionCfg_Event.EventFrames["DCT_SHOWBUFFDOSE"].tooltipText = "显示你的有益效果叠加及减少"		
+DCT_OptionCfg_Event.EventFrames["DCT_SHOWBUFFDOSE"].tooltipText = "显示你的有益效果叠加及减少"
 DCT_OptionCfg_Event.EventFrames["DCT_SHOWENVIRONMENTAL"].title = "环境伤害"
 DCT_OptionCfg_Event.EventFrames["DCT_SHOWENVIRONMENTAL"].tooltipText = "比如溺水掉落等"
 DCT_OptionCfg_Event.EventFrames["DCT_SHOWDISPELLED"].title = "被驱散,偷取"
@@ -57,7 +57,7 @@ DCT_OptionCfg_Event.EventFrames["DCT_SHOWSHIELD"].tooltipText = "反射伤害"
 DCT_OptionCfg_Event.EventFrames["DCT_SHOWKILLBLOW"].title = "击杀"
 DCT_OptionCfg_Event.EventFrames["DCT_SHOWKILLBLOW"].tooltipText = "如果因为你的攻击杀死了目标，则显示击杀字样"
 
-		
+
 DCT_OptionCfg_Event.EventFrames["DCT_SHOWSPELL"].title = "技能伤害"
 DCT_OptionCfg_Event.EventFrames["DCT_SHOWSPELL"].tooltipText = "显示你受到的技能伤害"
 DCT_OptionCfg_Event.EventFrames["DCT_SHOWSPELLCRIT"].title = "技能伤害(爆击)"
@@ -93,7 +93,7 @@ DCT_TEXT_OPEX_FONTEFFDDC = "字体效果:"
 DCT_TEXT_OPEX_CHECK = "继承自框架"
 DCT_TEXT_OPEX_CHECK_TIP = "选中则继承所属动画框架的设定，否则将特别指定"
 
-DCT_Opex_FontEffTypeConfig = {"无","描边-细","描边-粗","阴影-极细","阴影-细","阴影-粗"}
+DCT_Opex_FontEffTypeConfig = { "无", "描边-细", "描边-粗", "阴影-极细", "阴影-细", "阴影-粗" }
 
 DCT_TEXT_OPEX_COLOR[1] = "1号色"
 DCT_TEXT_OPEX_COLOR[2] = "2号色"
@@ -131,24 +131,24 @@ DCT_Opex_PreviewSet["di"] = "誰"
 DCT_Opex_EditHelp = "(按回车才确认)"
 DCT_Opex_SoundEditTitle = "声音文件:"
 
-DCT_Opex_MulitEditLabel["DEFAULT"] = {"正常伤害","不完全伤害"}
-DCT_Opex_MulitEditLabel["DCT_SHOWHEAL"] = {"完全治疗","过量治疗"}
-DCT_Opex_MulitEditLabel["DCT_SHOWPERIODICHEAL"] = {"完全治疗","过量治疗"}
-DCT_Opex_MulitEditLabel["DCT_SHOWCP"] = {"连击点未满","连击点满"}
-DCT_Opex_MulitEditLabel["DCT_SHOWMISS"] = {"普通未击中","技能未击中"}
-DCT_Opex_MulitEditLabel["DCT_SHOWDISPELLED"] = {"被驱散","被偷取"}
-DCT_Opex_MulitEditLabel["DCT_SHOWBUFFFADE"] = {"消失时","消失前倒计时"}
-DCT_Opex_MulitEditLabel["DCT_SHOWSPECBUFF"] = {"增益效果","不良效果"}
-DCT_Opex_MulitEditLabel["DCT_SHOWSPECBUFFFADE"] = {"增益效果","消失前倒计时"}
-DCT_Opex_MulitEditLabel["DCT_SHOWBUFFDOSE"] = {"增加","减少"}
-DCT_Opex_MulitEditLabel["DCT_SHOWDEBUFFDOSE"] = {"增加","减少"}
-DCT_Opex_MulitEditLabel["DCT_SHOWFACTION"] = {"声望增加","声望减少"}
-DCT_Opex_MulitEditLabel["DCT_SHOWLOWHEALTH"] = {"","声音文件"}
-DCT_Opex_MulitEditLabel["DCT_SHOWLOWMANA"] = {"","声音文件"}
-DCT_Opex_MulitEditLabel["DCT_SHOWSPECTARGETBUFF"] = {"目标","焦点"}
-DCT_Opex_MulitEditLabel["DCT_SHOWSPECTARGETDEBUFF"] = {"目标","焦点"}
-DCT_Opex_MulitEditLabel["DCT_SHOWSPECTARGETBUFFFADE"] = {"目标","焦点"}
-DCT_Opex_MulitEditLabel["DCT_SHOWSPECTARGETDEBUFFFADE"] = {"目标","焦点"}
+DCT_Opex_MulitEditLabel["DEFAULT"] = { "正常伤害", "不完全伤害" }
+DCT_Opex_MulitEditLabel["DCT_SHOWHEAL"] = { "完全治疗", "过量治疗" }
+DCT_Opex_MulitEditLabel["DCT_SHOWPERIODICHEAL"] = { "完全治疗", "过量治疗" }
+DCT_Opex_MulitEditLabel["DCT_SHOWCP"] = { "连击点未满", "连击点满" }
+DCT_Opex_MulitEditLabel["DCT_SHOWMISS"] = { "普通未击中", "技能未击中" }
+DCT_Opex_MulitEditLabel["DCT_SHOWDISPELLED"] = { "被驱散", "被偷取" }
+DCT_Opex_MulitEditLabel["DCT_SHOWBUFFFADE"] = { "消失时", "消失前倒计时" }
+DCT_Opex_MulitEditLabel["DCT_SHOWSPECBUFF"] = { "增益效果", "不良效果" }
+DCT_Opex_MulitEditLabel["DCT_SHOWSPECBUFFFADE"] = { "增益效果", "消失前倒计时" }
+DCT_Opex_MulitEditLabel["DCT_SHOWBUFFDOSE"] = { "增加", "减少" }
+DCT_Opex_MulitEditLabel["DCT_SHOWDEBUFFDOSE"] = { "增加", "减少" }
+DCT_Opex_MulitEditLabel["DCT_SHOWFACTION"] = { "声望增加", "声望减少" }
+DCT_Opex_MulitEditLabel["DCT_SHOWLOWHEALTH"] = { "", "声音文件" }
+DCT_Opex_MulitEditLabel["DCT_SHOWLOWMANA"] = { "", "声音文件" }
+DCT_Opex_MulitEditLabel["DCT_SHOWSPECTARGETBUFF"] = { "目标", "焦点" }
+DCT_Opex_MulitEditLabel["DCT_SHOWSPECTARGETDEBUFF"] = { "目标", "焦点" }
+DCT_Opex_MulitEditLabel["DCT_SHOWSPECTARGETBUFFFADE"] = { "目标", "焦点" }
+DCT_Opex_MulitEditLabel["DCT_SHOWSPECTARGETDEBUFFFADE"] = { "目标", "焦点" }
 
 DCT_Opex_Config.Sliders["fSizeEn"].title = "数字大小修正"
 DCT_Opex_Config.Sliders["fSizeCh"].title = "文字大小修正"
@@ -177,9 +177,9 @@ DCT_TEXT_TEST = "123 测试"
 
 
 
-DCT_Opani_AniTypeConfig = {"弹出","Hud","静态","抛物线","水平","垂直","静态分散式"}
-DCT_Opani_AniTypeSimpleConfig = {"弹","H","静","抛","水","垂","静"}--动画名称简写
-DCT_Opani_AnchorConfig = {"中间","左边","右边"}
+DCT_Opani_AniTypeConfig = { "弹出", "Hud", "静态", "抛物线", "水平", "垂直", "静态分散式" }
+DCT_Opani_AniTypeSimpleConfig = { "弹", "H", "静", "抛", "水", "垂", "静" } --动画名称简写
+DCT_Opani_AnchorConfig = { "中间", "左边", "右边" }
 
 DCT_Opani_Config.Sliders["fSizeEn"].title = "英文字体大小"
 DCT_Opani_Config.Sliders["fSizeCh"].title = "中文字体大小"
@@ -204,7 +204,7 @@ DCT_AniModeParamsSliders[1].Sliders["param5"].tooltipText = "防重叠角度修�
 DCT_AniModeParamsSliders[1].Sliders["param6"].title = "防重叠距离修正"
 DCT_AniModeParamsSliders[1].Sliders["param6"].tooltipText = "防重叠距离修正"
 DCT_AniModeParamsSliders[1].Ddc[1].name = "抖动"
-DCT_AniModeParamsSliders[1].Ddc[1].text = {"开","关"}
+DCT_AniModeParamsSliders[1].Ddc[1].text = { "开", "关" }
 
 
 DCT_AniModeParamsSliders[2].Sliders["param1"].title = "角度范围"
@@ -213,9 +213,9 @@ DCT_AniModeParamsSliders[2].Sliders["param2"].title = "半径"
 DCT_AniModeParamsSliders[2].Sliders["param2"].tooltipText = "半径,影响到弯曲度"
 
 DCT_AniModeParamsSliders[2].Ddc[1].name = "开口方向"
-DCT_AniModeParamsSliders[2].Ddc[1].text = {"向左","向右"}
+DCT_AniModeParamsSliders[2].Ddc[1].text = { "向左", "向右" }
 DCT_AniModeParamsSliders[2].Ddc[2].name = "移动方向"
-DCT_AniModeParamsSliders[2].Ddc[2].text = {"顺时针","逆时针"}
+DCT_AniModeParamsSliders[2].Ddc[2].text = { "顺时针", "逆时针" }
 
 
 DCT_AniModeParamsSliders[3].Sliders["param1"].title = "条目数"
@@ -224,9 +224,9 @@ DCT_AniModeParamsSliders[3].Sliders["param2"].title = "显示时间(秒)"
 DCT_AniModeParamsSliders[3].Sliders["param2"].tooltipText = "显示时间(秒)"
 
 DCT_AniModeParamsSliders[3].Ddc[1].name = "推送方向"
-DCT_AniModeParamsSliders[3].Ddc[1].text = {"向上","向下"}
+DCT_AniModeParamsSliders[3].Ddc[1].text = { "向上", "向下" }
 DCT_AniModeParamsSliders[3].Ddc[2].name = "显示方式"
-DCT_AniModeParamsSliders[3].Ddc[2].text = {"正常","缩放","抖动","缩放+抖动"}
+DCT_AniModeParamsSliders[3].Ddc[2].text = { "正常", "缩放", "抖动", "缩放+抖动" }
 
 
 
@@ -236,14 +236,14 @@ DCT_AniModeParamsSliders[4].Sliders["param1"].tooltipText = "抛物线射出力�
 DCT_AniModeParamsSliders[4].Sliders["param2"].title = "坠落深度"
 DCT_AniModeParamsSliders[4].Sliders["param2"].tooltipText = "抛物线射出后坠落的深度"
 DCT_AniModeParamsSliders[4].Ddc[1].name = "方向"
-DCT_AniModeParamsSliders[4].Ddc[1].text = {"向左","向右"}
+DCT_AniModeParamsSliders[4].Ddc[1].text = { "向左", "向右" }
 
 
 
 DCT_AniModeParamsSliders[5].Sliders["param1"].title = "移动距离"
 DCT_AniModeParamsSliders[5].Sliders["param1"].tooltipText = "设定移动距离"
 DCT_AniModeParamsSliders[5].Ddc[1].name = "方向"
-DCT_AniModeParamsSliders[5].Ddc[1].text = {"向左","向右"}
+DCT_AniModeParamsSliders[5].Ddc[1].text = { "向左", "向右" }
 
 
 
@@ -254,13 +254,13 @@ DCT_AniModeParamsSliders[6].Sliders["param2"].tooltipText = "设定移动这些�
 DCT_AniModeParamsSliders[6].Sliders["param4"].title = "水平偏移"
 DCT_AniModeParamsSliders[6].Sliders["param4"].tooltipText = "设定水平上要偏移的距离，非0将造成斜向移动效果"
 DCT_AniModeParamsSliders[6].Ddc[1].name = "方向"
-DCT_AniModeParamsSliders[6].Ddc[1].text = {"向上","向下"}
+DCT_AniModeParamsSliders[6].Ddc[1].text = { "向上", "向下" }
 
 
 DCT_AniModeParamsSliders[7].Sliders["param1"].title = "显示时间(秒)"
 DCT_AniModeParamsSliders[7].Sliders["param1"].tooltipText = "显示时间(秒)"
 DCT_AniModeParamsSliders[7].Ddc[1].name = "显示方式"
-DCT_AniModeParamsSliders[7].Ddc[1].text = {"正常","弹性缩放","缩放"}
+DCT_AniModeParamsSliders[7].Ddc[1].text = { "正常", "弹性缩放", "缩放" }
 
 --options_font ********************************************************************************************************************************
 --******************************************************************************************************************************************

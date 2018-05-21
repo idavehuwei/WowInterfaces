@@ -1,4 +1,4 @@
-if GetLocale() ~= "zhTW" then return;end
+if GetLocale() ~= "zhTW" then return; end
 
 DCT_TEXT_PAGE = " 頁"
 
@@ -15,10 +15,10 @@ DCT_SA_OPTION_ADD_SUCCESS = "過濾技能添加成功: "
 DCT_SA_OPTION_ADD_FAILED = "過濾技能添加失敗,可能的原因為已存在: "
 
 
-DCTSA_TXT_FilterDDCList[1][1] = "開始施放/施放了-過濾","DCTSA_FILTER_CASTSTART"
-DCTSA_TXT_FilterDDCList[2][1] = "效果獲得/消失-過濾","DCTSA_FILTER_BUFF"
-DCTSA_TXT_FilterDDCList[3][1] = "被驅散-過濾","DCTSA_FILTER_DISPELLED"
-DCTSA_TXT_FilterDDCList[4][1] = "施放了-過濾","DCTSA_FILTER_CASTSUCCESS"
+DCTSA_TXT_FilterDDCList[1][1] = "開始施放/施放了-過濾", "DCTSA_FILTER_CASTSTART"
+DCTSA_TXT_FilterDDCList[2][1] = "效果獲得/消失-過濾", "DCTSA_FILTER_BUFF"
+DCTSA_TXT_FilterDDCList[3][1] = "被驅散-過濾", "DCTSA_FILTER_DISPELLED"
+DCTSA_TXT_FilterDDCList[4][1] = "施放了-過濾", "DCTSA_FILTER_CASTSUCCESS"
 
 
 
@@ -53,8 +53,8 @@ DCT_SaCfg_Event.CheckButtons["DCTSA_ENABLE_ONPVP"].title = "在友善或中立�
 DCT_SaCfg_Event.CheckButtons["DCTSA_ENABLE_ONPVP"].tooltipText = "在友善或中立區禁用"
 DCT_SaCfg_Event.CheckButtons["DCTSA_ENABLE_ONCOMBAT"].title = "只在戰鬥狀態中預警"
 DCT_SaCfg_Event.CheckButtons["DCTSA_ENABLE_ONCOMBAT"].tooltipText = "開啟法術預警"
-DCT_SaCfg_Event.CheckButtons["DCTSA_CASTSUCCESS_ONLYTOYOU"].title =  "\"施放了\"只顯示對你的"
-DCT_SaCfg_Event.CheckButtons["DCTSA_CASTSUCCESS_ONLYTOYOU"].tooltipText =  "此功能對\"開始施放\"無效"
+DCT_SaCfg_Event.CheckButtons["DCTSA_CASTSUCCESS_ONLYTOYOU"].title = "\"施放了\"只顯示對你的"
+DCT_SaCfg_Event.CheckButtons["DCTSA_CASTSUCCESS_ONLYTOYOU"].tooltipText = "此功能對\"開始施放\"無效"
 DCT_SaCfg_Event.CheckButtons["DCTSA_MERGE_CASTSUCCESS_AND_BUFFGET"].title = "合併(施放了,獲得了)同名技能"
 DCT_SaCfg_Event.CheckButtons["DCTSA_MERGE_CASTSUCCESS_AND_BUFFGET"].tooltipText = "當對某目標\"施放了\"某技能，而那目標也同時獲得了一個同名的技能，則只顯示一次預警"
 DCT_SaCfg_Event.CheckButtons["DCTSA_FILTER_ENABLE"].title = "開啟法術篩檢程式"

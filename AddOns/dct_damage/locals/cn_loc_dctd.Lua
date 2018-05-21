@@ -15,14 +15,14 @@ DCTD_Config_Event.EventFrames["DCTD_SHOWHEAL"].tooltipText = "显示你对他人
 DCTD_Config_Event.EventFrames["DCTD_SHOWPERIODICHEAL"].title = "持续治疗"
 DCTD_Config_Event.EventFrames["DCTD_SHOWPERIODICHEAL"].tooltipText = "显示你对他人的持续治疗"
 DCTD_Config_Event.EventFrames["DCTD_SHOWMISS"].title = "未击中"
-DCTD_Config_Event.EventFrames["DCTD_SHOWMISS"].tooltipText = "显示你攻击怪物的未击中等"	
+DCTD_Config_Event.EventFrames["DCTD_SHOWMISS"].tooltipText = "显示你攻击怪物的未击中等"
 DCTD_Config_Event.EventFrames["DCTD_SHOWHIT_PET"].title = "伤害(宠物)"
 DCTD_Config_Event.EventFrames["DCTD_SHOWHIT_PET"].tooltipText = ""
 DCTD_Config_Event.EventFrames["DCTD_SHOWSPELL_PET"].title = "技能伤害(宠物)"
 DCTD_Config_Event.EventFrames["DCTD_SHOWSPELL_PET"].tooltipText = ""
 DCTD_Config_Event.EventFrames["DCTD_SHOWMISS_PET"].title = "未击中(宠物)"
 DCTD_Config_Event.EventFrames["DCTD_SHOWMISS_PET"].tooltipText = ""
-		
+
 DCTD_Config_Event.EventFrames["DCTD_SHOWHITCRIT"].title = "伤害-暴击"
 DCTD_Config_Event.EventFrames["DCTD_SHOWHITCRIT"].tooltipText = "显示你对怪物的暴击伤害"
 DCTD_Config_Event.EventFrames["DCTD_SHOWSPELLCRIT"].title = "技能伤害-暴击"
@@ -65,7 +65,7 @@ DCTD_Config_Event.CheckButtons["DCTD_SSC_Spell"].title = "技能名着色"
 DCTD_Config_Event.CheckButtons["DCTD_SSC_Spell"].tooltipText = "将技能名(#sn)根据法术类型着色,将会覆盖事件设定颜色"
 
 
-DCTD_MulitEditLabel["DCTD_SHOWHEAL"] = {"完全治疗","过量治疗"}
-DCTD_MulitEditLabel["DCTD_SHOWPERIODICHEAL"] = {"完全治疗","过量治疗"}
-DCTD_MulitEditLabel["DCTD_SHOWMISS"] = {"物理","技能"}
-DCTD_MulitEditLabel["DCTD_SHOWINTERRUPT"] = {"打断","驱散"}
+DCTD_MulitEditLabel["DCTD_SHOWHEAL"] = { "完全治疗", "过量治疗" }
+DCTD_MulitEditLabel["DCTD_SHOWPERIODICHEAL"] = { "完全治疗", "过量治疗" }
+DCTD_MulitEditLabel["DCTD_SHOWMISS"] = { "物理", "技能" }
+DCTD_MulitEditLabel["DCTD_SHOWINTERRUPT"] = { "打断", "驱散" }
