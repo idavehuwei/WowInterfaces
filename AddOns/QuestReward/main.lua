@@ -69,6 +69,10 @@ function QuestReward_SelectItem(self,index)
 
         local id = QuestReward_ItemID(GetQuestItemLink("choice", btn:GetID()));
 
+        while (id == nil) do
+            id = QuestReward_Timer("WaitforID", 2, QuestReward_ReturnId, btn)
+        end
+
         local bad = false;
         for k,v in pairs(BuyNowItems) do
             if (id == v) then
@@ -97,12 +101,18 @@ function QuestReward_ItemID(link)
     return tostring(itemid);
 end
 
+function QuestReward_ReturnId(btn)
+    return QuestReward_ItemID(GetQuestItemLink("choice", btn:GetID()));
+end
+
 -- Timer function
-function QuestReward_Timer(name,targettime,functiontodo)
+function QuestReward_Timer(name,targettime,functiontodo, ...)
     local framename = "QuestRewardFrame"..name;
     if getglobal(framename) and (getglobal(framename):GetScript("OnUpdate") ~= nil) then
         return;
     end
+
+    local funcvar1, funcvar2, funcvar3, funcvar4 = ...;
 
     local frame = CreateFrame("Frame", framename);
 
@@ -116,9 +126,9 @@ function QuestReward_Timer(name,targettime,functiontodo)
         tickcount = tickcount + 1;
 
         if (tickcount == targettime) then
-            functiontodo();
+            local result = functiontodo(funcvar1, funcvar2, funcvar3, funcvar4);
             frame:SetScript("OnUpdate", nil);
-            return;
+            return result;
         end
         -- Enable for timing debugging
         -- ChatFrame1:AddMessage("tick... "..tickcount);
