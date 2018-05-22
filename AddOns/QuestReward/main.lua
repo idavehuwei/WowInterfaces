@@ -37,7 +37,8 @@ function QuestReward_ChooseItem(self)
     for x=1,num do
         local link = GetQuestItemLink("choice", x);
         if (not link) then
-            link = QuestReward_Timer("GetLink",1,function(x) return GetQuestItemLink("choice", x) end)
+--            link = QuestReward_Timer("GetLink",1,function(x) return GetQuestItemLink("choice", x) end, x)
+            return
         end
         local _, _, _, _, _, _, _, _, _, _, ISP = GetItemInfo(link);
         for k,v in pairs(BuyNowItems) do

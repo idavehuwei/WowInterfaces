@@ -583,7 +583,7 @@ BugSack:SetScript("OnEvent", function(self, event, addon)
         if type(sv.auto) ~= "boolean" then sv.auto = false end
         if type(sv.chatframe) ~= "boolean" then sv.chatframe = false end
         if type(sv.filterAddonMistakes) ~= "boolean" then sv.filterAddonMistakes = true end
-        if type(sv.soundMedia) ~= "string" then sv.soundMedia = "BugSack: Fatality" end
+        if type(sv.soundMedia) ~= "string" then sv.soundMedia = "None" end
         if type(sv.fontSize) ~= "string" then sv.fontSize = "GameFontHighlight" end
         self.db = sv
 
