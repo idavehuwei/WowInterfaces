@@ -202,3 +202,18 @@ function Mapster:SetupMapButton()
 
     self.optionsButton:SetScript("OnClick", optFunc)
 end
+
+function Mapster:SetupAtlasMapButton()
+    if (Atlas_Toggle ~= nil) then
+        -- create button on the worldmap to toggle the options
+        self.atlasMapButton = CreateFrame("Button", "MapsterAtlasMapButton", WorldMapFrame, "UIPanelButtonTemplate")
+        self.atlasMapButton:SetWidth(95)
+        self.atlasMapButton:SetHeight(18)
+        self.atlasMapButton:SetText(L["Atlas Map"])
+        self.atlasMapButton:ClearAllPoints()
+        self.atlasMapButton:SetPoint("TOPRIGHT", WorldMapPositioningGuide, "TOPRIGHT", -143, -2)
+        self.atlasMapButton:Show()
+
+        self.atlasMapButton:SetScript("OnClick", Atlas_Toggle)
+    end
+end
