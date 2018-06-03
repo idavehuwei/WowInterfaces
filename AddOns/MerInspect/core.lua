@@ -9,7 +9,7 @@ M.version = "2.2.0";
 M._DEBUG = false;
 M.Config = {
     ["MerInspectEnable"] = true,
-    ["DisplayDurability"] = true,	-- 显示装备栏耐久度及维修费用
+    ["DisplayDurability"] = true, -- 显示装备栏耐久度及维修费用
     ["DisplayItemQulity"] = true,
 };
 

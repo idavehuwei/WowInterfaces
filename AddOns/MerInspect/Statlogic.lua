@@ -41,14 +41,14 @@ M.Class2Id = {
 };
 
 M.base = {
-    HasteMelee = 10, HasteSpell = 10, HitRating = 10, SpellHitRating = 8,	AttackCrit = 14,
-    SpellCrit = 14,	defense = 1.5, Dodge = 12,	Parry = 15,	Block = 5, Resilience = 25,
+    HasteMelee = 10, HasteSpell = 10, HitRating = 10, SpellHitRating = 8, AttackCrit = 14,
+    SpellCrit = 14, defense = 1.5, Dodge = 12, Parry = 15, Block = 5, Resilience = 25,
     RangedAttackCrit = 14,
 
-    BaseDodge = {WARRIOR = 3.4636, PALADIN = 3.2685, HUNTER = -5.4500,	ROGUE =  -0.5900, PRIEST = 3.1830,	DEATHKNIGHT = 0.7580, SHAMAN = 1.6750,
-                          MAGE = 3.4575, 	WARLOCK = 2.0350, DRUID = 4.951,},
+    BaseDodge = {WARRIOR = 3.4636, PALADIN = 3.2685, HUNTER = -5.4500, ROGUE = -0.5900, PRIEST = 3.1830, DEATHKNIGHT = 0.7580, SHAMAN = 1.6750,
+                          MAGE = 3.4575,  WARLOCK = 2.0350, DRUID = 4.951,},
     -- TODO: 对这个公式做修改
-    DodgePerAgi = { WARRIOR = 30, PALADIN = 25, HUNTER = 25, ROGUE = 20, PRIEST = 25, DEATHKNIGHT = 25, SHAMAN = 25, MAGE = 25, WARLOCK = 25, DRUID = 14.7059 	},
+    DodgePerAgi = { WARRIOR = 30, PALADIN = 25, HUNTER = 25, ROGUE = 20, PRIEST = 25, DEATHKNIGHT = 25, SHAMAN = 25, MAGE = 25, WARLOCK = 25, DRUID = 14.7059  },
     CritPerAgi = {
         [1] = {0.2587, 0.2164, 0.2840, 0.4476, 0.0912, 0.2587, 0.1039, 0.0773, 0.1189, 0.1262, },
         [2] = {0.2264, 0.2164, 0.2834, 0.4290, 0.0912, 0.2264, 0.1039, 0.0773, 0.1189, 0.1262, },
@@ -446,7 +446,7 @@ M.logic = {
         return value;
     end,
 
-    RangedAttackCrit = function(v,t,l,c,r)	-- 该公式并不准确(我猜的~��~)
+    RangedAttackCrit = function(v,t,l,c,r) -- 该公式并不准确(我猜的~��~)
         local value = t:GetEffect("Agility") * (t:GetCritPerAgi(v, l, c, r) or 0) + t:GetRatingInPercent("RangedAttackCrit", v, l);
         if c == "DRUID" then
             value = value + 0.9;
@@ -511,6 +511,6 @@ M.logic = {
     end,
 
     --Armor = function(v,t,l,c,r)
-    --	t.effect.Armor = t:GetEffect("Armor") + t:GetEffect("Agility") * 2;
+    -- t.effect.Armor = t:GetEffect("Armor") + t:GetEffect("Agility") * 2;
     --end,
 };

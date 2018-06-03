@@ -115,11 +115,11 @@ function M:GetSummaryText(unit, talent)
     self:DoQueueScan(unit);
     --terry@bf 去掉这些，只留下装备加成
     -- 在可观察天赋时需要累计上天赋加成
---	if (talent) then
---		self:ScanUnitTalent(unit, class, race, level, (unit ~= "player"));
---		self:AddPercentEffect();
---	end
---	self:StatLogic(level, class, race);
+--  if (talent) then
+--      self:ScanUnitTalent(unit, class, race, level, (unit ~= "player"));
+--      self:AddPercentEffect();
+--  end
+--  self:StatLogic(level, class, race);
     local relstr = "";
     for k, v in ipairs(self.shownlist) do
         local point = 0;
