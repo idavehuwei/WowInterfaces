@@ -160,7 +160,7 @@ end
 -----------------------------------------
 function Atr_EventHandler()
 
-    --	zc.md (event);
+    -- zc.md (event);
 
     if (event == "VARIABLES_LOADED") then Atr_OnLoad(); end;
     if (event == "ADDON_LOADED") then Atr_OnAddonLoaded(); end;
@@ -210,8 +210,8 @@ function Atr_SetupHookFunctions()
     auctionator_orig_ChatFrame_OnEvent = ChatFrame_OnEvent;
     ChatFrame_OnEvent = auctionator_ChatFrame_OnEvent;
 
-    --	auctionator_orig_AuctionFrameBrowse_Update = AuctionFrameBrowse_Update;
-    --	AuctionFrameBrowse_Update = auctionator_AuctionFrameBrowse_Update;
+    -- auctionator_orig_AuctionFrameBrowse_Update = AuctionFrameBrowse_Update;
+    -- AuctionFrameBrowse_Update = auctionator_AuctionFrameBrowse_Update;
 end
 
 -----------------------------------------
@@ -306,8 +306,8 @@ function Atr_OnChatMsgAddon()
     local distribution = arg3;
     local sender = arg4;
 
-    --	local s = string.format ("%s %s |cff88ffff %s |cffffffaa %s|r", prefix, distribution, sender, msg);
-    --	zc.md (s);
+    -- local s = string.format ("%s %s |cff88ffff %s |cffffffaa %s|r", prefix, distribution, sender, msg);
+    -- zc.md (s);
 
     if (arg1 == "ATR") then
 
@@ -546,7 +546,7 @@ function Atr_OnAddonLoaded()
 
     local now = time();
 
-    --	zc.md (addonName.."   time: "..now - gStartingTime);
+    -- zc.md (addonName.."   time: "..now - gStartingTime);
 
     gPrevTime = now;
 end
@@ -557,7 +557,7 @@ function Atr_OnPlayerEnteringWorld()
 
     Atr_InitOptionsPanels();
 
-    --	Atr_MakeOptionsFrameOpaque();
+    -- Atr_MakeOptionsFrameOpaque();
 end
 
 -----------------------------------------
@@ -578,7 +578,7 @@ function Atr_Init()
         return;
     end
 
-    --	zc.msg("Auctionator Initialized");
+    -- zc.msg("Auctionator Initialized");
 
     AuctionatorInited = true;
 
@@ -730,19 +730,19 @@ local gOrig_ContainerFrameItemButton_OnClick = nil;
 -----------------------------------------
 local function Atr_SwitchTo_OurItemOnClick()
 
-    --	if (gOrig_ContainerFrameItemButton_OnClick == nil) then
-    --		gOrig_ContainerFrameItemButton_OnClick = ContainerFrameItemButton_OnClick;
-    --		ContainerFrameItemButton_OnClick = Atr_ContainerFrameItemButton_OnClick;
-    --	end
+    --  if (gOrig_ContainerFrameItemButton_OnClick == nil) then
+    --      gOrig_ContainerFrameItemButton_OnClick = ContainerFrameItemButton_OnClick;
+    --      ContainerFrameItemButton_OnClick = Atr_ContainerFrameItemButton_OnClick;
+    --  end
 end
 
 -----------------------------------------
 local function Atr_SwitchTo_BlizzItemOnClick()
 
-    --	if (gOrig_ContainerFrameItemButton_OnClick) then
-    --		ContainerFrameItemButton_OnClick = gOrig_ContainerFrameItemButton_OnClick;
-    --		gOrig_ContainerFrameItemButton_OnClick = nil;
-    --	end
+    --  if (gOrig_ContainerFrameItemButton_OnClick) then
+    --      ContainerFrameItemButton_OnClick = gOrig_ContainerFrameItemButton_OnClick;
+    --      gOrig_ContainerFrameItemButton_OnClick = nil;
+    --  end
 end
 
 -----------------------------------------
@@ -1860,7 +1860,7 @@ function Atr_StackSizeChangedFunc()
     MoneyInputFrame_SetCopper(Atr_StackPrice, item_BuyoutPrice * Atr_StackSize());
     MoneyInputFrame_SetCopper(Atr_StartingPrice, new_Item_StartPrice * Atr_StackSize());
 
-    --	Atr_MemorizeButton:Show();
+    -- Atr_MemorizeButton:Show();
 
     gSellPane.UINeedsUpdate = true;
 end
@@ -1868,7 +1868,7 @@ end
 -----------------------------------------
 function Atr_NumAuctionsChangedFunc(x)
 
-    --	Atr_MemorizeButton:Show();
+    -- Atr_MemorizeButton:Show();
 
     gSellPane.UINeedsUpdate = true;
 end
@@ -2116,7 +2116,7 @@ function Atr_OnNewAuctionUpdate()
         return;
     end
 
-    --	zc.md ("gAtr_ClickAuctionSell:", gAtr_ClickAuctionSell);
+    -- zc.md ("gAtr_ClickAuctionSell:", gAtr_ClickAuctionSell);
 
     gAtr_ClickAuctionSell = false;
 
@@ -2590,9 +2590,9 @@ end
 function Atr_BuildHistItemText(data)
 
     local stacktext = "";
-    --	if (data.stackSize > 1) then
-    --		stacktext = " (stack of "..data.stackSize..")";
-    --	end
+    --  if (data.stackSize > 1) then
+    --      stacktext = " (stack of "..data.stackSize..")";
+    --  end
 
     local now = time();
     local nowtime = date("*t");
@@ -3620,13 +3620,13 @@ function Atr_CheckActive_OnClick(andCancel)
     if (gAtr_CheckingActive_State == ATR_CACT_NULL) then
 
         Atr_CheckActiveList(andCancel);
-        --[[
-		if (andCancel == nil) then
-			Atr_CheckActives_Frame:Show();
-		else
-			Atr_CheckActives_Frame:Hide();
-			Atr_CheckActiveList (andCancel);
-		end
+--[[
+        if (andCancel == nil) then
+            Atr_CheckActives_Frame:Show();
+        else
+            Atr_CheckActives_Frame:Hide();
+            Atr_CheckActiveList (andCancel);
+        end
 ]] --
     else -- stop checking
         Atr_CheckingActive_Finish();
@@ -3793,7 +3793,7 @@ function Atr_Cancel_Undercuts_OnClick(nameToCancel)
 
                 local itemPrice = math.floor(buyoutPrice / stackSize);
 
-                --	zc.md (i, name, "itemPrice: ", itemPrice, "absBestPrice: ", absBestPrice);
+                -- zc.md (i, name, "itemPrice: ", itemPrice, "absBestPrice: ", absBestPrice);
 
                 if (itemPrice > absBestPrice) then
 
@@ -4002,7 +4002,7 @@ end
 -- roundPriceDown - rounds a price down to the next lowest multiple of a.
 -- - if the result is not at least a/2 lower, rounds down by a/2.
 --
--- examples:  	(128790, 500)  ->  128500
+-- examples:   (128790, 500)  ->  128500
 -- (128700, 500)  ->  128000
 -- (128400, 500)  ->  128000
 -----------------------------------------
