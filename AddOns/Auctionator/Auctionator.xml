@@ -306,7 +306,7 @@
                     <Anchors><Anchor point="TOPLEFT" relativeTo="Atr_Recommend_Text"><Offset><AbsDimension x="152" y="-28"/></Offset></Anchor></Anchors>
                 </FontString>
 
-                <FontString name="Atr_RecommendPerItem_Text" inherits="GameFontHighlightSmall" text="per item">
+                <FontString name="Atr_RecommendPerItem_Text" inherits="GameFontHighlightSmall" text="Per Item">
                     <Anchors><Anchor point="TOPLEFT" relativeTo="Atr_Recommend_Text"><Offset><AbsDimension x="152" y="-51"/></Offset></Anchor></Anchors>
                 </FontString>
             </Layer>
@@ -483,7 +483,7 @@
                     <Layer level="ARTWORK">
 
                         <FontString inherits="GameFontHighlightSmall" text="Sell">
-                            <Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="93" y="18"/></Offset></Anchor></Anchors>
+                            <Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="62" y="19"/></Offset></Anchor></Anchors>
                         </FontString>
 
                         <FontString name="Atr_StackPriceText" inherits="GameFontHighlightSmall" text="Buyout Price">
