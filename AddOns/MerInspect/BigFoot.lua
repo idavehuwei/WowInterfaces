@@ -401,11 +401,11 @@ M:Init{
         M.moneyFrame.title = M.moneyFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal");
         M.moneyFrame.title:SetPoint("BOTTOMLEFT", M.moneyFrame, "TOPLEFT", -2, 2);
         M.moneyFrame.title:SetText(M.loc["Repair Cost"]);
-        __Secure:HookScript(CharacterFrame,"OnShow", function()
+        __Secure:HookScript(PaperDollFrame,"OnShow", function()
             M:OnShowPaperFrame(true);
             M:DisplayInventoryInfo();
         end);
-        __Secure:HookScript(CharacterFrame,"OnHide", function()
+        __Secure:HookScript(PaperDollFrame,"OnHide", function()
              M:OnHidePaperFrame()
         end);
         hooksecurefunc("SetItemButtonCount",function(button,...)
