@@ -8,9 +8,9 @@ M.author = "Mermaid";
 M.version = "2.2.0";
 M._DEBUG = false;
 M.Config = {
-	["MerInspectEnable"] = true,	
-	["DisplayDurability"] = true,	-- ÏÔÊ¾×°±¸À¸ÄÍ¾Ã¶È¼°Î¬ĞŞ·ÑÓÃ
-	["DisplayItemQulity"] = true,
+    ["MerInspectEnable"] = true,
+    ["DisplayDurability"] = true,	-- æ˜¾ç¤ºè£…å¤‡æ è€ä¹…åº¦åŠç»´ä¿®è´¹ç”¨
+    ["DisplayItemQulity"] = true,
 };
 
 M.PercentList = {};
@@ -22,118 +22,118 @@ M.effect = {};
 M.set = {};
 
 function M:DoQueueScan(unit)
-	for k in pairs(self.set) do
-		self.set[k] = nil;
-	end
-	for k in pairs(self.effect) do
-		self.effect[k] = nil;
-	end
-	for k in pairs(self.effectPercent) do
-		self.effectPercent[k] = nil;
-	end
-	local level = UnitLevel(unit) or 80;
-	local class = strupper(select(2, UnitClass(unit)));
-	local race = strupper(select(2, UnitRace(unit)));
+    for k in pairs(self.set) do
+        self.set[k] = nil;
+    end
+    for k in pairs(self.effect) do
+        self.effect[k] = nil;
+    end
+    for k in pairs(self.effectPercent) do
+        self.effectPercent[k] = nil;
+    end
+    local level = UnitLevel(unit) or 80;
+    local class = strupper(select(2, UnitClass(unit)));
+    local race = strupper(select(2, UnitRace(unit)));
 
-	for _, v in ipairs(self.QueueScan) do
-		if self[v] then
-			self[v](self, unit, class, race, level);
-		end
-	end
+    for _, v in ipairs(self.QueueScan) do
+        if self[v] then
+            self[v](self, unit, class, race, level);
+        end
+    end
 end
 
 function M:DoQueue(unit)
-	if (not UnitExists(unit)) or (not UnitIsPlayer(unit)) then
-		return;
-	end
-	
-	local level = UnitLevel(unit);
-	local class = strupper(select(2, UnitClass(unit)));
-	local race = strupper(select(2, UnitRace(unit)));
-	for _, v in ipairs(self.QueueShow) do
-		if self[v] then
-			self[v](self, unit, class, race, level);
-		end
-	end
+    if (not UnitExists(unit)) or (not UnitIsPlayer(unit)) then
+        return;
+    end
+
+    local level = UnitLevel(unit);
+    local class = strupper(select(2, UnitClass(unit)));
+    local race = strupper(select(2, UnitRace(unit)));
+    for _, v in ipairs(self.QueueShow) do
+        if self[v] then
+            self[v](self, unit, class, race, level);
+        end
+    end
 end
 --[[
-	PercentEffect effectÒÀÀµÓë±ğµÄÊôĞÔ, ÓëÆäÒÀÀµÊôĞÔÊÇÏßĞÔ¹ØÏµ. 
-	ÀıÈç: ÄÁÊ¦µÄ¾«ÉñÓë·¨ÊõÉËº¦µÄ¹ØÏµ
+    PercentEffect effectä¾èµ–ä¸åˆ«çš„å±æ€§, ä¸å…¶ä¾èµ–å±æ€§æ˜¯çº¿æ€§å…³ç³».
+    ä¾‹å¦‚: ç‰§å¸ˆçš„ç²¾ç¥ä¸æ³•æœ¯ä¼¤å®³çš„å…³ç³»
 ]]
 function M:GetPercentEffect(anchor, ...)
-	local effect, value, type;
-	for i = 1, select("#", ...) do
-		effect, value, type = strsplit("#",select(i, ...) or "");
-		if (type and type == "sub") then
-			self.effectPercent[effect] = (self.effectPercent[effect] or 0) - floor((self.effect[anchor] or 0) * (tonumber(value) or 0));
-		else
-			self.effectPercent[effect] = (self.effectPercent[effect] or 0) + floor((self.effect[anchor] or 0) * (tonumber(value) or 0));
-		end
-	end
+    local effect, value, type;
+    for i = 1, select("#", ...) do
+        effect, value, type = strsplit("#",select(i, ...) or "");
+        if (type and type == "sub") then
+            self.effectPercent[effect] = (self.effectPercent[effect] or 0) - floor((self.effect[anchor] or 0) * (tonumber(value) or 0));
+        else
+            self.effectPercent[effect] = (self.effectPercent[effect] or 0) + floor((self.effect[anchor] or 0) * (tonumber(value) or 0));
+        end
+    end
 end
 --------------------
--- 7/2/2008 ¼ÓÈëÀàĞÍ, È±Ê¡Îª¼Ó. ÒÔÊÊÓ¦ÀàËÆ"ºÄ§Öª×R"ÕâÑùµÄ´øÓĞ¸ºÃæĞ§¹ûµÄÌì¸³.
--- ÀÛ¼ÓÀàĞÍtypeÎªnil
--- ¼õÀàĞÍtypeÎªtrue, ÓÃsub±êÊ¾
+-- 7/2/2008 åŠ å…¥ç±»å‹, ç¼ºçœä¸ºåŠ . ä»¥é€‚åº”ç±»ä¼¼"ï¿½è€—Ğµï¿½ï¿½R"è¿™æ ·çš„å¸¦æœ‰è´Ÿé¢æ•ˆæœçš„å¤©èµ‹.
+-- ç´¯åŠ ç±»å‹typeä¸ºnil
+-- å‡ç±»å‹typeä¸ºtrue, ç”¨subæ ‡ç¤º
 function M:SetPercentEffect(anchor, effect, value, type)
-	if (not effect or not value) then return; end
+    if (not effect or not value) then return; end
 
-	if self.PercentList[anchor] then
-		if strfind(self.PercentList[anchor], (type and effect.."#(%d%.?%d*)#sub") or effect.."#(%d%.?%d*)") then
-			oldV = strmatch(self.PercentList[anchor], effect.."#(%d%.?%d*)");
-			newV = oldV+ value;
-			self.PercentList[anchor] = gsub(self.PercentList[anchor], effect.."#"..oldV, effect.."#"..newV)
-		else
-			self.PercentList[anchor] = self.PercentList[anchor] .. "|" .. effect .. "#" .. value .. (type and "#sub" or "");
-		end
-	else
-		self.PercentList[anchor] = effect .. "#" .. value .. (type and "#sub" or "");
-	end
+    if self.PercentList[anchor] then
+        if strfind(self.PercentList[anchor], (type and effect.."#(%d%.?%d*)#sub") or effect.."#(%d%.?%d*)") then
+            oldV = strmatch(self.PercentList[anchor], effect.."#(%d%.?%d*)");
+            newV = oldV+ value;
+            self.PercentList[anchor] = gsub(self.PercentList[anchor], effect.."#"..oldV, effect.."#"..newV)
+        else
+            self.PercentList[anchor] = self.PercentList[anchor] .. "|" .. effect .. "#" .. value .. (type and "#sub" or "");
+        end
+    else
+        self.PercentList[anchor] = effect .. "#" .. value .. (type and "#sub" or "");
+    end
 end
 
 function M:AddPercentEffect()
-	for k, v in pairs(self.PercentList) do
-		self:GetPercentEffect(k, strsplit("|",v));
-		self.PercentList[k] = nil;
-	end
-	for k, v in pairs(self.effectPercent) do
-		self.effect[k] = (self.effect[k] or 0) + v;
-	end
+    for k, v in pairs(self.PercentList) do
+        self:GetPercentEffect(k, strsplit("|",v));
+        self.PercentList[k] = nil;
+    end
+    for k, v in pairs(self.effectPercent) do
+        self.effect[k] = (self.effect[k] or 0) + v;
+    end
 end
-  
+
 function M:GetBaseEffect(effect, class, race, level)
-	if not class or not race or level ~= 70 then return 0 end
-	return self.base[class.."_"..race] and self.base[class.."_"..race][effect] or 0;
+    if not class or not race or level ~= 70 then return 0 end
+    return self.base[class.."_"..race] and self.base[class.."_"..race][effect] or 0;
 end
 
 function M:StatLogic(l,c,r)
-	local value;
-	for effect, func in pairs(self.logic) do
-		value = self:GetEffect(effect);
-		func(value, self, l, c, r);
-	end	
+    local value;
+    for effect, func in pairs(self.logic) do
+        value = self:GetEffect(effect);
+        func(value, self, l, c, r);
+    end
 end
 
 function M:JoinEffect(...)
-	local effect = 0
-	for i = 1, select("#", ...) do
-		effect = effect + self:GetEffect(select(i, ...));
-	end
-	return select(1, ...), effect, self:GetEffect(select(2, ...));
+    local effect = 0
+    for i = 1, select("#", ...) do
+        effect = effect + self:GetEffect(select(i, ...));
+    end
+    return select(1, ...), effect, self:GetEffect(select(2, ...));
 end
 
 function M:GetEffect(effect)
-	return self.effect[effect] or 0;
+    return self.effect[effect] or 0;
 end
 
 function M:GetAllEffects(eTable)
-	return (self.effect[eTable.effectName] or 0) + (self.effect[eTable.effectExtra] or 0)
+    return (self.effect[eTable.effectName] or 0) + (self.effect[eTable.effectExtra] or 0)
 end
 
 function M:DEBUG(...)
-	if (self._DEBUG) then
-		for i = 1, select("#",...) do
-			ChatFrame1:AddMessage(select(i,...));
-		end
-	end
+    if (self._DEBUG) then
+        for i = 1, select("#",...) do
+            ChatFrame1:AddMessage(select(i,...));
+        end
+    end
 end
