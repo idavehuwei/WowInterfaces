@@ -9,6 +9,7 @@
 ## X-Curse-Repository-ID: wow/addons-cpu-usage/mainline
 
 ## Dependencies: BigFoot
+## DefaultState: disabled
 
 #@no-lib-strip@
 Libs\libs.xml

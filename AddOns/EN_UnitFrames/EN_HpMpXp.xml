@@ -48,16 +48,16 @@
                     <OnUpdate><!-- 加入上下載具時，頭像更新及死騎符文條位置 -->
                         EUF_Frame_Update();
                         --EUF_PlayerFrameElite_Update();
-                        local _, class = UnitClass("player");
-                        if (class == "DEATHKNIGHT" and PetFrame:IsVisible()) then
-                            RuneFrame:SetScale(1)
-                            RuneFrame:ClearAllPoints()
-                            RuneFrame:SetPoint("TOP", "PetFrame", "BOTTOM", 27, 4)
-                        else
-                            RuneFrame:SetScale(1)
-                            RuneFrame:ClearAllPoints()
-                            RuneFrame:SetPoint("TOP", "PlayerFrame", "BOTTOM", 54, 20)
-                        end
+--                        local _, class = UnitClass("player");
+--                        if (class == "DEATHKNIGHT" and PetFrame:IsVisible()) then
+--                            RuneFrame:SetScale(1)
+--                            RuneFrame:ClearAllPoints()
+--                            RuneFrame:SetPoint("TOP", "PetFrame", "BOTTOM", 27, 4)
+--                        else
+--                            RuneFrame:SetScale(1)
+--                            RuneFrame:ClearAllPoints()
+--                            RuneFrame:SetPoint("TOP", "PlayerFrame", "BOTTOM", 54, 20)
+--                        end
                     </OnUpdate>
                 </Scripts>
             </Frame>

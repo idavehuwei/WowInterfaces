@@ -17,12 +17,19 @@ function EUF_PartyInfo_OnLoad(this)
     this:RegisterEvent("PARTY_LEADER_CHANGED");
     this:RegisterEvent("RAID_ROSTER_UPDATE");
     this:RegisterEvent("VARIABLES_LOADED");
+    this:RegisterEvent("WORLD_MAP_UPDATE");
+    this:RegisterEvent("UPDATE_INSTANCE_INFO");
 end
 
 function EUF_PartyInfo_OnEvent(self,event,...)
-    if event == "VARIABLES_LOADED" or event == "PLAYER_ENTERING_WORLD"
-        or event == "PARTY_MEMBERS_CHANGED" or event == "PARTY_LEADER_CHANGED"
-        or event == "RAID_ROSTER_UPDATE" or event == "UNIT_LEVEL" then
+    if event == "VARIABLES_LOADED"
+        or event == "WORLD_MAP_UPDATE"
+        or event == "PLAYER_ENTERING_WORLD"
+        or event == "PARTY_MEMBERS_CHANGED"
+        or event == "PARTY_LEADER_CHANGED"
+        or event == "RAID_ROSTER_UPDATE"
+        or event == "UPDATE_INSTANCE_INFO"
+        or event == "UNIT_LEVEL" then
 
         EUF_HidePartyToggle();
         EUF_FramePartyInfo_Update();
@@ -40,7 +47,7 @@ function EUF_PartyInfo_Update(unit)
     if not unitExists then
         return;
     end;
-    
+
     -- Set class
     if EUF_CurrentOptions["PARTYCLASS"] == 1 then
         local class = UnitClass(unit);
