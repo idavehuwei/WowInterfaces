@@ -505,7 +505,7 @@ function Atr_OnLoad()
     AtrScanningTooltip:SetOwner(WorldFrame, "ANCHOR_NONE");
     -- Allow tooltip SetX() methods to dynamically add new lines based on these
     AtrScanningTooltip:AddFontStrings(AtrScanningTooltip:CreateFontString("$parentTextLeft1", nil, "GameTooltipText"),
-        AtrScanningTooltip:CreateFontString("$parentTextRight1", nil, "GameTooltipText"));
+    AtrScanningTooltip:CreateFontString("$parentTextRight1", nil, "GameTooltipText"));
 
     ------------------
 
