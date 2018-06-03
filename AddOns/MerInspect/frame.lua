@@ -94,7 +94,7 @@ function M:CreateMainFrame()
     frame.title:SetText("PVP:");
 
     --resistance
---[[	frame = CreateFrame("Frame", "MerInspectRES", InspectPaperDollFrame);
+--[[ frame = CreateFrame("Frame", "MerInspectRES", InspectPaperDollFrame);
     frame:SetWidth(40); frame:SetHeight(1);
     frame:SetPoint("TOPRIGHT", InspectPaperDollFrame, "TOPLEFT", 297, -77);
     local texture = "Interface\\PaperDollInfoFrame\\UI-Character-ResistanceIcons"
@@ -114,7 +114,7 @@ function M:CreateMainFrame()
         frame["button"..i]:SetPoint("TOPRIGHT", getglobal("MerInspectRESbutton" .. (i - 1)) or frame, "BOTTOMRIGHT", 0, -1);
     end]]
     --base effect
---[[	frame = self:CreateFrame("MerInspectBase", InspectPaperDollFrame, 110, 122, 7, 4)
+--[[ frame = self:CreateFrame("MerInspectBase", InspectPaperDollFrame, 110, 122, 7, 4)
     frame:SetPoint("TOPLEFT", InspectPaperDollFrame, "TOPLEFT", 73, -260)
     frame.title:SetText(self.loc.base)]]
 end
@@ -129,8 +129,8 @@ function MerInspect_Toggle(switch)
         InspectModelFrame:SetHeight(215);
         MerInspectTalent:Show();
         MerInspectPVP:Show();
-        --MerInspectRES:Show();
-    --	MerInspectBase:Show();
+    --  MerInspectRES:Show();
+    --  MerInspectBase:Show();
     else
         M.Config.MerInspectEnable = false;
         M:UnregisterEvent("UNIT_INVENTORY_CHANGED");
@@ -141,8 +141,8 @@ function MerInspect_Toggle(switch)
         InspectModelFrame:Show();
         MerInspectTalent:Hide();
         MerInspectPVP:Hide();
-    --	MerInspectRES:Hide();
-    --	MerInspectBase:Hide();
+    --  MerInspectRES:Hide();
+    --  MerInspectBase:Hide();
     end
 end
 
