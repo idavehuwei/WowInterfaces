@@ -60,7 +60,7 @@ function EventAlert_OnEvent(self, event, ...)
 			if EA_Config.ShowName == nil then EA_Config.ShowName = true end
 			if EA_Config.ShowFlash == nil then EA_Config.ShowFlash = false end
 			if EA_Config.ShowTimer == nil then EA_Config.ShowTimer = true end
-			if EA_Config.IconSize == nil then EA_Config.IconSize = 60 end
+			if EA_Config.IconSize == nil then EA_Config.IconSize = 40 end
 			if EA_Config.TimerFontSize == nil then EA_Config.TimerFontSize = 28 end
 			if EA_Config.StackFontSize == nil then EA_Config.StackFontSize = 18 end
 			if EA_Config.SNameFontSize == nil then EA_Config.SNameFontSize = 14 end

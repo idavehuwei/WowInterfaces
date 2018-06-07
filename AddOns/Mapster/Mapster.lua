@@ -93,6 +93,7 @@ function Mapster:OnEnable()
 	end
 
 	self:SetupMapButton()
+    	self:SetupAtlasMapButton()
 
 	LibWindow.RegisterConfig(WorldMapFrame, db)
 
