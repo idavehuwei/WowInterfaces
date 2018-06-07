@@ -1,6 +1,9 @@
 local L = LibStub("AceLocale-3.0"):GetLocale("Mendeleev")
 local PT = LibStub("LibPeriodicTable-3.1")
-
+local BB = LibStub('LibBabble-Boss-3.0'):GetLookupTable()
+local BZ = LibStub('LibBabble-Zone-3.0'):GetLookupTable()
+local lootdata = LibStub("LibInstanceLootData-1.0")
+local Mendeleev_Enable = false;
 local _G = getfenv(0)
 
 -- We cache the results, so that we don't have to do a PT lookup for every item.
@@ -27,10 +30,6 @@ local string_rep	= _G.string.rep
 local table_insert	= _G.table.insert
 local table_sort	= _G.table.sort
 
-
-MainMenuBarLeftEndCap:Hide();
-MainMenuBarRightEndCap:Hide();
-
 local skillcolor = {
 	[-1] = "|cffff0000",
 	[0] = "|cff7f7f7f",
@@ -39,6 +38,16 @@ local skillcolor = {
 	[3] = "|cffff7f3f",
 }
 
+local qulityText = {
+	[0] = L["Poor"],
+	[1] = L["Common"],
+	[2] = L["Uncommon"],
+	[3] = L["Rare"],
+	[4] = L["Epic"],
+	[5] = L["Legendary"],
+	[6] = L["Artifact"],
+	[7] = L["Heirloom"],
+}
 local options = {
 	type = "group",
 	args = {
@@ -122,17 +131,24 @@ local options = {
 function Mendeleev:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("MendeleevDB", {
 		profile = {
-			showItemLevel = false,
-			showItemID = true,
-			showItemCount = true,
+			showItemLevel = true,
+			showItemID = false,
+			showItemCount = false,
 			showStackSize = true,
 			showUsedInTree = true,
 			UsedInTreeIcons = true,
+			showItemQuality = true,
+			showItemGem = true,
 			UsedInTreeMinSkill = 0,
 			UsedInTreeMinSkillShift = -1,
-			sets = {},
+			sets = {},		
 		}
-	}, DEFAULT)
+	})
+	
+	self.db.profile.showItemCount = false;
+	if (self.db.profile.showItemGem == nil) then
+		self.db.profile.showItemGem = true;
+	end
 
 	local t = {
 		name = L["Toggle sets."],
@@ -162,10 +178,15 @@ function Mendeleev:OnInitialize()
 		}
 	end
 	
-	LibStub("AceConfig-3.0"):RegisterOptionsTable("Mendeleev", options)
-	LibStub("AceConfig-3.0"):RegisterOptionsTable("Mendeleev-Sets", t)
-	LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Mendeleev", "Mendeleev")
-	LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Mendeleev-Sets", "Sets", "Mendeleev")
+	Mendeleev_ShowTradeskill(false);
+	--LibStub("AceConfig-3.0"):RegisterOptionsTable("Mendeleev", options)
+	--LibStub("AceConfig-3.0"):RegisterOptionsTable("Mendeleev-Sets", t)
+	--LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Mendeleev", "Mendeleev")
+	--LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Mendeleev-Sets", "Sets", "Mendeleev")
+end
+
+function Mendeleev:Open()
+	--LibStub("AceConfigDialog-3.0"):Open(L["Mendeleev"]);
 end
 
 local firstLoad = true
@@ -181,10 +202,10 @@ function Mendeleev:OnEnable()
 	self:SecureHookScript(ShoppingTooltip3, "OnTooltipSetItem")
 	self:SecureHookScript(ShoppingTooltip3, "OnTooltipCleared")
 	
-	if AtlasLootTooltip then
-		self:SecureHookScript(AtlasLootTooltip, "OnTooltipSetItem")
-		self:SecureHookScript(AtlasLootTooltip, "OnTooltipCleared")
-	end
+	--if AtlasLootTooltip then
+	--	self:SecureHookScript(AtlasLootTooltip, "OnTooltipSetItem")
+	--	self:SecureHookScript(AtlasLootTooltip, "OnTooltipCleared")
+	--end
 
 	if firstLoad then
 		-- load our sets into the cache
@@ -236,31 +257,31 @@ function Mendeleev:GetUsedInTable(skill, reagentid)
 end
 
 local tradeskillNames = {
-	["Alchemy"] = GetSpellInfo(2259),
-	["Blacksmithing.Armorsmith"] = GetSpellInfo(9788),
-	["Blacksmithing.Basic"] = GetSpellInfo(2018),
-	["Blacksmithing.Weaponsmith.Axesmith"] = GetSpellInfo(17041),
-	["Blacksmithing.Weaponsmith.Basic"] = GetSpellInfo(9787),
-	["Blacksmithing.Weaponsmith.Hammersmith"] = GetSpellInfo(17040),
-	["Blacksmithing.Weaponsmith.Swordsmith"] = GetSpellInfo(17039),
-	["Cooking"] = GetSpellInfo(2550),
-	["Enchanting"] = GetSpellInfo(7411),
-	["Engineering.Basic"] = GetSpellInfo(4036),
-	["Engineering.Gnomish"] = GetSpellInfo(20220),
-	["Engineering.Goblin"] = GetSpellInfo(20221),
-	["First Aid"] = GetSpellInfo(3273),
-	["Inscription"] = GetSpellInfo(45357),
-	["Jewelcrafting"] = GetSpellInfo(25229),
-	["Leatherworking.Basic"] = GetSpellInfo(2108),
-	["Leatherworking.Dragonscale"] = GetSpellInfo(10657),
-	["Leatherworking.Elemental"] = GetSpellInfo(10659),
-	["Leatherworking.Tribal"] = GetSpellInfo(10661),
-	["Poisons"] = GetSpellInfo(2842),
-	["Smelting"] = GetSpellInfo(2575),
-	["Tailoring.Basic"] = GetSpellInfo(3908),
-	["Tailoring.Mooncloth"] = GetSpellInfo(26798),
-	["Tailoring.Shadoweave"] = GetSpellInfo(26801),
-	["Tailoring.Spellfire"] = GetSpellInfo(26797),
+	["Alchemy"] = GetSpellInfo(2259),							-- 炼金
+	["Blacksmithing.Armorsmith"] = GetSpellInfo(9788),				-- 防具锻造
+	["Blacksmithing.Basic"] = GetSpellInfo(2018),					-- 锻造
+	["Blacksmithing.Weaponsmith.Axesmith"] = GetSpellInfo(17041),	-- 大师级铸斧
+	["Blacksmithing.Weaponsmith.Basic"] = GetSpellInfo(9787),		-- 武器锻造
+	["Blacksmithing.Weaponsmith.Hammersmith"] = GetSpellInfo(17040),	-- 大师级铸锤
+	["Blacksmithing.Weaponsmith.Swordsmith"] = GetSpellInfo(17039),	-- 大师级铸剑
+	["Cooking"] = GetSpellInfo(2550),					-- 烹饪
+	["Enchanting"] = GetSpellInfo(7411),					-- 附魔
+	["Engineering.Basic"] = GetSpellInfo(4036),			-- 工程
+	["Engineering.Gnomish"] = GetSpellInfo(20220),			-- 侏儒工程
+	["Engineering.Goblin"] = GetSpellInfo(20221),			-- 抵京工程
+	["First Aid"] = GetSpellInfo(3273),					-- 急救
+	["Inscription"] = GetSpellInfo(45357),				-- 铭文
+	["Jewelcrafting"] = GetSpellInfo(25229),				-- 珠宝制造
+	["Leatherworking.Basic"] = GetSpellInfo(2108),			-- 制皮
+	["Leatherworking.Dragonscale"] = GetSpellInfo(10657),	-- 龙鳞制皮
+	["Leatherworking.Elemental"] = GetSpellInfo(10659),		-- 元素制皮
+	["Leatherworking.Tribal"] = GetSpellInfo(10661),			-- 部族制皮
+	["Poisons"] = GetSpellInfo(2842),					-- 毒药
+	["Smelting"] = GetSpellInfo(2575),					-- 采矿
+	["Tailoring.Basic"] = GetSpellInfo(3908),				-- 裁缝
+	["Tailoring.Mooncloth"] = GetSpellInfo(26798),			-- 月布裁缝
+	["Tailoring.Shadoweave"] = GetSpellInfo(26801),			-- 暗纹裁缝
+	["Tailoring.Spellfire"] = GetSpellInfo(26797),			-- 魔焰裁缝
 }
 
 function Mendeleev:GetLinesForTradeskillReagent(skill, reagent)
@@ -445,19 +466,48 @@ function Mendeleev:ScanTradeSkill()
 	end
 end
 
+local stringCache = {}
+setmetatable(stringCache, {__mode = "kv"})
+local TOOLTIP_COLOR = {0.69, 0.77, 0.87};
+
+local gemLink = {};
+function Mendeleev:OnShowTooltipGem(tooltip, item)
+	local itemLink = select(2, GetItemInfo(item));
+	gemLink[1], gemLink[2], gemLink[3] = strmatch(itemLink, "item:%d+:%d+:(%d+):(%d+):(%d+):");
+	for i, v in ipairs(gemLink) do
+		gemLink[i] = select(2, GetItemGem(itemLink, i));
+		if (gemLink[i]) then
+			tooltip:AddLine(gemLink[i]);		
+			tooltip:AddTexture(GetItemIcon(gemLink[i]) or "Interface\\Icons\\INV_Misc_QuestionMark");
+		end		
+	end
+end
+
 function Mendeleev:OnTooltipSetItem(tooltip, ...)
+	if (not Mendeleev_Enable) then
+		return false;
+	end
+
 	local item = select(2, tooltip:GetItem())
 	if tooltip.Mendeleev_data_added or not item or not GetItemInfo(item) then return end
 	local quality,iLevel,_,_,_,stack = select(3, GetItemInfo(item))
 	local db = self.db.profile
-
+	
+	-- 宝石信息
+	if db.showItemGem then
+		self:OnShowTooltipGem(tooltip, item);
+	end
+	
+	-- 这段代码将带来大量的内存占用, 所以缺省是关闭状态
+	--[[
 	if cache[item] == nil then
 		for _,v in ipairs(MENDELEEV_SETS) do
 			if not db.sets[v.setindex] and quality >= v.quality then
 				local lines = nil
 				local c = v.colour or "|cffffffff"
 				for set,desc in pairs(v.sets) do
-					local val = PT:ItemInSet(item,set)
+					
+					local val = PT:ItemInSet(item,set)					
 					if val then
 						if not lines then lines = {} end
 						if type(v.descfunc) == "function" then
@@ -497,7 +547,7 @@ function Mendeleev:OnTooltipSetItem(tooltip, ...)
 		for _, k in ipairs(cache[item]["_index"]) do
 			local v = cache[item][k]
 			local first = 1
-			for i, line in ipairs(v[2]) do
+			for i, line in ipairs(v[2]) do				
 				if first == 1 then
 					tooltip:AddDoubleLine(v[1], line)
 					first = 0
@@ -507,7 +557,41 @@ function Mendeleev:OnTooltipSetItem(tooltip, ...)
 			end
 		end
 	end
-
+	]]
+	-- 添加物品掉落信息 dugu@wowbox		
+	local itemID = string.match(item, "item:(%d+)")
+	local c = TOOLTIP_COLOR;
+	--if stringCache[itemID] then
+	--	local diffstr, instance, boss, droprate = string.match(stringCache[itemID], "([^|]+)|([^|]+)|([^|]+)|([^|]*)")
+	--	tooltip:AddDoubleLine(diffstr, instance,c[1],c[2],c[3],c[1],c[2],c[3])
+	--	tooltip:AddDoubleLine(boss, droprate,c[1],c[2],c[3],c[1],c[2],c[3])
+	--else
+		local iType, instance, boss, difficulty, droprate = lootdata:FindItem(itemID)
+		boss = boss and BB[boss] or boss
+		instance = instance and BZ[instance] or instance
+		if iType then
+			local diffstr = lootdata:GetDifficultyString(iType, difficulty)
+			local multiboss = lootdata:IsSubBoss(iType, instance, boss)
+			multiboss = multiboss and BB[multiboss] or multiboss
+			if multiboss and multiboss ~= boss then
+				boss = multiboss..": "..boss
+			end
+			if tonumber(difficulty) == 0 then
+				diffstr = L['Drop:']	-- TODO
+			else
+				diffstr = diffstr and L[diffstr] or diffstr
+			end
+			tooltip:AddDoubleLine(diffstr, instance,c[1],c[2],c[3],c[1],c[2],c[3])
+			if tonumber(droprate) <= 0 then
+				droprate = ''
+			else
+				droprate = droprate.."%"
+			end
+			tooltip:AddDoubleLine(boss, droprate,c[1],c[2],c[3],c[1],c[2],c[3])
+			--stringCache[itemID] = string.format("%s|%s|%s|%s", diffstr, instance, boss, droprate)
+		end
+	--end
+	
 	if db.showItemCount then
 		local count = GetItemCount(item, false)
 		local bankcount = GetItemCount(item, true) - count
@@ -530,7 +614,7 @@ function Mendeleev:OnTooltipSetItem(tooltip, ...)
 	if iLevel and db.showItemLevel then
 		tooltip:AddDoubleLine(L["iLevel"], iLevel)
 	end
-
+	
 	if db.showUsedInTree then
 		local id = tonumber(item:match("^|%x+|Hitem:(%d+):"))
 		local t = Mendeleev:GetUsedInTree(id, ">"..id.."<")
@@ -544,11 +628,82 @@ function Mendeleev:OnTooltipSetItem(tooltip, ...)
 			tooltip:AddDoubleLine(l[i], l[i+1])
 		end
 	end
-
+	
+	if (db.showItemQuality) then
+		local text = qulityText[quality];
+		if (text) then
+			tooltip:AppendText(format(" (%s)", text));
+		end
+	end
 	tooltip.Mendeleev_data_added = true
 end
 
 function Mendeleev:OnTooltipCleared(tooltip, ...)
 	tooltip.Mendeleev_data_added = nil
 end
+-----------------
+-- Duowan Interface
+function Mendeleev_Toggle(switch)
+	if (switch) then
+		Mendeleev_Enable = true;
+	else
+		Mendeleev_Enable = false;
+	end
+end
 
+function Mendeleev_ShowItemLevel(switch)
+	if (switch) then
+		Mendeleev.db.profile.showItemLevel = true;
+	else
+		Mendeleev.db.profile.showItemLevel = false;
+	end
+end
+
+function Mendeleev_ShowItemCount(switch)
+	if (switch) then
+		Mendeleev.db.profile.showItemCount = true;
+	else
+		Mendeleev.db.profile.showItemCount = false;
+	end
+end
+
+function Mendeleev_ShowStackSize(switch)
+	if (switch) then
+		Mendeleev.db.profile.showStackSize = true;
+	else
+		Mendeleev.db.profile.showStackSize = false;
+	end
+end
+
+function Mendeleev_ShowUsedInTree(switch)
+	if (switch) then
+		Mendeleev.db.profile.showUsedInTree = true;
+	else
+		Mendeleev.db.profile.showUsedInTree = false;
+	end
+end
+
+function Mendeleev_ShowTradeskill(switch)
+	if (switch) then
+		Mendeleev.db.profile.sets["Tradeskill.Mat.ByProfession"] = true;
+	else
+		Mendeleev.db.profile.sets["Tradeskill.Mat.ByProfession"] = false;
+	end
+	cache = {};
+end
+
+function Mendeleev_ShowQulityText(switch)
+	if (switch) then
+		Mendeleev.db.profile.showItemQuality = true;
+	else
+		Mendeleev.db.profile.showItemQuality = false;
+	end	
+end
+
+function Mendeleev_ShowGemInfo(switch)
+	if (switch) then
+		Mendeleev.db.profile.showItemGem = true;
+	else
+		Mendeleev.db.profile.showItemGem = false;
+	end
+end

@@ -2,8 +2,7 @@
 	GridLayout.lua
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local AceOO = AceLibrary("AceOO-2.0")
 local media = LibStub("LibSharedMedia-3.0", true)
@@ -158,16 +157,16 @@ GridLayout.defaultDB = {
 		party = L["By Group 5"],
 		arena = L["By Group 5"],
 		heroic_raid = L["By Group 25"],
-		raid = L["By Group 10"],
+		raid = L["By Group 25"],
 		bg = L["By Group 40"],
 	},
 
-	horizontal = true,
+	horizontal = false,
 	clamp = true,
 	FrameLock = false,
 
 	Padding = 1,
-	Spacing = 6,
+	Spacing = 10,
 	ScaleSize = 1.0,
 	borderTexture = "Blizzard Tooltip",
 	BorderR = .5,
@@ -180,9 +179,8 @@ GridLayout.defaultDB = {
 	BackgroundA = .65,
 
 	anchor = "TOPLEFT",
-	anchorRel = "BOTTOMLEFT",
-	groupAnchor = "BOTTOMLEFT",
-	hideTab = false,
+	groupAnchor = "TOPLEFT",
+	hideTab = true,
 
 	PosX = 500,
 	PosY = -400,

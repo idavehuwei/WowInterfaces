@@ -1,0 +1,244 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+	
+	<Font name="WhisperPopWrappingFont" inherits="ChatFontNormal" nonspacewrap="true" maxLines="100" justifyH="LEFT" justifyV="TOP" virtual="true"/>	
+
+	<Button name="WhisperPopPlayerButtonTemplate" virtual="true">
+		<Size> <AbsDimension x="120" y="20"/> </Size>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parentClassIcon" file="Interface\WorldStateFrame\Icons-Classes">	
+					<Size> <AbsDimension x="16" y="16"/> </Size>
+					<Anchors> <Anchor point="LEFT"/> </Anchors>
+				</Texture>	
+						
+				<FontString name="$parentLevelText" inherits="GameFontNormalSmall">
+					<Size> <AbsDimension x="20" y="0"/> </Size>
+					<Anchors> <Anchor point="LEFT" relativeTo="$parentClassIcon" relativePoint="RIGHT"/> </Anchors>
+				</FontString>
+
+				<FontString name="$parentNameText" inherits="GameFontHighlightSmall" justifyH="LEFT">
+					<Anchors> <Anchor point="LEFT" relativeTo="$parentLevelText" relativePoint="RIGHT"/> </Anchors>
+				</FontString>
+			</Layer>					
+		</Layers>		
+
+		<Scripts> 
+			<OnLoad> WhisperPopPlayerButton_OnLoad(self); </OnLoad>
+			<OnMouseDown> WhisperPopPlayerButton_OnMouseDown(self, button); </OnMouseDown>
+			<OnMouseUp> WhisperPopPlayerButton_OnMouseUp(self, button); </OnMouseUp>
+		</Scripts>
+	</Button>
+	
+	<Button name="WhisperPopPlayerListButtonTemplate" inherits="WhisperPopPlayerButtonTemplate" virtual="true">
+		<HighlightTexture name="$parentHighlight" file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD"/>
+		<Frames>
+			<Button inherits="UIPanelCloseButton">
+				<Size> <AbsDimension x="16" y="16"/> </Size>
+				<Anchors> <Anchor point="RIGHT"/> </Anchors>
+				<Scripts> 
+					<OnClick> self:GetParent():DeleteData(); </OnClick>
+					<OnEnter> WhisperPopPlayerListButton_CloseButton_OnEnter(self); </OnEnter>
+					<OnLeave> GameTooltip:Hide(); </OnLeave>
+				</Scripts>
+			</Button>
+		</Frames>
+
+		<Scripts> 
+			<OnLoad> WhisperPopPlayerListButton_OnLoad(self); </OnLoad>
+			<OnEnter> WhisperPopPlayerListButton_OnEnter(self); </OnEnter>
+			<OnLeave> WhisperPopPlayerListButton_OnLeave(self); </OnLeave>
+		</Scripts>
+	</Button>
+
+	<Frame name="WhisperPopCommonFrameTemplate" virtual="true">
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="">
+			<BackgroundInsets> <AbsInset left="0" right="0" top="0" bottom="0"/> </BackgroundInsets>
+		</Backdrop>		
+
+		<Frames>
+			<Frame>
+				<Backdrop bgFile="" edgeFile="Interface\Tooltips\UI-Tooltip-Border">
+					<BackgroundInsets> <AbsInset left="0" right="0" top="0" bottom="0"/> </BackgroundInsets>
+				</Backdrop>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset> <AbsDimension x="-5" y="5"/> </Offset>
+					</Anchor>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset> <AbsDimension x="5" y="-5"/> </Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts> 
+					<OnLoad> self:SetScale(0.5); </OnLoad>
+				</Scripts>
+			</Frame>
+			
+			<Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+				<Size> <AbsDimension x="24" y="24"/> </Size>
+				<Anchors> <Anchor point="TOPRIGHT"/> </Anchors>
+			</Button>
+		</Frames>
+	</Frame>	
+	
+	<Button name="WhisperPopOutButton" frameStrata="LOW" parent="UIParent">
+		<Size>
+			<AbsDimension x="32" y="32"/>
+		</Size>
+		<Anchors>
+			<Anchor point="BOTTOM" relativeTo="FriendsMicroButton" relativePoint="TOP">
+				<Offset><AbsDimension x="0" y="0"/></Offset>
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture name="$parentFlashTextuter" file="Interface\ChatFrame\UI-ChatIcon-BlinkHilight" setAllPoints="true" hidden="true"/>				
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				self.flash = WhisperPopOutButtonFlashTextuter;	
+			</OnLoad>
+			<OnClick>
+				PlaySound("igChatEmoteButton");	
+				if (WhisperPopFrame:IsShown()) then
+					WhisperPopFrame:Hide();
+				else
+					WhisperPopFrame:Show();
+				end				
+			</OnClick>
+			<OnEnter>
+				GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+				GameTooltip:SetText(WHISPER_POP_LABEL, 1, 1, 1);
+				GameTooltip:AddLine(WHISPER_POP_DESC, 1, 0.85, 0);				
+				GameTooltip:Show();
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+			<OnUpdate>
+				WhisperPopOutButton_OnUpdate(self, elapsed);
+			</OnUpdate>
+		</Scripts>
+		<NormalTexture file="Interface\AddOns\WhisperPop\Texture\normal-up"/>
+		<PushedTexture file="Interface\AddOns\WhisperPop\Texture\normal-down"/>
+		<DisabledTexture file="Interface\AddOns\WhisperPop\Texture\normal-disabled"/>
+		<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+	</Button>
+
+	<Frame name="WhisperPopFrame" inherits="WhisperPopCommonFrameTemplate" toplevel="true" enableMouse="true" movable="true" frameStrata="DIALOG" hidden="true" clampedToScreen="true" parent="UIParent">
+		<Size> <AbsDimension x="165" y="262"/> </Size>
+		<Anchors>	
+			<Anchor point="BOTTOMLEFT" relativeTo="WhisperPopOutButton" relativePoint="TOPLEFT">
+				<Offset><AbsDimension x="20" y="0"/></Offset>
+			</Anchor>
+		</Anchors>			
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitle" inherits="GameFontNormalSmall">
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset> <AbsDimension x="-12" y="-5"/> </Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+			<Frame name="$parentListFrame">
+				<Size> <AbsDimension x="100" y="200"/> </Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset> <AbsDimension x="5" y="-28"/> </Offset>
+					</Anchor>
+					<Anchor point="TOPRIGHT">
+						<Offset> <AbsDimension x="-5" y="-28"/> </Offset>
+					</Anchor>
+				</Anchors>
+
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture file="Interface\OptionsFrame\UI-OptionsFrame-Spacer">	
+							<Size> <AbsDimension x="16" y="16"/> </Size>
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="TOPLEFT">
+									<Offset> <AbsDimension x="-2" y="5"/> </Offset>
+								</Anchor>
+								<Anchor point="RIGHT" relativePoint="TOPRIGHT">
+									<Offset> <AbsDimension x="2" y="5"/> </Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+
+						<Texture file="Interface\OptionsFrame\UI-OptionsFrame-Spacer">	
+							<Size> <AbsDimension x="16" y="16"/> </Size>
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="BOTTOMLEFT">
+									<Offset> <AbsDimension x="-2" y="-2"/> </Offset>
+								</Anchor>
+								<Anchor point="RIGHT" relativePoint="BOTTOMRIGHT">
+									<Offset> <AbsDimension x="2" y="-2"/> </Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+					</Layer>					
+				</Layers>
+			</Frame>			
+
+			<Frame name="$parentOptionBar">
+				<Size> <AbsDimension x="135" y="20"/> </Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset> <AbsDimension x="7" y="5"/> </Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts> 
+					<OnLoad> WhisperPop_OptionBar_OnLoad(self); </OnLoad>
+					<OnEvent> WhisperPop_OptionBar_OnEvent(self, event, ...); </OnEvent>
+				</Scripts>
+			</Frame>
+
+			<Frame name="$parentMessageFrame" inherits="WhisperPopCommonFrameTemplate" toplevel="true" enableMouse="true" hidden="true" clampedToScreen="true">
+				<Size> <AbsDimension x="270" y="50"/> </Size>
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="TOPLEFT">
+						<Offset> <AbsDimension x="-2" y="0"/> </Offset>
+					</Anchor>
+				</Anchors>				
+
+				<Frames>
+					<Frame name="$parentPlayerLabel" inherits="WhisperPopPlayerButtonTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset> <AbsDimension x="5" y="-5"/> </Offset>
+							</Anchor>
+
+							<Anchor point="TOPRIGHT">
+								<Offset> <AbsDimension x="-30" y="-5"/> </Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+				</Frames>
+
+				<Scripts> 
+					<OnLoad> WhisperPop_MessageFrame_OnLoad(self); </OnLoad>
+					<OnEnter> self:CancelDelayHide(); </OnEnter>
+					<OnLeave> self:DelayHide(); </OnLeave>
+					<OnUpdate> WhisperPop_MessageFrame_OnUpdate(self, elapsed); </OnUpdate>
+					<OnShow> self:CancelDelayHide(); </OnShow>
+					<OnHide> WhisperPop_MessageFrame_OnHide(self); </OnHide>
+				</Scripts>
+			</Frame>
+
+		</Frames>
+
+		<Scripts>
+			<OnLoad> WhisperPop_OnLoad(self); </OnLoad>
+			<OnEvent> WhisperPop_OnEvent(self, event, ...); </OnEvent>
+			<OnDragStart> self:StartMoving(); </OnDragStart>
+			<OnDragStop> self:StopMovingOrSizing(); </OnDragStop>
+			<OnMouseUp> if arg1 == "RightButton" and GetMouseFocus() == self then self:Hide(); end </OnMouseUp>
+		</Scripts>
+	</Frame>
+
+</Ui>

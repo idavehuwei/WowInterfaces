@@ -4,8 +4,7 @@
 	Created by Greltok.
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local GridStatusReadyCheck = Grid:GetModule("GridStatus"):NewModule("GridStatusReadyCheck")
 GridStatusReadyCheck.menuName = L["Ready Check"]
@@ -187,14 +186,19 @@ function GridStatusReadyCheck:READY_CHECK(originator)
 	end
 end
 
-function GridStatusReadyCheck:READY_CHECK_CONFIRM(unit, confirm)
+function GridStatusReadyCheck:READY_CHECK_CONFIRM(unit, confirm)	
 	local settings = self.db.profile.ready_check
 	if settings.enable and self.readyChecking then
-		local guid = UnitGUID(unit)
-		if confirm then
-			self:GainStatus(guid, "ready", settings)
-		else
-			self:GainStatus(guid, "not_ready", settings)
+		for i=1, 40 do
+			if (UnitExists("raid" .. i)) then
+				local guid = UnitGUID("raid" .. i);
+				local isReady = GetReadyCheckStatus("raid" .. i);
+				if isReady == "ready" then
+					self:GainStatus(guid, "ready", settings)
+				elseif (isReady == "notready" ) then
+					self:GainStatus(guid, "not_ready", settings)
+				end
+			end		
 		end
 	end
 end

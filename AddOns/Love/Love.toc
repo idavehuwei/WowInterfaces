@@ -1,0 +1,21 @@
+## Interface: 30300
+## Title: Love
+## Notes: 提供一些简单的辅助游戏的便捷工具
+## Title-zhCN: [多玩] 爱心工具
+## Notes-zhCN: 提供一些简单的辅助游戏的便捷工具
+## Title-zhTW: [多玩] 愛心工具
+## Notes-zhTW: 提供一些簡單的輔助遊戲的便捷工具
+## Author: dugu
+## X-DuowanAddon: 界面聊天
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 
+## SavedVariables: LoveDB, ezIconsDB
+
+locale\localization.xml
+Love.lua
+ezIcons.lua
+RandomMount.lua
+ButonFacade.lua
+
+QuickCompare\QuickCompare.xml

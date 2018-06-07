@@ -1,35 +1,28 @@
 Gladius = LibStub("AceAddon-3.0"):NewAddon("Gladius", "AceEvent-3.0", "AceConsole-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Gladius", true)
-local LSM = LibStub("LibSharedMedia-3.0")
+
 local arenaUnits = {}
 local arenaGUID = {}
-local arenaSpecs = {}
-
 local petClasses = { ["WARLOCK"] = true, ["DEATHKNIGHT"] = true, ["MAGE"] = true, ["PRIEST"] = true, ["HUNTER"] = true, }
-local instanceType, db, GladiusAuraList
-
--- diminishing return
-local DRTIME = 17
+local instanceType, db
 
 function Gladius:OnInitialize()
-	self.db = LibStub("AceDB-3.0"):New("GladiusDB", self:getDefaults())
-	self.db.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
-	self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
-	self.db.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
+	self.db = LibStub("AceDB-3.0"):New("DuowanAddon_GladiusDB", self:getDefaults())
+	self:SetupOptions()
 	db = self.db.profile
-	
 	self.buttons = {}
 	self.currentBracket = nil
 
-	-- Populate the arenaUnits table
+	--default arena units
 	for i=1, 5 do
 		arenaUnits["arena" .. i] = "playerUnit"
 		arenaUnits["arenapet" .. i] = "arena" .. i
 	end
 	
-	-- Add support for the addon Clique
+	--clique support
 	if ( db.cliqueSupport and IsAddOnLoaded("Clique") ) then
-		for i=1, 6 do
+
+		for i=1, 5 do
 			self.buttons["arena" .. i] = self:CreateButton(i)
 			self.buttons["arenapet" .. i] = self.buttons["arena" .. i].pet
 		end
@@ -40,9 +33,10 @@ function Gladius:OnInitialize()
 		ClickCastFrames[GladiusButton3] = true
 		ClickCastFrames[GladiusButton4] = true
 		ClickCastFrames[GladiusButton5] = true
+		
 	end
 	
-	-- Set the text in the keybinding interface.
+	-- waste of space :(
 	BINDING_HEADER_GLADIUS 				= L["Gladius"]
 	BINDING_NAME_GLADIUSTARGET1_LEFT 	= L["Left click enemy #1"]
 	BINDING_NAME_GLADIUSTARGET2_LEFT 	= L["Left click enemy #2"]
@@ -55,72 +49,38 @@ function Gladius:OnInitialize()
 	BINDING_NAME_GLADIUSTARGET4_RIGHT	= L["Right click enemy #4"]
 	BINDING_NAME_GLADIUSTARGET5_RIGHT 	= L["Right click enemy #5"]
 
-	-- Add spec-detection abilities
-	self.specBuffs = self:GetSpecBuffList()
-	self.specSpells = self:GetSpecSpellList()
-	
-	-- Get Cooldown Spells
-	self.cooldownSpells = self:GetCooldownList()
-	self.cooldownSpellIds = {}
-	self.spellTextures = {}
-	
-	for class, t in pairs(self.cooldownSpells) do
-      for k,v in pairs(t) do
-         local spellName, _, texture = GetSpellInfo(k)
-         self.cooldownSpellIds[spellName] = k
-         self.spellTextures[k] = texture
-      end
-	end
-	
-	-- Get Diminishing Return Spells
-	self.drSpells = self:GetDRList()
-	self.drSpellIds = {}
-	self.drSpellTextures = {}
-	for spellId, spellType in pairs(self.drSpells) do
-      local spellName, _, texture = GetSpellInfo(spellId)
-      self.drSpellIds[spellName] = spellType
-      self.drSpellTextures[spellName] = texture
-	end
-	self.drTime = { "50%", "25%", L["immune"] }
-	
-	self:SetupOptions()
 end
 
 function Gladius:OnEnable()
-	-- Register the appropriate events that fires when you enter an arena
 	self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "ZONE_CHANGED_NEW_AREA")
-	
-	-- Incase the frame isn't locked and hasn't been moved, print out a little welcome message
-	-- if (not db.locked and db.x == 0 and db.y == 0) then
-		-- self:ToggleFrame(5)
-		-- self:Print(L["Welcome to Gladius!"])
-		-- self:Print(L["First run has been detected, displaying test frame."])
-		-- self:Print(L["Valid slash commands are:"])
-		-- self:Print(L["/gladius ui"])
-		-- self:Print(L["/gladius test1-5"])
-		-- self:Print(L["/gladius hide"])
-		-- self:Print(L["If this is not your first run please lock or move the frame to prevent this from happening."])
-	-- end
-	
-	-- Check if we are in an arena in case of postponed loading (AddonLoader support)
-	if IsLoggedIn() then
-		Gladius:ZONE_CHANGED_NEW_AREA()
+	if (not db.locked and db.x == 0 and db.y == 0) then
+		--self:ToggleFrame(5)
+		--[[
+		self:Print(L["Welcome to Gladius!"])
+		self:Print(L["First run has been detected, displaying test frame."])
+		self:Print(L["Valid slash commands are:"])
+		self:Print(L["/gladius ui"])
+		self:Print(L["/gladius test1-5"])	
+		self:Print(L["If this is not your first run please lock or move the frame to prevent this from happening."])
+		]]
 	end
 end
 
-function Gladius:OnProfileChanged(event, database, newProfileKey)
-   db = self.db.profile
-   	
-	-- display a test frame
-	self:HideFrame()
-	self:ToggleFrame(5)
+function Gladius:Toggle(switch)
+	if (switch) then
+		self:RegisterEvent("ZONE_CHANGED_NEW_AREA");
+		self:RegisterEvent("PLAYER_ENTERING_WORLD", "ZONE_CHANGED_NEW_AREA");
+		self:ZONE_CHANGED_NEW_AREA();
+	else
+		self:UnregisterAllEvents();
+		Gladius:ClearAllUnits();
+	end
 end
 
 function Gladius:ZONE_CHANGED_NEW_AREA()
 	local type = select(2, IsInInstance())
-	
-	-- Check if we are entering or leaving an arena and call the functions	
+		
 	if (type == "arena") then
 		self:JoinedArena()
 	elseif (type ~= "arena" and instanceType == "arena") then
@@ -130,57 +90,41 @@ function Gladius:ZONE_CHANGED_NEW_AREA()
 	instanceType = type
 end
 
--- Iterates through and resets all units (only resets the necessary things, like trinket status)
+-- Hides and resets all units (only resets the necessary things, like trinket status)
 function Gladius:ClearAllUnits()
 	for k, v in pairs(self.buttons) do
 		if ( arenaUnits[k] == "playerUnit" ) then
-			-- Stop the trinket cooldown counting
+			-- stop the trinket cooldown counting
 			if ( v.trinketFrame ) then
 				v.trinketFrame:SetScript("OnUpdate", nil)
 			end
 			
-			-- Resets so the announcement works again
+			-- resets so the enemy announcement works again
 			v.enemyAnnounced = false
-			v.lastAuraName = nil
 			
-			-- diminishing return
-         v.diminishingReturn = {}
-			
-			-- reset cooldown tracker
-			for i=1, 14 do
-            local icon = v.spellCooldownFrame["icon" .. i]
-            icon.spellId = nil
-            icon:Hide()
-			end
-			
-			-- Reset all the cooldown spirals
+			-- reset all the cooldown spirals
 			CooldownFrame_SetTimer(v.cooldownFrame, 1, 1, 1)
 			
-			-- Turn grid trinket icon green again
+			-- turn grid trinket icon green again
 			v.gridTrinket:SetBackdropColor(0,1,0,1)
 			
 			-- Reset the trinket "text" to avoid issues with the embedded trinket icon
 			v.trinket:SetText("")
 		end
 			
-		-- Hide the button
+		-- hide the button
 		v:SetAlpha(0)
 		v:Hide()
 	end
 	
-	-- Reset guid table
+	-- reset guid table
 	arenaGUID = {}
-	
-	-- Reset spec listing
-	for i=1,5 do arenaSpecs["arena" .. i] = nil end
 end
 
--- We joined an arena: clear units, register events, create buttons and show frames
+--We joined an arena: clear units, register events, create buttons and show frames
 function Gladius:JoinedArena()
-	-- Clear all the buttons in case the frame has been in test mode.
 	self:ClearAllUnits()
-	
-	-- Enemy events
+
 	self:RegisterEvent("UNIT_AURA")
 	self:RegisterEvent("UNIT_HEALTH")
 	self:RegisterEvent("UNIT_MANA", "UNIT_POWER")
@@ -190,29 +134,23 @@ function Gladius:JoinedArena()
 	self:RegisterEvent("UNIT_RUNIC_POWER", "UNIT_POWER")
 	self:RegisterEvent("UNIT_DISPLAYPOWER")
 	self:RegisterEvent("UNIT_TARGET")
+	self:RegisterEvent("PLAYER_TARGET_CHANGED")
+	self:RegisterEvent("PLAYER_FOCUS_CHANGED")
+	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	self:RegisterEvent("ARENA_OPPONENT_UPDATE")
 	self:RegisterEvent("UNIT_NAME_UPDATE")
 	self:RegisterEvent("UNIT_PET")
-	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-
-	-- Spellcasting events
+	
 	self:RegisterEvent("UNIT_SPELLCAST_START")
 	self:RegisterEvent("UNIT_SPELLCAST_STOP")
 	self:RegisterEvent("UNIT_SPELLCAST_DELAYED")
-	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 	self:RegisterEvent("UNIT_SPELLCAST_FAILED", "UNIT_SPELLCAST_STOP")
 	self:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED", "UNIT_SPELLCAST_STOP")
 	self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
 	self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE", "UNIT_SPELLCAST_DELAYED")
 	self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP", "UNIT_SPELLCAST_STOP")
 	
-	-- Player events
-	self:RegisterEvent("PLAYER_TARGET_CHANGED")
-	self:RegisterEvent("PLAYER_FOCUS_CHANGED")
-	
-	-- Special arena event
-	self:RegisterEvent("ARENA_OPPONENT_UPDATE")
-	
-	-- Find out the current bracket size
+	-- find out the current bracket size
 	for i=1, MAX_BATTLEFIELD_QUEUES do
 		local status, _, _, _, _, teamSize = GetBattlefieldStatus(i)
 		if (status == "active" and teamSize > 0) then
@@ -221,9 +159,7 @@ function Gladius:JoinedArena()
 		end
 	end
 	
-	-- Create the frame and the correct amount of buttons.
-	-- It creates one extra button incase the arena unit ids bug out
-	for i=1, Gladius.currentBracket+1 do
+	for i=1, Gladius.currentBracket do
 		local unit = "arena" .. i
 		local pet = "arenapet" .. i
 		local button = self.buttons[unit]
@@ -235,15 +171,11 @@ function Gladius:JoinedArena()
 		end
 		
 		button:Show()
-		if ( not db.showPets ) then
-         button.pet:Hide()
-      else
-         button.pet:Show()
-      end
+		button.pet:Show()
+		button.isDead = nil
 		button.powerType = 0
 	end
 	
-	-- Update the frame, buttons, bindings and show the frame
 	self.frame.testing = false
 	self:UpdateFrame()
 	self.UpdateUnits()
@@ -251,7 +183,7 @@ function Gladius:JoinedArena()
 	self.frame:Show()
 end
 
---We left an arena, unregister all events, register zoning events and clear+hide the frame and buttons
+--We left an arena, unregister events and clear/hide frames
 function Gladius:LeftArena()
 	self:ClearAllUnits()	
 	self:UnregisterAllEvents()
@@ -262,61 +194,48 @@ end
 
 --Update units health
 function Gladius:UNIT_HEALTH(event, unit)
-	if (arenaUnits[unit]) then
+	if (arenaUnits[unit] and not self.buttons[unit].isDead) then
 		local button = self.buttons[unit]
-		if(not button) then return end
 		
-		-- show the button
-		if (arenaUnits[unit] == "playerUnit" or (arenaUnits[unit] ~= "playerUnit" and db.showPets)) then
-         if (not button:IsShown()) then button:Show() end
-         if (button:GetAlpha() < 1) then button:SetAlpha(1) end         
-      end
+		local currentHealth, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
+		local healthPercent = math.floor((UnitHealth(unit)/UnitHealthMax(unit)) * 100)
+		local healthText
 		
-		if(not UnitIsDeadOrGhost(unit)) then
-			local currentHealth, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
-			local healthPercent = math.floor((currentHealth / maxHealth) * 100)
-			local healthText
-			
-			if ( db.healthActual ) then
-				healthText = db.shortHpMana and currentHealth > 9999 and string.format("%.1fk", (currentHealth / 1000)) or currentHealth  
-			end
-			
-			if ( db.healthMax ) then
-				local text = db.shortHpMana and maxHealth > 9999 and string.format("%.1fk", (maxHealth / 1000)) or maxHealth
-				if ( healthText ) then
-					healthText = string.format("%s/%s", healthText, text)
-				else
-					healthText = text
-				end
-			end
-			
-			if ( db.healthPercentage) then
-				if ( healthText ) then
-					healthText = string.format("%s (%d%%)", healthText, healthPercent)
-				else
-					healthText = string.format("%d%%", healthPercent)
-				end		
-			end
+		if ( db.healthActual ) then
+            healthText = db.shortHpMana and currentHealth > 9999 and string.format("%.1fk", (currentHealth / 1000)) or currentHealth  
+		end
 		
-			button.healthText:SetText(healthText)
-			button.health:SetValue(healthPercent)
-			
-			-- display low health announcement
-			if ( db.lowHealthAnnounce and healthPercent <= db.lowHealthPercentage and not button.lowHealth and (not button.healthThrottle or GetTime() > button.healthThrottle) and button.name ) then
-				local text = string.format(L["LOW HEALTH: %s"], button.name)
-				Gladius:SendAnnouncement(text, RAID_CLASS_COLORS[button.class])
-				button.lowHealth = true
-				button.healthThrottle = GetTime() + 5
+		if ( db.healthMax ) then
+            local text = db.shortHpMana and maxHealth > 9999 and string.format("%.1fk", (maxHealth / 1000)) or maxHealth
+            if ( healthText ) then
+				healthText = string.format("%s/%s", healthText, text)
+			else
+				healthText = text
 			end
-			
-			-- reset the lowHealth announcement
-			if ( button.lowHealth and healthPercent > db.lowHealthPercentage ) then
-				button.lowHealth = false
-			end
-		else
-			button.healthText:SetText("DEAD")
-			button.health:SetValue(0)
-			button:SetAlpha(0.5)
+		end
+		
+		if ( db.healthPercentage) then
+			if ( healthText ) then
+				healthText = string.format("%s (%d%%)", healthText, healthPercent)
+			else
+				healthText = string.format("%d%%", healthPercent)
+			end		
+		end
+		
+		button.healthText:SetText(healthText)
+		button.health:SetValue(healthPercent)
+		
+		-- display low health announcement
+		if ( db.lowHealthAnnounce and healthPercent <= db.lowHealthPercentage and not button.lowHealth and (not button.healthThrottle or GetTime() > button.healthThrottle) and button.name ) then
+			local text = string.format(L["LOW HEALTH: %s"], button.name)
+			Gladius:SendAnnouncement(text, RAID_CLASS_COLORS[button.class])
+			button.lowHealth = true
+			button.healthThrottle = GetTime() + 5
+		end
+		
+		-- reset the lowHealth announcement
+		if ( button.lowHealth and healthPercent > db.lowHealthPercentage ) then
+			button.lowHealth = false
 		end
 
 	end
@@ -324,9 +243,8 @@ end
 
 --Update units mana/rage/energy
 function Gladius:UNIT_POWER(event, unit)
-	if ( arenaUnits[unit] == "playerUnit" and not UnitIsDeadOrGhost(unit) ) then
-		local button = self.buttons[unit]		
-		if(not button) then return end
+	if ( arenaUnits[unit] == "playerUnit" and not self.buttons[unit].isDead ) then
+		local button = self.buttons[unit]
 		
 		local currentMana, maxMana = UnitMana(unit), UnitManaMax(unit)
 		local manaPercent = math.floor((currentMana/maxMana) * 100)
@@ -345,7 +263,7 @@ function Gladius:UNIT_POWER(event, unit)
 			end
 		end
 		
-		if ( db.manaPercentage ) then
+		if ( db.manaPercentage) then
 			if ( manaText ) then
 				manaText = string.format("%s (%d%%)", manaText, manaPercent)
 			else
@@ -354,16 +272,15 @@ function Gladius:UNIT_POWER(event, unit)
 		end
 		
 		button.manaText:SetText(manaText)
-		button.mana:SetValue(manaPercent)
+		button.mana:SetValue(manaPercent)	
+			
 	end
 end
 
 --Update units powertypes
 function Gladius:UNIT_DISPLAYPOWER(event, unit)
-	if (arenaUnits[unit] == "playerUnit") then
-		local button = self.buttons[unit]		
-		if(not button) then return end
-		
+	if (arenaUnits[unit] == "playerUnit" and not self.buttons[unit].isDead) then
+		local button = self.buttons[unit]
 		button.powerType = UnitPowerType(unit)
 		if (button.powerType == 0 and not db.manaDefault) then
 			button.mana:SetStatusBarColor(db.manaColor.r, db.manaColor.g, db.manaColor.b, db.manaColor.a)
@@ -376,23 +293,15 @@ function Gladius:UNIT_DISPLAYPOWER(event, unit)
 		else
 			button.mana:SetStatusBarColor(PowerBarColor[button.powerType].r, PowerBarColor[button.powerType].g, PowerBarColor[button.powerType].b)
 		end
+		self:UNIT_POWER(nil, unit)
 	end
 end
 
 -- Aura event
-local DRINK_SPELL = GetSpellInfo(57073)
-local WYVERN_SPELL = GetSpellInfo(49012)
 function Gladius:UNIT_AURA(event, unit)
-	if ( arenaUnits[unit] == "playerUnit" ) then	
-		local button = self.buttons[unit]		
-		if(not button) then return end
+	if ( arenaUnits[unit] == "playerUnit" ) then
 		
-		-- show the button
-		if (arenaUnits[unit] == "playerUnit" or (arenaUnits[unit] ~= "playerUnit" and db.showPets)) then
-         if (not button:IsShown()) then button:Show() end
-         if (button:GetAlpha() < 1) then button:SetAlpha(1) end         
-      end
-		
+		local button = self.buttons[unit]
 		local aura = button.auraFrame
 		local index = 1
 		local priority = 0
@@ -403,24 +312,15 @@ function Gladius:UNIT_AURA(event, unit)
 			local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable = UnitAura(unit, index, "HELPFUL")
 			if ( not name ) then break end
 			
-			if ( (GladiusAuraList[name] and GladiusAuraList[name] >= priority) or ( name == "Berserk" and UnitClass(unit) == "Druid" ) ) then
-				priority = GladiusAuraList[name] and GladiusAuraList[name] or 3
+			if ( GladiusAuraList[name] and GladiusAuraList[name] >= priority ) then
+				priority = GladiusAuraList[name]
 				auraName = name
 				auraIcon = icon
 				auraExpTime = expirationTime
-				
-				-- announce aura gain
-            if((db.auraAnnounce or (db.auraAnnounceList[auraName] and db.auraAnnounceList[auraName] ~= "disabled")) and (not button.lastAuraName or auraName ~= button.lastAuraName)) then
-               self:SendAnnouncement(string.format(L["AURA GAIN: %s (%s) - %s for %s seconds"], UnitName(unit), UnitClass(unit), auraName, ceil(auraExpTime - GetTime())), RAID_CLASS_COLORS[select(2, UnitClass(unit))], db.auraAnnounceList[auraName] and db.auraAnnounceList[auraName] or db.announceType)
-               button.lastAuraName = auraName
-            end
-			end	
-			
-			-- Spec detection
-			self:DetectSpec(unitCaster, self.specBuffs[name])
+			end
 			
 			-- If the unit is drinking, show an announcement if it's turned on
-			if ( name == DRINK_SPELL and db.drinkAnnounce and ( not button.drinkThrottle or GetTime() > button.drinkThrottle )) then
+			if ( name == GetSpellInfo(57073) and db.drinkAnnounce and ( not button.drinkThrottle or GetTime() > button.drinkThrottle )) then
 				Gladius:SendAnnouncement(string.format(L["DRINKING: %s (%s)"], button.name, button.classLoc), RAID_CLASS_COLORS[button.class])
 				button.drinkThrottle = GetTime() + 3 -- limit the spamming of announcements
 			end
@@ -436,7 +336,7 @@ function Gladius:UNIT_AURA(event, unit)
 			if ( not name ) then break end
 			
 			-- Here we implement a fix for wyvern sting to have it not display the DoT
-			if ( GladiusAuraList[name] and GladiusAuraList[name] >= priority and ( not button.wyvernDot or name ~= WYVERN_SPELL )) then
+			if ( GladiusAuraList[name] and GladiusAuraList[name] >= priority and ( not button.wyvernDot or name ~= GetSpellInfo(49012) )) then
 				priority = GladiusAuraList[name]
 				auraName = name
 				auraIcon = icon
@@ -444,27 +344,15 @@ function Gladius:UNIT_AURA(event, unit)
 			end
 			
 			index = index+1	
-		end	
+		end
+		
 		
 		if ( auraName ) then -- Aura found?
 			Gladius:AuraGain(unit, auraName, auraIcon, auraExpTime, priority) -- Display it!
 		elseif ( not auraName and aura.auraActive ) then -- No aura found and one is active?
 			Gladius:AuraFades(aura) -- Have it fade.
 		end
-		
-		-- Debuff tracker, couldn't think of a better way to do this
-		if(db.enableDebuffs) then
-			for k, debuff in pairs(db.debuffs) do
-				if(debuff.name == "") then return end
-				local frame = button.debuffFrame["icon"..k]
-				local _,_,_,_,_,duration,expirationTime,_,_ = UnitDebuff(unit,debuff.name)
-				if(duration) then
-					Gladius:DebuffGain(unit,k,expirationTime,duration)
-				elseif(not duration and frame.active) then
-					Gladius:DebuffFades(frame)
-				end
-			end
-		end
+	
 	end
 end
 
@@ -478,107 +366,47 @@ function Gladius:AuraGain(unit, name, icon, expirationTime, priority)
 	aura.auraActive = true
 end
 
-function Gladius:AuraFades(frame)
-	frame.name = nil
-	frame.priority = nil
-	frame.text:SetText("")
-	frame.icon:SetTexture("")
-	frame.auraActive = nil
-end
-
-function Gladius:DebuffGain(unit, num, expirationTime, duration)
-	local frame = self.buttons[unit].debuffFrame["icon"..num]
-	frame.active = true
-	frame.timeLeft = (expirationTime - GetTime())
-	frame.cooldown:SetCooldown(expirationTime - duration, duration)
-	
-	if(db.debuffHiddenStyle == "desat") then
-		frame.texture:SetDesaturated(0)
-	else 
-		frame:SetAlpha(1)
-	end
-	
-	frame:SetScript("OnUpdate", function(self, elapsed)
-		self.timeLeft = self.timeLeft - elapsed
-		if ( self.timeLeft <= 0 ) then
-			Gladius:DebuffFades(frame)
-		end	
-		if ( self.timeLeft < 10 ) then
-			self.cooldown.text:SetFormattedText("%.1f", self.timeLeft)
-		else
-			self.cooldown.text:SetFormattedText("%.0f", self.timeLeft)
-		end
-	end)
-end
-
-function Gladius:DebuffFades(frame)
-	frame.active = false
-	frame.cooldown:Hide()
-	frame.cooldown.text:SetText("")
-	frame:SetScript("OnUpdate", nil)
-
-	if(db.debuffHiddenStyle == "desat") then
-		frame.texture:SetDesaturated(1)
-	else
-		local alpha = db.debuffHiddenStyle == "alpha" and 0.25 or 0
-		frame:SetAlpha(alpha)
-	end
+function Gladius:AuraFades(bar)
+	bar.name = nil
+	bar.priority = nil
+	bar.text:SetText("")
+	bar.icon:SetTexture("")
+	bar.auraActive = nil
 end
 
 -- converts the aura list to the old format I was using since I'm too lazy to update the aura functions (old format: ["Spell Name"] = 1 (prio))
 function Gladius:ConvertAuraList()
 	GladiusAuraList = {}
-	for _, aura in pairs(self.db.profile.auras) do
-		if ( not aura.deleted ) then
-			GladiusAuraList[aura.name] = aura.priority
+	for k, v in pairs(self.db.profile.auras) do
+		if ( not v.deleted ) then
+			GladiusAuraList[v.name] = v.priority
 		end
 	end
 end
 
 --Spell casts
-local RESURRECTION_SPELLS = {
-	[GetSpellInfo(48950)] = true,
-	[GetSpellInfo(48171)] = true,
-	[GetSpellInfo(49277)] = true,
-	[GetSpellInfo(50763)] = true
-}
 function Gladius:UNIT_SPELLCAST_START(event, unit)
-	local spell, rank, displayName, icon, startTime, endTime, isTradeSkill = UnitCastingInfo(unit)
-	if (arenaUnits[unit] == "playerUnit" and spell) then
-		local button = self.buttons[unit]	
-		if(not button) then return end
-	
-		local castBar = button.castBar
+	if (arenaUnits[unit] == "playerUnit" and not self.buttons[unit].isDead) then
+		local spell, rank, displayName, icon, startTime, endTime, isTradeSkill = UnitCastingInfo(unit)
+		local castBar = self.buttons[unit].castBar
 		castBar.isCasting = true
 		castBar.value = (GetTime() - (startTime / 1000))
 		castBar.maxValue = (endTime - startTime) / 1000
 		castBar:SetMinMaxValues(0, castBar.maxValue)
 		castBar:SetValue(castBar.value)
 		castBar.timeText:SetText(maxValue)
-		castBar.icon:SetTexture(icon)
 		
 		if( rank ~= "" ) then
 			castBar.spellText:SetFormattedText("%s (%s)", spell, rank)
 		else
 			castBar.spellText:SetText(spell)
 		end
-		
-		-- Spec detection
-		self:DetectSpec(unit, self.specSpells[spell])
-		
-		-- Resurrection alert
-		if(RESURRECTION_SPELLS[spell] and db.resAnnounce) then
-			Gladius:SendAnnouncement(string.format(L["RESURRECTING: %s (%s)"], UnitName(unit), UnitClass(unit)), RAID_CLASS_COLORS[button.class])
-		end
 	end
 end
 
 function Gladius:UNIT_SPELLCAST_CHANNEL_START(event, unit)
-	local spell, rank, displayName, icon, startTime, endTime, isTradeSkill = UnitChannelInfo(unit)	
-	if (arenaUnits[unit] == "playerUnit" and spell) then
-		local button = self.buttons[unit]	
-		if(not button) then return end
-		
+	if (arenaUnits[unit] == "playerUnit" and not self.buttons[unit].isDead) then
+		local spell, rank, displayName, icon, startTime, endTime, isTradeSkill = UnitChannelInfo(unit)
 		local castBar = self.buttons[unit].castBar
 		castBar.isChanneling = true
 		castBar.value = ((endTime / 1000) - GetTime())
@@ -586,43 +414,29 @@ function Gladius:UNIT_SPELLCAST_CHANNEL_START(event, unit)
 		castBar:SetMinMaxValues(0, castBar.maxValue)
 		castBar:SetValue(castBar.value)
 		castBar.timeText:SetText(maxValue)
-		castBar.icon:SetTexture(icon)
 
 		if( rank ~= "" ) then
 			castBar.spellText:SetFormattedText("%s (%s)", spell, rank)
 		else
 			castBar.spellText:SetText(spell)
 		end
-		
-		-- Cooldown detection
-		local unitClass = select(2, UnitClass(unit))
-		local spellId = self.cooldownSpellIds[spell]
-		if ( unitClass and self.cooldownSpells[unitClass][spellId] ) then
-         self:CooldownUsed(unit, unitClass, spellId, spell)
-		end
 	end	
 end
 
 function Gladius:UNIT_SPELLCAST_STOP(event, unit)
-	if (arenaUnits[unit] == "playerUnit") then
-		local button = self.buttons[unit]	
-		if(not button) then return end
-		
-		self:CastEnd(button.castBar)
+	if (arenaUnits[unit] == "playerUnit" and not self.buttons[unit].isDead) then
+		self:CastEnd(self.buttons[unit].castBar)
 	end
 end
 
 function Gladius:UNIT_SPELLCAST_DELAYED(event, unit)
-	if (arenaUnits[unit] == "playerUnit") then
+	if (arenaUnits[unit] == "playerUnit" and not self.buttons[unit].isDead) then
 		local spell, rank, displayName, icon, startTime, endTime, isTradeSkill
 		if (event == "UNIT_SPELLCAST_DELAYED") then
 			spell, rank, displayName, icon, startTime, endTime, isTradeSkill = UnitCastingInfo(unit)
 		else
 			spell, rank, displayName, icon, startTime, endTime, isTradeSkill = UnitChannelInfo(unit)
 		end
-		
-		if startTime == nil then return end
-		
 		local bar = self.buttons[unit].castBar
 		bar.value = (GetTime() - (startTime / 1000))
 		bar.maxValue = (endTime - startTime) / 1000
@@ -635,407 +449,91 @@ function Gladius:CastEnd(bar)
 	bar.isChanneling = nil
 	bar.timeText:SetText("")
 	bar.spellText:SetText("")
-	bar.icon:SetTexture("")
 	bar:SetValue(0)
-end
-
--- Talent spec detection handler
--- kremonted: Your old code was duplicating the logic twice, don't really need to check if
--- they are a valid unit/have no spec and then check again in here. - Shadowed
-function Gladius:DetectSpec(unit, spec)
-	if( not spec or arenaSpecs[unit] or arenaUnits[unit] ~= "playerUnit" ) then return end
-	arenaSpecs[unit] = spec
-	
-	-- update cooldown tracker
-	if (db.cooldown) then
-      local class = select(2, UnitClass(unit))
-      for k,v in pairs(self.cooldownSpells[class]) do
-         if (db.cooldownList[k] ~= false and db.cooldownList[class] ~= false) then      
-            if (type(v) == "table" and ((v.spec ~= nil and v.spec == spec) or (v.notSpec ~= nil and v.notSpec ~= spec))) then
-               local button = self.buttons[unit]
-               
-               local sharedCD = false
-               if (type(v) == "table" and v.sharedCD ~= nil and v.sharedCD.cd == nil) then
-                  for spellId, _ in pairs(v.sharedCD) do
-                     for i=1, button.lastCooldownSpell do
-                        local icon = button.spellCooldownFrame["icon" .. i]
-                        if (icon.spellId == spellId) then 
-                           sharedCD = true 
-                        end
-                     end
-                  end
-               end
-               if sharedCD then return end
-               
-               local icon = button.spellCooldownFrame["icon" .. button.lastCooldownSpell]
-               icon:Show()
-               icon.texture:SetTexture(self.spellTextures[k])
-               
-               button.lastCooldownSpell = button.lastCooldownSpell + 1            
-            end
-         end
-      end
-   end
-	
-	if( db.specAnnounce ) then
-		self:SendAnnouncement(string.format(L["SPEC DETECTED: %s - %s %s"], UnitName(unit), spec, UnitClass(unit)), RAID_CLASS_COLORS[select(2,UnitClass(unit))])
-	end
-	
-	-- update cooldown tracker
-
-	-- Have to do a unit update too so it becomes visible
-	if( db.specText ) then
-		local button = self.buttons[unit]
-		if(not button) then return end
-		if (button.classText:GetText()) then
-			button.classText:SetFormattedText("%s %s", arenaSpecs[unit], button.classText:GetText())
-		else
-			button.classText:SetText(arenaSpecs[unit])
-		end
-	end
 end
 
 --Update the highlight and frame border for current target
 function Gladius:PLAYER_TARGET_CHANGED(event)
 	local target = UnitGUID("target")
-	for _, button in pairs(self.buttons) do
-		if( button.GUID == target ) then
+	for _, v in pairs(self.buttons) do
+		if (v.GUID == target) then
 			if (db.highlight) then
-				button.highlight:Show()
+				v.highlight:Show()
 			end
 			if (db.selectedBorder) then
-				button.selected:Show()
+				v.selected:Show()
 			end
 		else
-			button.highlight:Hide()
-			button.selected:Hide()
+			v.highlight:Hide()
+			v.selected:Hide()
 		end
 	end		
 end
 
 function Gladius:PLAYER_FOCUS_CHANGED(event)
 	local focus = UnitGUID("focus")
-	for _, button in pairs(self.buttons) do
-		if( button.GUID == focus ) then
+	for _, v in pairs(self.buttons) do
+		if (v.GUID == focus) then
 			if (db.focusBorder) then
-				button.focusBorder:Show()
+				v.focusBorder:Show()
 			end
 		else
-			button.focusBorder:Hide()
+			v.focusBorder:Hide()
 		end
 	end
 end
 
---Update target of arena enemies and assist border
+--Update target of arena enemies
 function Gladius:UNIT_TARGET(event, unit)
-	if (arenaUnits[unit] == "playerUnit" and db.targetIcon) then
-      local button = self.buttons[unit]
-		local targetIcon = button.targetIcon
+	if (arenaUnits[unit] == "playerUnit" and not self.buttons[unit].isDead and db.targetIcon) then
+		local targetIcon = self.buttons[unit].targetIcon
 		local targetClass = select(2, UnitClass(unit.."target"))
 		if (targetClass ~= nil) then
+			local coords = CLASS_BUTTONS[targetClass]
 			targetIcon:SetTexture("Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes")
-			targetIcon:SetTexCoord(unpack(CLASS_BUTTONS[targetClass]))
+			targetIcon:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
 			targetIcon:SetAlpha(1)
 		else
 			targetIcon:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
 			targetIcon:SetTexCoord(0,0,0,1,1,0,1,1)
 			targetIcon:SetAlpha(0.33)
 		end
-   elseif (GetRealNumRaidMembers() > 0 and (unit:find("raid") ~= nil or unit:find("party") ~= nil) and unit:find("pet") == nil) then
-      if (GetPartyAssignment("MAINASSIST", unit) == 1) then
-         local assist = UnitGUID(unit .. "target")
-         for _, button in pairs(self.buttons) do
-            if( button.GUID == assist ) then
-               if (db.assistBorder) then
-                  button.assistBorder:Show()
-               end
-            else
-               button.assistBorder:Hide()
-            end
-         end
-      end
 	end
-end
-
-function Gladius:DRGain(unit, spellType)
-   local button = self.buttons[unit]
-   if not button then return end
-   
-   -- don't continue if its a pet or the spellType is deactivated
-   if (arenaUnits[unit] ~= "playerUnit" or (db.drList[spellType] ~= nil and not db.drList[spellType])) then return end
-   
-   -- save the diminishing return value
-   if (not button.diminishingReturn) then button.diminishingReturn = {} end
-   
-   if (not button.diminishingReturn[spellType]) then 
-      button.diminishingReturn[spellType] = 0
-   end
-   
-   button.diminishingReturn[spellType] = button.diminishingReturn[spellType] + 1
-end
-
-function Gladius:DRFades(unit, spellName)
-   local button = self.buttons[unit]
-   if not button then return end
-
-   if (not button.diminishingReturn) then button.diminishingReturn = {} end
-   
-   -- get the diminishing return type
-   if (not db.drCooldown) then return end
-   local spellType = self.drSpellIds[spellName] 
-   
-   -- don't continue if its a pet or the spellType is deactivated
-   if (arenaUnits[unit] ~= "playerUnit" or (db.drList[spellType] ~= nil and db.drList[spellType] == false)) then return end
-   
-   -- immune to spells
-   if (button.diminishingReturn[spellType] ~= nil and button.diminishingReturn[spellType] >= 4) then return end
-   
-   -- set the cooldown
-   for i=1, 16 do
-      local frame = button.drCooldownFrame["icon" .. i]
-      if (not frame.active or (frame.type ~= nil and frame.type == spellType)) then
-         frame.active = true
-         frame.type = spellType
-         frame.timeLeft = DRTIME
-         frame.cooldown:SetCooldown(GetTime(), DRTIME)
-         frame.texture:SetTexture(self.drSpellTextures[spellName])
-         
-         if (db.drText) then
-            frame.text:SetText(self.drTime[button.diminishingReturn[spellType]])
-         end
-         
-         -- position the icons
-         self:DRPositionIcons()
-         
-         -- show icon
-         frame:Show()
-         frame:SetAlpha(1)         
-                  
-         frame:SetScript("OnUpdate", function(self, elapsed)
-            self.timeLeft = self.timeLeft - elapsed
-            if ( self.timeLeft <= 0 ) then
-               frame.active = false
-               frame.type = nil
-               frame.cooldown:Hide()
-               frame:SetScript("OnUpdate", nil)
-               frame:Hide()
-               frame.text:SetText("")
-               frame:SetAlpha(0)
-               
-               -- reset diminishing return
-               button.diminishingReturn[spellType] = 0
-               
-               -- position icons
-               Gladius:DRPositionIcons(unit)
-            end	
-         end)
-         
-         break
-      end
-   end
-end
-
-function Gladius:DRPositionIcons(unit)
-   local button = self.buttons[unit]
-   if not button then return end
-   
-   local lastFrame = nil
-   local anchor = db.drCooldownAnchor == "CENTER" and "" or db.drCooldownAnchor
-   
-   for i=1, 16 do 
-      local frame = button.drCooldownFrame["icon" .. i]
-      if (frame.active) then
-         frame:ClearAllPoints()
-            
-         if (db.drCooldownPos == "RIGHT") then
-            if (lastFrame == nil) then
-               frame:SetPoint(anchor.."LEFT",button.drCooldownFrame)
-            else
-               frame:SetPoint("LEFT",lastFrame,"RIGHT",db.drMargin-5,0)
-            end
-         else
-            if (lastFrame == nil) then
-               frame:SetPoint(anchor.."RIGHT",button.drCooldownFrame)
-            else
-               frame:SetPoint("RIGHT",lastFrame,"LEFT",-db.drMargin+5,0)
-            end
-         end	
-         
-         lastFrame = frame
-      end
-   end   
 end
 
 --Scan combatlog for enemy deaths and aura fading
 function Gladius:COMBAT_LOG_EVENT_UNFILTERED(event, timestamp, eventType, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
+
 	-- enemy death
 	if (eventType == "PARTY_KILL" and bit.band(destFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) == COMBATLOG_OBJECT_REACTION_HOSTILE) then
-		self:UnitDeath(destGUID)
+		self:EnemyDeath(destGUID)
 	
+	-- fix for wyvern sting
 	elseif ( eventType == "SPELL_AURA_APPLIED" ) then
 		local spellID, spellName = ...
 		if ( arenaGUID[destGUID] and ( spellID == 49010 or spellID == 49009 or spellID == 27069 or spellID == 24135 or spellID == 24134 or spellID == 24131 ) ) then
 			self.buttons[arenaGUID[destGUID]].wyvernDot = true	
-      elseif (arenaGUID[destGUID] and self.drSpellIds[spellName]) then
-         self:DRGain(arenaGUID[destGUID], self.drSpellIds[spellName])
 		end
 	
 	elseif (eventType == "SPELL_AURA_REMOVED" or eventType == "SPELL_PERIODIC_AURA_REMOVED" or eventType == "SPELL_AURA_REMOVED_DOSE" or eventType == "SPELL_PERIODIC_AURA_REMOVED_DOSE") then
-		local spellID, spellName = ...		
+		local spellID, spellName = ...
+		-- fix for wyvern sting
 		if ( arenaGUID[destGUID] and ( spellID == 49010 or spellID == 49009 or spellID == 27069 or spellID == 24135 or spellID == 24134 or spellID == 24131 ) ) then
 			self.buttons[arenaGUID[destGUID]].wyvernDot = false
-      elseif (arenaGUID[destGUID] and self.drSpellIds[spellName]) then
-         self:DRFades(arenaGUID[destGUID], spellName)
 		end
-   
-   elseif (eventType == "SPELL_AURA_REFRESH") then
-      local spellID, spellName = ...		
-      if (arenaGUID[destGUID] and self.drSpellIds[spellName]) then
-         self:DRFades(arenaGUID[destGUID], spellName)
-         self:DRGain(arenaGUID[destGUID], self.drSpellIds[spellName])
-      end
 	
 	elseif ( eventType == "SPELL_CAST_SUCCESS" ) then
 		local spellID, spellName = ...
-		-- Trying out UNIT_SPELLCAST_SUCCEEDED because relying on the combat log for important things sucks due to it breaking constantly.
-		--[[							
-		if( arenaGUID[sourceGUID] ) then
-			-- Spec detection for instant cast spells
-			-- GetSpellInfo(spellID) and spellName are the same, results don't differ.
-			self:DetectSpec(arenaGUID[sourceGUID], self.specSpells[spellName])
-			
-			-- enemy trinket usage
-			if( ( spellID == 59752 or spellID == 42292 ) and db.trinketStatus ) then
-				self:TrinketUsed(arenaGUID[sourceGUID], 120)
-			end
-			
-			--wotf
-			if ( spellID == 7744 and db.trinketStatus ) then	
-				self:TrinketUsed(arenaGUID[sourceGUID], 45)
-			end
+						
+		-- enemy trinket usage
+		if ( arenaGUID[sourceGUID] and (spellID == 42292 or spellID == 59752) and db.trinketStatus) then
+			self:TrinketUsed(arenaGUID[sourceGUID])
 		end
-		--]]
+			
 	end
 	
 end
 
--- New little experiment, hopefully this won't break just as often as the combat log (lol)
-function Gladius:UNIT_SPELLCAST_SUCCEEDED(event, unit, spell, rank)
-	if ( arenaUnits[unit] == "playerUnit" or ( self.frame.testing and unit == "player" )) then
-		if ( unit == "player" ) then unit = "arena1" end
-		
-		-- Spec detection for instant cast spells
-		self:DetectSpec(unit, self.specSpells[spell])
-		
-		-- Cooldown detection		
-      local unitClass = select(2, UnitClass(unit))
-      local spellId = self.cooldownSpellIds[spell]
-      if ( unitClass and self.cooldownSpells[unitClass][spellId] ) then
-         self:CooldownUsed(unit, unitClass, spellId, spell)
-      end     
-		
-		-- pvp trinket
-		if ( ( spell == GetSpellInfo(59752) or spell == GetSpellInfo(42292) ) and db.trinketStatus ) then
-			self:TrinketUsed(unit, 120)
-		end
-
-		-- wotf
-		if ( spell == GetSpellInfo(7744) and db.trinketStatus ) then	
-			self:TrinketUsed(unit, 45)
-		end
-	end
-end
-
-function Gladius:CooldownUsed(unit, unitClass, spellId, spellName)
-   local button = self.buttons[unit]
-   if not button then return end   
-   if (db.cooldownList[spellId] == false) then return end
-   
-   local cooldown = self.cooldownSpells[unitClass][spellId]
-   local cd = cooldown
-   if (type(cooldown) == "table") then
-      -- return if the spec doesn't have a cooldown for this spell
-      if (arenaSpecs[unit] ~= nil and cooldown.notSpec ~= nil and arenaSpecs[unit] == cooldown.notSpec) then return end 
-      
-      -- check if we need to reset other cooldowns because of this spell
-      if (cooldown.resetCD ~= nil) then
-         for k,v in pairs(cooldown.resetCD) do
-            self:CooldownReady(button, k, false)
-         end
-      end
-      
-      -- check if there is a special cooldown for the units spec
-      if (arenaSpecs[unit] ~= nil and cooldown[arenaSpecs[unit]] ~= nil) then
-         cd = cooldown[arenaSpecs[unit]]
-      else
-         cd = cooldown.cd
-      end     
-      
-      -- check if there is a shared cooldown with an other spell
-      if (cooldown.sharedCD ~= nil) then
-         local sharedCD = cooldown.sharedCD.cd and cooldown.sharedCD.cd or cd
-      
-         for k,v in pairs(cooldown.sharedCD) do
-            if (k ~= "cd") then            
-               self:CooldownStart(button, k, sharedCD)
-            end
-         end
-      end
-   end  
-
-   if (db.cooldown) then     
-      -- start cooldown
-      self:CooldownStart(button, spellId, cd)
-   end
-   
-   -- announcement
-   if (db.cooldownAnnounce or db.cooldownAnnounceList[spellId] or db.cooldownAnnounceList[unitClass]) then   
-      self:SendAnnouncement(string.format(L["COOLDOWN USED: %s (%s) used %s - %s sec. cooldown"], UnitName(unit), UnitClass(unit), spellName, cd), RAID_CLASS_COLORS[UnitClass(unit)], db.cooldownAnnounceList[spellId] and db.cooldownAnnounceList[spellId] or db.announceType)
-   end
-   
-   -- sound file
-   if (db.cooldownSoundList[spellId] ~= nil and db.cooldownSoundList[spellId] ~= "disabled") then
-      PlaySoundFile(LSM:Fetch(LSM.MediaType.SOUND, db.cooldownSoundList[spellId]))
-   end  
-end
-
-function Gladius:CooldownStart(button, spellId, duration)
-   if not duration or duration == nil or type(duration) ~= "number" then return end
-
-   for i=1, button.lastCooldownSpell do
-      if (button.spellCooldownFrame["icon" .. i].spellId == spellId) then
-         local frame = button.spellCooldownFrame["icon" .. i]
-         frame.active = true
-         frame.timeLeft = duration
-         frame.cooldown:SetCooldown(GetTime(), duration)
-                  
-         frame:SetScript("OnUpdate", function(self, elapsed)
-            self.timeLeft = self.timeLeft - elapsed
-            if ( self.timeLeft <= 0 ) then
-               Gladius:CooldownReady(button, spellId, frame)
-            end	
-         end)
-      end
-   end
-end
-
-function Gladius:CooldownReady(button, spellId, frame)
-   if (frame == false) then
-      for i=1, button.lastCooldownSpell do
-         frame = button.spellCooldownFrame["icon" .. i]
-         
-         if (frame.spellId == spellId) then  
-            frame.active = false
-            frame.cooldown:Hide()
-            frame:SetScript("OnUpdate", nil)
-         end
-      end
-   else
-      frame.active = false
-      frame.cooldown:Hide()
-      frame:SetScript("OnUpdate", nil)
-   end
-end
 
 function Gladius:GetTrinketIcon(unit)
 	local trinketIcon
@@ -1056,7 +554,9 @@ end
 
 -- Trinket updating function
 local function TrinketUpdate(self, elapsed)
-	if ( self.endTime < GetTime() ) then	
+
+	if ( self.endTime < GetTime() ) then
+	
 		local button = Gladius.buttons[self.unit]
 		local display = db.trinketDisplay
 
@@ -1069,7 +569,7 @@ local function TrinketUpdate(self, elapsed)
 		end
 		
 		-- Announce trinket ready
-		if ( db.trinketUpAnnounce ) then
+		if ( db.trinketUpAnnounce and not button.isDead ) then
 			Gladius:SendAnnouncement(string.format(L["TRINKET READY: %s (%s)"], button.name, button.classLoc), RAID_CLASS_COLORS[button.class])
 		end
 		
@@ -1081,11 +581,9 @@ local function TrinketUpdate(self, elapsed)
 end	
 
 --Trinket used
-function Gladius:TrinketUsed(unit, time)
+function Gladius:TrinketUsed(unit)
+
 	local button = self.buttons[unit]
-	
-	if ( not button or ( button.trinketFrame and button.trinketFrame.endTime > (GetTime()+time)) ) then return end
-	
 	local display = db.trinketDisplay
 	local trinketIcon = self:GetTrinketIcon(unit)
 
@@ -1095,7 +593,7 @@ function Gladius:TrinketUsed(unit, time)
 	end
 
 	button.trinketFrame:SetScript("OnUpdate", TrinketUpdate)
-	button.trinketFrame.endTime = GetTime() + time
+	button.trinketFrame.endTime = GetTime() + 120
 	button.trinketFrame.unit = unit
 	
 	-- Hide name-text/icon or change color of gridtrinket frame
@@ -1107,221 +605,156 @@ function Gladius:TrinketUsed(unit, time)
 	
 	-- Set the cooldown timer
 	if ( display == "overrideIcon" or display == "bigIcon" or display == "smallIcon" or display == "gridIcon" ) then 
-		CooldownFrame_SetTimer(button.cooldownFrame, GetTime(), time, 1)
+		CooldownFrame_SetTimer(button.cooldownFrame, GetTime(), 120, 1)
 	end
 
 	-- Announce that the trinket has been used
 	if ( db.trinketUsedAnnounce ) then
-		if (time == 120) then
-			Gladius:SendAnnouncement(string.format(L["TRINKET USED: %s (%s)"], button.name, button.classLoc), RAID_CLASS_COLORS[button.class])
-		else
-			Gladius:SendAnnouncement(string.format("WOTF USED: %s (%s)", button.name, button.classLoc), RAID_CLASS_COLORS[button.class])
+		Gladius:SendAnnouncement(string.format(L["TRINKET USED: %s (%s)"], button.name, button.classLoc), RAID_CLASS_COLORS[button.class])
+	end
+	
+end
+
+--Enemy has died
+function Gladius:EnemyDeath(GUID)
+	for unit, button in pairs(self.buttons) do
+		if (button.GUID == GUID and arenaUnits[unit] == "playerUnit") then
+			button.isDead = true
+			button.health:SetValue(0)
+			button.healthText:SetText("DEAD")
+			button.mana:SetValue(0)
+			button.manaText:SetText("0%")
+			button.classIcon:SetAlpha(0.33)
+			button.targetIcon:SetAlpha(0.33)
+			button.targetIcon:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
+			button.targetIcon:SetTexCoord(0,0,0,1,1,0,1,1)
+			button.trinket:SetText("")
+			Gladius:AuraFades(button.auraFrame)
+			break
 		end
 	end
 end
 
---Enemy has died
-function Gladius:UnitDeath(GUID)
-	local unit = arenaGUID[GUID]
-	if (arenaUnits[unit] == "playerUnit") then
-		local button = self.buttons[unit]		
-		if(not button) then return end
-		
-		button.health:SetValue(0)
-		button.healthText:SetText("DEAD")
-		button.mana:SetValue(0)
-		button.manaText:SetText("0%")
-		button.classIcon:SetAlpha(0.33)
-		button.targetIcon:SetAlpha(0.33)
-		button.targetIcon:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
-		button.targetIcon:SetTexCoord(0,0,0,1,1,0,1,1)
-		button.trinket:SetText("")
-		button.spellCooldownFrame:Hide()
-		button.drCooldownFrame:Hide()
-		Gladius:AuraFades(button.auraFrame)
-	end
-end
-
 --Send an announcement message
-function Gladius:SendAnnouncement(text, color, dest)
-	local color = color or { r = 0, g = 1, b = 0 }
-	local dest = dest or db.announceType
-	
-	if (dest == "self") then
-      DEFAULT_CHAT_FRAME:AddMessage("|cff33ff99Gladius|r: " .. text)
-   end
-	
-	if( dest == "rw" and not IsRaidLeader() and not IsRaidOfficer() and GetRealNumRaidMembers() > 0 ) then
-		dest = "party"
-	end
-	
+function Gladius:SendAnnouncement(text, color)
 	-- party chat
-	if ( dest == "party" and (GetRealNumPartyMembers() > 0 or GetRealNumRaidMembers() > 0) ) then
+	if ( db.announceType == "party" ) then
 		SendChatMessage(text, "PARTY")
-	
-	-- say
-	elseif ( dest == "say" ) then
-		SendChatMessage(text, "SAY")
 		
 	-- raid warning
-	elseif ( dest == "rw" ) then
+	elseif ( db.announceType == "rw" ) then
 		SendChatMessage(text, "RAID_WARNING")
 		
 	-- floating combat text
-	elseif ( dest == "fct" and IsAddOnLoaded("Blizzard_CombatText") ) then
+	elseif ( db.announceType == "fct" and IsAddOnLoaded("Blizzard_CombatText") ) then
 		CombatText_AddMessage(text, COMBAT_TEXT_SCROLL_FUNCTION, color.r, color.g, color.b)
 		
 	-- MikScrollingBattleText	
-	elseif ( dest == "msbt" and IsAddOnLoaded("MikScrollingBattleText") ) then 
+	elseif ( db.announceType == "msbt" and IsAddOnLoaded("MikScrollingBattleText") ) then 
 		MikSBT.DisplayMessage(text, MikSBT.DISPLAYTYPE_NOTIFICATION, false, color.r * 255, color.g * 255, color.b * 255)
 		
 	-- Scrolling Combat Text
-	elseif ( dest == "sct" and IsAddOnLoaded("sct") ) then
+	elseif ( db.announceType == "sct" and IsAddOnLoaded("sct") ) then
 		SCT:DisplayText(text, color, nil, "event", 1)
-	
-	-- Parrot
-	elseif ( dest == "parrot" and IsAddOnLoaded("parrot") ) then
-      Parrot:ShowMessage(text, "Notification", false, color.r, color.g, color.b)
 	end
 end
 
 
 --Update single unit button
 function Gladius:UpdateUnit(unit)	
-	local button = self.buttons[unit]	
-	if (not button) then return end
-	
-	--check if unit exists
-	if (UnitExists(unit)) then
-      if (arenaUnits[unit] == "playerUnit" or (arenaUnits[unit] ~= "playerUnit" and db.showPets)) then
-         if (not button:IsShown()) then button:Show() end
-         if (button:GetAlpha() < 1) then button:SetAlpha(1) end  
-      end
-
-		arenaGUID[UnitGUID(unit)] = unit
-		local name, server = UnitName(unit)
-		local classLoc, class = UnitClass(unit)
-		local raceLoc, race = UnitRace(unit)
-				
-		button.name = name
-		button.class = class
-		button.classLoc = classLoc
-		button.GUID = UnitGUID(unit)
-		button.text:SetText(name)
+		local button = self.buttons[unit]
 		
-		--Announce the enemy if enabled and a name exists.
-		if ( db.enemyAnnounce and not button.enemyAnnounced and name ~= "Unknown" ) then
-			Gladius:SendAnnouncement(name .. " - " .. classLoc, RAID_CLASS_COLORS[class])
-			button.enemyAnnounced = true
-		end
+		if ( not button ) then return end
 		
-		button.diminishingReturn = {}
-					
-		--setup the trinket status
-		if (not db.trinketStatus or (db.trinketDisplay ~= "nameText" and db.trinketDisplay ~= "nameIcon")) then
-			button.trinket:SetText("")
-		else
-			local text = db.trinketDisplay == "nameText" and " (t)" or Gladius:GetTrinketIcon(unit, true)
-			local alpha = db.trinketDisplay == "nameText" and 1 or 0.5
-			button.trinket:SetText(text)
-			button.trinket:SetAlpha(alpha)
-		end
+		--check if unit exists
+		if (UnitExists(unit)) then
 		
-		if (db.trinketDisplay == "bigIcon" and db.trinketStatus) then
-			button.bigTrinket:SetTexture(Gladius:GetTrinketIcon(unit, false))
-		elseif (db.trinketDisplay == "smallIcon" and db.trinketStatus) then
-			button.smallTrinket:SetTexture(Gladius:GetTrinketIcon(unit, false))
-		elseif (db.trinketDisplay == "overrideIcon" and db.trinketStatus) then
-			button.overrideTrinket:SetTexture(Gladius:GetTrinketIcon(unit, false))
-		end
+			arenaGUID[UnitGUID(unit)] = unit
+			local name, server = UnitName(unit)
+			local classLoc, class = UnitClass(unit)
+			local raceLoc, race = UnitRace(unit)
+			local sex = UnitSex(unit)
 			
-		-- handle the class/race/spec text
-		button.classText:SetText("")
-		if (db.classText) then
-			button.classText:SetText(classLoc)
-		end
-		
-		if (db.raceText) then
-			if (button.classText:GetText()) then
-				button.classText:SetFormattedText("%s %s", raceLoc, button.classText:GetText())
-			else
-				button.classText:SetText(raceLoc)
+			--Announce the enemy if enabled and a name exists.
+			if ( db.enemyAnnounce and not button.enemyAnnounced and name ~= "Unknown" ) then
+				Gladius:SendAnnouncement(name .. " - " .. classLoc, RAID_CLASS_COLORS[class])
+				button.enemyAnnounced = true
 			end
-		end
-		
-		if (db.specText and arenaSpecs[unit]) then
-			if (button.classText:GetText()) then
-				button.classText:SetFormattedText("%s %s", arenaSpecs[unit], button.classText:GetText())
+			
+			button.name = name
+			button.class = class
+			button.classLoc = classLoc
+			button.GUID = UnitGUID(unit)
+			button.text:SetText(name)
+						
+			--setup the trinket status
+			if (not db.trinketStatus or (db.trinketDisplay ~= "nameText" and db.trinketDisplay ~= "nameIcon")) then
+				button.trinket:SetText("")
 			else
-				button.classText:SetText(arenaSpecs[unit])
+				local text = db.trinketDisplay == "nameText" and " (t)" or Gladius:GetTrinketIcon(unit, true)
+				local alpha = db.trinketDisplay == "nameText" and 1 or 0.5
+				button.trinket:SetText(text)
+				button.trinket:SetAlpha(alpha)
 			end
+			
+			if (db.trinketDisplay == "bigIcon" and db.trinketStatus) then
+				button.bigTrinket:SetTexture(Gladius:GetTrinketIcon(unit, false))
+			elseif (db.trinketDisplay == "smallIcon" and db.trinketStatus) then
+				button.smallTrinket:SetTexture(Gladius:GetTrinketIcon(unit, false))
+			elseif (db.trinketDisplay == "overrideIcon" and db.trinketStatus) then
+				button.overrideTrinket:SetTexture(Gladius:GetTrinketIcon(unit, false))
+			end
+				
+			-- handle the class/race text
+			button.classText:SetText("")
+			if (db.classText) then
+				button.classText:SetText(classLoc)
+			end
+			
+			if (db.raceText) then
+				if (button.classText:GetText()) then
+					button.classText:SetFormattedText("%s %s", raceLoc, button.classText:GetText())
+				else
+					button.classText:SetText(raceLoc)
+				end
+			end
+			
+			if (not db.classText and not db.raceText) then
+				button.classText:Hide()
+			end
+						
+			--health bar class color
+			button.health:SetStatusBarColor(RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b, 1)
+			
+			--class icon
+			local coords = CLASS_BUTTONS[class]
+			button.classIcon:SetTexture("Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes")
+			button.classIcon:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
+			button.classIcon:SetAlpha(1)
+			
+			--Check if it's a pet class and in that case update the frame to fit
+			button.isPetClass = petClasses[class] and true or false
+			if ( db.showPets and not button.isPetClass and not InCombatLockdown() and ( not button.resizeThrottle or GetTime() > button.resizeThrottle )) then
+				Gladius:NewNonPetUnit(unit)
+				button.resizeThrottle = GetTime()+5
+			end
+			
+			-- Update health/mana/power
+			self:UNIT_HEALTH(nil, unit)
+			self:UNIT_POWER(nil, unit)
+			self:UNIT_DISPLAYPOWER(nil, unit)
+			self:UNIT_AURA(nil, unit)
+			self:UNIT_TARGET(nil, unit)
+			self:UNIT_PET(nil, unit)
+			self:PLAYER_TARGET_CHANGED(nil)
+			self:PLAYER_FOCUS_CHANGED(nil)
+			self:CastEnd(button.castBar)
+			
+			button:SetAlpha(1)		
+		else
+			button:SetAlpha(0)
 		end
 		
-		if (not db.classText and not db.raceText and not db.specText) then
-			button.classText:Hide()
-		end
-					
-		--health bar class color
-		button.health:SetStatusBarColor(RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b, 1)
-		
-		--class icon
-		button.classIcon:SetTexture("Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes")
-		button.classIcon:SetTexCoord(unpack(CLASS_BUTTONS[class]))
-		button.classIcon:SetAlpha(1)
-		
-		-- update cooldown tracker
-		button.lastCooldownSpell = 1
-		if (db.cooldown) then         
-         for k,v in pairs(self.cooldownSpells[class]) do
-            if (db.cooldownList[k] ~= false and db.cooldownList[class] ~= false) then         
-               if (type(v) ~= "table" or (type(v) == "table" and v.spec == nil and v.notSpec == nil)) then
-                  -- see if we have shared cooldowns without a cooldown defined
-                  -- e.g. hunter traps have shared cooldowns, so only display one trap instead all of them
-                  local sharedCD = false
-                  if (type(v) == "table" and v.sharedCD ~= nil and v.sharedCD.cd == nil) then
-                     for spellId, _ in pairs(v.sharedCD) do
-                        for i=1, button.lastCooldownSpell do
-                           local icon = button.spellCooldownFrame["icon" .. i]
-                           if (icon.spellId == spellId) then 
-                              sharedCD = true 
-                           end
-                        end
-                     end
-                  end
-                  
-                  if (not sharedCD) then                              
-                     local icon = button.spellCooldownFrame["icon" .. button.lastCooldownSpell]
-                     icon:Show()
-                     icon.spellId = k
-                     icon.texture:SetTexture(self.spellTextures[k])
-                     
-                     button.lastCooldownSpell = button.lastCooldownSpell + 1  
-                  end          
-               end
-            end
-         end
-		end
-		
-		--Check if it's a pet class and in that case update the frame to fit
-		button.isPetClass = petClasses[class] and true or false
-		if ( db.showPets and not button.isPetClass and not InCombatLockdown() and ( not button.resizeThrottle or GetTime() > button.resizeThrottle )) then
-			Gladius:NewNonPetUnit(unit)
-			button.resizeThrottle = GetTime()+5
-		end
-		
-		-- Update everything
-		self:UNIT_HEALTH(nil, unit)
-		self:UNIT_POWER(nil, unit)
-		self:UNIT_DISPLAYPOWER(nil, unit)
-		self:UNIT_AURA(nil, unit)
-		self:UNIT_TARGET(nil, unit)
-		self:UNIT_PET(nil, unit)
-		self:PLAYER_TARGET_CHANGED(nil)
-		self:PLAYER_FOCUS_CHANGED(nil)
-		self:CastEnd(button.castBar)		
-	else
-		button:SetAlpha(0)
-	end		
 end
 
 function Gladius:UNIT_PET(event, unit)
@@ -1338,9 +771,7 @@ end
 
 -- Update a single pet button
 function Gladius:UpdatePet(unit)
-	local button = self.buttons[unit]	
-	if ( not button ) then return end
-	
+	local button = self.buttons[unit]
 	if ( self.frame.testing and unit == "arenapet1" ) then unit = "pet" end
 	
 	--check if unit exists
@@ -1389,31 +820,26 @@ end
 
 --Update attribute
 function Gladius:UpdateAttribute(unit, key, mod, action, spellName)
-	local button = self.buttons[unit]
+	local button = self.buttons[unit].secure
 	local test = self.frame.testing
 	
 	if (test and unit == "arena1") then
-		button.secure:SetAttribute("unit", "player")
+		button:SetAttribute("unit", "player")
 	elseif (test and unit == "arenapet1") then
-		button.secure:SetAttribute("unit", "pet")
+		button:SetAttribute("unit", "pet")
 	else
-		button.secure:SetAttribute("unit", unit)
+		button:SetAttribute("unit", unit)
 	end
-	
-	if (arenaUnits[unit] == "playerUnit") then
-      button.secureTarget:SetAttribute("unit", unit .. "target") 
-      button.secureTarget:SetAttribute("type1", "target")
-   end       
 
 	if ( action == "target" or action == "focus" ) then
-		button.secure:SetAttribute(mod .. "type" .. key, action)
+		button:SetAttribute(mod .. "type" .. key, action)
 	elseif ( action == "macro" and spellName ~= "" ) then
 		local macro = string.gsub(spellName, "*unit", unit)
-		button.secure:SetAttribute(mod .. "type" .. key, "macro")
-		button.secure:SetAttribute(mod .. "macrotext" .. key, macro)
+		button:SetAttribute(mod .. "type" .. key, "macro")
+		button:SetAttribute(mod .. "macrotext" .. key, macro)
 	elseif ( action == "spell" and spellName ~= "" ) then
-		button.secure:SetAttribute(mod .. "type" .. key, "spell")
-		button.secure:SetAttribute(mod .. "spell" .. key, spellName)
+		button:SetAttribute(mod .. "type" .. key, "spell")
+		button:SetAttribute(mod .. "spell" .. key, spellName)
 	end
 end
 
@@ -1426,14 +852,8 @@ end
 
 --Arena unit update
 function Gladius:ARENA_OPPONENT_UPDATE(event, unit, type)
-	if(arenaUnits[unit] == "playerUnit") then
-		if(type == "seen") then
-			Gladius:UpdateUnit(unit)
-		elseif(type == "unseen") then
-			Gladius.buttons[unit]:SetAlpha(0.25)
-		elseif(type == "destroyed") then
-			Gladius.buttons[unit]:SetAlpha(0)
-		end
+	if ( type == "seen" and arenaUnits[unit] == "playerUnit" ) then
+		Gladius:UpdateUnit(unit)
 	end
 end
 
@@ -1462,6 +882,7 @@ function Gladius:Test()
 		local unit = "arena" .. i
 		local pet = "arenapet" .. i
 		local button = self.buttons[unit]
+		button.isDead = false
 		
 		local class, race, sex, classLoc, raceLoc, health, mana, manaMax, manaPercentage, healthMax, healthActual
 		if (i == 1) then
@@ -1523,7 +944,6 @@ function Gladius:Test()
 		button.castBar:SetValue(i-0.5)
 		button.castBar.spellText:SetText("Example Spell (Rank 1)")
 		button.castBar.timeText:SetText(i-0.5)
-		button.castBar.icon:SetTexture(select(3, GetSpellInfo(1)))
 		
 		Gladius:AuraGain("arena1", "Ice Block", select(3, GetSpellInfo(45438)), GetTime()+10, 3)
 		
@@ -1531,7 +951,7 @@ function Gladius:Test()
 		button.health:SetValue(health)
 		button.mana:SetValue(manaPercentage)
 		
-		if (not db.classText and not db.specText) then
+		if (not db.classText) then
 			button.classText:Hide()
 		end
 		
@@ -1559,11 +979,13 @@ function Gladius:Test()
 		local classes = { [0] = "WARRIOR", [1] = "PRIEST", [2] = "DRUID", [3] = "MAGE", [4] = "SHAMAN"}
 		local i = math.random(4)
 		local targetClass = classes[i]
+		local coords = CLASS_BUTTONS[targetClass]
 		button.targetIcon:SetTexture("Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes")
-		button.targetIcon:SetTexCoord(unpack(CLASS_BUTTONS[targetClass]))
-		      
+		button.targetIcon:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
+			
+		local coords = CLASS_BUTTONS[class]
 		button.classIcon:SetTexture("Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes")
-		button.classIcon:SetTexCoord(unpack(CLASS_BUTTONS[class]))
+		button.classIcon:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
 		button.classIcon:SetAlpha(1)
 		button:SetAlpha(1)
 		button:Show()

@@ -1,3 +1,5 @@
+DuowanAddon_TradeLog_TradesHistory = {};
+
 function TradeLogFrame_OnLoad(self)
 	table.insert(UISpecialFrames, self:GetName()); --for esc close frame
 
@@ -15,8 +17,8 @@ end
 function TradeLogFrame_SetItemRef(link, text, button)
 	if ( strsub(link, 1, 8) == "tradelog" ) then
 		local id = 0+gsub(gsub(strsub(link,10),"/2","|"),"/1","/");
-		if(id and TradeLog_TradesHistory) then
-			for _, v in pairs(TradeLog_TradesHistory) do
+		if(id and DuowanAddon_TradeLog_TradesHistory) then
+			for _, v in pairs(DuowanAddon_TradeLog_TradesHistory) do
 				if(v.id==id) then
 					TradeLogFrame_FillDetailLog(v);
 					TradeLogFrame:Show();
@@ -37,8 +39,8 @@ function TradeLogFrame_FillDetailLog(trade)
 	TradeLogFrameWhenWhereText:SetText(trade.when.." - "..trade.where);
 
 	for i=1,7 do
-		TradeLogFrame_UpdateItem(getglobal("TradeLogPlayerItem"..i), trade.playerItems[i]);
-		TradeLogFrame_UpdateItem(getglobal("TradeLogRecipientItem"..i), trade.targetItems[i]);
+		TradeLogFrame_UpdateItem(dwGetglobal("TradeLogPlayerItem"..i), trade.playerItems[i]);
+		TradeLogFrame_UpdateItem(dwGetglobal("TradeLogRecipientItem"..i), trade.targetItems[i]);
 	end
 end
 
@@ -53,13 +55,11 @@ end
 function TradeLogFrame_UpdateItemDetail(frame, name, texture, numItems, isUsable, enchantment, itemLink)
 	local frameName = frame:GetName();
 	local id = frame:GetID();
-	local buttonText = getglobal(frameName.."Name");
+	local buttonText = dwGetglobal(frameName.."Name");
 
 	if(itemLink) then
 		local found, _, itemString = string.find(itemLink, "^|%x+|H(.+)|h%[.+%]")
 		frame.itemLink = itemString;
-	else
-		frame.itemLink = nil
 	end
 
 	--ChatFrame1:AddMessage(itemLink, "\124", "\124\124"))
@@ -81,7 +81,7 @@ function TradeLogFrame_UpdateItemDetail(frame, name, texture, numItems, isUsable
 	buttonText:SetTextHeight(12);
 	TradeLogRecipientMoneyFrame:SetScale(0.9);
 	TradeLogPlayerMoneyFrame:SetScale(0.9);
-	local tradeItemButton = getglobal(frameName.."ItemButton");
+	local tradeItemButton = dwGetglobal(frameName.."ItemButton");
 	local tradeItem = frame;
 	SetItemButtonTexture(tradeItemButton, texture);
 	SetItemButtonCount(tradeItemButton, numItems);
@@ -101,11 +101,11 @@ function TradeListScrollFrame_Update(self)
 	
 	count=0;
 	if(TradeListOnlyCompleteCB:GetChecked()) then
-		for _, v in pairs(TradeLog_TradesHistory) do
+		for _, v in pairs(DuowanAddon_TradeLog_TradesHistory) do
 			if(v.result=="complete")then count=count+1 end
 		end
 	else
-		count = table.getn(TradeLog_TradesHistory);
+		count = table.getn(DuowanAddon_TradeLog_TradesHistory);
 	end
 
 	FauxScrollFrame_Update(TradeListScrollFrame,count,15,16);
@@ -115,7 +115,7 @@ function TradeListScrollFrame_Update(self)
 	else
 		offset=FauxScrollFrame_GetOffset(TradeListScrollFrame)+1;
 		if(TradeListOnlyCompleteCB:GetChecked()) then
-			for k, v in pairs(TradeLog_TradesHistory) do
+			for k, v in pairs(DuowanAddon_TradeLog_TradesHistory) do
 				if(v.result=="complete")then offset = offset - 1 end;
 				if(offset == 0) then
 					offset = k;
@@ -126,64 +126,64 @@ function TradeListScrollFrame_Update(self)
 	end
 	line=1
 	while line<=15 do
-		if offset<=table.getn(TradeLog_TradesHistory) then
-			local trade=TradeLog_TradesHistory[offset];
+		if offset<=table.getn(DuowanAddon_TradeLog_TradesHistory) then
+			local trade=DuowanAddon_TradeLog_TradesHistory[offset];
 			if(not TradeListOnlyCompleteCB:GetChecked() or trade.result=="complete") then
 				local _,_,month,day,hour,min = string.find(trade.when, "(%d+)-(%d+) (%d+):(%d+)")
-				getglobal("TradeListFrameButton"..line).offset = offset;
+				dwGetglobal("TradeListFrameButton"..line).offset = offset;
 
-				getglobal("TradeListFrameButton"..line.."Time"):SetText(month..TRADE_LIST_MONTH_SUFFIX..day..TRADE_LIST_DAY_SUFFIX.." "..hour..":"..min);
-				getglobal("TradeListFrameButton"..line.."Target"):SetText(trade.who);
-				getglobal("TradeListFrameButton"..line.."Zone"):SetText(trade.where);
-				getglobal("TradeListFrameButton"..line.."Result"):SetText(TRADE_LIST_RESULT_TEXT_SHORT[trade.result]);
-				getglobal("TradeListFrameButton"..line):Show();
+				dwGetglobal("TradeListFrameButton"..line.."Time"):SetText(month..TRADE_LIST_MONTH_SUFFIX..day..TRADE_LIST_DAY_SUFFIX.." "..hour..":"..min);
+				dwGetglobal("TradeListFrameButton"..line.."Target"):SetText(trade.who);
+				dwGetglobal("TradeListFrameButton"..line.."Zone"):SetText(trade.where);
+				dwGetglobal("TradeListFrameButton"..line.."Result"):SetText(TRADE_LIST_RESULT_TEXT_SHORT[trade.result]);
+				dwGetglobal("TradeListFrameButton"..line):Show();
 
-				getglobal("TradeListFrameButton"..line.."SendMoneyIcon"):Hide();
-				getglobal("TradeListFrameButton"..line.."SendItemIcon"):Hide();
-				getglobal("TradeListFrameButton"..line.."SendItemNum"):Hide();
-				getglobal("TradeListFrameButton"..line.."ReceiveMoneyIcon"):Hide();
-				getglobal("TradeListFrameButton"..line.."ReceiveItemIcon"):Hide();
-				getglobal("TradeListFrameButton"..line.."ReceiveItemNum"):Hide();
+				dwGetglobal("TradeListFrameButton"..line.."SendMoneyIcon"):Hide();
+				dwGetglobal("TradeListFrameButton"..line.."SendItemIcon"):Hide();
+				dwGetglobal("TradeListFrameButton"..line.."SendItemNum"):Hide();
+				dwGetglobal("TradeListFrameButton"..line.."ReceiveMoneyIcon"):Hide();
+				dwGetglobal("TradeListFrameButton"..line.."ReceiveItemIcon"):Hide();
+				dwGetglobal("TradeListFrameButton"..line.."ReceiveItemNum"):Hide();
 
 				if(trade.result=="complete")then
-					if(trade.playerMoney>0)then getglobal("TradeListFrameButton"..line.."SendMoneyIcon"):Show(); end
+					if(trade.playerMoney>0)then dwGetglobal("TradeListFrameButton"..line.."SendMoneyIcon"):Show(); end
 					local numSend = 0;
 					for i=1,6 do if(trade.playerItems[i]) then numSend = numSend + 1 end end
 					if(numSend>0)then
-						getglobal("TradeListFrameButton"..line.."SendItemIcon"):Show();
-						getglobal("TradeListFrameButton"..line.."SendItemNum"):Show();
-						getglobal("TradeListFrameButton"..line.."SendItemNum"):SetText("x"..TEXT(numSend));
+						dwGetglobal("TradeListFrameButton"..line.."SendItemIcon"):Show();
+						dwGetglobal("TradeListFrameButton"..line.."SendItemNum"):Show();
+						dwGetglobal("TradeListFrameButton"..line.."SendItemNum"):SetText("x"..TEXT(numSend));
 					end
 
-					if(trade.targetMoney>0)then getglobal("TradeListFrameButton"..line.."ReceiveMoneyIcon"):Show(); end
+					if(trade.targetMoney>0)then dwGetglobal("TradeListFrameButton"..line.."ReceiveMoneyIcon"):Show(); end
 					local numReceive = 0;
 					for i=1,6 do if(trade.targetItems[i]) then numReceive = numReceive + 1 end end
 					if(numReceive>0)then
-						getglobal("TradeListFrameButton"..line.."ReceiveItemIcon"):Show();
-						getglobal("TradeListFrameButton"..line.."ReceiveItemNum"):Show();
-						getglobal("TradeListFrameButton"..line.."ReceiveItemNum"):SetText("x"..TEXT(numReceive));
+						dwGetglobal("TradeListFrameButton"..line.."ReceiveItemIcon"):Show();
+						dwGetglobal("TradeListFrameButton"..line.."ReceiveItemNum"):Show();
+						dwGetglobal("TradeListFrameButton"..line.."ReceiveItemNum"):SetText("x"..TEXT(numReceive));
 					end
 
-					getglobal("TradeListFrameButton"..line.."Time"   ):SetTextColor(1.0, .82, 0.0);
-					getglobal("TradeListFrameButton"..line.."Target" ):SetTextColor(1.0, 1.0, 1.0);
-					getglobal("TradeListFrameButton"..line.."Zone"   ):SetTextColor(1.0, 1.0, 1.0);
-					getglobal("TradeListFrameButton"..line.."Result" ):SetTextColor(1.0, 1.0, 1.0);
+					dwGetglobal("TradeListFrameButton"..line.."Time"   ):SetTextColor(1.0, .82, 0.0);
+					dwGetglobal("TradeListFrameButton"..line.."Target" ):SetTextColor(1.0, 1.0, 1.0);
+					dwGetglobal("TradeListFrameButton"..line.."Zone"   ):SetTextColor(1.0, 1.0, 1.0);
+					dwGetglobal("TradeListFrameButton"..line.."Result" ):SetTextColor(1.0, 1.0, 1.0);
 				elseif(trade.result=="cancelled")then
-					getglobal("TradeListFrameButton"..line.."Time"   ):SetTextColor(0.5, 0.3, 0.3);
-					getglobal("TradeListFrameButton"..line.."Target" ):SetTextColor(0.5, 0.3, 0.3);
-					getglobal("TradeListFrameButton"..line.."Zone"   ):SetTextColor(0.5, 0.3, 0.3);
-					getglobal("TradeListFrameButton"..line.."Result" ):SetTextColor(0.5, 0.3, 0.3);
+					dwGetglobal("TradeListFrameButton"..line.."Time"   ):SetTextColor(0.5, 0.3, 0.3);
+					dwGetglobal("TradeListFrameButton"..line.."Target" ):SetTextColor(0.5, 0.3, 0.3);
+					dwGetglobal("TradeListFrameButton"..line.."Zone"   ):SetTextColor(0.5, 0.3, 0.3);
+					dwGetglobal("TradeListFrameButton"..line.."Result" ):SetTextColor(0.5, 0.3, 0.3);
 				else
-					getglobal("TradeListFrameButton"..line.."Time"   ):SetTextColor(0.8, 0.2, 0.2);
-					getglobal("TradeListFrameButton"..line.."Target" ):SetTextColor(0.8, 0.2, 0.2);
-					getglobal("TradeListFrameButton"..line.."Zone"   ):SetTextColor(0.8, 0.2, 0.2);
-					getglobal("TradeListFrameButton"..line.."Result" ):SetTextColor(0.8, 0.2, 0.2);
+					dwGetglobal("TradeListFrameButton"..line.."Time"   ):SetTextColor(0.8, 0.2, 0.2);
+					dwGetglobal("TradeListFrameButton"..line.."Target" ):SetTextColor(0.8, 0.2, 0.2);
+					dwGetglobal("TradeListFrameButton"..line.."Zone"   ):SetTextColor(0.8, 0.2, 0.2);
+					dwGetglobal("TradeListFrameButton"..line.."Result" ):SetTextColor(0.8, 0.2, 0.2);
 				end
 
 				line=line+1
 			end
 		else
-			getglobal("TradeListFrameButton"..line):Hide();
+			dwGetglobal("TradeListFrameButton"..line):Hide();
 			line=line+1
 		end
 		offset=offset+1
@@ -196,7 +196,7 @@ StaticPopupDialogs["TRADE_LOG_CLEAR_HISTORY"] = {
 	button2 = TEXT(CANCEL),
 	whileDead = 1,
 	OnShow = function(self)
-		getglobal(self:GetName().."Text"):SetText(TRADE_LIST_CLEAR_CONFIRM);
+		dwGetglobal(self:GetName().."Text"):SetText(TRADE_LIST_CLEAR_CONFIRM);
 	end,
 	OnAccept = function(self)
 		TradeLog_KeepOnlyToday();
@@ -210,22 +210,22 @@ function TradeLog_KeepOnlyToday()
 		month = date("%m"), 
 		day = date("%d"),
 	}
-	for k, v in pairs(TradeLog_TradesHistory) do
+	for k, v in pairs(DuowanAddon_TradeLog_TradesHistory) do
 		local _,_,month,day,hour,min = string.find(v.when, "(%d+)-(%d+) (%d+):(%d+)");
 		if(month==today.month and day==today.day)then
 			local tmp = {}
-			for i=k, table.getn(TradeLog_TradesHistory) do
-				table.insert(tmp, TradeLog_TradesHistory[i]);
+			for i=k, table.getn(DuowanAddon_TradeLog_TradesHistory) do
+				table.insert(tmp, DuowanAddon_TradeLog_TradesHistory[i]);
 			end
-			TradeLog_TradesHistory = nil;
-			TradeLog_TradesHistory = tmp;
+			DuowanAddon_TradeLog_TradesHistory = nil;
+			DuowanAddon_TradeLog_TradesHistory = tmp;
 			TradeListScrollFrame_Update();
 			return;
 		end
 	end
 	
-	TradeLog_TradesHistory = nil;
-	TradeLog_TradesHistory = {};
+	DuowanAddon_TradeLog_TradesHistory = nil;
+	DuowanAddon_TradeLog_TradesHistory = {};
 	TradeListScrollFrame_Update();
 end
 
@@ -253,12 +253,13 @@ function TradeListFrame_ShowDetail(trade)
 end;
 
 function InitialMovableMinimapButton(ButtonName, PosVariableName, UseSquareMap)
-	local button = getglobal(ButtonName);
+	local button = dwGetglobal(ButtonName);
 	if(not button) then return nil; end
 
 	button["POS"] = PosVariableName;
 	button["square"] = UseSquareMap;
 	button.updateTimer = 0;
+	button:RegisterEvent("VARIABLES_LOADED");
 	button:RegisterForDrag("LeftButton");
 
 	button:SetScript("OnDragStart", function(self) 
@@ -270,10 +271,20 @@ function InitialMovableMinimapButton(ButtonName, PosVariableName, UseSquareMap)
 		self:StopTimer();
 		self:UnlockHighlight();
 	end)
+	
+	button:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self,"ANCHOR_LEFT");
+		GameTooltip:AddLine(TRADE_LIST_TOOLTIP);
+		GameTooltip:Show();
+	end);
+
+	button:SetScript("OnLeave", function ()
+		GameTooltip:Hide();
+	end);
 
 	button.MovingPos = function(self)
 		local xpos,ypos
-		local IconPos = getglobal(self["POS"]);
+		local IconPos = dwGetglobal(self["POS"]);
 
 		if self["square"] then
 			xpos = 110 * cos(IconPos or 0)
@@ -285,7 +296,7 @@ function InitialMovableMinimapButton(ButtonName, PosVariableName, UseSquareMap)
 			ypos = 82*sin(IconPos or 0)
 		end
 
-		button:SetPoint("TOPLEFT","Minimap","TOPLEFT",52-xpos,ypos-52)
+		button:GetParent():SetPoint("TOPLEFT","Minimap","TOPLEFT",52-xpos,ypos-52)
 	end
 	
 	button.Dragging = function(self)
@@ -313,14 +324,4 @@ function InitialMovableMinimapButton(ButtonName, PosVariableName, UseSquareMap)
 
 end
 			
-function TradeListFrame_MiniMapToggle(tog)
-	if tog then
-		if(_G.TradeListFrameButton.POS == nil) then
-			setglobal(TradeListFrameButton.POS, 190);
-		end
-		TradeListFrameButton:MovingPos();
-		TradeListFrameButton:Show();
-	else
-		TradeListFrameButton:Hide();
-	end
-end
+

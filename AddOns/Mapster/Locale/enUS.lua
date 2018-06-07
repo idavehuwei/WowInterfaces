@@ -12,7 +12,6 @@ local L = LibStub("AceLocale-3.0"):NewLocale("Mapster", "enUS", true, debug)
 L["Accuracy"] = true
 L["Adjust the size of the Player Arrow on the Map for better visibility."] = true
 L["Alpha"] = true
-L["Atlas Map"] = true
 L["Battlegrounds"] = true
 L["BattleMap"] = true
 L["Blobs & Panels"] = true

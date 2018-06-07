@@ -91,12 +91,12 @@ end
 
 
 function Recount:SetupScrollbar(name)
-	local Thumb=getglobal(name.."ScrollBarThumbTexture")
+	local Thumb=dwGetglobal(name.."ScrollBarThumbTexture")
 	Thumb:SetTexture("Interface\\AddOns\\Recount\\textures\\scrollbar\\UI-ScrollBar-Knob")
 	Thumb:SetVertexColor(1,0,0)
 	Recount.Colors:RegisterTexture("Window","Title",Thumb)
 
-	local Up=getglobal(name.."ScrollBarScrollUpButton")
+	local Up=dwGetglobal(name.."ScrollBarScrollUpButton")
 	Up:SetNormalTexture("Interface\\AddOns\\Recount\\textures\\scrollbar\\UI-ScrollBar-ScrollUpButton-Up")
 	Up:SetPushedTexture("Interface\\AddOns\\Recount\\textures\\scrollbar\\UI-ScrollBar-ScrollUpButton-Up")
 	Up:SetDisabledTexture("Interface\\AddOns\\Recount\\textures\\scrollbar\\UI-ScrollBar-ScrollUpButton-Disabled")
@@ -112,7 +112,7 @@ function Recount:SetupScrollbar(name)
 		Recount.Colors:RegisterTexture("Window","Title",Up.Overlay)
 	end
 
-	local Down=getglobal(name.."ScrollBarScrollDownButton")
+	local Down=dwGetglobal(name.."ScrollBarScrollDownButton")
 	Down:SetNormalTexture("Interface\\AddOns\\Recount\\textures\\scrollbar\\UI-ScrollBar-ScrollDownButton-Up")
 	Down:SetPushedTexture("Interface\\AddOns\\Recount\\textures\\scrollbar\\UI-ScrollBar-ScrollDownButton-Up")
 	Down:SetDisabledTexture("Interface\\AddOns\\Recount\\textures\\scrollbar\\UI-ScrollBar-ScrollDownButton-Disabled")
@@ -132,9 +132,9 @@ function Recount:SetupScrollbar(name)
 end
 
 function Recount:HideScrollbarElements(name)
-	local Thumb=getglobal(name.."ScrollBarThumbTexture")
-	local Up=getglobal(name.."ScrollBarScrollUpButton")
-	local Down=getglobal(name.."ScrollBarScrollDownButton")
+	local Thumb=dwGetglobal(name.."ScrollBarThumbTexture")
+	local Up=dwGetglobal(name.."ScrollBarScrollUpButton")
+	local Down=dwGetglobal(name.."ScrollBarScrollDownButton")
 
 
 	Thumb:Hide()
@@ -145,14 +145,14 @@ function Recount:HideScrollbarElements(name)
 	Down:EnableMouse(false)
 	if Down.Overlay then Down.Overlay:Hide() end
 	
-	local scrollbar=getglobal(name.."ScrollBar")
+	local scrollbar=dwGetglobal(name.."ScrollBar")
 	scrollbar:EnableMouse(false)
 end
 
 function Recount:ShowScrollbarElements(name)
-	local Thumb=getglobal(name.."ScrollBarThumbTexture")
-	local Up=getglobal(name.."ScrollBarScrollUpButton")
-	local Down=getglobal(name.."ScrollBarScrollDownButton")
+	local Thumb=dwGetglobal(name.."ScrollBarThumbTexture")
+	local Up=dwGetglobal(name.."ScrollBarScrollUpButton")
+	local Down=dwGetglobal(name.."ScrollBarScrollDownButton")
 
 	Thumb:Show()
 	Up:EnableMouse(true)
@@ -161,7 +161,7 @@ function Recount:ShowScrollbarElements(name)
 	Down:EnableMouse(true)
 	Down:Show()
 	if Down.Overlay then Down.Overlay:Show() end
-	local scrollbar=getglobal(name.."ScrollBar")
+	local scrollbar=dwGetglobal(name.."ScrollBar")
 	scrollbar:EnableMouse(true)
 end
 

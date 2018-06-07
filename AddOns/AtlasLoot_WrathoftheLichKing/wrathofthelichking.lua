@@ -5938,11 +5938,12 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 	AtlasLoot_Data["HoRMarwyn"] = {
 		{ 1, 0, "INV_Box_01", "=q6=#j1#", ""};
 		{ 2, 49834, "", "=q4=Frayed Abomination Stitching Shoulders", "=ds=#s3#, #a1#"};
-		{ 3, 49838, "", "=q4=Carpal Tunnelers", "=ds=#s9#, #a2#"};
-		{ 4, 49837, "", "=q4=Mitts of Burning Hail", "=ds=#s9#, #a3#"};
-		{ 5, 49836, "", "=q4=Frostsworn Bone Leggings", "=ds=#s11#, #a3#"};
-		{ 6, 49833, "", "=q4=Splintered Icecrown Parapet", "=ds=#h3#, #w10#"};
-		{ 7, 49835, "", "=q4=Splintered Door of the Citadel", "=ds=#w8#"};
+		{ 3, 49828, "", "=q4=Marwyn's Macabre Fingertips", "=ds=#s9#,#a1#"};
+		{ 4, 49838, "", "=q4=Carpal Tunnelers", "=ds=#s9#, #a2#"};
+		{ 5, 49837, "", "=q4=Mitts of Burning Hail", "=ds=#s9#, #a3#"};
+		{ 6, 49836, "", "=q4=Frostsworn Bone Leggings", "=ds=#s11#, #a3#"};
+		{ 7, 49833, "", "=q4=Splintered Icecrown Parapet", "=ds=#h3#, #w10#"};
+		{ 8, 49835, "", "=q4=Splintered Door of the Citadel", "=ds=#w8#"};
 		{ 16, 0, "INV_Box_01", "=q6=#j3#", ""};
 		{ 17, 50298, "", "=q4=Sightless Crown of Ulmaas", "=ds=#s1#, #a1#"};
 		{ 18, 50299, "", "=q4=Suspiciously Soft Gloves", "=ds=#s9#, #a1#"};
@@ -6219,7 +6220,7 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 8, 51008, "", "=q4=Choker of Filthy Diamonds", "=ds=#s2#"};
 		{ 9, 51001, "", "=q4=Rotface's Rupturing Ring", "=ds=#s13#"};
 		{ 16, 51003, "", "=q4=Abomination Knuckles", "=ds=#h3#, #w13#"};
-		{ 17, 51004, "", "=q4=Lockjaw", "=ds=#h3#, #w6#"};
+		{ 17, 51004, "", "=q4=Lockjaw", "=ds=#h1#, #w6#"};
 		{ 18, 50998, "", "=q4=Shaft of Glacial Ice", "=ds=#w9#"};
 		{ 19, 50999, "", "=q4=Gluth's Fetching Knife", "=ds=#w11#"};
 		Prev = "ICCFestergut";
@@ -6280,7 +6281,7 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		Prev = "ICCRotface25Man";
 		Next = "ICCCouncil25Man";
 	};
-
+	
 		------------------------
 		--- The Crimson Hall ---
 		------------------------
@@ -6697,7 +6698,7 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 8, 51871, "", "=q4=Choker of Filthy Diamonds", "=ds=#s2#"};
 		{ 9, 51878, "", "=q4=Rotface's Rupturing Ring", "=ds=#s13#"};
 		{ 16, 51876, "", "=q4=Abomination Knuckles", "=ds=#h3#, #w13#"};
-		{ 17, 51875, "", "=q4=Lockjaw", "=ds=#h3#, #w6#"};
+		{ 17, 51875, "", "=q4=Lockjaw", "=ds=#h1#, #w6#"};
 		{ 18, 51881, "", "=q4=Shaft of Glacial Ice", "=ds=#w9#"};
 		{ 19, 51880, "", "=q4=Gluth's Fetching Knife", "=ds=#w11#"};
 		Prev = "ICCFestergutHEROIC";
@@ -6735,12 +6736,9 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 5, 51860, "", "=q4=Rippling Flesh Kilt", "=ds=#s11#, #a3#"};
 		{ 6, 51865, "", "=q4=Scalpel-Sharpening Shoulderguards", "=ds=#s3#, #a4#"};
 		{ 7, 51861, "", "=q4=Chestplate of Septic Stitches", "=ds=#s5#, #a4#"};
-		{ 9, 51867, "", "=q4=Infected Choker", "=ds=#s2#"};
-		{ 10, 51863, "", "=q4=Pendant of Split Veins", "=ds=#s2#"};
-		{ 11, 50344, "", "=q4=Unidentifiable Organ", "=ds=#s14#"};
-		{ 16, 52027, "", "=q4=Conqueror's Mark of Sanctification", "=ds=#e15#"};
-		{ 17, 52026, "", "=q4=Protector's Mark of Sanctification", "=ds=#e15#"};
-		{ 18, 52025, "", "=q4=Vanquisher's Mark of Sanctification", "=ds=#e15#"};
+		{ 16, 51867, "", "=q4=Infected Choker", "=ds=#s2#"};
+		{ 17, 51863, "", "=q4=Pendant of Split Veins", "=ds=#s2#"};
+		{ 18, 50344, "", "=q4=Unidentifiable Organ", "=ds=#s14#"};
 		{ 20, 51868, "", "=q4=Flesh-Carving Scalpel", "=ds=#h1#, #w4#"};
 		{ 21, 51869, "", "=q4=The Facelifter", "=ds=#h1#, #w10#"};
 		Prev = "ICCRotfaceHEROIC";
@@ -6816,14 +6814,11 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 5, 51844, "", "=q4=Throatrender Handguards", "=ds=#s9#, #a4#"};
 		{ 6, 51835, "", "=q4=Veincrusher Gauntlets", "=ds=#s9#, #a4#"};
 		{ 7, 51836, "", "=q4=Tightening Waistband", "=ds=#s10#, #a4#"};
-		{ 9, 51842, "", "=q4=Collar of Haughty Disdain", "=ds=#s2#"};
-		{ 10, 51843, "", "=q4=Seal of the Twilight Queen", "=ds=#s13#"};
-		{ 16, 52027, "", "=q4=Conqueror's Mark of Sanctification", "=ds=#e15#"};
-		{ 17, 52026, "", "=q4=Protector's Mark of Sanctification", "=ds=#e15#"};
-		{ 18, 52025, "", "=q4=Vanquisher's Mark of Sanctification", "=ds=#e15#"};
-		{ 20, 51846, "", "=q4=Bloodsipper", "=ds=#h1#, #w4#"};
-		{ 21, 51845, "", "=q4=Stakethrower", "=ds=#w5#"};
-		{ 22, 51838, "", "=q4=Lana'thel's Bloody Nail", "=ds=#w12#"};
+		{ 16, 51842, "", "=q4=Collar of Haughty Disdain", "=ds=#s2#"};
+		{ 17, 51843, "", "=q4=Seal of the Twilight Queen", "=ds=#s13#"};
+		{ 19, 51846, "", "=q4=Bloodsipper", "=ds=#h1#, #w4#"};
+		{ 20, 51845, "", "=q4=Stakethrower", "=ds=#w5#"};
+		{ 21, 51838, "", "=q4=Lana'thel's Bloody Nail", "=ds=#w12#"};
 		Prev = "ICCCouncilHEROIC";
 		Next = "ICCValithriaHEROIC";
 	};
@@ -6862,7 +6857,7 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 8, 51832, "", "=q4=Taiga Bindings", "=ds=#s8#, #a4#"};
 		{ 9, 51831, "", "=q4=Ironrope Belt of Ymirjar", "=ds=#s10#, #a4#"};
 		{ 16, 51833, "", "=q4=Oxheart", "=ds=#h2#, #w6#"};
-		{ 17, 51828, "", "=q4=Sister Svalna's Aether Staff", "=ds=#w9#"};
+		{ 17, 51828, "", "=q4=Sister Svalna's Aether Staff", "=ds=#w12#"};
 		{ 18, 51834, "", "=q4=Dreamhunter's Carbine", "=ds=#w5#"};
 		Prev = "ICCLanathelHEROIC";
 		Next = "ICCSindragosaHEROIC";
@@ -6979,7 +6974,7 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		--------------------
 
 	AtlasLoot_Data["Halion"] = {
-		{ 1, 53115, "", "=q4=Abduction's Cover", "=ds=#s4#"};
+		{ 1, 53115, "", "=q4=Abduction Cover", "=ds=#s4#"};
 		{ 2, 53118, "", "=q4=Misbegotten Belt", "=ds=#s10#, #a1#"};
 		{ 3, 53114, "", "=q4=Gloaming Sark", "=ds=#s5#, #a2#"};
 		{ 4, 53117, "", "=q4=Changeling Gloves", "=ds=#s9#, #a2#"};
@@ -7009,11 +7004,11 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 19, 54572, "", "=q4=Charred Twilight Scale", "=ds=#s14#"};
 		{ 20, 54573, "", "=q4=Glowing Twilight Scale", "=ds=#s14#"};
 		{ 21, 54571, "", "=q4=Petrified Twilight Scale", "=ds=#s14#"};
-		{ 22, 54569, "", "=q4=Sharpened Twilight Scale", "=ds=#s14#"};
+		{ 22, 54569, "", "=q4=Sharpended Twilight Scale", "=ds=#s14#"};
 	};
 
 	AtlasLoot_Data["HalionHEROIC"] = {
-		{ 1, 54556, "", "=q4=Abduction's Cover", "=ds=#s4#"};
+		{ 1, 54556, "", "=q4=Abduction Cover", "=ds=#s4#"};
 		{ 2, 54562, "", "=q4=Misbegotten Belt", "=ds=#s10#, #a1#"};
 		{ 3, 54561, "", "=q4=Gloaming Sark", "=ds=#s5#, #a2#"};
 		{ 4, 54560, "", "=q4=Changeling Gloves", "=ds=#s9#, #a2#"};
@@ -7043,7 +7038,7 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 19, 54588, "", "=q4=Charred Twilight Scale", "=ds=#s14#"};
 		{ 20, 54589, "", "=q4=Glowing Twilight Scale", "=ds=#s14#"};
 		{ 21, 54591, "", "=q4=Petrified Twilight Scale", "=ds=#s14#"};
-		{ 22, 54590, "", "=q4=Sharpened Twilight Scale", "=ds=#s14#"};
+		{ 22, 54590, "", "=q4=Sharpended Twilight Scale", "=ds=#s14#"};
 	};
 
 	----------------
@@ -8828,11 +8823,11 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 
 	AtlasLoot_Data["NaxxHunter"] = {
 		{ 1, 0, "Ability_Hunter_RunningShot", "=q6=#t7s2#", "=q5="..AL["Tier 7"].." ("..AL["10 Man"]..")"};
-		{ 2, 39578, "", "=q4=Heroes' Cryptstalker Headpiece", "=ds="..BabbleBoss["Kel'Thuzad"]};
-		{ 3, 39581, "", "=q4=Heroes' Cryptstalker Spaulders", "=ds="..BabbleBoss["Loatheb"]};
-		{ 4, 39579, "", "=q4=Heroes' Cryptstalker Tunic", "=ds="..BabbleBoss["The Four Horsemen"]};
-		{ 5, 39582, "", "=q4=Heroes' Cryptstalker Handguards", "=ds="..BabbleBoss["Sartharion"]};
-		{ 6, 39580, "", "=q4=Heroes' Cryptstalker Legguards", "=ds="..BabbleBoss["Thaddius"]};
+		{ 2, 39578, "", "=q4=Heroes' Crypstalker Headpiece", "=ds="..BabbleBoss["Kel'Thuzad"]};
+		{ 3, 39581, "", "=q4=Heroes' Crypstalker Spaulders", "=ds="..BabbleBoss["Loatheb"]};
+		{ 4, 39579, "", "=q4=Heroes' Crypstalker Tunic", "=ds="..BabbleBoss["The Four Horsemen"]};
+		{ 5, 39582, "", "=q4=Heroes' Crypstalker Handguards", "=ds="..BabbleBoss["Sartharion"]};
+		{ 6, 39580, "", "=q4=Heroes' Crypstalker Legguards", "=ds="..BabbleBoss["Thaddius"]};
 		{ 8, 0, "Ability_Hunter_RunningShot", "=q6=#t7s2#", "=q5="..AL["Tier 7"].." ("..AL["25 Man"]..")"};
 		{ 9, 40505, "", "=q4=Valorous Crypstalker Headpiece", "=ds="..BabbleBoss["Kel'Thuzad"]};
 		{ 10, 40507, "", "=q4=Valorous Crypstalker Spaulders", "=ds="..BabbleBoss["Loatheb"]};
@@ -8868,17 +8863,17 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 12, 40415, "", "=q4=Valorous Frostfire Gloves", "=ds="..BabbleBoss["Sartharion"]};
 		{ 13, 40417, "", "=q4=Valorous Frostfire Leggings", "=ds="..BabbleBoss["Thaddius"]};
 		{ 16, 0, "Spell_Frost_IceStorm", "=q6=#t8s3#", "=q5="..AL["Tier 8"].." ("..AL["10 Man"]..")"};
-		{ 17, 45365, "", "=q4=Valorous Kirin Tor Hood", "=ds="..BabbleBoss["Mimiron"]};
-		{ 18, 45369, "", "=q4=Valorous Kirin Tor Shoulderpads", "=ds="..BabbleBoss.Thorim};
-		{ 19, 45368, "", "=q4=Valorous Kirin Tor Tunic", "=ds="..BabbleBoss["Yogg-Saron"]};
-		{ 20, 46131, "", "=q4=Valorous Kirin Tor Gauntlets", "=ds="..BabbleBoss.Freya};
-		{ 21, 45367, "", "=q4=Valorous Kirin Tor Leggings", "=ds="..BabbleBoss.Hodir};
+		{ 17, 45365, "", "=q4=Valorous Kirin'dor Hood", "=ds="..BabbleBoss["Mimiron"]};
+		{ 18, 45369, "", "=q4=Valorous Kirin'dor Shoulderpads", "=ds="..BabbleBoss.Thorim};
+		{ 19, 45368, "", "=q4=Valorous Kirin'dor Tunic", "=ds="..BabbleBoss["Yogg-Saron"]};
+		{ 20, 46131, "", "=q4=Valorous Kirin'dor Gauntlets", "=ds="..BabbleBoss.Freya};
+		{ 21, 45367, "", "=q4=Valorous Kirin'dor Leggings", "=ds="..BabbleBoss.Hodir};
 		{ 23, 0, "Spell_Frost_IceStorm", "=q6=#t8s3#", "=q5="..AL["Tier 8"].." ("..AL["25 Man"]..")"};
-		{ 24, 46129, "", "=q4=Conqueror's Kirin Tor Hood", "=ds="..BabbleBoss.Thorim};
-		{ 25, 46134, "", "=q4=Conqueror's Kirin Tor Shoulderpads", "=ds="..BabbleBoss["Yogg-Saron"]};
-		{ 26, 46130, "", "=q4=Conqueror's Kirin Tor Tunic", "=ds="..BabbleBoss.Hodir};
-		{ 27, 46132, "", "=q4=Conqueror's Kirin Tor Gauntlets", "=ds="..BabbleBoss["Mimiron"]};
-		{ 28, 46133, "", "=q4=Conqueror's Kirin Tor Leggings", "=ds="..BabbleBoss.Freya};
+		{ 24, 46129, "", "=q4=Conqueror's Kirin'dor Hood", "=ds="..BabbleBoss.Thorim};
+		{ 25, 46134, "", "=q4=Conqueror's Kirin'dor Shoulderpads", "=ds="..BabbleBoss["Yogg-Saron"]};
+		{ 26, 46130, "", "=q4=Conqueror's Kirin'dor Tunic", "=ds="..BabbleBoss.Hodir};
+		{ 27, 46132, "", "=q4=Conqueror's Kirin'dor Gauntlets", "=ds="..BabbleBoss["Mimiron"]};
+		{ 28, 46133, "", "=q4=Conqueror's Kirin'dor Leggings", "=ds="..BabbleBoss.Freya};
 		Back = "T7T8SET";
 	};
 
@@ -11549,8 +11544,8 @@ local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 		{ 19, 45510, "", "=q4=Libram of Discord", "=ds=#s16#, #w16#", "19 #eofconquest#" };
 		{ 20, 45436, "", "=q4=Libram of the Resolute", "=ds=#s16#, #w16#", "19 #eofconquest#" };
 		{ 21, 45145, "", "=q4=Libram of the Sacred Shield", "=ds=#s16#, #w16#", "19 #eofconquest#" };
-		{ 22, 45144, "", "=q4=Sigil of Deflection", "=ds=#s16#, #w21#", "19 #eofconquest#" };
-		{ 23, 45254, "", "=q4=Sigil of the Vengeful Heart", "=ds=#s16#, #w21#", "19 #eofconquest#" };
+		{ 22, 45144, "", "=q4=Sigil of Deflection", "=ds=#s21#, #w16#", "19 #eofconquest#" };
+		{ 23, 45254, "", "=q4=Sigil of the Vengeful Heart", "=ds=#s21#, #w16#", "19 #eofconquest#" };
 		{ 24, 45114, "", "=q4=Steamcaller's Totem", "=ds=#s16#, #w15#", "19 #eofconquest#" };
 		{ 25, 45255, "", "=q4=Thunderfall Totem", "=ds=#s16#, #w15#", "19 #eofconquest#" };
 		{ 26, 45169, "", "=q4=Totem of the Dancing Flame", "=ds=#s16#, #w15#", "19 #eofconquest#" };

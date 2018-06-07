@@ -1,0 +1,23 @@
+﻿## Interface: 30300
+## Title: Phoenix|cff7fff7fStyle|r - Coliseum
+## Notes: PhoenixStyle Coliseum Module
+## Title-zhCN: [多玩] 团长助手 - 十字军模块
+## Notes-zhCN: 详细的分析战斗记录并找出灭团责任人
+## Title-zhTW: [多玩] 團長助手 - 十字軍模塊
+## Notes-zhTW: 詳細的分析戰鬥記錄並找出滅團責任人
+## Author: Shurshik
+## SavedVariablesPerCharacter: wherereporttwins, twinspart, twinspart2, twinspart3, twinspart4, zveripart, wherereportzveri, pswelwidth, pswelheight, psgalochki, wherereportinfshield, wherereportjarax, jaraxpart, jaraxpart2, pscoltekver, psanubheal, wherereportanub,wherereportanub2, psanubbop
+## X-DuowanAddon: 团队副本
+## Dependencies: Duowan, PhoenixStyle
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+Localization\localization-enEN.lua
+Localization\localization-zhCN.lua
+Localization\localization-zhTW.lua
+
+PhoenixStyleColiseum.lua
+PhoenixStyleMod_Coliseum.xml
+TwinValkyr.lua
+TheNorthrendBeasts.lua
+AnubArak.lua

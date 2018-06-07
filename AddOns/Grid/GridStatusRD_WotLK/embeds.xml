@@ -1,0 +1,10 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Script file="Naxxramas.lua"/>
+	<Script file="Sartharion.lua"/>
+	<Script file="Malygos.lua"/>
+	<Script file="Ulduar.lua"/>
+	<Script file="Coliseum.lua"/>
+	<Script file="Archavon.lua"/>
+	<Script file="IcecrownCitadel.lua"/>
+</Ui>

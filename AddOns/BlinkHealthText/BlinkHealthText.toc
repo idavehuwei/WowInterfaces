@@ -1,0 +1,16 @@
+## Interface: 30300
+## Title: BlinkHealthText
+## Notes: BlinkHealthText 2.1 
+## Title-zhCN: [多玩] 简易信息
+## Notes-zhCN: 在屏幕中心显示玩家和目标的基本状态信息
+## Title-zhTW: [多玩] 簡易資訊
+## Notes-zhTW: 在螢幕中心顯示玩家和目標的基本狀態資訊
+## Author: Kill & dugu
+## SavedVariables: showstuffstatus, showfriends, BHT_position
+## X-DuowanAddon: 界面聊天
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 
+
+locale\locale.xml
+SimpleInfo.lua

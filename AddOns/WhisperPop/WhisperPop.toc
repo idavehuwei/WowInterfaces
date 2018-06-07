@@ -1,0 +1,25 @@
+﻿## Interface: 30300
+## Title: WhisperPop
+## Notes: WhisperPop
+## Title-zhCN: [多玩] 密语聊天 WhisperPop
+## Notes-zhCN: 记录玩家的密语信息并提示玩家
+## Title-zhTW: [多玩] 密語聊天 WhisperPop
+## Notes-zhTW: 記錄玩家的密語信息並提示玩家
+## Version: 2.1
+## Author: Abin
+## SavedVariables: WhisperPopDB
+## X-DuowanAddon:界面聊天
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 
+
+Locales\enUS.lua
+Locales\zhCN.lua
+Locales\zhTW.lua
+Includes\MinimapButton-2.0.lua
+Includes\ScrollFrame-1.0.lua
+
+MessageFrame.lua
+OptionBar.lua
+WhisperPop.lua
+WhisperPop.xml

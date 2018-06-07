@@ -19,7 +19,7 @@ function AtlasLoot_GetEnchantLink(enchantID)
    AtlasLootScanTooltip:ClearLines();
    AtlasLootScanTooltip:SetHyperlink("enchant:"..enchantID);
    AtlasLootScanTooltip:Show()
-   local tooltipline = getglobal("AtlasLootScanTooltipTextLeft1")
+   local tooltipline = dwGetglobal("AtlasLootScanTooltipTextLeft1")
    local text = tooltipline:GetText()
    if text and string.find(text, ":") then
       EnchantLink = "|cffffd000|Henchant:"..enchantID.."|h["..text.."]|h|r"
@@ -38,8 +38,8 @@ function AtlasLootItem_OnEnter()
     local isItem;
     AtlasLootTooltip:ClearLines();
     for i=1, 30, 1 do
-        if (getglobal("AtlasLootTooltipTextRight"..i) ~= nil) then
-            getglobal("AtlasLootTooltipTextRight"..i):SetText("");
+        if (dwGetglobal("AtlasLootTooltipTextRight"..i) ~= nil) then
+            dwGetglobal("AtlasLootTooltipTextRight"..i):SetText("");
         end
     end
     if this.itemID and (this.itemID ~= 0) then
@@ -49,8 +49,8 @@ function AtlasLootItem_OnEnter()
             isItem = true;
         end
         if isItem then
-            local color = strsub(getglobal("AtlasLootItem_"..this:GetID().."_Name"):GetText(), 3, 10);
-            local name = strsub(getglobal("AtlasLootItem_"..this:GetID().."_Name"):GetText(), 11);
+            local color = strsub(dwGetglobal("AtlasLootItem_"..this:GetID().."_Name"):GetText(), 3, 10);
+            local name = strsub(dwGetglobal("AtlasLootItem_"..this:GetID().."_Name"):GetText(), 11);
             if(this.itemID ~= 0 and this.itemID ~= "" and this.itemID ~= nil and AtlasLootDKPValues and AtlasLootClassPriority) then
                 Identifier = "Item"..this.itemID;
                 DKP = AtlasLootDKPValues[Identifier];
@@ -63,7 +63,7 @@ function AtlasLootItem_OnEnter()
             if( AtlasLoot.db.profile.LootlinkTT ) then
                 --If we have seen the item, use the game tooltip to minimise same name item problems
                 if(GetItemInfo(this.itemID) ~= nil) then
-                    getglobal(this:GetName().."_Unsafe"):Hide();
+                    dwGetglobal(this:GetName().."_Unsafe"):Hide();
                     AtlasLootTooltip:SetOwner(this, "ANCHOR_RIGHT", -(this:GetWidth() / 2), 24);
                     AtlasLootTooltip:SetHyperlink("item:"..this.itemID..":0:0:0");
                     if ( AtlasLoot.db.profile.ItemIDs ) then
@@ -86,12 +86,12 @@ function AtlasLootItem_OnEnter()
                         LootLink_AddItem(name, this.itemID..":0:0:0", color);
                     end
                 else
-                    getglobal(this:GetName().."_Unsafe"):Show();
+                    dwGetglobal(this:GetName().."_Unsafe"):Show();
                     AtlasLootTooltip:SetOwner(this, "ANCHOR_RIGHT", -(this:GetWidth() / 2), 24);
                     if (LootLink_Database and LootLink_Database[this.itemID]) then
                        LootLink_SetTooltip(AtlasLootTooltip, LootLink_Database[this.itemID][1], 1);
                     else
-                       LootLink_SetTooltip(AtlasLootTooltip,strsub(getglobal("AtlasLootItem_"..this:GetID().."_Name"):GetText(), 11), 1);
+                       LootLink_SetTooltip(AtlasLootTooltip,strsub(dwGetglobal("AtlasLootItem_"..this:GetID().."_Name"):GetText(), 11), 1);
                     end
                     if ( AtlasLoot.db.profile.ItemIDs ) then
                         AtlasLootTooltip:AddLine(BLUE..AL["ItemID:"].." "..this.itemID, nil, nil, nil, 1);
@@ -112,7 +112,7 @@ function AtlasLootItem_OnEnter()
             --Item Sync tooltips
             elseif( AtlasLoot.db.profile.ItemSyncTT ) then
                 if(GetItemInfo(this.itemID) ~= nil) then
-                    getglobal(this:GetName().."_Unsafe"):Hide();
+                    dwGetglobal(this:GetName().."_Unsafe"):Hide();
                 end
                 ItemSync:ButtonEnter();
                 if ( AtlasLoot.db.profile.ItemIDs ) then
@@ -135,7 +135,7 @@ function AtlasLootItem_OnEnter()
             else
                 if(this.itemID ~= nil) then
                     if(GetItemInfo(this.itemID) ~= nil) then
-                        getglobal(this:GetName().."_Unsafe"):Hide();
+                        dwGetglobal(this:GetName().."_Unsafe"):Hide();
                         AtlasLootTooltip:SetOwner(this, "ANCHOR_RIGHT", -(this:GetWidth() / 2), 24);
                         AtlasLootTooltip:SetHyperlink("item:"..this.itemID..":0:0:0");
                         if ( AtlasLoot.db.profile.ItemIDs ) then
@@ -209,9 +209,9 @@ end
 --------------------------------------------------------------------------------
 function AtlasLootItem_OnClick(arg1)
     local isItem;
-	local color = strsub(getglobal("AtlasLootItem_"..this:GetID().."_Name"):GetText(), 1, 10);
+	local color = strsub(dwGetglobal("AtlasLootItem_"..this:GetID().."_Name"):GetText(), 1, 10);
 	local id = this:GetID();
-	local name = strsub(getglobal("AtlasLootItem_"..this:GetID().."_Name"):GetText(), 11);
+	local name = strsub(dwGetglobal("AtlasLootItem_"..this:GetID().."_Name"):GetText(), 11);
     if string.sub(this.itemID, 1, 1) == "s" then
             isItem = false;
         else
@@ -238,8 +238,8 @@ function AtlasLootItem_OnClick(arg1)
             ChatEdit_InsertLink(itemLink);
         elseif(IsShiftKeyDown() and AtlasLoot.db.profile.AllLinks) then
             ChatEdit_InsertLink(color.."|Hitem:"..this.itemID..":0:0:0:0:0:0:0|h["..name.."]|h|r");
-        elseif(ChatFrameEditBox and ChatFrameEditBox:IsVisible() and IsShiftKeyDown()) then
-            ChatFrameEditBox:Insert(name);  -- <-- this line just inserts plain text, does not need any adjustment
+        elseif(SELECTED_CHAT_FRAME.editBox and SELECTED_CHAT_FRAME.editBox:IsVisible() and IsShiftKeyDown()) then
+            SELECTED_CHAT_FRAME.editBox:Insert(name);  -- <-- this line just inserts plain text, does not need any adjustment
         --If control-clicked, use the dressing room
         elseif(IsControlKeyDown() and iteminfo) then
             DressUpItemLink(itemLink);
@@ -249,7 +249,7 @@ function AtlasLootItem_OnClick(arg1)
             elseif AtlasLootItemsFrame.refresh[1] == "SearchResult" then
             	AtlasLoot:GetOriginalDataFromSearchResult(this.itemID);
             else
-                AtlasLoot_ShowWishListDropDown(this.itemID, this.itemTexture, getglobal("AtlasLootItem_"..this:GetID().."_Name"):GetText(), AtlasLoot_BossName:GetText(), AtlasLootItemsFrame.refreshOri[1].."|"..AtlasLootItemsFrame.refreshOri[2], this);
+                AtlasLoot_ShowWishListDropDown(this.itemID, this.itemTexture, dwGetglobal("AtlasLootItem_"..this:GetID().."_Name"):GetText(), AtlasLoot_BossName:GetText(), AtlasLootItemsFrame.refreshOri[1].."|"..AtlasLootItemsFrame.refreshOri[2], this);
             end
         elseif((AtlasLootItemsFrame.refresh[1] == "SearchResult" or AtlasLootItemsFrame.refresh[1] == "WishList") and this.sourcePage) then
             local dataID, dataSource = strsplit("|", this.sourcePage);

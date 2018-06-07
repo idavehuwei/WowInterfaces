@@ -1,0 +1,14 @@
+﻿## Interface: 30300
+## Title: GladiatorlosSA
+## Notes: PVP技能語音提示
+## Title-zhCN: [多玩] 竞技语音
+## Notes-zhCN: 竞技场技能语音提示
+## Author: Abatorlos of Spinebreaker, Duskashes, superk(tw-巴納札爾-夢雨)
+## SavedVariables: GladiatorlosSADB
+## Version: 2.0
+## X-Revision: Duowan
+## X-DuowanAddon: PvP
+## Dependencies: Duowan
+## LoadOnDemand: 1
+
+GladiatorlosSA.lua

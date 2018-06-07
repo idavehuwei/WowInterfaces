@@ -2,7 +2,7 @@
     <!--
     This file is part of Decursive.
     
-    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
+    Decursive (v 2.5.1-12-gb39554a) add-on for World of Warcraft UI
     Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/to/decursive.php )
 
     Starting from 2009-10-31 and until said otherwise by its author, Decursive
@@ -20,8 +20,10 @@
     -->
     <Script>
 
+        local T = DecursiveRootTable or {};
+
 -- big ugly scary fatal error message display function {{{
-if not DcrFatalError then
+if not T._FatalError then
 -- the beautiful error popup : {{{ -
 StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     text = "|cFFFF0000Decursive Error:|r\n%s",
@@ -34,18 +36,14 @@ StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     hideOnEscape = 1,
     showAlert = 1,
     }; -- }}}
-DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
+T._FatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
 end
--- }}}
-        if not DcrLoadedFiles or not DcrLoadedFiles["Decursive.lua"] then
-            if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (Decursive.lua not loaded)"); end;
-            DcrCorrupted = true;
-        end
+-- }}} 
 
     </Script>
 
 
-    <Frame name="DecursiveMainBar" frameStrata="LOW" toplevel="true" enableMouse="true" movable="true" hidden="true" parent="UIParent"> <!-- {{{ -->
+    <Frame name="DecursiveMainBar" clampedToScreen="true" frameStrata="LOW" toplevel="true" enableMouse="true" movable="true" hidden="true" parent="UIParent"> <!-- {{{ -->
         <Size>
             <AbsDimension x="80" y="25" />
         </Size>
@@ -86,19 +84,21 @@ end
 
         <Scripts>
             <OnEnter>
-                if DecursiveSelfDiagnostic() ~= 2 then
+        local T = DecursiveRootTable or {};
 
+                if T._SelfDiagnostic() ~= 2 then
+				
                 Dcr:DisplayTooltip(
                 string.format(
-                "|cFF0055AA%s|r %s by %s|r\n" ..
+                "|cFF0055AA%s|r\n" ..
                 --"|cFF11FF11%s|r: %s\n" ..
                 "|cFF11FF11%s|r / |cFF11FF11%s|r-|cFF11FF11%s|r: %s"
-                , Dcr.name, Dcr.version, Dcr.author,
+                , BINDING_HEADER_DECURSIVE,
                 --Dcr.L["HLP_RIGHTCLICK"], Dcr.L["STR_OPTIONS"],
                 Dcr.L["HLP_MIDDLECLICK"], Dcr.L["SHIFT"], Dcr.L["HLP_LEFTCLICK"],
                 Dcr.L["HIDESHOW_BUTTONS"]
                 )
-                , this);
+                , self);
                 end
             </OnEnter>
             <OnLeave>
@@ -106,34 +106,36 @@ end
             </OnLeave>
 
             <OnMouseUp>
-                if ( this.isMoving ) then
-                this:StopMovingOrSizing();
-                this.isMoving = false;
+                if ( self.isMoving ) then
+                self:StopMovingOrSizing();
+                self.isMoving = false;
                 end
                 Dcr:SaveLLPos();
             </OnMouseUp>
             <OnMouseDown>
-                if ( ( ( not this.isLocked ) or ( this.isLocked == 0 ) or IsAltKeyDown()) and ( arg1 == "LeftButton" ) ) then
-                this:StartMoving();
-                this.isMoving = true;
+                if ( ( ( not self.isLocked ) or ( self.isLocked == 0 ) or IsAltKeyDown()) and ( button == "LeftButton" ) ) then
+                self:StartMoving();
+                self.isMoving = true;
                 end
-                if (arg1 == "MiddleButton" or arg1 == "LeftButton" and IsShiftKeyDown()) then
+                if (button == "MiddleButton" or button == "LeftButton" and IsShiftKeyDown()) then
                 Dcr:ShowHideButtons();
                 end
             </OnMouseDown>
             <OnHide>
-                if ( this.isMoving ) then
-                this:StopMovingOrSizing();
-                this.isMoving = false;
+                if ( self.isMoving ) then
+                self:StopMovingOrSizing();
+                self.isMoving = false;
                 end
             </OnHide>
             <OnLOad>
-                this:RegisterEvent("ADDON_LOADED");
+                self:RegisterEvent("ADDON_LOADED");
             </OnLOad>
             <OnEvent>
-                if event == "ADDON_LOADED" and arg1 == "Decursive" then
-                    DecursiveSelfDiagnostic();
-                    this:UnregisterEvent("ADDON_LOADED");
+                if event == "ADDON_LOADED" and (...) == "Decursive" then
+                    local T = DecursiveRootTable or {};
+
+                    T._SelfDiagnostic();
+                    self:UnregisterEvent("ADDON_LOADED");
                 end
             </OnEvent>
         </Scripts>
@@ -152,17 +154,21 @@ end
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this:SetText(Dcr.L["PRIORITY_SHOW"]);
+                        if DecursiveInstallCorrupted then return end
+                        self:SetText(Dcr.L["PRIORITY_SHOW"]);
                     </OnLoad>
                     <OnClick>
-                        if DecursiveSelfDiagnostic(true) ~= 2 then
+        local T = DecursiveRootTable or {};
+
+                        if T._SelfDiagnostic(true) ~= 2 then
                         Dcr:ShowHidePriorityListUI();
                         end
                     </OnClick>
                     <OnEnter>
-                        if DecursiveSelfDiagnostic() ~= 2 then
-                        Dcr:DisplayTooltip(Dcr.L["PRIORITY_LIST"], this);
+        local T = DecursiveRootTable or {};
+
+                        if T._SelfDiagnostic() ~= 2 then
+                        Dcr:DisplayTooltip(Dcr.L["PRIORITY_LIST"], self);
                         end
                     </OnEnter>
                     <OnLeave>
@@ -184,17 +190,21 @@ end
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this:SetText(Dcr.L["SKIP_SHOW"]);
+                        if DecursiveInstallCorrupted then return end
+                        self:SetText(Dcr.L["SKIP_SHOW"]);
                     </OnLoad>
                     <OnClick>
-                        if DecursiveSelfDiagnostic(true) ~= 2 then
+        local T = DecursiveRootTable or {};
+
+                        if T._SelfDiagnostic(true) ~= 2 then
                         Dcr:ShowHideSkipListUI();
                         end
                     </OnClick>
                     <OnEnter>
-                        if DecursiveSelfDiagnostic() ~= 2 then
-                        Dcr:DisplayTooltip(Dcr.L["SKIP_LIST_STR"], this);
+        local T = DecursiveRootTable or {};
+
+                        if T._SelfDiagnostic() ~= 2 then
+                        Dcr:DisplayTooltip(Dcr.L["SKIP_LIST_STR"], self);
                         end
                     </OnEnter>
                     <OnLeave>
@@ -216,13 +226,17 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        if DecursiveSelfDiagnostic(true) ~= 2 then
+        local T = DecursiveRootTable or {};
+
+                        if T._SelfDiagnostic(true) ~= 2 then
                         Dcr:HideBar(false);
                         end
                     </OnClick>
                     <OnEnter>
-                        if DecursiveSelfDiagnostic() ~= 2 then
-                        Dcr:DisplayTooltip(Dcr.L["HIDE_MAIN"], this);
+        local T = DecursiveRootTable or {};
+
+                        if T._SelfDiagnostic() ~= 2 then
+                        Dcr:DisplayTooltip(Dcr.L["HIDE_MAIN"], self);
                         end
                     </OnEnter>
                     <OnLeave>
@@ -298,7 +312,7 @@ end
 
                     </OnClick>
                     <OnShow>
-                        Dcr:ThisSetParentText(Dcr.L["ANCHOR"]);
+                        Dcr:ThisSetParentText(self, Dcr.L["ANCHOR"]);
                     </OnShow>
                 </Scripts>
             </Button>
@@ -325,7 +339,9 @@ end
     <Frame name="Decursive" />
 
     <Script>
-        DcrLoadedFiles["Decursive.xml"] = "2.4.5-3-g6a02387";
+        local T = DecursiveRootTable or {};
+
+        T._LoadedFiles["Decursive.xml"] = "2.5.1-12-gb39554a";
     </Script>
 
 

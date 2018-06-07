@@ -132,6 +132,8 @@ function TotemTimers.CreateEnhanceCDs()
 end
 
 function TotemTimers.ConfigEnhanceCDs() 
+	if (not TotemTimers.ActiveSpecSettings["EnhanceCDs"]) then return end
+
     local _,_,spent1 = GetTalentTabInfo(1)
     local _,_,spent2 = GetTalentTabInfo(2)
     local _,_,spent3 = GetTalentTabInfo(3)

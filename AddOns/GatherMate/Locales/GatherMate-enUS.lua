@@ -8,7 +8,7 @@ debug = true
 --@end-debug@]===]
 
 local L = LibStub("AceLocale-3.0"):NewLocale("GatherMate", "enUS", true, debug)
-
+L["GatherMate"] = true
 L["Add this location to Cartographer_Waypoints"] = true
 L["Add this location to TomTom waypoints"] = true
 L["Always show"] = true

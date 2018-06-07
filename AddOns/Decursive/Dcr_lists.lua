@@ -1,7 +1,7 @@
 --[[
     This file is part of Decursive.
     
-    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
+    Decursive (v 2.5.1-12-gb39554a) add-on for World of Warcraft UI
     Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/to/decursive.php )
 
     Starting from 2009-10-31 and until said otherwise by its author, Decursive
@@ -19,8 +19,9 @@
 --]]
 -------------------------------------------------------------------------------
 
+local addonName, T = ...;
 -- big ugly scary fatal error message display function {{{
-if not DcrFatalError then
+if not T._FatalError then
 -- the beautiful error popup : {{{ -
 StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     text = "|cFFFF0000Decursive Error:|r\n%s",
@@ -33,12 +34,12 @@ StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     hideOnEscape = 1,
     showAlert = 1,
     }; -- }}}
-DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
+T._FatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
 end
 -- }}}
-if not DcrLoadedFiles or not DcrLoadedFiles["Decursive.xml"] or not DcrLoadedFiles["Decursive.lua"] then
-    if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (Decursive.xml or Decursive.lua not loaded)"); end;
-    DcrCorrupted = true;
+if not T._LoadedFiles or not T._LoadedFiles["Decursive.xml"] or not T._LoadedFiles["Decursive.lua"] then
+    if not DecursiveInstallCorrupted then T._FatalError("Decursive installation is corrupted! (Decursive.xml or Decursive.lua not loaded)"); end;
+    DecursiveInstallCorrupted = true;
     return;
 end
 
@@ -51,6 +52,7 @@ local LC = D.LC;
 local DC = DcrC;
 local DS = DC.DS;
 local _;
+local _G = _G;
 
 local pairs             = _G.pairs;
 local ipairs            = _G.ipairs;
@@ -61,14 +63,14 @@ local str_sub           = _G.string.gsub;
 local t_insert          = _G.table.insert;
 
 -- Dcr_ListFrameTemplate specific internal functions {{{
-function D.ListFrameTemplate_OnLoad()
-    this.ScrollFrame = getglobal(this:GetName().."ScrollFrame");
-    this.ScrollBar = getglobal(this.ScrollFrame:GetName().."ScrollBar");
-    this.ScrollFrame.offset = 0;
+function D.ListFrameTemplate_OnLoad(frame)
+    frame.ScrollFrame = _G[frame:GetName().."ScrollFrame"];
+    frame.ScrollBar = _G[frame.ScrollFrame:GetName().."ScrollBar"];
+    frame.ScrollFrame.offset = 0;
 end
 
-function D:ListFrameScrollFrameTemplate_OnMouseWheel(value)
-    local scrollBar = getglobal(this:GetName().."ScrollBar");
+function D:ListFrameScrollFrameTemplate_OnMouseWheel(frame, value)
+    local scrollBar = _G[frame:GetName().."ScrollBar"];
     local min, max = scrollBar:GetMinMaxValues();
     if ( value > 0 ) then
         if (IsShiftKeyDown() ) then
@@ -89,19 +91,19 @@ end
 
 -- Dcr_ListFrameTemplate specific handlers {{{
 
-function D.PrioSkipListFrame_OnUpdate() --{{{
+function D.PrioSkipListFrame_OnUpdate(frame) --{{{
 
 
     if not D.DcrFullyInitialized then
         return;
     end
 
-    if (this.UpdateYourself) then
-        this.UpdateYourself = false;
-        local baseName = this:GetName();
+    if (frame.UpdateYourself) then
+        frame.UpdateYourself = false;
+        local baseName = frame:GetName();
         local size;
 
-        if (this.Priority) then
+        if (frame.Priority) then
             size = table.getn(D.profile.PriorityList);
         else
             size = table.getn(D.profile.SkipList);
@@ -114,9 +116,9 @@ function D.PrioSkipListFrame_OnUpdate() --{{{
             if (i < 10) then
                 id = "0"..i;
             end
-            local btn = getglobal(baseName.."Index"..id);
+            local btn = _G[baseName.."Index"..id];
 
-            btn:SetID( i + this.ScrollFrame.offset);
+            btn:SetID( i + frame.ScrollFrame.offset);
             D:PrioSkipListEntry_Update(btn);
 
             if (i <= size) then
@@ -125,17 +127,17 @@ function D.PrioSkipListFrame_OnUpdate() --{{{
                 btn:Hide();
             end
         end
-        this.ScrollUpdateFunc(getglobal(baseName.."ScrollFrame"), true);
+        frame.ScrollUpdateFunc(_G[baseName.."ScrollFrame"], true);
     end
 
 end --}}}
 
-function D:PrioSkipListEntryTemplate_OnClick() --{{{
+function D:PrioSkipListEntryTemplate_OnClick(frame) --{{{
 --    D:PrintLiteral(arg1);
 
     local list;
     local UnitNum;
-    if (this:GetParent().Priority) then
+    if (frame:GetParent().Priority) then
         list = D.profile.PriorityList;
         UnitNum = getn(D.profile.PriorityList);
     else
@@ -144,10 +146,10 @@ function D:PrioSkipListEntryTemplate_OnClick() --{{{
     end
 
 
-    local id = this:GetID();
+    local id = frame:GetID();
     if (id) then
         if (IsControlKeyDown()) then
-            if (this:GetParent().Priority) then
+            if (frame:GetParent().Priority) then
                 D:RemoveIDFromPriorityList(id);
             else
                 D:RemoveIDFromSkipList(id);
@@ -187,7 +189,7 @@ function D:PrioSkipListEntryTemplate_OnClick() --{{{
             elseif (arg1=="MiddleButton") then
             
             end
-            this:GetParent().UpdateYourself = true;
+            frame:GetParent().UpdateYourself = true;
         end
         D.Status.PrioChanged       = true;
         D:GroupChanged ("PrioSkipListEntryTemplate_OnClick");
@@ -243,7 +245,7 @@ function D.PrioSkipList_ScrollFrame_Update (ScrollFrame) -- {{{
 
     D:Debug("ScrollFrame is a %s", type(ScrollFrame));
     if (not ScrollFrame) then
-        ScrollFrame = this; -- Called from the scrollbar frame handler
+        --ScrollFrame = this; -- Called from the scrollbar frame handler
     else
         --UpdateListOnceDone = false; -- The function was called from the list update function
         DirectCall = true;
@@ -524,16 +526,16 @@ end --}}}
 
 
 
-function D:PopulateButtonPress() --{{{
-    local PopulateFrame = this:GetParent();
+function D:PopulateButtonPress(frame) --{{{
+    local PopulateFrame = frame:GetParent();
     local UppedClass = "";
 
-    if (IsShiftKeyDown() and this.ClassType) then
+    if (IsShiftKeyDown() and frame.ClassType) then
 
         -- UnitClass returns uppercased class...
-        UppedClass = string.upper(this.ClassType);
+        UppedClass = string.upper(frame.ClassType);
 
-        D:Debug("Populate called for %s", this.ClassType);
+        D:Debug("Populate called for %s", frame.ClassType);
         -- for the class type stuff... we do party
 
         local _, pclass = UnitClass("player");
@@ -562,7 +564,7 @@ function D:PopulateButtonPress() --{{{
     local i, pgroup, pclass;
 
 
-    if (IsShiftKeyDown() and this.ClassType) then
+    if (IsShiftKeyDown() and frame.ClassType) then
         D:Debug("Finding raid units with a macthing class");
         for index, unit in ipairs(D.Status.Unit_Array) do
             _, pclass = UnitClass(unit);
@@ -573,27 +575,27 @@ function D:PopulateButtonPress() --{{{
             end
 
         end
-    elseif (this.ClassType) then
-        PopulateFrame:addFunction(DC.ClassUNameToNum[string.upper(this.ClassType)]);
+    elseif (frame.ClassType) then
+        PopulateFrame:addFunction(DC.ClassUNameToNum[string.upper(frame.ClassType)]);
     end
 
 
     local max = GetNumRaidMembers();
 
-    if (IsShiftKeyDown() and this.GroupNumber and max > 0) then
+    if (IsShiftKeyDown() and frame.GroupNumber and max > 0) then
         D:Debug("Finding raid units with a macthing group number");
         for i = 1, max do
             _, _, pgroup, _, _, pclass = GetRaidRosterInfo(i);
 
-            if (pgroup == this.GroupNumber) then
+            if (pgroup == frame.GroupNumber) then
                 D:Debug("found %s in group %d", pclass, max);
                 PopulateFrame:addFunction("raid"..i);
             end
         end
-    elseif (not IsShiftKeyDown() and this.GroupNumber) then
-        PopulateFrame:addFunction(this.GroupNumber);
+    elseif (not IsShiftKeyDown() and frame.GroupNumber) then
+        PopulateFrame:addFunction(frame.GroupNumber);
     end
 
 end --}}}
 
-DcrLoadedFiles["Dcr_lists.lua"] = "2.4.5-3-g6a02387";
+T._LoadedFiles["Dcr_lists.lua"] = "2.5.1-12-gb39554a";

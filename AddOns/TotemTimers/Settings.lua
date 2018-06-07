@@ -89,6 +89,9 @@ SettingsFunctions = {
     		for e=1,4 do
     			Timers[e]:SetScale(v/36)
     		end
+		if (TotemTimers.TotemicCallButton) then
+			TotemTimers.TotemicCallButton:SetScale(v/36);
+		end
         end,
         
     CastButtonSize = 
@@ -268,7 +271,7 @@ SettingsFunctions = {
     LastWeaponEnchant =  
         function(value, Timers)
             if value == 5 then
-				Timers[8].button:SetAttribute("type1", "macro")
+		Timers[8].button:SetAttribute("type1", "macro")
                 Timers[8].button:SetAttribute("macrotext", "/cast "..SpellNames[SpellIDs.WindfuryWeapon].."\n/use 16")
                 Timers[8].button:SetAttribute("doublespell1", SpellNames[SpellIDs.WindfuryWeapon])
                 Timers[8].button:SetAttribute("doublespell2", SpellNames[SpellIDs.FlametongueWeapon])
@@ -361,12 +364,18 @@ SettingsFunctions = {
                         Timers[i]:activate()
                     end
                 end
+		if (TotemTimers.TotemicCallButton) then
+			TotemTimers.TotemicCallButton:activate();
+		end
                 TotemTimersFrame:Show()
                 TotemTimers_OrderTimers()
             else
                 for i=1,4 do
                     Timers[i]:deactivate()
                 end
+		if (TotemTimers.TotemicCallButton) then
+			TotemTimers.TotemicCallButton:deactivate();
+		end
                 TotemTimersFrame:Hide()
             end
         end,
@@ -477,21 +486,21 @@ SettingsFunctions = {
         
     EnhanceCDsMaelstromHeight = 
         function(value, Timers)
-            TotemTimers.maelstrom:SetHeight(value)
-            TotemTimers.maelstrom.background:SetHeight(value)
-            TotemTimers.maelstrombutton:SetHeight(value)
-            TotemTimers.maelstrom.icon:SetWidth(value)
-            TotemTimers.maelstrom.icon:SetHeight(value)
-            Timers[17]:SetScale(value/36)
-            Timers[17]:SetTimeHeight(value)
-            Timers[17].timerbars[1]:SetScale(36/value)
-            local font = TotemTimers.maelstrom.text:GetFont()
-            local outline
-            if Timers[9].timerOnButton then outline = "OUTLINE" end
+		TotemTimers.maelstrom:SetHeight(value)
+		TotemTimers.maelstrom.background:SetHeight(value)
+		TotemTimers.maelstrombutton:SetHeight(value)
+		TotemTimers.maelstrom.icon:SetWidth(value)
+		TotemTimers.maelstrom.icon:SetHeight(value)
+		Timers[17]:SetScale(value/36)
+		Timers[17]:SetTimeHeight(value)
+		Timers[17].timerbars[1]:SetScale(36/value)
+		local font = TotemTimers.maelstrom.text:GetFont()
+		local outline
+		if Timers[9].timerOnButton then outline = "OUTLINE" end
     		TotemTimers.maelstrom.text:SetFont(font, value, outline)
-            local font, value = _G["XiTimers_TimerBar17_1Time"]:GetFont()
-            _G["XiTimers_TimerBar17_1Time"]:SetFont(font, value, outline)
-            TotemTimers.LayoutEnhanceCDs()
+		local font, value = _G["XiTimers_TimerBar17_1Time"]:GetFont()
+		_G["XiTimers_TimerBar17_1Time"]:SetFont(font, value, outline)
+		TotemTimers.LayoutEnhanceCDs()
         end,
         
     Tooltips =  
@@ -588,8 +597,8 @@ SettingsFunctions = {
     
     MultiSpellSize = 
         function(value, Timers)
-   			TotemTimers_MultiSpell:SetScale(value/36)
-            TotemTimers.ProcessSetting("TimerSize")
+   		TotemTimers_MultiSpell:SetScale(value/36)
+		TotemTimers.ProcessSetting("TimerSize")
         end,
         
     MultiSpellBarDirection = 
@@ -659,10 +668,16 @@ SettingsFunctions = {
         function(value, Timers)
             for i=1,#Timers do
                 if i ~= 17 then
-                    Timers[i].timerOnButton = value
-                    if not value and i > 8 and TotemTimers.ActiveSpecSettings.CDTimersOnButtons then Timers[i].timerOnButton = true end
-                    if Timers[i].timers[1] > 0 then Timers[i]:start(1, Timers[i].timers[1], Timers[i].durations[1]) end
-                    if Timers[i].numtimers > 1 and Timers[i].timers[2] > 0 then Timers[i]:start(2, Timers[i].timers[2], Timers[i].durations[1]) end
+			Timers[i].timerOnButton = value
+			if not value and i > 8 and TotemTimers.ActiveSpecSettings.CDTimersOnButtons then 
+				Timers[i].timerOnButton = true 
+			end
+			if Timers[i].timers[1] > 0 then 
+				Timers[i]:start(1, Timers[i].timers[1], Timers[i].durations[1]) 
+			end
+			if Timers[i].numtimers > 1 and Timers[i].timers[2] > 0 then 
+				Timers[i]:start(2, Timers[i].timers[2], Timers[i].durations[1]) 
+			end
                 end
             end
             TotemTimers.ProcessSpecSetting("EnhanceCDsMaelstromHeight")

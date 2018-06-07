@@ -1,6 +1,10 @@
 local L = AceLibrary("AceLocale-2.2"):new("PallyPower")
-
-L:RegisterTranslations("zhTW", function() return {
+if (GetLocale() == "zhTW") then
+	PALLY_POWER_TEXT = "祝福管理";
+end
+L:RegisterTranslations("zhTW", function() return 
+{
+	["PallyPower Options"] = "祝福管理配置",
 	AURAS = "光環",
 	AURAS_DESC = "光環監視開啟/關閉",
 	AUTOASSIGN = "自動指派",
@@ -27,13 +31,17 @@ L:RegisterTranslations("zhTW", function() return {
 	DISPCOL = "列數",
 	DISPCOL_DESC = "設定列數",
 	DISP_DESC = "祝福施加視窗的設定",
+	DISPEDGES = "顯示按鈕的稜角",
+	DISPEDGES_DESC = "顯示玩家按鈕的稜角",
 	DISPGAP = "間隔",
 	DISPGAP_DESC = "設定按鈕間距",
 	DISPPL = "玩家按鈕",
 	DISPPL_DESC = "玩家按鈕方向設定",
 	DISPROWS = "行數",
 	DISPROWS_DESC = "設定行數",
-	DRAGHANDLE = "左鍵拖曳移動\n左鍵點擊以鎖定 / 解除鎖定\n右鍵點擊打開設定",
+	DRAGHANDLE = [=[左鍵拖曳移動
+左鍵點擊以鎖定 / 解除鎖定
+右鍵點擊打開設定]=],
 	ENABLED = "啟用",
 	FREEASSIGN = "自由指派",
 	FREEASSIGN_DESC = "允許其他人改變你的祝福設定而不需為隊長/助手",
@@ -45,17 +53,25 @@ L:RegisterTranslations("zhTW", function() return {
 	HIDEDH_DESC = "顯示/隱藏拖動錨點",
 	HIDEPB = "隱藏玩家按鈕",
 	HIDEPB_DESC = "顯示/隱藏玩家按鈕",
+	IGNOREEXTRA = "忽略 6-8 隊",
+	IGNOREEXTRADESC = "忽略在 6-8 隊待命的隊員",
+	LAYOUT = "螢幕配置",
+	LAYOUT_DESC = "自訂螢幕配置",
 	PP_CLEAR = "清除",
 	PP_OPTIONS = "設定",
 	PP_RAS1 = "--- 聖騎士祝福分配 ---",
 	PP_RAS2 = "--- 分配通告結束 ---",
 	PP_REFRESH = "更新",
 	RESET = "重置位置",
-	RESET_DESC = "將所有PallyPower視窗重置回畫面中央",
+	RESET_DESC = "將所有祝福管理視窗重置回畫面中央",
 	RFBUFF = "正義之怒",
 	RFBUFF_DESC = "正義之怒監視開啟/關閉",
+	RFUSE = "神聖之怒",
+	RFUSE_DESC = "神聖之怒 啟動/關閉",
 	SBUFF = "智能選擇祝福",
 	SBUFF_DESC = "在選擇祝福時為某些職業忽略特定的祝福",
+	SEAL = "聖印",
+	SEAL_DESC = "聖印",
 	SHOWPARTY = "在小隊時顯示",
 	SHOWPARTY_DESC = "當加入一個小隊後顯示/隱藏祝福施加視窗",
 	SHOWSINGLE = "在單獨時顯示",
@@ -65,4 +81,5 @@ L:RegisterTranslations("zhTW", function() return {
 	WAIT = "等待所有隊友",
 	WAIT_DESC = "是否等待所有隊友都在線上且於祝福範圍內才施放祝福",
 }
+ 
 end)

@@ -1,0 +1,41 @@
+## Interface: 30300
+## Name: oRA3
+## Title-zhCN: [多玩] 团队助手
+## Title-zhTW: [多玩] 團隊助手
+## Notes: Raid and Party Assist
+## Notes-zhCN: CT_RaidAssist 外的另一个选择。
+## Notes-zhTW: CT_RaidAssist 以外的另一個選擇。
+## Author: Ammo, Rabbit
+## X-Curse-Packaged-Version: r435
+## X-Curse-Project-Name: oRA3
+## X-Curse-Project-ID: ora3
+## X-Curse-Repository-ID: wow/ora3/mainline
+
+## X-Credits: Cladhaire for the sliding/detaching panel
+## X-DuowanAddon: 团队副本
+## SavedVariables: oRA3DB
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+#@no-lib-strip@
+libs.xml
+#@end-no-lib-strip@
+
+locales\enUS.lua
+locales\zhCN.lua
+locales\zhTW.lua
+
+oRA3.lua
+modulePrototype.lua
+
+modules\ReadyCheck.lua
+modules\Durability.lua
+modules\Resistance.lua
+modules\Zone.lua
+modules\Invite.lua
+modules\Promote.lua
+modules\Cooldowns.lua
+modules\Tanks.lua
+modules\Loot.lua
+modules\GearScore.lua

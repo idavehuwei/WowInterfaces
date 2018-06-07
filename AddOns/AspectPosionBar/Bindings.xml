@@ -1,0 +1,12 @@
+<Bindings>
+	<Binding name="CLICK AspectPosionBarButton1:LeftButton" runOnUp="true" header="ASPECTBAR">DUMMY_FUNC(1)</Binding>
+	<Binding name="CLICK AspectPosionBarButton2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
+	<Binding name="CLICK AspectPosionBarButton3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
+	<Binding name="CLICK AspectPosionBarButton4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
+	<Binding name="CLICK AspectPosionBarButton5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
+	<Binding name="CLICK AspectPosionBarButton6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
+	<Binding name="CLICK AspectPosionBarButton7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
+	<Binding name="CLICK AspectPosionBarButton8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
+	<Binding name="CLICK AspectPosionBarButton9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
+	<Binding name="CLICK AspectPosionBarButton10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
+</Bindings>

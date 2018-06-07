@@ -1,765 +1,648 @@
+--------------------
+--	"notarget" - [1|nil]		-	无目标, 缺省unit为"player"
+--	"live"			- [1|nil]		-	脱离战斗后不消失
+--	"unit"		- [STIRNG]-	unit, 当notarget为真时有效, 缺省为"player" 
+--	"unique"	- [1|nil]		-	唯一, 同时只存在一个该类计时
+--	"nocheck"	- [1|0]	 	-	不需要检查, 当目标身上无该buff或者debuff时也不取消计时, 当notarget为真时缺省为true
+-- "any"			- [1|0]		-	影藏所有guid的这个计时
+--------------------
+SPELL_TIMER_LEVEL_ROMAN = {" IX", " VIII", " VII", " VI", " V",  " IV", " III", " II", ""};
+
 if (GetLocale() =="zhCN") then
-	SPELL_TIMER_TITLE = "法术计时器";
+	SPELL_TIMER_TITILE = "法术计时器";
 	SPELL_TIMER_TEXT_OPTION_SLIDER = "你可以在原有法术的持续时间上再额外增加一段时间，拖动该滑动条来调整该时间。";
+	SPELL_TIMER_IMPROVED_SLICE_DICE = "强化切割";
 	SPELL_TIMER_SHOW_NAME = "显示魔法名称";
 	SPELL_TIMER_SHOW_PROGRESS = "显示进度条";
+	SPELL_TIMER_ENABLE = "启用法术计时器";
 
-	SPELL_TIMER_POISON = "药膏";
-	SPELL_TIMER_VENOMOUS = "毒蛇";
+	SPELL_TIMER_TRAP_PATTERN1 = "(.-)效果$";
+	SPELL_TIMER_TRAP_PATTERN2 = "(.-)光环$";
 
-	SPELL_TIMER_TRAP_PATTERN1 = "(.-)效果";
-	SPELL_TIMER_TRAP_PATTERN2 = "(.-)光环";
-
+	SPELL_TIMER_SUMMON_TOTEM = "图腾召唤";
 	SPELL_TIMER_TOTEM_PATTERN = "图腾";
+	SPELL_TIMER_JUDGEMENT = "审判$";
 
-	SPELL_TIMER_TOTEM_TIP = "你可以使用鼠标右键取消该图腾。"
-
-	SPELL_TIMER_UNITFRAME_TOOLTIP = "点击小锁解开/锁定窗口";
-
-	SPELLTIMER_HOUR_WORD = "小时";
-	SPELLTIMER_MINUTE_WORD = "分钟";
-	SPELLTIMER_SECOND_WORD = "秒";
-
-	SPELLTIMER_COOLDOWN_INFO = "%s的剩余时间还有%s。";
+	SPELL_TIMER_TOTEM_TIP = "你可以使用鼠标右键取消该图腾。";
+	SPELL_TIMER_LOCK_POSITION = "锁定位置";
+	SPELL_TIMER_CANCEL_TIMER = "右键取消计时";
+	SPELL_TIMER_CHANGE_SCALE = "缩放比例...";
+	SPELL_TIMER_DISPLAY_BORDER = "显示边框";
+	SPELL_TIMER_CHANGE_BD_ALPHA = "边框透明度...";
+	SPELL_TIMER_DISPLAY_BACKGD = "显示背景";
+	SPELL_TIMER_CHANGE_BG_ALPHA = "背景透明度...";
+	SPELL_TIMER_COLSE_TIMER = "右键点击关闭该计时";
+	SPELL_TIMER_SHIFT_CLOSE = "Shift + 右键屏蔽对该效果的计时";
+	SPELL_TIMER_MOVE_MENU = "左键 - 拖动计时器\n右键 - 弹出配置菜单";
 
 	SPELL_TIMER_PATTERN_TABLE = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["恐惧"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["献祭"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["放逐术"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["腐蚀术"] = {"debuff", {"腐蚀之种"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["腐蚀之种"] = {"debuff", {"腐蚀术"}, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["厄运诅咒"] = {"debuff", {"痛苦诅咒", "元素诅咒", "虚弱诅咒", "语言诅咒", "疲劳诅咒"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["痛苦诅咒"] = {"debuff", {"厄运诅咒", "元素诅咒", "虚弱诅咒", "语言诅咒", "疲劳诅咒"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["元素诅咒"] = {"debuff", {"厄运诅咒", "痛苦诅咒", "虚弱诅咒", "语言诅咒", "疲劳诅咒"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["虚弱诅咒"] = {"debuff", {"厄运诅咒", "痛苦诅咒", "元素诅咒", "语言诅咒", "疲劳诅咒"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["语言诅咒"] = {"debuff", {"厄运诅咒", "痛苦诅咒", "元素诅咒", "虚弱诅咒", "疲劳诅咒"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["疲劳诅咒"] = {"debuff", {"厄运诅咒", "痛苦诅咒", "元素诅咒", "虚弱诅咒", "语言诅咒"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["死亡缠绕"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["恐惧嚎叫"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["暗影烈焰"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["奴役恶魔"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["痛苦无常"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["诱惑"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["鬼影缠身"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["暗影防护结界"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["恶魔变形"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["挑战嚎叫"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["暗影之怒"] = {"debuff"};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"] = {};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["恐惧"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["献祭"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["放逐术"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["腐蚀术"] = {nil, nil, nil, {"腐蚀之种"}};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["腐蚀之种"] = {nil, nil, nil, {"腐蚀术"}};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["生命虹吸"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["厄运诅咒"] = {nil, nil, nil, {"痛苦诅咒", "元素诅咒", "虚弱诅咒", "语言诅咒", "鲁莽诅咒", "暗影诅咒", "疲劳诅咒"}};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["痛苦诅咒"] = {nil, nil, nil, {"厄运诅咒", "元素诅咒", "虚弱诅咒", "语言诅咒", "鲁莽诅咒", "暗影诅咒", "疲劳诅咒"}};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["元素诅咒"] = {nil, nil, nil, {"痛苦诅咒", "厄运诅咒", "虚弱诅咒", "语言诅咒", "鲁莽诅咒", "暗影诅咒", "疲劳诅咒"}};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["虚弱诅咒"] = {nil, nil, nil, {"痛苦诅咒", "厄运诅咒", "元素诅咒", "语言诅咒", "鲁莽诅咒", "暗影诅咒", "疲劳诅咒"}};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["语言诅咒"] = {nil, nil, nil, {"痛苦诅咒", "厄运诅咒", "元素诅咒", "虚弱诅咒", "鲁莽诅咒", "暗影诅咒", "疲劳诅咒"}};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["鲁莽诅咒"] = {nil, nil, nil, {"痛苦诅咒", "厄运诅咒", "元素诅咒", "虚弱诅咒", "语言诅咒", "暗影诅咒", "疲劳诅咒"}};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["暗影诅咒"] = {nil, nil, nil, {"痛苦诅咒", "厄运诅咒", "元素诅咒", "虚弱诅咒", "语言诅咒", "鲁莽诅咒", "疲劳诅咒"}};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["疲劳诅咒"] = {nil, nil, nil, {"痛苦诅咒", "厄运诅咒", "元素诅咒", "虚弱诅咒", "语言诅咒", "鲁莽诅咒", "暗影诅咒"}};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["死亡缠绕"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["恐惧嚎叫"] = {"持续([%d%.]+)秒", nil, nil, nil, {["notarget"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["奴役恶魔"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["痛苦无常"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["诱惑"] = {nil}; 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["暗影烈焰"] = {"([%d%.]+)秒内", nil, nil, nil, {["notarget"] =1}};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["鬼影缠身"] = {nil}; 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["蚀魂术"] = {nil}; 	-- 台服简化
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["挑战嚎叫"] = {"持续([%d%.]+)", nil, nil, nil, {["live"] = 1,["notarget"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["暗影之怒"] = {nil};
 
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE][SPELL_TIMER_POISON] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["凿击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["锁喉"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["闷棍"] = {"debuff", nil, {["live"] = 1, ["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["破甲"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["偷袭"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["致盲"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["割裂"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["毒伤"] = {"buff" , nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["切割"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["脚踢"] = {"持续%t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["扰乱"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["还击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["肾击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["血之饥渴"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["暗影之舞"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["冲动"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["鬼魅攻击"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["消失"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["佯攻"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["嫁祸诀窍"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["疾跑"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["闪避"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["暗影步"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["剑刃乱舞"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["装死"] = {"buff", nil, {["live"] = 1, ["spell"] = {"装死 CD", 60}}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["出血"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["暗影斗篷"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["致命投掷"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["拆卸"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["打劫"] = {"debuff"};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"] = {};	
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["凿击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["锁喉"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["闷棍"] = {nil, nil, nil, nil, {["live"] = 1, ["unique"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["破甲"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["偷袭"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["致盲"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["割裂"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["切割"] = {"buff", nil, nil, nil, {["live"] = 1, ["notarget"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["脚踢"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["扰乱"] = {nil, nil, nil, nil, {["live"] = 1,["notarget"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["还击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["肾击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["血之饥渴"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["暗影之舞"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["毒伤"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["出血"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["致命投掷"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["拆卸"] = {nil};
+	-- 毒药
+	for i, lv in ipairs(SPELL_TIMER_LEVEL_ROMAN) do
+		SPELL_TIMER_PATTERN_TABLE["ROGUE"]["麻醉药膏" .. lv] = {nil};
+		SPELL_TIMER_PATTERN_TABLE["ROGUE"]["速效药膏" .. lv] = {nil};
+		SPELL_TIMER_PATTERN_TABLE["ROGUE"]["致伤药膏" .. lv] = {nil};
+		SPELL_TIMER_PATTERN_TABLE["ROGUE"]["致命药膏" .. lv] = {nil};
+		SPELL_TIMER_PATTERN_TABLE["ROGUE"]["麻痹药膏" .. lv] = {nil};
+		SPELL_TIMER_PATTERN_TABLE["ROGUE"]["减速药膏" .. lv] = {nil};
+	end
+	
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"] = {};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["暗言术：痛"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["沉默"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["心灵尖啸"] = {nil, nil, nil, nil, {["notarget"] = 1}};
+	--SPELL_TIMER_PATTERN_TABLE["PRIEST"]["吸血鬼的拥抱"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["恢复"] = {"both", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["驱除疾病"] = {"both", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["束缚亡灵"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["噬灵疫病"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["精神控制"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["神圣之火"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["安抚心灵"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["吸血鬼之触"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["星辰碎片"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["暗影易伤"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["悲惨"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["昏阙"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["精神鞭笞"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["守护之魂"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["渐隐术"] = {"buff", nil, nil, nil, {["live"] =1}};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["真言术：盾"] = {"both", nil, nil, nil, {["live"] =1}};
 
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["暗言术：痛"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["沉默"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["心灵尖啸"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["吸血鬼之触"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["心灵惊骇"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["束缚亡灵"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["噬灵疫病"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["神圣之火"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["安抚心灵"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["星辰碎片"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["暗影恶魔"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["真言术：盾"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["愈合祷言"] = {"buff", nil, {["live"] = 1,["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["恢复"] = {"buff", nil, {["live"] = 1,["needMana"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["守护之魂"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["能量灌注"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["痛苦压制"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["消散"] = {"buff", nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"] = {};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["断筋"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["撕裂"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["盾击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["挫志怒吼"] = {"持续([%d%.]+)秒", nil, nil, nil, {["notarget"] =1}};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["刺耳怒吼"] = {"眩晕([%d%.]+)秒", nil, nil, nil, {["notarget"] =1}};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["惩戒痛击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["雷霆一击"] = {"持续([%d%.]+)秒", nil, nil, nil, {["notarget"] =1}};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["缴械"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["破胆怒吼"] = {"持续([%d%.]+)秒", nil, nil, nil, {["notarget"] =1}};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["破甲攻击"] = {"持续([%d%.]+)秒"};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["致死打击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["拦截"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["暴怒"] = {"持续([%d%.]+)秒", nil, nil, nil, {["notarget"] = 1, ["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["法术反射"] = {"buff"};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["缴械"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["震荡猛击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["震荡波"] = {nil};
 
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["断筋"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["撕裂"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["盾击"] = {"持续%t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["挫志怒吼"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["刺耳怒吼"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["惩戒痛击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["雷霆一击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["缴械"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["破胆怒吼"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["破甲攻击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["致死打击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["拦截"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["挑战怒吼"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["法术反射"] = {"buff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["缴械"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["狂暴之怒"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["血性狂暴"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["死亡之愿"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["破釜沉舟"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["反击风暴"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["盾墙"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["鲁莽"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["震荡猛击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["震荡波"] = {"debuff"};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"] = {};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["照明弹"] = {"持续([%d%.]+)秒", nil, nil, nil, {["notarget"] = 1, ["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["猎人印记"] = {nil, nil, nil, nil, {["live"] = 1, ["unique"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["摔绊"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["恐吓野兽"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["反击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["治疗宠物"] = {"在([%d%.]+)秒内为其恢复", nil, nil, nil, {["notarget"] = 1, ["live"] = 1, ["unit"] = "pet", ["nocheck"] = 0}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["狂野怒火"] = {"持续([%d%.]+)秒"};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["毒蛇钉刺"] = {nil, nil, nil, {"蝰蛇钉刺", "毒蝎钉刺", "翼龙钉刺"}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["蝰蛇钉刺"] = {nil, nil, nil, {"毒蛇钉刺", "毒蝎钉刺", "翼龙钉刺"}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["毒蝎钉刺"] = {nil, nil, nil, {"毒蛇钉刺", "蝰蛇钉刺", "翼龙钉刺"}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["翼龙钉刺"] = {nil, nil, nil, {"毒蛇钉刺", "蝰蛇钉刺", "毒蝎钉刺"}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["震荡射击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["驱散射击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["黑箭"] = {nil}; 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["瞄准射击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["沉默射击"] = {nil}; 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["扰乱射击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["冰冻陷阱"] = {{"SpellTimer_TrapSearchFunc", {"使其在最多([%d%.]+)秒内无法行动", 1, "陷阱可存在([%d%.]+)分钟", 60}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"冰霜陷阱", "献祭陷阱", "爆炸陷阱", "毒蛇陷阱"}, {["notarget"] = 1, ["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["冰霜陷阱"] = {{"SpellTimer_TrapSearchFunc", {"持续([%d%.]+)秒", 1, "陷阱可以存在([%d%.]+)分钟", 60}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"冰冻陷阱", "献祭陷阱", "爆炸陷阱", "毒蛇陷阱"}, {["notarget"] = 1, ["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["献祭陷阱"] = {{"SpellTimer_TrapSearchFunc", {"持续([%d%.]+)秒", 1, "最多存在([%d%.]+)分钟", 60}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"冰冻陷阱", "冰霜陷阱", "爆炸陷阱", "毒蛇陷阱"}, {["notarget"] = 1, ["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["爆炸陷阱"] = {{"SpellTimer_TrapSearchFunc", {"接下来的([%d%.]+)秒", 1, "存在([%d%.]+)分钟", 60}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"冰冻陷阱", "冰霜陷阱", "献祭陷阱", "毒蛇陷阱"}, {["notarget"] = 1, ["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["毒蛇陷阱"] = {{"SpellTimer_TrapSearchFunc", {"毒蛇可在([%d%.]+)秒", 1, "陷阱可存在([%d%.]+)秒", 1}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"冰冻陷阱", "冰霜陷阱", "献祭陷阱", "爆炸陷阱"}, {["notarget"] = 1, ["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["冰冻陷阱效果"] = {nil, nil, nil, {"冰冻陷阱"}, {["any"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["冰霜陷阱效果"] = {nil, nil, nil, {"冰霜陷阱"}, {["any"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["献祭陷阱效果"] = {nil, nil, nil, {"献祭陷阱"}, {["any"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["爆炸陷阱效果"] = {nil, nil, nil, {"爆炸陷阱"}, {["any"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["毒蛇陷阱效果"] = {nil, nil, nil, {"毒蛇陷阱"}, {["any"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["急速射击"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	
+	SPELL_TIMER_PATTERN_TABLE["DRUID"] = {};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["休眠"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["月火术"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["猛击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["挫志咆哮"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["野蛮咆哮"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["精灵之火"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["精灵之火（野性）"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["纠缠根须"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["突袭"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["割裂"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["愈合"] = {"both", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["回春术"] = {"both", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["斜掠"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["野性冲锋"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["虫群"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["猛击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["自然之力"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["裂伤（熊）"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["裂伤（豹）"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["激活"] = {"both", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["野性成长"] = {nil, nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["割伤"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["生命绽放"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["割碎"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["飓风术"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["月蚀"] = {"buff", nil, nil, nil, {["live"] = 1, ["nocheck"]=1, ["spell"] = {"月蚀 CD", 30}}};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["日蚀"] = {"buff", nil, nil, nil, {["live"] = 1, ["nocheck"]=1, ["spell"] = {"日蚀 CD", 30}}};
 
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["照明弹"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["摔绊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["恐吓野兽"] = {"debuff",nil,{["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["猎人印记"] = {"debuff",nil, {["live"] = 1,["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["反击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["治疗宠物"] = {"buff", nil, {["live"] = 1,["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["狂野怒火"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["主人的召唤"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["毒蛇钉刺"] = {"debuff", {"蝰蛇钉刺", "毒蝎钉刺", "翼龙钉刺"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["蝰蛇钉刺"] = {"debuff", {"毒蛇钉刺", "毒蝎钉刺", "翼龙钉刺"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["毒蝎钉刺"] = {"debuff", {"毒蛇钉刺", "蝰蛇钉刺", "翼龙钉刺"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["翼龙钉刺"] = {"debuff", {"毒蛇钉刺", "蝰蛇钉刺", "毒蝎钉刺"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["冰冻陷阱"] = {{"SpellTimer_TrapSearchFunc", {"最多%t", "存在%t"}, "SpellTimer_TrapActiveFunc"}, nil, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["冰霜陷阱"] = {{"SpellTimer_TrapSearchFunc", {"持续%t", "存在%t"}, "SpellTimer_TrapActiveFunc"}, nil, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["献祭陷阱"] = {{"SpellTimer_TrapSearchFunc", {"在%t", "存在%t"}, "SpellTimer_TrapActiveFunc"}, nil, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["爆炸陷阱"] = {{"SpellTimer_TrapSearchFunc", {"接下来的%t", "存在%t"}, "SpellTimer_TrapActiveFunc"}, nil, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["毒蛇陷阱"] = {{"SpellTimer_TrapSearchFunc", {"将在%t", "存在%t"}, "SpellTimer_TrapActiveFunc"}, nil, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["冰冻之箭"] = {{"SpellTimer_TrapSearchFunc", {"最多%t", "存在%t"}, "SpellTimer_TrapActiveFunc"}, nil, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["威慑"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["急速射击"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["震荡射击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["瞄准射击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["沉默射击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["驱散射击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["扰乱射击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["黑箭"] = {"debuff"};
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"] = {};
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["风暴打击"] = {"持续([%d%.]+)秒"};
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["漩涡武器"] = {nil, nil, nil, nil, {["live"] = 1}}; 
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["激流"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["元素掌握"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["激流"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["萨满之怒"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["潮汐之力"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["烈焰震击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["冰霜震击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["大地震击"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["妖术"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["野性狼魂"] = {"持续([%d%.]+)", nil, nil, nil, {["live"] = 1,["notarget"] = 1}}; 
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["嗜血"] = {"持续([%d%.]+)",  nil, nil, nil, {["live"] = 1,["notarget"] = 1}}; 
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["英勇"] = {"持续([%d%.]+)",  nil, nil, nil, {["live"] = 1,["notarget"] = 1}}; 
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["自然的守护者"] = {"buff",  nil, nil, nil, {["live"] = 1, ["spell"] = {"自然的守护者 CD", 30}}};
 
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["休眠"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["月火术"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["猛击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["挫志咆哮"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["精灵之火"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["精灵之火（野性）"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["纠缠根须"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["突袭"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["血袭"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["割裂"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["感染伤口"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["愈合"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["回春术"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["斜掠"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["野性冲锋"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["虫群"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["猛击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["自然之力"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["裂伤（熊）"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["裂伤（豹）"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["割伤"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["生命绽放"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["割碎"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["野蛮咆哮"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["野性成长"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["台风"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["星辰坠落"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["自然之握"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["旋风"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["树皮术"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["激活"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["猛虎之怒"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["急奔"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["狂暴回复"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["激怒"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["生存本能"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["狂暴"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["挑战咆哮"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["野性冲锋 - 熊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["野性冲锋 - 豹"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["月蚀"] = {"buff", nil, {["live"] = 1, ["spell"] = {"月蚀 CD", 30}}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["日蚀"] = {"buff", nil, {["live"] = 1, ["spell"] = {"日蚀 CD", 30}}};
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"] = {};
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["制裁之锤"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["忏悔"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["超度邪恶"] = {nil};  
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["神启"] = {"持续([%d%.]+)秒", nil, nil, nil, {["notarget"] = 1, ["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["圣光之赐"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["圣光道标"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["正义复仇"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["血之腐蚀"] = {nil};	
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["神圣恳求"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["圣洁护盾"] = {"both", nil, nil, nil, {["live"] = 1}};	
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["牺牲之手"] = {nil, nil, nil, {"拯救之手", "自由之手", "保护之手"}, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["拯救之手"] = {"both", nil, nil, {"牺牲之手", "自由之手", "保护之手"}, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["自由之手"] = {"both", nil, nil, {"牺牲之手", "拯救之手", "保护之手"}, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["保护之手"] = {"both", nil, nil, {"牺牲之手", "拯救之手", "自由之手"}, {["live"] = 1}};
+	--SPELL_TIMER_PATTERN_TABLE["PALADIN"]["清算之手"] = {nil, nil, nil, {"牺牲之手", "拯救之手", "自由之手", "保护之手"}, {["live"] = 1}};
 
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["风暴打击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["元素掌握"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["漩涡武器"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["激流"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["萨满之怒"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["潮汐之力"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["烈焰震击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["冰霜震击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["地缚术"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["大地震击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["妖术"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["野性狼魂"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["嗜血"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["英勇"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["自然的守护者"] = {"buff", nil, {["live"] = 1, ["spell"] = {"自然的守护者 CD", 30}}};
+	SPELL_TIMER_PATTERN_TABLE["MAGE"] = {};
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["变形术"] = {nil, nil, nil, nil, {["live"] = 1, ["unique"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["冰锥术"] = {"持续([%d%.]+)秒", nil, nil, {"寒冰箭"}, {["notarget"] =1}};
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["寒冰箭"] = {nil, nil, nil, {"冰锥术"}};
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["炎爆术"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["火球术"] = {nil};
+	--SPELL_TIMER_PATTERN_TABLE["MAGE"]["深冬之寒"] = {nil};  
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["霜寒刺骨"] = {nil}; 
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["寒冰屏障"] = {"buff", nil, nil, nil, {["live"] = 1}};  
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["火焰易伤"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["冰冷血脉"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["烈焰风暴"] = {"并在([%d%.]+)秒", nil, nil, nil, {["notarget"] =1}}; 
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["侦测魔法"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["冲击波"] = {"眩晕([%d%.]+)秒", nil, nil, nil, {["notarget"] =1}};
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["冰霜新星"] = {"最多持续([%d%.]+)秒", nil, nil, nil, {["notarget"] =1}};
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["召唤水元素"] = {"持续([%d%.]+)秒", nil, nil, nil, {["notarget"] =1, ["live"] = 1}}; 
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["减速"] = {nil}; -- 246
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["活动炸弹"] = {nil}; -- 44457
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["强化灼烧"] = {nil}; -- 11095
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["镜像"] = {"持续([%d%.]+)", nil, nil, nil, {["live"] = 1,["notarget"] = 1}};
 
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["圣光审判"] = {"debuff", {"智慧审判", "公正审判"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["智慧审判"] = {"debuff", {"圣光审判", "公正审判"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["公正审判"] = {"debuff", {"圣光审判", "智慧审判"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["制裁之锤"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["忏悔"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["超度邪恶"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["神启"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["光之优雅"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["圣光道标"] = {"buff", nil, {["live"] = 1,["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["圣洁护盾"] = {"buff", nil, {["live"] = 1,["unique"] = 1,["needMana"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["复仇之怒"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["神圣牺牲"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["神圣之盾"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["牺牲之手"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["光环掌握"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["保护之手"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["圣盾术"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["圣佑术"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["拯救之手"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["自由之手"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["神圣愤怒"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["复仇者之盾"] = {"debuff"};
-
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["变形术"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["减速"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["冰锥术"] = {"debuff", {"寒冰箭"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["寒冰箭"] = {"debuff", {"冰锥术"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["炎爆术"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["火球术"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["深冬之寒"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["冲击波"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["冰霜新星"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["召唤水元素"] = {"持续%t", nil, {["notarget"] = 1, ["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["减速术"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["活动炸弹"] = {"debuff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["强化灼烧"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["奥术冲击"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["寒冰护体"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["镜像"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["霜火之箭"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["深度冻结"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["龙息术"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["防护冰霜结界"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["防护火焰结界"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["法力护盾"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["隐形术"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["奥术强化"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["冰冷血脉"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["寒冰屏障"] = {"buff", nil, {["live"] = 1, ["spell"] = {"低温", 30}}};
-
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["冰霜疫病"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["血之疫病"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["黑色热疫"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["绞袭"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["冰冷触摸"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["鲜血印记"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["冰封之韧"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["狂乱"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["吸血鬼之血"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["巫妖之躯"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["黑锋冰寒"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["铜墙铁壁"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["白骨之盾"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["寒冰锁链"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["饥饿之寒"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["反魔法护罩"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["召唤石像鬼"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["反魔法领域"] = {"持续%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["亡者大军"] = {"buff", nil, {["live"] = 1, ["spell"] = {"食尸鬼军团", 45}}};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"] = {};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["冰霜疫病"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["血之疫病"] = {nil}; 
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["黑色热疫"] = {nil}; 
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["绞袭"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["冰冷触摸"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["鲜血印记"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["冰封之韧"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["狂乱"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["吸血鬼之血"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["巫妖之躯"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["黑锋冰寒"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["铜墙铁壁"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["白骨之盾"] = {"buff", nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["寒冰锁链"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["饥饿之寒"] = {"持续([%d%.]+)",  nil, nil, nil, {["live"] = 1,["notarget"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["反魔法护罩"] = {"buff",  nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["召唤石像鬼"] = {"持续([%d%.]+)", nil, nil, nil, {["live"] = 1,["notarget"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["反魔法领域"] = {"持续([%d%.]+)", nil, nil, nil, {["live"] = 1,["notarget"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["亡者大军"] = {"buff", nil, nil, nil, {["live"] = 1, ["spell"] = {"食尸鬼军团", 45}}};
 elseif (GetLocale() == "zhTW") then
-	SPELL_TIMER_TITLE = "法術計時器";
+	SPELL_TIMER_TITILE = "法術計時器";
 	SPELL_TIMER_TEXT_OPTION_SLIDER = "你可以在原有的法術的持續時間上再額外增加一段時間，拖動滑動塊來調整該時間。";
+	SPELL_TIMER_IMPROVED_SLICE_DICE = "強化切割";
 	SPELL_TIMER_SHOW_NAME = "顯示魔法名稱";
 	SPELL_TIMER_SHOW_PROGRESS = "顯示進度條";
+	SPELL_TIMER_ENABLE = "啟用法術計時器";
 
-	SPELL_TIMER_POISON = "毒藥";
-	SPELL_TIMER_VENOMOUS = "毒蛇";
+	SPELL_TIMER_TRAP_PATTERN1 = "(.-)效果$";
+	SPELL_TIMER_TRAP_PATTERN2 = "(.-)光環$";
 
-	SPELL_TIMER_TRAP_PATTERN1 = "(.-)效果";
-	SPELL_TIMER_TRAP_PATTERN2 = "(.-)光環";
-
+	SPELL_TIMER_SUMMON_TOTEM = "圖騰召喚";
 	SPELL_TIMER_TOTEM_PATTERN = "圖騰";
+	SPELL_TIMER_JUDGEMENT = "審判$";
+	SPELL_TIMER_INFECTION = "感染之傷";
 
 	SPELL_TIMER_TOTEM_TIP = "你可以使用滑鼠右鍵取消該圖騰。";
+	SPELL_TIMER_TOTEM_TIP = "你可以使用滑鼠右鍵取消該圖騰。";
+	SPELL_TIMER_LOCK_POSITION = "鎖定位置";
+	SPELL_TIMER_CANCEL_TIMER = "右鍵取消計時";
+	SPELL_TIMER_CHANGE_SCALE = "縮放比例...";
+	SPELL_TIMER_DISPLAY_BORDER = "顯示邊框";
+	SPELL_TIMER_CHANGE_BD_ALPHA = "邊框透明度...";
+	SPELL_TIMER_DISPLAY_BACKGD = "顯示背景";
+	SPELL_TIMER_CHANGE_BG_ALPHA = "背景透明度...";
+	SPELL_TIMER_COLSE_TIMER = "右鍵點擊關閉該計時";
+	SPELL_TIMER_SHIFT_CLOSE = "Shift + 右鍵遮罩對該效果的計時";
+	SPELL_TIMER_MOVE_MENU = "左鍵 - 拖動計時器\n右鍵 - 彈出配置菜單";
 
-	SPELL_TIMER_UNITFRAME_TOOLTIP = "點擊小鎖解開/鎖定窗口";
+	SPELL_TIMER_PATTERN_TABLE = {} 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"] = {} 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["恐懼術"] = {nil} 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["獻祭"] = {nil} 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["放逐術"] = {nil} 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["腐蝕術"] = {nil, nil, nil, {"腐蝕種子"}} 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["腐蝕種子"] = {nil, nil, nil, {"腐蝕術"}};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["生命虹吸"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["厄運詛咒"] = {nil, nil, nil, {"痛苦詛咒", "元素詛咒", "虛弱詛咒", "語言詛咒", "魯莽詛咒", "暗影詛咒", "疲勞詛咒", "腐蝕種子"}} 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["痛苦詛咒"] = {nil, nil, nil, {"厄運詛咒", "元素詛咒", "虛弱詛咒", "語言詛咒", "魯莽詛咒", "暗影詛咒", "疲勞詛咒", "腐蝕種子"}} 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["元素詛咒"] = {nil, nil, nil, {"痛苦詛咒", "厄運詛咒", "虛弱詛咒", "語言詛咒", "魯莽詛咒", "暗影詛咒", "疲勞詛咒"}} 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["虛弱詛咒"] = {nil, nil, nil, {"痛苦詛咒", "厄運詛咒", "元素詛咒", "語言詛咒", "魯莽詛咒", "暗影詛咒", "疲勞詛咒", "腐蝕種子"}} 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["語言詛咒"] = {nil, nil, nil, {"痛苦詛咒", "厄運詛咒", "元素詛咒", "虛弱詛咒", "魯莽詛咒", "暗影詛咒", "疲勞詛咒", "腐蝕種子"}} 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["魯莽詛咒"] = {nil, nil, nil, {"痛苦詛咒", "厄運詛咒", "元素詛咒", "虛弱詛咒", "語言詛咒", "暗影詛咒", "疲勞詛咒", "腐蝕種子"}} 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["暗影詛咒"] = {nil, nil, nil, {"痛苦詛咒", "厄運詛咒", "元素詛咒", "虛弱詛咒", "語言詛咒", "魯莽詛咒", "疲勞詛咒", "腐蝕種子"}} 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["疲勞詛咒"] = {nil, nil, nil, {"痛苦詛咒", "厄運詛咒", "元素詛咒", "虛弱詛咒", "語言詛咒", "魯莽詛咒", "暗影詛咒", "腐蝕種子"}} 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["死亡纏繞"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["恐懼嚎叫"] = {"持續([%d%.]+)秒"}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["奴役惡魔"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["痛苦動盪"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["蝕魂術"] = {nil}; 
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["鬼影缠身"] = {nil}; 
 
-	SPELLTIMER_HOUR_WORD = "小時";
-	SPELLTIMER_MINUTE_WORD = "分鐘";
-	SPELLTIMER_SECOND_WORD = "秒";
+	
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"] = {} 
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["鑿擊"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["絞喉"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["悶棍"] = {nil, nil, nil, nil, {["live"] = 1, ["unique"] = 1}} 
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["破甲"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["偷襲"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["致盲"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["割裂"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["切割"] = {"buff", nil, nil, nil, {["live"] = 1, ["notarget"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["腳踢"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["擾亂"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["還擊"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["腎擊"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["鮮血渴求"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["暗影之舞"] = {nil};
+	-- 毒药
+	for i, lv in ipairs(SPELL_TIMER_LEVEL_ROMAN) do
+		SPELL_TIMER_PATTERN_TABLE["ROGUE"]["麻醉毒藥" .. lv] = {nil};
+		SPELL_TIMER_PATTERN_TABLE["ROGUE"]["速效毒藥" .. lv] = {nil};
+		SPELL_TIMER_PATTERN_TABLE["ROGUE"]["致傷毒藥" .. lv] = {nil};
+		SPELL_TIMER_PATTERN_TABLE["ROGUE"]["致命毒藥" .. lv] = {nil};
+		SPELL_TIMER_PATTERN_TABLE["ROGUE"]["麻痹毒藥" .. lv] = {nil};
+		SPELL_TIMER_PATTERN_TABLE["ROGUE"]["致殘毒藥" .. lv] = {nil};
+	end
 
-	SPELLTIMER_COOLDOWN_INFO = "%s的剩餘時間還有%s。";
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"] = {} 
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["暗言術：痛"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["沉默"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["心靈尖嘯"] = {nil, nil, nil, nil, {["notarget"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["吸血鬼的擁抱"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["恢復"] = {nil, nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["安撫心靈"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["束縛不死生物"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["噬靈瘟疫"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["精神控制"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["神聖之火"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["吸血之觸"] ={nil};
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["星辰裂片"] = {nil};
+	
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"] = {} 
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["斷筋"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["撕裂"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["盾擊"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["挫志怒吼"] = {"持續([%d%.]+)秒"} 
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["懲戒痛擊"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["雷霆一擊"] = {"持續([%d%.]+)秒"} 
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["繳械"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["破膽怒吼"] = {"持續([%d%.]+)秒"} 
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["破甲攻擊"] = {"持續([%d%.]+)秒"} 
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["致死打擊"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["攔截"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["暴怒"] = {"持續%t", nil, {["notarget"] = 1, ["live"] = 1}}; -- 29801
 
-	SPELL_TIMER_PATTERN_TABLE = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["恐懼術"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["獻祭"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["放逐術"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["腐蝕術"] = {"debuff", {"腐蝕種子"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["腐蝕種子"] = {"debuff", {"腐蝕術"}, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["末日災厄"] = {"debuff", {"痛苦災厄", "浩劫災厄"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["痛苦災厄"] = {"debuff", {"末日災厄", "浩劫災厄"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["浩劫災厄"] = {"debuff", {"末日災厄", "痛苦災厄"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["元素詛咒"] = {"debuff", { "虛弱詛咒", "語言詛咒", "疲勞詛咒"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["虛弱詛咒"] = {"debuff", { "元素詛咒", "語言詛咒", "疲勞詛咒"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["語言詛咒"] = {"debuff", { "元素詛咒", "虛弱詛咒", "疲勞詛咒"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["疲勞詛咒"] = {"debuff", { "元素詛咒", "虛弱詛咒", "語言詛咒"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["死亡纏繞"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["恐懼嚎叫"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["古爾丹之手"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["誘惑"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["惡魔化身"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["奴役惡魔"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["痛苦動盪"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["蝕魂術"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["防護暗影結界"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["暗影之焰"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["暗影之怒"] = {"debuff"};
 
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE][SPELL_TIMER_POISON] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["鑿擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["絞喉"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["悶棍"] = {"debuff", nil, {["live"] = 1, ["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["破甲"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["偷襲"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["致盲"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["割裂"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["揭底之擊"] = {"debuff"};--BUFF OR DEBUFF
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["卸除武裝"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["擲殺"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["毒化"] = {"buff" , nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["切割"] = {"buff" , nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["疾跑"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["閃避"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["能量刺激"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["佯攻"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["養精蓄銳"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["戰鬥就緒"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["暗影披風"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["消失"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["煙霧彈"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["偷天換日"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["死亡謊言"] = {"buff", nil, {["live"] = 1, ["spell"] = {"死亡謊言 CD", 60}}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["腳踢"] = {"持續%t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["擾亂"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["還擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["腎擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["出血"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["鮮血渴求"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["暗影之舞"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["宿怨"] = {"debuff"};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"] = {} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["照明彈"] = {"持續([%d%.]+)秒", nil, nil, nil, {["notarget"] = 1, ["live"] = 1}} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["獵人印記"] = {nil, nil, nil, nil, {["live"] = 1, ["unique"] = 1}} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["摔絆"] = {nil} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["恐嚇野獸"] = {nil} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["反擊"] = {nil} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["狂野怒火"] = {"持續([%d%.]+)秒",nil,nil,nil,{["notarget"] = 1,["live"] = 1}} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["毒蛇釘刺"] = {nil, nil, nil, {"蝮蛇釘刺", "毒蝎釘刺", "翼龍釘刺"}} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["蝮蛇釘刺"] = {nil, nil, nil, {"毒蛇釘刺", "毒蝎釘刺", "翼龍釘刺"}} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["毒蠍釘刺"] = {nil, nil, nil, {"毒蛇釘刺", "蝮蛇釘刺", "翼龍釘刺"}} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["翼龍釘刺"] = {nil, nil, nil, {"毒蛇釘刺", "蝮蛇釘刺", "毒蝎釘刺"}} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["震盪射擊"] = {nil}      
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["驅散射擊"] = {nil} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["冰凍陷阱"] = {{"SpellTimer_TrapSearchFunc", {"使其在最多([%d%.]+)秒內無法行動", "陷阱可存在([%d%.]+)分鐘"}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"冰霜陷阱", "獻祭陷阱", "爆炸陷阱", "毒蛇陷阱"}, {["notarget"] = 1,["live"] = 1}} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["冰霜陷阱"] = {{"SpellTimer_TrapSearchFunc", {"持續([%d%.]+)秒", "陷阱可以存在([%d%.]+)分鐘"}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"冰凍陷阱", "獻祭陷阱", "爆炸陷阱", "毒蛇陷阱"}, {["notarget"] = 1,["live"] = 1}} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["獻祭陷阱"] = {{"SpellTimer_TrapSearchFunc", {"持續([%d%.]+)秒", "最多存在([%d%.]+)分鐘"}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"冰凍陷阱", "冰霜陷阱", "爆炸陷阱", "毒蛇陷阱"}, {["notarget"] = 1,["live"] = 1}} 
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["爆炸陷阱"] = {{"SpellTimer_TrapSearchFunc", {"接下來的([%d%.]+)秒", "存在([%d%.]+)分鐘"}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"冰凍陷阱", "冰霜陷阱", "獻祭陷阱", "毒蛇陷阱"}, {["notarget"] = 1,["live"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["毒蛇陷阱"] = {{"SpellTimer_TrapSearchFunc", {"毒蛇將在([%d%.]+)秒後死亡", "陷阱將在([%d%.]+)分鐘後消失"}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"冰凍陷阱", "冰霜陷阱", "獻祭陷阱", "爆炸陷阱"}, {["notarget"] = 1,["live"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["冰凍陷阱效果"] = {nil, nil, nil, {"冰凍陷阱"}, {["any"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["冰霜陷阱效果"] = {nil, nil, nil, {"冰霜陷阱"}, {["any"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["獻祭陷阱效果"] = {nil, nil, nil, {"獻祭陷阱"}, {["any"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["爆炸陷阱效果"] = {nil, nil, nil, {"爆炸陷阱"}, {["any"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["毒蛇陷阱效果"] = {nil, nil, nil, {"毒蛇陷阱"}, {["any"] = 1}};
+	
+	SPELL_TIMER_PATTERN_TABLE["DRUID"] = {} 
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["休眠"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["月火術"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["重擊"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["挫志咆哮"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["精靈之火"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["精靈之火（野性）"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["糾纏根鬚"] = {nil};
+	--SPELL_TIMER_PATTERN_TABLE["DRUID"]["樹皮術"] = {"持續([%d%.]+)秒"}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["突襲"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["撕扯"] = {{"SpellTimer_ComboSearchFunc", "(%d+)點：([%d%.]+)秒", "GetComboPoints"}} 
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["癒合"] = {nil, nil, nil, nil, {["live"] = 1}} 
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["回春術"] = {nil, nil, nil, nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["掃擊"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["野性沖鋒"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["蟲群"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["重擊"] = {"昏迷([%d%.]+)"}; 
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["自然之力"] = {"持續([%d%.]+)"}; 
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["割碎 - 熊形態"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["割碎 - 獵豹形態"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["割裂"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["生命之花"] = {"在([%d%.]+)內"};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["傷殘術"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["兇蠻咆哮"] = {"buff"};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["颶風術"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["蝕星蔽月"] = {"buff", nil, nil, nil, {["live"] = 1, ["spell"] = {"蝕星蔽月 CD", 30}}}; -- 48518
 
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["暗言術:痛"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["沉默"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["心靈尖嘯"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["恢復"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["聖言術:寧"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["漸隱術"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["痛苦鎮壓"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["恩典"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["真言術:壁"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["注入能量"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["佈道"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["大天使"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["心靈烙印"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["暗影惡魔"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["癒合禱言"] = {"buff", nil, {["live"] = 1,["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["守護聖靈"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["真言術:盾"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["影散"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["束縛不死生物"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["噬靈瘟疫"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["神聖之火"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["安撫心靈"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["心靈恐慌"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["吸血之觸"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["星辰裂片"] = {"debuff"};
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"] = {} 
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["風暴打擊"] = {"持續([%d%.]+)"};
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["氣漩武器"] = {nil, nil, nil, nil, {["live"] = 1}};
 
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["斷筋"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["撕裂"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["盾擊"] = {"持續%t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["挫志怒吼"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["刺耳怒吼"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["懲戒痛擊"] = {"debuff"};--是否还存在
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["雷霆一擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["繳械"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["破膽怒吼"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["破甲攻擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["致死打擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["碎甲投擲"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["挑戰怒吼"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["撂倒"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["震盪猛擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["攔截"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["震懾波"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["反擊風暴"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["巨像碎擊"] = {"debuff"};--buff or debuff
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["狂暴之怒"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["破釜沉舟"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["狂怒恢復"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["橫掃攻擊"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["劍下亡魂"] = {"buff", nil, {["live"] = 1, ["spell"] = {"劍下亡魂 CD", 120}}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["魯莽"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["沈著殺機"] = {"buff", {"心靈之怒"}, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["心靈之怒"] = {"buff", {"沈著殺機"}, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["死亡之願"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["盾牌格擋"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["削骨斬肉"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["盾牆"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["法術反射"] = {"buff", nil, {["live"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"] = {} 
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["制裁之錘"] = {"使目標昏迷([%d%.]+)秒"} 
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["懺悔"] = {"最多持續([%d%.]+)秒"} 
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["超度不死生物"] = {"最多([%d%.]+)秒"}
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["神聖啟發"] = {"持續([%d%.]+)", nil, {["notarget"] = 1, ["live"] = 1}}; 
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["光明賜福"] = {"持續([%d%.]+)", nil, {["notarget"] = 1, ["live"] = 1}}; 
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["聖光信標"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["公正復仇"] = {nil}; 
 
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["照明彈"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["摔絆"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["恐嚇野獸"] = {"debuff",nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["反擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["寡婦毒液"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["治療寵物"] = {"buff", nil, {["live"] = 1,["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["狂野怒火"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["專注之火"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["威懾"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["主人的呼喚"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["急速射擊"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["沉默射擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["獵人印記"] = {"debuff",nil, {["live"] = 1,["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["死亡標記"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["擾亂射擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["毒蛇釘刺"] = {"debuff", {"蝮蛇釘刺", "毒蠍釘刺", "翼龍釘刺"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["蝮蛇釘刺"] = {"debuff", {"毒蛇釘刺", "毒蠍釘刺", "翼龍釘刺"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["毒蠍釘刺"] = {"debuff", {"毒蛇釘刺", "蝮蛇釘刺", "翼龍釘刺"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["翼龍釘刺"] = {"debuff", {"毒蛇釘刺", "蝮蛇釘刺", "毒蠍釘刺"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["震盪射擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["驅散射擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["黑蝕箭"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["冰凍陷阱"] = {{"SpellTimer_TrapSearchFunc", {"最多%t內", "陷阱可存在%t"}, "SpellTimer_TrapActiveFunc"}, nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["冰霜陷阱"] = {{"SpellTimer_TrapSearchFunc", {"持續%t", "陷阱可存在%t"}, "SpellTimer_TrapActiveFunc"}, nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["獻祭陷阱"] = {{"SpellTimer_TrapSearchFunc", {"在%t內", "陷阱可存在%t"}, "SpellTimer_TrapActiveFunc"}, nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["爆炸陷阱"] = {{"SpellTimer_TrapSearchFunc", {"接下來的%t", "陷阱可存在%t"}, "SpellTimer_TrapActiveFunc"}, nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["毒蛇陷阱"] = {{"SpellTimer_TrapSearchFunc", {"毒蛇將在%t", "陷阱可存在%t"}, "SpellTimer_TrapActiveFunc"}, nil, {["live"] = 1,["notarget"] = 1}};
+	--SPELL_TIMER_PATTERN_TABLE["PALADIN"]["審判"] = {nil, nil, 0, nil, {["公正審判"]=1, ["聖光審判"]=1, ["十字軍審判"]=1, ["智慧審判"]=1}}
+	--SPELL_TIMER_PATTERN_TABLE["PALADIN"]["公正審判"] = {"公正聖印", nil, 10, {"聖光審判", "十字軍審判", "智慧審判"}}
+	--SPELL_TIMER_PATTERN_TABLE["PALADIN"]["聖光審判"] = {"光明聖印", nil, 10, {"公正審判", "十字軍審判", "智慧審判"}}
+	--SPELL_TIMER_PATTERN_TABLE["PALADIN"]["十字軍審判"] = {"十字軍聖印", nil, 10, {"公正審判", "聖光審判", "智慧審判"}}
+	--SPELL_TIMER_PATTERN_TABLE["PALADIN"]["智慧審判"] = {"智慧聖印", nil, 10, {"公正審判", "聖光審判", "十字軍審判"}}
 
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["休眠"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["月火術"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["重擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["挫志咆哮"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["精靈之火"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["精靈之火(野性)"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["啟動"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["奔竄咆哮"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["樹皮術"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["糾纏根鬚"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["突襲"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["血襲"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["撕扯"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["感染之傷"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["挑戰咆哮"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["狂暴恢復"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["自然之握"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["荊棘術"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["癒合"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["回春術"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["狂暴"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["求生本能"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["掃擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["野性衝鋒"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["蟲群"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["自然之力"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["割碎"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["割裂"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["狂怒"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["生命之花"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["星殞術"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["傷殘術"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["突進"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["日炎術"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["痛擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["颱風"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["奔竄"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["野性痊癒"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["自然之賜"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["兇蠻咆哮"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["颶風術"] = {"debuff", nil, {["unique"] = 1}};
+	SPELL_TIMER_PATTERN_TABLE["MAGE"] = {} 
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["變形術"] = {nil, nil,nil,{"變豬術","變龜術"},{["live"] = 1, ["unique"] = 1}} 
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["變豬術"] = {nil,nil,nil,{"變形術","變龜術"},{["live"] = 1, ["unique"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["變龜術"] = {nil,nil,nil,{"變形術","變豬術"},{["live"] = 1, ["unique"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["冰錐術"] = {"持續([%d%.]+)秒",nil,nil,{"寒冰箭"}, {["notarget"] =1}} 
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["炎爆術"] = {nil}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["火球術"] = {nil}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["烈焰風暴"] = {"在([%d%.]+)秒內", nil, nil, nil, {["notarget"] = 1}} 
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["寒冰箭"] = {nil, nil, nil, {"冰錐術"}}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["偵測魔法"] = {nil}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["沖擊波"] = {"眩暈([%d%.]+)秒", nil, nil, nil, {["notarget"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["冰霜新星"] = {"最高可持續([%d%.]+)秒", nil, nil, nil, {["notarget"] = 1}} 
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["召喚水元素"] = {"持續([%d%.]+)秒", nil, nil, nil, {["notarget"] =1, ["live"] = 1}} 
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["減速術"] = {nil};
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["活體爆彈"] = {nil, nil, nil, nil, {["live"] = 1, ["unique"] = 1}}; -- 44457
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["強化灼燒"] = {nil}; 
 
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["風暴打擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["靈行者之賜"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["精通元素"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["薩滿之怒"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["氣漩武器"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["激流"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["烈焰震擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["冰霜震擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["地縛圖騰"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["妖術"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["大地震擊"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["野性之魂"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["元素束縛"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["嗜血術"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["英勇氣概"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["自然守護者"] = {"buff", nil, {["live"] = 1, ["spell"] = {"自然守護者 CD", 30}}};
-
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["制裁之錘"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["懺悔"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["退邪術"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["自由聖禦"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["拯救聖禦"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["異端審問"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["犧牲聖禦"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["保護聖禦"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["神聖啟發"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["光明賜福"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["復仇之怒"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["神性祈求"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["聖盾術"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["聖佑術"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["精通光環"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["神恩術"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["狂熱精神"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["忠誠防衛者"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["聖光信標"] = {"buff", nil, {["live"] = 1,["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["公正復仇"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["神聖憤怒"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["神性守護"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["遠古諸王守護者"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["變形術"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["冰錐術"] = {"debuff", {"寒冰箭"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["寒冰箭"] = {"debuff", {"冰錐術"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["炎爆術"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["霜火箭"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["烈燄之球"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["寒冰屏障"] = {"buff", nil, {["live"] = 1, ["spell"] = {"低温", 30}}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["法力護盾"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["法師結界"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["幻鏡之像"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["秘法衝擊"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["冰寒脈動"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["寒冰護體"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["秘法強化"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["衝擊波"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["龍之吐息"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["冰霜新星"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["減速術"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["極度冰凍"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["活體爆彈"] = {"debuff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["燃火"] = {"debuff"};
-
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["冰錮堅韌"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["反魔法護罩"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["骸骨之盾"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["血族之裔"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["冰霜之柱"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["巫妖之軀"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["邪惡狂熱"] = {"buff", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["冰霜熱疫"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["血魄瘟疫"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["黑死瘟疫"] = {"debuff", nil, {["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["噬溫酷寒"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["絞殺"]   = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["亡域打擊"]   = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["反魔法力場"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["召喚石像鬼"] = {"持續%t", nil, {["live"] = 1,["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["死亡之握"]   = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["黑暗幻象"]   = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["冰結之觸"]   = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["穢邪荒疫"]   = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["冰鍊術"]   = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["亡域意志"] = {"buff", nil, {["live"] = 1, ["spell"] = {"亡域意志 CD", 45}}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["亡靈大軍"] = {"buff", nil, {["live"] = 1, ["spell"] = {"亡靈军团", 45}}};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"] = {};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["冰霜熱疫"] = {nil}; 
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["冰鍊術"]   = {nil}; 	
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["血魄瘟疫"] = {nil}; 
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["黑死瘟疫"] = {nil};
 else
-	SPELL_TIMER_TITLE = "SpellTimer";
+	SPELL_TIMER_TITILE = "SpellTimer";
 	SPELL_TIMER_TEXT_OPTION_SLIDER = "You can add some time on this spell .";
+	SPELL_TIMER_IMPROVED_SLICE_DICE = "Slice and Dice";
 	SPELL_TIMER_SHOW_NAME = "Show spell name";
 	SPELL_TIMER_SHOW_PROGRESS = "Show Progress bar";
+	SPELL_TIMER_ENABLE = "Enable SpellTimer";
 
-	SPELL_TIMER_POISON = "Poison";
-
-	SPELL_TIMER_TRAP_PATTERN1 = "(.-) effect";
+	SPELL_TIMER_TRAP_PATTERN1 = "(.-) effect$";
 	SPELL_TIMER_TRAP_PATTERN2 = "(.-) aura$";
 
+	SPELL_TIMER_SUMMON_TOTEM = "Totemic Call";
 	SPELL_TIMER_TOTEM_PATTERN = "Totem";
+	SPELL_TIMER_JUDGEMENT = "審判$";
+	SPELL_TIMER_INFECTION = "感染之傷";
 
 	SPELL_TIMER_TOTEM_TIP = "Right click to cancel totem.";
+	SPELL_TIMER_TOTEM_TIP = "你可以使用鼠标右键取消该图腾。";
+	SPELL_TIMER_LOCK_POSITION = "锁定位置";
+	SPELL_TIMER_CANCEL_TIMER = "右键取消计时";
+	SPELL_TIMER_CHANGE_SCALE = "缩放比例...";
+	SPELL_TIMER_DISPLAY_BORDER = "显示边框";
+	SPELL_TIMER_CHANGE_BD_ALPHA = "边框透明度...";
+	SPELL_TIMER_DISPLAY_BACKGD = "显示背景";
+	SPELL_TIMER_CHANGE_BG_ALPHA = "背景透明度...";
+	SPELL_TIMER_COLSE_TIMER = "右键点击关闭该计时";
+	SPELL_TIMER_SHIFT_CLOSE = "Shift + 右键屏蔽对该效果的计时";
+	SPELL_TIMER_MOVE_MENU = "左键 - 拖动计时器\n右键 - 弹出配置菜单";
 
-	SPELL_TIMER_UNITFRAME_TOOLTIP = "Click the lock unlock/lock the window";
-
-	SPELLTIMER_HOUR_WORD = " hour";
-	SPELLTIMER_MINUTE_WORD = " min";
-	SPELLTIMER_SECOND_WORD = " sec";
-
-	SPELLTIMER_COOLDOWN_INFO = "%s remains %s.";
-
+--    spells
 	SPELL_TIMER_PATTERN_TABLE = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Fear"] = {"up to %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Immolate"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Banish"] = {"up to %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Corruption"] = {"debuff", {"Seed of Corruption"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Seed of Corruption"] = {"over %t", {"Corruption"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Siphon Life"] = {"Lasts %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Curse of Doom"] = {"after %t", {"Curse of Agony", "Curse of the Elements", "Curse of Weakness", "Curse of Tongues", "Curse of Recklessness", "Curse of Shado", "Curse of Exhaustion"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Curse of Agony"] = {"over %t", {"Curse of Doom", "Curse of the Elements", "Curse of Weakness", "Curse of Tongues", "Curse of Recklessness", "Curse of Shado", "Curse of Exhaustion"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Curse of the Elements"] = {"target for %t", {"Curse of Agony", "Curse of Doom", "Curse of Weakness", "Curse of Tongues", "Curse of Recklessness", "Curse of Shado", "Curse of Exhaustion"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Curse of Weakness"] = {"for %t.", {"Curse of Agony", "Curse of Doom", "Curse of the Elements", "Curse of Tongues", "Curse of Recklessness", "Curse of Shado", "Curse of Exhaustion"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Curse of Tongues"] = {"Lasts %t.", {"Curse of Agony", "Curse of Doom", "Curse of the Elements", "Curse of Weakness", "Curse of Recklessness", "Curse of Shado", "Curse of Exhaustion"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Curse of Recklessness"] = {"for %t.", {"Curse of Agony", "Curse of Doom", "Curse of the Elements", "Curse of Weakness", "Curse of Tongues", "Curse of Shado", "Curse of Exhaustion"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Curse of Shadow"] = {"for %t", {"Curse of Agony", "Curse of Doom", "Curse of the Elements", "Curse of Weakness", "Curse of Tongues", "Curse of Recklessness", "Curse of Exhaustion"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Curse of Exhaustion"] = {"for %t", {"Curse of Agony", "Curse of Doom", "Curse of the Elements", "Curse of Weakness", "Curse of Tongues", "Curse of Recklessness", "Curse of Shado"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Death Coil"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Howl of Terror"] = {"for %t", nil, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Enslave Demon"] = {"up to %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Unstable Affliction"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARLOCK]["Haunt"] = {"debuff"};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"] = {};
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Fear"] = {"causing it to run in fear for up to ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Immolate"] = {"over ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Banish"] = {"but making it invulnerable for up to ([%d%.]+) sec.",nil,nil,nil,{["live"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Corruption"] = {"Shadow damage over ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Siphon Life"] = {"Lasts ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Curse of Doom"] = {"Shadow damage after ([%d%.]+) min.", 60, nil, {"Curse of Agony", "Curse of the Elements", "Curse of Weakness", "Curse of Tongues", "Curse of Recklessness", "Curse of Shadow", "Curse of Exhaustion"}}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Curse of Agony"] = {"Shadow damage over ([%d%.]+) sec.", nil, nil, {"Curse of Doom", "Curse of the Elements", "Curse of Weakness", "Curse of Tongues", "Curse of Recklessness", "Curse of Shadow", "Curse of Exhaustion"}}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Curse of the Elements"] = {"Curses the target for ([%d%.]+) min", 60, nil, {"Curse of Agony", "Curse of Doom", "Curse of Weakness", "Curse of Tongues", "Curse of Recklessness", "Curse of Shadow", "Curse of Exhaustion"}}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Curse of Weakness"] = {"the target is reduced by %d+ for ([%d%.]+) min.", 60, nil, {"Curse of Agony", "Curse of Doom", "Curse of the Elements", "Curse of Tongues", "Curse of Recklessness", "Curse of Shadow", "Curse of Exhaustion"}}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Curse of Tongues"] = {"Lasts ([%d%.]+) sec.", nil, nil, {"Curse of Agony", "Curse of Doom", "Curse of the Elements", "Curse of Weakness", "Curse of Recklessness", "Curse of Shadow", "Curse of Exhaustion"}}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Curse of Recklessness"] = {"reducing armor by %d+ for ([%d%.]+) min.", 60, nil, {"Curse of Agony", "Curse of Doom", "Curse of the Elements", "Curse of Weakness", "Curse of Tongues", "Curse of Shadow", "Curse of Exhaustion"}}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Curse of Shadow"] = {"Curses the target for ([%d%.]+) min", 60, nil, {"Curse of Agony", "Curse of Doom", "Curse of the Elements", "Curse of Weakness", "Curse of Tongues", "Curse of Recklessness", "Curse of Exhaustion"}}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Curse of Exhaustion"] = {"movement speed by %d+%% for ([%d%.]+) sec.", nil, nil, {"Curse of Agony", "Curse of Doom", "Curse of the Elements", "Curse of Weakness", "Curse of Tongues", "Curse of Recklessness", "Curse of Shadow"}}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Death Coil"] = {"the enemy target to run in horror for ([%d%.]+) sec"}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Howl of Terror"] = {"flee in terror for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Enslave Demon"] = {"Lasts up to ([%d%.]+) min", 60, nil, nil, {["live"] = 1, ["unique"] = 1}}
+	--pet
+	SPELL_TIMER_PATTERN_TABLE["WARLOCK"]["Spell Lock"] = {"Silences the enemy for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"] = {}
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["Gouge"] = {"incapacitating the opponent for ([%d%.]+) sec"}
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["Garrote"] = {"Garrote the enemy, causing %d+ damage over ([%d%.]+) sec"}
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["Sap"] = {"Incapacitates the target for up to ([%d%.]+) sec", nil, nil, nil, {["live"] = 1, ["unique"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["Expose Armor"] = {"Finishing move that exposes the target for ([%d%.]+) sec"}
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["Cheap Shot"] = {"Stuns the target for ([%d%.]+) sec"}
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["Blind"] = {"Blinds the target, causing it to wander disoriented for up to ([%d%.]+) sec"}
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["Rupture"] = {{"SpellTimer_ComboSearchFunc", "(%d+) point : 60 damage over ([%d%.]+) secs", "GetComboPoints"}}
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["Slice and Dice"] = {{"SpellTimer_ComboSearchFunc", "(%d+) point : ([%d%.]+) sec", "GetComboPoints"}, nil, nil, nil, {["live"] = 1, ["notarget"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["Kick"] = {"from being cast for ([%d%.]+) sec"}
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["Distract"] = {"all nearby monsters for ([%d%.]+) sec"}
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["Riposte"] = {"disarms the target for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["ROGUE"]["Kidney Shot"] = {{"SpellTimer_ComboSearchFunc", "(%d+) point : ([%d%.]+) second(%d+)", "GetComboPoints"}}
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"] = {}
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["Shadow Word: Pain"] = {"A word of darkness that causes 30 Shadow damage over ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["Silence"] = {"from casting spells for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["Psychic Scream"] = {"for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["Vampiric Embrace"] = {"you deal for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["Renew"] = {"over ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["Shackle Undead"] = {"Shackles the target undead enemy for up to ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["Devouring Plague"] = {"Lasts ([%d%.]+) min."}
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["Mind Control"] = {"Lasts up to ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["Holy Fire"] = {"over ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["PRIEST"]["Mind Soothe"] = {"Lasts ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"] = {}
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["Hamstring"] = {"for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["Rend"] = {"over ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["Shield Bash"] = {"from being cast for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["Demoralizing Shout"] = {"for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["Piercing Howl"] = {"for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["Mocking Blow"] = {"forces the target to focus attacks on you for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["Thunder Clap"] = {"for ([%d%.]+) sec"}
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["Disarm"] = {"Disarm the enemy's weapon for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["Intimidating Shout"] = {"Lasts ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["Sunder Armor"] = {"Lasts ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["Mortal Strike"] = {"for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["WARRIOR"]["Intercept"] = {"for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"] = {}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Flare"] = {"for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Hunter's Mark"] = {"Lasts for ([%d%.]+) min.", 60, nil, nil, {["live"] = 1, ["unique"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Wing Clip"] = {"by %d+%% for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Scare Beast"] = {"fear for up to ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Counterattack"] = {"for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Bestial Wrath"] = {"for ([%d%.]+) sec.",nil,nil,nil,{["notarget"] = 1,["live"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Serpent Sting"] = {"damage over ([%d%.]+) sec.", nil, nil, {"Viper Sting", "Scorpid Sting", "Wyvern Sting"}}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Viper Sting"] = {"mana over ([%d%.]+) sec.", nil, nil, {"Serpent Sting", "Scorpid Sting", "Wyvern Sting"}}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Scorpid Sting"] = {"by %d+ for ([%d%.]+) sec.", nil, nil, {"Serpent Sting", "Viper Sting", "Wyvern Sting"}}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Wyvern Sting"] = {"over ([%d%.]+) sec.", nil, nil, {"Serpent Sting", "Viper Sting", "Scorpid Sting"}}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Concussive Shot"] = {"speed by %d+%% for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Scatter Shot"] = {"the target for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Freezing Trap"] = {{"SpellTimer_TrapSearchFunc", {"all action for up to ([%d%.]+) sec.", "Trap will exist for ([%d%.]+) min."}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"Frost Trap", "Immolation Trap", "Explosive Trap"}, {["notarget"] = 1,["live"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Frost Trap"] = {{"SpellTimer_TrapSearchFunc", {"around itself for ([%d%.]+) sec", "Trap will exist for ([%d%.]+) min."}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"Freezing Trap", "Immolation Trap", "Explosive Trap"}, {["notarget"] = 1,["live"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Immolation Trap"] = {{"SpellTimer_TrapSearchFunc", {"over ([%d%.]+) sec.", "exist for ([%d%.]+) min."}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"Freezing Trap", "Frost Trap", "Explosive Trap"}, {["notarget"] = 1,["live"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["HUNTER"]["Explosive Trap"] = {{"SpellTimer_TrapSearchFunc", {"Fire damage over ([%d%.]+) sec", "Trap will exist for ([%d%.]+) min."}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"Freezing Trap", "Frost Trap", "Immolation Trap"}, {["notarget"] = 1,["live"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"] = {}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Hibernate"] = {"for up to ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Moonfire"] = {"over ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Bash"] = {"for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Demoralizing Roar"] = {"Lasts ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Faerie Fire"] = {"for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Faerie Fire (Feral)"] = {"for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Entangling Roots"] = {"over ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Nature's Grasp"] = {"Lasts ([%d%.]+) sec",nil,nil,nil,{["Entangling Roots"] = 1}}     
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Pounce"] = {"over ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Rip"] = {{"SpellTimer_ComboSearchFunc", "(%d+) point : %d+ damage over ([%d%.]+) sec.", "GetComboPoints"}}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Regrowth"] = {"over ([%d%.]+) sec.",nil,nil,nil,{["live"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Rejuvenation"] = {"over ([%d%.]+) sec.",nil,nil,nil,{["live"] = 1}}      
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Swiftmend"] = {nil, nil, 0, {"Regrowth","Rejuvenation"}}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Rake"] = {"over ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Feral Charge"] = {"cast for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["DRUID"]["Insect Swarm"] = {"over ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"] = {}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Frost Shock"] = {"Lasts ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Flame Shock"] = {"over ([%d%.]+) sec."}
+	--earth
+	--[[
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Earthbind Totem"] = {"for ([%d%.]+) sec", nil, nil, {"Stoneclaw Totem", "Strength of Earth Totem", "Stoneskin Totem", "Tremor Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Stoneclaw Totem"] = {"for ([%d%.]+) sec", nil, nil, {"Earthbind Totem", "Strength of Earth Totem", "Stoneskin Totem", "Tremor Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 65}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Strength of Earth Totem"] = {" Lasts ([%d%.]+) min.", 60, nil, {"Earthbind Totem", "Stoneclaw Totem", "Stoneskin Totem", "Tremor Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Stoneskin Totem"] = {"Lasts ([%d%.]+) min.", 60, nil, {"Earthbind Totem", "Stoneclaw Totem", "Strength of Earth Totem", "Tremor Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Tremor Totem"] = {"Lasts ([%d%.]+) min.", 60, nil, {"Earthbind Totem", "Stoneclaw Totem", "Strength of Earth Totem", "Stoneskin Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	--fire
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Fire Nova Totem"] = {"within ([%d%.]+) sec.", nil, nil, {"Searing Totem", "Magma Totem", "Frost Resistance Totem", "Flametongue Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Searing Totem"] = {"for ([%d%.]+) sec", nil, nil, {"Fire Nova Totem", "Magma Totem", "Frost Resistance Totem", "Flametongue Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Magma Totem"] = {"for ([%d%.]+) sec", nil, nil, {"Fire Nova Totem", "Searing Totem", "Frost Resistance Totem", "Flametongue Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Frost Resistance Totem"] = {"for ([%d%.]+) min.", 60, nil, {"Fire Nova Totem", "Searing Totem", "Magma Totem", "Flametongue Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Flametongue Totem"] = {"Lasts ([%d%.]+) min.", 60, nil, {"Fire Nova Totem", "Searing Totem", "Magma Totem", "Frost Resistance Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	--air
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Grace of Air Totem"] = {"Lasts ([%d%.]+) min.", 60, nil, {"Tranquil Air Totem", "Windwall Totem", "Windfury Totem", "Nature Resistance Totem", "Grounding Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Tranquil Air Totem"] = {"Lasts ([%d%.]+) min.", 60, nil, {"Grace of Air Totem", "Windwall Totem", "Windfury Totem", "Nature Resistance Totem", "Grounding Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Windwall Totem"] = {"Lasts ([%d%.]+) min.", 60, nil, {"Tranquil Air Totem", "Grace of Air Totem", "Windfury Totem", "Nature Resistance Totem", "Grounding Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Windfury Totem"] = {"Lasts ([%d%.]+) min.", 60, nil, {"Tranquil Air Totem", "Grace of Air Totem", "Windwall Totem", "Nature Resistance Totem", "Grounding Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Nature Resistance Totem"] = {"for ([%d%.]+) min", 60, nil, {"Tranquil Air Totem", "Grace of Air Totem", "Windwall Totem", "Windfury Totem", "Grounding Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Grounding Totem"] = {"Lasts ([%d%.]+) sec.", nil, nil, {"Tranquil Air Totem", "Grace of Air Totem", "Windwall Totem", "Windfury Totem", "Nature Resistance Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Sentry Totem"] = {"for ([%d%.]+) min", 60, nil, {"Tranquil Air Totem", "Grace of Air Totem", "Windwall Totem", "Windfury Totem", "Nature Resistance Totem", "Grounding Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 100}}
+	--water
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Fire Resistance Totem"] = {"for ([%d%.]+) min", 60, nil, {"Healing Stream Totem", "Mana Spring Totem", "Mana Tide Totem", "Poison Cleansing Totem", "Disease Cleansing Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Healing Stream Totem"] = {"for ([%d%.]+) min", 60, nil, {"Fire Resistance Totem", "Mana Spring Totem", "Mana Tide Totem", "Poison Cleansing Totem", "Disease Cleansing Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Mana Spring Totem"] = {"for ([%d%.]+) min", 60, nil, {"Fire Resistance Totem", "Healing Stream Totem", "Mana Tide Totem", "Poison Cleansing Totem", "Disease Cleansing Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Mana Tide Totem"] = {"for ([%d%.]+) sec", nil, nil, {"Fire Resistance Totem", "Healing Stream Totem", "Mana Spring Totem", "Poison Cleansing Totem", "Disease Cleansing Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Poison Cleansing Totem"] = {"Lasts ([%d%.]+) min.", 60, nil, {"Fire Resistance Totem", "Healing Stream Totem", "Mana Spring Totem", "Mana Tide Totem", "Disease Cleansing Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	SPELL_TIMER_PATTERN_TABLE["SHAMAN"]["Disease Cleansing Totem"] = {"Lasts ([%d%.]+) min.", 60, nil, {"Fire Resistance Totem", "Healing Stream Totem", "Mana Spring Totem", "Mana Tide Totem", "Poison Cleansing Totem"}, {["notarget"] = 1, ["live"] = 1, ["hp"] = 5}}
+	]]
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"] = {}
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["Hammer of Justice"] = {"Stuns the target for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["Repentance"] = {"for up to ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["PALADIN"]["Turn Undead"] = {"flee for up to ([%d%.]+) sec."}  
+	--SPELL_TIMER_PATTERN_TABLE["PALADIN"]["Judgement"] = {nil,nil,0,nil,{["Judgement of Light"] = 1, ["Judgement of Wisdom"] = 1, ["Judgement of Crusader"] = 1, ["Judgement of Justice"] = 1}}
+	--SPELL_TIMER_PATTERN_TABLE["PALADIN"]["Judgement of Justice"] = {"Seal of Justice",nil,10,{"Judgement of Light", "Judgement of Crusader", "Judgement of Wisdom"}}
+	--SPELL_TIMER_PATTERN_TABLE["PALADIN"]["Judgement of Light"] = {"Seal of Light",nil,10,{"Judgement of Justice", "Judgement of Crusader", "Judgement of Wisdom"}}
+	--SPELL_TIMER_PATTERN_TABLE["PALADIN"]["Judgement of Crusader"] = {"Seal of the Crusader",nil,10,{"Judgement of Light", "Judgement of Justice", "Judgement of Wisdom"}}
+	--SPELL_TIMER_PATTERN_TABLE["PALADIN"]["Judgement of Wisdom"] = {"	Seal of Wisdom",nil,10,{"Judgement of Light","Judgement of Crusader", "Judgement of Justice"}}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"] = {}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["Polymorph"] = {"around for up to ([%d%.]+) sec.", nil, nil, {"Polymorph: Pig", "Polymorph: Turtle"},{["unique"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["Polymorph: Pig"] = {"around for up to ([%d%.]+) sec.", nil, nil, {"Polymorph", "Polymorph: Turtle"},{["unique"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["Polymorph: Turtle"] = {"around for up to ([%d%.]+) sec.", nil, nil, {"Polymorph", "Polymorph: Pig"},{["unique"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["Cone of Cold"] = {"slowed by ([%d%.]+) for 8 sec.", nil, nil, {"Frostbolt"},{["notarget"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["Frostbolt"] = {"by 40% for ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["Pyroblast"] = {"damage over ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["Fireball"] = {"damage over ([%d%.]+) sec."}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["Flamestrike"] = {"damage over ([%d%.]+) sec.", nil, nil, nil, {["notarget"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["Detect Magic"] = {"the target for ([%d%.]+) min.", 60}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["Blast Wave"] = {"dazing them for ([%d%.]+) sec.", nil, nil, nil, {["notarget"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["Frost Nova"] = {"place for up to ([%d%.]+) sec.", nil, nil, nil, {["notarget"] = 1}}
+	SPELL_TIMER_PATTERN_TABLE["MAGE"]["Summon Water Elemental"] = {"for ([%d%.]+) sec."}
 
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE][SPELL_TIMER_POISON] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["Gouge"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["Garrote"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["Sap"] = {"debuff", nil, {["live"] = 1, ["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["Expose Armor"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["Cheap Shot"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["Blind"] = {"up to %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["Rupture"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["Slice and Dice"] = {"buff", nil, {["notarget"] = 1, ["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["Kick"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["Distract"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["Riposte"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["Kidney Shot"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["Hunger For Blood"] = {"buff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_ROGUE]["Shadow Dance"] = {"buff"};
-
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["Shadow Word: Pain"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["Silence"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["Psychic Scream"] = {"for %t", nil, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["Vampiric Embrace"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["Renew"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["Shackle Undead"] = {"up to %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["Devouring Plague"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["Mind Control"] = {"up to %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["Holy Fire"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["Mind Soothe"] = {"Lasts %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["Vampiric Touch"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PRIEST]["Starshards"] = {"over %t"};
-
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["Hamstring"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["Rend"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["Shield Bash"] = {"cast for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["Demoralizing Shout"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["Piercing Howl"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["Mocking Blow"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["Thunder Clap"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["Disarm"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["Intimidating Shout"] = {"Lasts %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["Sunder Armor"] = {"Lasts %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["Mortal Strike"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["Intercept"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_WARRIOR]["Rampage"] = {"Lasts %t", nil, {["notarget"] = 1, ["live"] = 1}};
-
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Flare"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Wing Clip"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Scare Beast"] = {"up to %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Counterattack"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Mend Pet"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Bestial Wrath"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Serpent Sting"] = {"debuff", {"Viper Sting", "Scorpid Sting", "Wyvern Sting"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Viper Sting"] = {"debuff", {"Serpent Sting", "Scorpid Sting", "Wyvern Sting"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Scorpid Sting"] = {"debuff", {"Serpent Sting", "Viper Sting", "Wyvern Sting"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Wyvern Sting"] = {"debuff", {"Serpent Sting", "Viper Sting", "Scorpid Sting"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Concussive Shot"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Scatter Shot"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Freezing Trap"] = {{"SpellTimer_TrapSearchFunc", {"preventing all action for up to %t", "exist for %t"}, "SpellTimer_TrapActiveFunc"}, nil, nil, {"Frost Trap", "Immolation Tra", "Explosive Trap", "Snake Trap"}, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Frost Trap"] = {{"SpellTimer_TrapSearchFunc", {"around itself for %t", "exist for %t"}, "SpellTimer_TrapActiveFunc"}, {"Freezing Trap", "Immolation Trap", "Explosive Trap", "Snake Trap"}, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Immolation Trap"] = {{"SpellTimer_TrapSearchFunc", {"damage over %t", "exist for %t"}, "SpellTimer_TrapActiveFunc"}, {"Freezing Trap", "Frost Trap", "Explosive Trap", "Snake Trap"}, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Explosive Trap"] = {{"SpellTimer_TrapSearchFunc", {"damage over %t", "exist for %t"}, "SpellTimer_TrapActiveFunc"}, {"Freezing Trap", "Frost Trap", "Immolation Trap", "Snake Trap"}, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_HUNTER]["Snake Trap"] = {{"SpellTimer_TrapSearchFunc", {"after %t", "exist for %t"}, "SpellTimer_TrapActiveFunc"}, {"Freezing Trap", "Frost Trap", "Immolation Trap", "Explosive Trap"}, {["notarget"] = 1}};
-
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Hibernate"] = {"up to %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Moonfire"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Bash"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Demoralizing Roar"] = {"Lasts %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Faerie Fire"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Faerie Fire"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Entangling Roots"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Pounce"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Pounce Bleed"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Rip"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Regrowth"] = {"over %t", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Rejuvenation"] = {"over %t", nil, {["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Rake"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Feral Charge"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Insect Swarm"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Bash"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Force of Nature"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Mangle - Bear"] = {"effects for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Mangle - Cat"] = {"effects for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Lacerate"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Lifebloom"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Maim"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Savage Roar"] = {"buff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Cyclone"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DRUID]["Eclipse"] = {"buff", nil, {["live"] = 1, ["spell"] = {"Eclipse CD", 30}}};
-
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["Stormstrike"] = {"Lasts %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_SHAMAN]["Maelstrom Weapon"] = {"buff", nil, {["live"] = 1}};
-
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["Hammer of Justice	"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["Repentance"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["Turn Undead"] = {"up to %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["Divine Illumination"] = {"for %t", nil, {["notarget"] = 1, ["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["Light's Grace"] = {"lasts %t", nil, {["notarget"] = 1, ["live"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["Beacon of Light"] = {"buff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_PALADIN]["Righteous Vengeance"] = {"debuff"};
-
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["Polymorph"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["Cone of Cold"] = {"for %t", {"Frostbolt"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["Frostbolt"] = {"for %t", {"Cone of Cold"}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["Pyroblast"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["Fireball"] = {"over %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["Flamestrike"] = {"over %t", nil, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["Detect Magic"] = {"for %t"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["Blast Wave"] = {"for %t", nil, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["Frost Nova"] = {"for %t", nil, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["Summon Water Elemental"] = {"for %t", nil, {["notarget"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["Slow"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["Living Bomb"] = {"debuff", nil, {["live"] = 1, ["unique"] = 1}};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_MAGE]["Improved Scorch"] = {"debuff"};
-
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT] = {};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["Frost Fever"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["Blood Plague"] = {"debuff"};
-	SPELL_TIMER_PATTERN_TABLE[BF_CLASS_DEATHKNIGHT]["Ebon Plague"] = {"debuff"};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"] = {};
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["Frost Fever"] = {nil}; 
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["Blood Plague"] = {nil}; 
+	SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["Ebon Plague"] = {nil}; 
 end

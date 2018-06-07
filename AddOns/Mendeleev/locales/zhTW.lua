@@ -1,6 +1,6 @@
-﻿local L = LibStub("AceLocale-3.0"):NewLocale("Mendeleev", "zhTW", false)
+local L = LibStub("AceLocale-3.0"):NewLocale("Mendeleev", "zhTW", false)
 if not L then return end
-
+L["Mendeleev"] = "物品信息";
 L["Toggle sets."] = "切換顯示"
 L["Toggle sets from showing information in the tooltip."] = "切換在提示訊息中所要顯示的資訊"
 L["Toggle sets in the %s category."] = "切換在提示訊息中顯示 %s 種類的資訊"
@@ -15,12 +15,12 @@ L["Show stack size"] = "顯示堆疊數量"
 L["Toggle showing the stack size in the tooltip."] = "切換在提示訊息中顯示物品堆疊數量"
 L["Show 'used in' tree"] = "顯示「使用在」樹狀結構"
 L["Toggle showing the 'used in' tree in the tooltip."] = "切換在提示訊息中顯示「使用在」樹狀結構"
-L["Show icons in 'used in' tree"] = "在可以用的商業技能顯示圖示"
-L["Toggle showing of icons in the 'used in' tree."] = "指定是否在商業技能顯示圖示"
-L["Minimal skill for 'used in' tree"] = "最小化可用商業技能訊息"
-L["Minimal skill advance for an item to show up in the 'used in' tree."] = "最小化可用商業技能訊息並顯示目前提示。"
-L["Minimal skill for 'used in' tree (shift)"] = "最小化可用商業技能訊息（Shift）"
-L["Minimal skill advance for an item to show up in the 'used in' tree if Shift is held."] = "當按下 Shift 鍵時最小化可用商業技能訊息並顯示目前提示。"
+L["Show icons in 'used in' tree"] = "在可以用的商業技能顯示圖標"
+L["Toggle showing of icons in the 'used in' tree."] = "指定是否在商業技能顯示圖標"
+L["Minimal skill for 'used in' tree"] = "最小化可用商業技能信息"
+L["Minimal skill advance for an item to show up in the 'used in' tree."] = "最小化可用商業技能信息並顯示當前提示。"
+L["Minimal skill for 'used in' tree (shift)"] = "最小化可用商業技能信息（Shift）"
+L["Minimal skill advance for an item to show up in the 'used in' tree if Shift is held."] = "當按下 Shift 鍵時最小化可用商業技能信息並顯示當前提示。"
 L["TRADESKILL_UNKNOWN"] = "未知"
 L["TRADESKILL_TRIVIAL"] = "無價值"
 L["TRADESKILL_EASY"] = "簡單"
@@ -31,7 +31,7 @@ L["iLevel"] = "物品等級"
 L["You have"] = "你有"
 L["Stacksize"] = "堆疊數量"
 
-L["Bought for"] = "購買於"
+L["Bought for"] = "購買于"
 L["Crafted by"] = "製造"
 L["Component in"] = "使用於"
 
@@ -62,8 +62,8 @@ L["SPECIALBAG_ENCHANTING"] = "附魔"
 L["SPECIALBAG_ENGINEERING"] = "工程學"
 L["SPECIALBAG_GEM"] = "寶石"
 L["SPECIALBAG_INSCRIPTION"] = "銘文學"
-L["SPECIALBAG_LEATHERWORKING"] = "製皮"
-L["SPECIALBAG_MINING"] = "採礦"
+L["SPECIALBAG_LEATHERWORKING"] = "制皮"
+L["SPECIALBAG_MINING"] = "采礦"
 L["SPECIALBAG_SOULSHARD"] = "靈魂裂片"
 
 L["Fish"] = "魚類"
@@ -86,10 +86,6 @@ L["Crusade Card"] = "暗月卡:聖戰"
 L["Vengeance Card"] = "暗月卡:復仇"
 L["Madness Card"] = "暗月卡:瘋狂"
 L["Wrath Card"] = "暗月卡:狂怒"
-L["Illusion Card"] = "暗月卡:幻象"
-L["Berserker! Card"] = "暗月卡:狂戰士!"
-L["Greatness Card"] = "暗月卡:崇高"
-L["Death Card"] = "暗月卡:死亡"
 
 -- Sources
 L["Drop"] = "掉落"
@@ -102,9 +98,6 @@ L["LBRS"] = "黑石塔下層"
 	
 L["Heroic"] = "英雄模式"
 	
-L["(10 Man)"] = "10人"
-L["(25 Man)"] = "25人"
-	
 -- Tier Sets
 L["Tier 1 Set"] = "T1 套裝"
 L["Tier 2 Set"] = "T2 套裝"
@@ -115,12 +108,6 @@ L["Tier 5 Set"] = "T5 套裝"
 L["Tier 6 Set"] = "T6 套裝"
 L["Tier 7.10 Set"] = "T7 10人套裝"
 L["Tier 7.25 Set"] = "T7 25人套裝"
-L["Tier 8.10 Set"] = "T8 10人套裝"
-L["Tier 8.25 Set"] = "T8 25人套裝"
-L["Tier 9.10 Set"] = "T9 10人套裝"
-L["Tier 9.25 Set"] = "T9 25人套裝"
-L["Tier 10.10 Set"] = "T10 10人套裝"
-L["Tier 10.25 Set"] = "T10 25人套裝"
 	
 -- Arena Sets
 L["Arena - Season 1 Set"] = "競技場 - 第一季套裝"
@@ -130,9 +117,6 @@ L["Arena - Season 4 Set"] = "競技場 - 第四季套裝"
 L["Arena - Season 5 Tier 1 Set"] = "競技場 - 第五季套裝一"
 L["Arena - Season 5 Tier 2 Set"] = "競技場 - 第五季套裝二"
 L["Arena - Season 5 Tier 3 Set"] = "競技場 - 第五季套裝三"
-L["Arena - Season 6 Set"] = "競技場 - 第六季套裝"
-L["Arena - Season 7 Set"] = "競技場 - 第七季套裝"
-L["Arena - Season 8 Set"] = "競技場 - 第八季套裝"
 	
 L["%d%% alc/vol (%d proof)"] = " 濃度%d%% (%d度)"
 L[" (%d tickets)"] = " (%d張票)"
@@ -153,27 +137,40 @@ L["Adamantite Deposit"] = "堅鋼礦床"
 L["Fel Iron Deposit"] = "魔鐵礦床"
 L["Khorium Vein"] = "克銀礦脈"
 L["Rich Adamantite Deposit"] = "豐沃的堅鋼礦床"
-L["Cobalt Deposit"] = "鈷藍礦點"
-L["Rich Cobalt Deposit"] = "豐沃的鈷藍礦點"
-L["Saronite Deposit"] = "薩鋼礦點"
-L["Rich Saronite Deposit"] = "豐沃的薩鋼礦點"
-L["Titanium Vein"] = "泰坦鋼礦點"
+L["Cobalt Node"] = "鈷藍礦點"
+L["Rich Cobalt Node"] = "豐沃的鈷藍礦點"
+L["Saronite Node"] = "薩鋼礦點"
+L["Rich Saronite Node"] = "豐沃的薩鋼礦點"
+L["Titanium Node"] = "泰坦鋼礦點"
 
 -- Categories
 L["CurrencyItems"] = "通貨物品"
 L["Consumable"] = "消耗品"
 L["Gear"] = "裝備"
 L["GearSet"] = "套裝"
-L["InstanceLoot"] = "副本掉落"
-L["InstanceLootHeroic"] = "英雄模式副本掉落"
+L["InstanceLoot"] = "副本戰利品"
+L["InstanceLootHeroic"] = "英雄模式副本戰利品"
 L["Misc"] = "其他"
 L["QuestMats"] = "任務物品"
 L["Reagent"] = "職業施法材料"
 L["Tradeskill"] = "交易技能"
-	
+L['Drop:'] = "掉落來源:"
 L["Trash Mobs"] = "小怪掉落"
-L["Gunship Battle"] = "砲艇戰"
-
+-- 掉落查询
+L['Loot'] = '戰利品'
+L['Normal Loot'] = '普通模式戰利品'
+L['Heroic Loot'] = '英雄模式戰利品'
+L['Normal 10-man Loot'] = '10人普通戰利品'
+L['Normal 25-man Loot'] = '25人普通戰利品'
+L['Heroic 10-man Loot'] = '10人英雄戰利品'
+L['Heroic 25-man Loot'] = '25人英雄戰利品'
+L["Non Boss Drops"] = "非BOSS戰利品"
+L['N'] = '普通'
+L['H'] = '英雄'
+L['N10'] = '普通10'
+L['N25'] = '普通25'
+L['H10'] = '英雄10'
+L['H25'] = '英雄25'
 -- Timed Reward Chest
 L["Timed Reward Chest1"] = "限時任務獎勵箱子 1"
 L["Timed Reward Chest2"] = "限時任務獎勵箱子 2"

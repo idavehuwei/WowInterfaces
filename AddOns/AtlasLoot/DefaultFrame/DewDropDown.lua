@@ -12,7 +12,7 @@ local BabbleInventory = AtlasLoot_GetLocaleLibBabble("LibBabble-Inventory-3.0")
 
 --This is a multi-layer table defining the main loot listing.
 --Entries have the text to display, loot table or sub table to link to and if the link is to a loot table or sub table
-AtlasLoot_DewDropDown = {
+AtlasLoot_DewDropDown2 = {
 	[1] = {
 		[AL["Classic Instances"]] = {
 			[1] = {
@@ -192,16 +192,16 @@ AtlasLoot_DewDropDown = {
 			[11] = {
 				{ BabbleZone["Onyxia's Lair"], "Onyxia_1", "Table" },
 			},
-            [12] = {
+			[12] = {
 				{ BabbleZone["Pit of Saron"], "PitofSaron", "Submenu" },
 			},
-            [13] = {
+			[13] = {
 				{ BabbleZone["The Ruby Sanctum"], "Halion", "Table" },
 			},
 			[14] = {
 				{ BabbleZone["The Eye of Eternity"], "Malygos", "Table" },
 			},
-            [15] = {
+			[15] = {
 				{ BabbleZone["The Forge of Souls"], "ForgeofSouls", "Submenu" },
 			},
 			[16] = {
@@ -809,7 +809,7 @@ AtlasLoot_DewDropDown_SubTables = {
 		{ AL["Faction Champions"], "TrialoftheCrusaderFactionChampions_A" },
 		{ BabbleBoss["The Twin Val'kyr"], "TrialoftheCrusaderTwinValkyrs_A" },
 		{ BabbleBoss["Anub'arak"], "TrialoftheCrusaderAnubarak_A" },
-		{ AL["Tribute Run"], "TrialoftheCrusaderTributeHEROIC_A" },
+		{ AL["Tribute Run"], "TrialoftheCrusaderTribute_AHEROIC" },
 		{ AL["Trial of the Crusader Patterns/Plans"], "TrialoftheCrusaderPatterns_A" },
 	},
 	["VaultofArchavon_A"] = {

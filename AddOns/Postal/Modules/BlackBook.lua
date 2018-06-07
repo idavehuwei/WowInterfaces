@@ -6,7 +6,6 @@ Postal_BlackBook.description2 = L[ [[|cFFFFCC00*|r This module will list your co
 |cFFFFCC00*|r It will also autocomplete all names in your BlackBook.]] ]
 
 local Postal_BlackBookButton
-local numFriendsOnList = 0
 local sorttable = {}
 local ignoresortlocale = {
 	["koKR"] = true,
@@ -394,46 +393,15 @@ function Postal_BlackBook.BlackBookMenu(self, level)
 			UIDropDownMenu_AddButton(info, level)
 
 		elseif UIDROPDOWNMENU_MENU_VALUE == "friend" then
-			-- Friends list
+			if GetNumFriends() == 0 then return end
 			local numFriends = GetNumFriends()
 			for i = 1, numFriends do
 				sorttable[i] = GetFriendInfo(i)
 			end
-
-			-- Battle.net friends
-			if BNGetNumFriends then -- For pre 3.3.5 backwards compat
-				local numBNetTotal, numBNetOnline = BNGetNumFriends()
-				for i= 1, numBNetOnline do
-					local presenceID, givenName, surname, toonName, toonID, client = BNGetFriendInfo(i)
-					--local hasFocus, toonName, client = BNGetToonInfo(toonID)
-					if (toonName and client == BNET_CLIENT_WOW and CanCooperateWithToon(toonID)) then
-						-- Check if already on friends list
-						local alreadyOnList = false
-						for j = 1, numFriends do
-							if sorttable[j] == toonName then
-								alreadyOnList = true
-								break
-							end
-						end			
-						if not alreadyOnList then
-							numFriends = numFriends + 1
-							sorttable[numFriends] = toonName
-						end
-					end
-				end
-			end
-
-			-- Sort the list
-			if numFriends == 0 then return end
 			for i = #sorttable, numFriends+1, -1 do
 				sorttable[i] = nil
 			end
 			if not ignoresortlocale[GetLocale()] then table.sort(sorttable) end
-
-			-- Store upvalue
-			numFriendsOnList = numFriends
-
-			-- 25 or less, don't need multi level menus
 			if numFriends > 0 and numFriends <= 25 then
 				for i = 1, numFriends do
 					local name = sorttable[i]
@@ -503,7 +471,7 @@ function Postal_BlackBook.BlackBookMenu(self, level)
 
 		elseif strfind(UIDROPDOWNMENU_MENU_VALUE, "fpart") then
 			local startIndex = tonumber(strmatch(UIDROPDOWNMENU_MENU_VALUE, "fpart(%d+)")) * 25 - 24
-			local endIndex = math.min(startIndex+24, numFriendsOnList)
+			local endIndex = math.min(startIndex+24, GetNumFriends())
 			for i = startIndex, endIndex do
 				local name = sorttable[i]
 				info.text = name

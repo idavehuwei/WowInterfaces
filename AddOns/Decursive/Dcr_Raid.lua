@@ -1,7 +1,7 @@
 --[[
     This file is part of Decursive.
     
-    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
+    Decursive (v 2.5.1-12-gb39554a) add-on for World of Warcraft UI
     Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/to/decursive.php )
 
     Starting from 2009-10-31 and until said otherwise by its author, Decursive
@@ -19,8 +19,9 @@
 --]]
 -------------------------------------------------------------------------------
 
+local addonName, T = ...;
 -- big ugly scary fatal error message display function {{{
-if not DcrFatalError then
+if not T._FatalError then
 -- the beautiful error popup : {{{ -
 StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     text = "|cFFFF0000Decursive Error:|r\n%s",
@@ -33,12 +34,12 @@ StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     hideOnEscape = 1,
     showAlert = 1,
     }; -- }}}
-DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
+T._FatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
 end
 -- }}}
-if not DcrLoadedFiles or not DcrLoadedFiles["Dcr_Events.lua"] then
-    if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (Dcr_Events.lua not loaded)"); end;
-    DcrCorrupted = true;
+if not T._LoadedFiles or not T._LoadedFiles["Dcr_Events.lua"] then
+    if not DecursiveInstallCorrupted then T._FatalError("Decursive installation is corrupted! (Dcr_Events.lua not loaded)"); end;
+    DecursiveInstallCorrupted = true;
     return;
 end
 
@@ -456,7 +457,7 @@ do
     local pet;
     function D:GetUnitArray() --{{{
         -- if the groups composition did not changed
-        if (not self.Groups_datas_are_invalid or not self.DcrFullyInitialized) then
+        if not self.Groups_datas_are_invalid or not self.DcrFullyInitialized then
             return;
         end
         self.Groups_datas_are_invalid = false;
@@ -492,6 +493,11 @@ do
         UnitToGUID = setmetatable(UnitToGUID, UnitToGUID_mt); -- we could simply erase this one to prevent garbage
         GUIDToUnit = setmetatable(GUIDToUnit, GUIDToUnit_mt); -- this one cannot be erased (memory leak due to GUID...)
         GUIDToUnit_ScannedAll = false;
+
+        if Status.TestLayout then
+            D:GetFakeUnit_array ();
+            return;
+        end
 
 
         local unit;
@@ -713,12 +719,6 @@ do
         for GUID, unit in pairs(Status.Unit_Array_GUIDToUnit) do -- /!\ PAIRS not iPAIRS
             t_insert(Status.Unit_Array, unit);
 
-            --[=[
-            if Status.Unit_Array_UnitToGUID[unit] then -- XXX to remove for release
-                D:AddDebugText("multi-unit bug for ", unit, GUID, "previous found GUID", Status.Unit_Array_UnitToGUID[unit]);
-            end
-            --]=]
-
             Status.Unit_Array_UnitToGUID[unit] = GUID; -- just a useful table, not used here :)
         end
 
@@ -731,13 +731,6 @@ do
         end);
 
 
-        --[=[
-        if UnitExists("focus") then
-            self.Status.last_focus_GUID = false;
-            D:PLAYER_FOCUS_CHANGED();
-        end
-        --]=]
-
         Status.UnitNum = #Status.Unit_Array;
 
         UnitToGUID = {};
@@ -748,12 +741,43 @@ do
         return;
     end
 
+    function D:GetFakeUnit_array ()
+
+        if not D.Status.TestLayout then
+            return;
+        end
+
+        self:Debug ("|cFFFF22FF-->|r Creating fake Units Array");
+
+        local Status = self.Status;
+        Status.Unit_Array_GUIDToUnit[DC.MyGUID] =  "player";
+
+        Status.Unit_Array = {}
+
+        for i = 1, D.Status.TestLayoutUNum - 1 do -- the player is always in so we remove one here.
+            Status.Unit_Array_GUIDToUnit["raid" .. i .. "GUID"] = "raid" .. i;
+        end
+
+        local GUID;
+        for GUID, unit in pairs(Status.Unit_Array_GUIDToUnit) do -- /!\ PAIRS not iPAIRS
+            t_insert(Status.Unit_Array, unit);
+
+            Status.Unit_Array_UnitToGUID[unit] = GUID; -- just a useful table, not used here :)
+        end
+
+        table.sort(Status.Unit_Array);
+
+        Status.UnitNum = #Status.Unit_Array;
+        D.Status.GroupUpdatedOn = D:NiceTime(); -- It's used in UNIT_AURA event handler to trigger a rescan if the array is found inacurate
+
+    end
+
 end
 
 --}}}
 
 -------------------------------------------------------------------------------
-DcrLoadedFiles["Dcr_Raid.lua"] = "2.4.5-3-g6a02387";
+T._LoadedFiles["Dcr_Raid.lua"] = "2.5.1-12-gb39554a";
 
 -- "Your God is dead and no one cares"
 -- "If there is a Hell I'll see you there"

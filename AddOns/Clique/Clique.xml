@@ -73,7 +73,7 @@
 				</Size>
 				<Scripts>
 				  <OnTextChanged>
-					local scrollBar = getglobal(this:GetParent():GetName().."ScrollBar")
+					local scrollBar = dwGetglobal(this:GetParent():GetName().."ScrollBar")
 					this:GetParent():UpdateScrollChildRect();
 					local min;
 					local max;

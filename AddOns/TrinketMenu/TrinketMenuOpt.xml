@@ -62,7 +62,7 @@
 		<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
 		<Scripts>
 			<OnLoad>
-				RegisterForSaveFrame(self);
+				dwRegisterForSaveFrame(self);
 				self:RegisterForClicks("LeftButtonUp","RightButtonUp")
 				self:RegisterForDrag("LeftButton")
 			</OnLoad>

@@ -74,7 +74,7 @@
 		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="$parentTime" inherits="NumberFontNormal" justifyH="CENTER"/>
+				<FontString name="$parentTime" inherits="dwNumberFontNormal" justifyH="CENTER"/>
 			</Layer>
 		</Layers>
 	</Frame>
@@ -194,7 +194,7 @@
 
 		<Scripts>
 			<OnLoad>
-				RegisterForSaveFrame(self);
+				dwRegisterForSaveFrame(self);
 				TrinketMenu.OnLoad(self)
 			</OnLoad>
 			<OnEvent>
@@ -348,7 +348,7 @@
 
 		<Scripts>
 			<OnLoad>
-				RegisterForSaveFrame(self);
+				dwRegisterForSaveFrame(self);
 			</OnLoad>
 			<OnMouseDown>
 				TrinketMenu.MenuFrame_OnMouseDown(self, arg1)

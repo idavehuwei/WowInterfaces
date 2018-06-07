@@ -1,4 +1,4 @@
-﻿local Postal = LibStub("AceAddon-3.0"):GetAddon("Postal")
+local Postal = LibStub("AceAddon-3.0"):GetAddon("Postal")
 local Postal_Rake = Postal:NewModule("Rake", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Postal")
 Postal_Rake.description = L["Prints the amount of money collected during a mail session."]
@@ -7,15 +7,17 @@ local money
 
 function Postal_Rake:OnEnable()
 	self:RegisterEvent("MAIL_SHOW")
+	self:RegisterEvent("MAIL_CLOSED")
 end
 
 -- Disabling modules unregisters all events/hook automatically
---function Postal_Rake:OnDisable()
---end
+function Postal_Rake:OnDisable()
+	self:UnregisterEvent("MAIL_SHOW");
+	self:UnregisterEvent("MAIL_CLOSED");
+end
 
 function Postal_Rake:MAIL_SHOW()
-	money = GetMoney()
-	self:RegisterEvent("MAIL_CLOSED")
+	money = GetMoney()	
 end
 
 function Postal_Rake:MAIL_CLOSED()

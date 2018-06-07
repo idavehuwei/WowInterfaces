@@ -1,0 +1,40 @@
+
+-- Default(English)
+WHISPERPOP_LOCALE = {
+	["title"] = "WhisperPop",
+	["no new messages"] = "No unread messages",
+	["new messages from"] = "Unread messages from: ",
+	["receive only"] = "Show received messages only",
+	["sound notifying"] = "Sound notifying",
+	["square minimap"] = "Square minimap",
+	["class icon"] = "Show class icons",
+	["level"] = "Show player levels",
+	["time"] = "Show time stamp",
+	["requires playerdb"] = "Requirements missing: PlayerDB 1.0",
+	["receive only tooltip"] = "If checked, sent messages will not be displayed in the list.",
+	["sound notifying tooltip"] = "If checked, you will be notifyed with a sound alert every time a new message comes in.",
+	["square minimap tooltip"] = "If checked, the minimap button will take square positioning mode.",
+	["disabled by SexyMap"] = "Disabled by SexyMap",
+	["class icon tooltip"] = "If checked, player class icons will be displayed in the message list. Requires PlayerDB 1.0 or higher versions.",
+	["level tooltip"] = "If checked, player levels will be displayed in the message list. Requires PlayerDB 1.0 or higher versions.",
+	["time tooltip"] = "If checked, a time stamp will be displayed in front of every message text.",
+	["hide minimap button"] = "Hide minimap button",
+	["hide minimap button tooltip"] = "If checked, the minimap button of this addon will be hidden",
+	["delete message"] = "|cff00ff00Click:|r Delete all messages from/to %s",
+	["toggle frame"] = "Toggle WhisperPop frame",
+	["help tip"] = "Help-tip",
+	["show help tip"] = "Show help tip",
+	["show help tip tooltip"] = "If checked, a |cffffd200Help-tip|r appears when mouse hovers a player button or a message text line.",
+	["player help tip text 1"] = "|cff00ff00Click:|r Open whisper chat with %s",
+	["player help tip text 2"] = "|cff00ff00Shift-click:|r Query %s's character information",
+	["player help tip text 3"] = "|cff00ff00Alt-click:|r Invite %s to join your party",
+	["player help tip text 4"] = "|cff00ff00Right-click:|r Open %s's player menu",
+	["message help tip text"] = "|cff00ff00Ctrl-click:|r Copy this message to the chat frame editbox",
+	["link tip text1"] = "|cff00ff00Click:|r Open/close the link tooltip",
+	["link tip text2"] = "|cff00ff00Shift-click:|r Forward this link",
+	["detach minimap button"] = "Minimap button detach",
+	["detach minimap button tooltip"] = "If checked, the minimap button of this addon will be detached from Minimap and can be dragged anywhere freely by mouse.",
+};
+
+WHISPER_POP_LABEL = "WhisperPop"
+WHISPER_POP_DESC = ""

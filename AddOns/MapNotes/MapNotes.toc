@@ -1,0 +1,15 @@
+﻿## Interface: 30300
+## Title: Map Notes
+## Title-zhCN: [多玩] 地图标记
+## Title-zhTW: [多玩] 地圖標記
+## Notes: Mark nodes in worldmap.
+## Notes-zhCN: 在世界地图上标注你需要纪录的信息。
+## Notes-zhTW: 在世界地圖上標注你需要紀錄的信息。
+## SavedVariables: MapNoteInfo
+## X-DuowanAddon: 地图
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 
+
+localization\lang.xml
+MapNotes.xml

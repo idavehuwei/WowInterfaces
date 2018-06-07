@@ -2,6 +2,8 @@
 if not L then return end
 
 -- The translations I pinched from Babble-Tradeskill-2.2
+L["A"] = true
+L["V"] = true
 L["Alchemy"]                    = true
 L["Blacksmithing"]              = true
 L["Enchanting"]                 = true
@@ -429,3 +431,4 @@ L["Skill Level"] = true
 L["Alchemist Finklestein"] = true
 L["Larana Drome"] = true
 L["Frozo the Renowned"] = true
+L["Open Panel"] = true

@@ -1,4 +1,4 @@
-﻿local Postal = LibStub("AceAddon-3.0"):NewAddon("Postal", "AceEvent-3.0", "AceHook-3.0")
+local Postal = LibStub("AceAddon-3.0"):NewAddon("Postal", "AceEvent-3.0", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Postal")
 _G["Postal"] = Postal
 
@@ -11,7 +11,6 @@ local defaults = {
 		OpenSpeed = 0.50,
 		Select = {
 			SpamChat = true,
-			KeepFreeSpace = 1,
 		},
 		OpenAll = {
 			AHCancelled = true,
@@ -26,7 +25,6 @@ local defaults = {
 			NeutralAHWon = true,
 			Attachments = true,
 			SpamChat = true,
-			KeepFreeSpace = 1,
 		},
 		Express = {
 			EnableAltClick = true,
@@ -38,14 +36,6 @@ local defaults = {
 			AutoFill = true,
 			contacts = {},
 			recent = {},
-			AutoCompleteAlts = true,
-			AutoCompleteRecent = true,
-			AutoCompleteContacts = true,
-			AutoCompleteFriends = true,
-			AutoCompleteGuild = true,
-			ExcludeRandoms = true,
-			DisableBlizzardAutoComplete = false,
-			UseAutoComplete = true,
 		},
 	},
 	global = {
@@ -56,7 +46,7 @@ local defaults = {
 }
 local _G = getfenv(0)
 local t = {}
-Postal.keepFreeOptions = {0, 1, 2, 3, 5, 10, 15, 20, 25, 30}
+local aboutFrame
 
 -- Use a common frame and setup some common functions for the Postal dropdown menus
 local Postal_DropDownMenu = CreateFrame("Frame", "Postal_DropDownMenu")
@@ -71,20 +61,6 @@ Postal_DropDownMenu.HideMenu = function()
 		CloseDropDownMenus()
 	end
 end
-
--- Functions for long subject mouseover
-local function subjectHoverIn(self)
-	local s = _G["MailItem"..self:GetID().."Subject"]
-	if s:GetStringWidth() + 25 > s:GetWidth() then
-		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText(s:GetText())
-		GameTooltip:Show()
-	end
-end
-local function subjectHoverOut(self)
-	GameTooltip:Hide()
-end
-
 
 ---------------------------
 -- Postal Core Functions --
@@ -128,22 +104,7 @@ function Postal:OnInitialize()
 		ToggleDropDownMenu(1, nil, Postal_DropDownMenu, self:GetName(), 0, 0)
 	end)
 	Postal_ModuleMenuButton:SetScript("OnHide", Postal_DropDownMenu.HideMenu)
-
-	-- Create 7 buttons for mouseover on long subject lines
-	for i = 1, 7 do
-		local b = CreateFrame("Button", "PostalSubjectHover"..i, _G["MailItem"..i])
-		b:SetID(i)
-		b:SetAllPoints(_G["MailItem"..i.."Subject"])
-		b:SetScript("OnEnter", subjectHoverIn)
-		b:SetScript("OnLeave", subjectHoverOut)
-	end
-
-	-- To fix Blizzard's bug caused by the new "self:SetFrameLevel(2);"
-	if not IsAddOnLoaded("!BlizzBugsSuck") then
-		hooksecurefunc("UIDropDownMenu_CreateFrames", Postal.FixMenuFrameLevels)
-	end
-
-	self.OnInitialize = nil
+	Postal_ModuleMenuButton:Hide();
 end
 
 function Postal:OnProfileChanged(event, database, newProfileKey)
@@ -188,6 +149,12 @@ end
 function Postal.ToggleModule(dropdownbutton, arg1, arg2, checked)
 	Postal.db.profile.ModuleEnabledState[arg1] = checked
 	if checked then arg2:Enable() else arg2:Disable() end
+end
+
+function Postal.ToggleModule2(name, checked)
+	local module =Postal:GetModule(name);
+	Postal.db.profile.ModuleEnabledState[name] = checked
+	if module and checked then module:Enable() else module:Disable() end
 end
 
 function Postal.SetOpenSpeed(dropdownbutton, arg1, arg2, checked)
@@ -399,7 +366,6 @@ function Postal.Menu(self, level)
 end
 
 function Postal:CreateAboutFrame()
-	local aboutFrame = Postal.aboutFrame
 	if not aboutFrame and Chatter and ChatterCopyFrame then
 		aboutFrame = ChatterCopyFrame
 		aboutFrame.editBox = Chatter:GetModule("Chat Copy").editBox
@@ -419,7 +385,6 @@ function Postal:CreateAboutFrame()
 		aboutFrame:SetPoint("CENTER", UIParent, "CENTER")
 		aboutFrame:Hide()
 		aboutFrame:SetFrameStrata("DIALOG")
-		aboutFrame:SetToplevel(true)
 
 		local scrollArea = CreateFrame("ScrollFrame", "PostalAboutScroll", aboutFrame, "UIPanelScrollFrameTemplate")
 		scrollArea:SetPoint("TOPLEFT", aboutFrame, "TOPLEFT", 8, -30)
@@ -441,7 +406,6 @@ function Postal:CreateAboutFrame()
 		local close = CreateFrame("Button", nil, aboutFrame, "UIPanelCloseButton")
 		close:SetPoint("TOPRIGHT", aboutFrame, "TOPRIGHT")
 	end
-	Postal.aboutFrame = aboutFrame
 	Postal.CreateAboutFrame = nil -- Kill ourselves
 end
 
@@ -468,28 +432,9 @@ function Postal.About()
 	tinsert(t, "")
 	tinsert(t, "- Xinhuan (Blackrock US Alliance)")
 	tinsert(t, "")
-	Postal.aboutFrame.editBox:SetText(table.concat(t, "\n"))
-	Postal.aboutFrame:Show()
+	aboutFrame.editBox:SetText(table.concat(t, "\n"))
+	aboutFrame:Show()
 	wipe(t) -- For garbage collection
-end
-
-if not IsAddOnLoaded("!BlizzBugsSuck") then
-	-- To fix Blizzard's bug caused by the new "self:SetFrameLevel(2);"
-	local function FixFrameLevel(level, ...)
-		for i = 1, select("#", ...) do
-			local button = select(i, ...)
-			button:SetFrameLevel(level)
-		end
-	end
-	function Postal.FixMenuFrameLevels()
-		-- Postal only uses up to 3 levels of menus
-		for i = 1, 3 do
-			local f = _G["DropDownList"..i]
-			if f then
-				FixFrameLevel(f:GetFrameLevel() + 2, f:GetChildren())
-			end
-		end
-	end
 end
 
 ---------------------------
@@ -544,28 +489,4 @@ function Postal:GetMoneyString(money)
 	else
 		return format(COPPER_AMOUNT_TEXTURE, copper, 0, 0)
 	end
-end
-
-function Postal:GetMoneyStringPlain(money)
-	local gold = floor(money / 10000)
-	local silver = floor((money - gold * 10000) / 100)
-	local copper = mod(money, 100)
-	if gold > 0 then
-		return gold..GOLD_AMOUNT_SYMBOL.." "..silver..SILVER_AMOUNT_SYMBOL.." "..copper..COPPER_AMOUNT_SYMBOL
-	elseif silver > 0 then
-		return silver..SILVER_AMOUNT_SYMBOL.." "..copper..COPPER_AMOUNT_SYMBOL
-	else
-		return copper..COPPER_AMOUNT_SYMBOL
-	end
-end
-
-function Postal:CountItemsAndMoney()
-	local numAttach = 0
-	local numGold = 0
-	for i = 1, GetInboxNumItems() do
-		local msgMoney, _, _, msgItem = select(5, GetInboxHeaderInfo(i))
-		numAttach = numAttach + (msgItem or 0)
-		numGold = numGold + msgMoney
-	end
-	return numAttach, numGold
 end

@@ -1,0 +1,6 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="svn://113.106.98.20/repos/Duowan-Work/UI.xsd">
+	<Include file= "MBB\MBB.xml"/>
+	<Include file="ACP\ACP.xml"/>
+	<Script file="MainMenu\MainMenu.lua"/>
+	<Script file="DWB\DWB.lua"/>
+</Ui>

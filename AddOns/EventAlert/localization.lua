@@ -1,4 +1,20 @@
-﻿
+﻿local L = LibStub("AceLocale-3.0"):NewLocale("EventAlert", "enUS", true)
+
+L["Event Alert Frame"] = true;
+L["EventAlert: You must unlock the alert frame in order to move it or reset it's position."] = true;
+L["EventAlert Options"] = true;
+L["ShaysBell"] = true;
+L["Flute"] = true;
+L["Netherwind"] = true;
+L["PolyCow"] = true;
+L["Rockbiter"] = true;
+L["Yarrrr!"] = true;
+L["Broken Heart"] = true;
+L["Millhouse 1!"] = true;
+L["Millhouse 2!"] = true;
+L["Pissed Satyr"] = true;
+L["Pissed Dwarf"] = true;
+
 EA_TTIP_DOALERTSOUND = "Play a sound when an event triggers.";
 EA_TTIP_ALERTSOUNDSELECT = "Choose which sound to play when an event triggers.";
 EA_TTIP_LOCKFRAME = "Locks the notification frame so it cannot be moved.";

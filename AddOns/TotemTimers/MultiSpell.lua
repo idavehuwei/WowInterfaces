@@ -96,23 +96,29 @@ function TotemTimers.CreateMultiCastButtons()
                                                         or (button == "Button4" and down)) then
                                                           local open = self:GetAttribute("open")
                                                           control:ChildUpdate("show", not open)
-														  self:SetAttribute("open", not open)
+								self:SetAttribute("open", not open)
                                                       end ]])
                                                       
-    mb:SetScript("OnDragStart", function() if not InCombatLockdown() and not TotemTimers_Settings.Lock then TotemTimers_MultiSpellFrame:StartMoving() end end)
-    mb:SetScript("OnDragStop", function(self) 
-        TotemTimers_MultiSpellFrame:StopMovingOrSizing()
-        TotemTimers.SaveFramePositions()
-        TotemTimers.ProcessSetting("MultiSpellBarDirection")
-        if not InCombatLockdown() then self:SetAttribute("hide", true) end
-    end)
-    mb:SetAttribute("OpenMenu", "mouseover")
-    mb:SetAttribute("*spell2", SpellIDs.TotemicCall)
-    mb:SetAttribute("*spell1", TotemTimers_Settings.LastMultiCastSpell or SpellIDs.CallofElements)
-    mb:SetAttribute("*spell3", SpellIDs.TotemicCall)
-   -- mb:RegisterForClicks("LeftButton, RightButton")
-    mb:RegisterForDrag("LeftButton")
-    mb:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp", "Button4Down")
+	mb:SetScript("OnDragStart", function() 
+		if not InCombatLockdown() and not TotemTimers_Settings.Lock then 
+			TotemTimers_MultiSpellFrame:StartMoving() 
+		end 
+	end)
+	mb:SetScript("OnDragStop", function(self) 
+		TotemTimers_MultiSpellFrame:StopMovingOrSizing()
+		TotemTimers.SaveFramePositions()
+		TotemTimers.ProcessSetting("MultiSpellBarDirection")
+		if not InCombatLockdown() then 
+			self:SetAttribute("hide", true) 
+		end
+	end)
+	mb:SetAttribute("OpenMenu", "mouseover")
+	mb:SetAttribute("*spell2", SpellIDs.TotemicCall)
+	mb:SetAttribute("*spell1", TotemTimers_Settings.LastMultiCastSpell or SpellIDs.CallofElements)
+	mb:SetAttribute("*spell3", SpellIDs.TotemicCall)
+	-- mb:RegisterForClicks("LeftButton, RightButton")
+	mb:RegisterForDrag("LeftButton")
+	mb:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp", "Button4Down")
 end
 
 
@@ -121,19 +127,31 @@ function TotemTimers.MultiSpellActivate()
         for i=1,4 do
             XiTimers.timers[i].button:SetParent(mb)
         end
+	if (TotemTimers.TotemicCallButton) then
+		TotemTimers.TotemicCallButton.button:SetParent(mb);
+	end
         mb:Show()
         TotemTimers.SetMultiCastSpells()
         mb.active = true
         mb:SetAttribute("active", true)
         TotemTimers.ProcessSetting("TimerSize")
+	--TotemTimersFrame:CreateAllPoints();
+	--TotemTimersFrame:SetPoint("TOPLEFT", mb, "TOPRIGHT", 4, 0);
     else
         for i=1,4 do
             XiTimers.timers[i].button:SetParent(UIParent)
         end
+	if (TotemTimers.TotemicCallButton) then
+		TotemTimers.TotemicCallButton.button:SetParent(UIParent);
+	end
         mb:Hide()
         mb.active = false
         mb:SetAttribute("active", false)
         TotemTimers.ProcessSetting("TimerSize")
+	local left = TotemTimersFrame:GetLeft();
+	local top = TotemTimersFrame:GetTop();
+	--TotemTimersFrame:CreateAllPoints();
+	--TotemTimersFrame:SetPoint("TOPLEFT", UIParent, "BOTTOM", left, top);
     end
 end
 

@@ -353,5 +353,18 @@ do
 		end
 	end)
 	mainframe:RegisterEvent("ADDON_LOADED")
+
+	---------------------------------
+	-- dugu@wowbox added
+	function DBM_SpellTimer_Toggle(switch)
+		if (switch) then
+			mainframe:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+			mainframe:RegisterEvent("PLAYER_ENTERING_BATTLEGROUND")
+		else
+			mainframe:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+			mainframe:UnregisterEvent("PLAYER_ENTERING_BATTLEGROUND")
+			 clearAllSpellBars() 
+		end
+	end
 end
 

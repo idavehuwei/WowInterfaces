@@ -1,7 +1,7 @@
 --[[
     This file is part of Decursive.
     
-    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
+    Decursive (v 2.5.1-12-gb39554a) add-on for World of Warcraft UI
     Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/to/decursive.php )
 
     Starting from 2009-10-31 and until said otherwise by its author, Decursive
@@ -19,8 +19,9 @@
 --]]
 -------------------------------------------------------------------------------
 
+local addonName, T = ...;
 -- big ugly scary fatal error message display function {{{
-if not DcrFatalError then
+if not T._FatalError then
 -- the beautiful error popup : {{{ -
 StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     text = "|cFFFF0000Decursive Error:|r\n%s",
@@ -33,12 +34,12 @@ StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     hideOnEscape = 1,
     showAlert = 1,
     }; -- }}}
-DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
+T._FatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
 end
 -- }}}
-if not DcrLoadedFiles or not DcrLoadedFiles["Dcr_LDB.lua"] then
-    if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (Dcr_LDB.lua not loaded)"); end;
-    DcrCorrupted = true;
+if not T._LoadedFiles or not T._LoadedFiles["Dcr_LDB.lua"] then
+    if not DecursiveInstallCorrupted then T._FatalError("Decursive installation is corrupted! (Dcr_LDB.lua not loaded)"); end;
+    DecursiveInstallCorrupted = true;
     return;
 end
 
@@ -133,6 +134,14 @@ local function UseFormatIfPresent(...)
     end
 end
 
+function D:NumToHexStr(number)
+    if type(number) == 'number' then
+        return ("%X"):format(number);
+    else
+        return tostring(number);
+    end
+end
+
 Dcr.UseFormatIfPresent = UseFormatIfPresent;
 
 local function debugStyle(...)
@@ -165,11 +174,15 @@ function D:ColorPrint (r,g,b, ... ) --XXX
     if D.profile.Print_CustomFrame then
         self:Print(DecursiveTextFrame, ColorHeader, unpack(datas));
     end
+
+    if not Dcr.db then
+        self:Print(ColorHeader, unpack(datas));
+    end
     
 end
 
 function D:errln( ... ) --{{{
-    if D.profile.Print_Error then
+    if not D.db or D.profile.Print_Error then
         self:ColorPrint(1,0,0,...);
         
     end
@@ -198,9 +211,9 @@ end -- }}}
 function D:tcheckforval(tab, val) -- {{{
     local k;
     local v;
-    if (tab) then
+    if tab then
         for k,v in pairs(tab) do
-            if(v==val) then
+            if v==val then
                 return true;
             end
         end
@@ -228,11 +241,31 @@ function D:tcopy(to, from)   -- "to" must be a table (possibly empty)
 end
 
 
+-- tcopycallback: recursively copy contents of one table to another calling a callback before storing the new values
+function D:tcopycallback(to, from, CallBack) -- "to" must be a table (possibly empty)
+    if (type(from) ~= "table") then 
+        return error(("D:tcopycallback: bad argument #2 'from' must be a table, got '%s' instead"):format(type(from)),2);
+    end
+
+    if (type(to) ~= "table") then 
+        return error(("D:tcopycallback: bad argument #1 'to' must be a table, got '%s' instead"):format(type(to)),2);
+    end
+    if (type(CallBack) ~= "function") then 
+        return error(("D:tcopycallback: bad argument #3 'CallBack' must be a function ref, got '%s' instead"):format(type(CallBack)),2);
+    end
+    for k,v in pairs(from) do
+        if(type(v)=="table") then
+            to[k] = {}; -- this generate garbage
+            D:tcopycallback(to[k], v, CallBack);
+        else
+            to[k] = CallBack(v);
+        end
+    end
+end
+
 function D:tGiveValueIndex(tab, val)
-    local k;
-    local v;
     for k,v in pairs(tab) do
-        if(v==val) then
+        if v==val then
             return k;
         end
     end
@@ -279,13 +312,37 @@ function D:Pack(...)
     return args;
 end
 
+function D:tSwap(t, i1, i2)
 
-function D:ThisSetText(text) --{{{
-    getglobal(this:GetName().."Text"):SetText(text);
+    if i1 == i2 then
+        return false;
+    end
+
+    local i1c= t[i1];
+    local i2c= t[i2];
+
+    if i1 <= i2 then
+        t_remove(t, i2) -- remove the greater one first
+        t_remove(t, i1)
+        t_insert(t, i1, i2c) -- insert the smaller one first
+        t_insert(t, i2, i1c)
+    else
+        t_remove(t, i1) -- remove the greater one first
+        t_remove(t, i2)
+        t_insert(t, i2, i1c) -- insert the smaller one first
+        t_insert(t, i1, i2c)
+    end
+
+    return true;
+end
+
+
+function D:ThisSetText(frame, text) --{{{
+    _G[frame:GetName().."Text"]:SetText(text);
 end --}}}
 
-function D:ThisSetParentText(text) --{{{
-    getglobal(this:GetParent():GetName().."Text"):SetText(text);
+function D:ThisSetParentText(frame, text) --{{{
+    _G[frame:GetParent():GetName().."Text"]:SetText(text);
 end --}}}
 
 do
@@ -301,8 +358,8 @@ local DefaultAnchorTab = {"ANCHOR_LEFT"};
     end --}}}
 end
 
-function D:DisplayGameTooltip(Message) --{{{
-    GameTooltip_SetDefaultAnchor(GameTooltip, this);
+function D:DisplayGameTooltip(frame, Message) --{{{
+    GameTooltip_SetDefaultAnchor(GameTooltip, frame);
     GameTooltip:SetText(Message);
     GameTooltip:Show();
 end --}}}
@@ -349,7 +406,6 @@ do
             local r, g, b = self:GetClassColor(EnglishClass)
             DC.HexClassColor[EnglishClass] = str_format("%02x%02x%02x", r * 255, g * 255, b * 255);
             DC.HexClassColor[LC[EnglishClass]] = DC.HexClassColor[EnglishClass];
-
         end
 
         return DC.HexClassColor[EnglishClass];
@@ -360,16 +416,20 @@ do
         if RAID_CLASS_COLORS then
             local class, colors;
             for class in pairs(RAID_CLASS_COLORS) do
-                if not class:find(" ") then -- thank to a wonderful add-on that adds the wrong translation "Death Knight" to the global RAID_CLASS_COLORS....
+                if LC[class] then -- Some badly coded add-ons are modifying RAID_CLASS_COLORS causing multiple problems...
                     D:GetClassHexColor(class);
                     D:GetClassColor(class);
                 else
                     RAID_CLASS_COLORS[class] = nil; -- Eat that!
+                    --[===[@debug@
+                    D:AddDebugText("Strange class found in RAID_CLASS_COLORS:", class);
+                    --@end-debug@]===]
+                    print("Decursive: |cFFFF0000Stupid value found in _G.RAID_CLASS_COLORS table|r\nThis will cause many issues (tainting), Decursive will display this message until the culprit add-on is fixed or removed, the Stupid value is: '", class, "'");
                 end
             end
         else
             D:AddDebugText("global RAID_CLASS_COLORS does not exist...");
-            D:Error("global RAID_CLASS_COLORS does not exist...");
+            T._FatalError("global RAID_CLASS_COLORS does not exist...");
         end
     end
 
@@ -462,4 +522,4 @@ function D:CancelAllTimedCalls()
     end
 end
 
-DcrLoadedFiles["Dcr_utils.lua"] = "2.4.5-3-g6a02387";
+T._LoadedFiles["Dcr_utils.lua"] = "2.5.1-12-gb39554a";

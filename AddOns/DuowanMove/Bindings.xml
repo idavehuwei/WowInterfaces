@@ -1,0 +1,14 @@
+<Bindings>
+	<Binding name="CLICK dwMainBarButton1:LeftButton" header="DWMAINBARHEADER" />
+	<Binding name="CLICK dwMainBarButton2:LeftButton" />
+	<Binding name="CLICK dwMainBarButton3:LeftButton" />
+	<Binding name="CLICK dwMainBarButton4:LeftButton" />
+	<Binding name="CLICK dwMainBarButton5:LeftButton" />
+	<Binding name="CLICK dwMainBarButton6:LeftButton" />
+	<Binding name="CLICK dwMainBarButton7:LeftButton" />
+	<Binding name="CLICK dwMainBarButton8:LeftButton" />
+	<Binding name="CLICK dwMainBarButton9:LeftButton" />
+	<Binding name="CLICK dwMainBarButton10:LeftButton" />
+	<Binding name="CLICK dwMainBarButton11:LeftButton" />
+	<Binding name="CLICK dwMainBarButton12:LeftButton" />	
+</Bindings>

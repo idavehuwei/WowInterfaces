@@ -154,8 +154,8 @@ end
   Begin Library Implementation
 ---------------------------------------------------------------------------]]
 
-local major = "Dongle-1.1"
-local minor = tonumber(string.match("$Revision: 647 $", "(%d+)") or 1)
+local major = "Dongle-1.2"
+local minor = tonumber(string.match("$Revision: 674 $", "(%d+)") or 1)
 
 assert(DongleStub, string.format("%s requires DongleStub.", major))
 
@@ -398,8 +398,11 @@ function Dongle:IsEventRegistered(event)
 	assert(3, reg, string.format(L["MUST_CALLFROM_REGISTERED"], "IsEventRegistered"))
 	argcheck(event, 2, "string")
 
-	local tbl = events[event]
-	return tbl
+	if events[event] and events[event][self] then
+		return true
+	else
+		return false
+	end
 end
 
 --[[-------------------------------------------------------------------------
@@ -888,7 +891,7 @@ local function initdb(parent, name, defaults, defaultProfile, olddb)
 	-- This allows us to use an arbitrary table as base instead of saved variable name
 	local sv
 	if type(name) == "string" then
-		sv = getglobal(name)
+		sv = dwGetglobal(name)
 		if not sv then
 			sv = {}
 			setglobal(name, sv)
@@ -1024,7 +1027,7 @@ end
 
 function Dongle.GetProfiles(db, tbl)
 	assert(3, databases[db], string.format(L["MUST_CALLFROM_DBOBJECT"], "GetProfiles"))
-	argcheck(t, 2, "table", "nil")
+	argcheck(tbl, 2, "table", "nil")
 
 	-- Clear the container table
 	if tbl then

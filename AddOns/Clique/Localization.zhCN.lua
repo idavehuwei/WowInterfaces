@@ -1,4 +1,4 @@
-﻿-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 -- Localization                                                              --
 -- Simple Chinese Translated by 昏睡墨鱼&Costa<CWDG>                         --
 -------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ if GetLocale() == "zhCN" then
 	L.CLICKSET_OOC            = "非战斗中动作"
 	L.CLICKSET_BEARFORM       = "熊形态"
 	L.CLICKSET_CATFORM        = "猎豹形态"
-    L.CLICKSET_AQUATICFORM    = "水栖形态"
+	L.CLICKSET_AQUATICFORM    = "水栖形态"
 	L.CLICKSET_TRAVELFORM     = "旅行形态"
 	L.CLICKSET_MOONKINFORM    = "枭兽形态"
 	L.CLICKSET_TREEOFLIFE     = "树形"
@@ -108,4 +108,43 @@ if GetLocale() == "zhCN" then
 	L.BS_CLICK_ARG1_LABEL = "按钮名称:"
 
 	L.BS_MENU_HELP = "显示单位的弹出菜单"
+
+	L["Click Set:"] = "点击方案:"
+	L["Clique Options"] = "Clique 选项"
+	L["Primary:"] = "主要:"
+	L["Secondary:"] = "次要:"
+	L["Clique configuration"] = "Clique 配置"
+	L["Profile Name"] = "配置名称"
+	L["Select a click-set to edit"] = "选择点击方案"
+	L["Custom"] = "自定义"
+	L["Frames"] = "框架"
+	L["Cancel"] = "取消"
+	L["Profiles"] = "配置"
+	L["Profile: "] = "配置: "
+	L["Options"] = "选项"
+	L["Delete"] = "删除"
+	L["Edit"] = "编辑"
+	L["Set"] = "设置"
+	L["New"] = "新建"	
+	L["Clique Custom Editor"] = "Clique自定义编辑器"
+	L["Set Click Binding"] = "设置点击绑定"
+	L["Click here to set icon"] = "点击选择图标"
+	L["Spell Name:"] = "法术名:"
+	L["Macro Text:"] = "宏内容:"
+	L["Save"] = "保存"
+	L["Select an icon"] = "选择一个图标"
+	L["Action Button %d%s"] = "动作键 %d%s"
+	L["Action Bar: %s"] = "动作条: %s"
+	L["Pet Action %d%s"] = "宠物重做条 %d%s"
+	L["Show Menu"] = "显示菜单"
+	L["Cancel Pending Spell"] = "删除待定法术"
+	L["Target Unit: %s"] = "选定目标: %s"
+	L["Set Focus Unit: %s"] = "设置焦点: %s"
+	L["Item: %s"] = "物品: %s"
+	L["Macro: %s"] = "宏: %s"
+	L["Clique Frame Editor"] = "Clique框架编辑器"	
+	L["Change profile when switching talent specs"] = "切换天赋时改变配置档"
+	L["That combination is already bound.  Delete the old one before trying to re-bind."] = "That combination is already bound.  Delete the old one before trying to re-bind."
+	L["You are currently in combat.  You cannot make changes to your click casting while in combat.."] = "You are currently in combat.  You cannot make changes to your click casting while in combat.."
+	L["Enter the name of a new profile you'd like to create"] = "Enter the name of a new profile you'd like to create"
 end

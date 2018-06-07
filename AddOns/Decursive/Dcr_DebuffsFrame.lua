@@ -1,7 +1,7 @@
 --[[
     This file is part of Decursive.
     
-    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
+    Decursive (v 2.5.1-12-gb39554a) add-on for World of Warcraft UI
     Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/to/decursive.php )
 
     Starting from 2009-10-31 and until said otherwise by its author, Decursive
@@ -19,8 +19,10 @@
 --]]
 -------------------------------------------------------------------------------
 
+local addonName, T = ...;
+
 -- big ugly scary fatal error message display function {{{
-if not DcrFatalError then
+if not T._FatalError then
 -- the beautiful error popup : {{{ -
 StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     text = "|cFFFF0000Decursive Error:|r\n%s",
@@ -33,18 +35,17 @@ StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     hideOnEscape = 1,
     showAlert = 1,
     }; -- }}}
-DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
+T._FatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
 end
 -- }}}
 
-if not DcrLoadedFiles or not DcrLoadedFiles["Dcr_lists.xml"] or not DcrLoadedFiles["Dcr_lists.lua"] then -- XML are loaded even if LUA syntax errors exixts
-    if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (Dcr_lists.xml or Dcr_lists.lua not loaded)"); end;
-    DcrCorrupted = true;
+if not T._LoadedFiles or not T._LoadedFiles["Dcr_lists.xml"] or not T._LoadedFiles["Dcr_lists.lua"] then -- XML are loaded even if LUA syntax errors exixts
+    if not DecursiveInstallCorrupted then T._FatalError("Decursive installation is corrupted! (Dcr_lists.xml or Dcr_lists.lua not loaded)"); end;
+    DecursiveInstallCorrupted = true;
     return;
 end
 
-local D   = Dcr;
---D:SetDateAndRevision("$Date: 2008-09-16 00:25:13 +0200 (mar., 16 sept. 2008) $", "$Revision: 81755 $");
+local D   = T.Dcr;
 
 
 local L     = D.L;
@@ -120,29 +121,22 @@ local UnitIsUnit        = _G.UnitIsUnit;
 local str_upper         = _G.string.upper;
 local InCombatLockdown  = _G.InCombatLockdown;
 local UnitAura          = _G.UnitAura;
+local GetRaidTargetIndex= _G.GetRaidTargetIndex;
 
--- Those are lookups table to set the frame attributes
-local AvailableButtons = { -- {{{
-    "%s1", -- left mouse button
-    "%s2", -- right mouse button
-    "ctrl-%s1",
-    "ctrl-%s2",
-    "shift-%s1",
-    "shift-%s2",
-    "alt-%s1",
-    "alt-%s2",
-    -- 3, -- middle mouse button || RESERVED FOR TARGETING
-}; -- }}}
 
 DC.AvailableButtonsReadable = { -- {{{
-    L["HLP_LEFTCLICK"], -- left mouse button
-    L["HLP_RIGHTCLICK"], -- right mouse button
-    L["CTRL"] .. "-" .. L["HLP_LEFTCLICK"],
-    L["CTRL"] .. "-" .. L["HLP_RIGHTCLICK"],
-    L["SHIFT"] .. "-" .. L["HLP_LEFTCLICK"],
-    L["SHIFT"] .. "-" .. L["HLP_RIGHTCLICK"],
-    L["ALT"] .. "-" .. L["HLP_LEFTCLICK"],
-    L["ALT"] .. "-" .. L["HLP_RIGHTCLICK"],
+    ["%s1"]         =   L["HLP_LEFTCLICK"], -- left mouse button
+    ["%s2"]         =   L["HLP_RIGHTCLICK"], -- right mouse button
+    ["%s3"]         =   L["HLP_MIDDLECLICK"], -- middle mouse button
+    ["ctrl-%s1"]    =   L["CTRL"]  .. "-" .. L["HLP_LEFTCLICK"],
+    ["ctrl-%s2"]    =   L["CTRL"]  .. "-" .. L["HLP_RIGHTCLICK"],
+    ["ctrl-%s3"]    =   L["CTRL"]  .. "-" .. L["HLP_MIDDLECLICK"],
+    ["shift-%s1"]   =   L["SHIFT"] .. "-" .. L["HLP_LEFTCLICK"],
+    ["shift-%s2"]   =   L["SHIFT"] .. "-" .. L["HLP_RIGHTCLICK"],
+    ["shift-%s3"]   =   L["SHIFT"] .. "-" .. L["HLP_MIDDLECLICK"],
+    ["alt-%s1"]     =   L["ALT"]   .. "-" .. L["HLP_LEFTCLICK"],
+    ["alt-%s2"]     =   L["ALT"]   .. "-" .. L["HLP_RIGHTCLICK"],
+    ["alt-%s3"]     =   L["ALT"]   .. "-" .. L["HLP_MIDDLECLICK"],
     -- 3, -- middle mouse button || RESERVED FOR TARGETTING
 }; -- }}}
 
@@ -231,6 +225,8 @@ function MicroUnitF:ResetAllPositions () -- {{{
 end -- }}}
 
 -- return the anchor of a given MUF depending on its creation ID
+do
+local Anchor = { "TOPLEFT", x, y, "TOPLEFT" };
 function MicroUnitF:GiveMFAnchor (ID) -- {{{
     local LineNum = floor( (ID - 1) / D.profile.DebuffsFramePerline);
     local NumOnLine = fmod( (ID - 1), D.profile.DebuffsFramePerline);
@@ -238,9 +234,11 @@ function MicroUnitF:GiveMFAnchor (ID) -- {{{
     local x = (D.profile.DebuffsFrameGrowToTop and DC.MFSIZE or 0) + NumOnLine * (DC.MFSIZE + D.profile.DebuffsFrameXSpacing);
     local y = (D.profile.DebuffsFrameGrowToTop and -1 or 1) * LineNum * ((-1 * D.profile.DebuffsFrameYSpacing) - DC.MFSIZE);
 
+    Anchor[2] = x; Anchor[3] = y;
 
-    return { "TOPLEFT", x, y, "TOPLEFT" };
-end -- }}}
+    return Anchor;
+end
+end-- }}}
 
 
 function MicroUnitF:Delayed_MFsDisplay_Update ()
@@ -391,9 +389,6 @@ function MicroUnitF:Force_FullUpdate () -- {{{
         if not MF.IsDebuffed then
             MF.UnitStatus = 0; -- reset status to force SetColor to update
         end
-
-        MF.TooltipUpdate = 0; -- force help tooltip to update
-        --MF_f = MF.Frame;
 
         MF.ChronoFontString:SetTextColor(unpack(MF_colors["COLORCHRONOS"]));
 
@@ -558,24 +553,9 @@ function MicroUnitF:UpdateMUFUnit(Unitid, CheckStealth)
     -- get the MUF object
     local MF = self.UnitToMUF[unit];
 
-    --[=[
-    if MF then
-        -- sanity test: test if UnitToMUF[] == getattributeUnit -- XXX probably fixed (99.99% sure) was due to misuse of player regen event instead of incombatlockdown
-        if MF.Frame:GetAttribute("unit") ~= MF.CurrUnit then -- never comes true :/ it does... (reproduceable by mind-controlling something and releasing it)
-            D:AddDebugText("Sanity check failed in MicroUnitF:UpdateMUFUnit() Cattrib ~= CurrUnit", MF.CurrUnit, MF.Frame:GetAttribute("unit"), MF.Shown);
-        end
-
-        -- sanity test: test if unit == CurrUnit -- XXX is completely impossible
-        if unit ~= MF.CurrUnit then -- should be completely impossible since CurrUnit is set with UnitToMUF...
-            D:AddDebugText("Sanity check failed in MicroUnitF:UpdateMUFUnit() unit ~= MF.CurrUnit (%s ~= %s - %s).", unit, MF.CurrUnit, MF.Shown);
-        end
-    end
-    --]=]
-
     if (MF and MF.Shown) then
         -- The MUF will be updated only every DebuffsFrameRefreshRate seconds at most
         -- but we don't miss any event XXX note this can be the cause of slowdown if 25 or 40 players got debuffed at the same instant, DebuffUpdateRequest is here to prevent that since 2008-02-17
-        -- We need to find another way, this hammers AceEvent and won't be authorized with Ace3
         if (not D:DelayedCallExixts("Dcr_Update"..unit)) then
             D.DebuffUpdateRequest = D.DebuffUpdateRequest + 1;
             D:ScheduleDelayedCall("Dcr_Update"..unit, CheckStealth and MF.UpdateWithCS or MF.Update, D.profile.DebuffsFrameRefreshRate * (1 + floor(D.DebuffUpdateRequest / (D.profile.DebuffsFramePerUPdate / 2))), MF);
@@ -593,11 +573,14 @@ end
 -- It's outside the function to avoid creating and discarding this table at each call
 local DefaultTTAnchor = {"ANCHOR_TOPLEFT", 0, 6};
 local UnitGUID = _G.UnitGUID;
+local TooltipButtonsInfo = {}; -- help tooltip text table
+local TooltipUpdate = 0; -- help tooltip change update check
 -- This function is responsible for showing the tooltip when the mouse pointer is over a MUF
-function MicroUnitF:OnEnter() -- {{{
+-- it also handles Unstable Affliction detection and warning.
+function MicroUnitF:OnEnter(frame) -- {{{
     D.Status.MouseOveringMUF = true;
 
-    local MF = this.Object;
+    local MF = frame.Object;
     local Status;
 
     local Unit = MF.CurrUnit; -- shortcut
@@ -613,61 +596,45 @@ function MicroUnitF:OnEnter() -- {{{
             D.Status.Unit_Array_UnitToGUID[Unit] = unitguid;
             D.Status.Unit_Array_GUIDToUnit[unitguid] = Unit;
             GUIDwasFixed = true;
-            --D:AddDebugText("Wrong stored GUID detected (MicroUnitF:OnEnter()) ", "LGU:", D.Status.GroupUpdatedOn, "LGuEr", D.Status.GroupUpdateEvent); -- XXX to remove for release
         end
 
     end
-
-    --[=[
-    --@alpha@  
-    local LateDetectTest = false;
-    if MF.Debuffs and MF.Debuffs[1].Type then
-        LateDetectTest = 0;
-    end
-
-    -- removes the CHARMED_STATUS bit from Status, we don't need it
-    Status = bit.band(MF.UnitStatus,  bit.bnot(CHARMED_STATUS)); -- XXX do not use this value other than for debugging (not up to date, use the later below)
-    --@end-alpha@
-    --]=]
 
     MF:Update(false, false, true); -- will reset the color early and set the current status of the MUF
     MF:SetClassBorder(); -- set the border if it wasn't possible at the time the unit was discovered
-
-    --[=[
-    --@alpha@  
-
-    -- if there was no debuff just before the above update (it's wrong)
-    if not LateDetectTest and Status ~= FAR and MF.Debuffs and MF.Debuffs[1].Type then
-        LateDetectTest = true;
-    else
-        LateDetectTest = false;
-    end
-
-    if LateDetectTest then
-        -- if there is no scheduled event for this unit
-        if not D:DelayedCallExixts("Dcr_Update"..Unit) then
-            MicroUnitF:LateAnalysis("OnEnter", MF.Debuffs, MF, Status, GUIDwasFixed);
-        end
-    end
-    --@end-alpha@
-    --]=]
-
+    
     if not Unit then
         return; -- If the user overs the MUF befor it's completely initialized
     end
 
-    if (D.profile.AfflictionTooltips) then
+    --Test for unstable affliction
+    if MF.Debuffs then
+        for i, Debuff in ipairs(MF.Debuffs) do
+            if Debuff.Type then
+                -- Create a warning if the Unstable Affliction is detected
+                if Debuff.Name == DS["Unstable Affliction"] then
+                    --if Debuff.Name == "Malédiction de Stalvan" then -- to test easily
+                    D:Println("|cFFFF0000 ==> %s !!|r (%s)", DS["Unstable Affliction"], D:MakePlayerName((D:PetUnitName(      Unit, true    ))));
+                    PlaySoundFile("Sound\\Doodad\\G_NecropolisWound.wav");
+                end
+            end
+        end
+    end
+
+    if D.profile.AfflictionTooltips then
 
         -- removes the CHARMED_STATUS bit from Status, we don't need it
         Status = bit.band(MF.UnitStatus,  bit.bnot(CHARMED_STATUS));
 
         -- First, write the name of the unit in its class color
-        if (UnitExists(MF.CurrUnit)) then
+        if UnitExists(MF.CurrUnit) then
             TooltipText =
+            ((DC.RAID_ICON_LIST[GetRaidTargetIndex(Unit)]) and (DC.RAID_ICON_LIST[GetRaidTargetIndex(Unit)] .. "0:0:0:0|t ") or ""  ) ..
             -- Colored unit name
-            -- D:ColorText(         (D:PetUnitName(       Unit, true    )) -- cannot be replaced by MF.UnitName, (UnitName is set by SetClassBorder only if class borders are displayed)
             D:ColorText(            (D:PetUnitName(       Unit, true    ))
             , "FF" .. ((UnitClass(Unit)) and DC.HexClassColor[ (select(2, UnitClass(Unit))) ] or "AAAAAA")) .. "  |cFF3F3F3F(".. Unit .. ")|r";
+        else
+            TooltipText = MF.CurrUnit;
         end
 
 
@@ -675,67 +642,97 @@ function MicroUnitF:OnEnter() -- {{{
         local StatusText = "";
 
         -- set the status text, just translate the bitfield to readable text
-        if (Status == NORMAL) then
+        if Status == NORMAL then
             StatusText = L["NORMAL"];
 
-        elseif (Status == ABSENT) then
+        elseif Status == ABSENT then
             StatusText = str_format(L["ABSENT"], Unit);
 
-        elseif (Status == FAR) then
+        elseif Status == FAR then
             StatusText = L["TOOFAR"];
 
-        elseif (Status == STEALTHED) then
+        elseif Status == STEALTHED then
             StatusText = L["STEALTHED"];
 
-        elseif (Status == BLACKLISTED) then
+        elseif Status == BLACKLISTED then
             StatusText = L["BLACKLISTED"];
 
-        elseif (MF.Debuffs and (Status == AFFLICTED or Status == AFFLICTED_NIR)) then
+        elseif MF.Debuffs and (Status == AFFLICTED or Status == AFFLICTED_NIR) then
             local DebuffType = MF.Debuffs[1].Type;
             StatusText = str_format(L["AFFLICTEDBY"], D:ColorText( L[str_upper(DC.TypeNames[DebuffType])], "FF" .. DC.TypeColors[DebuffType]) );
         end
 
         -- Unit Status
-        TooltipText = TooltipText .. "\n" .. L["UNITSTATUS"] .. StatusText .. "\n";
+        --TooltipText = TooltipText .. "\n" .. L["UNITSTATUS"] .. StatusText .. "\n";
+        TooltipText = TooltipText .. "\n" .. StatusText;
 
         -- list the debuff(s) names
-        if (MF.Debuffs) then
+        if MF.Debuffs then
             for i, Debuff in ipairs(MF.Debuffs) do
-                if (Debuff.Type) then
+                if Debuff.Type then
                     local DebuffApps = Debuff.Applications;
                     TooltipText = TooltipText .. "\n" .. str_format("%s", D:ColorText(Debuff.Name, "FF" .. DC.TypeColors[Debuff.Type])) .. (DebuffApps>0 and str_format(" (%d)", DebuffApps) or "");
-
-                    -- Create a warning if the Unstable Affliction is detected
-                    if Debuff.Name == DS["Unstable Affliction"] then
-                    --if Debuff.Name == "Malédiction de Stalvan" then -- to test easily
-                        D:Println("|cFFFF0000 ==> %s !!|r (%s)", DS["Unstable Affliction"], D:MakePlayerName((D:PetUnitName(      Unit, true    ))));
-                        PlaySoundFile("Sound\\Doodad\\G_NecropolisWound.wav");
-                    end
-
-                else
-                    break;
                 end
             end
         end
 
-        -- The tooltip is anchored above the first MUF
-        local FirstMUFAnchor = self:GiveMFAnchor(1); DefaultTTAnchor[2] = FirstMUFAnchor[2]; DefaultTTAnchor[3] = FirstMUFAnchor[3];
+        local VerticalMUF    = floor((self.UnitShown - 1) / D.profile.DebuffsFramePerline ) * D.profile.DebuffsFramePerline + 1;
 
-        -- finally display the tooltip
+        -- The tooltip is anchored above the top first MUF
+        if not D.profile.DebuffsFrameGrowToTop then
+            local FirstMUFAnchor = self:GiveMFAnchor(1);
+            DefaultTTAnchor[2] = FirstMUFAnchor[2];
+            DefaultTTAnchor[3] = FirstMUFAnchor[3];
+        else
+            local TopMUFAnchor   = self:GiveMFAnchor(VerticalMUF);
+            DefaultTTAnchor[2] = TopMUFAnchor[2];
+            DefaultTTAnchor[3] = TopMUFAnchor[3];
+        end
+
+        -- Display the tooltip
         D:DisplayTooltip( TooltipText , self.Frame, DefaultTTAnchor);
+
+        -- if the tooltip is at the top of the screen it means it's overlaping the MUF, let's move the tooltip somewhere else.
+        if floor(DcrDisplay_Tooltip:GetTop()) == floor(UIParent:GetTop()) then
+            local RefMUF = 1;
+
+            if not D.profile.DebuffsFrameGrowToTop then
+               RefMUF = VerticalMUF;
+            end
+
+            DcrDisplay_Tooltip:ClearAllPoints();
+            DcrDisplay_Tooltip:SetPoint("TOPLEFT", self.ExistingPerNum[RefMUF].Frame, "BOTTOMLEFT");
+        end
     end
 
     -- show a help text in the Game default tooltip
-    if (D.profile.DebuffsFrameShowHelp) then
-        local helpText = MF.TooltipButtonsInfo;
-        GameTooltip_SetDefaultAnchor(GameTooltip, this);
-        GameTooltip:SetText(helpText);
+    if D.profile.DebuffsFrameShowHelp then
+        -- if necessary we will update the help tooltip text
+        if (D.Status.SpellsChanged ~= TooltipUpdate) then
+            TooltipButtonsInfo = {};
+            local AvailableButtons = D.db.global.AvailableButtons;
+
+            for Spell, Prio in pairs(D.Status.CuringSpellsPrio) do
+                TooltipButtonsInfo[Prio] =
+                str_format("%s: %s", D:ColorText(DC.AvailableButtonsReadable[AvailableButtons[Prio]], D:NumToHexColor(MF_colors[Prio])), Spell);
+            end
+
+            t_insert(TooltipButtonsInfo, str_format("%s: %s", DC.AvailableButtonsReadable[AvailableButtons[#AvailableButtons - 1]], L["TARGETUNIT"]));
+            t_insert(TooltipButtonsInfo, str_format("%s: %s", DC.AvailableButtonsReadable[AvailableButtons[#AvailableButtons    ]], L["FOCUSUNIT"]));
+            TooltipButtonsInfo = table.concat(TooltipButtonsInfo, "\n");
+            TooltipUpdate = D.Status.SpellsChanged;
+        end
+
+        GameTooltip_SetDefaultAnchor(GameTooltip, frame);
+        GameTooltip:SetText(TooltipButtonsInfo);
         GameTooltip:Show();
 
     end
 
 end -- }}}
 
+-- No longer used
+--[===[
 function MicroUnitF:LateAnalysis(From, Debuffs, MF, Status, GUIDwasFixed)
 
     local Unit = MF.CurrUnit; -- shortcut
@@ -797,7 +794,7 @@ function MicroUnitF:LateAnalysis(From, Debuffs, MF, Status, GUIDwasFixed)
 
     -- trigger a dcr diag if DetectHistoryIndex is 1 :/
     if DetectHistoryIndex == 1 then
-        DecursiveSelfDiagnostic(true, true);
+        T._SelfDiagnostic(true, true);
     end
 
     if #foundcblevents == 0 then
@@ -806,6 +803,7 @@ function MicroUnitF:LateAnalysis(From, Debuffs, MF, Status, GUIDwasFixed)
         D:AddDebugText(#foundcblevents / 2, "events for ", Unit, "or debuff:", debuffname, "Status:", Status, "Events:\n", unpack(foundcblevents));
     end
 end
+--]===]
 
 function MicroUnitF:OnLeave() -- {{{
     D.Status.MouseOveringMUF = false;
@@ -818,9 +816,9 @@ function MicroUnitF:OnLeave() -- {{{
 end -- }}}
 
 
-function D.MicroUnitF:OnCornerEnter()
+function D.MicroUnitF:OnCornerEnter(frame)
     if (D.profile.DebuffsFrameShowHelp) then
-        D:DisplayGameTooltip(
+        D:DisplayGameTooltip(frame,
         str_format(
         "|cFF11FF11%s|r-|cFF11FF11%s|r: %s\n\n"..
         --"|cFF11FF11%s|r: %s\n"..
@@ -843,56 +841,58 @@ function D.MicroUnitF:OnCornerEnter()
 end
 
 
-function MicroUnitF:OnLoad() -- {{{
-    this:SetScript("PreClick", self.OnPreClick);
-    this:SetScript("PostClick", self.OnPostClick);
+function MicroUnitF:OnLoad(frame) -- {{{
+    frame:SetScript("PreClick", self.OnPreClick);
+    frame:SetScript("PostClick", self.OnPostClick);
 end
 -- }}}
 
-function MicroUnitF:OnPreClick(Button) -- {{{
-        -- D:Debug("Micro unit Preclicked: ", Button);
+function MicroUnitF.OnPreClick(frame, Button) -- {{{
+        D:Debug("Micro unit Preclicked: ", Button);
 
-        local Unit = this.Object.CurrUnit; -- shortcut
+        local Unit = frame.Object.CurrUnit; -- shortcut
 
-
-        if (this.Object.UnitStatus == NORMAL and (Button == "LeftButton" or Button == "RightButton")) then
+        if (frame.Object.UnitStatus == NORMAL and (Button == "LeftButton" or Button == "RightButton")) then
 
             D:Println(L["HLP_NOTHINGTOCURE"]);
 
-        elseif (this.Object.UnitStatus == AFFLICTED) then
-            local NeededPrio = D:GiveSpellPrioNum(this.Object.Debuffs[1].Type);
+        elseif (frame.Object.UnitStatus == AFFLICTED) then
+            local NeededPrio = D:GiveSpellPrioNum(frame.Object.Debuffs[1].Type);
             local RequestedPrio = false;
+            local ButtonsString = "";
 
-            if (Button == "LeftButton") then
-                if (IsControlKeyDown()) then
-                    RequestedPrio = 3;
-                else
-                    RequestedPrio = 1;
-                end
-            elseif (Button == "RightButton") then
-                if (IsControlKeyDown()) then
-                    RequestedPrio = 4;
-                else
-                    RequestedPrio = 2;
-                end
+            if IsControlKeyDown() then
+                ButtonsString = "ctrl-";
+            elseif IsAltKeyDown() then
+                ButtonsString = "alt-";
+            elseif IsShiftKeyDown() then
+                ButtonsString = "shift-";
             end
+
+            if Button == "LeftButton" then
+               ButtonsString = ButtonsString .. "%s1";
+            elseif Button == "RightButton" then
+               ButtonsString = ButtonsString .. "%s2";
+            end
+
+            RequestedPrio = D:tGiveValueIndex(D.db.global.AvailableButtons, ButtonsString);
 
             if RequestedPrio and NeededPrio ~= RequestedPrio then
                 D:errln(L["HLP_WRONGMBUTTON"]);
                 if NeededPrio and MF_colors[NeededPrio] then
-                    D:Println(L["HLP_USEXBUTTONTOCURE"], D:ColorText(DC.AvailableButtonsReadable[NeededPrio], D:NumToHexColor(MF_colors[NeededPrio])));
+                    D:Println(L["HLP_USEXBUTTONTOCURE"], D:ColorText(DC.AvailableButtonsReadable[ D.db.global.AvailableButtons[NeededPrio] ], D:NumToHexColor(MF_colors[NeededPrio])));
                 --[===[@debug@
                 else
-                    D:AddDebugText("Button wrong click info bug: NeededPrio:", NeededPrio, "Unit:", Unit, "RequestedPrio:", RequestedPrio, "Button clicked:", Button, "MF_colors:", unpack(MF_colors), "Debuff Type:", this.Object.Debuffs[1].Type);
+                    D:AddDebugText("Button wrong click info bug: NeededPrio:", NeededPrio, "Unit:", Unit, "RequestedPrio:", RequestedPrio, "Button clicked:", Button, "MF_colors:", unpack(MF_colors), "Debuff Type:", frame.Object.Debuffs[1].Type);
                 --@end-debug@]===]
                 end
 
 
             elseif RequestedPrio and D.Status.HasSpell then
 --              D:Print("XXX ClickedMF SET");
-                D.Status.ClickedMF = this.Object; -- used to update the MUF on cast success and failure to know which unit is being cured
+                D.Status.ClickedMF = frame.Object; -- used to update the MUF on cast success and failure to know which unit is being cured
                 D.Status.ClickedMF.SPELL_CAST_SUCCESS = false;
-                D:Debuff_History_Add(this.Object.Debuffs[1].Name, this.Object.Debuffs[1].TypeName);
+                D:Debuff_History_Add(frame.Object.Debuffs[1].Name, frame.Object.Debuffs[1].TypeName);
             end
         end
 end -- }}}
@@ -936,6 +936,8 @@ function MicroUnitF.prototype:init(Container, Unit, FrameNum, ID) -- {{{
         self.PrevChrono         = false;
         self.Shown              = false; -- Setting this to true will broke the stick to right option
         self.UpdateCD           = 0;
+        self.RaidTargetIcon     = false;
+        self.PrevRaidTargetIndex= false;
 
         -- create the frame
         self.Frame  = CreateFrame ("Button", "DcrMicroUnit"..Unit, self.Parent, "DcrMicroUnitTemplateSecure");
@@ -977,8 +979,15 @@ function MicroUnitF.prototype:init(Container, Unit, FrameNum, ID) -- {{{
         self.InnerTexture:SetTexture(unpack(MF_colors[CHARMED_STATUS]));
 
         -- Chrono Font string
-        self.ChronoFontString = self.Frame:CreateFontString("DcrMicroUnit"..Unit.."Chrono", "OVERLAY", "DcrMicroUnitChronoFont");
+        self.ChronoFontString = self.Frame:CreateFontString("DcrMicroUnit"..Unit.."Chrono", "ARTWORK", "DcrMicroUnitChronoFont");
         self.ChronoFontString:SetTextColor(unpack(MF_colors["COLORCHRONOS"]));
+
+        -- raid target icon
+        self.RaidIconTexture = self.Frame:CreateTexture("DcrMicroUnit"..Unit.."RaidTargetIcon", "OVERLAY");
+        self.RaidIconTexture:SetPoint("CENTER",self.Frame ,"CENTER",0,8)
+        self.RaidIconTexture:SetHeight(13);
+        self.RaidIconTexture:SetWidth(13);
+
 
         -- a reference to this object
         self.Frame.Object = self;
@@ -1060,7 +1069,7 @@ do
     -- used to tell if we changed something to improve performances.
     -- Each attribute change trigger an event...
     local ReturnValue = false;
-    -- this updates the sttributes of the MUF's frame object
+    -- this updates the sttributes of a MUF's frame object
     function MicroUnitF.prototype:UpdateAttributes(Unit, DoNotDelay)
 
         -- Delay the call if we are fighting
@@ -1092,48 +1101,40 @@ do
             ReturnValue = self;
         end
 
-        -- if the spell settings (the priority order or available spells) did not changed
         if (D.Status.SpellsChanged == self.LastAttribUpdate) then
-            return ReturnValue;
+            return ReturnValue; -- nothing changed
         end
 
---      D:Debug("UpdateAttributes() executed");
-        -- set the mouse middle-button action
-        self.Frame:SetAttribute("type3", "target"); --never changes
+        -- D:Debug("UpdateAttributes() executed");
 
-        -- set the mouse ctrl-middle-button action
-        self.Frame:SetAttribute("ctrl-type3", "focus"); -- never changes
+        if self.LastAttribUpdate == 0 then -- only once
+            -- set the mouse left-button actions on all modifiers
+            self.Frame:SetAttribute("type1", "macro");
+            self.Frame:SetAttribute("ctrl-type1", "macro");
+            self.Frame:SetAttribute("alt-type1", "macro");
+            self.Frame:SetAttribute("shift-type1", "macro");
 
-        -- set the mouse left-button action
-        --self.Frame:SetAttribute("type1", "target"); -- required to disable an hidden cache somewhere...
-        self.Frame:SetAttribute("type1", "macro");
+            -- set the mouse right-button actions on all modifiers
+            self.Frame:SetAttribute("type2", "macro");
+            self.Frame:SetAttribute("ctrl-type2", "macro");
+            self.Frame:SetAttribute("alt-type2", "macro");
+            self.Frame:SetAttribute("shift-type2", "macro");
 
-        -- set the mouse ctrl-left-button action
-        --self.Frame:SetAttribute("ctrl-type1", "target");  -- required to disable an hidden cache somewhere...
-        self.Frame:SetAttribute("ctrl-type1", "macro");
-
-        -- set the mouse right-button action
-        --self.Frame:SetAttribute("type2", "target"); -- required to disable an hidden cache somewhere...
-        self.Frame:SetAttribute("type2", "macro");
-
-        -- set the mouse ctrl-right-button action
-        --self.Frame:SetAttribute("ctrl-type2", "target"); -- required to disable an hidden cache somewhere...
-        self.Frame:SetAttribute("ctrl-type2", "macro");
-
-        -- We need:
-        --
-        --  - a table telling the priority of each spell
-        --              D.Status.CuringSpellsPrio [ __SPELL_NAME__ ] = __PRIO_NUM__
-
-        -- if necessary we will update the help tooltip text
-        if (D.Status.SpellsChanged ~= self.TooltipUpdate) then
-            self.TooltipButtonsInfo = {};
+            -- set the mouse middle-button actions on all modifiers
+            self.Frame:SetAttribute("type3", "macro");
+            self.Frame:SetAttribute("ctrl-type3", "macro");
+            self.Frame:SetAttribute("alt-type3", "macro");
+            self.Frame:SetAttribute("shift-type3", "macro");
         end
+
+        local AvailableButtons = D.db.global.AvailableButtons;
+
+        self.Frame:SetAttribute(str_format(AvailableButtons[#AvailableButtons - 1], "macrotext"), str_format("/target %s", Unit));
+        self.Frame:SetAttribute(str_format(AvailableButtons[#AvailableButtons    ], "macrotext"), str_format("/focus %s", Unit));
 
         -- set the spells attributes using the lookup tables above
         for Spell, Prio in pairs(D.Status.CuringSpellsPrio) do
 
-            --self.Frame:SetAttribute(str_format(AvailableButtons[Prio], "spell"), Spell);
             --the [target=%s, help][target=%s, harm] prevents the 'please select a unit' cursor problem (Blizzard should fix this...)
             self.Frame:SetAttribute(str_format(AvailableButtons[Prio], "macrotext"), str_format("%s/cast [target=%s, help][target=%s, harm] %s%s",
             ((not D.Status.FoundSpells[Spell][1]) and "/stopcasting\n" or ""),
@@ -1143,26 +1144,13 @@ do
 
 
             --[[
-            D:Debug("XX-> macro: ",str_format(AvailableButtons[Prio], "macrotext"), str_format("%s/cast [target=%s, exists] %s%s",
+            D:Debug("XX-> macro: ",str_format(AvailableButtons[Prio], "macrotext"), str_format("%s/cast [target=%s, help][target=%s, harm] %s%s",
             ((not D.Status.FoundSpells[Spell][1]) and "/stopcasting\n" or ""),
-            Unit,
+            Unit,Unit,
             Spell,
             (DC.SpellsToUse[Spell].Rank and "(" .. (str_sub(DC.RANKNUMTRANS, '%d+', DC.SpellsToUse[Spell].Rank)) .. ")" or "")  ));
             --]]
 
-            -- set the tooltip text for the current prio if necessary
-            if (D.Status.SpellsChanged ~= self.TooltipUpdate) then
-                self.TooltipButtonsInfo[Prio] =
-                str_format("%s: %s", D:ColorText(DC.AvailableButtonsReadable[Prio], D:NumToHexColor(MF_colors[Prio])), Spell);
-            end
-        end
-
-        -- concatenate the tooltip text if necessary
-        if (D.Status.SpellsChanged ~= self.TooltipUpdate) then
-            t_insert(self.TooltipButtonsInfo, str_format("%s: %s", L["HLP_MIDDLECLICK"], L["TARGETUNIT"]));
-            t_insert(self.TooltipButtonsInfo, str_format("%s: %s", L["CTRL"] .. "-" .. L["HLP_MIDDLECLICK"], L["FOCUSUNIT"]));
-            self.TooltipButtonsInfo = table.concat(self.TooltipButtonsInfo, "\n");
-            self.TooltipUpdate = D.Status.SpellsChanged;
         end
 
         self.Debuff1Prio = false;
@@ -1221,6 +1209,8 @@ do
     local fmod              = _G.math.fmod;
     local CooldownFrame_SetTimer = _G.CooldownFrame_SetTimer;
     local GetSpellCooldown = _G.GetSpellCooldown;
+    local GetRaidTargetIndex= _G.GetRaidTargetIndex;
+    local bor = _G.bit.bor;
 
     function MicroUnitF.prototype:SetColor() -- {{{
 
@@ -1246,7 +1236,6 @@ do
                 if self.LitTime then
                     self.LitTime = false;
                     self.ChronoFontString:SetText(" ");
-
                 end
             end
 
@@ -1264,7 +1253,7 @@ do
 
         else
             -- If the Unit is invisible
-            if D.profile.Show_Stealthed_Status and D.Stealthed_Units[Unit] then
+            if profile.Show_Stealthed_Status and D.Stealthed_Units[Unit] then
                 if PreviousStatus ~= STEALTHED then
                     self.Color = MF_colors[STEALTHED];
                     self.UnitStatus = STEALTHED;
@@ -1319,26 +1308,35 @@ do
                     if self.LitTime then
                         PrevChrono = self.Chrono;
 
-                        self.Chrono = floor(Time - self.LitTime + 0.5);
+                        if not profile.DebuffsFrameTimeLeft then
+                            self.Chrono = floor(Time - self.LitTime);
 
-                        if self.Chrono ~= PrevChrono then
-                            self.ChronoFontString:SetText( ((self.Chrono < 60) and self.Chrono or (floor(self.Chrono / 60) .. "\'") ));
+                            if self.Chrono ~= PrevChrono then
+                                self.ChronoFontString:SetText( ((self.Chrono < 60) and self.Chrono or (floor(self.Chrono / 60) .. "\'") ));
+                            end
+                        else
+                            self.Chrono = floor(self.Debuffs[1].expirationTime - Time);
+
+                            if self.Chrono ~= PrevChrono then
+                                self.ChronoFontString:SetText( ((self.Chrono < 60) and (self.Chrono + 1) or (floor(self.Chrono / 60 + 1) .. "\'") ));
+                            end
                         end
                     else
                         self.LitTime = Time;
-                        
                     end
                 end
-
+                
+                self.RaidTargetIcon = GetRaidTargetIndex(Unit);
+                if self.PrevRaidTargetIndex ~= self.RaidTargetIcon then
+                    self.RaidIconTexture:SetTexture(self.RaidTargetIcon and DC.RAID_ICON_TEXTURE_LIST[self.RaidTargetIcon] or nil);
+                    self.PrevRaidTargetIndex = self.RaidTargetIcon;
+                end
+ 
 
                 -- set the status according to RangeStatus
                 if (not RangeStatus or RangeStatus == 0) then
                     Alpha = 0.40;
                     self.UnitStatus = AFFLICTED_NIR;
-
-                    --  if profile.LV_OnlyInRange then
-                    --  D.UnitDebuffed[self.CurrUnit] = false;
-                    --  end
                 else
                     Alpha = 1;
                     self.UnitStatus = AFFLICTED;
@@ -1359,26 +1357,29 @@ do
                     self.ChronoFontString:SetText(" ");
                 end
 
+                if self.RaidTargetIcon then
+                    self.RaidIconTexture:SetTexture(nil);
+                    self.RaidTargetIcon = false;
+                    self.PrevRaidTargetIndex = false;
+                end
+
                 -- if the previous status was FAR, trigger a full rescan of the unit (combat log event does not report events for far away units)
                 if PreviousStatus == FAR then
                     D.MicroUnitF:UpdateMUFUnit(self.CurrUnit, true); -- this is able to deal when a lot of update queries
                 end
-                
-
             end
         end
 
         if PreviousStatus == AFFLICTED or PreviousStatus == AFFLICTED_AND_CHARMED  then
             MicroUnitF.UnitsDebuffedInRange = MicroUnitF.UnitsDebuffedInRange - 1;
 
-            --if (MicroUnitF.UnitsDebuffedInRange == 0 and profile.LV_OnlyInRange) then
-            if (MicroUnitF.UnitsDebuffedInRange == 0 and profile.Hide_LiveList) then
+            if MicroUnitF.UnitsDebuffedInRange == 0 and profile.Hide_LiveList then
                 D:Debug("SetColor(): No more unit, sound re-enabled");
                 Status.SoundPlayed = false;
             end
         end
 
-        if (not profile.DebuffsFrameElemBorderShow) then
+        if not profile.DebuffsFrameElemBorderShow then
             BorderAlpha = 0;
         end
 
@@ -1387,7 +1388,7 @@ do
         --self:SetClassBorder();
         
         -- set the alpha of the border if necessary
-        if (self.BorderAlpha ~= BorderAlpha) then
+        if self.BorderAlpha ~= BorderAlpha then
             self.OuterTexture1:SetAlpha(BorderAlpha);
             self.OuterTexture2:SetAlpha(BorderAlpha);
             self.OuterTexture3:SetAlpha(BorderAlpha);
@@ -1402,12 +1403,12 @@ do
 
 
         -- Add the charm status to the bitfield (note that it's treated separatly because it's shown even if the unit is not afflicetd by anything we can cure)
-        if (self.IsCharmed) then
-            self.UnitStatus = bit.bor( self.UnitStatus, CHARMED_STATUS);
+        if self.IsCharmed then
+            self.UnitStatus = bor(self.UnitStatus, CHARMED_STATUS);
         end
 
         -- if the unit is not afflicted or too far set the color to a lower alpha
-        if (not DebuffType) then -- if DebuffType was not set, it means that the unit is too far
+        if not DebuffType then -- if DebuffType was not set, it means that the unit is too far
             Alpha = self.Color[4] * profile.DebuffsFrameElemAlpha;
             self.PrevDebuff1Prio = false;
         end
@@ -1425,8 +1426,10 @@ do
             self.Texture:SetTexture(self.Color[1], self.Color[2], self.Color[3], Alpha);
             --self.Texture:SetAlpha(Alpha);
 
+            
+
             -- Show the charmed alert square
-            if (self.IsCharmed) then
+            if self.IsCharmed then
                 self.InnerTexture:Show();
             else
                 self.InnerTexture:Hide();
@@ -1565,7 +1568,7 @@ do
                 if UnitToGUID[MF.CurrUnit] ~= MF.UnitGUID then
                     MF.UpdateCountDown = 0; -- will force MF:Update() to be called
                     --[===[@debug@
-                    D:Println("|cFFFFAA55GUID change detected while placing for |r", MicroFrameUpdateIndex);
+                    D:Println("|cFFFFAA55GUID change detected while placing for |r", MicroFrameUpdateIndex, UnitToGUID[MF.CurrUnit], MF.UnitGUID );
                     --@end-debug@]===]
                 end
 
@@ -1613,7 +1616,7 @@ end -- }}}
 -- UNUSED STUFF {{{
 -- Micro Frame Events, useless for now
 
-function MicroUnitF:OnPostClick()
+function MicroUnitF:OnPostClick(frame, button)
 --      D:Debug("Micro unit PostClicked");
 end
 
@@ -1646,6 +1649,6 @@ local MF_Textures = { -- unused
 
 -- }}}
 
-DcrLoadedFiles["Dcr_DebuffsFrame.lua"] = "2.4.5-3-g6a02387";
+T._LoadedFiles["Dcr_DebuffsFrame.lua"] = "2.5.1-12-gb39554a";
 
 -- Heresy

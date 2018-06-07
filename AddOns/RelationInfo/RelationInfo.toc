@@ -1,0 +1,13 @@
+﻿## Interface: 30300
+## Title: Relation Info
+## Notes: Save player's relation infomation (friends ans guild)
+## Title-zhCN: [多玩] YY好友助手
+## Notes-zhCN: 保存你在游戏中的关系信息(好友和公会)
+## Title-zhTW: [多玩] YY好友助手
+## Notes-zhTW: 保存你在遊戲中的關係信息(好友和公會)
+## Version: 1.0.3
+## Author: dugu
+## X-Revision: 
+## SavedVariablesPerCharacter: RelationInfoDB
+
+RelationInfo.lua

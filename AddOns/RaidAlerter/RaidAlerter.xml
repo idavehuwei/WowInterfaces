@@ -125,7 +125,7 @@
 		<Anchors>
 			<Anchor point="TOP" relativeTo="UIParent" relativePoint="TOP">
 				<Offset>
-					<AbsDimension x="20" y="-12"/>
+					<AbsDimension x="20" y="-20"/>
 				</Offset>
 			</Anchor>
 		</Anchors>
@@ -158,18 +158,28 @@
 
 		<Scripts>
 			<OnLoad>
-				self:RegisterForDrag("RightButton");
+				self:RegisterForDrag("LeftButton");
 				self:RegisterForClicks("LeftButtonUp","RightButtonUp");
+				dwRegisterForSaveFrame(self);
 			</OnLoad>
 			<OnDragStart>
-				self:StartMoving();
+				if (not self.locked) then
+					self.isMoving = true;
+					self:StartMoving();
+				end				
 			</OnDragStart>
 			<OnDragStop>
-				self:StopMovingOrSizing();
-				BF_RaidAlerter_SavePosition(self);
+				if (self.isMoving) then
+					self.isMoving = false;
+					self:StopMovingOrSizing();
+				end				
 			</OnDragStop>
 			<OnClick>
-				RaidAlerter_RaidState(self,button);
+					if (self.isMoving) then
+						self.isMoving = false;
+						self:StopMovingOrSizing();
+					end
+					RaidAlerter_RaidState(self,button);
 			</OnClick>
 			<OnEnter>
 				RaidAlerter_OnEnter(self);
@@ -185,7 +195,7 @@
 	<GameTooltip name="RaidAlerterTooltip" inherits="GameTooltipTemplate" parent="UIParent" hidden="true"/>
 
 	<Frame name="RaidAlerter_MainFrame" parent="UIParent" movable="true" frameStrata="DIALOG" toplevel="true" hidden="true" enableMouse="true">
-		<Size><AbsDimension x="490" y="410"/></Size>
+		<Size><AbsDimension x="490" y="389"/></Size>
 		<Anchors><Anchor point="CENTER"/></Anchors>
 
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
@@ -665,7 +675,7 @@
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="RaidAlerterCheckLabel03_8" relativePoint="TOPLEFT">
 						<Offset>
-							<AbsDimension x="80" y="-2"/>
+							<AbsDimension x="80" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -1122,6 +1132,32 @@
 				</Scripts>
 			</CheckButton>
 
+			<CheckButton name="RaidAlerterCheckLabel14_1" inherits="RaidAlerterCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="RaidAlerterCheckLabel13_1" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-8" y="-19"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Label"):SetText(RAL_TEXT_XML_70);
+					</OnLoad>
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT");
+						GameTooltip:AddLine(RAL_TEXT_XML_71);
+						GameTooltip:Show();
+					</OnEnter>
+					<OnLeave>
+						GameTooltip:Hide();
+					</OnLeave>
+					<OnClick>
+						RaidAlerter_SET_FUNC_Hunter_Mark(self:GetChecked());
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+
 			<CheckButton name="RaidAlerterCheckLabel08_2" inherits="RaidAlerterCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="RaidAlerterCheckLabel08_1" relativePoint="TOPLEFT">
@@ -1305,32 +1341,6 @@
 				</Scripts>
 			</CheckButton>
 
-			<CheckButton name="RaidAlerterCheckLabel15_2" inherits="RaidAlerterCheckButtonTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="RaidAlerterCheckLabel14_2" relativePoint="TOPLEFT">
-						<Offset>
-							<AbsDimension x="" y="-19"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						getglobal(self:GetName().."Label"):SetText(RAL_TEXT_XML_70);
-					</OnLoad>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT");
-						GameTooltip:AddLine(RAL_TEXT_XML_71);
-						GameTooltip:Show();
-					</OnEnter>
-					<OnLeave>
-						GameTooltip:Hide();
-					</OnLeave>
-					<OnClick>
-						RaidAlerter_SET_FUNC_Hunter_Mark(self:GetChecked());
-					</OnClick>
-				</Scripts>
-			</CheckButton>
-
 			<CheckButton name="RaidAlerterCheckLabel08_3" inherits="RaidAlerterCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="RaidAlerterCheckLabel08_2" relativePoint="TOPLEFT">
@@ -1487,6 +1497,32 @@
 					</OnLeave>
 					<OnClick>
 						RaidAlerter_SET_FUNC_Break_Magic(self:GetChecked());
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+
+			<CheckButton name="RaidAlerterCheckLabel14_3" inherits="RaidAlerterCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="RaidAlerterCheckLabel13_3" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="" y="-19"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(self:GetName().."Label"):SetText(RAL_TEXT_XML_103);
+					</OnLoad>
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT");
+						GameTooltip:AddLine(RAL_TEXT_XML_104);
+						GameTooltip:Show();
+					</OnEnter>
+					<OnLeave>
+						GameTooltip:Hide();
+					</OnLeave>
+					<OnClick>
+						RaidAlerter_SET_FUNC_Check_Gem(self:GetChecked());
 					</OnClick>
 				</Scripts>
 			</CheckButton>
@@ -1652,146 +1688,12 @@
 				</Scripts>
 			</CheckButton>
 
-			<CheckButton name="RaidAlerterCheckLabel14_4" inherits="RaidAlerterCheckButtonTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="RaidAlerterCheckLabel13_4" relativePoint="TOPLEFT">
-						<Offset>
-							<AbsDimension x="" y="-19"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						getglobal(self:GetName().."Label"):SetText(RAL_TEXT_XML_103);
-					</OnLoad>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT");
-						GameTooltip:AddLine(RAL_TEXT_XML_104);
-						GameTooltip:Show();
-					</OnEnter>
-					<OnLeave>
-						GameTooltip:Hide();
-					</OnLeave>
-					<OnClick>
-						RaidAlerter_SET_FUNC_Check_Gem(self:GetChecked());
-					</OnClick>
-				</Scripts>
-			</CheckButton>
-
-			<CheckButton name="RaidAlerterCheckLabel14_1" inherits="RaidAlerterCheckButtonTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="RaidAlerterCheckLabel13_1" relativePoint="TOPLEFT">
-						<Offset>
-							<AbsDimension x="-8" y="-19"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						getglobal(self:GetName().."Label"):SetText(RAL_TEXT_XML_143);
-					</OnLoad>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT");
-						GameTooltip:AddLine(RAL_TEXT_XML_144);
-						GameTooltip:AddLine("|cFFFFFFFF"..RAL_TEXT_XML_145);
-						GameTooltip:Show();
-					</OnEnter>
-					<OnLeave>
-						GameTooltip:Hide();
-					</OnLeave>
-					<OnClick>
-						RaidAlerter_SET_FUNC_Check_Cooking(self:GetChecked());
-					</OnClick>
-				</Scripts>
-			</CheckButton>
-
-			<CheckButton name="RaidAlerterCheckLabel15_1" inherits="RaidAlerterCheckButtonTemplate">
+			<Button name="RaidAlerterButtonLabel15_1" inherits="OptionsButtonTemplate" text="RAL_TEXT_XML_118">
+				<Size><AbsDimension x="70" y="20"/></Size>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="RaidAlerterCheckLabel14_1" relativePoint="TOPLEFT">
 						<Offset>
-							<AbsDimension x="8" y="-19"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						getglobal(self:GetName().."Label"):SetText(RAL_TEXT_XML_146);
-					</OnLoad>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT");
-						GameTooltip:AddLine(RAL_TEXT_XML_147);
-						GameTooltip:AddLine("|cFFFFFFFF"..RAL_TEXT_XML_148);
-						GameTooltip:Show();
-					</OnEnter>
-					<OnLeave>
-						GameTooltip:Hide();
-					</OnLeave>
-					<OnClick>
-						RaidAlerter_SET_FUNC_Check_Cooking_Whisper(self:GetChecked());
-					</OnClick>
-				</Scripts>
-			</CheckButton>
-
-			<CheckButton name="RaidAlerterCheckLabel14_3" inherits="RaidAlerterCheckButtonTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="RaidAlerterCheckLabel13_3" relativePoint="TOPLEFT">
-						<Offset>
-							<AbsDimension x="" y="-19"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						getglobal(self:GetName().."Label"):SetText(RAL_TEXT_XML_149);
-					</OnLoad>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT");
-						GameTooltip:AddLine(RAL_TEXT_XML_150);
-						GameTooltip:AddLine("|cFFFFFFFF"..RAL_TEXT_XML_151);
-						GameTooltip:Show();
-					</OnEnter>
-					<OnLeave>
-						GameTooltip:Hide();
-					</OnLeave>
-					<OnClick>
-						RaidAlerter_SET_FUNC_Check_Inner_Fire(self:GetChecked());
-					</OnClick>
-				</Scripts>
-			</CheckButton>
-
-			<CheckButton name="RaidAlerterCheckLabel15_3" inherits="RaidAlerterCheckButtonTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="RaidAlerterCheckLabel14_3" relativePoint="TOPLEFT">
-						<Offset>
-							<AbsDimension x="8" y="-19"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						getglobal(self:GetName().."Label"):SetText(RAL_TEXT_XML_152);
-					</OnLoad>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT");
-						GameTooltip:AddLine(RAL_TEXT_XML_153);
-						GameTooltip:AddLine("|cFFFFFFFF"..RAL_TEXT_XML_154);
-						GameTooltip:Show();
-					</OnEnter>
-					<OnLeave>
-						GameTooltip:Hide();
-					</OnLeave>
-					<OnClick>
-						RaidAlerter_SET_FUNC_Check_Inner_Fire_Whisper(self:GetChecked());
-					</OnClick>
-				</Scripts>
-			</CheckButton>
-
-			<Button name="RaidAlerterButtonLabel16_1" inherits="OptionsButtonTemplate" text="RAL_TEXT_XML_118">
-				<Size><AbsDimension x="70" y="20"/></Size>
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="RaidAlerterCheckLabel15_1" relativePoint="TOPLEFT">
-						<Offset>
-							<AbsDimension x="2" y="-28"/>
+							<AbsDimension x="10" y="-28"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -1810,10 +1712,10 @@
 				</Scripts>
 			</Button>
 
-			<Button name="RaidAlerterButtonLabel16_2" inherits="OptionsButtonTemplate" text="RAL_TEXT_XML_120">
+			<Button name="RaidAlerterButtonLabel15_2" inherits="OptionsButtonTemplate" text="RAL_TEXT_XML_120">
 				<Size><AbsDimension x="70" y="20"/></Size>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="RaidAlerterButtonLabel16_1" relativePoint="TOPLEFT">
+					<Anchor point="TOPLEFT" relativeTo="RaidAlerterButtonLabel15_1" relativePoint="TOPLEFT">
 						<Offset>
 							<AbsDimension x="75" y=""/>
 						</Offset>
@@ -1834,10 +1736,10 @@
 				</Scripts>
 			</Button>
 
-			<Button name="RaidAlerterButtonLabel16_3" inherits="OptionsButtonTemplate" text="RAL_TEXT_XML_122">
+			<Button name="RaidAlerterButtonLabel15_3" inherits="OptionsButtonTemplate" text="RAL_TEXT_XML_122">
 				<Size><AbsDimension x="75" y="20"/></Size>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="RaidAlerterButtonLabel16_2" relativePoint="TOPLEFT">
+					<Anchor point="TOPLEFT" relativeTo="RaidAlerterButtonLabel15_2" relativePoint="TOPLEFT">
 						<Offset>
 							<AbsDimension x="75" y=""/>
 						</Offset>
@@ -1858,9 +1760,9 @@
 				</Scripts>
 			</Button>
 
-			<CheckButton name="RaidAlerterCheckLabel16_1" inherits="RaidAlerterCheckButtonTemplate">
+			<CheckButton name="RaidAlerterCheckLabel15_1" inherits="RaidAlerterCheckButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="RaidAlerterButtonLabel16_3" relativePoint="TOPLEFT">
+					<Anchor point="TOPLEFT" relativeTo="RaidAlerterButtonLabel15_3" relativePoint="TOPLEFT">
 						<Offset>
 							<AbsDimension x="85" y=""/>
 						</Offset>
@@ -1885,10 +1787,10 @@
 				</Scripts>
 			</CheckButton>
 
-			<Button name="RaidAlerterButtonLabel16_4" inherits="OptionsButtonTemplate" text="RAL_TEXT_XML_124">
+			<Button name="RaidAlerterButtonLabel15_4" inherits="OptionsButtonTemplate" text="RAL_TEXT_XML_124">
 				<Size><AbsDimension x="75" y="20"/></Size>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="RaidAlerterButtonLabel16_3" relativePoint="TOPLEFT">
+					<Anchor point="TOPLEFT" relativeTo="RaidAlerterButtonLabel15_3" relativePoint="TOPLEFT">
 						<Offset>
 							<AbsDimension x="212" y=""/>
 						</Offset>

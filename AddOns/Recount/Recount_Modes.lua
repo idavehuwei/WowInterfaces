@@ -567,7 +567,7 @@ end
 
 local MainWindowModes={
 {L["Damage Done"],DataModes.DamageReturner,TooltipFuncs.Damage,nil,{"DAMAGE",L["'s DPS"]},nil,"Damage"},
-{L["DPS"],DataModes.DPSReturner,TooltipFuncs.Damage,nil,{"DAMAGE",L["'s DPS"]},nil,"Damage"},
+{L["DPS"],DataModes.DPSReturner,TooltipFuncs.Damage,nil,{"DAMAGE","'s DPS"},nil,"Damage"},
 {L["Friendly Fire"],DataModes.FriendlyDamageReturner,TooltipFuncs.FDamage},
 {L["Damage Taken"],DataModes.DamageTakenReturner,TooltipFuncs.DamageTaken,nil,{"DAMAGETAKEN",L["'s DTPS"]},nil,"DamageTaken"},
 {L["Healing Done"],DataModes.HealingReturner,TooltipFuncs.Healing,nil,{"HEALING",L["'s HPS"]},nil,"Healing"},

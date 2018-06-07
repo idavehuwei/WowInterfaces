@@ -2,7 +2,7 @@
     <!--
     This file is part of Decursive.
     
-    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
+    Decursive (v 2.5.1-12-gb39554a) add-on for World of Warcraft UI
     Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/to/decursive.php )
 
     Starting from 2009-10-31 and until said otherwise by its author, Decursive
@@ -20,28 +20,25 @@
     -->
     <Script>
 
--- big ugly scary fatal error message display function {{{
-if not DcrFatalError then
--- the beautiful error popup : {{{ -
-StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
-    text = "|cFFFF0000Decursive Error:|r\n%s",
-    button1 = "OK",
-    OnAccept = function()
+        local T = DecursiveRootTable or {};
+
+        -- big ugly scary fatal error message display function {{{
+        if not T._FatalError then
+        -- the beautiful error popup : {{{ -
+        StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
+        text = "|cFFFF0000Decursive Error:|r\n%s",
+        button1 = "OK",
+        OnAccept = function()
         return false;
-    end,
-    timeout = 0,
-    whileDead = 1,
-    hideOnEscape = 1,
-    showAlert = 1,
-    }; -- }}}
-DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
-end
--- }}}
-        if not DcrLoadedFiles or not DcrLoadedFiles["Dcr_lists.lua"] then
-            if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (Dcr_lists.lua not loaded)"); end;
-            DcrCorrupted = true;
-            return;
+        end,
+        timeout = 0,
+        whileDead = 1,
+        hideOnEscape = 1,
+        showAlert = 1,
+        }; -- }}}
+        T._FatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
         end
+        -- }}}
 
         -- Dcr:SetDateAndRevision("$Date: 2008-08-12 04:50:10 +0200 (mar., 12 août 2008) $", "$Revision: 80230 $");
     </Script>
@@ -65,14 +62,14 @@ end
 
         <Scripts>
             <OnLoad>
-                this:RegisterForClicks('LeftButtonUp', 'RightButtonUp', 'MiddleButtonUp');
+                self:RegisterForClicks('LeftButtonUp', 'RightButtonUp', 'MiddleButtonUp');
             </OnLoad>
             <OnClick>
-                this:GetParent():EntryOnclick();
+                self:GetParent():EntryOnclick(self);
 
             </OnClick>
             <OnEnter>
-                Dcr:DisplayTooltip(Dcr.L["LIST_ENTRY_ACTIONS"], this:GetParent());
+                Dcr:DisplayTooltip(Dcr.L["LIST_ENTRY_ACTIONS"], self:GetParent());
             </OnEnter>
             <OnLeave>
                 DcrDisplay_Tooltip:Hide();
@@ -107,21 +104,21 @@ end
 
         <Scripts>
             <OnEnter>
-                Dcr:DisplayTooltip(this.ListTitle, this);
+                Dcr:DisplayTooltip(self.ListTitle, self);
             </OnEnter>
             <OnLeave>
                 DcrDisplay_Tooltip:Hide();
             </OnLeave>
             <OnLoad>
-                if DcrCorrupted then return end
-                Dcr.ListFrameTemplate_OnLoad();
+                if DecursiveInstallCorrupted then return end
+                Dcr.ListFrameTemplate_OnLoad(self);
             </OnLoad>
             <OnShow>
-                this.UpdateYourself = true;
+                self.UpdateYourself = true;
             </OnShow>
 
             <OnUpdate>
-                this.OnUpdate();
+                self.OnUpdate(self);
             </OnUpdate>
         </Scripts>
 
@@ -155,13 +152,13 @@ end
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        this:SetText(this:GetParent().ClearButtonText);
+                        self:SetText(self:GetParent().ClearButtonText);
                     </OnShow>
                     <OnClick>
-                        this:GetParent().ClearFunction();
+                        self:GetParent().ClearFunction();
                     </OnClick>
                     <OnEnter>
-                        Dcr:DisplayTooltip(this:GetParent().ClearButtonTip, this);
+                        Dcr:DisplayTooltip(self:GetParent().ClearButtonTip, self);
                     </OnEnter>
                     <OnLeave>
                         DcrDisplay_Tooltip:Hide();
@@ -178,10 +175,10 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        this:GetParent():Hide();
+                        self:GetParent():Hide();
                     </OnClick>
                     <OnEnter>
-                        Dcr:DisplayTooltip(this:GetParent().CloseButtonTip, this);
+                        Dcr:DisplayTooltip(self:GetParent().CloseButtonTip, self);
                     </OnEnter>
                     <OnLeave>
                         DcrDisplay_Tooltip:Hide();
@@ -199,16 +196,16 @@ end
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this:SetText(Dcr.L["POPULATE"]);
+                        if DecursiveInstallCorrupted then return end
+                        self:SetText(Dcr.L["POPULATE"]);
                     </OnLoad>
                     <OnClick>
-                        DecursivePopulateListFrame.addFunction = this:GetParent().PopulateAddFunction;
-                        DecursivePopulateListFrameText:SetText(this:GetParent().PopulateFrameTitle);
+                        DecursivePopulateListFrame.addFunction = self:GetParent().PopulateAddFunction;
+                        DecursivePopulateListFrameText:SetText(self:GetParent().PopulateFrameTitle);
                         DecursivePopulateListFrame:Show();
                     </OnClick>
                     <OnEnter>
-                        Dcr:DisplayTooltip(Dcr.L["POPULATE_LIST"], this);
+                        Dcr:DisplayTooltip(Dcr.L["POPULATE_LIST"], self);
                     </OnEnter>
                     <OnLeave>
                         DcrDisplay_Tooltip:Hide();
@@ -225,11 +222,11 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        if (this:GetParent():AddTargetFunc()) then
+                        if (self:GetParent():AddTargetFunc()) then
 
                         -- put the scroll bar at the bottom
 
-                        local Slider = this:GetParent().ScrollBar;
+                        local Slider = self:GetParent().ScrollBar;
 
                         local Scrollmin, scrollmax = Slider:GetMinMaxValues();
 
@@ -240,7 +237,7 @@ end
 
                     </OnClick>
                     <OnEnter>
-                        Dcr:DisplayTooltip(Dcr.L["BINDING_NAME_DCRPRADD"], this);
+                        Dcr:DisplayTooltip(Dcr.L["BINDING_NAME_DCRPRADD"], self);
                     </OnEnter>
                     <OnLeave>
                         DcrDisplay_Tooltip:Hide();
@@ -271,11 +268,11 @@ end
                         FauxScrollFrame_OnVerticalScroll(self, offset, 16, self:GetParent().ScrollUpdateFunc);
                     </OnVerticalScroll>
                     <OnShow>
-                        this.UpdateYourself = true;
-                        this:GetParent().ScrollUpdateFunc()
+                        self.UpdateYourself = true;
+                        self:GetParent().ScrollUpdateFunc(self)
                     </OnShow>
                     <OnMouseWheel>
-                        Dcr:ListFrameScrollFrameTemplate_OnMouseWheel(arg1);
+                        Dcr:ListFrameScrollFrameTemplate_OnMouseWheel(self, delta);
                     </OnMouseWheel>
                 </Scripts>
             </ScrollFrame>
@@ -346,28 +343,28 @@ end
 
         <Scripts>
             <OnLoad>
-                if DcrCorrupted then return end
-                Dcr.ListFrameTemplate_OnLoad();
+                if DecursiveInstallCorrupted then return end
+                Dcr.ListFrameTemplate_OnLoad(self);
 
-                this.ScrollUpdateFunc = Dcr.PrioSkipList_ScrollFrame_Update;
+                self.ScrollUpdateFunc = Dcr.PrioSkipList_ScrollFrame_Update;
 
-                this.Priority = true;
-                this.ListTitle = Dcr.L["PRIORITY_LIST"];
-                getglobal(this:GetName().."Text"):SetText(Dcr.L["STR_DCR_PRIO"]);
+                self.Priority = true;
+                self.ListTitle = Dcr.L["PRIORITY_LIST"];
+                _G[self:GetName().."Text"]:SetText(Dcr.L["STR_DCR_PRIO"]);
 
-                this.OnUpdate = Dcr.PrioSkipListFrame_OnUpdate;
+                self.OnUpdate = Dcr.PrioSkipListFrame_OnUpdate;
 
-                this.ClearButtonText = Dcr.L["CLEAR_PRIO"];
-                this.ClearButtonTip = Dcr.L["BINDING_NAME_DCRPRCLEAR"];
-                this.ClearFunction = Dcr.ClearPriorityList;
+                self.ClearButtonText = Dcr.L["CLEAR_PRIO"];
+                self.ClearButtonTip = Dcr.L["BINDING_NAME_DCRPRCLEAR"];
+                self.ClearFunction = Dcr.ClearPriorityList;
 
-                this.CloseButtonTip = Dcr.L["BINDING_NAME_DCRPRSHOW"];
+                self.CloseButtonTip = Dcr.L["BINDING_NAME_DCRPRSHOW"];
 
-                this.PopulateAddFunction = Dcr.AddUnitToPriorityList;
-                this.PopulateFrameTitle = Dcr.L["PRIORITY_LIST"];
+                self.PopulateAddFunction = Dcr.AddUnitToPriorityList;
+                self.PopulateFrameTitle = Dcr.L["PRIORITY_LIST"];
 
-                this.AddTargetFunc = Dcr.AddTargetToPriorityList;
-                this.EntryOnclick = Dcr.PrioSkipListEntryTemplate_OnClick;
+                self.AddTargetFunc = Dcr.AddTargetToPriorityList;
+                self.EntryOnclick = Dcr.PrioSkipListEntryTemplate_OnClick;
 
 
             </OnLoad>
@@ -380,29 +377,29 @@ end
 
         <Scripts>
             <OnLoad>
-                if DcrCorrupted then return end
-                Dcr.ListFrameTemplate_OnLoad();
+                if DecursiveInstallCorrupted then return end
+                Dcr.ListFrameTemplate_OnLoad(self);
 
-                this.ScrollUpdateFunc = Dcr.PrioSkipList_ScrollFrame_Update;
+                self.ScrollUpdateFunc = Dcr.PrioSkipList_ScrollFrame_Update;
 
-                this.Priority = false;
-                this.ListTitle = Dcr.L["SKIP_LIST_STR"];
+                self.Priority = false;
+                self.ListTitle = Dcr.L["SKIP_LIST_STR"];
 
-                getglobal(this:GetName().."Text"):SetText(Dcr.L["STR_DCR_SKIP"]);
+                _G[self:GetName().."Text"]:SetText(Dcr.L["STR_DCR_SKIP"]);
 
-                this.OnUpdate = Dcr.PrioSkipListFrame_OnUpdate;
+                self.OnUpdate = Dcr.PrioSkipListFrame_OnUpdate;
 
-                this.ClearButtonText = Dcr.L["CLEAR_SKIP"];
-                this.ClearButtonTip = Dcr.L["BINDING_NAME_DCRSKCLEAR"];
-                this.ClearFunction = Dcr.ClearSkipList;
+                self.ClearButtonText = Dcr.L["CLEAR_SKIP"];
+                self.ClearButtonTip = Dcr.L["BINDING_NAME_DCRSKCLEAR"];
+                self.ClearFunction = Dcr.ClearSkipList;
 
-                this.CloseButtonTip = Dcr.L["BINDING_NAME_DCRSKSHOW"];
+                self.CloseButtonTip = Dcr.L["BINDING_NAME_DCRSKSHOW"];
 
-                this.PopulateAddFunction = Dcr.AddUnitToSkipList;
-                this.PopulateFrameTitle = Dcr.L["SKIP_LIST_STR"];
+                self.PopulateAddFunction = Dcr.AddUnitToSkipList;
+                self.PopulateFrameTitle = Dcr.L["SKIP_LIST_STR"];
 
-                this.AddTargetFunc = Dcr.AddTargetToSkipList;
-                this.EntryOnclick = Dcr.PrioSkipListEntryTemplate_OnClick;
+                self.AddTargetFunc = Dcr.AddTargetToSkipList;
+                self.EntryOnclick = Dcr.PrioSkipListEntryTemplate_OnClick;
 
 
             </OnLoad>
@@ -437,7 +434,7 @@ end
 
         <Scripts>
             <OnShow>
-                getglobal(this:GetName().."Title"):SetText(Dcr.L["STR_QUICK_POP"]);
+                _G[self:GetName().."Title"]:SetText(Dcr.L["STR_QUICK_POP"]);
             </OnShow>
         </Scripts>
         <Layers>
@@ -477,12 +474,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        this.GroupNumber = 1;
-                        Dcr:PopulateButtonPress();
+                        self.GroupNumber = 1;
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this:SetText(Dcr.L["STR_GROUP"] .. '1');
+                        if DecursiveInstallCorrupted then return end
+                        self:SetText(Dcr.L["STR_GROUP"] .. '1');
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -500,12 +497,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        this.GroupNumber = 2;
-                        Dcr:PopulateButtonPress();
+                        self.GroupNumber = 2;
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this:SetText(Dcr.L["STR_GROUP"] .. '2');
+                        if DecursiveInstallCorrupted then return end
+                        self:SetText(Dcr.L["STR_GROUP"] .. '2');
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -523,12 +520,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        this.GroupNumber = 3;
-                        Dcr:PopulateButtonPress();
+                        self.GroupNumber = 3;
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this:SetText(Dcr.L["STR_GROUP"] .. '3');
+                        if DecursiveInstallCorrupted then return end
+                        self:SetText(Dcr.L["STR_GROUP"] .. '3');
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -546,12 +543,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        this.GroupNumber = 4;
-                        Dcr:PopulateButtonPress();
+                        self.GroupNumber = 4;
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this:SetText(Dcr.L["STR_GROUP"] .. '4');
+                        if DecursiveInstallCorrupted then return end
+                        self:SetText(Dcr.L["STR_GROUP"] .. '4');
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -569,12 +566,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        this.GroupNumber = 5;
-                        Dcr:PopulateButtonPress();
+                        self.GroupNumber = 5;
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this:SetText(Dcr.L["STR_GROUP"] .. '5');
+                        if DecursiveInstallCorrupted then return end
+                        self:SetText(Dcr.L["STR_GROUP"] .. '5');
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -592,12 +589,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        this.GroupNumber = 6;
-                        Dcr:PopulateButtonPress();
+                        self.GroupNumber = 6;
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this:SetText(Dcr.L["STR_GROUP"] .. '6');
+                        if DecursiveInstallCorrupted then return end
+                        self:SetText(Dcr.L["STR_GROUP"] .. '6');
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -615,12 +612,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        this.GroupNumber = 7;
-                        Dcr:PopulateButtonPress();
+                        self.GroupNumber = 7;
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this:SetText(Dcr.L["STR_GROUP"] .. '7');
+                        if DecursiveInstallCorrupted then return end
+                        self:SetText(Dcr.L["STR_GROUP"] .. '7');
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -638,12 +635,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        this.GroupNumber = 8;
-                        Dcr:PopulateButtonPress();
+                        self.GroupNumber = 8;
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this:SetText(Dcr.L["STR_GROUP"] .. '8');
+                        if DecursiveInstallCorrupted then return end
+                        self:SetText(Dcr.L["STR_GROUP"] .. '8');
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -661,12 +658,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        Dcr:PopulateButtonPress();
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this.ClassType = DcrC.CLASS_WARRIOR;
-                        this:SetText(Dcr:ColorText(Dcr.LC[this.ClassType], "FF"..Dcr:GetClassHexColor(this.ClassType)));
+                        if DecursiveInstallCorrupted then return end
+                        self.ClassType = DcrC.CLASS_WARRIOR;
+                        self:SetText(Dcr:ColorText(Dcr.LC[self.ClassType], "FF"..Dcr:GetClassHexColor(self.ClassType)));
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -684,12 +681,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        Dcr:PopulateButtonPress();
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this.ClassType = DcrC.CLASS_PRIEST;
-                        this:SetText(Dcr:ColorText(Dcr.LC[this.ClassType], "FF"..Dcr:GetClassHexColor(this.ClassType)));
+                        if DecursiveInstallCorrupted then return end
+                        self.ClassType = DcrC.CLASS_PRIEST;
+                        self:SetText(Dcr:ColorText(Dcr.LC[self.ClassType], "FF"..Dcr:GetClassHexColor(self.ClassType)));
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -707,12 +704,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        Dcr:PopulateButtonPress();
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this.ClassType = DcrC.CLASS_MAGE;
-                        this:SetText(Dcr:ColorText(Dcr.LC[this.ClassType], "FF"..Dcr:GetClassHexColor(this.ClassType)));
+                        if DecursiveInstallCorrupted then return end
+                        self.ClassType = DcrC.CLASS_MAGE;
+                        self:SetText(Dcr:ColorText(Dcr.LC[self.ClassType], "FF"..Dcr:GetClassHexColor(self.ClassType)));
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -730,12 +727,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        Dcr:PopulateButtonPress();
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this.ClassType = DcrC.CLASS_WARLOCK;
-                        this:SetText(Dcr:ColorText(Dcr.LC[this.ClassType], "FF"..Dcr:GetClassHexColor(this.ClassType)));
+                        if DecursiveInstallCorrupted then return end
+                        self.ClassType = DcrC.CLASS_WARLOCK;
+                        self:SetText(Dcr:ColorText(Dcr.LC[self.ClassType], "FF"..Dcr:GetClassHexColor(self.ClassType)));
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -753,12 +750,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        Dcr:PopulateButtonPress();
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this.ClassType = DcrC.CLASS_HUNTER;
-                        this:SetText(Dcr:ColorText(Dcr.LC[this.ClassType], "FF"..Dcr:GetClassHexColor(this.ClassType)));
+                        if DecursiveInstallCorrupted then return end
+                        self.ClassType = DcrC.CLASS_HUNTER;
+                        self:SetText(Dcr:ColorText(Dcr.LC[self.ClassType], "FF"..Dcr:GetClassHexColor(self.ClassType)));
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -776,12 +773,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        Dcr:PopulateButtonPress();
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this.ClassType = DcrC.CLASS_ROGUE;
-                        this:SetText(Dcr:ColorText(Dcr.LC[this.ClassType], "FF"..Dcr:GetClassHexColor(this.ClassType)));
+                        if DecursiveInstallCorrupted then return end
+                        self.ClassType = DcrC.CLASS_ROGUE;
+                        self:SetText(Dcr:ColorText(Dcr.LC[self.ClassType], "FF"..Dcr:GetClassHexColor(self.ClassType)));
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -799,12 +796,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        Dcr:PopulateButtonPress();
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this.ClassType = DcrC.CLASS_DRUID;
-                        this:SetText(Dcr:ColorText(Dcr.LC[this.ClassType], "FF"..Dcr:GetClassHexColor(this.ClassType)));
+                        if DecursiveInstallCorrupted then return end
+                        self.ClassType = DcrC.CLASS_DRUID;
+                        self:SetText(Dcr:ColorText(Dcr.LC[self.ClassType], "FF"..Dcr:GetClassHexColor(self.ClassType)));
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -822,12 +819,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        Dcr:PopulateButtonPress();
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this.ClassType = DcrC.CLASS_SHAMAN;
-                        this:SetText(Dcr:ColorText(Dcr.LC[this.ClassType], "FF"..Dcr:GetClassHexColor(this.ClassType)));
+                        if DecursiveInstallCorrupted then return end
+                        self.ClassType = DcrC.CLASS_SHAMAN;
+                        self:SetText(Dcr:ColorText(Dcr.LC[self.ClassType], "FF"..Dcr:GetClassHexColor(self.ClassType)));
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -845,12 +842,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        Dcr:PopulateButtonPress();
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this.ClassType = DcrC.CLASS_PALADIN;
-                        this:SetText(Dcr:ColorText(Dcr.LC[this.ClassType], "FF"..Dcr:GetClassHexColor(this.ClassType)));
+                        if DecursiveInstallCorrupted then return end
+                        self.ClassType = DcrC.CLASS_PALADIN;
+                        self:SetText(Dcr:ColorText(Dcr.LC[self.ClassType], "FF"..Dcr:GetClassHexColor(self.ClassType)));
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -867,12 +864,12 @@ end
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        Dcr:PopulateButtonPress();
+                        Dcr:PopulateButtonPress(self);
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this.ClassType = DcrC.CLASS_DEATHKNIGHT;
-                        this:SetText(Dcr:ColorText(Dcr.LC[this.ClassType], "FF"..Dcr:GetClassHexColor(this.ClassType)));
+                        if DecursiveInstallCorrupted then return end
+                        self.ClassType = DcrC.CLASS_DEATHKNIGHT;
+                        self:SetText(Dcr:ColorText(Dcr.LC[self.ClassType], "FF"..Dcr:GetClassHexColor(self.ClassType)));
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -893,8 +890,8 @@ end
                         DecursivePopulateListFrame:Hide();
                     </OnClick>
                     <OnLoad>
-                        if DcrCorrupted then return end
-                        this:SetText(Dcr.L["STR_CLOSE"]);
+                        if DecursiveInstallCorrupted then return end
+                        self:SetText(Dcr.L["STR_CLOSE"]);
                     </OnLoad>
                 </Scripts>
             </Button>
@@ -904,6 +901,8 @@ end
 
     
     <Script>
-        DcrLoadedFiles["Dcr_lists.xml"] = "2.4.5-3-g6a02387";
+        local T = DecursiveRootTable or {};
+
+        T._LoadedFiles["Dcr_lists.xml"] = "2.5.1-12-gb39554a";
     </Script>
 </Ui>

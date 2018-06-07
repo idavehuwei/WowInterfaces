@@ -12,8 +12,16 @@
 	<Script file="WishList.lua"/>
     <Script file="Search.lua"/>
     
-	
-    <GameTooltip name="AtlasLootTooltip" inherits="GameTooltipTemplate" parent="UIParent" hidden="true"/>
+	<GameTooltip name="AtlasLootCompareTooltip1" clampedToScreen="true" frameStrata="TOOLTIP" hidden="true" parent="WorldMapFrame" inherits="ShoppingTooltipTemplate"/>
+	<GameTooltip name="AtlasLootCompareTooltip2" clampedToScreen="true" frameStrata="TOOLTIP" hidden="true" parent="WorldMapFrame" inherits="ShoppingTooltipTemplate"/>
+	<GameTooltip name="AtlasLootCompareTooltip3" clampedToScreen="true" frameStrata="TOOLTIP" hidden="true" parent="WorldMapFrame" inherits="ShoppingTooltipTemplate"/>		
+    <GameTooltip name="AtlasLootTooltip" inherits="GameTooltipTemplate" parent="UIParent" hidden="true">
+		<Scripts>
+			<OnLoad>
+				self.shoppingTooltips = { AtlasLootCompareTooltip1, AtlasLootCompareTooltip2, AtlasLootCompareTooltip3 };
+			</OnLoad>
+		</Scripts>
+	</GameTooltip>
     
     <Button name="AtlasLootBossLineTemplate" virtual="true" hidden="true">
 		<Size>
@@ -231,7 +239,7 @@
 	<Button name="AtlasLootItem_Template" inherits="AtlasLootItem_ParentTemplate" virtual="true" hidden="false">
 		<Scripts>
             <OnLoad>
-                this:RegisterForClicks("LeftButtonDown", "RightButtonDown");
+                self:RegisterForClicks("LeftButtonDown", "RightButtonDown");
             </OnLoad>
 			<OnEnter>
 				AtlasLootItem_OnEnter();
@@ -243,7 +251,7 @@
 				AtlasLootItem_OnClick(arg1);
 			</OnClick>
             <OnShow>
-				this:SetFrameLevel( (this:GetParent()):GetFrameLevel() + 1 );
+				self:SetFrameLevel( (this:GetParent()):GetFrameLevel() + 1 );
 			</OnShow>
 		</Scripts>
 	</Button>
@@ -284,7 +292,7 @@
                         this:SetFrameLevel( (this:GetParent()):GetFrameLevel() + 1 );
                         this:SetText(AL["Toggle AL Panel"]);
                         this:SetWidth(this:GetTextWidth()+20);
-                        getglobal("AtlasLootInfo_Text2"):SetText(AL["Click boss name to view loot."]);
+                        dwGetglobal("AtlasLootInfo_Text2"):SetText(AL["Click boss name to view loot."]);
                     </OnShow>
                     <OnClick>
                         if AtlasLoot.db.profile.HidePanel then
@@ -599,7 +607,7 @@
 	                </OnShow>
 					<OnLoad>
                         local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-						getglobal(this:GetName().."Text"):SetText(AL["Heroic Mode"]);
+						dwGetglobal(this:GetName().."Text"):SetText(AL["Heroic Mode"]);
 					</OnLoad>
 					<OnClick>
 						AtlasLoot_HeroicModeToggle();
@@ -712,7 +720,7 @@
 	                </OnShow>
 					<OnLoad>
                         local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-						getglobal(this:GetName().."Text"):SetText(AL["Filter"]);
+						dwGetglobal(this:GetName().."Text"):SetText(AL["Filter"]);
 					</OnLoad>
 					<OnClick>
 						AtlasLoot_FilterEnableButton();
@@ -777,8 +785,8 @@
 			<OnLoad>
 				AtlasLoot_OnLoad();
                 local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-                getglobal("AtlasLootItemsFrame_BACK"):SetText(AL["Back"]);
-                getglobal("AtlasLoot_QuickLooks"):SetText(AL["Add to QuickLooks:"]);
+                dwGetglobal("AtlasLootItemsFrame_BACK"):SetText(AL["Back"]);
+                dwGetglobal("AtlasLoot_QuickLooks"):SetText(AL["Add to QuickLooks:"]);
 			</OnLoad>
 			<OnEvent>
 				AtlasLoot_OnEvent(event, arg1, arg2);
@@ -808,7 +816,7 @@
         <Scripts>
             <OnLoad>
 				local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-				getglobal("AtlasLootHelpFrame_Title"):SetText(AL["AtlasLoot Help"]);
+				dwGetglobal("AtlasLootHelpFrame_Title"):SetText(AL["AtlasLoot Help"]);
 			</OnLoad>
             <OnShow>
                 AtlasLoot_DisplayHelp();
@@ -835,7 +843,7 @@
 				<Scripts>
 					<OnLoad>
                         local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-						getglobal(this:GetName().."Text"):SetText(AL["Default Tooltips"]);
+						dwGetglobal(this:GetName().."Text"):SetText(AL["Default Tooltips"]);
 					</OnLoad>
 					<OnClick>
 						AtlasLootOptions_DefaultTTToggle();
@@ -853,7 +861,7 @@
 				<Scripts>
 					<OnLoad>
                         local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-						getglobal(this:GetName().."Text"):SetText(AL["Lootlink Tooltips"]);
+						dwGetglobal(this:GetName().."Text"):SetText(AL["Lootlink Tooltips"]);
 					</OnLoad>
 					<OnClick>
 						AtlasLootOptions_LootlinkTTToggle();
@@ -871,7 +879,7 @@
 				<Scripts>
 					<OnLoad>
                         local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-						getglobal(this:GetName().."Text"):SetText(AL["ItemSync Tooltips"]);
+						dwGetglobal(this:GetName().."Text"):SetText(AL["ItemSync Tooltips"]);
 					</OnLoad>
 					<OnClick>
 						AtlasLootOptions_ItemSyncTTToggle();
@@ -889,7 +897,7 @@
 				<Scripts>
 					<OnLoad>
                         local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-						getglobal(this:GetName().."Text"):SetText(AL["Make Loot Table Opaque"]);
+						dwGetglobal(this:GetName().."Text"):SetText(AL["Make Loot Table Opaque"]);
 					</OnLoad>
 					<OnClick>
 						AtlasLootOptions_OpaqueToggle();
@@ -907,7 +915,7 @@
 				<Scripts>
 					<OnLoad>
                         local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-						getglobal(this:GetName().."Text"):SetText(AL["Show itemIDs at all times"]);
+						dwGetglobal(this:GetName().."Text"):SetText(AL["Show itemIDs at all times"]);
 					</OnLoad>
 					<OnClick>
 						AtlasLootOptions_ItemIDToggle();
@@ -925,7 +933,7 @@
 				<Scripts>
 					<OnLoad>
                         local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-						getglobal(this:GetName().."Text"):SetText(AL["Load Loot Modules at Startup"]);
+						dwGetglobal(this:GetName().."Text"):SetText(AL["Load Loot Modules at Startup"]);
 					</OnLoad>
 					<OnClick>
 						AtlasLootOptions_LoDStartup();
@@ -943,7 +951,7 @@
 				<Scripts>
 					<OnLoad>
                         local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-						getglobal(this:GetName().."Text"):SetText(AL["Safe Chat Links"]);
+						dwGetglobal(this:GetName().."Text"):SetText(AL["Safe Chat Links"]);
 					</OnLoad>
 					<OnClick>
 						AtlasLootOptions_SafeLinksToggle();
@@ -961,7 +969,7 @@
 				<Scripts>
 					<OnLoad>
                         local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-						getglobal(this:GetName().."Text"):SetText(AL["Show Comparison Tooltips"]);
+						dwGetglobal(this:GetName().."Text"):SetText(AL["Show Comparison Tooltips"]);
 					</OnLoad>
 					<OnClick>
 						if(AtlasLoot.db.profile.EquipCompare) then
@@ -989,7 +997,7 @@
 				<Scripts>
 					<OnLoad>
                         local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-						getglobal(this:GetName().."Text"):SetText(AL["Suppress Item Query Text"]);
+						dwGetglobal(this:GetName().."Text"):SetText(AL["Suppress Item Query Text"]);
 					</OnLoad>
 					<OnClick>
 						AtlasLootOptions_ItemSpam();
@@ -1007,7 +1015,7 @@
 				<Scripts>
 					<OnLoad>
                         local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-						getglobal(this:GetName().."Text"):SetText(AL["Hide AtlasLoot Panel"]);
+						dwGetglobal(this:GetName().."Text"):SetText(AL["Hide AtlasLoot Panel"]);
 					</OnLoad>
 					<OnClick>
 						if AtlasLoot.db.profile.HidePanel then
@@ -1233,7 +1241,7 @@
         <Scripts>
             <OnLoad>
 				local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-				getglobal("AtlasLootOptionsFrame_FuBarNotice"):SetText(AL["The Minimap Button is generated by the FuBar Plugin."].."\n"..AL["This is automatic, you do not need FuBar installed."]);
+				dwGetglobal("AtlasLootOptionsFrame_FuBarNotice"):SetText(AL["The Minimap Button is generated by the FuBar Plugin."].."\n"..AL["This is automatic, you do not need FuBar installed."]);
 			</OnLoad>
             <OnShow>
                 AtlasLoot_OptionsOnShow();
@@ -1470,9 +1478,9 @@
                     </OnLeave>
 					<OnClick>
                         if AtlasLoot_IsLootTableAvailable(AtlasLootCharDB["QuickLooks"][1][1]) then
-                            if getglobal("AtlasLootPanel"):GetParent() == AtlasFrame then
+                            if dwGetglobal("AtlasLootPanel"):GetParent() == AtlasFrame then
                                 AtlasLoot_ShowItemsFrame(AtlasLootCharDB["QuickLooks"][1][1], AtlasLootCharDB["QuickLooks"][1][2], AtlasLootCharDB["QuickLooks"][1][3], nil);
-                            elseif getglobal("AtlasLootPanel"):GetParent() == AlphaMapAlphaMapFrame then
+                            elseif dwGetglobal("AtlasLootPanel"):GetParent() == AlphaMapAlphaMapFrame then
                                 pFrame = { "TOPLEFT", AlphaMapAlphaMapFrame, "TOPLEFT", 0, 0 };
                                 AtlasLoot_ShowItemsFrame(AtlasLootCharDB["QuickLooks"][1][1], AtlasLootCharDB["QuickLooks"][1][2], AtlasLootCharDB["QuickLooks"][1][3], pFrame);
                             else
@@ -1514,9 +1522,9 @@
                     </OnLeave>
 					<OnClick>
                         if AtlasLoot_IsLootTableAvailable(AtlasLootCharDB["QuickLooks"][2][1]) then
-                            if getglobal("AtlasLootPanel"):GetParent() == AtlasFrame then
+                            if dwGetglobal("AtlasLootPanel"):GetParent() == AtlasFrame then
                                 AtlasLoot_ShowItemsFrame(AtlasLootCharDB["QuickLooks"][2][1], AtlasLootCharDB["QuickLooks"][2][2], AtlasLootCharDB["QuickLooks"][2][3], nil);
-                            elseif getglobal("AtlasLootPanel"):GetParent() == AlphaMapAlphaMapFrame then
+                            elseif dwGetglobal("AtlasLootPanel"):GetParent() == AlphaMapAlphaMapFrame then
                                 pFrame = { "TOPLEFT", AlphaMapAlphaMapFrame, "TOPLEFT", 0, 0 };
                                 AtlasLoot_ShowItemsFrame(AtlasLootCharDB["QuickLooks"][2][1], AtlasLootCharDB["QuickLooks"][2][2], AtlasLootCharDB["QuickLooks"][2][3], pFrame);
                             else
@@ -1558,9 +1566,9 @@
                     </OnLeave>
 					<OnClick>
                         if AtlasLoot_IsLootTableAvailable(AtlasLootCharDB["QuickLooks"][3][1]) then
-                            if getglobal("AtlasLootPanel"):GetParent() == AtlasFrame then
+                            if dwGetglobal("AtlasLootPanel"):GetParent() == AtlasFrame then
                                 AtlasLoot_ShowItemsFrame(AtlasLootCharDB["QuickLooks"][3][1], AtlasLootCharDB["QuickLooks"][3][2], AtlasLootCharDB["QuickLooks"][3][3], nil);
-                            elseif getglobal("AtlasLootPanel"):GetParent() == AlphaMapAlphaMapFrame then
+                            elseif dwGetglobal("AtlasLootPanel"):GetParent() == AlphaMapAlphaMapFrame then
                                 pFrame = { "TOPLEFT", AlphaMapAlphaMapFrame, "TOPLEFT", 0, 0 };
                                 AtlasLoot_ShowItemsFrame(AtlasLootCharDB["QuickLooks"][3][1], AtlasLootCharDB["QuickLooks"][3][2], AtlasLootCharDB["QuickLooks"][3][3], pFrame);
                             else
@@ -1602,9 +1610,9 @@
                     </OnLeave>
 					<OnClick>
                         if AtlasLoot_IsLootTableAvailable(AtlasLootCharDB["QuickLooks"][4][1]) then
-                            if getglobal("AtlasLootPanel"):GetParent() == AtlasFrame then
+                            if dwGetglobal("AtlasLootPanel"):GetParent() == AtlasFrame then
                                 AtlasLoot_ShowItemsFrame(AtlasLootCharDB["QuickLooks"][4][1], AtlasLootCharDB["QuickLooks"][4][2], AtlasLootCharDB["QuickLooks"][4][3], nil);
-                            elseif getglobal("AtlasLootPanel"):GetParent() == AlphaMapAlphaMapFrame then
+                            elseif dwGetglobal("AtlasLootPanel"):GetParent() == AlphaMapAlphaMapFrame then
                                 pFrame = { "TOPLEFT", AlphaMapAlphaMapFrame, "TOPLEFT", 0, 0 };
                                 AtlasLoot_ShowItemsFrame(AtlasLootCharDB["QuickLooks"][4][1], AtlasLootCharDB["QuickLooks"][4][2], AtlasLootCharDB["QuickLooks"][4][3], pFrame);
                             else

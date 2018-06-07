@@ -1,0 +1,20 @@
+﻿## Interface: 30300
+## Title: GridCooldownText
+## Notes: Displays the remaining time on grid icon's cooldown animation.
+## Dependencies: Grid
+## Author: Whitetooth
+## X-eMail: hotdogee [at] gmail [dot] com
+## X-Credits: CooldownTimerText
+## X-Category: UnitFrame
+## X-Curse-Packaged-Version: r30
+## X-Curse-Project-Name: GridCooldownText
+## X-Curse-Project-ID: grid-cooldown-text
+## X-Curse-Repository-ID: wow/grid-cooldown-text/mainline
+
+GridCooldownText-enUS.lua
+GridCooldownText-deDE.lua
+GridCooldownText-koKR.lua
+GridCooldownText-zhTW.lua
+GridCooldownText-zhCN.lua
+
+GridCooldownText.lua

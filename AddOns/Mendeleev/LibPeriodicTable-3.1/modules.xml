@@ -1,0 +1,13 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Script file="LibPeriodicTable-3.1\LibPeriodicTable-3.1.lua"/>
+	
+	<Script file="LibPeriodicTable-3.1-Consumable\LibPeriodicTable-3.1-Consumable.lua"/>
+	<Script file="LibPeriodicTable-3.1-CurrencyItems\LibPeriodicTable-3.1-CurrencyItems.lua"/>
+	<Script file="LibPeriodicTable-3.1-GearSet\LibPeriodicTable-3.1-GearSet.lua"/>
+	<Script file="LibPeriodicTable-3.1-Misc\LibPeriodicTable-3.1-Misc.lua"/>
+	<Script file="LibPeriodicTable-3.1-Tradeskill\LibPeriodicTable-3.1-Tradeskill.lua"/>
+
+	<Script file="LibPeriodicTable-3.1-TradeskillResultMats\LibPeriodicTable-3.1-TradeskillResultMats.lua"/>
+	<Script file="LibPeriodicTable-3.1-TradeskillLevels\LibPeriodicTable-3.1-TradeskillLevels.lua"/>
+</Ui>

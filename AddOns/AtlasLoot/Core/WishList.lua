@@ -443,7 +443,7 @@ end
 
 --[[
 local RecursiveSearchZoneName(dataTable, zoneID):
-A recursive function iterate AtlasLoot_DewDropDown table for the zone name
+A recursive function iterate AtlasLoot_DewDropDown2 table for the zone name
 ]]
 local function RecursiveSearchZoneName(dataTable, zoneID)
 	if(dataTable[2] == zoneID) then
@@ -466,7 +466,7 @@ AtlasLoot_GetWishListSubheading(dataID):
 Iterating through dropdown data tables to search backward for zone name with specified dataID
 ]]
 function AtlasLoot_GetWishListSubheading(dataID)
-	if not AtlasLoot_DewDropDown or not AtlasLoot_DewDropDown_SubTables then return end
+	if not AtlasLoot_DewDropDown2 or not AtlasLoot_DewDropDown_SubTables then return end
 	local zoneID, ret
 	for subKey, subTable in pairs(AtlasLoot_DewDropDown_SubTables) do
 		for _, t in ipairs(subTable) do
@@ -478,7 +478,7 @@ function AtlasLoot_GetWishListSubheading(dataID)
 		if zoneID then break end
 	end
 	if zoneID then
-		return RecursiveSearchZoneName(AtlasLoot_DewDropDown, zoneID or dataID);
+		return RecursiveSearchZoneName(AtlasLoot_DewDropDown2, zoneID or dataID);
 	else
 		if AtlasLoot_TableNames[dataID] then
 			zoneID = AtlasLoot_TableNames[dataID][1]
@@ -1357,7 +1357,7 @@ function AtlasLoot_CreateWishlistOptions()
 		WishListMark:SetWidth(25)
 		WishListMark:SetHeight(25)
 		WishListMark:SetScript("OnShow", function()
-			getglobal(this:GetName().."Text"):SetText(AL["Mark items in loot tables"]);
+			dwGetglobal(this:GetName().."Text"):SetText(AL["Mark items in loot tables"]);
 			if AtlasLootWishList["Options"][playerName]["Mark"] then
 				this:SetChecked(1);
 			else
@@ -1383,7 +1383,7 @@ function AtlasLoot_CreateWishlistOptions()
 		WishListMarkOwn:SetWidth(25)
 		WishListMarkOwn:SetHeight(25)
 		WishListMarkOwn:SetScript("OnShow", function()
-			getglobal(this:GetName().."Text"):SetText(AL["Mark items from own Wishlist"]);
+			dwGetglobal(this:GetName().."Text"):SetText(AL["Mark items from own Wishlist"]);
 			if AtlasLootWishList["Options"][playerName]["markInTable"] == "own" then
 				this:SetChecked(1);
 			else
@@ -1405,7 +1405,7 @@ function AtlasLoot_CreateWishlistOptions()
 		WishListMarkAll:SetWidth(25)
 		WishListMarkAll:SetHeight(25)
 		WishListMarkAll:SetScript("OnShow", function()
-			getglobal(this:GetName().."Text"):SetText(AL["Mark items from all Wishlists"]);
+			dwGetglobal(this:GetName().."Text"):SetText(AL["Mark items from all Wishlists"]);
 			if AtlasLootWishList["Options"][playerName]["markInTable"] == "all" then
 				this:SetChecked(1);
 			else
@@ -1427,7 +1427,7 @@ function AtlasLoot_CreateWishlistOptions()
 		WishListShare:SetWidth(25)
 		WishListShare:SetHeight(25)
 		WishListShare:SetScript("OnShow", function()
-			getglobal(this:GetName().."Text"):SetText(AL["Enable Wishlist Sharing"]);
+			dwGetglobal(this:GetName().."Text"):SetText(AL["Enable Wishlist Sharing"]);
 			if AtlasLootWishList["Options"][playerName]["AllowShareWishlist"] then
 				this:SetChecked(1);
 			else
@@ -1449,7 +1449,7 @@ function AtlasLoot_CreateWishlistOptions()
 		WishListShareInCombat:SetWidth(25)
 		WishListShareInCombat:SetHeight(25)
 		WishListShareInCombat:SetScript("OnShow", function()
-			getglobal(this:GetName().."Text"):SetText(AL["Auto reject in combat"]);
+			dwGetglobal(this:GetName().."Text"):SetText(AL["Auto reject in combat"]);
 			if AtlasLootWishList["Options"][playerName]["AllowShareWishlistInCombat"] then
 				this:SetChecked(1);
 			else
@@ -1469,7 +1469,7 @@ function AtlasLoot_CreateWishlistOptions()
 		WishListAutoAdd:SetWidth(25)
 		WishListAutoAdd:SetHeight(25)
 		WishListAutoAdd:SetScript("OnShow", function()
-			getglobal(this:GetName().."Text"):SetText(AL["Always use default Wishlist"]);
+			dwGetglobal(this:GetName().."Text"):SetText(AL["Always use default Wishlist"]);
 			if AtlasLootWishList["Options"][playerName]["UseDefaultWishlist"] == true then
 				this:SetChecked(1);
 			else
@@ -1718,7 +1718,7 @@ StaticPopupDialogs["ATLASLOOT_SEND_WISHLIST"] = {
 		this:SetFrameStrata("TOOLTIP");
 	end,
 	OnAccept = function()
-		local name = getglobal(this:GetParent():GetName().."EditBox"):GetText()
+		local name = dwGetglobal(this:GetParent():GetName().."EditBox"):GetText()
 		if string.lower(name) == string.lower(playerName) then
 			DEFAULT_CHAT_FRAME:AddMessage(BLUE..AL["AtlasLoot"]..": "..RED..AL["You can't send Wishlists to yourself."]);
 			curtabname = ""

@@ -1,9 +1,0 @@
-## Interface: 30000
-## X-BigfootType: 1
-## X-BigfootDesc: 给动作条加上各种个性化的边框和皮肤。
-## Notes: LiteFlat skin for Button Facade.
-## Version: 3.0.2
-## X-Category: Action Bars
-## OptionalDeps: LibButtonFacade, ButtonFacade
-
-Skins.lua

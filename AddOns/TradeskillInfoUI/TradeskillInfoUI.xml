@@ -188,7 +188,7 @@
 		<!-- Window Title -->
 		<Layers>
 			<Layer level="BORDER">
-				<FontString name="TradeskillInfoFrameTitleText" inherits="GameFontNormal" text="Tradeskill Info">
+				<FontString name="TradeskillInfoFrameTitleText" inherits="GameFontNormal" text="TRADESKILL_INFO">
 					<Anchors>
 						<Anchor point="TOP" relativeTo="TradeskillInfoFrame" relativePoint="TOP">
 							<Offset>
@@ -357,7 +357,7 @@
 								</Anchors>
 								<Layers>
 									<Layer level="ARTWORK">
-										<FontString name="TradeskillInfoSkillIconCount" inherits="NumberFontNormal" justifyH="RIGHT" hidden="false">
+										<FontString name="TradeskillInfoSkillIconCount" inherits="dwNumberFontNormal" justifyH="RIGHT" hidden="false">
 											<Anchors>
 												<Anchor point="BOTTOMRIGHT">
 													<Offset>
@@ -500,7 +500,7 @@
 				</ScrollChild>
 			</ScrollFrame>
 
-			<Button name="TradeskillInfoSearchButton" inherits="TradeskillInfoButtonTemplate" text="Search">
+			<Button name="TradeskillInfoSearchButton" inherits="TradeskillInfoButtonTemplate" text="TRADESKILLINFO_SEARCH">
 				<Size>
 					<AbsDimension x="80" y="22"/>
 				</Size>
@@ -519,7 +519,7 @@
 				</Scripts>
 			</Button>
 
-			<Button name="TradeskillInfoResetButton" inherits="TradeskillInfoButtonTemplate" text="Reset">
+			<Button name="TradeskillInfoResetButton" inherits="TradeskillInfoButtonTemplate" text="TRADESKILLINFO_RESET">
 				<Size>
 					<AbsDimension x="80" y="22"/>
 				</Size>
@@ -708,7 +708,7 @@
 						</Anchors>
 						<Scripts>
 							<OnLoad>
-								getglobal(self:GetName()):SetText(ALL);
+								dwGetglobal(self:GetName()):SetText(ALL);
 							</OnLoad>
 							<OnClick>
 								TradeskillInfoUI:CollapseAllButton_OnClick(self);

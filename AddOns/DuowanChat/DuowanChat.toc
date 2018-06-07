@@ -1,0 +1,24 @@
+﻿## Interface: 30300
+## Title: DuowanChat
+## Title-zhCN: [多玩] 多玩聊天
+## Title-zhTW: [多玩] 多玩聊天
+## Notes: A chat enhance addon
+## Notes-zhTW: 研究178的聊天增強插件
+## Notes-zhCN: 研究178的聊天增强插件
+## Author: Terry, dugu
+## Version: 0.1
+## X-DuowanAddon: 界面聊天
+## Dependencies: Duowan
+## X-Revision: Duowan
+## SavedVariables: DuowanChatDB
+## SavedVariablesPerCharacter: DuowanChatPerDB
+## LoadOnDemand: 
+
+locale\locale.en.lua
+locale\locale.cn.lua
+locale\locale.tw.lua
+frame.xml
+
+LFGForwarder.lua
+TabChannel.lua
+

@@ -2,7 +2,6 @@ if(GetLocale() == "zhTW") then
 
 -- ===================== Part for TradeFrameEnchanced ==================
 TBT_SPELL_RANK_PATTERN = "等級 (%d)";
-TBT_SPELL_PORTAL = "傳送門"
 TBT_UNLOCK_SKILL_NAME="开鎖";
 _,_,TBT_GAMETOOLTIP_MADE_BY=string.find(string.gsub(ITEM_CREATED_BY,"%%s","(.+)"),"(<.+>)"); --TBT_GAMETOOLTIP_MADE_BY="<由(.+)製造>"
 TBT_SPELL_TABLE = {
@@ -39,20 +38,6 @@ TBT_SPELL_TABLE = {
 	}
 }
 -- =============== just localizate the above, the addon will function ok ========================= 
-
-TBT_PORTAL_1 = "傳送門:斯通納德"
-TBT_PORTAL_2 = "傳送門:塞拉摩"
-TBT_PORTAL_3 = "傳送門:艾克索達"
-TBT_PORTAL_4 = "傳送門:鐵爐堡"
-TBT_PORTAL_5 = "傳送門:奧格瑪"
-TBT_PORTAL_6 = "傳送門:銀月城"
-TBT_PORTAL_7 = "傳送門:暴風城"
-TBT_PORTAL_8 = "傳送門:幽暗城"
-TBT_PORTAL_9 = "傳送門:達納蘇斯"
-TBT_PORTAL_10 = "傳送門:雷霆崖"
-TBT_PORTAL_11 = "傳送門:撒塔斯"
-TBT_PORTAL_12 = "傳送門:達拉然"
-
 TBT_LEFT_BUTTON = {
 	water		= "水",
 	food		= "食",
@@ -65,7 +50,10 @@ TBT_RIGHT_BUTTON = {
 	ask		= "要",
 	thank		= "謝",
 }
+
+TBT_CANT_CREATE_AUCTION = "無法進行拍賣，拍賣按鈕不可用，可能是插件衝突。"
 -- ===================== Part for TradeLog ==================
+TRADE_LIST_TOOLTIP = "交易記錄"
 TRADE_LOG_MONEY_NAME = {
 	gold = "g",
 	silver = "s",
@@ -140,8 +128,5 @@ TRADE_LIST_DAY_SUFFIX = "日"
 TRADE_LIST_COMPLETE_TOOLTIP = "點擊鼠標左鍵查看交易的詳細信息";
 
 TRADE_LIST_CLEAR_CONFIRM = "今天以外的紀錄都將被清除!";
-
-TBT_MINIMAP_TOOLTIP1 = "交易助手"
-TBT_MINIMAP_TOOLTIP2 = "點擊顯示交易詳情面板"
 
 end

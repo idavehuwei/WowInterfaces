@@ -1,0 +1,26 @@
+## Interface: 30300
+## Title: [Duowan] BattleInfo V 1.6!
+## Notes: Display more battle infomation by T.G.(farmer1992@gmail.com)
+## Title-zhCN: [多玩] 战场指示器
+## Notes-zhCN: 显示更多的战场信息
+## Title-zhTW: [多玩] 戰場指示器
+## Notes-zhTW: 顯示更多的戰場資訊
+## X-DuowanAddon: PvP
+## SavedVariablesPerCharacter: DuowanAddon_BattleInfoDB
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 
+
+localization\localization.lua
+
+BattleInfo.xml
+
+mod\common.lua
+mod\server.lua
+mod\newbattle.lua
+mod\quest.lua
+mod\auto.lua
+mod\option.lua
+mod\av.lua
+mod\binding.lua
+BattleInfo.lua

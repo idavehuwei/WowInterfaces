@@ -2,7 +2,7 @@
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local enUS = AceLocale:NewLocale("YssBossLoot", "enUS", true)
 if not enUS then return end
-
+enUS["Show Boss Frame"] = true
 enUS['Loot'] = true
 enUS['Normal Loot'] = true
 enUS['Heroic Loot'] = true
@@ -10,12 +10,11 @@ enUS['Normal 10-man Loot'] = true
 enUS['Normal 25-man Loot'] = true
 enUS['Heroic 10-man Loot'] = true
 enUS['Heroic 25-man Loot'] = true
-enUS['Non Boss Drops'] = true
+enUS['Trash Mobs'] = true
 
 enUS['Dungeon'] = true
 enUS['Raid'] = true
-enUS["Show Boss Frame"] = true
-enUS['|cffff2222%s not cached!'] = true
+
 enUS["|cffffff00Click|r to open YssBossLoot Options"] = true
 
 enUS["UNSAVE_QUERY_MSG"] = "|cFF33FF99YssBossLoot|r has detected that you recently disconnected. This may have been caused by scanning too many |cffff2020unsafe itemlinks|r too fast which increases your chance of repeat disconnects while scanning.\n\n|cffffd200Do you want to continue scanning?|r"
@@ -51,7 +50,7 @@ enUS['Want:'] = true
 
 enUS["3D_Skull_Detect_MSG"] = "|cffffd200YssBossLoot has detected %s!|r|n|nDo you want to use it as your boss frame skull"
 
-enUS["Loot Scaling"] = true
+enUS["Loot Scalling"] = true
 enUS["Large Map"] = true
 enUS["Large Map with Objectives"] = true
 enUS["Small Map"] = true
@@ -61,7 +60,9 @@ enUS["Animated Background"] = true
 enUS["Use 3D Skull"] = true
 enUS["2D Skulls"] = true
 enUS['Minimap Icon'] = true
-enUS['Add Tooltip Info'] = true
 enUS['Open to Current Instance Difficulty'] = true
 enUS['Open to Currently Selected Difficulty in Group'] = true
 enUS['Open to Currently Selected Difficulty in Group desc'] = "Opens to the current difficulty if you are in a group but still outside the instance"
+enUS['|cffff2222%s not cached!'] = true
+
+enUS['YssBossLoot'] = true

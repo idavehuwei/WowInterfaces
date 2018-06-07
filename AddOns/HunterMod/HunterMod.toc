@@ -1,0 +1,26 @@
+## Interface: 30300
+## Title: [Duowan] Hunter Mod
+## Title-zhCN: [多玩] 猎人助手
+## Title-zhTW: [多玩] 獵人幫手
+## Notes: Useful additions to make a Hunter's life even easier!
+## Notes-zhCN: 让猎人们的生活更加简单！
+## Notes-zhTW: 讓獵人們的生活更加簡單！
+## X-DuowanAddon: 职业辅助
+## SavedVariablesPerCharacter: HunterMod_Saved, HunterModDB
+## Author: dugu
+## X-Category: Hunter
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+embeds.xml
+
+Locale\EN.lua
+Locale\CN.lua
+Locale\TW.lua
+
+HunterMod.lua
+zFeeder.lua
+AutoShot\AutoShot.xml
+AutoTrack.lua
+AntiDaze.lua

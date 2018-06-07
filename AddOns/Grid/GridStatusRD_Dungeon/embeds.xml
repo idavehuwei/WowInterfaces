@@ -1,0 +1,19 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Script file="Ahnkahet.lua"/>
+	<Script file="Azjol.lua"/>
+	<Script file="Culling.lua"/>
+	<Script file="DrakTharon.lua"/>
+	<Script file="Gundrak.lua"/>
+	<Script file="Keep.lua"/>
+	<Script file="Lightning.lua"/>
+	<Script file="Nexus.lua"/>
+	<Script file="Oculus.lua"/>
+	<Script file="Pinnacle.lua"/>
+	<Script file="Reflection.lua"/>
+	<Script file="Saron.lua"/>
+	<Script file="Souls.lua"/>
+	<Script file="Stone.lua"/>
+	<Script file="Trial.lua"/>
+	<Script file="Violet.lua"/>
+</Ui>

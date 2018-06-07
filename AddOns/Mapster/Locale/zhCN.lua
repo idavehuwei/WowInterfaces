@@ -4,9 +4,8 @@
 
 local L = LibStub("AceLocale-3.0"):NewLocale("Mapster", "zhCN")
 if not L then return end
-L["Mapster"] = "地图专家"
-L["Atlas Map"] = "Atlas地图"
-L["General Settings"] = "通用设置"
+L["Mapster"] = "地图增强"
+L["Profiles"] = "配置方案"
 L["Accuracy"] = "高精度"
 L["Adjust the size of the Player Arrow on the Map for better visibility."] = "调整地图上的玩家箭头尺寸以获得更好的视觉效果"
 L["Alpha"] = "透明度"

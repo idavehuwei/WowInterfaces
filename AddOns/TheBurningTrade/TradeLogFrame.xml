@@ -24,20 +24,6 @@
 				</FontString>
 			</Layer>
 		</Layers>
-<!--
-		<NormalTexture name="$parentNormalTexture" file="Interface\Buttons\UI-Quickslot2">
-			<Size>
-				<AbsDimension x="40" y="40"/>
-			</Size>
-			<Anchors>
-				<Anchor point="CENTER">
-					<Offset>
-						<AbsDimension x="0" y="-1"/>
-					</Offset>
-				</Anchor>
-			</Anchors>
-		</NormalTexture>
--->
 		<HighlightTexture file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD"/>
 	</Button>
 
@@ -481,17 +467,6 @@
 					<TexCoords left="0.90625" right="0.96875" top="0" bottom="0.75"/>
 				</Texture>
 			</Layer>
-			<Layer level="ARTWORK">
-				<FontString name="$parentName" justifyH="LEFT" inherits="GameFontNormalSmall">					
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="10" y="-5"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
 		</Layers>
 		<ButtonText>
 			<Anchors>
@@ -502,7 +477,9 @@
 				</Anchor>
 			</Anchors>
 		</ButtonText>
-		<NormalFont inherits="GameFontHighlightSmall"/>
+		<NormalFont style="GameFontNormal"/>
+		<HighlightFont style="GameFontHighlight"/>
+		<DisabledFont style="GameFontDisable"/>
 	</Button>
 
 	<Button name="TradeListItemButtonTemplate" virtual="true">
@@ -640,10 +617,10 @@
 				self:RegisterForClicks("LeftButtonUp");
 			</OnLoad>
 			<OnClick>
-				TradeListFrame_ShowDetail(TradeLog_TradesHistory[self.offset]);
+				TradeListFrame_ShowDetail(DuowanAddon_TradeLog_TradesHistory[self.offset]);
 			</OnClick>
 			<OnEnter>
-				TradeListFrame_TradeTooltip(self, TradeLog_TradesHistory[self.offset]);
+				TradeListFrame_TradeTooltip(self, DuowanAddon_TradeLog_TradesHistory[self.offset]);
 			</OnEnter>
 			<OnLeave>
 				GameTooltip:Hide();
@@ -726,13 +703,13 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						local string = getglobal(self:GetName().."Text");
+						local string = dwGetglobal(self:GetName().."Text");
 						--OptionsFrame_EnableSlider(self);
 						local name = self:GetName();
-						getglobal(name.."Thumb"):Show();
-						getglobal(name.."Text"):SetVertexColor(NORMAL_FONT_COLOR.r , NORMAL_FONT_COLOR.g , NORMAL_FONT_COLOR.b);
-						getglobal(name.."Low"):SetVertexColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
-						getglobal(name.."High"):SetVertexColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
+						dwGetglobal(name.."Thumb"):Show();
+						dwGetglobal(name.."Text"):SetVertexColor(NORMAL_FONT_COLOR.r , NORMAL_FONT_COLOR.g , NORMAL_FONT_COLOR.b);
+						dwGetglobal(name.."Low"):SetVertexColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
+						dwGetglobal(name.."High"):SetVertexColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
 						
 						self:SetMinMaxValues(0.8, 1.5);
 						self:SetValueStep(0.1);
@@ -759,7 +736,7 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						getglobal(self:GetName().."Text"):SetText(TRADE_LIST_FILTER);
+						dwGetglobal(self:GetName().."Text"):SetText(TRADE_LIST_FILTER);
 						self:SetChecked(nil);
 					</OnLoad>
 					<OnClick>
@@ -779,7 +756,6 @@
 				<Scripts>
 					<OnLoad>
 						WhoFrameColumn_SetWidth(self, 138);
-						_G[self:GetName().."Name"]:SetText(TRADE_LIST_HEADER_WHEN)
 					</OnLoad>
 				</Scripts>
 			</Button>
@@ -794,7 +770,6 @@
 				<Scripts>
 					<OnLoad>
 						WhoFrameColumn_SetWidth(self, 100);
-						_G[self:GetName().."Name"]:SetText(TRADE_LIST_HEADER_WHO)
 					</OnLoad>
 				</Scripts>
 			</Button>
@@ -809,7 +784,6 @@
 				<Scripts>
 					<OnLoad>
 						WhoFrameColumn_SetWidth(self, 95);
-						_G[self:GetName().."Name"]:SetText(TRADE_LIST_HEADER_WHERE)
 					</OnLoad>
 				</Scripts>
 			</Button>
@@ -824,7 +798,6 @@
 				<Scripts>
 					<OnLoad>
 						WhoFrameColumn_SetWidth(self, 60);
-						_G[self:GetName().."Name"]:SetText(TRADE_LIST_HEADER_SEND)
 					</OnLoad>
 				</Scripts>
 			</Button>
@@ -839,7 +812,6 @@
 				<Scripts>
 					<OnLoad>
 						WhoFrameColumn_SetWidth(self, 60);
-						_G[self:GetName().."Name"]:SetText(TRADE_LIST_HEADER_RECEIVE)
 					</OnLoad>
 				</Scripts>
 			</Button>
@@ -854,7 +826,6 @@
 				<Scripts>
 					<OnLoad>
 						WhoFrameColumn_SetWidth(self, 57);
-						_G[self:GetName().."Name"]:SetText(TRADE_LIST_HEADER_RESULT)
 					</OnLoad>
 				</Scripts>
 			</Button>
@@ -1020,7 +991,7 @@
 					</OnShow>
 					<OnLoad>
 						ScrollFrame_OnLoad(self);
-						local scrollBar = getglobal(self:GetName().."ScrollBar");
+						local scrollBar = dwGetglobal(self:GetName().."ScrollBar");
 						scrollBar:SetBackdrop( 
 						{
 							bgFile = "Interface\\ChatFrame\\ChatFrameBackground", 
@@ -1049,15 +1020,13 @@
 		</Scripts>
 	</Frame>
 
-	<Button name="TradeListFrameButton" toplevel="true" frameStrata="LOW" parent="Minimap" enableMouse="true">	
+	<Button name="TradeListFrameButton" parent="Minimap" frameStrata="LOW" enableMouse="true">	
 		<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
-		<Size>
-			<AbsDimension x="32" y="32"/>
-		</Size>
+		<Size><AbsDimension x="32" y="32"/>	</Size>
 		<Anchors>
 			<Anchor point="TOPLEFT" relativeTo="Minimap" relativePoint="RIGHT">
 				<Offset>
-					<AbsDimension x="1" y="0"/>
+					<AbsDimension x="0" y="0"/>
 				</Offset>
 			</Anchor>
 		</Anchors>
@@ -1107,14 +1076,6 @@
 			</Layer>
 		</Layers>
 		<Scripts>
-			<OnLoad>
-				InitialMovableMinimapButton(self:GetName(), "TRADE_LOG_BUTTON_POS", nil);
-				if(getglobal(self.POS) == nil) then
-					setglobal(self.POS, 190);
-				end
-				self:MovingPos();
-				self:Show();
-			</OnLoad>
 			<OnClick>
 				if( TradeListFrame:IsVisible() ) then
 					TradeListFrame:Hide();
@@ -1122,15 +1083,18 @@
 					TradeListFrame:Show();
 				end
 			</OnClick>	
-			<OnEnter>
-				GameTooltip:SetOwner(self,"TOPLEFT",30,-80)
-				GameTooltip:AddLine(TBT_MINIMAP_TOOLTIP1)
-				GameTooltip:AddLine(TBT_MINIMAP_TOOLTIP2)
-				GameTooltip:Show()
-			</OnEnter>
-			<OnLeave>
-				GameTooltip:Hide()
-			</OnLeave>
+			<OnLoad>
+				InitialMovableMinimapButton(self:GetName(), "DuowanAddon_TRADE_LOG_BUTTON_POS", nil);
+			</OnLoad>
+			<OnEvent>
+				if(event=="VARIABLES_LOADED") then
+					if(dwGetglobal(self.POS) == nil) then
+						setglobal(self.POS, 190);
+					end
+					self:MovingPos();
+					self:Show();
+				end
+			</OnEvent>
 		</Scripts>
 	</Button>
 </Ui>

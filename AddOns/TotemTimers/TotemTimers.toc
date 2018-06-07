@@ -1,7 +1,7 @@
 ﻿## Interface: 30300
 ## Title: TotemTimers
-## Title-zhCN: [大脚][集]萨满助手
-## Title-zhTW: [大腳][集]薩滿助手
+## Title-zhCN: [多玩] 图腾助手
+## Title-zhTW: [多玩] 圖騰助手
 ## Notes: |cffbc8f8fShaman Assistant.|r
 ## Notes-zhCN: |cff00ff00TotemTimers|r                                             |cffbc8f8f管理监视萨满图腾，护盾及武器祝福。|r
 ## Notes-zhTW: |cff00ff00TotemTimers|r                                             |cffbc8f8f管理監視薩滿圖騰，護盾及武器祝福。|r
@@ -9,12 +9,14 @@
 ## Version: 10.2.4
 ## SavedVariablesPerCharacter: TotemTimers_Settings, TotemTimers_SpecSettings
 ## OptionalDeps: cyCircled, ButtonFacade, !ClassColors, rActionButtonStyler, LibTalentQuery-1.0
+## X-DuowanAddon: 职业辅助
 ## LoadOnDemand: 1
-## X-Curse-Packaged-Version: 10.2.4
-## X-Revision: BigFoot
-## X-Curse-Project-Name: TotemTimers
-## X-Curse-Project-ID: totemtimers
-## X-Curse-Repository-ID: wow/totemtimers/mainline
+## Dependencies: Duowan
+## X-Revision: Duowan
+
+#@AceLibs@#
+embeds.xml
+#@AceLibs@#
 
 TotemData.lua
 
@@ -50,4 +52,6 @@ GUI\General.lua
 GUI\Timers.lua
 GUI\Trackers.lua
 GUI\MultiSpell.lua
+GUI\EnhanceCDs.lua
+GUI\ConfigForDuowan.lua
 

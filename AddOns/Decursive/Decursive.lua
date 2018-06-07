@@ -1,7 +1,7 @@
 --[[
     This file is part of Decursive.
     
-    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
+    Decursive (v 2.5.1-12-gb39554a) add-on for World of Warcraft UI
     Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/to/decursive.php )
 
     Starting from 2009-10-31 and until said otherwise by its author, Decursive
@@ -19,8 +19,9 @@
 --]]
 -------------------------------------------------------------------------------
 
+local addonName, T = ...;
 -- big ugly scary fatal error message display function {{{
-if not DcrFatalError then
+if not T._FatalError then
 -- the beautiful error popup : {{{ -
 StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     text = "|cFFFF0000Decursive Error:|r\n%s",
@@ -33,12 +34,12 @@ StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     hideOnEscape = 1,
     showAlert = 1,
     }; -- }}}
-DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
+T._FatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
 end
 -- }}}
-if not DcrLoadedFiles or not DcrLoadedFiles["Dcr_Raid.lua"] then
-    if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (Dcr_Raid.lua not loaded)"); end;
-    DcrCorrupted = true;
+if not T._LoadedFiles or not T._LoadedFiles["Dcr_Raid.lua"] then
+    if not DecursiveInstallCorrupted then T._FatalError("Decursive installation is corrupted! (Dcr_Raid.lua not loaded)"); end;
+    DecursiveInstallCorrupted = true;
     return;
 end
 
@@ -135,7 +136,7 @@ function D:HideBar(hide) --{{{
         DcrLiveList:ClearAllPoints();
         DcrLiveList:SetPoint("TOPLEFT", "DecursiveMainBar", "BOTTOMLEFT");
     else
---        D:ColorPrint(0.3, 0.5, 1, L["SHOW_MSG"]);
+        D:ColorPrint(0.3, 0.5, 1, L["SHOW_MSG"]);
     end
 
     LibStub("AceConfigRegistry-3.0"):NotifyChange(D.name);
@@ -186,14 +187,14 @@ function D:ShowHideButtons(UseCurrentValue) --{{{
         DcrFrame .. "Hide",
     }
 
-    local DCRframeObject = getglobal(DcrFrame);
+    local DCRframeObject = _G[DcrFrame];
 
     if (not UseCurrentValue) then
         D.profile.HideButtons = (not D.profile.HideButtons);
     end
 
     for _, ButtonName in pairs(buttons) do
-        local Button = getglobal(ButtonName);
+        local Button = _G[ButtonName];
 
         if (D.profile.HideButtons) then
             Button:Hide();
@@ -239,18 +240,19 @@ function D:ResetWindow() --{{{
 end --}}}
 
 
-
 function D:PlaySound (UnitID, Caller) --{{{
-    if (self.profile.PlaySound and not self.Status.SoundPlayed) then
+    if self.profile.PlaySound and not self.Status.SoundPlayed then
         local Debuffs = self:UnitCurableDebuffs(UnitID, true);
-        if (Debuffs and Debuffs[1] and Debuffs[1].Type) then
+        if Debuffs and Debuffs[1] and Debuffs[1].Type then
 
             -- good sounds: Sound\\Doodad\\BellTollTribal.wav
             --          Sound\\interface\\AuctionWindowOpen.wav
             --          Sound\\interface\\AlarmClockWarning3.wav
             PlaySoundFile(self.profile.SoundFile);
-            D:Debug("Sound Played! by %s", Caller);
+            self:Debug("Sound Played! by %s", Caller);
             self.Status.SoundPlayed = true;
+        else
+            self.UnitDebuffed[UnitID] = false;
         end
     end
 end --}}}
@@ -270,7 +272,7 @@ function D:PlaceLL () -- {{{
     -- check if the coordinates are correct
     if x and y and (x + 10 > UIParent:GetWidth() * UIScale or x < 0 or (-1 * y + 10) > UIParent:GetHeight() * UIScale or y > 0) then
         x = false; -- reset to default position
-        DcrFatalError("Decursive's bar position reset to default");
+        T._FatalError("Decursive's bar position reset to default");
     end
 
     -- Executed for the very first time, then put it in the top right corner of the screen
@@ -386,7 +388,7 @@ end
 
 do
 
-    local Name, rank, Texture, Applications, TypeName; --, Duration;
+    local Name, rank, Texture, Applications, TypeName, Duration, expirationTime;
     local D = _G.Dcr;
     local UnitAura = _G.UnitAura;
 
@@ -395,22 +397,22 @@ do
 
         if D.LiveList.TestItemDisplayed and i == 1 and Unit ~= "target" and Unit ~= "mouseover" and UnitExists(Unit) then
             D:Debug("|cFFFF0000Setting test debuff for %s (debuff %d)|r", Unit, i);
-            return "Test item", DC.TypeNames[D.Status.ReversedCureOrder[1]], 1, "Interface\\AddOns\\Decursive\\iconON.tga", 70;
+            return "Test item", DC.TypeNames[D.Status.ReversedCureOrder[1]], 2, "Interface\\AddOns\\Decursive\\iconON.tga", D.LiveList.TestItemDisplayed + 70;
         end
 
         --D:Debug("|cFFFF0000Getting debuffs for %s , id = %d|r", Unit, i);
 
 
-        -- name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable = UnitAura("unit", index or ["name", "rank"][, "filter"])
+        --    Name, rank, Texture, Applications, TypeName, duration, expirationTime, unitCaster, isStealable = UnitAura("unit", index or ["name", "rank"][, "filter"])
 
-        local Name, rank, Texture, Applications, TypeName = UnitAura(Unit, i, "HARMFUL");
+        local Name, rank, Texture, Applications, TypeName, Duration, expirationTime = UnitAura(Unit, i, "HARMFUL");
 
         --local Name, rank, Texture, Applications, TypeName, Duration = UnitDebuff(Unit, i);
 
-        if (Name) then
-            return Name, TypeName, Applications, Texture;
+        if Name then
+            return Name, TypeName, Applications, Texture, expirationTime;
         else
-            return false, false, false, false;
+            return false, false, false, false, false;
         end
     end --}}}
 
@@ -446,7 +448,7 @@ do
 
 
         -- test if the unit is mind controlled once
-        if (UnitIsCharmed(Unit) and (UnitCanAttack("player", Unit)  or UnitIsCharmed("player"))) then
+        if (UnitIsCharmed(Unit) and (UnitCanAttack("player", Unit) or UnitIsCharmed("player"))) then
             IsCharmed = true;
         else
             IsCharmed = false;
@@ -454,7 +456,7 @@ do
 
         -- iterate all available debuffs
         while (true) do
-            Name, TypeName, Applications, Texture = GetUnitDebuff(Unit, i);
+            Name, TypeName, Applications, Texture, expirationTime = GetUnitDebuff(Unit, i);
 
             if not Name then
                 break;
@@ -528,14 +530,13 @@ do
                     ThisUnitDebuffs[StoredDebuffIndex] = {};
                 end
 
---              ThisUnitDebuffs[StoredDebuffIndex].TimeLeft     = TimeLeft;
---              ThisUnitDebuffs[StoredDebuffIndex].TimeStamp    = false;
-                ThisUnitDebuffs[StoredDebuffIndex].Texture      = Texture;
-                ThisUnitDebuffs[StoredDebuffIndex].Applications = Applications;
-                ThisUnitDebuffs[StoredDebuffIndex].TypeName     = TypeName;
-                ThisUnitDebuffs[StoredDebuffIndex].Type         = Type;
-                ThisUnitDebuffs[StoredDebuffIndex].Name         = Name;
-                ThisUnitDebuffs[StoredDebuffIndex].index        = i;
+                ThisUnitDebuffs[StoredDebuffIndex].expirationTime = expirationTime;
+                ThisUnitDebuffs[StoredDebuffIndex].Texture        = Texture;
+                ThisUnitDebuffs[StoredDebuffIndex].Applications   = Applications;
+                ThisUnitDebuffs[StoredDebuffIndex].TypeName       = TypeName;
+                ThisUnitDebuffs[StoredDebuffIndex].Type           = Type;
+                ThisUnitDebuffs[StoredDebuffIndex].Name           = Name;
+                ThisUnitDebuffs[StoredDebuffIndex].index          = i;
 
                 -- we can't use i, else we wouldn't have contiguous indexes in the table
                 StoredDebuffIndex = StoredDebuffIndex + 1;
@@ -762,7 +763,7 @@ do
                     --[===[@debug@
                     if IsDebuffed then
                         self:AddDebugText("delayed debuff found by scaneveryone, scheduling analysis in 1s");
-                        D:ScheduleDelayedCall("Dcr_lateanalysis" .. Unit, self.MicroUnitF.LateAnalysis, 1, self.MicroUnitF, "ScanEveryone", Debuffs, MUF, MUF.UnitStatus);
+                        --D:ScheduleDelayedCall("Dcr_lateanalysis" .. Unit, self.MicroUnitF.LateAnalysis, 1, self.MicroUnitF, "ScanEveryone", Debuffs, MUF, MUF.UnitStatus);
                     else
                         self:AddDebugText("delayed UNdebuff found by scaneveryone on", Unit);
                     end
@@ -883,6 +884,6 @@ end
 
 
 
-DcrLoadedFiles["Decursive.lua"] = "2.4.5-3-g6a02387";
+T._LoadedFiles["Decursive.lua"] = "2.5.1-12-gb39554a";
 
 -- Sin

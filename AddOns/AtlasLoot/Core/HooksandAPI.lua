@@ -3,7 +3,6 @@ File containing all the Atlas replacement functions and the External API
 ]]
 
 local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-
 -- Colours stored for code readability
 local GREY = "|cff999999";
 local RED = "|cffff0000";
@@ -38,9 +37,9 @@ function AtlasLoot_Atlas_OnShow()
     else
         --If no loot table is selected, set up icons next to boss names
         for i=1,ATLAS_CUR_LINES do
-            if (getglobal("AtlasEntry"..i.."_Selected") and getglobal("AtlasEntry"..i.."_Selected"):IsVisible()) then
-                getglobal("AtlasEntry"..i.."_Loot"):Show();
-                getglobal("AtlasEntry"..i.."_Selected"):Hide();
+            if (dwGetglobal("AtlasEntry"..i.."_Selected") and dwGetglobal("AtlasEntry"..i.."_Selected"):IsVisible()) then
+                dwGetglobal("AtlasEntry"..i.."_Loot"):Show();
+                dwGetglobal("AtlasEntry"..i.."_Selected"):Hide();
             end
         end
     end
@@ -119,7 +118,6 @@ function AtlasLoot_Refresh()
     
     Atlastextbase = base;
     --Get the size of the Atlas text to append stuff to the bottom.  Looks for empty lines
-	--[[
     local i = 1;
     local j = 2;
     while ( (Atlastextbase[i] ~= nil and Atlastextbase[i]~="") or (Atlastextbase[j] ~= nil and Atlastextbase[j]~="")) do
@@ -144,26 +142,11 @@ function AtlasLoot_Refresh()
             Atlastextbase[i]={"", nil, nil};
         end
     end
-	]]--
-	if AtlasLoot_ExtraText[zoneID] and #Atlastextbase and #Atlastextbase > 0 then
-		local numContent = #Atlastextbase
-		-- add the extra lines
-		for i = 1,#AtlasLoot_ExtraText[zoneID]+1 do
-			Atlastextbase[numContent+i] = {"", nil, nil}
-		end
-		for k,v in ipairs(AtlasLoot_ExtraText[zoneID]) do
-			numContent = numContent + 1
-			Atlastextbase[numContent] = {v, nil, nil}
-		end
-		Atlastextbase[numContent+2]={"", nil, nil}
-	end
-	
-	
     
     --Hide any Atlas objects lurking around that have now been replaced
     for i=1,ATLAS_CUR_LINES do
-        if ( getglobal("AtlasEntry"..i) ) then
-            getglobal("AtlasEntry"..i):Hide();
+        if ( dwGetglobal("AtlasEntry"..i) ) then
+            dwGetglobal("AtlasEntry"..i):Hide();
         end
     end
     
@@ -191,7 +174,7 @@ function AtlasLoot_Refresh()
     --create and align any new entry buttons that we need
     for i=1,ATLAS_CUR_LINES do
         local f;
-        if (not getglobal("AtlasBossLine"..i)) then
+        if (not dwGetglobal("AtlasBossLine"..i)) then
             f = CreateFrame("Button", "AtlasBossLine"..i, AtlasFrame, "AtlasLootNewBossLineTemplate");
             f:SetFrameStrata("HIGH");
             if i==1 then
@@ -200,8 +183,8 @@ function AtlasLoot_Refresh()
                 f:SetPoint("TOPLEFT", "AtlasBossLine"..(i-1), "BOTTOMLEFT");
             end
         else
-            getglobal("AtlasBossLine"..i.."_Loot"):Hide();
-            getglobal("AtlasBossLine"..i.."_Selected"):Hide();
+            dwGetglobal("AtlasBossLine"..i.."_Loot"):Hide();
+            dwGetglobal("AtlasBossLine"..i.."_Selected"):Hide();
         end
     end
     
@@ -260,7 +243,7 @@ Required as the Atlas function cannot deal with the AtlasLoot button template or
 ]]
 function AtlasLoot_AtlasScrollBar_Update()
     local line, lineplusoffset;
-    if (getglobal("AtlasBossLine1_Text") ~= nil) then
+    if (dwGetglobal("AtlasBossLine1_Text") ~= nil) then
         local zoneID = ATLAS_DROPDOWNS[AtlasOptions.AtlasType][AtlasOptions.AtlasZone];
         --Update the contents of the Atlas scroll frame
         FauxScrollFrame_Update(AtlasScrollBar,ATLAS_CUR_LINES,ATLAS_LOOT_BOSS_LINES,15);
@@ -268,28 +251,28 @@ function AtlasLoot_AtlasScrollBar_Update()
         for line=1,ATLAS_NUM_LINES do
             lineplusoffset = line + FauxScrollFrame_GetOffset(AtlasScrollBar);
             if ( lineplusoffset <= ATLAS_CUR_LINES ) then
-                getglobal("AtlasBossLine"..line.."_Text"):SetText(ATLAS_SCROLL_LIST[lineplusoffset]);
+                dwGetglobal("AtlasBossLine"..line.."_Text"):SetText(ATLAS_SCROLL_LIST[lineplusoffset]);
                 if AtlasLootItemsFrame.activeBoss == lineplusoffset then
-                    getglobal("AtlasBossLine"..line.."_Loot"):Hide();
-                    getglobal("AtlasBossLine"..line.."_Selected"):Show();
+                    dwGetglobal("AtlasBossLine"..line.."_Loot"):Hide();
+                    dwGetglobal("AtlasBossLine"..line.."_Selected"):Show();
                 elseif (AtlasLootBossButtons[zoneID]~=nil and AtlasLootBossButtons[zoneID][lineplusoffset] ~= nil and AtlasLootBossButtons[zoneID][lineplusoffset] ~= "") then
-                    getglobal("AtlasBossLine"..line.."_Loot"):Show();
-                    getglobal("AtlasBossLine"..line.."_Selected"):Hide();
+                    dwGetglobal("AtlasBossLine"..line.."_Loot"):Show();
+                    dwGetglobal("AtlasBossLine"..line.."_Selected"):Hide();
                 elseif (AtlasLootWBBossButtons[zoneID]~=nil and AtlasLootWBBossButtons[zoneID][lineplusoffset] ~= nil and AtlasLootWBBossButtons[zoneID][lineplusoffset] ~= "") then
-                    getglobal("AtlasBossLine"..line.."_Loot"):Show();
-                    getglobal("AtlasBossLine"..line.."_Selected"):Hide();
+                    dwGetglobal("AtlasBossLine"..line.."_Loot"):Show();
+                    dwGetglobal("AtlasBossLine"..line.."_Selected"):Hide();
                 elseif (AtlasLootBattlegrounds[zoneID]~=nil and AtlasLootBattlegrounds[zoneID][lineplusoffset] ~= nil and AtlasLootBattlegrounds[zoneID][lineplusoffset] ~= "") then
-                    getglobal("AtlasBossLine"..line.."_Loot"):Show();
-                    getglobal("AtlasBossLine"..line.."_Selected"):Hide();
+                    dwGetglobal("AtlasBossLine"..line.."_Loot"):Show();
+                    dwGetglobal("AtlasBossLine"..line.."_Selected"):Hide();
                 else
-                    getglobal("AtlasBossLine"..line.."_Loot"):Hide();
-                    getglobal("AtlasBossLine"..line.."_Selected"):Hide();
+                    dwGetglobal("AtlasBossLine"..line.."_Loot"):Hide();
+                    dwGetglobal("AtlasBossLine"..line.."_Selected"):Hide();
                 end
-                getglobal("AtlasBossLine"..line).idnum = lineplusoffset;
-                getglobal("AtlasBossLine"..line):Show();
-            elseif ( getglobal("AtlasBossLine"..line) ) then
+                dwGetglobal("AtlasBossLine"..line).idnum = lineplusoffset;
+                dwGetglobal("AtlasBossLine"..line):Show();
+            elseif ( dwGetglobal("AtlasBossLine"..line) ) then
                 --Hide lines that are not needed
-                getglobal("AtlasBossLine"..line):Hide();
+                dwGetglobal("AtlasBossLine"..line):Hide();
             end
         end
     else

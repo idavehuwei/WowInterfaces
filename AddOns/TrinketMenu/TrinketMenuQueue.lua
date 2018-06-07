@@ -101,9 +101,9 @@ function TrinketMenu.SortScrollFrameUpdate()
 		local texture,name,quality
 		local item,itemName,itemIcon
 		for i=1,9 do
-			item = getglobal("TrinketMenu_Sort"..i)
-			itemName = getglobal("TrinketMenu_Sort"..i.."Name")
-			itemIcon = getglobal("TrinketMenu_Sort"..i.."Icon")
+			item = dwGetglobal("TrinketMenu_Sort"..i)
+			itemName = dwGetglobal("TrinketMenu_Sort"..i.."Name")
+			itemIcon = dwGetglobal("TrinketMenu_Sort"..i.."Icon")
 			idx = offset+i
 			if idx<=#(list) then
 				name,texture,quality = TrinketMenu.GetNameByID(list[idx])
@@ -128,17 +128,17 @@ function TrinketMenu.SortScrollFrameUpdate()
 end
 
 function TrinketMenu.LockHighlight(frame)
-	if type(frame)=="string" then frame = getglobal(frame) end
+	if type(frame)=="string" then frame = dwGetglobal(frame) end
 	if not frame then return end
 	frame.lockedHighlight = 1
-	getglobal(frame:GetName().."Highlight"):Show()
+	dwGetglobal(frame:GetName().."Highlight"):Show()
 end
 
 function TrinketMenu.UnlockHighlight(frame)
-	if type(frame)=="string" then frame = getglobal(frame) end
+	if type(frame)=="string" then frame = dwGetglobal(frame) end
 	if not frame then return end
 	frame.lockedHighlight = nil
-	getglobal(frame:GetName().."Highlight"):Hide()
+	dwGetglobal(frame:GetName().."Highlight"):Hide()
 end
 
 -- shows tooltip for items in the sort list
@@ -306,7 +306,7 @@ function TrinketMenu.ProcessAutoQueue(which)
 	local start,duration,enable = GetInventoryItemCooldown("player",13+which)
 	local timeLeft = GetTime()-start
 	local _,_,id,name = string.find(GetInventoryItemLink("player",13+which) or "","item:(%d+).+%[(.+)%]")
-	local icon = getglobal("TrinketMenu_Trinket"..which.."Queue") 
+	local icon = dwGetglobal("TrinketMenu_Trinket"..which.."Queue") 
 
 	if not id then return end -- leave if no trinket equipped
 	if IsInventoryItemLocked(13+which) then return end -- leave if slot being swapped
@@ -342,7 +342,7 @@ function TrinketMenu.ProcessAutoQueue(which)
 	icon:SetVertexColor(1,1,1)
 
 	local name
-	local ready = TrinketMenu.TrinketNearReady(GetInventoryItemID("player",13+which))
+	local ready = TrinketMenu.TrinketNearReady(GetInventoryItemLink("player",13+which))
 	if ready and TrinketMenu.CombatQueue[which] then
 		TrinketMenu.CombatQueue[which] = nil
 		TrinketMenu.UpdateCombatQueue()
@@ -512,9 +512,9 @@ function TrinketMenu.ProfileScrollFrameUpdate()
 	local item
 	for i=1,7 do
 		idx = offset+i
-		item = getglobal("TrinketMenu_Profile"..i)
+		item = dwGetglobal("TrinketMenu_Profile"..i)
 		if idx<=#(list) then
-			getglobal("TrinketMenu_Profile"..i.."Name"):SetText(list[idx][1])
+			dwGetglobal("TrinketMenu_Profile"..i.."Name"):SetText(list[idx][1])
 			item:Show()
 			if TrinketMenu.ProfileSelected==idx then
 				item:LockHighlight()

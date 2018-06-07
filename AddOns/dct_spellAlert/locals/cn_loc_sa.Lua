@@ -15,10 +15,10 @@ DCT_SA_OPTION_ADD_SUCCESS = "过滤技能添加成功: "
 DCT_SA_OPTION_ADD_FAILED = "过滤技能添加失败,可能的原因为已存在: "
 
 
-DCTSA_TXT_FilterDDCList[1][1] = "开始施放/施放了-过滤", "DCTSA_FILTER_CASTSTART"
-DCTSA_TXT_FilterDDCList[2][1] = "效果获得/消失-过滤", "DCTSA_FILTER_BUFF"
-DCTSA_TXT_FilterDDCList[3][1] = "被驱散-过滤", "DCTSA_FILTER_DISPELLED"
-DCTSA_TXT_FilterDDCList[4][1] = "施放了-过滤", "DCTSA_FILTER_CASTSUCCESS"
+DCTSA_TXT_FilterDDCList[1][1] = "开始施放/施放了-过滤","DCTSA_FILTER_CASTSTART"
+DCTSA_TXT_FilterDDCList[2][1] = "效果获得/消失-过滤","DCTSA_FILTER_BUFF"
+DCTSA_TXT_FilterDDCList[3][1] = "被驱散-过滤","DCTSA_FILTER_DISPELLED"
+DCTSA_TXT_FilterDDCList[4][1] = "施放了-过滤","DCTSA_FILTER_CASTSUCCESS"
 
 
 
@@ -53,8 +53,8 @@ DCT_SaCfg_Event.CheckButtons["DCTSA_ENABLE_ONPVP"].title = "在友善或中立�
 DCT_SaCfg_Event.CheckButtons["DCTSA_ENABLE_ONPVP"].tooltipText = "在友善或中立区禁用"
 DCT_SaCfg_Event.CheckButtons["DCTSA_ENABLE_ONCOMBAT"].title = "只在战斗状态中预警"
 DCT_SaCfg_Event.CheckButtons["DCTSA_ENABLE_ONCOMBAT"].tooltipText = "开启法术预警"
-DCT_SaCfg_Event.CheckButtons["DCTSA_CASTSUCCESS_ONLYTOYOU"].title = "\"施放了\"只显示对你的"
-DCT_SaCfg_Event.CheckButtons["DCTSA_CASTSUCCESS_ONLYTOYOU"].tooltipText = "此功能对\"开始施放\"无效"
+DCT_SaCfg_Event.CheckButtons["DCTSA_CASTSUCCESS_ONLYTOYOU"].title =  "\"施放了\"只显示对你的"
+DCT_SaCfg_Event.CheckButtons["DCTSA_CASTSUCCESS_ONLYTOYOU"].tooltipText =  "此功能对\"开始施放\"无效"
 DCT_SaCfg_Event.CheckButtons["DCTSA_MERGE_CASTSUCCESS_AND_BUFFGET"].title = "合并(施放了,获得了)同名技能"
 DCT_SaCfg_Event.CheckButtons["DCTSA_MERGE_CASTSUCCESS_AND_BUFFGET"].tooltipText = "当对某目标\"施放了\"某技能，而那目标也同时获得了一个同名的技能，则只显示一次预警"
 DCT_SaCfg_Event.CheckButtons["DCTSA_FILTER_ENABLE"].title = "开启法术过滤器"

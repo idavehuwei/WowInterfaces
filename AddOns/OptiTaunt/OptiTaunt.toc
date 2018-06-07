@@ -1,0 +1,25 @@
+## Interface: 30300
+## Title: [Duowan] OptiTaunt |cff7fff7f -Ace2-|r
+## Title-zhCN: [多玩] 嘲讽抵抗通报 OptiTaunt |cff7fff7f -Ace2-|r
+## Title-zhTW: [多玩] 嘲諷抵抗發布 OptiTaunt |cff7fff7f -Ace2-|r
+## Notes: Announces resisted taunts (and more) for druids, warriors and paladins.
+## Notes-frFR: Annonce les provocations résistées pour les druides, guerriers et paladins. 
+## Notes-deDE: Sagt widerstandenen Spott für Krieger, Druiden und Paladine an.
+## Notes-zhCN: 嘲讽抵抗通报
+## Notes-zhTW: 嘲諷抵抗發佈
+## Author: Nebelmond
+## Version: 0.86
+## OptionalDeps: !!!CWDGLibsPack, Ace2
+## SavedVariables: DuowanAddon_OptiTauntDB
+## SavedVariablesPerCharacter: DuowanAddon_OptiTauntDBPC
+## X-Category: Combat
+## X-DuowanAddon: 团队副本
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+Locale-enUS.lua
+Locale-zhCN.lua
+Locale-zhTW.lua
+OptiTaunt.lua
+Options.lua

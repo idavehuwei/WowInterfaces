@@ -4,7 +4,7 @@
   ****************************************************************************]]
 
 
-local _NPCScan = select( 2, ... );
+local _NPCScan = _NPCScan;
 local L = _NPCScan.L;
 local me = CreateFrame( "Frame" );
 _NPCScan.Config = me;

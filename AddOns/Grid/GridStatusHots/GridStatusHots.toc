@@ -1,0 +1,24 @@
+﻿## Interface: 30300
+## Title: GridStatusHots
+## Author: Bogenlampe, shadmar, Veridiac
+## Version: 3.31
+## Notes: Separate indicator for your HoTs with timer.
+## Notes-deDE: Ein eigener Indikator für eure HoTs mit Timer.
+## Notes-zhTW: [Grid] 分別顯示你的 Hots：恢復，回春術，癒合及生命之花的計時與總 HoTs 值。
+## Notes-zhCN: [Grid] 分别显示你的 Hots：恢复，回春术，愈合及生命绽放的计时与总 HoTs 值。
+## X-Website: http://wowace.com/wiki/Grid
+## X-Category: UnitFrame
+## X-GridStatusModule: GridStatusHots
+## RequiredDeps: Grid
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## X-Curse-Packaged-Version: r135
+## X-Curse-Project-Name: GridStatusHots
+## X-Curse-Project-ID: grid-status-hots
+## X-Curse-Repository-ID: wow/grid-status-hots/mainline
+## X-Curse-Packaged-Version: r135
+## X-Curse-Project-Name: GridStatusHots
+## X-Curse-Project-ID: grid-status-hots
+## X-Curse-Repository-ID: wow/grid-status-hots/mainline
+GridStatusHots_locale.lua
+GridStatusHots.lua

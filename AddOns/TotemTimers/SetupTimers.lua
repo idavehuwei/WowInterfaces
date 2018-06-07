@@ -34,16 +34,16 @@ function TotemTimers_CreateTimers()
 	for e = 1,4 do
 		local tt = XiTimers:new(timercount[e])
 
-        tt.ManaCheckMini = true
+		tt.ManaCheckMini = true
 		tt.button:SetScript("OnEvent", TotemTimers.TotemEvent)
 		tt.spacing = TotemTimers_Settings.TimerSpacing
 		tt.events[1] = "PLAYER_TOTEM_UPDATE"
-        tt.events[2] = "SPELL_UPDATE_COOLDOWN"
-        tt.events[3] = "PLAYER_ENTERING_WORLD"
-        tt.events[4] = "UNIT_SPELLCAST_SUCCEEDED"
-        tt.events[5] = "PLAYER_REGEN_ENABLED"
-        --tt.events[6] = "UNIT_AURA"
-        --tt.events[7] = "RAID_ROSTER_UPDATE"
+		tt.events[2] = "SPELL_UPDATE_COOLDOWN"
+		tt.events[3] = "PLAYER_ENTERING_WORLD"
+		tt.events[4] = "UNIT_SPELLCAST_SUCCEEDED"
+		tt.events[5] = "PLAYER_REGEN_ENABLED"
+		--tt.events[6] = "UNIT_AURA"
+		--tt.events[7] = "RAID_ROSTER_UPDATE"
         
 		--[[tt.button:ClearAllPoints()
 		if e == 1 then
@@ -51,35 +51,36 @@ function TotemTimers_CreateTimers()
 		else
 			tt.button:SetPoint("LEFT", XiTimers.timers[e-1].button, "RIGHT", 5, 0)
 		end]]
-		tt.button.anchorframe = TotemTimersFrame
+		--tt.button.anchorframe = TotemTimersFrame
+		tt.button.anchorframe = TotemTimers_MultiSpellFrame
 		tt.button:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp", "Button4Down")
 		tt.button:SetAttribute("*type2", "macro")
 		tt.button:SetAttribute("*type3", "macro")
 		tt.button:SetAttribute("*macrotext2", "/script DestroyTotem("..e..")")		
 		tt.button:SetAttribute("*type1", "spell")
 		tt.button.UpdateMiniIcon = function(self)
-                local spell = self:GetAttribute("*spell1")
-                if spell and spell ~= 0 then
-                    local _,_,t = GetSpellInfo(self:GetAttribute("*spell1"))
-                    self.miniIcon:SetTexture(t)
-                    TotemTimers.TotemEvent(self, "SPELL_UPDATE_COOLDOWN", self.timer.nr)
-                    self.timer.ManaCheck = t
-                    TotemTimers.SetEmptyTexCoord(self.miniIcon)
-                else
-					self.miniIcon:SetTexture(TotemTimers.emptyTotem)
-                    TotemTimers.SetEmptyTexCoord(self.miniIcon, self.element)
-				end
-                local c = self.timer.Cast1:GetAttribute("spell1")
-                if c then
-                    self.timer.Cast1.Icon:SetTexture(GetSpellTexture(c))
-                end
-                local c = self.timer.Cast2:GetAttribute("spell1")
-                if c then
-                    self.timer.Cast2.Icon:SetTexture(GetSpellTexture(c))
-                end
+			local spell = self:GetAttribute("*spell1")
+			if spell and spell ~= 0 then
+				local _,_,t = GetSpellInfo(self:GetAttribute("*spell1"))
+				self.miniIcon:SetTexture(t)
+				TotemTimers.TotemEvent(self, "SPELL_UPDATE_COOLDOWN", self.timer.nr)
+				self.timer.ManaCheck = t
+				TotemTimers.SetEmptyTexCoord(self.miniIcon)
+			else
+				self.miniIcon:SetTexture(TotemTimers.emptyTotem)
+				TotemTimers.SetEmptyTexCoord(self.miniIcon, self.element)
 			end
-        tt.button.ShowTooltip = TotemTimers.TimerTooltip
-        tt.button.HideTooltip = function(self) GameTooltip:Hide() end
+			local c = self.timer.Cast1:GetAttribute("spell1")
+			if c then
+				self.timer.Cast1.Icon:SetTexture(GetSpellTexture(c))
+			end
+			local c = self.timer.Cast2:GetAttribute("spell1")
+			if c then
+				self.timer.Cast2.Icon:SetTexture(GetSpellTexture(c))
+			end
+		end
+		tt.button.ShowTooltip = TotemTimers.TimerTooltip
+		tt.button.HideTooltip = function(self) GameTooltip:Hide() end
 		tt.button:SetAttribute("_onenter", [[ control:CallMethod("ShowTooltip")
                                               if self:GetAttribute("OpenMenu") == "mouseover" then
                                                   control:ChildUpdate("show", true)
@@ -126,7 +127,7 @@ function TotemTimers_CreateTimers()
                                                           control:ChildUpdate("show", not open)
 														  self:SetAttribute("open", not open)
                                                       end ]])
-        tt.button:SetAttribute("_childupdate-mspell", [[  self:SetAttribute("mspell", tostring(message))
+		tt.button:SetAttribute("_childupdate-mspell", [[  self:SetAttribute("mspell", tostring(message))
                                                           self:SetAttribute("*spell1", self:GetAttribute("mspell"..message) or 0)
                                                           for i = 1,8 do
                                                               local f = self:GetFrameRef("f"..i)
@@ -189,10 +190,29 @@ function TotemTimers_CreateTimers()
         end
 
 	end
-	TotemTimers_CreateCastButtons()
+	TotemTimers_CreateCastButtons();
+	--TotemTimers_CreateTotemicCallButton();
 end
 
-
+local TotemicCallButton = nil;
+function TotemTimers_CreateTotemicCallButton()
+	local tt = XiTimers:new(1);
+	local name, rank, icon = GetSpellInfo(TotemTimers.SpellIDs.TotemicCall);
+	tt.button.anchorframe = TotemTimers_MultiSpellFrame;	
+	tt.button:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	tt.button:SetAttribute("*type1", "spell")
+	tt.button:SetAttribute("*spell1", TotemTimers.SpellIDs.TotemicCall);
+	tt.button:SetWidth(36) tt.button:SetHeight(36)
+	tt.button:SetScale(1);	
+	tt.button.icons[1]:SetTexture(icon);
+	TotemicCallButton = tt;
+	if (IsSpellKnown(TotemTimers.SpellIDs.TotemicCall) and TotemTimers_Settings["Show"]) then
+		tt:activate();
+	else
+		tt:deactivate();
+	end
+	return tt;
+end
 
 function TotemTimers.SetupTotemButtons()
     for i = 1,4 do
@@ -275,7 +295,7 @@ function TotemTimers:TotemEvent(event, arg1, arg2)
                 else
                     self.timer.bar = nil
                 end
-    			self.timer:start(1, duration)
+    		self.timer:start(1, duration)
                 TotemTimers.SetTotemPosition(self.element)
                 TotemTimers.ResetRange(self.element)
                 if TotemData[totem].noRangeCheck then
@@ -301,29 +321,29 @@ function TotemTimers:TotemEvent(event, arg1, arg2)
             local start, duration, enable = GetSpellCooldown(spell)
             if start and duration then CooldownFrame_SetTimer(self.cooldown, GetSpellCooldown(spell)) end
         end
-        if settings.ShowCooldowns then
-            for nr, spellid in pairs(Cooldowns[self.timer.nr]) do
-                local spell = TotemTimers.SpellNames[spellid]
-                if TotemTimers.AvailableSpells[spell] then
-                    local start, duration, enable = GetSpellCooldown(spell)
-					if not start and not duration then
-						self.timer:stop(nr)
-						return
-			        end
-                    if duration == 0 then
-                        self.timer:stop(nr)
-                    elseif duration > 2 and self.timer.timers[nr]<=0 then
-                        self.timer:start(nr,start+duration-floor(GetTime()),duration)
-                        self.timer.timerbars[nr].icon:SetTexture(TotemTimers.SpellTextures[spellid])
-                    end
-                elseif self.timer.timers[nr] > 0 then
-                    self.timer:stop(nr)
-                end 
-            end
+	if settings.ShowCooldowns then
+		for nr, spellid in pairs(Cooldowns[self.timer.nr]) do
+			local spell = TotemTimers.SpellNames[spellid]
+			if TotemTimers.AvailableSpells[spell] then
+				local start, duration, enable = GetSpellCooldown(spell)
+				if not start and not duration then
+					self.timer:stop(nr)
+					return
+				end
+				if duration == 0 then
+					self.timer:stop(nr)
+				elseif duration > 2 and self.timer.timers[nr]<=0 then
+					self.timer:start(nr,start+duration-floor(GetTime()),duration)
+					self.timer.timerbars[nr].icon:SetTexture(TotemTimers.SpellTextures[spellid])
+				end
+			elseif self.timer.timers[nr] > 0 then
+				self.timer:stop(nr)
+			end 
+		end
         else
-            for i = 2, self.timer.numtimers do
-                self.timer:stop(i)
-            end
+		for i = 2, self.timer.numtimers do
+			self.timer:stop(i)
+		end
         end
     elseif (event == "UNIT_SPELLCAST_SUCCEEDED" and arg1 == "player" and arg2 == TotemicCall)
         or event == "PLAYER_ENTERING_WORLD" then
@@ -371,9 +391,9 @@ end
 
 
 local ButtonPositions = {
-	["box"] = {{"CENTER",0,"CENTER"},{"LEFT",1,"RIGHT"},{"TOP",2,"BOTTOM"},{"LEFT",1,"RIGHT"}},
-	["horizontal"] = {{"CENTER",0,"CENTER"},{"LEFT",1,"RIGHT"},{"LEFT",1,"RIGHT"},{"LEFT",1,"RIGHT"}},
-	["vertical"] = {{"CENTER",0,"CENTER"},{"TOP",1,"BOTTOM"},{"TOP",1,"BOTTOM"},{"TOP",1,"BOTTOM"}}	
+	["box"] = {{"LEFT",0,"RIGHT"},{"LEFT",1,"RIGHT"},{"TOP",2,"BOTTOM"},{"LEFT",1,"RIGHT"}},
+	["horizontal"] = {{"LEFT",1,"RIGHT"},{"LEFT",1,"RIGHT"},{"LEFT",1,"RIGHT"},{"LEFT",1,"RIGHT"}},
+	["vertical"] = {{"TOP",1,"BOTTOM"},{"TOP",1,"BOTTOM"},{"TOP",1,"BOTTOM"},{"TOP",1,"BOTTOM"}}	
 }
 
 
@@ -385,30 +405,47 @@ function TotemTimers_OrderTimers()
 		Timers[e]:ClearAnchors()
 		Timers[e].button:ClearAllPoints()
 	end
-    local c = 0
-    local pos = {}
+	local c = 0
+	local pos = {}
 	for e=1,4 do
-        if Timers[e].active then
-            c = c + 1
-            Timers[e].actnr = c
-            local arrange = Settings.Arrange
-            if arrange ~= "free" then
-                if c == 1 then
-                    Timers[e]:SetPoint(ButtonPositions[arrange][1][1], TotemTimersFrame, ButtonPositions[arrange][1][3])
-                else
-                    Timers[e]:Anchor(pos[c-ButtonPositions[arrange][c][2]], ButtonPositions[arrange][c][1])
-                end
-                Timers[e].savePos = false
-            else
-                local pos = Settings.TimerPositions[Timers[e].nr]
-                if not pos or not pos[1] then pos = {"CENTER", "UIParent", "CENTER", 0,0} end
-                Timers[e].button:ClearAllPoints()
-                Timers[e].button:SetPoint(pos[1], pos[2], pos[3], pos[4], pos[5])
-                Timers[e].savePos = true
-            end
-            pos[c] = Timers[e]
+		if Timers[e].active then
+			c = c + 1
+			Timers[e].actnr = c
+			local arrange = Settings.Arrange
+			if arrange ~= "free" then
+				if c == 1 then
+		
+					--Timers[e]:SetPoint(ButtonPositions[arrange][1][1], TotemTimersFrame, ButtonPositions[arrange][1][3])
+					--Timers[e]:SetPoint(ButtonPositions[arrange][1][1], TotemTimers_MultiSpell, ButtonPositions[arrange][1][3])
+					TotemTimers_MultiSpell.anchors = {};
+					TotemTimers_MultiSpell.anchorchilds = {};
+					Timers[e]:Anchor(TotemTimers_MultiSpell, ButtonPositions[arrange][1][1], ButtonPositions[arrange][1][3])
+				else
+					Timers[e]:Anchor(pos[c-ButtonPositions[arrange][c][2]], ButtonPositions[arrange][c][1])
+				end
+				Timers[e].savePos = false
+			else
+				local pos = Settings.TimerPositions[Timers[e].nr]
+				if not pos or not pos[1] then pos = {"CENTER", "UIParent", "CENTER", 0,0} end
+				Timers[e].button:ClearAllPoints()
+				Timers[e].button:SetPoint(pos[1], pos[2], pos[3], pos[4], pos[5])
+				Timers[e].savePos = true
+			end
+			pos[c] = Timers[e]
 		end
 	end
+
+	if (not TotemicCallButton ) then
+		TotemTimers.TotemicCallButton = TotemTimers_CreateTotemicCallButton();
+	end
+	if (TotemTimers_Settings["Show"]) then
+		local arrange = Settings.Arrange
+		if (c>1) then
+			TotemicCallButton:Anchor(pos[c], ButtonPositions[arrange][c-1][1]);
+		elseif (c==1) then
+			TotemicCallButton:Anchor(pos[c], ButtonPositions[arrange][1][1]);
+		end		
+	end	
 end
 
 
@@ -419,7 +456,8 @@ local BarMiniIconPos = {
 
 function TotemTimers_CreateCastButtons()
     for i = 1,4 do 
-        TTActionBars:new(8, XiTimers.timers[i].button, _G["TotemTimers_CastBar"..i], TotemTimersFrame)
+        --TTActionBars:new(8, XiTimers.timers[i].button, _G["TotemTimers_CastBar"..i], TotemTimersFrame)
+	TTActionBars:new(8, XiTimers.timers[i].button, _G["TotemTimers_CastBar"..i], TotemTimers_MultiSpellFrame)
         for j = 1,8 do
             local button = _G["TT_ActionButton"..i..j]
             XiTimers.timers[i].button:SetFrameRef("f"..j, button)

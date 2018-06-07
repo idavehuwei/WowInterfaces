@@ -6,7 +6,6 @@ local Tablet = AceLibrary("Tablet-2.0")
 local Tourist = LibStub("LibTourist-3.0")
 local Quixote = LibStub("LibQuixote-2.0")
 local CN = CQI:GetModule("Notes");
-
 -------------------------------------------------------------------
 
 local DB_NAME = "QuestInfo"
@@ -62,9 +61,8 @@ function CQI:EnableCartoMap()
 
 	--self:Hook_IsNoteHidden("Quests")
 	--self:Hook_IsNoteHidden("Quest Objectives")
-
 	CN:RegisterNotesDatabase(DB_NAME, CQI_NOTES, self)
-	CN:RefreshMap(true)
+	CN:RefreshMap(true)	
 end
 
 function CQI:DisableCartoMap()
@@ -302,21 +300,16 @@ end
 function CQI:BatchAddQuestNotes(quest, title, type, zone, npc_list)
 	for _, npc in ipairs(npc_list) do
 		self:AddQuestNotes(quest, title, type, npc, zone)
-	end	
+	end
 end
 -------------------------------------------------------------------
 
 function CQI:ShowActiveQuests(tracked_only, all_zones)
-	if (CQI.trackMode) then
-		return;
-	end
-	
-	all_zone = true;
-
 	self:ClearQuestNotes()
 	local zone = not all_zones and CN:GetCurrentLocalizedZoneName()
 	for _, uid in Quixote:IterateQuestsByLevel() do
 		local _, qid, _, _, _, nobjs, complete = Quixote:GetQuestByUid(uid)
+
 		local q = self:GetQuest(uid)
 		if q and (not tracked_only or IsQuestWatched(qid)) then
 			--if q.start_npc and complete ~= 1 then
@@ -354,10 +347,6 @@ end
 local _aq
 
 function CQI:BatchShowAvialableQuests()
-	if (CQI.trackMode) then
-		return;
-	end
-
 	while true do
 		local npc_id, entry = next(_aq.npcs, _aq.current)
 		if not npc_id then break end
@@ -394,16 +383,12 @@ function CQI:BatchShowAvialableQuests()
 end
 
 function CQI:ShowAvialableQuests()
-	if (CQI.trackMode) then
-		return;
-	end
-
 	self:ClearQuestNotes()
 
 	local zone = CN:GetCurrentLocalizedZoneName()
 	local player_level = UnitLevel("player")
 	local player_high = player_level + 5
-	local player_low = player_level - GetQuestGreenRange()
+	local player_low = 0; --player_level - GetQuestGreenRange()
 	local npcs = {}
 
 	if self.db.profile.showAllAvail then
@@ -419,7 +404,7 @@ function CQI:ShowAvialableQuests()
 
 	for uid in pairs(QuestInfo_Quest) do		
 		local level, level_req, start_npc = self:PeekQuest(uid)
-		if player_level >= level_req and level >= player_low and level < player_high then
+		if player_level >= level_req and level >= player_low and level <= player_high then
 			start_npc = start_npc and self:GetNPC(start_npc)
 			if start_npc and start_npc.loc then
 				local start_here = false
@@ -525,11 +510,16 @@ end
 function CQI:GetNoteTransparency(zone, id, data)
 	return self.db.profile.iconAlpha
 end
-
-function CQI:GetNoteScaling(zone, id, data)
-	return self.db.profile.iconScale
+]]
+function CQI:GetNoteScalling()
 end
 
+--function MpasterE:PLAYER_REGEN_ENABLED()
+--	if ( CQI.lastC == "worldboss" or CQI.curentC == "worldboss") then		
+--		-- CQI:ScheduleRepeatingTimer("Mapster_NotesNewPOI", 0.00);
+--	end
+--end
+--[[
 function CQI:Hook_IsNoteHidden(mod)
 	local obj = C:HasModule(mod) and C:GetModule(mod)
 	if not obj or obj.IsNoteHiddenHooked then return end
@@ -542,6 +532,7 @@ function CQI:Hook_IsNoteHidden(mod)
 	end
 end
 ]]
+
 -------------------------------------------------------------------
 
 function CQI:BatchShowActiveQuests()

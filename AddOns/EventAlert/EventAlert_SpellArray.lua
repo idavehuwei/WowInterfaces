@@ -1,15 +1,19 @@
 function EventAlert_LoadSpellArray()
-	-- 职业技能提醒
+	-- 职业法术提醒
 	if EA_Items == nil then
 		EA_Items = {};
 	end
-	-- 职业特殊技能提醒
+	-- 职业额外提醒
 	if EA_AltItems == nil then
 		EA_AltItems = {};
 	end
-	-- 目标提醒
+	-- 目标提醒区
 	if EA_TarItems == nil then
 		EA_TarItems = {};
+	end
+	-- 必须排除的法术ID
+	if (EA_RejectItems == nil) then
+		EA_RejectItems = {};
 	end
 
 -- 05/24 Remark this code. For saving the spells dynamically, and clear the CLASS_OTHER for the removed spells.
@@ -20,8 +24,8 @@ function EventAlert_LoadSpellArray()
 
 --------------------------------- Start Normal Items ---------------------------------
 ----------------------------------- 職業主要提醒區 -----------------------------------
--- Death Knight / 死亡騎士
-if EA_Items[EA_CLASS_DK] == nil then EA_Items[EA_CLASS_DK] = {} end;
+	-- Death Knight / 死亡騎士
+	if EA_Items[EA_CLASS_DK] == nil then EA_Items[EA_CLASS_DK] = {} end;
 	-- Killing Machine
 		if EA_Items[EA_CLASS_DK][51124] == nil then EA_Items[EA_CLASS_DK][51124] = true end;
 
@@ -31,8 +35,8 @@ if EA_Items[EA_CLASS_DK] == nil then EA_Items[EA_CLASS_DK] = {} end;
 	-- Cinderglacier (Runeforge)
 		if EA_Items[EA_CLASS_DK][53386] == nil then EA_Items[EA_CLASS_DK][53386] = true end;
 
--- Druid / 德魯依
-if EA_Items[EA_CLASS_DRUID] == nil then EA_Items[EA_CLASS_DRUID] = {} end;
+	-- Druid / 德魯依
+	if EA_Items[EA_CLASS_DRUID] == nil then EA_Items[EA_CLASS_DRUID] = {} end;
 	-- Eclipse
 		if EA_Items[EA_CLASS_DRUID][48517] == nil then EA_Items[EA_CLASS_DRUID][48517] = true end;
 		if EA_Items[EA_CLASS_DRUID][48518] == nil then EA_Items[EA_CLASS_DRUID][48518] = true end;
@@ -55,14 +59,14 @@ if EA_Items[EA_CLASS_DRUID] == nil then EA_Items[EA_CLASS_DRUID] = {} end;
 	-- Predatory Strikes (掠食者迅捷)
 		if EA_Items[EA_CLASS_DRUID][69369] == nil then EA_Items[EA_CLASS_DRUID][69369] = true end;
 
-	-- Savage Roar / 兇蠻咆嘯
+	-- Savage Roar / 兇蠻咆嘯(增加)
 		if EA_Items[EA_CLASS_DRUID][52610] == nil then EA_Items[EA_CLASS_DRUID][52610] = false end;
 
-	-- Berserk / 狂暴
+	-- Berserk / 狂暴(增加)
 		if EA_Items[EA_CLASS_DRUID][50334] == nil then EA_Items[EA_CLASS_DRUID][50334] = false end;
 
--- Hunter / 獵人
-if EA_Items[EA_CLASS_HUNTER] == nil then EA_Items[EA_CLASS_HUNTER] = {} end;
+	-- Hunter / 獵人
+	if EA_Items[EA_CLASS_HUNTER] == nil then EA_Items[EA_CLASS_HUNTER] = {} end;
 	-- Improved Stead Shot
 		if EA_Items[EA_CLASS_HUNTER][53220] == nil then EA_Items[EA_CLASS_HUNTER][53220] = true end;
 
@@ -73,14 +77,14 @@ if EA_Items[EA_CLASS_HUNTER] == nil then EA_Items[EA_CLASS_HUNTER] = {} end;
 		if EA_Items[EA_CLASS_HUNTER][35098] == nil then EA_Items[EA_CLASS_HUNTER][35098] = true end;
 		if EA_Items[EA_CLASS_HUNTER][35099] == nil then EA_Items[EA_CLASS_HUNTER][35099] = true end;
 
-	-- -- T10x2P / 攻擊弱點 / Exploit Weakness
-	-- 	if EA_Items[EA_CLASS_HUNTER][70728] == nil then EA_Items[EA_CLASS_HUNTER][70728] = true end;
-    --
-	-- -- T10x4P / 釘刺 / Stinger
-	-- 	if EA_Items[EA_CLASS_HUNTER][71007] == nil then EA_Items[EA_CLASS_HUNTER][71007] = true end;
+	-- T10x2P / 攻擊弱點 / Exploit Weakness(增加)
+	 	if EA_Items[EA_CLASS_HUNTER][70728] == nil then EA_Items[EA_CLASS_HUNTER][70728] = true end;
+     
+	-- T10x4P / 釘刺 / Stinger(增加)
+	 	if EA_Items[EA_CLASS_HUNTER][71007] == nil then EA_Items[EA_CLASS_HUNTER][71007] = true end;
 
--- Mage / 法師
-if EA_Items[EA_CLASS_MAGE] == nil then EA_Items[EA_CLASS_MAGE] = {} end;
+	-- Mage / 法師
+	if EA_Items[EA_CLASS_MAGE] == nil then EA_Items[EA_CLASS_MAGE] = {} end;
 	-- Arcane Concentration
 		if EA_Items[EA_CLASS_MAGE][12536] == nil then EA_Items[EA_CLASS_MAGE][12536] = true end;
 
@@ -99,14 +103,14 @@ if EA_Items[EA_CLASS_MAGE] == nil then EA_Items[EA_CLASS_MAGE] = {} end;
 	-- Missile Barrage
 		if EA_Items[EA_CLASS_MAGE][44401] == nil then EA_Items[EA_CLASS_MAGE][44401] = true end;
 
-	-- Arcane Blast / 奧衝堆疊
+	-- Arcane Blast / 奧衝堆疊(增加)
 		if EA_Items[EA_CLASS_MAGE][36032] == nil then EA_Items[EA_CLASS_MAGE][36032] = false end;
 
-	-- -- T10x4P / Quad Core / 四重奧義
-	-- 	if EA_Items[EA_CLASS_MAGE][70747] == nil then EA_Items[EA_CLASS_MAGE][70747] = true end;
+	-- T10x4P / Quad Core / 四重奧義(增加)
+	 	if EA_Items[EA_CLASS_MAGE][70747] == nil then EA_Items[EA_CLASS_MAGE][70747] = true end;
 
--- Paladin / 聖騎士
-if EA_Items[EA_CLASS_PALADIN] == nil then EA_Items[EA_CLASS_PALADIN] = {} end;
+	-- Paladin / 聖騎士
+	if EA_Items[EA_CLASS_PALADIN] == nil then EA_Items[EA_CLASS_PALADIN] = {} end;
 
 	-- Just used for testing  (DO NOT ENABLE THESE UNLESS YOU KNOW WHAT YOU ARE DOING).
 		--  if EA_Items[EA_CLASS_PALADIN][27179] == nil then EA_Items[EA_CLASS_PALADIN][27179] = true end;
@@ -124,14 +128,14 @@ if EA_Items[EA_CLASS_PALADIN] == nil then EA_Items[EA_CLASS_PALADIN] = {} end;
 	-- Sacred Shield
 		if EA_Items[EA_CLASS_PALADIN][58597] == nil then EA_Items[EA_CLASS_PALADIN][58597] = true end;
 
-	-- -- T10x4P 神聖 / Holiness / 虔聖
-	-- 	if EA_Items[EA_CLASS_PALADIN][70757] == nil then EA_Items[EA_CLASS_PALADIN][70757] = true end;
-    --
-	-- -- T10x4P 防護 / Deliverance / 判決
-	-- 	if EA_Items[EA_CLASS_PALADIN][70760] == nil then EA_Items[EA_CLASS_PALADIN][70760] = true end;
+	-- T10x4P 神聖 / Holiness / 虔聖(增加)
+	 	if EA_Items[EA_CLASS_PALADIN][70757] == nil then EA_Items[EA_CLASS_PALADIN][70757] = true end;
+     
+	-- T10x4P 防護 / Deliverance / 判決(增加)
+	 	if EA_Items[EA_CLASS_PALADIN][70760] == nil then EA_Items[EA_CLASS_PALADIN][70760] = true end;
 
--- Priest / 牧師
-if EA_Items[EA_CLASS_PRIEST] == nil then EA_Items[EA_CLASS_PRIEST] = {} end;
+	-- Priest / 牧師
+	if EA_Items[EA_CLASS_PRIEST] == nil then EA_Items[EA_CLASS_PRIEST] = {} end;
 	-- Borrowed Time
 		if EA_Items[EA_CLASS_PRIEST][59887] == nil then EA_Items[EA_CLASS_PRIEST][59887] = true end;
 		if EA_Items[EA_CLASS_PRIEST][59888] == nil then EA_Items[EA_CLASS_PRIEST][59888] = true end;
@@ -153,21 +157,17 @@ if EA_Items[EA_CLASS_PRIEST] == nil then EA_Items[EA_CLASS_PRIEST] = {} end;
 		if EA_Items[EA_CLASS_PRIEST][63734] == nil then EA_Items[EA_CLASS_PRIEST][63734] = true end;
 		if EA_Items[EA_CLASS_PRIEST][63735] == nil then EA_Items[EA_CLASS_PRIEST][63735] = true end;
 
-		if EA_Items["FUNKY"] == nil then EA_Items["FUNKY"] = {} end;
-		if EA_Items["FUNKY"][63731] == nil then EA_Items["FUNKY"][63731] = true end;
-		if EA_Items["FUNKY"][63734] == nil then EA_Items["FUNKY"][63734] = true end;
-		if EA_Items["FUNKY"][63735] == nil then EA_Items["FUNKY"][63735] = true end;
     -- Surge of Light
 		if EA_Items[EA_CLASS_PRIEST][33151] == nil then EA_Items[EA_CLASS_PRIEST][33151] = true end;
 
--- Rogue / 盜賊
-if EA_Items[EA_CLASS_ROGUE] == nil then EA_Items[EA_CLASS_ROGUE] = {} end;
+	-- Rogue / 盜賊(增加)
+	if EA_Items[EA_CLASS_ROGUE] == nil then EA_Items[EA_CLASS_ROGUE] = {} end;
 		if EA_Items[EA_CLASS_ROGUE][6774] == nil then EA_Items[EA_CLASS_ROGUE][6774] = false end;
 		if EA_Items[EA_CLASS_ROGUE][57993] == nil then EA_Items[EA_CLASS_ROGUE][57993] = false end;
 		if EA_Items[EA_CLASS_ROGUE][63848] == nil then EA_Items[EA_CLASS_ROGUE][63848] = false end;
 
--- Shaman / 薩滿
-if EA_Items[EA_CLASS_SHAMAN] == nil then EA_Items[EA_CLASS_SHAMAN] = {} end;
+	-- Shaman / 薩滿
+	if EA_Items[EA_CLASS_SHAMAN] == nil then EA_Items[EA_CLASS_SHAMAN] = {} end;
 	-- Elemental Focus
 		if EA_Items[EA_CLASS_SHAMAN][16246] == nil then EA_Items[EA_CLASS_SHAMAN][16246] = true end;
 
@@ -177,18 +177,18 @@ if EA_Items[EA_CLASS_SHAMAN] == nil then EA_Items[EA_CLASS_SHAMAN] = {} end;
 	-- Tital Waves
 		if EA_Items[EA_CLASS_SHAMAN][53390] == nil then EA_Items[EA_CLASS_SHAMAN][53390] = true end;
 
-	-- -- T10x2P 增強 / Elemental Rage / 元素之怒
-	-- 	if EA_Items[EA_CLASS_SHAMAN][70829] == nil then EA_Items[EA_CLASS_SHAMAN][70829] = true end;
-    --
-	-- -- T10x4P 增強 / Maelstrom Power / 氣漩威能
-	-- 	if EA_Items[EA_CLASS_SHAMAN][70831] == nil then EA_Items[EA_CLASS_SHAMAN][70831] = true end;
-    --
-	-- -- T10x2P 恢復 / Rapid Currents / 急流
-	-- 	if EA_Items[EA_CLASS_SHAMAN][70806] == nil then EA_Items[EA_CLASS_SHAMAN][70806] = true end;
+	-- T10x2P 增強 / Elemental Rage / 元素之怒(增加)
+	 	if EA_Items[EA_CLASS_SHAMAN][70829] == nil then EA_Items[EA_CLASS_SHAMAN][70829] = true end;
+     
+	-- T10x4P 增強 / Maelstrom Power / 氣漩威能(增加)
+	 	if EA_Items[EA_CLASS_SHAMAN][70831] == nil then EA_Items[EA_CLASS_SHAMAN][70831] = true end;
+     
+	-- T10x2P 恢復 / Rapid Currents / 急流(增加)
+	 	if EA_Items[EA_CLASS_SHAMAN][70806] == nil then EA_Items[EA_CLASS_SHAMAN][70806] = true end;
 
 
--- Warlock / 術士
-if EA_Items[EA_CLASS_WARLOCK] == nil then EA_Items[EA_CLASS_WARLOCK] = {} end;
+	-- Warlock / 術士
+	if EA_Items[EA_CLASS_WARLOCK] == nil then EA_Items[EA_CLASS_WARLOCK] = {} end;
 	-- Backdraft
 		if EA_Items[EA_CLASS_WARLOCK][54274] == nil then EA_Items[EA_CLASS_WARLOCK][54274] = true end;
 		if EA_Items[EA_CLASS_WARLOCK][54276] == nil then EA_Items[EA_CLASS_WARLOCK][54276] = true end;
@@ -220,11 +220,11 @@ if EA_Items[EA_CLASS_WARLOCK] == nil then EA_Items[EA_CLASS_WARLOCK] = {} end;
 	-- Glyph of Life Tap (生命分流)
 		if EA_Items[EA_CLASS_WARLOCK][63321] == nil then EA_Items[EA_CLASS_WARLOCK][63321] = true end;
 
-	-- -- T10x4P / Devious Minds / 心靈沉淪
-	-- 	if EA_Items[EA_CLASS_WARLOCK][70840] == nil then EA_Items[EA_CLASS_WARLOCK][70840] = true end;
+	-- T10x4P / Devious Minds / 心靈沉淪(增加)
+	 	if EA_Items[EA_CLASS_WARLOCK][70840] == nil then EA_Items[EA_CLASS_WARLOCK][70840] = true end;
 
--- Warrior / 戰士
-if EA_Items[EA_CLASS_WARRIOR] == nil then EA_Items[EA_CLASS_WARRIOR] = {} end;
+	-- Warrior / 戰士
+	if EA_Items[EA_CLASS_WARRIOR] == nil then EA_Items[EA_CLASS_WARRIOR] = {} end;
 	-- Bloodsurge (Slam)
 		if EA_Items[EA_CLASS_WARRIOR][46916] == nil then EA_Items[EA_CLASS_WARRIOR][46916] = true end;
 
@@ -240,14 +240,14 @@ if EA_Items[EA_CLASS_WARRIOR] == nil then EA_Items[EA_CLASS_WARRIOR] = {} end;
 	-- Glyph of Revenge
 		if EA_Items[EA_CLASS_WARRIOR][58363] == nil then EA_Items[EA_CLASS_WARRIOR][58363] = true end;
 
-	-- -- T10x2P 傷害 / Blood Drinker / 飲血者
-	-- 	if EA_Items[EA_CLASS_WARRIOR][70855] == nil then EA_Items[EA_CLASS_WARRIOR][70855] = true end;
+	-- T10x2P 傷害 / Blood Drinker / 飲血者(增加)
+	 	if EA_Items[EA_CLASS_WARRIOR][70855] == nil then EA_Items[EA_CLASS_WARRIOR][70855] = true end;
 
 
 -------------------------------- Start Other Items --------------------------------
 -------------------------------- 跨職業共通提醒區 ---------------------------------
--- Other
-if EA_Items[EA_CLASS_OTHER] == nil then EA_Items[EA_CLASS_OTHER] = {} end;
+	-- Other
+	if EA_Items[EA_CLASS_OTHER] == nil then EA_Items[EA_CLASS_OTHER] = {} end;
 	-- Healing Trance
 		-- if EA_Items[EA_CLASS_OTHER][37706] == nil then EA_Items[EA_CLASS_OTHER][37706] = true end;
 		-- if EA_Items[EA_CLASS_OTHER][37721] == nil then EA_Items[EA_CLASS_OTHER][37721] = true end;
@@ -273,30 +273,30 @@ if EA_Items[EA_CLASS_OTHER] == nil then EA_Items[EA_CLASS_OTHER] = {} end;
 	-- -- Dislodged Foreign Object / Normal+Heroic / 異物逐除
 	-- 	if EA_Items[EA_CLASS_OTHER][71601] == nil then EA_Items[EA_CLASS_OTHER][71601] = true end;
 	-- 	if EA_Items[EA_CLASS_OTHER][71644] == nil then EA_Items[EA_CLASS_OTHER][71644] = true end;
-    --
-	-- -- ICC - Blood Princes / 血親王議會
-	-- 	-- Shadow Prison / 暗影之牢 / Heroic
-	-- 	if EA_Items[EA_CLASS_OTHER][72999] == nil then EA_Items[EA_CLASS_OTHER][72999] = true end;
-    --
-	-- -- ICC - Valithria Dreamwalker / 瓦莉絲瑞雅．夢行者
-	-- 	-- Emerald Vigor / 翡翠精力
-	-- 	if EA_Items[EA_CLASS_OTHER][70873] == nil then EA_Items[EA_CLASS_OTHER][70873] = true end;
-	-- 	-- Twisted Nightmares / 扭曲夢魘 / Heroic
-	-- 	if EA_Items[EA_CLASS_OTHER][71941] == nil then EA_Items[EA_CLASS_OTHER][71941] = true end;
-    --
-	-- -- ICC - Sindragosa / 辛德拉苟莎
-	-- 	-- Unchained Magic / 無束魔法
-	-- 	if EA_Items[EA_CLASS_OTHER][69762] == nil then EA_Items[EA_CLASS_OTHER][69762] = true end;
-	-- 	-- Instability / 不穩定(無束魔法反衝)
-	-- 	if EA_Items[EA_CLASS_OTHER][69766] == nil then EA_Items[EA_CLASS_OTHER][69766] = true end;
-	-- 	-- Chilled to the Bone / 徹骨之寒(沁骨之寒反衝)
-	-- 	if EA_Items[EA_CLASS_OTHER][70106] == nil then EA_Items[EA_CLASS_OTHER][70106] = true end;
-	-- 	-- Mystic Buffet / 秘能連擊
-	-- 	if EA_Items[EA_CLASS_OTHER][70127] == nil then EA_Items[EA_CLASS_OTHER][70127] = true end;
-	-- 	if EA_Items[EA_CLASS_OTHER][70128] == nil then EA_Items[EA_CLASS_OTHER][70128] = true end;
-	-- 	if EA_Items[EA_CLASS_OTHER][72528] == nil then EA_Items[EA_CLASS_OTHER][72528] = true end;
-	-- 	if EA_Items[EA_CLASS_OTHER][72529] == nil then EA_Items[EA_CLASS_OTHER][72529] = true end;
-	-- 	if EA_Items[EA_CLASS_OTHER][72530] == nil then EA_Items[EA_CLASS_OTHER][72530] = true end;
+     
+	-- ICC - Blood Princes / 血親王議會
+	 	-- Shadow Prison / 暗影之牢 / Heroic
+	 	if EA_Items[EA_CLASS_OTHER][72999] == nil then EA_Items[EA_CLASS_OTHER][72999] = true end;
+     
+	-- ICC - Valithria Dreamwalker / 瓦莉絲瑞雅．夢行者
+	 	-- Emerald Vigor / 翡翠精力
+	 	if EA_Items[EA_CLASS_OTHER][70873] == nil then EA_Items[EA_CLASS_OTHER][70873] = true end;
+	 	-- Twisted Nightmares / 扭曲夢魘 / Heroic
+	 	if EA_Items[EA_CLASS_OTHER][71941] == nil then EA_Items[EA_CLASS_OTHER][71941] = true end;
+     
+	-- ICC - Sindragosa / 辛德拉苟莎
+	 	-- Unchained Magic / 無束魔法
+	 	if EA_Items[EA_CLASS_OTHER][69762] == nil then EA_Items[EA_CLASS_OTHER][69762] = true end;
+	 	-- Instability / 不穩定(無束魔法反衝)
+	 	if EA_Items[EA_CLASS_OTHER][69766] == nil then EA_Items[EA_CLASS_OTHER][69766] = true end;
+	 	-- Chilled to the Bone / 徹骨之寒(沁骨之寒反衝)
+	 	if EA_Items[EA_CLASS_OTHER][70106] == nil then EA_Items[EA_CLASS_OTHER][70106] = true end;
+	 	-- Mystic Buffet / 秘能連擊
+	 	if EA_Items[EA_CLASS_OTHER][70127] == nil then EA_Items[EA_CLASS_OTHER][70127] = true end;
+	 	if EA_Items[EA_CLASS_OTHER][70128] == nil then EA_Items[EA_CLASS_OTHER][70128] = true end;
+	 	if EA_Items[EA_CLASS_OTHER][72528] == nil then EA_Items[EA_CLASS_OTHER][72528] = true end;
+	 	if EA_Items[EA_CLASS_OTHER][72529] == nil then EA_Items[EA_CLASS_OTHER][72529] = true end;
+	 	if EA_Items[EA_CLASS_OTHER][72530] == nil then EA_Items[EA_CLASS_OTHER][72530] = true end;
 		if EA_Items[EA_CLASS_OTHER][57934] == nil then EA_Items[EA_CLASS_OTHER][57934] = true end;
 		if EA_Items[EA_CLASS_OTHER][34477] == nil then EA_Items[EA_CLASS_OTHER][34477] = true end;
 		if EA_Items[EA_CLASS_OTHER][32182] == nil then EA_Items[EA_CLASS_OTHER][32182] = true end;
@@ -312,26 +312,26 @@ if EA_Items[EA_CLASS_OTHER] == nil then EA_Items[EA_CLASS_OTHER] = {} end;
 
 -------------------------------- Start Alternate Items --------------------------------
 ----------------------------------- 職業額外提醒區 ------------------------------------
--- Death Knight / 死亡騎士
-if EA_AltItems[EA_CLASS_DK] == nil then EA_AltItems[EA_CLASS_DK] = {} end;
-	-- Rune Strike
-    	if EA_AltItems[EA_CLASS_DK][56815] == nil then EA_AltItems[EA_CLASS_DK][56815] = true end;
+	-- Death Knight / 死亡騎士
+	if EA_AltItems[EA_CLASS_DK] == nil then EA_AltItems[EA_CLASS_DK] = {} end;
+		-- Rune Strike
+    		if EA_AltItems[EA_CLASS_DK][56815] == nil then EA_AltItems[EA_CLASS_DK][56815] = true end;
 
--- Druid / 德魯依
-if EA_AltItems[EA_CLASS_DRUID] == nil then EA_AltItems[EA_CLASS_DRUID] = {} end;
+	-- Druid / 德魯依
+	if EA_AltItems[EA_CLASS_DRUID] == nil then EA_AltItems[EA_CLASS_DRUID] = {} end;
 
--- Hunter / 獵人
-if EA_AltItems[EA_CLASS_HUNTER] == nil then EA_AltItems[EA_CLASS_HUNTER] = {} end;
+	-- Hunter / 獵人
+	if EA_AltItems[EA_CLASS_HUNTER] == nil then EA_AltItems[EA_CLASS_HUNTER] = {} end;
 	-- Kill Shot
 		if EA_AltItems[EA_CLASS_HUNTER][53351] == nil then EA_AltItems[EA_CLASS_HUNTER][53351] = true end;
 		if EA_AltItems[EA_CLASS_HUNTER][61005] == nil then EA_AltItems[EA_CLASS_HUNTER][61005] = true end;
 		if EA_AltItems[EA_CLASS_HUNTER][61006] == nil then EA_AltItems[EA_CLASS_HUNTER][61006] = true end;
 
--- Mage / 法師
-if EA_AltItems[EA_CLASS_MAGE] == nil then EA_AltItems[EA_CLASS_MAGE] = {} end;
+	-- Mage / 法師
+	if EA_AltItems[EA_CLASS_MAGE] == nil then EA_AltItems[EA_CLASS_MAGE] = {} end;
 
--- Paladin / 聖騎士
-if EA_AltItems[EA_CLASS_PALADIN] == nil then EA_AltItems[EA_CLASS_PALADIN] = {} end;
+	-- Paladin / 聖騎士
+	if EA_AltItems[EA_CLASS_PALADIN] == nil then EA_AltItems[EA_CLASS_PALADIN] = {} end;
 	-- Hammer of Wrath
 		if EA_AltItems[EA_CLASS_PALADIN][24275] == nil then EA_AltItems[EA_CLASS_PALADIN][24275] = true end;
 		if EA_AltItems[EA_CLASS_PALADIN][24274] == nil then EA_AltItems[EA_CLASS_PALADIN][24274] = true end;
@@ -340,57 +340,57 @@ if EA_AltItems[EA_CLASS_PALADIN] == nil then EA_AltItems[EA_CLASS_PALADIN] = {} 
 		if EA_AltItems[EA_CLASS_PALADIN][48805] == nil then EA_AltItems[EA_CLASS_PALADIN][48805] = true end;
 		if EA_AltItems[EA_CLASS_PALADIN][48806] == nil then EA_AltItems[EA_CLASS_PALADIN][48806] = true end;
 
--- Priest / 牧師
-if EA_AltItems[EA_CLASS_PRIEST] == nil then EA_AltItems[EA_CLASS_PRIEST] = {} end;
+	-- Priest / 牧師
+	if EA_AltItems[EA_CLASS_PRIEST] == nil then EA_AltItems[EA_CLASS_PRIEST] = {} end;
 
--- Rogue / 盜賊
-if EA_AltItems[EA_CLASS_ROGUE] == nil then EA_AltItems[EA_CLASS_ROGUE] = {} end;
+	-- Rogue / 盜賊
+	if EA_AltItems[EA_CLASS_ROGUE] == nil then EA_AltItems[EA_CLASS_ROGUE] = {} end;
 	-- Riposte
 		if EA_AltItems[EA_CLASS_ROGUE][14251] == nil then EA_AltItems[EA_CLASS_ROGUE][14251] = true end;
 
--- Shaman / 薩滿
-if EA_AltItems[EA_CLASS_SHAMAN] == nil then EA_AltItems[EA_CLASS_SHAMAN] = {} end;
+	-- Shaman / 薩滿
+	if EA_AltItems[EA_CLASS_SHAMAN] == nil then EA_AltItems[EA_CLASS_SHAMAN] = {} end;
 
--- Warlock / 術士
-if EA_AltItems[EA_CLASS_WARLOCK] == nil then EA_AltItems[EA_CLASS_WARLOCK] = {} end;
+	-- Warlock / 術士
+	if EA_AltItems[EA_CLASS_WARLOCK] == nil then EA_AltItems[EA_CLASS_WARLOCK] = {} end;
 
--- Warrior / 戰士
-if EA_AltItems[EA_CLASS_WARRIOR] == nil then EA_AltItems[EA_CLASS_WARRIOR] = {} end;
-	-- Overpower 压制
-    	if EA_AltItems[EA_CLASS_WARRIOR][7384] == nil then EA_AltItems[EA_CLASS_WARRIOR][7384] = true end;
+	-- Warrior / 戰士
+	if EA_AltItems[EA_CLASS_WARRIOR] == nil then EA_AltItems[EA_CLASS_WARRIOR] = {} end;
+		-- Overpower 压制
+		if EA_AltItems[EA_CLASS_WARRIOR][7384] == nil then EA_AltItems[EA_CLASS_WARRIOR][7384] = true end;
 
-	-- Execute 斩杀
-    	if EA_AltItems[EA_CLASS_WARRIOR][5308] == nil then EA_AltItems[EA_CLASS_WARRIOR][5308] = true end;
-    	if EA_AltItems[EA_CLASS_WARRIOR][20658] == nil then EA_AltItems[EA_CLASS_WARRIOR][20658] = true end;
-    	if EA_AltItems[EA_CLASS_WARRIOR][20660] == nil then EA_AltItems[EA_CLASS_WARRIOR][20660] = true end;
-    	if EA_AltItems[EA_CLASS_WARRIOR][20661] == nil then EA_AltItems[EA_CLASS_WARRIOR][20661] = true end;
-    	if EA_AltItems[EA_CLASS_WARRIOR][20662] == nil then EA_AltItems[EA_CLASS_WARRIOR][20662] = true end;
-      	if EA_AltItems[EA_CLASS_WARRIOR][25234] == nil then EA_AltItems[EA_CLASS_WARRIOR][25234] = true end;
-    	if EA_AltItems[EA_CLASS_WARRIOR][25236] == nil then EA_AltItems[EA_CLASS_WARRIOR][25236] = true end;
-    	if EA_AltItems[EA_CLASS_WARRIOR][47470] == nil then EA_AltItems[EA_CLASS_WARRIOR][47470] = true end;
-    	if EA_AltItems[EA_CLASS_WARRIOR][47471] == nil then EA_AltItems[EA_CLASS_WARRIOR][47471] = true end;
+		-- Execute 斩杀
+		if EA_AltItems[EA_CLASS_WARRIOR][5308] == nil then EA_AltItems[EA_CLASS_WARRIOR][5308] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][20658] == nil then EA_AltItems[EA_CLASS_WARRIOR][20658] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][20660] == nil then EA_AltItems[EA_CLASS_WARRIOR][20660] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][20661] == nil then EA_AltItems[EA_CLASS_WARRIOR][20661] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][20662] == nil then EA_AltItems[EA_CLASS_WARRIOR][20662] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][25234] == nil then EA_AltItems[EA_CLASS_WARRIOR][25234] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][25236] == nil then EA_AltItems[EA_CLASS_WARRIOR][25236] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][47470] == nil then EA_AltItems[EA_CLASS_WARRIOR][47470] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][47471] == nil then EA_AltItems[EA_CLASS_WARRIOR][47471] = true end;
 
-	-- Revenge 复仇
-    	if EA_AltItems[EA_CLASS_WARRIOR][6572] == nil then EA_AltItems[EA_CLASS_WARRIOR][6572] = true end;
-    	if EA_AltItems[EA_CLASS_WARRIOR][6574] == nil then EA_AltItems[EA_CLASS_WARRIOR][6574] = true end;
-    	if EA_AltItems[EA_CLASS_WARRIOR][7379] == nil then EA_AltItems[EA_CLASS_WARRIOR][7379] = true end;
-    	if EA_AltItems[EA_CLASS_WARRIOR][11600] == nil then EA_AltItems[EA_CLASS_WARRIOR][11600] = true end;
-    	if EA_AltItems[EA_CLASS_WARRIOR][11601] == nil then EA_AltItems[EA_CLASS_WARRIOR][11601] = true end;
-      	if EA_AltItems[EA_CLASS_WARRIOR][25288] == nil then EA_AltItems[EA_CLASS_WARRIOR][25288] = true end;
-    	if EA_AltItems[EA_CLASS_WARRIOR][25269] == nil then EA_AltItems[EA_CLASS_WARRIOR][25269] = true end;
-    	if EA_AltItems[EA_CLASS_WARRIOR][30357] == nil then EA_AltItems[EA_CLASS_WARRIOR][30357] = true end;
-    	if EA_AltItems[EA_CLASS_WARRIOR][57823] == nil then EA_AltItems[EA_CLASS_WARRIOR][57823] = true end;
+		-- Revenge 复仇
+		if EA_AltItems[EA_CLASS_WARRIOR][6572] == nil then EA_AltItems[EA_CLASS_WARRIOR][6572] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][6574] == nil then EA_AltItems[EA_CLASS_WARRIOR][6574] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][7379] == nil then EA_AltItems[EA_CLASS_WARRIOR][7379] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][11600] == nil then EA_AltItems[EA_CLASS_WARRIOR][11600] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][11601] == nil then EA_AltItems[EA_CLASS_WARRIOR][11601] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][25288] == nil then EA_AltItems[EA_CLASS_WARRIOR][25288] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][25269] == nil then EA_AltItems[EA_CLASS_WARRIOR][25269] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][30357] == nil then EA_AltItems[EA_CLASS_WARRIOR][30357] = true end;
+		if EA_AltItems[EA_CLASS_WARRIOR][57823] == nil then EA_AltItems[EA_CLASS_WARRIOR][57823] = true end;
 
-	-- Victory Rush 乘胜追击
-        if EA_AltItems[EA_CLASS_WARRIOR][34428] == nil then EA_AltItems[EA_CLASS_WARRIOR][34428] = true end;
+		-- Victory Rush 乘胜追击
+		if EA_AltItems[EA_CLASS_WARRIOR][34428] == nil then EA_AltItems[EA_CLASS_WARRIOR][34428] = true end;
 
 --------------------------------- Start Target Items ---------------------------------
 ----------------------------------- 職業目標提醒區 -----------------------------------
--- Death Knight / 死亡騎士
-if EA_TarItems[EA_CLASS_DK] == nil then EA_TarItems[EA_CLASS_DK] = {} end;
+	-- Death Knight / 死亡騎士
+	if EA_TarItems[EA_CLASS_DK] == nil then EA_TarItems[EA_CLASS_DK] = {} end;
 
--- Druid / 德魯依
-if EA_TarItems[EA_CLASS_DRUID] == nil then EA_TarItems[EA_CLASS_DRUID] = {} end;
+	-- Druid / 德魯依
+	if EA_TarItems[EA_CLASS_DRUID] == nil then EA_TarItems[EA_CLASS_DRUID] = {} end;
 	-- Faerie Fire / 精靈之火
 		if EA_TarItems[EA_CLASS_DRUID][770] == nil then EA_TarItems[EA_CLASS_DRUID][770] = false end;
 
@@ -434,11 +434,11 @@ if EA_TarItems[EA_CLASS_DRUID] == nil then EA_TarItems[EA_CLASS_DRUID] = {} end;
 	-- Rip / 撕扯
 		if EA_TarItems[EA_CLASS_DRUID][49800] == nil then EA_TarItems[EA_CLASS_DRUID][49800] = false end;
 
--- Hunter / 獵人
-if EA_TarItems[EA_CLASS_HUNTER] == nil then EA_TarItems[EA_CLASS_HUNTER] = {} end;
+	-- Hunter / 獵人
+	if EA_TarItems[EA_CLASS_HUNTER] == nil then EA_TarItems[EA_CLASS_HUNTER] = {} end;
 
--- Mage / 法師
-if EA_TarItems[EA_CLASS_MAGE] == nil then EA_TarItems[EA_CLASS_MAGE] = {} end;
+	-- Mage / 法師
+	if EA_TarItems[EA_CLASS_MAGE] == nil then EA_TarItems[EA_CLASS_MAGE] = {} end;
 	-- Frostbite / 霜寒刺骨
 		if EA_TarItems[EA_CLASS_MAGE][12494] == nil then EA_TarItems[EA_CLASS_MAGE][12494] = false end;
 
@@ -451,11 +451,11 @@ if EA_TarItems[EA_CLASS_MAGE] == nil then EA_TarItems[EA_CLASS_MAGE] = {} end;
 	-- Living Bomb(Rank 1) / 活體爆彈(等級 1)
 		if EA_TarItems[EA_CLASS_MAGE][44457] == nil then EA_TarItems[EA_CLASS_MAGE][44457] = false end;
 
--- Paladin / 聖騎士
-if EA_TarItems[EA_CLASS_PALADIN] == nil then EA_TarItems[EA_CLASS_PALADIN] = {} end;
+	-- Paladin / 聖騎士
+	if EA_TarItems[EA_CLASS_PALADIN] == nil then EA_TarItems[EA_CLASS_PALADIN] = {} end;
 
--- Priest / 牧師
-if EA_TarItems[EA_CLASS_PRIEST] == nil then EA_TarItems[EA_CLASS_PRIEST] = {} end;
+	-- Priest / 牧師
+	if EA_TarItems[EA_CLASS_PRIEST] == nil then EA_TarItems[EA_CLASS_PRIEST] = {} end;
 	-- Weakened Soul / 虛弱靈魂
 		if EA_TarItems[EA_CLASS_PRIEST][6788] == nil then EA_TarItems[EA_CLASS_PRIEST][6788] = false end;
 
@@ -494,16 +494,16 @@ if EA_TarItems[EA_CLASS_PRIEST] == nil then EA_TarItems[EA_CLASS_PRIEST] = {} en
 	-- Psychic Horror / 心靈恐慌
 		if EA_TarItems[EA_CLASS_PRIEST][64058] == nil then EA_TarItems[EA_CLASS_PRIEST][64058] = false end;
 
--- Rogue / 盜賊
-if EA_TarItems[EA_CLASS_ROGUE] == nil then EA_TarItems[EA_CLASS_ROGUE] = {} end;
+	-- Rogue / 盜賊
+	if EA_TarItems[EA_CLASS_ROGUE] == nil then EA_TarItems[EA_CLASS_ROGUE] = {} end;
 		if EA_TarItems[EA_CLASS_ROGUE][8647] == nil then EA_TarItems[EA_CLASS_ROGUE][8647] = false end;
 		if EA_TarItems[EA_CLASS_ROGUE][48672] == nil then EA_TarItems[EA_CLASS_ROGUE][48672] = false end;
 
--- Shaman / 薩滿
-if EA_TarItems[EA_CLASS_SHAMAN] == nil then EA_TarItems[EA_CLASS_SHAMAN] = {} end;
+	-- Shaman / 薩滿
+	if EA_TarItems[EA_CLASS_SHAMAN] == nil then EA_TarItems[EA_CLASS_SHAMAN] = {} end;
 
--- Warlock / 術士
-if EA_TarItems[EA_CLASS_WARLOCK] == nil then EA_TarItems[EA_CLASS_WARLOCK] = {} end;
+	-- Warlock / 術士
+	if EA_TarItems[EA_CLASS_WARLOCK] == nil then EA_TarItems[EA_CLASS_WARLOCK] = {} end;
 	-- Immolate (Rank 9-11) / 獻祭(等級 9-11)
 		-- if EA_TarItems[EA_CLASS_WARLOCK][11667] == nil then EA_TarItems[EA_CLASS_WARLOCK][11667] = true end;
 		-- if EA_TarItems[EA_CLASS_WARLOCK][11668] == nil then EA_TarItems[EA_CLASS_WARLOCK][11668] = true end;
@@ -548,6 +548,12 @@ if EA_TarItems[EA_CLASS_WARLOCK] == nil then EA_TarItems[EA_CLASS_WARLOCK] = {} 
 		if EA_TarItems[EA_CLASS_WARLOCK][50511] == nil then EA_TarItems[EA_CLASS_WARLOCK][50511] = false end;
 
 -- Warrior / 戰士
-if EA_TarItems[EA_CLASS_WARRIOR] == nil then EA_TarItems[EA_CLASS_WARRIOR] = {} end;
+	if EA_TarItems[EA_CLASS_WARRIOR] == nil then EA_TarItems[EA_CLASS_WARRIOR] = {} end;
 
+----------------------------------- 必须排除的法术ID -----------------------------------
+	if (not EA_RejectItems[31818]) then EA_RejectItems[31818] = true end
+end
+
+function EventAlert_RemoveOldSpells()
+    EA_Items["Other"] = nil;
 end

@@ -1,24 +1,31 @@
-﻿## Interface: 30300
-## Title: QuestInfo
-## Title-zhCN: [大脚][集]任务查询
-## Title-zhTW: [大腳][集]任务查询
-## Notes: |cffbc8f8fQuest library for mob location and other information|r
-## Notes-zhCN: |cff00ff00QuestInfo|r                                             |cffbc8f8f提供任务资料库。|r
-## Notes-zhTW: |cff00ff00QuestInfo|r                                             |cffbc8f8f提供任務資料庫功能。|r
+## Interface: 30300
+## Title: [Duowan] QuestInfo
+## Title-zhCN: [多玩] 任务查询
+## Title-zhTW: [多玩] 任务查询
+## Notes: Quest library for mob location and other information
+## Notes-zhCN: 提供任务资料库
+## Notes-zhTW: 提供任務資料庫功能
 ## Author: lahow (aka purple@bahamut)
-## SavedVariables: Cartographer_QuestInfoDB
-## OptionalDeps: Mapster
+## SavedVariables: DuowanAddon_Cartographer_QuestInfoDB
 ## X-Category: Map
 ## X-eMail: lahow DOT studio AT gmail DOT com
+## X-Embeds: LibQuixote-2.0, LibGratuity-3.0
+## X-Name: QuestInfo
+## X-Name-zhTW: 任務資訊
+## X-Name-zhCN: 任务资料
+## X-ModuleName: QuestInfo
+## X-DuowanAddon: 地图
+## Dependencies: Duowan
+## X-Revision: Duowan
 ## LoadOnDemand: 1
-## X-Revision:BigFoot
+
+embeds.xml
 
 Data\Quest.lua
 Data\NPC.lua
 Data\Zone.lua
 Data\Name-zhTW.lua
 Data\Name-zhCN.lua
-Data\Quest_EditAdd.lua
 
 Locale\Locale-enUS.lua
 Locale\Locale-zhTW.lua
@@ -31,6 +38,6 @@ LocationFrame.lua
 SeriesFrame.lua
 QuestFuPatch.lua
 QuestLogPatch.lua
-QuestPOI.xml
+#@QuestPOI.xml
 Buttons.xml
 WatchButton.lua

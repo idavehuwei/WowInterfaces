@@ -1,18 +1,18 @@
 ﻿## Interface: 30300
 ## Title: Trinket Menu
-## Title-zhCN: [大脚][集]饰品管理
-## Title-zhTW: [大腳][集]飾品管理
+## Title-zhCN: [多玩] 饰品管理 TrinketMenu
+## Title-zhTW: [多玩] 飾品管理 TrinketMenu
 ## Notes: |cffbc8f8fAddOn to manage trinkets.|r
 ## Notes-zhCN: |cff00ff00TrinketMenu|r                                             |cffbc8f8f方便地管理饰品。|r
 ## Notes-zhTW: |cff00ff00TrinketMenu|r                                             |cffbc8f8f方便地管理飾品。|r
 ## Author: Gello
 ## SavedVariables: TrinketMenuOptions
 ## SavedVariablesPerCharacter: TrinketMenuPerOptions, TrinketMenuQueue
+## X-DuowanAddon: 战斗
 ## LoadOnDemand: 1
-## Dependencies: BigFoot
-## X-Revision: BigFoot
+## Dependencies: Duowan
+## X-Revision: Duowan
 
-ClickBinder.lua
 TrinketMenu.lua
 TrinketMenu.xml
 TrinketMenuOpt.lua
@@ -21,3 +21,4 @@ TrinketMenuQueue.lua
 TrinketMenuQueue.xml
 localization.lua
 TrinketMenuConfig.lua
+AutoWhip.lua

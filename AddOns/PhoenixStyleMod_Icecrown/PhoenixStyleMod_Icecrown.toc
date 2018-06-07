@@ -1,0 +1,34 @@
+﻿## Interface: 30300
+## Title: Phoenix|cff7fff7fStyle|r - Icecrown
+## Notes: PhoenixStyle Icecrown Module
+## Title-zhCN: [多玩] 团长助手 - 巫妖王模块
+## Notes-zhCN: 详细的分析战斗记录并找出灭团责任人
+## Title-zhTW: [多玩] 團長助手 - 巫妖王模塊
+## Notes-zhTW: 詳細的分析戰鬥記錄並找出滅團責任人
+## Author: Shurshik
+## SavedVariablesPerCharacter: whererepiccchat,psicgalochki,psicchatchoose,psicdopmodchat,psicsaurfgalk,psiccsaurf,psicctekver, psicclanaignorlist,psicclanaignorlist2,psiccdmg3,psicclanaga,psiccprofgal1,psiccprofgal2,psiccprofgal3,psiccprofgal5,psiccprofignorlist1,psiccprofignorlist2,psiccprofchb,psiccproftimer,psiccsavedfails,psiccprofgal22,psiccprofgal23,psicccombatsvqu
+## X-DuowanAddon: 团队副本
+## Dependencies: Duowan, PhoenixStyle
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+Localization\localization-enEN.lua
+Localization\localization-zhCN.lua
+Localization\localization-zhTW.lua
+
+PhoenixStyleIcecrown.lua
+PhoenixStyleMod_Icecrown.xml
+DeathbringerSaurfang.lua
+LadyDeathwhisper.lua
+LordMarrowgar.lua
+GunshipEvent.lua
+Festergut.lua
+Putricide.lua
+Rotface.lua
+Damagecount-icc.lua
+BloodCouncil.lua
+BQLana.lua
+Valithria.lua
+Sindragosa.lua
+TheLichKing.lua
+Infosavingframe.lua

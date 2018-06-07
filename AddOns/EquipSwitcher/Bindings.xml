@@ -1,0 +1,11 @@
+<Bindings>
+	<!--Binding name="EquipSwitcher_QUICKSTRIP" header="DUOWAN_EquipSwitcher"></Binding-->
+	<Binding name="EquipSwitcher_EQUIP1" header="DUOWAN_EquipSwitcher">EquipSwitcher.SetButtonOnClick(EquipSwitcher, 1)</Binding>
+	<Binding name="EquipSwitcher_EQUIP2">EquipSwitcher.SetButtonOnClick(EquipSwitcher, 2)</Binding>
+	<Binding name="EquipSwitcher_EQUIP3">EquipSwitcher.SetButtonOnClick(EquipSwitcher, 3)</Binding>
+	<Binding name="EquipSwitcher_EQUIP4">EquipSwitcher.SetButtonOnClick(EquipSwitcher, 4)</Binding>
+	<Binding name="EquipSwitcher_EQUIP5">EquipSwitcher.SetButtonOnClick(EquipSwitcher, 5)</Binding>
+	<Binding name="EquipSwitcher_EQUIP6">EquipSwitcher.SetButtonOnClick(EquipSwitcher, 6)</Binding>
+	<Binding name="EquipSwitcher_EQUIP7">EquipSwitcher.SetButtonOnClick(EquipSwitcher, 7)</Binding>
+	<Binding name="EquipSwitcher_EQUIP8">EquipSwitcher.SetButtonOnClick(EquipSwitcher, 8)</Binding>
+</Bindings>

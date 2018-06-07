@@ -1,0 +1,48 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+E:\repos\Duowan-Work\UI.xsd">
+	<Script file="EN_PartyCastBar.lua"/>
+	<StatusBar name="PartyFrameTemplateSpellBar" inherits="CastingBarFrameTemplate" virtual="true" hidden="true">
+		<Size>
+			<AbsDimension x="78" y="16"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT">
+				<Offset>
+					<AbsDimension x="119" y="-13"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">				
+				<Texture name="$parentCastBorder" file="Interface\AddOns\EN_UnitFrames\Texture\UI-PartyCast-Border">
+					<Size><AbsDimension x="128" y="32"/></Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="-5" y="4"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>	
+			<OnShow>
+				Party_Spellbar_OnShow(self);
+			</OnShow>
+			<OnHide>
+				Party_Spellbar_OnHide(self);
+			</OnHide>
+			<OnLoad>
+				Party_Spellbar_OnLoad(self);
+			</OnLoad>
+			<OnEvent>
+				Party_Spellbar_OnEvent(self, event, ...);
+			</OnEvent>
+		</Scripts>
+	</StatusBar>
+	<StatusBar name="PartyFrame1SpellBar" inherits="PartyFrameTemplateSpellBar" parent="PartyMemberFrame1" id="1"/>
+	<StatusBar name="PartyFrame2SpellBar" inherits="PartyFrameTemplateSpellBar" parent="PartyMemberFrame2" id="2"/>
+	<StatusBar name="PartyFrame3SpellBar" inherits="PartyFrameTemplateSpellBar" parent="PartyMemberFrame3" id="3"/>
+	<StatusBar name="PartyFrame4SpellBar" inherits="PartyFrameTemplateSpellBar" parent="PartyMemberFrame4" id="4"/>
+</Ui>

@@ -296,7 +296,7 @@ local CastButtonPositions = {
 		{["left"] = {"RIGHT", "LEFT", "RIGHT", "LEFT"},["right"]={"LEFT", "RIGHT", "LEFT", "RIGHT"}},
 		{["left"] = {"RIGHT", "LEFT", "RIGHT", "LEFT"},["right"]={"LEFT", "RIGHT", "LEFT", "RIGHT"}},
 	},
-    ["free"] = {
+	["free"] = {
  		{["left"] = {"RIGHT", "LEFT", "RIGHT", "LEFT"},["right"]={"LEFT", "RIGHT", "LEFT", "RIGHT"},
 		["up"] = {"BOTTOM", "TOP", "BOTTOM", "TOP"},["down"]={"TOP", "BOTTOM", "TOP", "BOTTOM"}},
 		{["left"] = {"RIGHT", "LEFT", "RIGHT", "LEFT"},["right"]={"LEFT", "RIGHT", "LEFT", "RIGHT"},
@@ -310,26 +310,27 @@ local CastButtonPositions = {
 
 
 function TTActionBars:CalcDirection(dir, parentdir, freenotself)
-    if dir == "auto" then
-        local p,_,_,x,y = self.directionanchor:GetPoint()
-        if parentdir == "free" and not freenotself then p,_,_,x,y = self.parent:GetPoint() end
+	if dir == "auto" then
+		local p,_,_,x,y = self.directionanchor:GetPoint()
+		if parentdir == "free" and not freenotself then 
+			p,_,_,x,y = self.parent:GetPoint() 
+		end
 		if parentdir == "horizontal" then
-            if ((p == "LEFT" or p == "RIGHT" or p == "CENTER") and y < 0)
-              or (string.sub(p,1,6) == "BOTTOM") then
+			local cy = self.directionanchor:GetTop();
+			if ((p == "LEFT" or p == "RIGHT" or p == "CENTER") and y < 0) or (string.sub(p,1,6) == "BOTTOM" or cy < 500) then
 				dir = "up"
 			else
 				dir = "down"
 			end
 		else
-			if ((p == "TOP" or p == "BOTTOM" or p == "CENTER") and x < 0)
-              or (string.find(p,"LEFT")) then
+			if ((p == "TOP" or p == "BOTTOM" or p == "CENTER") and x < 0) or (string.find(p,"LEFT")) then
 				dir = "right"
 			else
 				dir = "left"
 			end
 		end
-    end
-    return dir
+	end
+	return dir
 end
 
 function TTActionBars:SetDirection(dir, parentdir, freenotself)

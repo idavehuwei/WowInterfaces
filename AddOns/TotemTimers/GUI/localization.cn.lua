@@ -1,6 +1,6 @@
 ﻿local L = LibStub("AceLocale-3.0"):NewLocale("TotemTimers_GUI", "zhCN")
 if not L then return end
-
+L["TotemTimers"] = "图腾助手"
 L["Automatic"] = "自动" -- Requires localization
 L["Bottom"] = "底部" -- Requires localization
 L["Down"] = "下拉" -- Requires localization
@@ -11,6 +11,8 @@ L["Top"] = "顶部" -- Requires localization
 L["Up"] = "上展" -- Requires localization
 L["Version"] = "版本"
 L["vertical"] = "垂直显示"
+L["down"] = "下"
+L["up"] = "上"
 
 L["Blizz Style"] = "暴雪样式"
 L["Displays timer bars underneath times"] = "在计时时间下方显示背景" -- Requires localization
@@ -82,3 +84,25 @@ L["WeaponDesc"] = "显示武器祝福的剩余时间。"
 L["Menu Direction"] = "菜单方向"
 L["Multicast Button"] = "图腾方案选项" -- Requires localization
 L["Same as totem menus"] = "与图腾方向一致" -- Requires localization
+
+L["Timers On Buttons"] = "在按钮上显示计时"
+L["Duration"] = "持续时间"
+L["ECD Button Size"] = "按钮大小"
+L["ECD Font Size"] = "字体大小"
+L["EnhanceCDs"] = "增强CD"
+L["Hide OOC Desc"] = "设置改变将在下次战斗时生效"
+L["Hide out of combat"] = "脱离战斗时隐藏"
+L["Maelstrom Bar Height"] = "烈焰震击计时条高度"
+L["OOC Alpha"] = "OOC透明度"
+L["OOC Alpha Desc"] = "控制按钮是否在脱离战斗后透明, 0 = 透明, 1 = 不透明"
+L["Show OmniCC counters"] = "显示OmniCC计时"
+
+TT_GUI_ROLE_NAMES = {
+	[0]="未知",
+	[1]="近战",
+	[2]="远程",
+	[3]="施法者",
+	[4]="治疗",
+	[5]="增强"
+}
+

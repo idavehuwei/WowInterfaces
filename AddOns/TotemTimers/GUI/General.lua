@@ -91,9 +91,9 @@ TotemTimers.options = {
 }
 
 ACR =	LibStub("AceConfigRegistry-3.0")
-ACR:RegisterOptionsTable("TotemTimers", TotemTimers.options)
+ACR:RegisterOptionsTable(L["TotemTimers"], TotemTimers.options)
 local ACD = LibStub("AceConfigDialog-3.0")
-local frame = ACD:AddToBlizOptions("TotemTimers", "TotemTimers", nil, "general")
+local frame = ACD:AddToBlizOptions(L["TotemTimers"], L["TotemTimers"], nil, "general")
 frame:SetScript("OnEvent", function(self) InterfaceOptionsFrame:Hide() end)
 frame:HookScript("OnShow", function(self) if InCombatLockdown() then InterfaceOptionsFrame:Hide() end TotemTimers.LastGUIPanel = self end)
 frame:RegisterEvent("PLAYER_REGEN_DISABLED")

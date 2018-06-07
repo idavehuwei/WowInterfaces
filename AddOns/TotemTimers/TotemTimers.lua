@@ -60,7 +60,7 @@ local inRaid = false
 local zoning = false
 
 function TotemTimers_ADDON_LOADED()
-	if TotemTimers_switch then
+	--if TotemTimers_switch then
 		if zoning then
 			TotemTimersFrame:UnregisterEvent("PLAYER_ENTERING_WORLD")
 			zoning = false
@@ -68,7 +68,7 @@ function TotemTimers_ADDON_LOADED()
 		end
 		TotemTimers_SetupGlobals()
 		inRaid = GetNumRaidMembers()>0
-	end
+	--end
 end
 
 function TotemTimers_OnEvent(event, ...)

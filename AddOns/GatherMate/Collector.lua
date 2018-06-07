@@ -181,7 +181,8 @@ end
 ]]
 function Collector:CursorChange()
 	if foundTarget then return end
-	if (MinimapCluster:IsMouseOver()) then return end
+	-- Modify by dugu
+	if (MouseIsOver(MinimapCluster)) then return end
 	if spells[prevSpell] then 
 		self:GetWorldTarget()
 	end
@@ -330,7 +331,7 @@ end
 ]]
 function Collector:GetWorldTarget()
 	if foundTarget or not spells[curSpell] then return end
-	if (MinimapCluster:IsMouseOver()) then return end
+	if (MouseIsOver(MinimapCluster)) then return end
 	local what = tooltipLeftText1:GetText()
 	local nodeID = GatherMate:GetIDForNode(spells[prevSpell], what)
 	if what and prevSpell and what ~= prevSpell and nodeID then

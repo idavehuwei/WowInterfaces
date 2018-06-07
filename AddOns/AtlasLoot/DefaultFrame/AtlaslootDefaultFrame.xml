@@ -507,7 +507,7 @@
 				this:SetMovable(1);
 				this:SetBackdropColor(0.75, 0, 0.75);
 				local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-				getglobal("AtlasLootDefaultFrame_Notice"):SetText(AL["This is a loot browser only.  To view maps as well, install either Atlas or Alphamap."]);
+				dwGetglobal("AtlasLootDefaultFrame_Notice"):SetText(AL["This is a loot browser only.  To view maps as well, install either Atlas or Alphamap."]);
 			</OnLoad>
 			<OnShow>
 				AtlasLootDefaultFrame_OnShow();

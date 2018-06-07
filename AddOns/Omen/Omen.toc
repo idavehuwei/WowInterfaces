@@ -1,22 +1,24 @@
-﻿## Interface: 30300
-## Title: Omen3
-## Title-zhCN: [大脚][集]仇恨统计
-## Title-zhTW: [大腳][集]仇恨統計
-## Notes: |cffbc8f8fA lightweight, flexible, multi-target threat meter.|r
-## Notes-zhCN: |cff00ff00Omen|r                                             |cffbc8f8f一个灵活的，多目标的，低资源占用的威胁值计量器。|r
-## Notes-zhTW: |cff00ff00Omen|r                                             |cffbc8f8f一個輕量級、有彈性、可監視多個目標的仇恨統計插件。|r
-## Author: Xinhuan
+## Interface: 30300
 ## Version: 3.0.7
+## Title: [Duowan] Omen
+## Title-zhCN: [多玩] 仇恨统计 Omen
+## Title-zhTW: [多玩] 仇恨统计 Omen
+## Notes: A lightweight, flexible, multi-target threat meter.
+## Notes-zhCN: 一个灵活的，多目标的，低资源占用的威胁值计量器。
+## Notes-zhTW: 一個輕量級、有彈性、可監視多個目標的仇恨統計插件。
+## Author: Xinhuan
+## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, LibSink-2.0, LibDBIcon-1.0, !ClassColors
 ## X-eMail: xinhuan @ gmail DOT com
-## X-Donate: PayPal:xinhuan @ gmail DOT com
 ## X-Category: Combat
-## SavedVariables: Omen3DB
-## X-Curse-Packaged-Version: v3.0.7
-## X-Curse-Project-Name: Omen Threat Meter
-## X-Curse-Project-ID: omen-threat-meter
-## X-Curse-Repository-ID: wow/omen-threat-meter/mainline
+## SavedVariables: DuowanAddon_Omen3DB
+## X-DuowanAddon: 团队副本
+## Dependencies: Duowan
+## X-Revision: Duowan
 ## LoadOnDemand: 1
-## X-Revision: BigFoot
+
+#@libs
+Libs\embed.xml
+#@libs
 
 Localization\enUS.lua
 Localization\zhTW.lua

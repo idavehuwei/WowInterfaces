@@ -1,0 +1,2263 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+E:\repos\Duowan-Work\UI.xsd">
+	<Script file="data.lua"/>
+	<Script file="default.lua"/>
+	<Script file="DWGKP.lua"/>
+	<!-- DKP Main Frame -->
+	<Frame name="DWGKPMainFrame" movable="true" enableMouse="true" frameStrata="HIGH" hidden="true" parent="UIParent">
+		<Size><AbsDimension x="640" y="460"/></Size>
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER">
+				<Offset><AbsDimension x="0" y="0"/></Offset>
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">				
+				<Texture name="$parentBGLeft" file="Interface\AddOns\DWGKP\Texture\wowdkp1">
+					<Size><AbsDimension x="430" y="460"/></Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset><AbsDimension x="-8" y="2"/></Offset>
+						</Anchor>
+					</Anchors>					
+				</Texture>
+				<Texture name="$parentBGRight" file="Interface\AddOns\DWGKP\Texture\wowdkp2">
+					<Size><AbsDimension x="256" y="460"/></Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentBGLeft" relativePoint="TOPRIGHT">
+							<Offset><AbsDimension x="0" y="0"/></Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitle" inherits="GameFontNormal" text="DWGKP_LOCAL_TITLE" justifyH="CENTER">
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset><AbsDimension x="0" y="-25"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentCopyright" inherits="DWGKPFontMed" text="DWGKP_LOCAL_COPYRIGHT">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset><AbsDimension x="38" y="40"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentRevison" inherits="DWGKPFontMed" text="DWGKP_LOCAL_VERSION">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentCopyright" relativePoint="RIGHT">
+							<Offset><AbsDimension x="5" y="0"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<!-- close button -->
+			<Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset><AbsDimension x="-5" y="-10"/></Offset>
+					</Anchor>
+				</Anchors>
+			</Button>	
+			<!-- help button -->
+			<Button name="$parentHelpButton" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_HELP_TEXT">
+				<Size><AbsDimension x="45" y="22"/></Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentCloseButton" relativePoint="TOPLEFT">
+						<Offset><AbsDimension x="-2" y="-5"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						DWGKPHelpButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>	
+			<!-- global editbox -->
+			<EditBox name="$parentGlobalEditBox" inherits="DWGKPGlobalEditBoxTemplate">
+				<Size><AbsDimension x="65" y="26"/></Size>
+			</EditBox>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				DWGKPMainFrame_OnLoad(self);
+			</OnLoad>
+			<OnShow>
+				PlaySound("igMainMenuOption");
+			</OnShow>
+			<OnHide>
+				PlaySound("igMainMenuOption");
+			</OnHide>
+			<OnMouseDown>
+				DWGKPMainFrame_OnClick(self);
+			</OnMouseDown>
+			<OnDragStart>
+				self:StartMoving();
+				self.isMoving = true;
+			</OnDragStart>
+			<OnDragStop>
+				self:StopMovingOrSizing();
+				self.isMoving = false;
+			</OnDragStop>
+		</Scripts>
+	</Frame>
+	<!-- 成员填写框 -->	
+	<Frame name="DWGKPMemberEditFrame" toplevel="true" movable="true" enableMouse="true" frameStrata="DIALOG" hidden="true" parent="DWGKPMainFrame">
+		<Size>
+			<AbsDimension x="320" y="195"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>	
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parenBG">
+					<Size><AbsDimension x="306" y="176"/></Size>
+					<Anchors>
+						<Anchor point="CENTER">
+							<Offset x="0" y="0"/>
+						</Anchor>
+					</Anchors>
+					<Color b="0.1" g="0.1" r="0.1" a="1.0"/>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitleText" inherits="GameFontHighlight" text="DWGKP_LOCAL_ADDMEMBER">
+					<Size>
+						<AbsDimension x="290" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-20"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentNote" inherits="ChatFontSmall" text="DWGKP_LOCAL_EDITMEMNOTE">
+					<Size>
+						<AbsDimension x="190" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-44"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentNameText" inherits="GameFontHighlight" text="DWGKP_LOCAL_EDITMEMNAME">
+					<Size>
+						<AbsDimension x="60" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="10" y="-60"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentClassText" inherits="GameFontHighlight" text="DWGKP_LOCAL_EDITMEMCLASS">
+					<Size>
+						<AbsDimension x="60" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentNameText" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-14"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>			
+			</Layer>
+		</Layers>
+		<Frames>
+			<EditBox name="$parentName" inherits="DWGKPInputBoxTemplate">
+				<Size>
+					<AbsDimension x="200" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="75" y="-60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</EditBox>		
+			<EditBox name="$parentClass" inherits="DWGKPInputBoxTemplate">
+				<Size>
+					<AbsDimension x="200" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="-8"/>
+						</Offset>
+					</Anchor>
+				</Anchors>	
+			</EditBox>
+			<Frame name="$parentHiddenFrame" inherits="UIDropDownMenuTemplate" hidden="true">				
+				<Anchors>
+					<Anchor point="CENTER"/>						
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						DWGKPMemberEditHiddenFrame_OnLoad(self);
+					</OnLoad>
+				</Scripts>
+			</Frame>
+			<Button name="$parentDropdown">
+				<Size>
+					<AbsDimension x="26" y="26"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentClass" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="3" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>					
+					<OnClick>
+						DWGKPMemberEditFrameDropdown_OnClick(self);
+					</OnClick>
+				</Scripts>
+				<NormalTexture file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up"/>
+				<PushedTexture file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down"/>
+				<DisabledTexture file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+			</Button>
+			<CheckButton name="$parentDistribute" inherits="DWGKPDistributeCheckButtonTemplate" text="DWGKP_LOCAL_EDITMEMDISTR">
+				<Size>
+					<AbsDimension x="26" y="26"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentClass" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="-4" y="-6"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						DWGKPRaidEditFrameDistribute_OnLoad(self);
+					</OnLoad>
+					<OnClick>
+						DWGKPRaidEditFrameDistribute_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>		
+			<Button name="$parentOkay" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_EDITOKAY">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="55" y="20"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						DWGKPMemberEditFrameOkay_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>			
+			<Button name="$parentCancel" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_EDITCANCEL">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentOkay" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="60" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Hide();
+						PlaySound("igMainMenuOption");
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				DWGKPMemberEditFrame_OnLoad(self);				
+			</OnLoad>
+			<OnShow>
+				DWGKPMemberEditFrame_OnShow(self);
+			</OnShow>
+			<OnDragStart>
+				self:StartMoving();
+				self.isMoving = true;
+			</OnDragStart>
+			<OnDragStop>
+				self:StopMovingOrSizing();
+				self.isMoving = false;
+			</OnDragStop>
+		</Scripts>
+	</Frame>
+	<!-- 物品填写框 -->
+	<Frame name="DWGKPItemEditFrame" toplevel="true" movable="true" enableMouse="true" frameStrata="DIALOG" hidden="true" parent="DWGKPMainFrame">
+		<Size>
+			<AbsDimension x="320" y="195"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>	
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parenBG">
+					<Size><AbsDimension x="306" y="176"/></Size>
+					<Anchors>
+						<Anchor point="CENTER">
+							<Offset x="0" y="0"/>
+						</Anchor>
+					</Anchors>
+					<Color b="0.1" g="0.1" r="0.1" a="1.0"/>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontHighlight" text="DWGKP_LOCAL_ADDITEM">
+					<Size>
+						<AbsDimension x="290" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-20"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentNote" inherits="ChatFontSmall" text="DWGKP_LOCAL_EDITITEMNOTE">
+					<Size>
+						<AbsDimension x="190" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-44"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentItemNameText" inherits="GameFontHighlight" text="DWGKP_LOCAL_EDITITEMNAME">
+					<Size>
+						<AbsDimension x="60" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="10" y="-60"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentPlayerNameText" inherits="GameFontHighlight" text="DWGKP_LOCAL_EDITITEMPLAYER">
+					<Size>
+						<AbsDimension x="60" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentItemNameText" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-14"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentItemCountText" inherits="GameFontHighlight" text="DWGKP_LOCAL_EDITITEMCOUNT">
+					<Size>
+						<AbsDimension x="60" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentPlayerNameText" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-14"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<EditBox name="$parentItemName" inherits="DWGKPInputBoxTemplate">
+				<Size>
+					<AbsDimension x="200" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="82" y="-60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnMouseUp>
+						DWGKPItemEditFrameItemName_OnReceiveDrag(self);
+					</OnMouseUp>
+					<OnReceiveDrag>
+						DWGKPItemEditFrameItemName_OnReceiveDrag(self);
+					</OnReceiveDrag>
+				</Scripts>
+			</EditBox>
+			<EditBox name="$parentPlayerName" inherits="DWGKPInputBoxTemplate">
+				<Size>
+					<AbsDimension x="200" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentItemName" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="-8"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</EditBox>
+			<EditBox name="$parentItemCount" inherits="DWGKPNumInputBoxTemplate">
+				<Size>
+					<AbsDimension x="200" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentPlayerName" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="-8"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</EditBox>
+			<Button name="$parentOkay" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_EDITOKAY">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="55" y="20"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						DWGKPItemEditFrameOkay_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentCancel" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_EDITCANCEL">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentOkay" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="60" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Hide();
+						PlaySound("igMainMenuOption");
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				DWGKPItemEditFrame_OnLoad(self);
+			</OnLoad>
+			<OnShow>
+				DWGKPItemEditFrame_OnShow(self);
+			</OnShow>
+			<OnReceiveDrag>
+				DWGKPItemEditFrame_OnReceiveDrag(self);
+			</OnReceiveDrag>
+			<OnMouseUp>
+				DWGKPItemEditFrame_OnReceiveDrag(self);
+			</OnMouseUp>
+			<OnDragStart>
+				self:StartMoving();
+				self.isMoving = true;
+			</OnDragStart>
+			<OnDragStop>
+				self:StopMovingOrSizing();
+				self.isMoving = false;
+			</OnDragStop>
+		</Scripts>
+	</Frame>
+	<!-- 活动名填写框 -->
+	<Frame name="DWGKPRaidEditFrame" toplevel="true" movable="true" enableMouse="true" frameStrata="DIALOG" hidden="true" parent="DWGKPMainFrame">
+		<Size>
+			<AbsDimension x="320" y="160"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>	
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parenBG">
+					<Size><AbsDimension x="306" y="146"/></Size>
+					<Anchors>
+						<Anchor point="CENTER">
+							<Offset x="0" y="0"/>
+						</Anchor>
+					</Anchors>
+					<Color b="0.1" g="0.1" r="0.1" a="1.0"/>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontHighlight" text="DWGKP_LOCAL_ADDRAID">
+					<Size>
+						<AbsDimension x="290" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-20"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentNote" inherits="ChatFontSmall" text="DWGKP_LOCAL_EDITRAIDNOTE">
+					<Size>
+						<AbsDimension x="190" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-44"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<EditBox name="$parentName" inherits="DWGKPInputBoxTemplate">
+				<Size>
+					<AbsDimension x="200" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOP">
+						<Offset>
+							<AbsDimension x="0" y="-60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>	
+			</EditBox>
+			<Frame name="$parentHiddenFrame" inherits="UIDropDownMenuTemplate" hidden="true">				
+				<Anchors>
+					<Anchor point="CENTER"/>						
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						DWGKPRaidEditHiddenFrame_OnLoad(self);
+					</OnLoad>
+				</Scripts>
+			</Frame>
+			<Button name="$parentDropdown">
+				<Size>
+					<AbsDimension x="26" y="26"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentName" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="3" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>					
+					<OnClick>
+						DWGKPRaidEditFrameDropdown_OnClick(self);
+					</OnClick>
+				</Scripts>
+				<NormalTexture file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up"/>
+				<PushedTexture file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down"/>
+				<DisabledTexture file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+			</Button>
+			<CheckButton name="$parent10Man" inherits="DWGKPDistributeCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="26" y="26"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="10" y="-4"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						DWGKPRaidEditFrame10Man_OnLoad(self);						
+					</OnLoad>
+					<OnClick>
+						DWGKPRaidEditFrame10Man_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentHero" inherits="DWGKPDistributeCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="26" y="26"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent10Man" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="90" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						DWGKPRaidEditFrameHero_OnLoad(self);						
+					</OnLoad>
+					<OnClick>
+						DWGKPRaidEditFrameHero_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<Button name="$parentOkay" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_EDITOKAY">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="55" y="-119"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						DWGKPRaidEditFrameOkay_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>			
+			<Button name="$parentCancel" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_EDITCANCEL">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentOkay" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="60" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Hide();
+						PlaySound("igMainMenuOption");
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				DWGKPRaidEditFrame_OnLoad(self);				
+			</OnLoad>
+			<OnShow>
+				DWGKPRaidEditFrame_OnShow(self);
+			</OnShow>
+			<OnDragStart>
+				self:StartMoving();
+				self.isMoving = true;
+			</OnDragStart>
+			<OnDragStop>
+				self:StopMovingOrSizing();
+				self.isMoving = false;
+			</OnDragStop>
+		</Scripts>
+	</Frame>
+	<!-- 收支编辑框 -->
+	<Frame name="DWGKPEventEditFrame" toplevel="true" movable="true" enableMouse="true" frameStrata="DIALOG" hidden="true" parent="DWGKPMainFrame">
+		<Size>
+			<AbsDimension x="330" y="200"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>	
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parenBG">
+					<Size><AbsDimension x="316" y="186"/></Size>
+					<Anchors>
+						<Anchor point="CENTER">
+							<Offset x="0" y="0"/>
+						</Anchor>
+					</Anchors>
+					<Color b="0.1" g="0.1" r="0.1" a="1.0"/>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitleText" inherits="GameFontHighlight" text="DWGKP_LOCAL_ADDEVENT">
+					<Size>
+						<AbsDimension x="290" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-20"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentNote" inherits="ChatFontSmall" text="DWGKP_LOCAL_EDITEVENTNOTE">
+					<Size>
+						<AbsDimension x="190" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-44"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentDiscriptionText" inherits="GameFontHighlight" text="DWGKP_LOCAL_EDITEVENTDISC">
+					<Size>
+						<AbsDimension x="60" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="5" y="-60"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentIncomeText" inherits="GameFontHighlight" text="DWGKP_LOCAL_EDITEVENTINCOME">
+					<Size>
+						<AbsDimension x="60" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentDiscriptionText" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-14"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentOutcomeText" inherits="GameFontHighlight" text="DWGKP_LOCAL_EDITEVENTOUTCOME">
+					<Size>
+						<AbsDimension x="60" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentIncomeText" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="105" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentPlayerText" inherits="GameFontHighlight" text="DWGKP_LOCAL_EDITEVENTPLAYER">
+					<Size>
+						<AbsDimension x="60" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentIncomeText" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-14"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<EditBox name="$parentDscription" inherits="DWGKPInputBoxTemplate">
+				<Size>
+					<AbsDimension x="240" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="65" y="-60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</EditBox>			
+			<EditBox name="$parentIncome" inherits="DWGKPNumInputBoxTemplate">
+				<Size>
+					<AbsDimension x="77" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentDscription" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="-8"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</EditBox>
+			<EditBox name="$parentOutcome" inherits="DWGKPNumInputBoxTemplate">
+				<Size>
+					<AbsDimension x="77" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentIncome" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="86" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</EditBox>
+			<EditBox name="$parentPlayerName" inherits="DWGKPInputBoxTemplate">
+				<Size>
+					<AbsDimension x="240" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentIncome" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="-8"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</EditBox>
+			<Button name="$parentOkay" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_EDITOKAY">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="55" y="20"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						DWGKPEventEditFrameOkay_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentCancel" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_EDITCANCEL">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentOkay" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="60" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Hide();
+						PlaySound("igMainMenuOption");
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				DWGKPEventEditFrame_OnLoad(self);				
+			</OnLoad>
+			<OnShow>
+				DWGKPEventEditFrame_OnShow(self);
+			</OnShow>
+			<OnDragStart>
+				self:StartMoving();
+				self.isMoving = true;
+			</OnDragStart>
+			<OnDragStop>
+				self:StopMovingOrSizing();
+				self.isMoving = false;
+			</OnDragStop>
+		</Scripts>
+	</Frame>
+
+	<!--======== DKPFrame ========-->
+	<Frame name="DWGKPDKPFrame" parent="DWGKPMainFrame">
+		<Size><AbsDimension x="640" y="445"/></Size>
+		<Anchors>
+			<Anchor point="TOPLEFT">
+				<Offset><AbsDimension x="0" y="0"/></Offset>
+			</Anchor>
+		</Anchors>
+		<Frames>
+			<!-- tabs(4) -->
+			<Button name="$parentTab1" inherits="DWGKPTab1ButtonTemplate" text="DWGKP_LOCAL_TABMEMBER" id="1">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset><AbsDimension x="40" y="-46"/></Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="$parentTab2" inherits="DWGKPTab1ButtonTemplate" text="DWGKP_LOCAL_TABITEM" id="2">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT">
+						<Offset><AbsDimension x="-1" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="$parentTab3" inherits="DWGKPTab1ButtonTemplate" text="DWGKP_LOCAL_TABINCOME" id="3">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTab2" relativePoint="RIGHT">
+						<Offset><AbsDimension x="-1" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="$parentTab4" inherits="DWGKPTab1ButtonTemplate" text="DWGKP_LOCAL_TABDISTRIBUTE" id="4">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTab3" relativePoint="RIGHT">
+						<Offset><AbsDimension x="-1" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="$parentTab5" inherits="DWGKPTab1ButtonTemplate" text="DWGKP_LOCAL_TABRAID" id="5">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTab4" relativePoint="RIGHT">
+						<Offset><AbsDimension x="-1" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<!--======= memberFrame ========-->
+			<Frame name="$parentMemberFrame" hidden="false">
+				<Size><AbsDimension x="640" y="445"/></Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset><AbsDimension x="0" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Frames>
+					<!-- HeadFrame -->
+					<Frame name="$parentHeadFrame" inherits="DWGKPHead">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="28" y="-88"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Frames>
+							<!-- NameButton -->
+							<Button name="$parentNameTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_MEMBERNAME">
+								<Size><AbsDimension x="80" y="32"/></Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset><AbsDimension x="15" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+										DWGKPMemberFrameSort("name");
+									</OnClick>
+								</Scripts>
+							</Button>
+							<!-- ClassButton -->
+							<Button name="$parentClassTitle" inherits="DWGKPHeadDropdownButtonTemplate" text="DWGKP_LOCAL_MEMBERCLASS">
+								<Size><AbsDimension x="72" y="32"/></Size>
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="$parentNameTitle" relativePoint="RIGHT">
+										<Offset><AbsDimension x="12" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										DWGKPMemberFrameClassTile_OnLoad(self);
+									</OnLoad>
+									<OnClick>
+										DWGKP:SetCVar("sortkey", "class");
+										ToggleDropdownBox(self);
+										PlaySound("igMainMenuOptionCheckBoxOn");
+									</OnClick>
+								</Scripts>
+							</Button>
+							<!-- PercentTitle -->
+							<Button name="$parentPercentTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_MEMBERPERCENT">
+								<Size><AbsDimension x="50" y="32"/></Size>
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="$parentClassTitle" relativePoint="RIGHT">
+										<Offset><AbsDimension x="10" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+										DWGKPMemberFrameSort("precent");
+									</OnClick>
+								</Scripts>
+							</Button>
+							<!-- BorrowTitle -->
+							<Button name="$parentBorrowTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_MEMBERBRORROW">
+								<Size><AbsDimension x="60" y="32"/></Size>
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="$parentPercentTitle" relativePoint="RIGHT">
+										<Offset><AbsDimension x="10" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+										DWGKPMemberFrameSort("bro");
+									</OnClick>
+								</Scripts>
+							</Button>
+							<!-- JoinTitle -->
+							<Button name="$parenJionTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_MEMBERJION">
+								<Size><AbsDimension x="60" y="32"/></Size>
+								<Anchors>
+										<Anchor point="LEFT">
+											<Offset><AbsDimension x="305" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								<Scripts>
+									<OnClick>
+										DWGKPMemberFrameSort("jion");
+									</OnClick>
+								</Scripts>
+							</Button>
+							<!-- OfflineTitle -->
+							<Button name="$parentOfflineTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_MEMBEOFFLINE">
+								<Size><AbsDimension x="120" y="32"/></Size>
+								<Anchors>
+										<Anchor point="LEFT">
+											<Offset><AbsDimension x="342" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								<Scripts>
+									<OnClick>
+										DWGKPMemberFrameSort("offline");
+									</OnClick>
+								</Scripts>
+							</Button>
+							<!-- EditTitle -->
+							<Button name="$parentEditTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_MEMBEREBONUS">
+								<Size><AbsDimension x="60" y="32"/></Size>
+								<Anchors>
+										<Anchor point="LEFT">
+											<Offset><AbsDimension x="454" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								<Scripts>
+									<OnClick>
+										DWGKPMemberFrameSort("bonus");
+									</OnClick>
+								</Scripts>
+							</Button>
+						</Frames>
+						<Layers>
+							<Layer level="ARTWORK">
+								<!--
+								<FontString name="$parentJionTitle" inherits="DWGKPFontMed" text="加入">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="LEFT">
+											<Offset><AbsDimension x="320" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+							
+								<FontString name="$parentOfflineTitle" inherits="DWGKPFontMed" text="累计离线">
+									<Size><AbsDimension x="120" y="32"/></Size>
+									<Anchors>
+										<Anchor point="LEFT">
+											<Offset><AbsDimension x="375" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+							
+								<FontString name="$parentEditTitle" inherits="DWGKPFontMed" text="补/扣">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="LEFT">
+											<Offset><AbsDimension x="460" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								-->
+								<!-- DeleteString -->
+								<FontString name="$parentDeleteTitle" inherits="DWGKPFontMed" text="DWGKP_LOCAL_MEMBERDISTRIBUTE">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="LEFT">
+											<Offset><AbsDimension x="510" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnLoad>
+								
+							</OnLoad>
+						</Scripts>
+					</Frame>
+					<!-- ScrollFrame -->
+					<ScrollFrame name="$parentScrollFrame" inherits="FauxScrollFrameTemplate">
+						<Size><AbsDimension x="557" y="298"/></Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="30" y="-81"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<Texture name="$parentBG" setAllPoints="true">
+									<Color b="0.0" g="1.0" r="0.0" a="0.0"></Color>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnVerticalScroll>
+								GKPMemberFrame_OnScroll(self, offset);
+								--FauxScrollFrame_OnVerticalScroll(self, offset, BROWSE_FILTER_HEIGHT, AuctionFrameFilters_Update);
+							</OnVerticalScroll>
+						</Scripts>
+						
+					</ScrollFrame>
+					<!-- Lists(8) -->				
+					<Button name="$parentMemberList1" inherits="DWGKPMemberListRowTemplate" id="1">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="40" y="-128"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentMemberList2" inherits="DWGKPMemberListRowTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentMemberList1" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentMemberList3" inherits="DWGKPMemberListRowTemplate" id="3">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentMemberList2" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentMemberList4" inherits="DWGKPMemberListRowTemplate" id="4">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentMemberList3" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentMemberList5" inherits="DWGKPMemberListRowTemplate" id="5">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentMemberList4" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentMemberList6" inherits="DWGKPMemberListRowTemplate" id="6">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentMemberList5" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentMemberList7" inherits="DWGKPMemberListRowTemplate" id="7">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentMemberList6" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentMemberList8" inherits="DWGKPMemberListRowTemplate" id="8">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentMemberList7" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					
+					<!-- BeginRaidButton -->
+					<Button name="$parentBeginRaidButton" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_MEMBERBEGINRAID">
+						<Size><AbsDimension x="90" y="25"/></Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="380" y="-400"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								DWGKPMemberFrameBeginRaid_OnClick(self);
+							</OnClick>
+						</Scripts>
+					</Button>
+					<!-- EndRaidButton -->
+					<Button name="$parentEndRaidButton" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_MEMBERENDRAID" hidden="true">
+						<Size><AbsDimension x="90" y="25"/></Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentBeginRaidButton" relativePoint="LEFT">
+								<Offset><AbsDimension x="0" y="0"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								DWGKPMemberFrameEndRaid_OnClick(self);
+							</OnClick>
+						</Scripts>
+					</Button>
+					<!-- AddMemberButton -->
+					<Button name="$parentAddMemberButton" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_MEMBERADDPLAYER">
+						<Size><AbsDimension x="90" y="25"/></Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentBeginRaidButton" relativePoint="RIGHT">
+								<Offset><AbsDimension x="15" y="0"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								DWGKPMemberFrameAddMember_OnClick(self);
+							</OnClick>
+						</Scripts>
+					</Button>					
+					<!-- CreateRaidButton -->
+					<Button name="$parentCreateRaidButton" text = "DWGKP_LOCAL_MEMBERNEWRAID" hidden="true">
+						<Size><AbsDimension x="160" y="55"/></Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="230" y="-200"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								DWGKPMemberFrameCreateRaid_OnClick(self);
+							</OnClick>
+						</Scripts>
+						
+						<ButtonText>
+							<Anchors>
+								<Anchor point="CENTER">
+									<Offset>
+										<AbsDimension x="0" y="3"/>
+									</Offset>
+								</Anchor>	
+							</Anchors>
+						</ButtonText>
+						<NormalFont style="GlueFontNormal"/>
+						<HighlightFont style="GlueFontHighlight"/>
+						<DisabledFont style="GlueFontDisable"/>
+						<NormalTexture file="Interface\GLUES\COMMON\Glue-Panel-Button-Up-Blue">	
+							<TexCoords left="0" right="0.578125" top="0" bottom="0.75"/>
+						</NormalTexture>
+						<PushedTexture file="Interface\GLUES\COMMON\Glue-Panel-Button-Down-Blue">							
+							<TexCoords left="0" right="0.578125" top="0" bottom="0.75"/>
+						</PushedTexture>
+						<DisabledTexture file="Interface\GLUES\COMMON\Glue-Panel-Button-Disabled">
+							<TexCoords left="0" right="0.578125" top="0" bottom="0.75"/>
+						</DisabledTexture>
+						<HighlightTexture file="Interface\GLUES\COMMON\Glue-Panel-Button-Highlight-Blue" alphaMode="ADD">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875"/>
+						</HighlightTexture>						
+					</Button>					
+				</Frames>
+				<Layers>
+					<Layer>
+						<Texture></Texture>
+					</Layer>
+				</Layers>				
+				<Scripts>
+					<OnShow>
+						DWGKPMemberFrame_OnShow(self);
+					</OnShow>
+				</Scripts>
+			</Frame>
+			<!--======= itemFrame ========-->			
+			<Frame name="$parentItemFrame" hidden="true">
+				<Size><AbsDimension x="640" y="445"/></Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset><AbsDimension x="0" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Frames>
+					<!-- HeadFrame -->
+					<Frame name="$parentHeadFrame" inherits="DWGKPHead">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="28" y="-88"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Frames>
+							<!-- NameButton -->
+							<Button name="$parentNameTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_ITEMNAME">
+								<Size><AbsDimension x="80" y="32"/></Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset><AbsDimension x="45" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										self:EnableMouse(false);
+									</OnLoad>
+								</Scripts>
+							</Button>
+							<!-- GainButton -->
+							<Button name="$parentGainTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_ITEMGAIN">
+								<Size><AbsDimension x="80" y="32"/></Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset><AbsDimension x="165" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										self:EnableMouse(false);
+									</OnLoad>
+								</Scripts>
+							</Button>
+							<!-- RaidPointButton -->
+							<Button name="$parentRaidPointTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_ITEMBIDPRICE">
+								<Size><AbsDimension x="50" y="32"/></Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset><AbsDimension x="245" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										self:EnableMouse(false);
+									</OnLoad>
+								</Scripts>
+							</Button>
+							<!-- TotalPointButton -->
+							<Button name="$parentTotalPointTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_ITEMLOOTER">
+								<Size><AbsDimension x="60" y="32"/></Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset><AbsDimension x="310" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										self:EnableMouse(false);
+									</OnLoad>
+								</Scripts>
+							</Button>
+						</Frames>
+						<Layers>
+							<Layer level="ARTWORK">
+								<!-- ItemString -->
+								<FontString name="$parentItemTitle" inherits="DWGKPFontMed" text="DWGKP_LOCAL_ITEMPRICE">
+									<Size><AbsDimension x="156" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="410" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<!-- EditString -->
+								<FontString name="$parentEditTitle" inherits="DWGKPFontMed" text="DWGKP_LOCAL_ITEMEIDT">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="472" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<!-- DeleteString -->
+								<FontString name="$parentDeleteTitle" inherits="DWGKPFontMed" text="DWGKP_LOCAL_ITEMDELETE">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="510" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnLoad>
+								
+							</OnLoad>
+						</Scripts>
+					</Frame>
+					<!-- ScrollFrame -->
+					<ScrollFrame name="$parentScrollFrame" inherits="FauxScrollFrameTemplate">
+						<Size><AbsDimension x="557" y="298"/></Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="30" y="-81"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<Texture name="$parentBG" setAllPoints="true">
+									<Color b="0.0" g="1.0" r="0.0" a="0.0"></Color>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnVerticalScroll>
+								GKPItemFrame_OnScroll(self, offset);
+							</OnVerticalScroll>
+						</Scripts>						
+					</ScrollFrame>
+					<!-- List(8) -->
+					<Button name="$parentItemList1" inherits="DWGKPItemListRowTemplate" id="1">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="40" y="-128"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentItemList2" inherits="DWGKPItemListRowTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItemList1" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentItemList3" inherits="DWGKPItemListRowTemplate" id="3">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItemList2" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentItemList4" inherits="DWGKPItemListRowTemplate" id="4">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItemList3" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentItemList5" inherits="DWGKPItemListRowTemplate" id="5">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItemList4" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentItemList6" inherits="DWGKPItemListRowTemplate" id="6">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItemList5" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentItemList7" inherits="DWGKPItemListRowTemplate" id="7">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItemList6" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentItemList8" inherits="DWGKPItemListRowTemplate" id="8">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItemList7" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					
+					<!-- IgnorListButton -->
+					<Button name="$parentIgnorListButton" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_ITEMIGNORLIST">
+						<Size><AbsDimension x="90" y="25"/></Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="380" y="-400"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								DWGKPItemFrameIgnorListButton_OnClick(self);
+							</OnClick>
+						</Scripts>
+					</Button>
+					<!-- AddItemButton -->
+					<Button name="$parentAddItemButton" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_ITEMADDITEM">
+						<Size><AbsDimension x="90" y="25"/></Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentIgnorListButton" relativePoint="RIGHT">
+								<Offset><AbsDimension x="15" y="0"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								DWGKPItemFrameAddItemButton_OnClick(self);
+							</OnClick>
+						</Scripts>
+					</Button>				
+				</Frames>
+				<Layers>
+					<Layer>
+						<Texture></Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnShow>
+						DWGKPItemFrame_OnShow(self);
+					</OnShow>
+				</Scripts>
+			</Frame>			
+			<!--======= eventFrame ========-->
+			<Frame name="$parentEventFrame" hidden="true">
+				<Size><AbsDimension x="640" y="445"/></Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset><AbsDimension x="0" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Frames>
+					<!-- HeadFrame -->
+					<Frame name="$parentHeadFrame" inherits="DWGKPHead">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="28" y="-88"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Frames>
+							<!-- NameButton -->
+							<Button name="$parentNameTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_EVENTDISCRIPTION">
+								<Size><AbsDimension x="80" y="32"/></Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset><AbsDimension x="80" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										self:EnableMouse(false);
+									</OnLoad>
+								</Scripts>
+							</Button>
+							<!-- AttendsButton -->
+							<Button name="$parentInTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_EVENTINCME">
+								<Size><AbsDimension x="80" y="32"/></Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset><AbsDimension x="262" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										self:EnableMouse(false);
+									</OnLoad>
+								</Scripts>
+							</Button>
+							<!-- PointButton -->
+							<Button name="$parentOutTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_EVENTOUTCOME">
+								<Size><AbsDimension x="80" y="32"/></Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset><AbsDimension x="312" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										self:EnableMouse(false);
+									</OnLoad>
+								</Scripts>
+							</Button>
+							<!-- EventTimeButton -->
+							<Button name="$parentEventMemberTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_EVENTMEMBER">
+								<Size><AbsDimension x="60" y="32"/></Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset><AbsDimension x="380" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										self:EnableMouse(false);
+									</OnLoad>
+								</Scripts>
+							</Button>
+						</Frames>
+						<Layers>
+							<Layer level="ARTWORK">
+								<!-- EditString -->
+								<FontString name="$parentEditTitle" inherits="DWGKPFontMed" text="DWGKP_LOCAL_EVENTEDIT">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="472" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<!-- DeleteString -->
+								<FontString name="$parentDeleteTitle" inherits="DWGKPFontMed" text="DWGKP_LOCAL_EVENTDELETE">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="510" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnLoad>
+								
+							</OnLoad>
+						</Scripts>
+					</Frame>
+					<!-- ScrollFrame -->
+					<ScrollFrame name="$parentScrollFrame" inherits="FauxScrollFrameTemplate">
+						<Size><AbsDimension x="557" y="298"/></Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="30" y="-81"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<Texture name="$parentBG" setAllPoints="true">
+									<Color b="0.0" g="1.0" r="0.0" a="0.0"></Color>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnVerticalScroll>
+								GKPEventFrame_OnScroll(self, offset);
+							</OnVerticalScroll>
+						</Scripts>						
+					</ScrollFrame>
+					<!-- List(8) -->
+					<Button name="$parentEventList1" inherits="DWGKPEventListRowTemplate" id="1">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="40" y="-128"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentEventList2" inherits="DWGKPEventListRowTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentEventList1" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentEventList3" inherits="DWGKPEventListRowTemplate" id="3">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentEventList2" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentEventList4" inherits="DWGKPEventListRowTemplate" id="4">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentEventList3" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentEventList5" inherits="DWGKPEventListRowTemplate" id="5">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentEventList4" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentEventList6" inherits="DWGKPEventListRowTemplate" id="6">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentEventList5" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentEventList7" inherits="DWGKPEventListRowTemplate" id="7">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentEventList6" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<Button name="$parentEventList8" inherits="DWGKPEventListRowTemplate" id="8">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentEventList7" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>						
+					</Button>
+					<!-- ReportMod -->
+					<CheckButton name="$parentReportMod" inherits="UICheckButtonTemplate">
+						<Size><AbsDimension x="28" y="28"/></Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="355" y="-400"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								DWGKPEventFrameReportMod_OnClick(self);
+							</OnClick>
+							<OnEnter>
+								DWGKPEventFrameReportMod_OnEnter(self);
+							</OnEnter>
+							<OnLeave>
+								GameTooltip:Hide();
+							</OnLeave>
+						</Scripts>
+					</CheckButton>
+					<!-- ReportForms -->
+					<Button name="$parentReportForms" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_EVENTREPORT">
+						<Size><AbsDimension x="90" y="25"/></Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="380" y="-400"/></Offset>
+							</Anchor>
+						</Anchors>						
+						<Scripts>
+							<OnClick>
+								DWGKPEventFrameReportForms_OnClick(self);
+							</OnClick>
+						</Scripts>
+					</Button>
+					<!-- AddEventButton -->
+					<Button name="$parentAddEventButton" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_EVENTADD">
+						<Size><AbsDimension x="90" y="25"/></Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentReportForms" relativePoint="RIGHT">
+								<Offset><AbsDimension x="15" y="0"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								DWGKPEventFrameAddEventButton_OnClick(self);
+							</OnClick>
+						</Scripts>
+					</Button>					
+				</Frames>
+				<Layers>
+					<Layer>
+						<Texture></Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnShow>
+						DWGKPEventFrame_OnShow(self);
+					</OnShow>
+				</Scripts>
+			</Frame>
+			<!--======== DistributeFrame =========-->
+			<Frame name="$parentDistributeFrame" hidden="true">
+				<Size><AbsDimension x="640" y="445"/></Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset><AbsDimension x="0" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<!-- 收支信息 -->
+						<FontString name="$parentIncomeInfo" inherits="DWGKPFontMed" text="">
+							<Size><AbsDimension x="300" y="0"/></Size>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT">
+									<Offset><AbsDimension x="340" y="27"/></Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<!-- TODO:  -->
+				<Frames>
+					<!-- HeadFrame -->
+					<Frame name="$parentHeadFrame" inherits="DWGKPHead">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="28" y="-88"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer level="ARTWORK">
+								<!-- Player1 -->
+								<FontString name="$parentPlayer1" inherits="DWGKPFontMed" text="DWGKP_LOCAL_DISTRIBUTENAME">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="42" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<!-- Coin1 -->
+								<FontString name="$parentGold1" inherits="DWGKPFontMed" text="DWGKP_LOCAL_DISTRIBUTEGOLD">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="118" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<!-- Player2 -->
+								<FontString name="$parentPlayer2" inherits="DWGKPFontMed" text="DWGKP_LOCAL_DISTRIBUTENAME">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="175" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<!-- Coin2 -->
+								<FontString name="$parentGold2" inherits="DWGKPFontMed" text="DWGKP_LOCAL_DISTRIBUTEGOLD">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="246" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<!-- Player3 -->
+								<FontString name="$parentPlayer3" inherits="DWGKPFontMed" text="DWGKP_LOCAL_DISTRIBUTENAME">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="307" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<!-- Coin3 -->
+								<FontString name="$parentGold3" inherits="DWGKPFontMed" text="DWGKP_LOCAL_DISTRIBUTEGOLD">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="380" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<!-- Player4 -->
+								<FontString name="$parentPlayer4" inherits="DWGKPFontMed" text="DWGKP_LOCAL_DISTRIBUTENAME">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="440" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<!-- Coin4 -->
+								<FontString name="$parentGold4" inherits="DWGKPFontMed" text="DWGKP_LOCAL_DISTRIBUTEGOLD">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="510" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>							
+							</Layer>
+						</Layers>
+					</Frame>
+					<!-- ScrollFrame -->
+					<ScrollFrame name="$parentScrollFrame" inherits="FauxScrollFrameTemplate">
+						<Size><AbsDimension x="557" y="298"/></Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="30" y="-81"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<Texture name="$parentBG" setAllPoints="true">
+									<Color b="0.0" g="1.0" r="0.0" a="0.0"></Color>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnVerticalScroll>
+								GKPDistributeFrame_OnScroll(self, offset);
+								--FauxScrollFrame_OnVerticalScroll(self, offset, BROWSE_FILTER_HEIGHT, AuctionFrameFilters_Update);
+							</OnVerticalScroll>
+						</Scripts>						
+					</ScrollFrame>
+					<!-- List(8) -->
+					<Button name="$parentDistributeList1" inherits="DWGKPDistributeListRowTemplate" id="1">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="40" y="-128"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentDistributeList2" inherits="DWGKPDistributeListRowTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentDistributeList1" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentDistributeList3" inherits="DWGKPDistributeListRowTemplate" id="3">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentDistributeList2" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentDistributeList4" inherits="DWGKPDistributeListRowTemplate" id="4">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentDistributeList3" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentDistributeList5" inherits="DWGKPDistributeListRowTemplate" id="5">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentDistributeList4" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentDistributeList6" inherits="DWGKPDistributeListRowTemplate" id="6">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentDistributeList5" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentDistributeList7" inherits="DWGKPDistributeListRowTemplate" id="7">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentDistributeList6" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentDistributeList8" inherits="DWGKPDistributeListRowTemplate" id="8">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentDistributeList7" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+				</Frames>	
+				<Scripts>
+					<OnShow>
+						DWGKPDistributeFrame_OnShow(self);
+					</OnShow>
+				</Scripts>
+			</Frame>
+			<!--======== raidFrame =========-->
+			<Frame name="$parentRaidFrame" hidden="true">
+				<Size><AbsDimension x="640" y="445"/></Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset><AbsDimension x="0" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Frames>
+					<!-- HeadFrame -->
+					<Frame name="$parentHeadFrame" inherits="DWGKPHead">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="28" y="-88"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Frames>
+							<!-- NameButton -->
+							<Button name="$parentNameTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_RAIDNAME">
+								<Size><AbsDimension x="80" y="32"/></Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset><AbsDimension x="45" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										self:EnableMouse(false);
+									</OnLoad>
+								</Scripts>
+							</Button>
+							<!-- StartTimeButton -->
+							<Button name="$parentStartTimeTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_RAIDSTARTTIME">
+								<Size><AbsDimension x="80" y="32"/></Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset><AbsDimension x="170" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										self:EnableMouse(false);
+									</OnLoad>
+								</Scripts>
+							</Button>
+							<!-- EndTimeButton -->
+							<Button name="$parentEndTimeTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_RAIDENDTIME">
+								<Size><AbsDimension x="80" y="32"/></Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset><AbsDimension x="275" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										self:EnableMouse(false);
+									</OnLoad>
+								</Scripts>
+							</Button>
+							<!-- AttendNumButton -->
+							<Button name="$parentAttendNumTitle" inherits="DWGKPHeadButtonTemplate" text="DWGKP_LOCAL_RAIDATTENDNUM">
+								<Size><AbsDimension x="80" y="32"/></Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset><AbsDimension x="353" y="0"/></Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										self:EnableMouse(false);
+									</OnLoad>
+								</Scripts>
+							</Button>
+						</Frames>
+						<Layers>
+							<Layer level="ARTWORK">
+								<!-- ActiveString -->
+								<FontString name="$parentActiveTitle" inherits="DWGKPFontMed" text="DWGKP_LOCAL_RAIDACTIVE">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="425" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<!-- EditString -->
+								<FontString name="$parentEditTitle" inherits="DWGKPFontMed" text="DWGKP_LOCAL_RAIDEDIT">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="472" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<!-- DeleteString -->
+								<FontString name="$parentDeleteTitle" inherits="DWGKPFontMed" text="DWGKP_LOCAL_RAIDDELETE">
+									<Size><AbsDimension x="40" y="32"/></Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset><AbsDimension x="510" y="0"/></Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnLoad>
+								
+							</OnLoad>
+						</Scripts>
+					</Frame>
+					<!-- ScrollFrame -->
+					<ScrollFrame name="$parentScrollFrame" inherits="FauxScrollFrameTemplate">
+						<Size><AbsDimension x="557" y="298"/></Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="30" y="-81"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<Texture name="$parentBG" setAllPoints="true">
+									<Color b="0.0" g="1.0" r="0.0" a="0.0"></Color>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnVerticalScroll>
+								GKPRaidFrame_OnScroll(self, offset);
+								--FauxScrollFrame_OnVerticalScroll(self, offset, BROWSE_FILTER_HEIGHT, AuctionFrameFilters_Update);
+							</OnVerticalScroll>
+						</Scripts>						
+					</ScrollFrame>
+					<!-- List(8) -->
+					<Button name="$parentRaidList1" inherits="DWGKPRaidListRowTemplate" id="1">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="40" y="-128"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentRaidList2" inherits="DWGKPRaidListRowTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentRaidList1" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentRaidList3" inherits="DWGKPRaidListRowTemplate" id="3">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentRaidList2" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentRaidList4" inherits="DWGKPRaidListRowTemplate" id="4">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentRaidList3" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentRaidList5" inherits="DWGKPRaidListRowTemplate" id="5">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentRaidList4" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentRaidList6" inherits="DWGKPRaidListRowTemplate" id="6">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentRaidList5" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentRaidList7" inherits="DWGKPRaidListRowTemplate" id="7">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentRaidList6" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentRaidList8" inherits="DWGKPRaidListRowTemplate" id="8">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentRaidList7" relativePoint="BOTTOMLEFT">
+								<Offset><AbsDimension x="0" y="-2"/></Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					
+					<!-- CreateRaidButton -->
+					<Button name="$parentCreateRaidButton" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_RAIDNEW">
+						<Size><AbsDimension x="60" y="25"/></Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset><AbsDimension x="380" y="-400"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								DWGKPCreateRaidButton_OnClick(self);
+							</OnClick>
+						</Scripts>
+					</Button>
+					<!-- BeginRaidButton -->
+					<Button name="$parentBeginRaidButton" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_RAIDSTART">
+						<Size><AbsDimension x="60" y="25"/></Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentCreateRaidButton" relativePoint="RIGHT">
+								<Offset><AbsDimension x="8" y="0"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								DWGKPBeginRaidButton_OnClick(self);
+							</OnClick>
+						</Scripts>
+					</Button>
+					<!-- EndRaidButton -->
+					<Button name="$parentEndRaidButton" inherits="UIPanelButtonTemplate" text="DWGKP_LOCAL_RAIDEND">
+						<Size><AbsDimension x="60" y="25"/></Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentBeginRaidButton" relativePoint="RIGHT">
+								<Offset><AbsDimension x="8" y="0"/></Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								DWGKPEndRaidButton_OnClick(self);
+							</OnClick>
+						</Scripts>
+					</Button>
+				</Frames>
+				<Layers>
+					<Layer>
+						<Texture></Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnShow>
+						DWGKPRaidFrame_OnShow(self);
+					</OnShow>
+				</Scripts>
+			</Frame>			
+		</Frames>
+		<Layers>
+			<!-- curent Raid FontString -->			
+			<Layer level="ARTWORK">
+				<FontString name="$parentCurRaidHead" inherits="DWGKPFontSmall" justifyH="LEFT" text="DWGKP_LOCAL_CURRAID">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset><AbsDimension x="390" y="-58"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentCurRaidName" inherits="DWGKPFontSmall" justifyH="LEFT" text="">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentCurRaidHead" relativePoint="RIGHT">
+							<Offset><AbsDimension x="2" y="0"/></Offset>
+						</Anchor>
+					</Anchors>
+					<Color b="0.067" g="0.8" r="0.08"/>
+				</FontString>
+				<Texture></Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				DWGKPDKPFrame_OnLoad(self);
+			</OnLoad>
+			<OnShow>
+				DWGKPDKPFrame_OnShow(self);
+			</OnShow>
+		</Scripts>
+	</Frame>
+</Ui>

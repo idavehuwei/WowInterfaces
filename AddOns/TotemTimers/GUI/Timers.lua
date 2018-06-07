@@ -104,17 +104,18 @@ TotemTimers.options.args.timers = {
             get = function(info) return TotemTimers_Settings.TimerTimeHeight end,
         },
         spacing = {
-            order = 13,
-            type = "range",
-            name = L["Spacing"] ,
-            desc = L["Sets the space between timer buttons"],
-            min = 0,
-            max = 20,
-            step = 1,
-            set = function(info, val)
-                        TotemTimers_Settings.TimerSpacing = val  TotemTimers.ProcessSetting("TimerSpacing")
-                  end,
-            get = function(info) return TotemTimers_Settings.TimerSpacing end,
+		order = 13,
+		type = "range",
+		name = L["Spacing"] ,
+		desc = L["Sets the space between timer buttons"],
+		min = 0,
+		max = 20,
+		step = 1,
+		set = function(info, val)
+			TotemTimers_Settings.TimerSpacing = val  
+			TotemTimers.ProcessSetting("TimerSpacing")
+		end,
+		get = function(info) return TotemTimers_Settings.TimerSpacing end,
         },
         advanced = {
             order = 30,
@@ -180,7 +181,7 @@ TotemTimers.options.args.timers = {
 }
 
 local ACD = LibStub("AceConfigDialog-3.0")
-local frame = ACD:AddToBlizOptions("TotemTimers", L["Timers"], "TotemTimers", "timers")
+local frame = ACD:AddToBlizOptions(L["TotemTimers"], L["Timers"], L["TotemTimers"], "timers")
 frame:SetScript("OnEvent", function(self) InterfaceOptionsFrame:Hide() end)
 frame:HookScript("OnShow", function(self) if InCombatLockdown() then InterfaceOptionsFrame:Hide() end TotemTimers.LastGUIPanel = self end)
 frame:RegisterEvent("PLAYER_REGEN_DISABLED")

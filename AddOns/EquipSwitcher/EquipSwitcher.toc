@@ -1,0 +1,20 @@
+﻿## Interface: 30300
+## Title: [Duowan] EquipSwitcher 
+## Title-zhCN: [多玩] 快速换装
+## Title-zhTW: [多玩] 快速換裝
+## Notes-zhCN: 快速 自由的切换身上装备.可以使用/qe 数字，在宏中快速切换到对应装备。
+## Notes-zhTW: 快速自由的切換身上的裝備.
+## X-DuowanAddon: 界面聊天
+## Version: 3.0
+## SavedVariables: EquipSwitcherDB
+## X-Category: Miscellaneous
+## Dependencies: Duowan
+## X-Revision: Duowan
+
+locale\zhCN.lua
+locale\zhTW.lua
+locale\enUS.lua
+
+EquipSwitcher.lua
+EquipSwitcher.xml
+eventequip.lua

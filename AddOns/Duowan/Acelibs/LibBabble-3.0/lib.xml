@@ -1,0 +1,10 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+E:\repos\Duowan-Work\UI.xsd">
+	<Script file="LibBabble-3.0.lua"/>
+	<Script file="LibBabble-Boss-3.0\LibBabble-Boss-3.0.lua"/>
+	<Script file="LibBabble-Class-3.0\LibBabble-Class-3.0.lua"/>
+	<Script file="LibBabble-Faction-3.0\LibBabble-Faction-3.0.lua"/>
+	<Script file="LibBabble-Inventory-3.0\LibBabble-Inventory-3.0.lua"/>
+	<Script file="LibBabble-TalentTree-3.0\LibBabble-TalentTree-3.0.lua"/>
+	<Script file="LibBabble-Zone-3.0\LibBabble-Zone-3.0.lua"/>
+</Ui>

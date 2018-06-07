@@ -6,18 +6,6 @@ local Quixote = LibStub("LibQuixote-2.0")
 -- local C = Cartographer
 local CQI = Cartographer_QuestInfo
 
-WorldMapFrame:HookScript("OnShow", function()
-	if (QuestLogFrame:IsShown()) then
-		QuestLogFrame:Hide();
-	end
-end);
-
-QuestLogFrame:HookScript("OnShow", function()
-	if (WorldMapFrame:IsShown()) then
-		WorldMapFrame:Hide();
-	end
-end);
-
 -------------------------------------------------------------------
 
 ----
@@ -42,7 +30,7 @@ function CQI:Hook_QuestLog_UpdateQuestDetails()
 	CQI_EndButton:Hide()
 	
 	for i = 1, 9 do
-		local button = getglobal("CQI_ObjButton"..i)
+		local button = dwGetglobal("CQI_ObjButton"..i)
 		button:Hide()
 	end
 
@@ -78,9 +66,9 @@ function CQI:Hook_QuestLog_UpdateQuestDetails()
 	if q.objs then
 		local obj_type = q.daily and "obj-daily" or "obj"
 		for i = 1, 9 do
-			local q_string = getglobal("QuestInfoObjective"..i)
-			if q_string and q.objs[i] and q.objs[i].npcs then
-				local button = getglobal("CQI_ObjButton"..i)
+			local q_string = dwGetglobal("QuestInfoObjective"..i)
+			if q_string:IsVisible() and q.objs[i] and q.objs[i].npcs then
+				local button = dwGetglobal("CQI_ObjButton"..i)
 				button.CQI_Data = {
 					quest = q.title_full,
 					obj = q.objs[i],
@@ -146,8 +134,6 @@ function CQI:OnButtonClick(this, button, data)
 	elseif zone_count > 1 then
 		self:OpenLocationFrame(map)
 	end
-
-	CQI.trackMode = true;
 end
 
 function CQI:OnButtonTooltip(this, data)
@@ -218,7 +204,7 @@ end
 -------------------------------------------------------------------
 
 local function MakeQuestLogDoubleWide()	
-	--[[
+--[[
 	-- give up if QuestLogFrame is already in wide mode
 	if QuestLogFrame:GetWidth() > 500 or IsAddOnLoaded("beql") then return end
 
@@ -240,7 +226,7 @@ local function MakeQuestLogDoubleWide()
 	    button:SetID(i)
 	    button:Hide()
 	    button:ClearAllPoints()
-	    button:SetPoint("TOPLEFT", getglobal("QuestLogTitle" .. (i-1)), "BOTTOMLEFT", 0, 1)
+	    button:SetPoint("TOPLEFT", dwGetglobal("QuestLogTitle" .. (i-1)), "BOTTOMLEFT", 0, 1)
 	end
 
 	local regions = { QuestLogFrame:GetRegions() }
@@ -295,8 +281,8 @@ end
 function CQI:Hook_QuestLog_Update()
 	--[[
 	if not self.db.profile.showQuestTag then return end
-	for i = 1, QUESTS_DISPLAYED, 1 do
-		local titleLine = _G["QuestLogTitle"..i]
+	for i = 1, MAX_QUESTLOG_QUESTS, 1 do
+		local titleLine = _G["QuestLogFrameTitle"..i]
 		if titleLine then
 			local title = titleLine:GetText()
 			if not title then break end
@@ -306,7 +292,7 @@ function CQI:Hook_QuestLog_Update()
 					title = Quixote:GetTaggedQuestName(uid)
 					titleLine:SetText(title)
 					
-					local check = _G["QuestLogTitle" .. i .. "Check"]
+					local check = _G["QuestLogFrameTitle" .. i .. "Check"]
 					if check and check:IsVisible() then
 						check:SetPoint("LEFT", titleLine, "LEFT", -1, -2)
 					end
@@ -333,6 +319,7 @@ local function QuestIconFaded(title)
 end
 
 local function GossipLoop(buttonindex, do_texture, ...)
+	--[[
 	local numQuests = select('#', ...)
 	for i = 2, numQuests, 3 do
 		local button = _G["GossipTitleButton"..buttonindex]
@@ -348,15 +335,16 @@ local function GossipLoop(buttonindex, do_texture, ...)
 		buttonindex = buttonindex + 1
 	end
 	return buttonindex + 1
+	]]
 end
 
 local function ShowQuestTagOnGossip()
 	local buttonindex = 1
 	if GetGossipAvailableQuests() then
---		buttonindex = GossipLoop(buttonindex, false, GetGossipAvailableQuests())
+		buttonindex = GossipLoop(buttonindex, false, GetGossipAvailableQuests())
 	end
 	if GetGossipActiveQuests() then
---		buttonindex = GossipLoop(buttonindex, true, GetGossipActiveQuests())
+		buttonindex = GossipLoop(buttonindex, true, GetGossipActiveQuests())
 	end
 end
 

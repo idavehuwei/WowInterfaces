@@ -1,10 +1,10 @@
 ## Interface: 30300
-## X-BigfootType: 1
-## X-BigfootDesc: 快捷收取邮件和发送邮件的邮箱助手。
-## Version: 3.3.2
-## Title: Postal
+## Version: 3.1.2
+## Title: [Duowan] Postal
+## Title-zhCN: [多玩] 邮件助手 Postal
+## Title-zhTW: [多玩] 郵件助手 Postal
 ## Author: Xinhuan
-## X-Credits: Ammo, Rabbit, Grennon, Mikk
+## X-Credits: Ammo, Rabbit, Grennon
 ## X-Category: Mail
 ## Notes: Postal: Enhanced Mailbox support
 ## Notes-ruRU: Postal: Расширенная поддержка почтового ящика
@@ -12,9 +12,10 @@
 ## Notes-esES: Postal: soporte mejorado para el buzon
 ## Notes-zhTW: Postal: 強化信箱功能。
 ## Notes-zhCN: Postal: 增强信箱功能
-## OptionalDeps: Ace3, !BlizzBugsSuck
+## OptionalDeps: Ace3
+## X-DuowanAddon: 界面聊天
 ## SavedVariables: Postal3DB
-## X-Curse-Packaged-Version: r290
+## X-Curse-Packaged-Version: v3.1.2
 ## X-Curse-Project-Name: Postal
 ## X-Curse-Project-ID: postal
 ## X-Curse-Repository-ID: wow/postal/mainline
@@ -22,16 +23,9 @@
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Mailbox: true
 ## X-Email: xinhuan AT gmail DOT com
-
-#@no-lib-strip@
-Libs\LibStub\LibStub.lua
-Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
-Libs\AceAddon-3.0\AceAddon-3.0.xml
-Libs\AceEvent-3.0\AceEvent-3.0.xml
-Libs\AceDB-3.0\AceDB-3.0.xml
-Libs\AceHook-3.0\AceHook-3.0.xml
-Libs\AceLocale-3.0\AceLocale-3.0.xml
-#@end-no-lib-strip@
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
 
 Localization.lua
 Postal.lua
@@ -43,5 +37,3 @@ Modules\Select.lua
 Modules\TradeBlock.lua
 Modules\Rake.lua
 Modules\BlackBook.lua
-Modules\DoNotWant.lua
-Modules\CarbonCopy.lua

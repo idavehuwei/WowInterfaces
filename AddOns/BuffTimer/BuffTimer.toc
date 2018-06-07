@@ -1,0 +1,15 @@
+## Interface: 30300
+## Title: [Duowan] BuffTimer
+## Notes: Display exact timer of player's buff and debuff
+## Title-zhCN: [多玩] 魔法增益
+## Notes-zhCN: 显示玩家精确的buff和debuff时间, 并显示武器增益次数
+## Title-zhTW: [多玩] 魔法增益
+## Notes-zhTW: 顯示玩家精確的buff和debuff時間, 並顯示武器增益次數
+## Author: dugu
+## X-DuowanAddon: 界面聊天
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 
+## SavedVariables:
+
+BuffTimer.lua

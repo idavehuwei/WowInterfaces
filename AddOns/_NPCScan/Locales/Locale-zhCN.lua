@@ -1,78 +1,96 @@
---[[****************************************************************************
+﻿--[[****************************************************************************
   * _NPCScan by Saiket                                                         *
   * Locales/Locale-zhCN.lua - Localized string constants (zh-CN).              *
   ****************************************************************************]]
 
+local L = LibStub("AceLocale-3.0"):NewLocale("_NPCScan", "zhCN");
 
-if ( GetLocale() ~= "zhCN" ) then
-    return;
-end
+if (not L) then return; end
 
-
--- See http://wow.curseforge.com/addons/npcscan/localization/zhCN/
-local _NPCScan = select( 2, ... );
-_NPCScan.L = setmetatable( {
-    NPCs = setmetatable( {
+L["NPCs"] = {
         [ 18684 ] = "独行者布罗加斯",
-        [ 32491 ] = "时光流逝始祖幼龙",
         [ 33776 ] = "古德利亚",
-        [ 35189 ] = "逐日",
-        [ 38453 ] = "大角",
-    }, { __index = _NPCScan.L.NPCs; } );
+	[ 1140 ] = "刺喉雌龙",
+	[ 5842 ] = "“跳跃者”塔克",
+	[ 6581 ] = "暴掠龙女王",
+	[ 14232 ] = "达尔特",
+	[ 32491 ] = "迷失的始祖幼龙",
+	[ 35189 ] = "逐日",
+	[ 38453 ] = "阿克图瑞斯",
+};
 
-    BUTTON_FOUND = "发现NPC！",
-    CACHED_FORMAT = "下列目标已经存入缓存：%s",
-    CACHED_LONG_FORMAT = "下列目标已经存入缓存。请考虑使用|cff808080“/npcscan”|r'设置菜单将其移除，或通过清空缓存来重置：%s",
-    CACHED_PET_RESTING_FORMAT = "下列可驯服宠物在休息时加入缓存：%s",
-    CACHED_WORLD_FORMAT = "下列目标%2$s unit(s) are already cached: %1$s.",
-    CACHELIST_ENTRY_FORMAT = "|cff808080“%s”|r",
-    CACHELIST_SEPARATOR = ",",
-    CMD_ADD = "ADD",
-    CMD_CACHE = "CACHE",
-    CMD_CACHE_EMPTY = "搜索的怪物均没有存入缓存。",
-    CMD_HELP = "命令为|cff808080“/npcscan add <NpcID> <Name>”|r、|cff808080“/npcscan remove NPC ID或名字”|r、|cff808080“/npcscan cache”|r列出已缓存的怪物，|cff808080“/npcscan”|r打开设置界面",
-    CMD_REMOVE = "REMOVE",
-    CMD_REMOVENOTFOUND_FORMAT = "NPC|cff808080“%s”|r未找到",
-    CONFIG_ALERT = "警报选项",
-    CONFIG_ALERT_SOUND = "警报所用声音文件",
-    CONFIG_ALERT_SOUND_DEFAULT = "|cffffd200默认|r",
-    CONFIG_ALERT_SOUND_DESC = "选择发现NPC时的警报音效，SharedMedia插件可以提供更多额外音效。",
-    CONFIG_ALERT_UNMUTE = "取消静音",
-    CONFIG_ALERT_UNMUTE_DESC = "如果你静音了游戏则在找到NPC时解除静音",
-    CONFIG_CACHEWARNINGS = "在登录和切换区域时显示缓存提示",
-    CONFIG_CACHEWARNINGS_DESC = "如果某个NPC在你登录或改变区域时已经在缓存中了，这一选项将显示一条关于已缓存怪物无法搜索的提示。",
-    CONFIG_DESC = "这些选项可定制_NPCScan在找到稀有NPC时的警示方式。",
-    CONFIG_TEST = "测试警报",
-    CONFIG_TEST_DESC = "模拟一次|cff808080“发现NPC”|r警报好让你知道该看啥",
-    CONFIG_TEST_HELP_FORMAT = "点击目标按钮或使用热键选定找到的怪物。按住|cffffffff<%s>|r并拖动可以移动目标按钮。注意，如果在战斗中发现NPC，目标按钮只会在离开战斗后显示。",
-    CONFIG_TEST_NAME = "你！（测试用）",
-    CONFIG_TITLE = "_|cffCCCC88NPCScan|r",
-    FOUND_FORMAT = "发现|cff808080“%s”|r！",
-    FOUND_TAMABLE_FORMAT = "发现|cff808080“%s”|r！|cffff2020(注意：可驯服，没准是个宠物)|r",
-    FOUND_TAMABLE_WRONGZONE_FORMAT = "|cffff2020错误警示:|r 发现可驯服宠物|cff808080“%s”|r，位于%s而不是%s (ID %d)；肯定是宠物。",
-    PRINT_FORMAT = "_|cffCCCC88NPCScan|r: %s",
-    SEARCH_ACHIEVEMENTADDFOUND = "搜索已完成成就的NPC",
-    SEARCH_ACHIEVEMENTADDFOUND_DESC = "继续搜寻任何成就类NPC，即使你已经不再需要它们。",
-    SEARCH_ACHIEVEMENT_DISABLED = "禁用",
-    SEARCH_ADD = "+",
-    SEARCH_ADD_DESC = "添加新NPC或保存改动",
-    SEARCH_ADD_TAMABLE_FORMAT = "注意：|cff808080“%s”|r可驯服，如果发现某个猎人的宠物是它的话会触发错误警示。",
-    SEARCH_CACHED = "已缓存",
-    SEARCH_COMPLETED = "完成",
-    SEARCH_DESC = "这个表格可添加或移除需扫描的NPC和成就。",
-    SEARCH_ID = "NPC ID：",
-    SEARCH_ID_DESC = "要搜寻的NPC的ID，这一数值可以wowhead等数据库找到",
-    SEARCH_NAME = "名称：",
-    SEARCH_NAME_DESC = "NPC的标签，不一定要和NPC名字对应。",
-    SEARCH_NPCS = "自定义NPC",
-    SEARCH_NPCS_DESC = "搜索任意NPC，即便它没有相关成就",
-    SEARCH_REMOVE = "-",
-    SEARCH_TITLE = "搜索",
-    SEARCH_WORLD = "地狱：",
-    SEARCH_WORLD_DESC = "可选的",
-    SEARCH_WORLD_FORMAT = "(%s)",
-}, { __index = _NPCScan.L; } );
+L["BUTTON_FOUND"] = "发现NPC!";
+L["CACHED_FORMAT"] = "下列NPC已在缓存中: %s.";
+L["CACHED_LONG_FORMAT"] = "下面这些NPC已经在缓存中. 可以用|cff808080“/npcscan”|r来清除他们, 或者清除你的缓存来重新搜索: %s.";
+L["CACHED_PET_RESTING_FORMAT"] = "下列可驯服的宠物在你休息时缓存到: %s.";
+L["CACHED_WORLD_FORMAT"] = "下列 %2$s 单位已经在缓存中: %1$s.";
+L["CACHELIST_ENTRY_FORMAT"] = "|cff808080“%s”|r";
+L["CACHELIST_SEPARATOR"] = "; ";
+L["CMD_ADD"] = "ADD";
+L["CMD_CACHE"] = "CACHE";
+L["CMD_CACHE_EMPTY"] = "没有任何寻找中的怪物在缓存中";
+L["CMD_HELP"] = "命令为 |cff808080“/npcscan add <NpcID> <Name>”|r, |cff808080“/npcscan remove <NpcID or Name>”|r, |cff808080“/npcscan cache”|r 列出缓存里的怪物, 输入 |cff808080“/npcscan”|r 将显示此帮助.";
+L["CMD_REMOVE"] = "REMOVE";
+L["CMD_REMOVENOTFOUND_FORMAT"] = "|cff808080“%s”|r 没有找到.";
+L["CONFIG_ALERT"] = "提示选项";
+L["CONFIG_ALERT_SOUND"] = "声音提示";
+L["CONFIG_ALERT_SOUND_DEFAULT"] = "|cffffd200默认|r";
+L["CONFIG_ALERT_SOUND_DESC"] = "选择一个声音, 会在找到NPC时播放.  可以用 |cff808080“SharedMedia”|r 来添加新的声音.";
+L["CONFIG_ALERT_UNMUTE"] = "在播放音效时取消禁音";
+L["CONFIG_ALERT_UNMUTE_DESC"] = "在找到追踪的怪物后打开被禁用的音效以播放声音提示, 完成后会自动禁用音效";
+L["CONFIG_CACHEWARNINGS"] = "在读条后提示你清除缓存";
+L["CONFIG_CACHEWARNINGS_DESC"] = "如果一个NPC已经在缓存里了, 在你读条完之后会在聊天框提示你.";
+L["CONFIG_DESC"] = "设置检测到稀有NPC后怎样提示";
+L["CONFIG_TEST"] = "测试音效";
+L["CONFIG_TEST_DESC"] = "测试 |cff808080“找到NPC”|r 提示.";
+--CONFIG_TEST_HELP_FORMAT"] = "点击Click the target button or use the provided keybinding to target the found mob.  Hold |cffffffff<%s>|r and drag to move the target button.  Note that if an NPC is found while you're in combat, the button will only appear after you exit combat.";
+L["CONFIG_TEST_HELP_FORMAT"] = "点击选中按钮或绑定的快捷键来选择. 按住|cffffffff<%s>|拖动选中按钮. 如果在npc在战斗中被发现, 按钮只能在战斗结束后出现.";
+L["CONFIG_TEST_NAME"] = "你! (测试)";
+L["CONFIG_TITLE"] = "稀有精英探测";
+L["FOUND_FORMAT"] = "找到 |cff808080“%s”|r!";
+L["FOUND_TAMABLE_FORMAT"] = "找到 |cff808080“%s”|r!  |cffff2020(提示: 可驯服宠物, 可能只是个宠物.)|r";
+L["FOUND_TAMABLE_WRONGZONE_FORMAT"] = "|cffff2020错误警报:|r 找到可驯服宠物 |cff808080“%s”|r 在 %s 而不是 %s (ID %d); 肯定是别人的宠物.";
+L["PRINT_FORMAT"] = "_|cffCCCC88NPCScan|r: %s";
+L["SEARCH_ACHIEVEMENTADDFOUND"] = "寻找成就要求的 NPC";
+L["SEARCH_ACHIEVEMENTADDFOUND_DESC"] = "继续寻找所有的NPC, 即使你之前已经找到过.";
+L["SEARCH_ACHIEVEMENT_DISABLED"] = "Disabled";
+L["SEARCH_ADD"] = "+";
+L["SEARCH_ADD_DESC"] = "添加新的NPC或保存修改";
+L["SEARCH_ADD_TAMABLE_FORMAT"] = "提示: |cff808080“%s”|r 是可驯服的, 所以看到其他猎人的宠物可能会造成错误警报.";
+L["SEARCH_CACHED"] = "已缓存";
+L["SEARCH_COMPLETED"] = "已完成";
+L["SEARCH_DESC"] = "这个表允许你添加/删除需搜索的成就/npc";
+L["SEARCH_ID"] = "NPC ID:";
+L["SEARCH_ID_DESC"] = "被寻找NPC的ID, 可以在db.duowan.com之类的网站找到";
+L["SEARCH_NAME"] = "名字:";
+L["SEARCH_NAME_DESC"] = "不需要和NPC名字一模一样";
+L["SEARCH_NPCS"] = "自定义 NPC";
+L["SEARCH_NPCS_DESC"] = "添加NPC到搜索列表, 即使没有成就也可以";
+L["SEARCH_REMOVE"] = "-";
+L["SEARCH_TITLE"] = "搜索";
+L["SEARCH_WORLD"] = "世界:";
+L["SEARCH_WORLD_DESC"] = "可选世界名, 可以是大陆或|cffff7f3副本|r (需要完全匹配).";
+L["SEARCH_WORLD_FORMAT"] = "(%s)";
+
+L["OVERLAY_CONFIG_ALPHA"] = "透明度";
+L["OVERLAY_CONFIG_DESC"] = "设定在哪张地图显示怪物移动路径。大部分的地图插件都针对世界地图做设定。";
+L["OVERLAY_CONFIG_SHOWALL"] = "永远显示所有路径";
+L["OVERLAY_CONFIG_SHOWALL_DESC"] = "通常地图上不会显示非搜寻中的怪物的路径图。开启这个选项将永远显示所有已知的路径图。";
+L["OVERLAY_CONFIG_TITLE"] = "路径图";
+L["OVERLAY_CONFIG_TITLE_STANDALONE"] = "稀有精英路径图";
+L["OVERLAY_CONFIG_ZONE"] = "地区:";
+L["OVERLAY_MODULE_ALPHAMAP3"] = "AlphaMap3 插件";
+L["OVERLAY_MODULE_BATTLEFIELDMINIMAP"] = "显示战场迷你地图";
+L["OVERLAY_MODULE_MINIMAP"] = "小地图";
+L["OVERLAY_MODULE_RANGERING_DESC"] = "提示： 在有稀有怪的地图才显示距离环(例如主城跟冬握就不会显示).";
+L["OVERLAY_MODULE_RANGERING_FORMAT"] = "显示大概 %d码的侦测距离环";
+L["OVERLAY_MODULE_WORLDMAP"] = "主要世界地图";
+L["OVERLAY_MODULE_WORLDMAP_KEY"] = "稀有精英路径图";
+L["OVERLAY_MODULE_WORLDMAP_KEY_FORMAT"] = "· %s";
+L["OVERLAY_MODULE_WORLDMAP_TOGGLE"] = "稀有精英路径图";
+L["OVERLAY_MODULE_WORLDMAP_TOGGLE_DESC"] = "如果开启，显示已知稀有精英路径的路径图。";
 
 
-_G[ "BINDING_NAME_CLICK _NPCScanButton:LeftButton" ] = [=[选定最后一个找到的怪物
-|cff808080(在_NPCScan警报时使用)|r]=];
+BINDING_HEADER__NPCSCAN = "稀有精英探测";
+_G[ "BINDING_NAME_CLICK _NPCScanButton:LeftButton" ] = [=[选中最后发现的稀有精英
+|cff808080(当获得通知时)|r]=];

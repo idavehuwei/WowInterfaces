@@ -1,0 +1,212 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+E:\repos\Duowan-Work\UI.xsd">
+	<Script file="template.lua"/>
+	<!-- Tab Template -->
+	<Button name="DuowanMoveTabTemplate" alpha="0.5" frameStrata="LOW" clampedToScreen="true" virtual="true" toplevel="true">
+		<Size x="34" y="10"/>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentLable" inherits="ChatFontNormal">
+					<Anchors>
+						<Anchor point="BOTTOM" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				DuowanMoveTab_OnLoad(self);
+				DuowanMoveFrame_OnLoad(self:GetParent());
+			</OnLoad>
+			<OnClick>
+				DuowanMoveTab_OnClick(self, button);
+			</OnClick>
+			<OnDragStart>
+				DuowanMoveTab_OnDragStart(self, button);
+			</OnDragStart>
+			<OnDragStop>
+				DuowanMoveTab_OnDragStop(self, button);
+			</OnDragStop>
+		</Scripts>
+		<NormalTexture file="Interface\AddOns\DuowanMove\img\tab1.tga">
+			<Size x="56" y="12"/>
+			<Anchors>
+				<Anchor point="CENTER"/>
+			</Anchors>
+		</NormalTexture>
+		<HighlightTexture file="Interface\AddOns\DuowanMove\img\tab2.tga" alphaMode="ADD">
+			<Size x="56" y="12"/>
+			<Anchors>
+				<Anchor point="CENTER"/>
+			</Anchors>
+		</HighlightTexture>
+	</Button>
+	<!-- Anchor Template -->
+	<Frame name="DuowanMoveAnchorTemplate" parent="UIParent"  hidden="false" frameStrata="LOW" virtual="true" movable="true" enableMouse="false" inherits="SecureHandlerStateTemplate">
+		<Size>
+			<AbsDimension x="430" y="128"/>
+		</Size>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentBG" file="Interface\ChatFrame\ChatFrameBackground" setAllPoints="true">
+					<Color r="0.0" g="0.0" b="0.0" a="0.5"/>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="ChatFontNormal">
+					<Anchors>
+						<Anchor point="CENTER" relativePoint="CENTER">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Color r="1.0" g="1.0" b="1.0" a="0.5"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentTab" inherits="DuowanMoveTabTemplate">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="1" y="2"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<!-- SpinBox模板 -->
+	<Frame name="DuowanMoveSpinBoxTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="100" y="28"/>
+		</Size>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="ChatFontSmall">
+					<Anchors>
+						<Anchor point="CENTER" relativePoint="CENTER">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Color r="1.0" g="1.0" b="1.0" a="1.0"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentPrev">
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="LEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						DuowanMoveSpinBoxPrev_OnLoad(self);
+					</OnLoad>
+					<OnClick>
+						DuowanMoveSpinBoxPrev_OnClick(self);
+					</OnClick>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Down"/>
+				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+			</Button>
+			<Button name="$parentNext">
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="RIGHT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						DuowanMoveSpinBoxNext_OnLoad(self);
+					</OnLoad>
+					<OnClick>
+						DuowanMoveSpinBoxNext_OnClick(self);
+					</OnClick>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
+				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+			</Button>			
+		</Frames>
+		<Scripts>
+			<OnShow>
+				DuowanMoveSpinBox_OnShow(self);
+			</OnShow>
+		</Scripts>
+	</Frame>
+	<!-- 按钮 -->
+	<Button name="DuowanMoveMinmaxButtonTemplate" virtual="true">
+		<Size><AbsDimension x="32" y="32"/></Size>		
+		<Scripts>
+			<OnLoad>
+				DuowanMoveMinmaxButton_OnLoad(self);				
+			</OnLoad>		
+		</Scripts>
+		<NormalTexture file="Interface\Buttons\UI-Panel-CollapseButton-Up"/>
+		<PushedTexture file="Interface\Buttons\UI-Panel-CollapseButton-Down"/>
+		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+	</Button>
+	<!-- 勾选框模板 -->
+	<CheckButton name="DuowanMoveCheckButtonTemplate" inherits="UICheckButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="24" y="24"/>
+		</Size>
+		<Frames>
+			<Button name="$parentHitArea">
+				<Size>
+					<AbsDimension x="80" y="25"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+					</OnLoad>
+					<OnClick>
+						self:GetParent():Click();
+					</OnClick>
+					<OnEnter>
+						if (self:GetParent().text) then
+							self:GetParent().text:SetTextColor(1, 1, 1);
+						end
+					</OnEnter>
+					<OnLeave>
+						if (self:GetParent().text) then
+							self:GetParent().text:SetTextColor(1, 0.82, 0);
+						end
+					</OnLeave>
+				</Scripts>
+			</Button>	
+		</Frames>
+		<Scripts>
+		</Scripts>
+	</CheckButton>
+</Ui>

@@ -1,0 +1,39 @@
+## Interface: 30300
+## Title: [Duowan] Titan Panel |cff00aa004.2.5.30100|r
+## Notes: Adds a display bar on the top and/or bottom of the screen. Allows users to show and control information/launcher plugins.
+## Title-zhCN: [多玩] 泰坦信息条 Titan Panel
+## Notes-zhCN: 在屏幕顶部增加一条显示游戏中咨询的信息条
+## Title-zhTW: [多玩] 泰坦信息條 Titan Panel
+## Notes-zhTW: 在螢幕頂部增加一條顯示遊戲中諮詢的資訊條
+## Author: Titan Development Team
+## X-Credits: TitanMod, Dark Imakuni, Adsertor, Titan Dev Team
+## SavedVariables: TitanSettings, TitanSkins, ServerTimeOffsets, ServerHourFormat, GoldArray
+## Version: 4.2.5.30200 - Revision 275
+## OptionalDeps: Ace3, AceGUI-3.0-SharedMediaWidgets, LibSharedMedia-3.0
+## X-Embeds: Ace3, AceGUI-3.0-SharedMediaWidgets, LibSharedMedia-3.0
+## X-Category: Interface Enhancements
+## X-Website: http://www.titanpanel.org
+## X-Email: contact@titanpanel.org
+## X-License: All rights reserved (See license.txt)
+## X-WoWI-ID: 8092
+## X-DuowanAddon: 界面聊天
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+Titan\Titan.xml
+
+TitanAmmo\TitanAmmo.xml
+TitanBag\TitanBag.xml
+TitanClock\TitanClock.xml
+TitanCoords\TitanCoords.xml
+TitanGoldTracker\TitanGoldTracker.xml
+TitanLootType\TitanLootType.xml
+TitanPerformance\TitanPerformance.xml
+TitanRegen\TitanRegen.xml
+TitanRepair\TitanRepair.xml
+TitanVolume\TitanVolume.xml
+TitanXP\TitanXP.xml
+TitanMail\TitanMail.xml
+TitanTracking\TitanTrack.xml
+TitanWinterTimer\TitanWinterTimer.xml

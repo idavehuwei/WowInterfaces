@@ -1,6 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 	<Script file="localization.lua"/>
+	<Script file="SpellInfo.lua"/>
 	<Script file="SpellTimer.lua"/>
 	<Slider name="SpellTimerOptionSliderTemplate" orientation="HORIZONTAL" virtual="true" enableMouse="true">
 		<Size>
@@ -62,7 +63,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			<Layer level="ARTWORK">
 				<FontString name="$parentText" inherits="ChatFontNormal" justifyH="LEFT">
 					<Size>
-						<AbsDimension x="130" y="16"/>
+						<AbsDimension x="180" y="16"/>
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
@@ -72,6 +73,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchor>
 					</Anchors>
 				</FontString>
+				
 			</Layer>
 		</Layers>
 		<Frames>
@@ -89,7 +91,9 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				<Layers>
 					<Layer level="BACKGROUND">
 						<Texture name="$parentTexture"/>
-						<FontString name="$parentCount" inherits="NumberFontNormal">
+					</Layer>
+					<Layer level="ARTWORK">
+						<FontString name="$parentCount" inherits="dwNumberFontNormal" justifyH="RIGHT">
 							<Anchors>
 								<Anchor point="BOTTOMRIGHT">
 									<Offset>
@@ -102,7 +106,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				</Layers>
 				<Scripts>
 					<OnLoad>
-						self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+						self:RegisterForClicks("LeftButtonDown", "LeftButtonUp", "RightButtonUp");
 					</OnLoad>
 					<OnEnter>
 						SpellTimerFrame_OnEnter(self);
@@ -184,13 +188,13 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		</Frames>
 		<Scripts>
 			<OnUpdate>
-				SpellTimerFrame_OnUpdate(self, elapsed);
+				SpellTimerFrame_OnUpdate(self, arg1);
 			</OnUpdate>
 		</Scripts>
 	</Frame>
-	<Frame name="SpellTimerMainFrame" frameStrata="MEDIUM" movable="true" enableMouse="false" parent="UIParent" clampedToScreen="true" hidden="false">
+	<Frame name="SpellTimerMainFrame" frameStrata="MEDIUM" movable="true" enableMouse="false" parent="UIParent" hidden="false">
 		<Size>
-			<AbsDimension x="1" y="1"/>
+			<AbsDimension x="190" y="64"/>
 		</Size>
 		<Anchors>
 			<Anchor point="TOPLEFT" relativeTo="UIParent" relativePoint="BOTTOMRIGHT">
@@ -198,23 +202,14 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 					<AbsDimension x="-346" y="453"/>
 				</Offset>
 			</Anchor>
-		</Anchors>
-		<Scripts>			
+		</Anchors>		
+		<Scripts>
 			<OnLoad>
 				SpellTimerMainFrame_OnLoad(self);
-			</OnLoad>
-			<OnShow>
-				self:SetBackdropColor(0.0, 0.0, 0.0);
-			</OnShow>
-			<OnMouseDown>
-				self:StartMoving();
-			</OnMouseDown>
-			<OnMouseUp>
-				self:StopMovingOrSizing();
-			</OnMouseUp>
+			</OnLoad>			
 		</Scripts>
 	</Frame>
-	<Button name="SpellTimerUnitFrameTemplate" frameStrata="MEDIUM" movable="true" clampedToScreen="true" enableMouse="true" parent="UIParent" hidden="false" virtual="true">
+	<Button name="SpellTimerUnitFrameTemplate" frameStrata="MEDIUM" movable="true" enableMouse="true" parent="UIParent" hidden="false" virtual="true">
 		<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize>
 				<AbsValue val="16"/>
@@ -238,18 +233,15 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 					</Anchors>
 				</FontString>
 			</Layer>
-		</Layers>
+		</Layers>		
 		<Scripts>
 			<OnLoad>
-				self:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.4);
+				self:SetBackdropBorderColor(0.5, 0.5, 0.5, 1.0);
 				self:SetBackdropColor(0.0, 0.0, 0.0, 0.5);
-			</OnLoad>
+			</OnLoad>			
 			<OnHide>
 				SpellTimerMainFrame:StopMovingOrSizing();
 			</OnHide>
-			<OnUpdate>
-				SpellTimerUnitFrame_OnUpdate(self, elapsed);
-			</OnUpdate>
 		</Scripts>
 	</Button>
 	<Frame name="SpellTimerOptionTemplate" hidden="false" virtual="true">
@@ -257,9 +249,9 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			<AbsDimension x="224" y="20"/>
 		</Size>
 		<Frames>
-			<CheckButton name="$parentCheckbox" inherits="ModOptionCheckButtonTemplate" hidden="false">
+			<CheckButton name="$parentCheckbox" inherits="dwCheckButtonTemplate" hidden="false">
 				<Size>
-					<AbsDimension x="110" y="20"/>
+					<AbsDimension x="20" y="20"/>
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT">
@@ -274,23 +266,23 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 					</OnClick>
 				</Scripts>
 			</CheckButton>
-			<Slider name="$parentSlider" inherits="SpellTimerOptionSliderTemplate">
+			<Slider name="$parentSlider" inherits="SpellTimerOptionSliderTemplate" hidden="true">
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentCheckbox" relativePoint="RIGHT">
 						<Offset>
-							<AbsDimension x="5" y="2"/>
+							<AbsDimension x="80" y="2"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						getglobal(self:GetName().."Text"):SetText("5");
+						dwGetglobal(self:GetName().."Text"):SetText("5");
 						self:SetMinMaxValues(0, 5);
 						self:SetValueStep(0.5);
 						self.tooltipText = SPELL_TIMER_TEXT_OPTION_SLIDER;
 					</OnLoad>
 					<OnValueChanged>
-						SpellTimerOptionFrameSlider_OnChange(self, self:GetParent():GetID());
+						SpellTimerOptionFrameSlider_OnChange(self,self:GetParent():GetID());
 					</OnValueChanged>
 				</Scripts>
 			</Slider>
@@ -317,7 +309,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativeTo="SpellTimerOptionFrame">							
 								<Offset>
-									<AbsDimension x="15" y="-30"/>
+									<AbsDimension x="25" y="-30"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -326,7 +318,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						<Anchors>
 							<Anchor point="TOP" relativeTo="$parentSpellOption1" relativePoint="BOTTOM">
 								<Offset>
-									<AbsDimension x="0" y="0"/>
+									<AbsDimension x="0" y="-3"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -335,7 +327,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						<Anchors>
 							<Anchor point="TOP" relativeTo="$parentSpellOption2" relativePoint="BOTTOM">
 								<Offset>
-									<AbsDimension x="0" y="0"/>
+									<AbsDimension x="0" y="-3"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -344,7 +336,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						<Anchors>
 							<Anchor point="TOP" relativeTo="$parentSpellOption3" relativePoint="BOTTOM">
 								<Offset>
-									<AbsDimension x="0" y="0"/>
+									<AbsDimension x="0" y="-3"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -353,7 +345,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						<Anchors>
 							<Anchor point="TOP" relativeTo="$parentSpellOption4" relativePoint="BOTTOM">
 								<Offset>
-									<AbsDimension x="0" y="0"/>
+									<AbsDimension x="0" y="-3"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -362,7 +354,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						<Anchors>
 							<Anchor point="TOP" relativeTo="$parentSpellOption5" relativePoint="BOTTOM">
 								<Offset>
-									<AbsDimension x="0" y="0"/>
+									<AbsDimension x="0" y="-3"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -371,7 +363,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						<Anchors>
 							<Anchor point="TOP" relativeTo="$parentSpellOption6" relativePoint="BOTTOM">
 								<Offset>
-									<AbsDimension x="0" y="0"/>
+									<AbsDimension x="0" y="-3"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -380,16 +372,16 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						<Anchors>
 							<Anchor point="TOP" relativeTo="$parentSpellOption7" relativePoint="BOTTOM">
 								<Offset>
-									<AbsDimension x="0" y="0"/>
+									<AbsDimension x="0" y="-3"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
 					</Frame>
-					<CheckButton name="SpellTimerOptionShowProgress" inherits="ModOptionCheckButtonTemplate" hidden="false">
+					<CheckButton name="SpellTimerOptionShowProgress" inherits="dwCheckButtonTemplate" hidden="false">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativeTo="$parentSpellOption8" relativePoint="BOTTOMLEFT">
 								<Offset>
-									<AbsDimension x="-15" y="0"/>
+									<AbsDimension x="-25" y="-3"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -402,7 +394,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 							</OnShow>
 						</Scripts>
 					</CheckButton>
-					<CheckButton name="SpellTimerOptionShowName" inherits="ModOptionCheckButtonTemplate" hidden="false">
+					<CheckButton name="SpellTimerOptionShowName" inherits="dwCheckButtonTemplate" hidden="false">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativeTo="SpellTimerOptionShowProgress" relativePoint="TOPLEFT">
 								<Offset>
@@ -432,7 +424,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnVerticalScroll>
-								FauxScrollFrame_OnVerticalScroll(self, offset, 20, SpellTimerList_Update);
+								FauxScrollFrame_OnVerticalScroll(self, arg1, 20, SpellTimerList_Update);
 							</OnVerticalScroll>
 						</Scripts>
 					</ScrollFrame>
@@ -445,6 +437,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			</OnShow>
 		</Scripts>
 	</Frame>
+
 	<GameTooltip name="SpellTimerTooltip" parent="UIParent" hidden="false" frameStrata="TOOLTIP" inherits="GameTooltipTemplate">
 		<Scripts>
 			<OnLoad>
@@ -452,5 +445,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			</OnLoad>
 		</Scripts>
 	</GameTooltip>
-	
+	<!--
+	<GameTooltip name="SpellTimerHelpTooltip" frameStrata="TOOLTIP" hidden="true" parent="UIParent" inherits="GameTooltipTemplate"/>
+	-->
 </Ui>

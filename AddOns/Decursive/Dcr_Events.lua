@@ -1,7 +1,7 @@
 --[[
     This file is part of Decursive.
     
-    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
+    Decursive (v 2.5.1-12-gb39554a) add-on for World of Warcraft UI
     Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/to/decursive.php )
 
     Starting from 2009-10-31 and until said otherwise by its author, Decursive
@@ -19,27 +19,28 @@
 --]]
 -------------------------------------------------------------------------------
 
+local addonName, T = ...;
 -- big ugly scary fatal error message display function {{{
-if not DcrFatalError then
--- the beautiful error popup : {{{ -
-StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
-    text = "|cFFFF0000Decursive Error:|r\n%s",
-    button1 = "OK",
-    OnAccept = function()
-        return false;
-    end,
-    timeout = 0,
-    whileDead = 1,
-    hideOnEscape = 1,
-    showAlert = 1,
+if not T._FatalError then
+    -- the beautiful error popup : {{{ -
+    StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
+        text = "|cFFFF0000Decursive Error:|r\n%s",
+        button1 = "OK",
+        OnAccept = function()
+            return false;
+        end,
+        timeout = 0,
+        whileDead = 1,
+        hideOnEscape = 1,
+        showAlert = 1,
     }; -- }}}
-DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
+    T._FatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
 end
 -- }}}
 
-if not DcrLoadedFiles or not DcrLoadedFiles["Dcr_opt.lua"] then
-    if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (Dcr_opt.lua not loaded)"); end;
-    DcrCorrupted = true;
+if not T._LoadedFiles or not T._LoadedFiles["Dcr_opt.lua"] then
+    if not DecursiveInstallCorrupted then T._FatalError("Decursive installation is corrupted! (Dcr_opt.lua not loaded)"); end;
+    DecursiveInstallCorrupted = true;
     return;
 end
 local D = Dcr;
@@ -241,9 +242,9 @@ function D:LeaveCombat() --{{{
     self.Status.Combat = false;
 
     -- test for debug report
-    if #D.DebugTextTable > 0 and GetTime() - LastDebugReportNotification > 300 then
+    if #T._DebugTextTable > 0 and GetTime() - LastDebugReportNotification > 300 then
         if LastDebugReportNotification == 0 then
-            DcrFatalError(L["DECURSIVE_DEBUG_REPORT_NOTIFY"]);
+            T._FatalError(L["DECURSIVE_DEBUG_REPORT_NOTIFY"]);
         end
         self:Println(L["DECURSIVE_DEBUG_REPORT_NOTIFY"]);
         LastDebugReportNotification = GetTime();
@@ -304,6 +305,7 @@ function D:PLAYER_ALIVE()
     D:Debug("|cFFFF0000PLAYER_ALIVE|r");
     D:ReConfigure();
     self:UnregisterEvent("PLAYER_ALIVE");
+    D:CheckPlayer();
 end
 
 function D:LEARNED_SPELL_IN_TAB()
@@ -583,7 +585,7 @@ do
                         if AuraEvents[event] == 1 then
                             self.Stealthed_Units[UnitID] = true;
                         else
-                            D:Debug("STEALTH LOST: ", UnitID, arg10);
+                            if self.debugging then D:Debug("STEALTH LOST: ", UnitID, arg10); end
                             self.Stealthed_Units[UnitID] = false;
                         end
                         self.MicroUnitF:UpdateMUFUnit(UnitID);
@@ -591,7 +593,7 @@ do
                 else
 
                     --[===[@debug@
-                    D:Debug("Debuff, UnitId: ", UnitID, arg10, event, time() + (GetTime() % 1), timestamp);
+                    if self.debugging then D:Debug("Debuff, UnitId: ", UnitID, arg10, event, time() + (GetTime() % 1), timestamp); end
                     --@end-debug@]===]
 
                     if self.profile.ShowDebuffsFrame then
@@ -602,7 +604,7 @@ do
                         --@end-alpha@
 
                     elseif not self.profile.Hide_LiveList then
-                        D:Debug("(LiveList) Registering delayed GetDebuff for ", destName);
+                        if self.debugging then D:Debug("(LiveList) Registering delayed GetDebuff for ", destName); end
                         self.LiveList:DelayedGetDebuff(UnitID);
                     end
 
@@ -615,7 +617,7 @@ do
 
             if self.Status.TargetExists and band (destFlags, FRIENDLY_TARGET) == FRIENDLY_TARGET then -- TARGET
 
-                D:Debug("A Target got something (source=%s -- %X) (dest=|cFF00AA00%s|r -- %x): |cffff0000%s|r, |cFF00AAAA%s|r, %s", sourceName, sourceFlags, destName, destFlags, event, arg10, arg12);
+                if self.debugging then D:Debug("A Target got something (source=", sourceName, "sFlags:", D:NumToHexStr(sourceFlags), "(dest=|cFF00AA00", destName, "dFlags:", D:NumToHexStr(destFlags), "|r, |cffff0000", event, "|r, |cFF00AAAA", arg10, "|r", arg12); end
 
                 self.LiveList:DelayedGetDebuff("target");
 
@@ -624,7 +626,7 @@ do
                         if AuraEvents[event] == 1 then
                             self.Stealthed_Units["target"] = true;
                         else
-                            D:Debug("TARGET STEALTH LOST: ", "target", arg10);
+                            if self.debugging then D:Debug("TARGET STEALTH LOST: ", "target", arg10); end
                             self.Stealthed_Units["target"] = false;
                         end
                     end
@@ -641,8 +643,8 @@ do
             end
 
             if event == "SPELL_CAST_SUCCESS" then
-                --D:Println(L["SUCCESSCAST"], arg10, (select(2, GetSpellInfo(arg9))), D:MakePlayerName(destName));
-                self:Debug(L["SUCCESSCAST"], arg10, (select(2, GetSpellInfo(arg9))), D:MakePlayerName(destName));
+
+                if self.debugging then self:Debug(L["SUCCESSCAST"], arg10, (select(2, GetSpellInfo(arg9))), D:MakePlayerName(destName)); end
 
                 --self:Debug("|cFFFF0000XXXXX|r |cFF11FF11Updating color of clicked frame|r");
                 self:ScheduleDelayedCall("Dcr_UpdatePC"..self.Status.ClickedMF.CurrUnit, self.Status.ClickedMF.Update, 1, self.Status.ClickedMF);
@@ -651,7 +653,7 @@ do
                     if D.Status.ClickedMF then
                         D.Status.ClickedMF.SPELL_CAST_SUCCESS = false;
                         D.Status.ClickedMF = false;
-                        D:Debug("ClickedMF to false (sched)");
+                        if self.debugging then D:Debug("ClickedMF to false (sched)"); end
                     end
                 end, 0.1 );
 
@@ -674,8 +676,9 @@ do
                     end
 
                     PlaySoundFile(DC.FailedSound);
+                --[=[
                 elseif arg12 == SPELL_FAILED_BAD_IMPLICIT_TARGETS then
-                    self:AddDebugText(ERR_GENERIC_NO_TARGET, "Unit:", self.Status.ClickedMF.CurrUnit, "UE:", UnitExists(self.Status.ClickedMF.CurrUnit), "UiF:",  UnitIsFriend("player",self.Status.ClickedMF.CurrUnit), "CBEs:", timestamp, event, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, arg9, arg10, arg11, arg12);
+                    self:AddDebugText("ERR_GENERIC_NO_TARGET", "Unit:", self.Status.ClickedMF.CurrUnit, "UE:", UnitExists(self.Status.ClickedMF.CurrUnit), "UiF:",  UnitIsFriend("player",self.Status.ClickedMF.CurrUnit), "CBEs:", timestamp, event, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, arg9, arg10, arg11, arg12); --]=]
                 end
                 self.Status.ClickedMF = false;
 
@@ -690,7 +693,7 @@ do
 
             ----  }}}
         --else
-          -- D:Debug(sourceName, sourceFlags, destName, destFlags, event, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
+          -- if self.debugging then D:Debug(sourceName, sourceFlags, destName, destFlags, event, arg10, arg11, arg12, arg13, arg14, arg15, arg16); end
             --  }}}
         end
 
@@ -705,6 +708,127 @@ function D:SPELL_UPDATE_COOLDOWN()
     D.Status.UpdateCooldown = GetTime();
 end
 
-DcrLoadedFiles["Dcr_Events.lua"] = "2.4.5-3-g6a02387";
+T.LastVCheck = 0;
+function D:AskVersion()
+
+    if InCombatLockdown() then
+        -- if we are fighting, postpone the call
+        D:AddDelayedFunctionCall ("AskVersion", self.AskVersion);
+        return false;
+    end
+
+    if GetTime() - T.LastVCheck < 60 then
+        D:Debug("AskVersion(): Too early!");
+        return false;
+    end
+
+    T.LastVCheck = GetTime();
+
+    local Distribution = false;
+    --  "PARTY", "RAID", "GUILD", "BATTLEGROUND". As of 2.1, "WHISPER"
+
+    if UnitExists("target") and (UnitFactionGroup("target")) == (UnitFactionGroup("player")) and (tonumber((UnitGUID("target")):sub(5,5), 16) % 8) == 0  then -- the unit exists and is a player of our faction
+        LibStub("AceComm-3.0"):SendCommMessage( "DecursiveVersion", "giveversion", "WHISPER", self:UnitName("target"));
+        D:Debug("Asking version to ", self:UnitName("target"));
+    end
+
+    local inInstance, InstanceType = IsInInstance();
+
+    if InstanceType == "pvp" then
+        Distribution = "BATTLEGROUND";
+    end
+
+    if not Distribution then
+        if GetNumRaidMembers() ~= 0 then
+            Distribution = "RAID";
+        elseif UnitExists("party1") then
+            Distribution = "PARTY";
+        elseif GetGuildInfo("player") then
+            Distribution = "GUILD";
+        end
+    end
+
+    if Distribution then
+        LibStub("AceComm-3.0"):SendCommMessage( "DecursiveVersion", "giveversion", Distribution);
+    end
+    D:Debug("Asking version on ", Distribution);
+
+    return true;
+    
+end
+
+local LastVersionQueryAnswerPerFrom = {};
+local LastVersionQueryAnswerPerDist = {};
+function D:OnCommReceived(message, distribution, from)
+    local alpha = false;
+    --@alpha@
+    alpha = true;
+    --@end-alpha@
+
+    --@alpha@
+    D:Debug("OnCommReceived:", message, distribution, from);
+    --@end-alpha@
+
+    local time = GetTime();
+
+    -- answer version queries but no more than once every 60 seconds to the same player and every 5 seconds to the same chanel
+    --      This avoids a player who would be crafting its own version query messages and sending them repeatidly from causing any damage
+    --      This avoids race conditions where several players would send a version query at the same time on the same chanel
+    if message == "giveversion"
+        and (not LastVersionQueryAnswerPerDist[distribution] or time - LastVersionQueryAnswerPerDist[distribution] > 5 )
+        and (not LastVersionQueryAnswerPerFrom[from]         or time - LastVersionQueryAnswerPerFrom[from] > 60        )
+    then
+
+        LibStub("AceComm-3.0"):SendCommMessage("DecursiveVersion", ("Version: %s,%u,%d,%d"):format(D.version, D.VersionTimeStamp, alpha and 1 or 0, D:IsEnabled() and 1 or 0 ), distribution, from )
+
+        LastVersionQueryAnswerPerFrom[from]         = time;
+        LastVersionQueryAnswerPerDist[distribution] = time;
+
+        --@alpha@
+        if self.debugging then D:Debug("Version info sent to, ", from, "by", distribution, ("Version: %s,%u,%d,%d"):format(D.version, D.VersionTimeStamp, alpha and 1 or 0, D:IsEnabled() and 1 or 0 )); end
+        --@end-alpha@
+ 
+    elseif message:sub(1, 8) == "Version:" then
+
+        local version, date, isAlpha, enabled = message:match ("^Version: ([^,]+),(%d+),(%d),(%d)");
+
+        --@alpha@
+        if self.debugging then D:Debug("Version info received from, ", from, "by", distribution, "version:", version, "date:", date, "islpha:", isAlpha, "enabled:", enabled); end
+        --@end-alpha@
+
+        if version then
+            if not D.versions then
+                D.versions = {}
+            end
+
+            D.versions[from] = { version, date, isAlpha, enabled };
+
+            --delayed call to LibStub("AceConfigRegistry-3.0"):NotifyChange(D.name); plus "spam" prevention system (after receiving version info from someone)
+            if not D:DelayedCallExixts ("NewversionDatareceived") then
+                D:ScheduleDelayedCall("NewversionDatareceived", LibStub("AceConfigRegistry-3.0").NotifyChange, 1, LibStub("AceConfigRegistry-3.0"), D.name);
+                T.LastVCheck = time;
+            end
+        else
+            D:Debug("Malformed version string received: ", message);
+        end
+    else
+        D:Debug("Unhandled comm received (spam?)");
+    end
+end
+
+function D:ReturnVersions()
+    if not D.versions then
+        return "no data available";
+    end
+
+    local formatedversions = {};
+    for name, versiondetails in pairs(D.versions) do
+        formatedversions[#formatedversions + 1] = ("%s: %s %s (%s)"):format(D:ColorText(name, "FF00AA00"), versiondetails[1], versiondetails[4]==0 and D:ColorText("disabled", "FFFF0000") or "", date("%Y-%m-%d", versiondetails[2]));
+    end
+
+    return table.concat(formatedversions, "\n");
+end
+
+T._LoadedFiles["Dcr_Events.lua"] = "2.5.1-12-gb39554a";
 
 -- The Great Below

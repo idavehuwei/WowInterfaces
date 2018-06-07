@@ -1,26 +1,28 @@
-﻿## Interface: 30300
-## X-BigfootType: 1
-## X-BigfootDesc: |cFF4488FF此模块依赖于 TradeskillInfo|r 商业技能资料库设置窗口。
-## Title: TradeskillInfo UI
+## Interface: 30300
+## Title: [Duowan] TradeskillInfo UI
+## Title-zhCN: [多玩] 商业技能信息库 设置 TradeskillInfoUI
+## Title-zhTW: [多玩] 商業技能資訊庫 設置 TradeskillInfoUI
 ## Author: wmrojer
 ## Notes: Complete Tradeskill Info UI
-## Notes-zhCN: 商业技能资料库设置窗口
-## Notes-zhTW: 商業技能資料庫設置窗口
+## Notes-zhCN: 商业技能资料库设置窗口 TradeskillInfoUI
+## Notes-zhTW: 商業技能資料庫設置窗口 TradeskillInfoUI
 ## Notes-esES: UI con Info Completa de las Habilidades de Comercio
-## Notes-koKR: 전문기술 정보 UI
-## Version: 1.6.1
-## SavedVariables: TradeskillInfoUIDB
+## Notes-koKR: ???? ?? UI
+## X-DuowanAddon: 商业物品
+## Version: 1.6.0
+## SavedVariables: DuowanAddon_TradeskillInfoUIDB
 ## Dependencies: TradeskillInfo
 ## OptionalDeps:
 ## X-Category: Tradeskill
 ## X-eMail: evenue.wow@gmail.com
 ## X-Credits Evenue (updates), Fieroivan (updates)
 ## LoadOnDemand: 1
-## X-Curse-Packaged-Version: r365
+## X-Curse-Packaged-Version: r346
 ## X-Curse-Project-Name: TradeskillInfo
 ## X-Curse-Project-ID: tradeskill-info
 ## X-Curse-Repository-ID: wow/tradeskill-info/mainline
-
+## Dependencies: Duowan
+## X-Revision: Duowan
 locale-enUS.lua
 locale-ruRU.lua
 locale-esES.lua

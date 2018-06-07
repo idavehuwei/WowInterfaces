@@ -1,19 +1,31 @@
-if(Skinner and 	Skinner.initialized) then Skinner.initialized.TradeFrame = true; end;
+DuowanAddon_TBT_Enabled = false;
 
-TBT_PORTAL_MAPPING = {
-	[TBT_PORTAL_1]="Interface\\AddOns\\TheBurningTrade\\icons\\9.tga",
-	[TBT_PORTAL_2]="Interface\\AddOns\\TheBurningTrade\\icons\\11.tga",
-	[TBT_PORTAL_3]="Interface\\AddOns\\TheBurningTrade\\icons\\4.tga",
-	[TBT_PORTAL_4]="Interface\\AddOns\\TheBurningTrade\\icons\\5.tga",
-	[TBT_PORTAL_5]="Interface\\AddOns\\TheBurningTrade\\icons\\6.tga",
-	[TBT_PORTAL_6]="Interface\\AddOns\\TheBurningTrade\\icons\\8.tga",
-	[TBT_PORTAL_7]="Interface\\AddOns\\TheBurningTrade\\icons\\10.tga",
-	[TBT_PORTAL_8]="Interface\\AddOns\\TheBurningTrade\\icons\\13.tga",
-	[TBT_PORTAL_9]="Interface\\AddOns\\TheBurningTrade\\icons\\3.tga",
-	[TBT_PORTAL_10]="Interface\\AddOns\\TheBurningTrade\\icons\\12.tga",
-	[TBT_PORTAL_11]="Interface\\AddOns\\TheBurningTrade\\icons\\7.tga",
-	[TBT_PORTAL_12]="Interface\\AddOns\\TheBurningTrade\\icons\\2.tga",
-}
+function TBT_Toggle(switch)
+	if (switch) then
+		TradeFrameRecipientNameText:Show();
+		TradeFrameTargetWhisperButton:Show();
+		TradeFrameTargetEmote1Button:Show();
+		TradeFrameTargetEmote2Button:Show();
+		TradeFrameTargetRecipientButton:Show();
+		if(TradeFramePlayerSpell1Button) then TradeFramePlayerSpell1Button:Show(); end
+		if(TradeFramePlayerSpell2Button) then TradeFramePlayerSpell2Button:Show(); end		
+	else
+		TradeFrameRecipientNameText:Hide();
+		TradeFrameTargetWhisperButton:Hide();
+		TradeFrameTargetEmote1Button:Hide();
+		TradeFrameTargetEmote2Button:Hide();
+		TradeFrameTargetRecipientButton:Hide();
+		if(TradeFramePlayerSpell1Button) then TradeFramePlayerSpell1Button:Hide(); end
+		if(TradeFramePlayerSpell2Button) then TradeFramePlayerSpell2Button:Hide(); end		
+	end
+end
+
+function TBT_QUICKTRAD(switch)
+	DuowanAddon_TBT_Enabled = switch;
+end
+
+if(Skinner and Skinner.initialized) then Skinner.initialized.TradeFrame = true; end;
+
 local function SetOrHookScript(frame, scriptName, func)
 	if( frame:GetScript(scriptName) ) then
 		frame:HookScript(scriptName, func);
@@ -22,9 +34,28 @@ local function SetOrHookScript(frame, scriptName, func)
 	end
 end
 
+function TBT_ContainerItemPreClick(self, button) 	
+	if (not DuowanAddon_TBT_Enabled) then return end;
+	if(button=="RightButton" and not IsModifierKeyDown()) then
+		if(InboxFrame and InboxFrame:IsVisible()) then
+			MailFrameTab_OnClick(nil, 2);
+		end
+		
+		if(AuctionFrame and AuctionFrame:IsVisible()) then
+			AuctionFrameTab_OnClick(nil, 3);
+			if(AuctionsItemButton and AuctionsItemButton:IsVisible()) then
+				PickupContainerItem(self:GetParent():GetID(), self:GetID());
+				ClickAuctionSellItemButton();
+				AuctionsFrameAuctions_ValidateAuction();
+			end
+		end
+	end
+end
+
 function TBTFrame_OnLoad(self)
---	self:RegisterEvent("PLAYER_ENTERING_WORLD");
+	self:RegisterEvent("PLAYER_ENTERING_WORLD");
 	self:RegisterEvent("LOOT_OPENED");
+	self:RegisterEvent("VARIABLES_LOADED");
 
 	--display the trade recepient info
 	local targetInfoText = TradeFrame:CreateFontString("TradeFrameTargetInfoText", "ARTWORK", "GameFontNormal");
@@ -69,10 +100,19 @@ function TBTFrame_OnLoad(self)
 	button:SetPoint("CENTER", "TradeFrame", "TOPLEFT", 210, -35);
 
 	--for rightclick quick trade
+	for i=1, NUM_CONTAINER_FRAMES do
+		for j=1, MAX_CONTAINER_ITEMS do
+			local f = dwGetglobal("ContainerFrame"..i.."Item"..j);
+			if(f) then
+				SetOrHookScript(f, "PreClick", TBT_ContainerItemPreClick);
+			end
+		end
+	end
 
-
-	--for alt+leftclick quick trade
+	--for alt+leftclick quick trade	
 	hooksecurefunc("ContainerFrameItemButton_OnModifiedClick", function(self, button)
+		if (not DuowanAddon_TBT_Enabled) then return end;
+
 		if(button == "LeftButton" and IsAltKeyDown() ) then
 			if(InboxFrame and InboxFrame:IsVisible()) then
 				MailFrameTab_OnClick(nil, 2);
@@ -88,39 +128,37 @@ function TBTFrame_OnLoad(self)
 		end
 
 		--for shift+leftclick start auction search directly.
-		if(button == "LeftButton" and IsShiftKeyDown() and AuctionFrame and AuctionFrame:IsVisible()) then
-			--[[
-			AuctionFrameTab_OnClick(nil, 1);
-			if(BrowseMinLevel and BrowseMaxLevel and BrowseDropDown and IsUsableCheckButton) then
-				BrowseMinLevel:SetText("")
-				BrowseMaxLevel:SetText("")
-				UIDropDownMenu_SetText("",BrowseDropDown)
-				UIDropDownMenu_SetSelectedName(BrowseDropDown)
-				AuctionFrameBrowse.selectedClassIndex = nil;
-				AuctionFrameBrowse.selectedClass = nil;
-				IsUsableCheckButton:SetChecked(false);
-				AuctionFrameFilters_Update();
-			end
-			]]
+		if(button == "LeftButton" and IsShiftKeyDown() and AuctionFrame and AuctionFrame:IsVisible()) then		
 			ChatEdit_InsertLink(GetContainerItemLink(self:GetParent():GetID(), self:GetID()));
 			AuctionFrameBrowse_Search();
 		end
 
+		-- ctrl + alt + right ÅÄÂô
+		--[[
 		if(button=="RightButton" and IsControlKeyDown() and IsAltKeyDown() and AuctionsItemButton and AuctionsItemButton:IsVisible()) then
 			PickupContainerItem(self:GetParent():GetID(), self:GetID());
 			ClickAuctionSellItemButton();
+			local name, texture, count, quality, canUse, price = GetAuctionSellItemInfo();
+			if ( name == LAST_ITEM_AUCTIONED and count == LAST_ITEM_COUNT) then
+				MoneyInputFrame_SetCopper(StartPrice, LAST_ITEM_START_BID);
+				MoneyInputFrame_SetCopper(BuyoutPrice, LAST_ITEM_BUYOUT);
+			end
 			AuctionsFrameAuctions_ValidateAuction();
-			AuctionsCreateAuctionButton_OnClick();
+			if(AuctionsCreateAuctionButton:IsEnabled()==1) then
+				AuctionsCreateAuctionButton_OnClick();
+			else
+				DEFAULT_CHAT_FRAME:AddMessage(TBT_CANT_CREATE_AUCTION);
+			end
 		end
+		]]
 	end)
-	TBTFrame_OnPlayerEnter()
+
 end
 
 function TBTFrame_SetButtonSpell(button, spell)
 	if not InCombatLockdown() then
 		button:SetAttribute("type", "spell");
 		button:SetAttribute("spell", spell);
-		button.spellName = spell
 	end
 end
 
@@ -166,186 +204,41 @@ function TBT_TradeItem(self, type)
 	end
 end
 
-function GetCurrentMageSpell()
-	if not TBT_CurrentPortal then return end
-	return TBT_CurrentPortal[1],TBT_CurrentPortal[2]
-end
-
-local function GetPortalTexture(spellName)
-	if not spellName then return "" end
-	return TBT_PORTAL_MAPPING[spellName]
-end
-
-function CreatePortalButtons(cbutton)
-	TBT_MagePortalButtons = {}
-	local radius = 45
-	local angle = 22.5
-
-	local button =CreateFrame("Button", "TradeFramePortalButtonCenter", TradeFrame, "TBTButtonTemplate");
-	button:SetWidth(35);
-	button:SetHeight(35);
-	button:SetPoint("CENTER",cbutton,"CENTER")
-	button:SetFrameStrata("DIALOG")
-	TBTFrame_SetButtonSpell(button,TBT_CurrentPortal[1])
-	button:Hide()
-	button:SetScript("OnEnter",function(self)
-		cbutton.stats='showed'
-		TBTTooltip:ClearLines()
-		TBTTooltip:SetOwner(self, "ANCHOR_LEFT");
-		TBTTooltip:AddLine(self.spellName)
-		TBTTooltip:Show()
-	end)
-	button:SetScript("OnLeave",function()
-		TBTTooltip:Hide()
-	end)
-	
-	button:SetScript("PreClick",function()
-		cbutton.stats ='hidden'
-	end) 
-	
-	for _i,_spellInfo in pairs(TBT_MagePortals) do
-		xoff = radius* cos(angle)
-		yoff = radius* sin(angle)
-		local button = CreateFrame("Button", "TradeFramePortalButton".._i, TradeFrame, "TBTButtonTemplate");
-		button:SetWidth(26);
-		button:SetHeight(26);
-		button:SetNormalTexture(GetPortalTexture(_spellInfo[1]))
-		button:SetFrameStrata("DIALOG")
-		TBTFrame_SetButtonSpell(button,_spellInfo[1])
-		button:SetPoint("CENTER",cbutton,"CENTER",-xoff,yoff)
-		button:SetScript("OnLeave",function(button)
-			TBTTooltip:Hide()
-		end)
-		button:SetScript("PreClick",function(button)
-			TBT_CurrentPortal=_spellInfo
-			TBTFrame_SetButtonSpell(cbutton,TBT_CurrentPortal[1])
-			cbutton:SetNormalTexture(TBT_CurrentPortal[2]);
-			cbutton.stats='hidden'
-		end)
-		button:SetScript("OnEnter",function(button)
-			cbutton.stats='showed'
-			TBTTooltip:ClearLines()
-			TBTTooltip:SetOwner(button, "ANCHOR_LEFT");
-			TBTTooltip:AddLine(button.spellName)
-			TBTTooltip:Show()
-		end)
-		button:Hide()
-		tinsert(TBT_MagePortalButtons,button)
-		angle = angle + 45
-	end
-end
-
-function TogglePortalPanel(tog)
-	if tog == TBT_portalShown then return end
-
-	_G.TBTPortalPanel:SetPoint("CENTER",TradeFramePlayerSpell3Button,"CENTER")
-	_G.TBTPortalPanel:SetAlpha(0.7)
-	_G.TBTPortalPanel:SetFrameStrata("HIGH")
-	TBTFrame_SetButtonSpell(TradeFramePortalButtonCenter,TBT_CurrentPortal[1])
-	TradeFramePortalButtonCenter:SetNormalTexture(GetPortalTexture(TBT_CurrentPortal[1]))
-	if tog then
-		TBTPortalPanel:Show()
-		TradeFramePortalButtonCenter:Show()
-		for _,_button in pairs(TBT_MagePortalButtons) do
-			_button:Show()
-		end
-	else	
-		TBTPortalPanel:Hide()
-		TradeFramePortalButtonCenter:Hide()
-		for _,_button in pairs(TBT_MagePortalButtons) do
-			_button:Hide()
-		end
-	end
-	TBT_portalShown= tog
-
-end
-
 function TBTFrame_CreateLeftButton(class)
-	if(getglobal("TradeFramePlayerSpell1Button")~=nil)then return end; --already created
+	if(dwGetglobal("TradeFramePlayerSpell1Button")~=nil)then return end; --already created
 
 	local button = nil;
 	if(class=="MAGE") then
 		--for make water button
-		button = CreateFrame("Button", "TradeFramePlayerSpell1Button", TradeFrame, "TBTButtonTemplate");
-		button:SetWidth(26);
-		button:SetHeight(26);
-		button:SetNormalTexture("Interface\\Icons\\inv_drink_18");
-		button:SetPoint("TOPLEFT", "TradeFrame", "TOPLEFT", 70, -40);
-		button:SetScript("PreClick", function(self) TBT_TradeItem(self, "water") end);	
+		button = CreateFrame("Button", "TradeFramePlayerSpell1Button", TradeFrame, "UIPanelButtonTemplate, SecureActionButtonTemplate");
+		button:SetWidth(45);
+		button:SetHeight(21);
+		button:SetText(TBT_LEFT_BUTTON.water);
+		button:SetPoint("TOPLEFT", "TradeFrame", "TOPLEFT", 72, -50);
+		button:SetScript("PreClick", function(self) TBT_TradeItem(self, "water") end);
 		button:SetScript("PostClick", function(self) TBTFrame_SetButtonSpell(self,"") end);
 
-		button = CreateFrame("Button", "TradeFramePlayerSpell2Button", TradeFrame, "TBTButtonTemplate");
-		button:SetWidth(26);
-		button:SetHeight(26);
-		button:SetNormalTexture("Interface\\Icons\\inv_misc_food_33");
+		button = CreateFrame("Button", "TradeFramePlayerSpell2Button", TradeFrame, "UIPanelButtonTemplate, SecureActionButtonTemplate");
+		button:SetWidth(45);
+		button:SetHeight(21);
+		button:SetText(TBT_LEFT_BUTTON.food);
 		button:SetPoint("LEFT", "TradeFramePlayerSpell1Button", "RIGHT", 5, 0);
 		button:SetScript("PreClick", function(self) TBT_TradeItem(self, "food") end);
 		button:SetScript("PostClick", function(self) TBTFrame_SetButtonSpell(self,"") end);
-		
-		local spell,texture = GetCurrentMageSpell()
-		if not spell then return end
-		button = CreateFrame("Button", "TradeFramePlayerSpell3Button", TradeFrame, "TBTButtonTemplate");
-		button:SetWidth(26);
-		button:SetHeight(26);
-		TBTFrame_SetButtonSpell(button,spell)
-		button:SetNormalTexture(texture);
-		button:SetPoint("LEFT", "TradeFramePlayerSpell2Button", "RIGHT", 5, 0);
-		button:SetScript("PreClick", function(self) self.stats = 'hidden' end);
-		button:SetScript("OnEnter", function(self) 
-			if not self.stats or self.stats =='hidden' then
-				self.stats = 'entered'
-				self.entertime = 0
-			elseif self.stats =='left' then
-				self.stats= 'showed'
-			end
-			--wait a second and pop up
-			--pop up here
-		end)
-		
-		button:SetScript("OnUpdate",function(self,elapsed)
-			if not self.stats then return end
-			if self.stats=='entered' then
-				self.entertime = self.entertime + elapsed
-			end
-			if self.stats=='left' then
-				self.lefttime = self.lefttime + elapsed
-			end
-			if self.stats=='entered' and self.entertime >=0.5 then
-				self.stats='showed'
-			end
-			if self.stats=='left' and self.lefttime >=0.2 then
-				self.stats='hidden'
-			end			
-			if self.stats=='entered' or self.stats=='hidden' then
-				TogglePortalPanel(false)
-			elseif self.stats=='showed' or self.stats=='left' then
-				TogglePortalPanel(true)
-			end
-		end)
-		
-		button:SetScript("OnLeave",function(self)
-			if self.stats=='entered' then
-				self.stats='hidden'
-			end
-		end)
-		
-		CreatePortalButtons(button)
-	--	button:Hide()
-		TBT_portalShown= false
 	elseif (class=="WARLOCK") then
-		button = CreateFrame("Button", "TradeFramePlayerSpell1Button", TradeFrame, "TBTButtonTemplate");
-		button:SetWidth(26);
-		button:SetHeight(26);
-		button:SetNormalTexture("Interface\\Icons\\inv_stone_04");		
-		button:SetPoint("TOPLEFT", "TradeFrame", "TOPLEFT", 80, -40);
+		button = CreateFrame("Button", "TradeFramePlayerSpell1Button", TradeFrame, "UIPanelButtonTemplate, SecureActionButtonTemplate");
+		button:SetWidth(45);
+		button:SetHeight(21);
+		button:SetText(TBT_LEFT_BUTTON.stone);
+		button:SetPoint("TOPLEFT", "TradeFrame", "TOPLEFT", 72, -50);
 		button:SetScript("PreClick", function(self) TBT_TradeItem(self, "stone") end);
 		button:SetScript("PostClick", function(self) TBTFrame_SetButtonSpell(self,"") end);
 	elseif (class=="ROGUE") then
-		button = CreateFrame("Button", "TradeFramePlayerSpell1Button", TradeFrame, "TBTButtonTemplate");
-		button:SetWidth(30);
-		button:SetHeight(30);
-		button:SetNormalTexture("Interface\\Icons\\spell_nature_moonkey");		
-		button:SetPoint("TOPLEFT", "TradeFrame", "TOPLEFT", 80, -40);
+		button = CreateFrame("Button", "TradeFramePlayerSpell1Button", TradeFrame, "UIPanelButtonTemplate, SecureActionButtonTemplate");
+		button:SetWidth(45);
+		button:SetHeight(21);
+		button:SetText(TBT_LEFT_BUTTON.unlock);
+		button:SetPoint("TOPLEFT", "TradeFrame", "TOPLEFT", 72, -50);
 		button:SetAttribute("type","spell");
 		button:SetAttribute("spell", TBT_UNLOCK_SKILL_NAME);
 		button:SetScript("PostClick", function(self) ClickTargetTradeButton(7); end);
@@ -354,66 +247,47 @@ end
 
 TBT_MaxSpellRank = nil;
 
-function TBTFrame_OnPlayerEnter()
-	local _,class = UnitClass("player")
-
-	
-	if(TBT_MaxSpellRank==nil) then
-		TBT_MaxSpellRank = {};
-		if(class=="MAGE")then
-			TBT_MagePortals= {}
-		end
-		--look through player's spell book
-		local i = 1
-		while true do
-			local spellName, spellRank,spellIcon = GetSpellInfo(i, BOOKTYPE_SPELL);
-			local spellRankNum;
-			if(spellRank) then _,_,spellRankNum = string.find(spellRank, TBT_SPELL_RANK_PATTERN); end
-			if(spellRankNum) then spellRankNum = spellRankNum + 0; end
-
-			if not spellName then
-				do break end
-			end
-			
-			
-			 
-			if(class=="MAGE")then
-				--collect portals 
-				
-				if string.find(spellName,TBT_SPELL_PORTAL) then
-					tinsert(TBT_MagePortals,{spellName,spellIcon})
-				end
-				UpdateMaxRank("water", spellName, spellRankNum);
-				UpdateMaxRank("food", spellName, spellRankNum);
-			elseif(class=="WARLOCK")then
-				UpdateMaxRank("stone", spellName, spellRankNum);
-			end
-			i = i + 1
-		end
-		if(class=="MAGE")then
-			TBT_CurrentPortal = TBT_CurrentPortal or TBT_MagePortals and TBT_MagePortals[1]
-		end
-	end
-	TBTFrame_CreateLeftButton(class);
-end
-
 function TBTFrame_OnEvent(self, event, ...)
 	if(event == "PLAYER_ENTERING_WORLD") then
-		
-	elseif(event=='ADDON_LOADED') then
-		local addon=...
-		if addon =='TheBurningTrade' then
-			TBTFrame_OnLoad(self);
+		local _,class = UnitClass("player")
+
+		TBTFrame_CreateLeftButton(class);
+		if(TBT_MaxSpellRank==nil) then
+			TBT_MaxSpellRank = {};
+
+			--look through player's spell book
+			local i = 1
+			while true do
+				local spellName, spellRank = GetSpellName(i, BOOKTYPE_SPELL);
+				local spellRankNum;
+				if(spellRank) then _,_,spellRankNum = string.find(spellRank, TBT_SPELL_RANK_PATTERN); end
+				if(spellRankNum) then spellRankNum = spellRankNum + 0; end
+
+				if not spellName then
+					do break end
+				end
+
+				if(class=="MAGE")then
+					UpdateMaxRank("water", spellName, spellRankNum);
+					UpdateMaxRank("food", spellName, spellRankNum);
+				elseif(class=="WARLOCK")then
+					UpdateMaxRank("stone", spellName, spellRankNum);
+				end
+				i = i + 1
+			end
 		end
+	--[[
 	elseif(event == "LOOT_OPENED") then
+		if (not DuowanAddon_TBT_Enabled) then return end;
+
 		if(GetNumLootItems()==1) then
 			local iconPath, _, _, _ = GetLootSlotInfo(1);
 			if(string.find(iconPath, "Interface\\Icons\\INV_Enchant_") == 1) then
 				LootSlot(1);
 			end
-		end
+		end	
+	]]
 	end
-
 end
 
 function UpdateMaxRank(type, spellName, spellRankNum)
@@ -445,7 +319,7 @@ function TBT_FindItem(item,quantity,type)
 						GameTooltip:SetOwner(UIParent,"ANCHOR_LEFT");
 						GameTooltip:SetBagItem(bag,slot);
 						for i=1,GameTooltip:NumLines(),1 do
-							local text = getglobal("GameTooltipTextLeft"..i):GetText();
+							local text = dwGetglobal("GameTooltipTextLeft"..i):GetText();
 							if(text) then
 								local _,_,name = string.find(text,TBT_GAMETOOLTIP_MADE_BY);
 								if(name) then

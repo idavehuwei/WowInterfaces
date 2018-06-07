@@ -124,7 +124,7 @@ function CreateFrames_CreateSpellFrame(index, IsTarget)
 
 	local spellId = tonumber(index);
 	local name, rank, icon = GetSpellInfo(spellId);
-	if IsTarget then
+	if IsTarget then 
 		if EA_SPELLINFO_TARGET[spellId] == nil then EA_SPELLINFO_TARGET[spellId] = {name, rank, icon, count, duration, expirationTime, unitCaster, isDebuff} end;
 		EA_SPELLINFO_TARGET[spellId].name = name;
 		EA_SPELLINFO_TARGET[spellId].rank = rank;
@@ -198,6 +198,7 @@ function CreateFrames_RefreshPrimarySpellList()
             And because of localization, I have to go back and re-call the original talent ID.
             Which is, honestly, damned annoying.  But... oh well!  QQ, right?
         --]]
+
         if (EA_name == "Death Trance!") then
 	        local EA_name2, _, EA_icon = GetSpellInfo(49018);
     	    EA_name = EA_name2;
@@ -258,7 +259,7 @@ function CreateFrames_RefreshPrimarySpellList()
 			f1:Show();
 		end
 
-		local f2 = _G["EA_ClassFrame_Chkbtn_"..index];
+		local f2 = _G["EA_ClassFrame_Chkbtn_"..index]; 
 		if f2 == nil then
 	        -- local ClassEventCheckButton = CreateFrame("CheckButton", "EA_ClassFrame_Chkbtn_"..index, EA_Class_Events_Frame, "OptionsCheckButtonTemplate");
 	        local ClassEventCheckButton = CreateFrame("CheckButton", "EA_ClassFrame_Chkbtn_"..index, EA_Class_Events_Frame_SpellListFrame, "OptionsCheckButtonTemplate");
@@ -269,10 +270,10 @@ function CreateFrames_RefreshPrimarySpellList()
 	        else
 	            getglobal(ClassEventCheckButton:GetName().."Text"):SetText(EA_name.."("..EA_rank..") ["..index.."]");
 	        end
-
+	
 	        ClassEventCheckButton:SetChecked(EA_Items[EA_playerClass][index]);
 	        ClassEventCheckButton:SetChecked(EA_Items[EA_playerClass][index]);
-
+	
 			local function ClassEventButtonGetChecked()
 				EA_Class_Events_Frame_SpellEditBox:SetText(tostring(index));
 	        	if (ClassEventCheckButton:GetChecked()) then
@@ -298,8 +299,8 @@ end
 
 
 function CreateFrames_RefreshAlternateSpellList()
-	-- local buttonPositionY = -60 + 25;
-	local buttonPositionY = 0;
+	local buttonPositionY = -60 + 25;
+	-- local buttonPositionY = 0;
 	for index,value in pairsByKeys(EA_AltItems[EA_playerClass]) do
 		if (type(value) == "number") then
 			value = tostring(index)
@@ -310,45 +311,34 @@ function CreateFrames_RefreshAlternateSpellList()
 			    value = "false"
 		    end
 		end
+
     	local EA_name, EA_rank, EA_icon = GetSpellInfo(index);
+		local AltClassEventIcon = CreateFrame("Frame", index, EA_Alt_Alerts_Frame);
+		AltClassEventIcon:SetWidth(25);
+		AltClassEventIcon:SetHeight(25);
+		AltClassEventIcon:SetPoint("TOPLEFT",20,buttonPositionY);
+		AltClassEventIcon:SetBackdrop({bgFile = EA_icon}); 
+        local AltAlertCheckButton = CreateFrame("CheckButton", index, EA_Alt_Alerts_Frame, "OptionsCheckButtonTemplate");
+		AltAlertCheckButton:SetPoint("TOPLEFT",45,buttonPositionY);
 
-		local f1 = _G["EA_AltFrame_Icon_"..index];
-		if f1 == nil then
-			local AltClassEventIcon = CreateFrame("Frame", "EA_AltFrame_Icon_"..index, EA_Alt_Alerts_Frame_SpellListFrame);
-			AltClassEventIcon:SetWidth(25);
-			AltClassEventIcon:SetHeight(25);
-			AltClassEventIcon:SetPoint("TOPLEFT",0,buttonPositionY);
-			AltClassEventIcon:SetBackdrop({bgFile = EA_icon});
-		else
-			f1:SetPoint("TOPLEFT",0,buttonPositionY);
-			f1:Show();
-		end
+        if (EA_rank == "") then
+            getglobal(AltAlertCheckButton:GetName().."Text"):SetText(EA_name.." ["..index.."]");
+        else
+            getglobal(AltAlertCheckButton:GetName().."Text"):SetText(EA_name.."("..EA_rank..") ["..index.."]");
+        end
 
-		local f2 = _G["EA_AltFrame_Chkbtn_"..index];
-		if f2 == nil then
-			local AltAlertCheckButton = CreateFrame("CheckButton", "EA_AltFrame_Chkbtn_"..index, EA_Alt_Alerts_Frame_SpellListFrame, "OptionsCheckButtonTemplate");
-			AltAlertCheckButton:SetPoint("TOPLEFT",25,buttonPositionY);
-			if (EA_rank == "") then
-				getglobal(AltAlertCheckButton:GetName().."Text"):SetText(EA_name.." ["..index.."]");
+        AltAlertCheckButton:SetChecked(EA_AltItems[EA_playerClass][index]);
+        AltAlertCheckButton:SetChecked(EA_AltItems[EA_playerClass][index]);
+
+		local function AltAlertButtonGetChecked()
+        	if (AltAlertCheckButton:GetChecked()) then
+           		EA_AltItems[EA_playerClass][index] = true
 			else
-				getglobal(AltAlertCheckButton:GetName().."Text"):SetText(EA_name.."("..EA_rank..") ["..index.."]");
+		   		EA_AltItems[EA_playerClass][index] = false
 			end
-
-			AltAlertCheckButton:SetChecked(EA_AltItems[EA_playerClass][index]);
-			AltAlertCheckButton:SetChecked(EA_AltItems[EA_playerClass][index]);
-			local function AltAlertButtonGetChecked()
-				if (AltAlertCheckButton:GetChecked()) then
-					EA_AltItems[EA_playerClass][index] = true
-				else
-					EA_AltItems[EA_playerClass][index] = false
-				end
-			end
-			AltAlertCheckButton:RegisterForClicks("AnyUp");
-			AltAlertCheckButton:SetScript("OnClick", AltAlertButtonGetChecked)
-		else
-			f2:SetPoint("TOPLEFT",25,buttonPositionY);
-			f2:Show();
-		end
+        end
+        AltAlertCheckButton:RegisterForClicks("AnyUp");
+		AltAlertCheckButton:SetScript("OnClick", AltAlertButtonGetChecked)
         buttonPositionY = buttonPositionY - 25;
 	end
 	-- local CEFHeight = -1*(buttonPositionY-60);
@@ -379,13 +369,13 @@ function CreateFrames_RefreshOtherSpellList()
 			OtherEventIcon:SetWidth(25);
 			OtherEventIcon:SetHeight(25);
 			OtherEventIcon:SetPoint("TOPLEFT",0,buttonPositionY);
-			OtherEventIcon:SetBackdrop({bgFile = EA_icon});
+			OtherEventIcon:SetBackdrop({bgFile = EA_icon}); 
 		else
 			f1:SetPoint("TOPLEFT",00,buttonPositionY);
 			f1:Show();
 		end
 
-		local f2 = _G["EA_OtherFrame_Chkbtn_"..index];
+		local f2 = _G["EA_OtherFrame_Chkbtn_"..index]; 
 		if f2 == nil then
 	        local OtherEventCheckButton = CreateFrame("CheckButton", "EA_OtherFrame_Chkbtn_"..index, EA_Other_Events_Frame_SpellListFrame, "OptionsCheckButtonTemplate");
 			OtherEventCheckButton:SetPoint("TOPLEFT",25,buttonPositionY);
@@ -395,10 +385,10 @@ function CreateFrames_RefreshOtherSpellList()
 	        else
 	            getglobal(OtherEventCheckButton:GetName().."Text"):SetText(EA_name.."("..EA_rank..") ["..index.."]");
 	        end
-
+	
 	        OtherEventCheckButton:SetChecked(EA_Items[EA_CLASS_OTHER][index]);
 	        OtherEventCheckButton:SetChecked(EA_Items[EA_CLASS_OTHER][index]);
-
+	
 			local function OtherEventButtonGetChecked()
 				EA_Other_Events_Frame_SpellEditBox:SetText(tostring(index));
 	        	if (OtherEventCheckButton:GetChecked()) then
@@ -445,13 +435,13 @@ function CreateFrames_RefreshTargetSpellList()
 			TargetEventIcon:SetWidth(25);
 			TargetEventIcon:SetHeight(25);
 			TargetEventIcon:SetPoint("TOPLEFT",0,buttonPositionY);
-			TargetEventIcon:SetBackdrop({bgFile = EA_icon});
+			TargetEventIcon:SetBackdrop({bgFile = EA_icon}); 
 		else
 			f1:SetPoint("TOPLEFT",0,buttonPositionY);
 			f1:Show();
 		end
 
-		local f2 = _G["EA_TargetFrame_Chkbtn_"..index];
+		local f2 = _G["EA_TargetFrame_Chkbtn_"..index]; 
 		if f2 == nil then
 	        local TargetEventCheckButton = CreateFrame("CheckButton", "EA_TargetFrame_Chkbtn_"..index, EA_Target_Events_Frame_SpellListFrame, "OptionsCheckButtonTemplate");
 			TargetEventCheckButton:SetPoint("TOPLEFT",25,buttonPositionY);
@@ -461,10 +451,10 @@ function CreateFrames_RefreshTargetSpellList()
 	        else
 	            getglobal(TargetEventCheckButton:GetName().."Text"):SetText(EA_name.."("..EA_rank..") ["..index.."]");
 	        end
-
+	
 	        TargetEventCheckButton:SetChecked(EA_TarItems[EA_playerClass][index]);
 	        TargetEventCheckButton:SetChecked(EA_TarItems[EA_playerClass][index]);
-
+	
 			local function TargetEventButtonGetChecked()
 				EA_Target_Events_Frame_SpellEditBox:SetText(tostring(index));
 	        	if (TargetEventCheckButton:GetChecked()) then

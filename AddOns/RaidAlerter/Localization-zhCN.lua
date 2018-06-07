@@ -1,5 +1,5 @@
-﻿--修订日期：2011-05-06 by shines
---前一次修订日期：2011-04-14 by 游云
+﻿--修订日期：2011-03-06
+
 
 if GetLocale() == "zhCN" then
 	RaidAlerter_UIName				= "团队报警系统";
@@ -29,8 +29,8 @@ if GetLocale() == "zhCN" then
 		[8]	= "{骷髅}",		--骷
 	};
 
-   --各种合剂Buff名称文本(可局部匹配，但必须唯一)
-   RaidAlerter_SuperFlask_TEXT = {
+	--各种合剂Buff名称文本（可局部匹配，但必须唯一）
+	RaidAlerter_SuperFlask_TEXT = {
 		"合剂",
 	--	"沙塔斯",
 	--	"超级能量",
@@ -42,23 +42,16 @@ if GetLocale() == "zhCN" then
 	--	"盲目光芒",
 	--	"多彩奇迹",
 	--	"多重抗性",
-		--WotLK
-		"冰霜巨龙",
-		"无尽怒气",
-		"石血",
-		"纯净魔精",
-		"次级强韧",
-		"次级抗性",
-		"北地",
 	};
 
-   --包含合剂在内的各种强化药剂Buff名称文本(可局部匹配，但必须唯一)
+	--包含合剂在内的各种强化药剂Buff名称文本（可局部匹配，但必须唯一）
 	RaidAlerter_ForceFlask_TEXT = {
 		"合剂",
 		--TBC药剂：移除
 	--	"沙塔斯",
 	--	"超级能量",
 	--	"泰坦",
+	--	"精炼智慧",
 	--	"盲目光芒",
 	--	"多彩奇迹",
 	--	"多重抗性",
@@ -79,7 +72,6 @@ if GetLocale() == "zhCN" then
 	--	"掌控",
 	--	"强效奥法",
 	--	"猫鼬",
-		"精炼智慧",
 		--WLK新增
 		"护甲穿透",
 		"特效防御",			-- [极效防御药剂]
@@ -97,14 +89,14 @@ if GetLocale() == "zhCN" then
 --		"防护药剂",			-- [防护药剂]
 --		"强效力量",			-- [极效力量药剂]buff名和QS祝福重复，取消检测
 		--CTM新增
-		"鬼灵药剂",			--[国服待校正]
-		"纳迦药剂",			--[国服待校正]
+		"鬼灵药剂",				--[国服待校正]
+		"纳迦药剂",				--[国服待校正]
 		"眼镜蛇药剂",			--[国服待校正]
-		"地核药剂",			--[国服待校正]
-		"不可置信精准药剂",	--[国服待校正]
-		"稜彩药剂",			--[国服待校正]
-		"非凡疾速药水",		--[国服待校正]
-		"精通药剂",			--[国服待校正]
+		"地核药剂",				--[国服待校正]
+		"不可置信精准药剂",		--[国服待校正]
+		"稜彩药剂",				--[国服待校正]
+		"非凡疾速药水",			--[国服待校正]
+		"精通药剂",				--[国服待校正]
 	};
 
 	--Boss清单默初始化为空，团队中会自动更新BOSS列表以供血量通报使用。若需添加某些特定怪物，可参照下面的表格式在{}内加入准确名称。
@@ -296,7 +288,7 @@ if GetLocale() == "zhCN" then
 	RAL_TEXT_FUNC_40				= "优先本地显示";
 	RAL_TEXT_FUNC_41				= "默认：自动选择（推荐）";
 	RAL_TEXT_FUNC_42				= "玩家生命危急自动喊话%s（界限=%s%%）";
-	RAL_TEXT_FUNC_43				= "状态条已重置；缩放比例%s";
+	RAL_TEXT_FUNC_43				= "状态条已重置 - 屏幕位置正中；缩放比例%s";
 	RAL_TEXT_FUNC_44				= "系统资源占用提示";
 	RAL_TEXT_FUNC_45				= "状态条悬停提示的CPU性能显示";
 	RAL_TEXT_FUNC_46				= "插件内存清理优化完毕";
@@ -342,9 +334,6 @@ if GetLocale() == "zhCN" then
 	RAL_TEXT_CHECK_32				= "未知的职业名称：%s";
 	RAL_TEXT_CHECK_33				= "%s人未选定敌对目标：";
 	RAL_TEXT_CHECK_34				= "%s人选定了相同标记：";
-	RAL_TEXT_CHECK_35				= "所有人均已有.";
-	RAL_TEXT_CHECK_36				= "(%s)人已有, (%s)人尚无.";
-	RAL_TEXT_CHECK_37				= "(共%s人无)";
 
 	RAL_TEXT_ALERT_1				= "**[仇恨!]%s"..RAL_TEXT_ARROW_R.."%s**";
 --	RAL_TEXT_ALERT_2				= "[%s]仇恨==>你!!!";
@@ -391,10 +380,6 @@ if GetLocale() == "zhCN" then
 	RAL_TEXT_ALERT_42				= "你可能需要启用“正义之怒”Buff!";
 	RAL_TEXT_ALERT_43				= "无正义之怒";
 	RAL_TEXT_ALERT_44				= "**[%s]%s"..RAL_TEXT_ARROW_R.."%s**";
-	RAL_TEXT_ALERT_45				= "你可能需要启用“心灵之火”Buff!";
-	RAL_TEXT_ALERT_46				= "无心灵之火";
-	RAL_TEXT_ALERT_47				= "你尚无进食充分Buff，可能需要坐下来吃鱼!";
-	RAL_TEXT_ALERT_48				= "无进食充分";
 
 	RAL_TEXT_THREAT_INFO_01			= "*获得仇恨*";
 	RAL_TEXT_THREAT_INFO_02			= "*仇恨消退*";
@@ -402,25 +387,24 @@ if GetLocale() == "zhCN" then
 	RAL_TEXT_THREAT_INFO_04			= "*高仇恨*";
 	RAL_TEXT_THREAT_INFO_05			= "*焦点"..RAL_TEXT_ARROW_R.."%s*";
 
-	--用SPELL_CREATE判定：各种召唤团队物件的法术名称文本（MATCH：0局部匹配，1完全匹配）
+	--用SPELL_CREATE判定：各种召唤团队物件的法术名称文本（可局部匹配，但必须唯一）
 	RAL_TEXT_RAIDSPELL_1 = {
-		{["TEXT"]="鱼肉筵席",["MATCH"]=1,["TYPE"]="COOKFOOD",["DUR"]=180,},
-		{["TEXT"]="筵席",["MATCH"]=1,["TYPE"]="COOKFOOD",["DUR"]=180,},
-		{["TEXT"]="炙烤龙肉盛宴",["MATCH"]=1,["TYPE"]="COOKFOOD",["DUR"]=180,},		--[国服待校正]CTM 4.0
-		{["TEXT"]="哥布林烧烤盛宴",["MATCH"]=1,["TYPE"]="COOKFOOD",["DUR"]=180,},		--[国服待校正]CTM 4.0
-		{["TEXT"]="海鲜珍馐盛宴",["MATCH"]=1,["TYPE"]="COOKFOOD",["DUR"]=180,},		--[国服待校正]CTM 4.0
-		{["TEXT"]="防护药锅",["MATCH"]=0,["TYPE"]="ELIXIR",["DUR"]=180,},				--各种抗性药锅
-		{["TEXT"]="战斗大锅",["MATCH"]=0,["TYPE"]="ELIXIR",["DUR"]=180,},				--[国服待校正]CTM: 战斗大锅, 加大的战斗大锅
-		{["TEXT"]="传送门：",["MATCH"]=0,["TYPE"]="TRANS",["DUR"]=60,},				--各种传送门
+		"鱼肉筵席",
+		"炙烤龙肉盛宴",			--[国服待校正]
+		"哥布林烧烤盛宴",		--[国服待校正]
+		"海鲜珍馐盛宴",			--[国服待校正]
+		"防护药锅",				--各种抗性药锅
+		"战斗大锅",				--[国服待校正]战斗大锅, 加大的战斗大锅
+		"传送门：",				--各种传送门
 	};
-	--用SPELL_CAST_SUCCESS判定：各种召唤团队物件的法术名称文本（MATCH：0局部匹配，1完全匹配）
+	--用SPELL_CAST_SUCCESS判定：各种召唤团队物件的法术名称文本（可局部匹配，但必须唯一）
 	RAL_TEXT_RAIDSPELL_2 = {
-		{["TEXT"]="召唤餐桌",["MATCH"]=1,["TYPE"]="SPELL",["DUR"]=0,},
-		{["TEXT"]="召唤仪式",["MATCH"]=1,["TYPE"]="SPELL",["DUR"]=0,},
-		{["TEXT"]="灵魂仪式",["MATCH"]=1,["TYPE"]="SPELL",["DUR"]=0,},
-		{["TEXT"]="基维斯",["MATCH"]=1,["TYPE"]="REPAIR",["DUR"]=600,},
-		{["TEXT"]="废物贩卖机器人",["MATCH"]=1,["TYPE"]="REPAIR",["DUR"]=300,},
-		{["TEXT"]="修理机器人",["MATCH"]=0,["TYPE"]="REPAIR",["DUR"]=600,},			--修理机器人74A型, 战地修理机器人110G
+		"召唤餐桌",
+		"召唤仪式",
+		"灵魂仪式",
+		"基维斯",
+		"废物贩卖机器人",
+		"修理机器人",			--修理机器人74A型, 战地修理机器人110G
 	};
 
 	RAL_TEXT_SPELL_1				= "盾墙";
@@ -478,8 +462,8 @@ if GetLocale() == "zhCN" then
 	RAL_TEXT_BUFF_12				= "王者祝福";
 	RAL_TEXT_BUFF_13				= "强效王者祝福";
 	RAL_TEXT_BUFF_13_SPEC_1			= "遗忘王者祝福"	--WLK制皮: 遗忘王者战鼓
-	RAL_TEXT_BUFF_14				= "庇护祝福";
-	RAL_TEXT_BUFF_15				= "强效庇护祝福";
+	RAL_TEXT_BUFF_14				= "拯救祝福";
+	RAL_TEXT_BUFF_15				= "强效拯救祝福";
 	RAL_TEXT_BUFF_16				= "智慧祝福";
 	RAL_TEXT_BUFF_17				= "强效智慧祝福";
 	RAL_TEXT_BUFF_17_SPEC_1			= "法力之泉";
@@ -490,10 +474,6 @@ if GetLocale() == "zhCN" then
 	RAL_TEXT_BUFF_21				= "正义之怒";
 	RAL_TEXT_BUFF_22				= "精神祷言";
 	RAL_TEXT_BUFF_23				= "神圣之灵";
-	RAL_TEXT_BUFF_24				= "进食充分";
-	RAL_TEXT_BUFF_25				= "心灵之火";
-	RAL_TEXT_BUFF_26				= "枭兽形态";
-	RAL_TEXT_BUFF_27				= "生命之树";
 
 	RAL_TEXT_MARCO_1				= "宏语法简介：";
 	RAL_TEXT_MARCO_2				= "举例：";
@@ -506,7 +486,7 @@ if GetLocale() == "zhCN" then
 	RAL_TEXT_XML_2					= "检查团队成员是否已到场";
 	RAL_TEXT_XML_3					= "检查Buff";
 	RAL_TEXT_XML_4					= "检查团队的常规增益效果";
-	RAL_TEXT_XML_5					= "包括：\n全团耐力、智力和野性\n全团王者（圣骑≥1人）\n法系智慧、近战力量（圣骑≥2人）\n全团庇护（圣骑≥3人）\n进食充分（已放置团队烹饪食物时）";
+	RAL_TEXT_XML_5					= "包括：\n全团耐力、智力和野性\n全团王者（若圣骑≥1人）\n法系智慧、近战力量（若圣骑≥2人）";
 	RAL_TEXT_XML_6					= "检查灵魂石";
 	RAL_TEXT_XML_7					= "检查灵魂石是否已有绑定";
 	RAL_TEXT_XML_8					= "检查MT目标";
@@ -646,22 +626,10 @@ if GetLocale() == "zhCN" then
 	RAL_TEXT_XML_140				= "团队物件";
 	RAL_TEXT_XML_141				= "通报召唤团队物件的法术：";
 	RAL_TEXT_XML_142				= "";
-	RAL_TEXT_XML_143				= "进食充分";
-	RAL_TEXT_XML_144				= "通报未吃鱼玩家";
-	RAL_TEXT_XML_145				= "检测和通报进食充分的情况";
-	RAL_TEXT_XML_146				= "未进食密语";
-	RAL_TEXT_XML_147				= "启用进食充分密语";
-	RAL_TEXT_XML_148				= "使用密语通知未进食玩家";
-	RAL_TEXT_XML_149				= "心灵之火";
-	RAL_TEXT_XML_150				= "通报心灵之火状态";
-	RAL_TEXT_XML_151				= "检测和通报牧师的心灵之火状态";
-	RAL_TEXT_XML_152				= "心灵之火密语";
-	RAL_TEXT_XML_153				= "启用心灵之火密语";
-	RAL_TEXT_XML_154				= "使用密语通知未开启心灵之火玩家";
-	for i, v in pairs(RAL_TEXT_RAIDSPELL_1) do
-		RAL_TEXT_XML_142 = RAL_TEXT_XML_142..v["TEXT"].."\n";
+	for index, text in pairs(RAL_TEXT_RAIDSPELL_1) do
+		RAL_TEXT_XML_142 = RAL_TEXT_XML_142..text.."\n";
 	end
-	for i, v in pairs(RAL_TEXT_RAIDSPELL_2) do
-		RAL_TEXT_XML_142 = RAL_TEXT_XML_142..v["TEXT"].."\n";
+	for index, text in pairs(RAL_TEXT_RAIDSPELL_2) do
+		RAL_TEXT_XML_142 = RAL_TEXT_XML_142..text.."\n";
 	end
 end

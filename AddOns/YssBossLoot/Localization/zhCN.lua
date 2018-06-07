@@ -2,11 +2,9 @@
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local zhCN = AceLocale:NewLocale("YssBossLoot", "zhCN")
 if not zhCN then return end
-
 zhCN["Show Boss Frame"] ="显示首领框架"
 zhCN["2D Skulls"] = "2D骷髅"
 zhCN["3D_Skull_Detect_MSG"] = "|cffffd200YssBossLoot检测到%s!|r|n|n你要将你的首领框架设定为3D骷髅吗?"
-zhCN["Add Tooltip Info"] = "添加提示信息资讯"
 zhCN["Animated Background"] = "动态背景"
 zhCN["Boss Font Size"] = "首领字型大小"
 zhCN["Boss Frame Size"] = "首领框架大小"
@@ -22,7 +20,6 @@ zhCN["Dungeon"] = "5人副本"
 zhCN["Equip Location Filter"] = "装备位置筛选"
 zhCN["Filter"] = "筛选"
 zhCN["Filter All"] = "筛选全部"
-zhCN['|cffff2222%s not cached!'] = "|cffff2222%s 暂无数据"
 zhCN["Filter All desc"] = [=[由于多重筛选
 你很可能必须停用
 两个或多个筛选之后使用
@@ -38,12 +35,12 @@ zhCN["Item Type Filter"] = "物品类型筛选"
 zhCN["Large Map"] = "大地图"
 zhCN["Large Map with Objectives"] = "大地图的具体目标"
 zhCN["Loot"] = "战利品"
-zhCN["Loot Scaling"] = "战利品比例"
+zhCN["Loot Scalling"] = "战利品比例"
 zhCN["Minimap Icon"] = "小地图图示"
 zhCN["No Class Restriction"] = "没有职业限定"
 zhCN["Normal 10-man Loot"] = "10人普通模式战利品"
 zhCN["Normal 25-man Loot"] = "25人普通模式战利品"
-zhCN['Non Boss Drops'] = "小怪掉落"
+zhCN['Trash Mobs'] = "小怪掉落"
 zhCN["Normal Loot"] = "普通模式战利品"
 zhCN["Only equip location you have previously seen can be filtered by default"] = "预设值为只有你先前见过的装备位置才能筛选"
 zhCN["Only item stats you have previously seen can be filtered by default"] = "预设值为只有你先前见过的物品能力值才可筛选"
@@ -69,3 +66,5 @@ zhCN["When selected this item type will be hidden unless multible subtypes are f
 zhCN["When selected this item type will be shown unless multible subtypes are found"] = "当选定此物品类型时将会被显示，除非子类型被找到"
 zhCN["Yellow Checkmark:|nWe want this stat.|n|nGrey Checkmark:|nWe do not care if we have this stat or not.|n|nNo Checkmark:|nWe do not want this stat."] = "黄色复选标记:|n我需要此能力值。|n|n灰色复选标记:|n不在乎此能力值是否为我需要的。|n|n无复选标记:|n我不需要此能力值。"
 
+zhCN['|cffff2222%s not cached!'] = "|cffff2222%s 没有数据!"
+zhCN['YssBossLoot'] = "副本掉落"

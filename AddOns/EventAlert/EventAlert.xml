@@ -13,7 +13,7 @@
 			EventAlert_OnLoad(self);
 		</OnLoad>
 		<OnEvent>
-			EventAlert_OnEvent(event);
+			EventAlert_OnEvent(self, event, ...);
 		</OnEvent>
 	</Scripts>
 </Frame>

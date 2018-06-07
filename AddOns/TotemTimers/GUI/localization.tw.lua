@@ -2,7 +2,7 @@
 
 local L = LibStub("AceLocale-3.0"):NewLocale("TotemTimers_GUI", "zhTW")
 if not L then return end
-
+L["TotemTimers"] = "圖騰助手"
 L["Air"] = "風之"
 L["Automatic"] = "自動"
 L["Bottom"] = "置底"

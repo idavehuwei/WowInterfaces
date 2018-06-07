@@ -1,0 +1,7 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="svn://113.106.98.20/repos/Duowan-Work/UI.xsd">
+	<!-- 多玩提供的缺省方案 -->
+	<Script file="default.lua"/>
+
+	<!-- 以下为第三方方案 -->
+	<Script file="default.lua"/>
+</Ui>

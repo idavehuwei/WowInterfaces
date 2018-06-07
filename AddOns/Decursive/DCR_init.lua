@@ -1,7 +1,7 @@
 --[[
     This file is part of Decursive.
     
-    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
+    Decursive (v 2.5.1-12-gb39554a) add-on for World of Warcraft UI
     Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/to/decursive.php )
 
     Starting from 2009-10-31 and until said otherwise by its author, Decursive
@@ -19,41 +19,46 @@
 --]]
 -------------------------------------------------------------------------------
 
+local addonName, T = ...;
 -- big ugly scary fatal error message display function {{{
-if not DcrFatalError then
--- the beautiful error popup : {{{ -
-StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
-    text = "|cFFFF0000Decursive Error:|r\n%s",
-    button1 = "OK",
-    OnAccept = function()
-        return false;
-    end,
-    timeout = 0,
-    whileDead = 1,
-    hideOnEscape = 1,
-    showAlert = 1,
+if not T._FatalError then
+    -- the beautiful error popup : {{{ -
+    StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
+        text = "|cFFFF0000Decursive Error:|r\n%s",
+        button1 = "OK",
+        OnAccept = function()
+            return false;
+        end,
+        timeout = 0,
+        whileDead = 1,
+        hideOnEscape = 1,
+        showAlert = 1,
     }; -- }}}
-DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
+    T._FatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
 end
 -- }}}
-if not DcrLoadedFiles or not DcrLoadedFiles["enUS.lua"] then
-    if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (enUS.lua not loaded)"); end;
-    DcrCorrupted = true;
+if not T._LoadedFiles or not T._LoadedFiles["enUS.lua"] then
+    if not DecursiveInstallCorrupted then T._FatalError("Decursive installation is corrupted! (enUS.lua not loaded)"); end;
+    DecursiveInstallCorrupted = true;
     return;
 end
 
-Dcr         = LibStub("AceAddon-3.0"):NewAddon("Decursive", "AceConsole-3.0", "AceEvent-3.0", "AceTimer-3.0", "AceHook-3.0");
+T.Dcr         = LibStub("AceAddon-3.0"):NewAddon("Decursive", "AceConsole-3.0", "AceEvent-3.0", "AceTimer-3.0", "AceHook-3.0");
+Dcr = T.Dcr; -- needed until we get rid of the xml based UI.
 
-local D = Dcr;
+local D = T.Dcr;
 
-D.name = "Decursive";
-D.version = "2.4.5-3-g6a02387";
-D.author = "Archarodim";
 
 D.L         = LibStub("AceLocale-3.0"):GetLocale("Decursive", true);
-
 D.LC        = _G.LOCALIZED_CLASS_NAMES_MALE;
+D.name = "Decursive";
+D.version = "2.5.1-12-gb39554a";
+D.author = "";
 
+if not D.LC then
+    T._AddDebugText("DCR_init.lua: Couldn't get LOCALIZED_CLASS_NAMES_MALE!");
+    D.LC = {};
+end
 
 D.DcrFullyInitialized = false;
 
@@ -82,10 +87,10 @@ D.Groups_datas_are_invalid = true;
 D.CONF = {};
 D.CONF.TEXT_LIFETIME = 4.0;
 D.CONF.MAX_LIVE_SLOTS = 10;
-D.CONF.MACRONAME = "Decursive";
+D.CONF.MACRONAME = BINDING_HEADER_DECURSIVE;
 D.CONF.MACROCOMMAND = string.format("MACRO %s", D.CONF.MACRONAME);
 
-BINDING_HEADER_DECURSIVE = "Decursive";
+--BINDING_HEADER_DECURSIVE = "Decursive";
 
 D.CONF.MACRO_DIAG     = "/dcrdiag";
 D.CONF.MACRO_COMMAND  = "/decursive";
@@ -170,6 +175,19 @@ DC.DebuffHistoryLength = 40; -- we use a rather high value to avoid garbage crea
 
 DC.DevVersionExpired = false;
 
+DC.RAID_ICON_LIST = _G.ICON_LIST;
+if not DC.RAID_ICON_LIST then
+    T._AddDebugText("DCR_init.lua: Couldn't get Raid Target Icon List!");
+    DC.RAID_ICON_LIST = {};
+end
+
+DC.RAID_ICON_TEXTURE_LIST = {};
+
+for i,v in ipairs(DC.RAID_ICON_LIST) do
+    DC.RAID_ICON_TEXTURE_LIST[i] = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_" .. i;
+end
+
+
 
 D.DebuffHistory = {};
 
@@ -197,12 +215,13 @@ D.Status.UpdateCooldown = 0;
 D.Status.GroupUpdatedOn = 0;
 D.Status.GroupUpdateEvent = 0;
 
+D.Status.TestLayout = false;
+D.Status.TestLayoutUNum = 25;
+
 -- An acces the debuff table
 D.ManagedDebuffUnitCache = {};
 -- A table UnitID=>IsDebuffed (boolean)
 D.UnitDebuffed = {};
-
-D.DebugTextTable    = Dcr_DebugTextTable;
 
 -- // }}}
 -------------------------------------------------------------------------------
@@ -221,9 +240,8 @@ D.hideWithoutStandby    = true;
 D.defaultPosition       = "LEFT";
 D.hideMenuTitle         = true;
 
-local AddDebugText = Dcr_AddDebugText;
 function D:AddDebugText(a1, ...)
-    AddDebugText(a1, ...);
+    T._AddDebugText(a1, ...);
 end
 
 function D:BetaWarning()
@@ -233,25 +251,32 @@ function D:BetaWarning()
     alpha = true;
     --@end-alpha@
 
-    if (("2.4.5-3-g6a02387"):lower()):find("beta") or ("2.4.5-3-g6a02387"):find("RC") or alpha then
+    if (("2.5.1-12-gb39554a"):lower()):find("beta") or ("2.5.1-12-gb39554a"):find("RC") or ("2.5.1-12-gb39554a"):find("Candidate") or alpha then
 
         -- check for expiration of this dev version
         if D.VersionTimeStamp ~= 0 then
 
-            local VersionLifeTime  = 3600 * 24 * 10; -- 10 days
+            local VersionLifeTime  = 3600 * 24 * 30; -- 30 days
 
             if time() > D.VersionTimeStamp + VersionLifeTime then
---                DC.DevVersionExpired = true;
---                StaticPopup_Show ("Decursive_Notice_Frame", "|cff00ff00Decursive version: 2.4.5-3-g6a02387|r\n\n" .. "|cFFFFAA66" .. L["DEV_VERSION_EXPIRED"] .. "|r");
+                DC.DevVersionExpired = true;
+                -- Display the expiration notice only once evry 48 hours
+                if time() - self.db.global.LastExpirationAlert > 48 * 3600  then
+                    --StaticPopup_Show ("Decursive_Notice_Frame", "|cff00ff00Decursive version: 2.5.1-12-gb39554a|r\n\n" .. "|cFFFFAA66" .. L["DEV_VERSION_EXPIRED"] .. "|r");
+
+                    self.db.global.LastExpirationAlert = time();
+                end
+
                 return;
             end
 
         end
-
-        if self.db.global.NonRealease ~= "2.4.5-3-g6a02387" then
-            self.db.global.NonRealease = "2.4.5-3-g6a02387";
-            StaticPopup_Show ("Decursive_Notice_Frame", "|cff00ff00Decursive version: 2.4.5-3-g6a02387|r\n\n" .. "|cFFFFAA66" .. L["DEV_VERSION_ALERT"] .. "|r");
+	--[[
+        if self.db.global.NonRealease ~= "2.5.1-12-gb39554a" then
+            self.db.global.NonRealease = "2.5.1-12-gb39554a";
+            StaticPopup_Show ("Decursive_Notice_Frame", "|cff00ff00Decursive version: 2.5.1-12-gb39554a|r\n\n" .. "|cFFFFAA66" .. L["DEV_VERSION_ALERT"] .. "|r");
         end
+	]]
     end
 
 
@@ -259,11 +284,12 @@ end
 
 function D:OnInitialize() -- Called on ADDON_LOADED -- {{{
 
-    if DecursiveSelfDiagnostic() == 2 then
+    if T._SelfDiagnostic() == 2 then
         return false;
     end
 
-    DcrHookErrorHandler();
+    T._HookErrorHandler();
+    T._CatchAllErrors = true; -- During init we catch all the errors else, if a library fails we won't know it.
 
     D.defaults = D:GetDefaultsSettings();
 
@@ -280,21 +306,13 @@ function D:OnInitialize() -- Called on ADDON_LOADED -- {{{
 
 
     D.MFContainer = DcrMUFsContainer;
+    D.MFContainerHandle = DcrMUFsContainerDragButton;
     D.MicroUnitF.Frame = D.MFContainer;
 
 
     D.LLContainer = DcrLiveList;
     D.LiveList.Frame = DcrLiveList;
 
-
-    --[=[
-    D.DewDrop:Register(DecursiveMainBar,
-    'children', function()
-        D.DewDrop:FeedAceOptionsTable( D.options )
-    end
-    )
-    D.Waterfall:Register("Decursive","aceOptions", D.options, 'title',  L["STR_OPTIONS"],  "colorR", 0.1, "colorG", 0.1, "colorB", 0.3);
-    --]=]
 
     DC.TypeNames = {
         [DC.MAGIC]      = "Magic";
@@ -318,44 +336,37 @@ function D:OnInitialize() -- Called on ADDON_LOADED -- {{{
         [DC.NOTYPE]     = "AAAAAA";
     }
 
-
-
     -- /script DcrC.SpellsToUse[DcrC.DS["Dampen Magic"]] = {Types = {DcrC.MAGIC, DcrC.DISEASE, DcrC.POISON},IsBest = false}; Dcr:Configure();
     -- /script DcrC.SpellsToUse[DcrC.DS["SPELL_POLYMORPH"]] = {  Types = {DcrC.CHARMED}, IsBest = false, Pet = false, Rank = "1 : Pig"}; Dcr:Configure();
 
     -- SPELL TABLE -- must be parsed after localisation is loaded {{{
     DC.SpellsToUse = {
 
-        --Mages
-        [DS["SPELL_POLYMORPH"]]     = {
-            Types = {DC.CHARMED},
-            IsBest = false,
-            Pet = false,
-            Rank = 1,
-        },
-        -- Druids
-        [DS["SPELL_CYCLONE"]]       = {
-            Types = {DC.CHARMED},
-            IsBest = false,
-            Pet = false,
-        },
         --[[
         -- used for testing only
         [DS["Dampen Magic"] ]       = {
         Types = {DC.MAGIC},--, DC.DISEASE, DC.POISON},
-        IsBest = false,
+        IsBest = 0,
         Pet = false,
         }, --]]
         --[[
         -- used for testing only
         [DS["Amplify Magic"] ]      = {
             Types = {DC.DISEASE, DC.POISON},
-            IsBest = false,
+            IsBest = 0,
             Pet = false,
         }, --]]
+      
+        -- Priests
+        [DS["SPELL_CURE_DISEASE"]]          = {
+            Types = {DC.DISEASE},
+            IsBest = 0,
+            Pet = false,
+        },
+        -- Priests
         [DS["SPELL_ABOLISH_DISEASE"]]       = {
             Types = {DC.DISEASE},
-            IsBest = true,
+            IsBest = 1,
             Pet = false,
 
             EnhancedBy = DS["TALENT_BODY_AND_SOUL"],
@@ -370,57 +381,49 @@ function D:OnInitialize() -- Called on ADDON_LOADED -- {{{
                 },
             }
         },
-        [DS["SPELL_CURE_DISEASE"]]          = {
-            Types = {DC.DISEASE},
-            IsBest = false,
-            Pet = false,
-        },
-        -- paladins
-        [DS["SPELL_CLEANSE"]]               = {
-            Types = {DC.MAGIC, DC.DISEASE, DC.POISON},
-            IsBest = true,
-            Pet = false,
-        },
-        [DS["SPELL_PURIFY"]]                = {
-            Types = {DC.DISEASE, DC.POISON},
-            IsBest = false,
-            Pet = false,
-        },
         -- Priests
         [DS["SPELL_DISPELL_MAGIC"]]         = {
             Types = {DC.MAGIC, DC.ENEMYMAGIC},
-            IsBest = true,
+            IsBest = 1,
+            Pet = false,
+        },
+        -- Paladins
+        [DS["SPELL_PURIFY"]]                = {
+            Types = {DC.DISEASE, DC.POISON},
+            IsBest = 1,
+            Pet = false,
+        },
+        -- Paladins
+        [DS["SPELL_CLEANSE"]]               = {
+            Types = {DC.MAGIC, DC.DISEASE, DC.POISON},
+            IsBest = 2,
+            Pet = false,
+        },
+        -- Druids
+        [DS["SPELL_CURE_POISON"]]           = {
+            Types = {DC.POISON},
+            IsBest = 0,
             Pet = false,
         },
         -- Druids
         [DS["SPELL_ABOLISH_POISON"]]        = {
             Types = {DC.POISON},
-            IsBest = true,
+            IsBest = 1,
             Pet = false,
         },
-        [DS["SPELL_CURE_POISON"]]           = {
-            Types = {DC.POISON},
-            IsBest = false,
+        -- Druids
+        [DS["SPELL_CYCLONE"]]       = {
+            Types = {DC.CHARMED},
+            IsBest = 0,
             Pet = false,
         },
-        [DS["SPELL_CURE_TOXINS"]]           = {
-            Types = {DC.POISON, DC.DISEASE},
-            IsBest = false,
-            Pet = false,
-        },
-        -- mages
-        [DS["SPELL_REMOVE_LESSER_CURSE"]]   = {
+        -- Mages and Druids
+        [DS["SPELL_REMOVE_CURSE"]]   = {
             Types = {DC.CURSE},
-            IsBest = true,
-            Pet = false,
-        },
-        -- druids and mages
-        [DS["SPELL_REMOVE_CURSE"]]          = {
-            Types = {DC.CURSE},
-            IsBest = true,
+            IsBest = 0,
             Pet = false,
 
-            --[===[ for testing purpose only
+            --[===[ for testing purpose only {{{
             EnhancedBy = DS["TALENT_ARCANE_POWER"], 
             EnhancedByCheck = function ()
                 return (select(5, GetTalentInfo(1,1))) > 0;
@@ -432,56 +435,112 @@ function D:OnInitialize() -- Called on ADDON_LOADED -- {{{
                     [DC.MAGIC]  = true,
                 },
             }
-            --]===]
-
+            --}}} ]===]
         },
-        --[=[ -- disabled because of Korean locals... see below
-        [DS["SPELL_PURGE"]]                 = {
-            Types = {DC.ENEMYMAGIC},
-            IsBest = true,
-            Pet = false,
-        },
-        --]=]
-
-        -- HUNTERS http://www.wowhead.com/?spell=19801
-        [DS["SPELL_TRANQUILIZING_SHOT"]]    = {
-            Types = {DC.ENEMYMAGIC},
-            IsBest = true,
-            Pet = false,
-        },
-        
-        -- SHAMAN http://www.wowhead.com/?spell=51514
-        [DS["SPELL_HEX"]]    = {
+        -- Mages
+        [DS["SPELL_POLYMORPH"]]      = {
             Types = {DC.CHARMED},
-            IsBest = true,
+            IsBest = 0,
+            Pet = false,
+            Rank = 1,
+        },
+        -- Shamans
+        [DS["SPELL_CURE_TOXINS"]]           = {
+            Types = {DC.POISON, DC.DISEASE},
+            IsBest = 1,
             Pet = false,
         },
-
-        [DS["PET_FEL_CAST"]]                = {
-            Types = {DC.MAGIC, DC.ENEMYMAGIC},
-            IsBest = true,
-            Pet = true,
-        },
-        [DS["PET_DOOM_CAST"]]               = {
-            Types = {DC.MAGIC, DC.ENEMYMAGIC},
-            IsBest = true,
-            Pet = true,
-        },
+        -- Shaman resto
         [DS["CLEANSE_SPIRIT"]]              = {
             Types = {DC.CURSE, DC.DISEASE, DC.POISON},
-            IsBest = true,
+            IsBest = 3,
             Pet = false,
         },
-
+        -- Shamans http://www.wowhead.com/?spell=51514
+        [DS["SPELL_HEX"]]    = {
+            Types = {DC.CHARMED},
+            IsBest = 0,
+            Pet = false,
+        },
+        --[=[ -- disabled because of Korean locals... see below
+        -- Shamans
+        [DS["SPELL_PURGE"]]                 = {
+            Types = {DC.ENEMYMAGIC},
+            IsBest = 0,
+            Pet = false,
+        }, --]=]
+        -- Hunters http://www.wowhead.com/?spell=19801
+        [DS["SPELL_TRANQUILIZING_SHOT"]]    = {
+            Types = {DC.ENEMYMAGIC},
+            IsBest = 0,
+            Pet = false,
+        },
+        -- Warlock
+        [DS["SPELL_FEAR"]]    = {
+            Types = {DC.CHARMED},
+            IsBest = 0,
+            Pet = false,
+            Rank = 1,
+        },
+        -- Warlock
+        [DS["PET_FEL_CAST"]]                = {
+            Types = {DC.MAGIC, DC.ENEMYMAGIC},
+            IsBest = 1,
+            Pet = true,
+        },
+        -- Warlock
+        [DS["PET_DOOM_CAST"]]               = {
+            Types = {DC.MAGIC, DC.ENEMYMAGIC},
+            IsBest = 1,
+            Pet = true,
+        },
     };
+
+    -- WoW 4.0 changes {{{
+
+    if T._tocversion == 40000 then
+        DC.SpellsToUse[DS["PET_FEL_CAST"]]              = {
+            Types = {DC.ENEMYMAGIC},
+            IsBest = 0,
+            Pet = true,
+        };
+        -- Warlocks
+        DC.SpellsToUse[DS["SPELL_SINGE_MAGIC"]]         = {
+            Types = {DC.MAGIC},
+            IsBest = 0,
+            Pet = true,
+        };
+        -- Warlock
+        DC.SpellsToUse[DS["SPELL_FEAR"]]    = {
+            Types = {DC.CHARMED},
+            IsBest = 0,
+            Pet = false,
+        };
+        -- Mages
+        DC.SpellsToUse[DS["SPELL_POLYMORPH"]]      = {
+            Types = {DC.CHARMED},
+            IsBest = 0,
+            Pet = false,
+        };
+        -- Druids
+        DC.SpellsToUse[DS["SPELL_REMOVE_CORRUPTION"]]      = {
+            Types = {DC.POISON, DC.CURSE},
+            IsBest = 0,
+            Pet = false,
+            Rank = 1,
+        };
+    end
+    
+    -- }}}
 
 
     -- Thanks to Korean localization team of WoW we have to make an exception....
     -- They found the way to call two different spells the same (Shaman PURGE and Paladin CLEANSE... (both are called "정화") )
     if ((select(2, UnitClass("player"))) == "SHAMAN") then
+        -- Shamans
         DC.SpellsToUse[DS["SPELL_PURGE"]]                   = {
             Types = {DC.ENEMYMAGIC},
-            IsBest = true,
+            IsBest = 0,
             Pet = false,
         };
     end
@@ -496,21 +555,32 @@ function D:OnInitialize() -- Called on ADDON_LOADED -- {{{
 
     -- // }}}
 
+
+    -- New Comm Part used for version checking
+    -- only if AceComm is here
+    if LibStub:GetLibrary("AceComm-3.0", true) then
+        DC.COMMAVAILABLE = true;
+        LibStub("AceComm-3.0"):RegisterComm("DecursiveVersion", D.OnCommReceived);
+    end
+
+    T._CatchAllErrors = false;
+
 end -- // }}}
 
 local FirstEnable = true;
 function D:OnEnable() -- called after PLAYER_LOGIN -- {{{
 
-    if DecursiveSelfDiagnostic() == 2 then
+    if T._SelfDiagnostic() == 2 then
         return false;
     end
+    T._CatchAllErrors = true; -- During init we catch all the errors else, if a library fails we won't know it.
 
 
     -- Register slashes command {{{
     if (FirstEnable) then
         SLASH_DECURSIVEDIAG1 = D.CONF.MACRO_DIAG;
         SlashCmdList["DECURSIVEDIAG"] = function(msg)
-            DecursiveSelfDiagnostic(true, true);
+            T._SelfDiagnostic(true, true);
         end
 
         SLASH_DECURSIVEPRADD1 = D.CONF.MACRO_PRADD;
@@ -628,9 +698,9 @@ function D:OnEnable() -- called after PLAYER_LOGIN -- {{{
     -- Configure specific profile dependent data
     D:SetConfiguration();
 
-    if (FirstEnable) then
---        D:ColorPrint(0.3, 0.5, 1, L["IS_HERE_MSG"]);
---        D:ColorPrint(0.3, 0.5, 1, L["SHOW_MSG"]);
+    if FirstEnable and not D.db.global.NoStartMessages then
+        --D:ColorPrint(0.3, 0.5, 1, L["IS_HERE_MSG"]);
+        D:ColorPrint(0.3, 0.5, 1, L["SHOW_MSG"]);
 
         -- schedule a reconfigure in 5 seconds
         --self:ScheduleDelayedCall("Dcr_FirstLogConfUpdate", self.ReConfigure, 5, self);
@@ -638,13 +708,17 @@ function D:OnEnable() -- called after PLAYER_LOGIN -- {{{
 
     FirstEnable = false;
 
+    D:CheckPlayer();
+    T._CatchAllErrors = false;
+
 end -- // }}}
 
 function D:SetConfiguration()
 
-    if DecursiveSelfDiagnostic() == 2 then
+    if T._SelfDiagnostic() == 2 then
         return false;
     end
+    T._CatchAllErrors = true; -- During init we catch all the errors else, if a library fails we won't know it.
 
 
     D.DcrFullyInitialized = false;
@@ -668,6 +742,8 @@ function D:SetConfiguration()
     D.Status.GroupUpdateEvent = 0;
     D.Status.UpdateCooldown = 0;
     D.Status.MouseOveringMUF = false;
+    D.Status.TestLayout = false;
+    D.Status.TestLayoutUNum = 25;
     
 
     -- if we log in and we are already fighting...
@@ -679,7 +755,7 @@ function D:SetConfiguration()
     D.classprofile = D.db.class; -- shortcut
 
     if type (D.profile.OutputWindow) == "string" then
-        D.Status.OutputWindow = getglobal(D.profile.OutputWindow);
+        D.Status.OutputWindow = _G[D.profile.OutputWindow];
     end
 
     D.debugging = D.db.global.debugging;
@@ -688,13 +764,18 @@ function D:SetConfiguration()
 
     D:Debug("Loading profile datas...");
 
-    -- some usefull constants
+    -- some useful constants
     DC.MyClass = (select(2, UnitClass("player")));
-    DC.MyName = (self:UnitName("player"));
-    DC.MyGUID = (UnitGUID("player"));
+    DC.MyName  = (self:UnitName("player"));
+    DC.MyGUID  = (UnitGUID("player"));
 
     if not DC.MyGUID then
         DC.MyGUID = "NONE";
+    end
+
+    if D.profile.DisableAbolish then
+        DC.SpellsToUse[DS["SPELL_CURE_DISEASE"]].IsBest = 10;
+        DC.SpellsToUse[DS["SPELL_CURE_POISON"]].IsBest = 10;
     end
 
     D:Init(); -- initialize Dcr core (set frames display, scans available cleansing spells)
@@ -705,6 +786,7 @@ function D:SetConfiguration()
 
     D.Groups_datas_are_invalid = true;
     D:CreateDropDownFiltersMenu(); -- create per class filters menus
+    D:CreateModifierOptionMenu();
 
 
     if D.profile.MF_colors['Chronometers'] then
@@ -756,6 +838,7 @@ function D:SetConfiguration()
     D:GetUnitArray(); -- get the unit array
     D.MicroUnitF:ResetAllPositions (); -- reset all anchors
 
+    T._CatchAllErrors = false; -- During init we catch all the errors else, if a library fails we won't know it.
     D:BetaWarning();
 
 end
@@ -789,8 +872,41 @@ function D:OnDisable() -- When the addon is disabled by Ace
     StaticPopup_Show("Decursive_OnDisableWarning");
 end
 
+-- A list of some people I personally have problems with. Decursive will not function for them.
+-- I don't want this kind of people benefiting from my hard work.
+-- Those [Insert appropriate word here] are players you really don't want to meet. Ignorance is just not enough for them...
+-- This list will only be used to disable Decursive for them, nothing else will ever happen.
+local BADPLAYERS = {
+    {"|A|r|a|d|o|s", "|C|o|n|s|e|i|l| |d|e|s| |O|m|b|r|e|s|", "|P|A|L|A|D|I|N|"}, -- This one gave me the most horrible experience I ever had in a pickup-group (At the Oculus). He is a terrible leader ; the kind of incompetent person who will accuse you of his own failures. All of this in a perverse and insidious way so he can turn others against you.
 
 
+    --{"|A|r|c|h|a|r|o|d|i|m|", "|L|e|s| |S|e|n|t|i|n|e|l|l|e|s|", "|M|A|G|E|"}, -- so I can test if it works.
+};
+local BADPLAYERS_READABLE = false;
+local GetRealmName = _G.GetRealmName;
+function D:CheckPlayer()
+
+    if not BADPLAYERS_READABLE then
+        BADPLAYERS_READABLE = {};
+        D:tcopycallback(BADPLAYERS_READABLE, BADPLAYERS, function (data) return (data:gsub("|", "")) end);
+        BADPLAYERS = nil;
+    end
+
+    for i=1, #BADPLAYERS_READABLE do
+        --D:Debug("TEST 1");
+        if BADPLAYERS_READABLE[i][1] == (self:UnitName("player")) then
+            --D:Debug("TEST 2 name ");
+            if BADPLAYERS_READABLE[i][2] == GetRealmName() then
+                --D:Debug("TEST 3 realmname");
+                if BADPLAYERS_READABLE[i][3] == (select(2, UnitClass("player"))) then
+                    --D:Debug("TEST 4 unitclass");
+                    D:Disable();
+                    break;
+                end
+            end
+        end
+    end
+end
 
 -------------------------------------------------------------------------------
 -- init functions and configuration functions {{{
@@ -801,9 +917,11 @@ function D:Init() --{{{
         D.Status.OutputWindow = DEFAULT_CHAT_FRAME;
         D.profile.OutputWindow =  "DEFAULT_CHAT_FRAME";
     end
-	--Terry@bf get rid of println
-		--D:Println("%s %s by %s", D.name, D.version, D.author);
-	--end Terry@bf
+
+    if not D.db.global.NoStartMessages then
+       -- D:Println("%s %s by %s", D.name, D.version, D.author);
+    end
+
     D:Debug( "Decursive Initialization started!");
 
 
@@ -818,6 +936,7 @@ function D:Init() --{{{
     else
         D.MFContainer:Hide();
     end
+    D.MFContainerHandle:EnableMouse(not D.profile.HideMUFsHandle);
     -- }}}
 
     -- SET THE LIVE_LIST FRAME AS WRITTEN IN THE CURRENT PROFILE {{{
@@ -964,7 +1083,7 @@ function D:Configure() --{{{
             -- register it
             for _, Type in pairs (Types) do
 
-                if not CuringSpells[Type] or not DC.SpellsToUse[ CuringSpells[Type] ].IsBest then  -- we did not already registered this spell or it's not the best spell for this type
+                if not CuringSpells[Type] or DC.SpellsToUse[spellName].IsBest > DC.SpellsToUse[ CuringSpells[Type] ].IsBest then  -- we did not already registered this spell or it's not the best spell for this type
 
                     self.Status.FoundSpells[spellName] = {DC.SpellsToUse[spellName].Pet, (select(2, GetSpellInfo(spellName))), IsEnhanced};
                     CuringSpells[Type] = spellName;
@@ -986,46 +1105,6 @@ function D:Configure() --{{{
         end
     end
 
-
-
-    --[[
-    -- parse through the entire library...
-    -- look for known cleaning spells...
-
-    local i = 1;
-
-    local BookType = BOOKTYPE_SPELL;
-    local break_flag = false
-
-    -- This array will be used to test if a reconfiguration is required
-    D.Status.FoundSpells = {};
-
-    while not break_flag  do
-        while (true) do -- I wish there was a continue statement in LUA...
-            spellName, spellRank = GetSpellName(i, BookType);
-            if (not spellName) then
-                if (BookType == BOOKTYPE_PET) then
-                    break_flag = true;
-                    break;
-                end
-                BookType = BOOKTYPE_PET; -- once done with our spells, search for our pet' spells
-                i = 1;
-                break;
-
-            end
-
-
-            if (DC.SpellsToUse[spellName]) then
-
-                
-            end
-
-            i = i + 1
-        end
-    end
-    --]]
-
-
     -- Verify the cure order list (if it was damaged)
     self:CheckCureOrder ();
     -- Set the appropriate priorities according to debuffs types
@@ -1037,17 +1116,15 @@ function D:Configure() --{{{
         return;
     end
 
-
-
-
-
-
-
 end --}}}
 
 function D:GetSpellsTranslations(FromDIAG)
     local GetSpellInfo = _G.GetSpellInfo;
-    local Spells = {
+
+    local Spells = {};
+
+
+    Spells = {
         ["SPELL_POLYMORPH"]             = {     118,                                     },
         ["SPELL_CYCLONE"]               = {     33786,                                   },
         ["SPELL_CURE_DISEASE"]          = {     528,                                     },
@@ -1058,13 +1135,14 @@ function D:GetSpellsTranslations(FromDIAG)
         ["SPELL_CURE_TOXINS"]           = {     526,                                     }, -- shamans
         ["SPELL_CURE_POISON"]           = {     8946,                                    },
         ["SPELL_ABOLISH_POISON"]        = {     2893,                                    },
-        ["SPELL_REMOVE_LESSER_CURSE"]   = {     475,                                     },
-        ["SPELL_REMOVE_CURSE"]          = {     2782,                                    },
+        ["SPELL_REMOVE_LESSER_CURSE"]   = {     475,                                     }, -- Mages
+        ["SPELL_REMOVE_CURSE"]          = {     2782,                                    }, -- Druids/Mages
         ['SPELL_TRANQUILIZING_SHOT']    = {     19801,                                   },
         ['SPELL_HEX']                   = {     51514,                                   }, -- shamans
         ["CLEANSE_SPIRIT"]              = {     51886,                                   },
         ["SPELL_PURGE"]                 = {     370, 8012,                               },
         ["PET_FEL_CAST"]                = {     19505, 19731, 19734, 19736, 27276, 27277,},
+        ["SPELL_FEAR"]                  = {     5782                                     },
         ["PET_DOOM_CAST"]               = {     527, 988,                                },
         ["CURSEOFTONGUES"]              = {     1714, 11719,                             },
         ["DCR_LOC_SILENCE"]             = {     15487,                                   },
@@ -1102,6 +1180,16 @@ function D:GetSpellsTranslations(FromDIAG)
         --['STALVAN_CURSE']             = {     3105,                                    }, --temp to test
     };
 
+    -- WoW 4.0 compatibility fix
+    if T._tocversion == 40000 then
+        Spells["SPELL_REMOVE_CURSE"]         = {     475,                                    }; -- Druids/Mages
+        Spells["SPELL_REMOVE_CORRUPTION"]    = {     2782,                                   };
+        Spells["SPELL_SINGE_MAGIC"]          = {     89808,                                    }; -- Warlock imp
+    end
+
+    DC.ttest = Spells;
+
+
 
     local alpha = false;
     --@alpha@
@@ -1115,12 +1203,14 @@ function D:GetSpellsTranslations(FromDIAG)
             if _ == 1 then
                 DS[Sname] = (GetSpellInfo(Sid));
                 if not DS[Sname] then
-                    if random (1, 9000) == 1 or FromDIAG or alpha then
+                    if random (1, 9000) == 1 or FromDIAG then
                         D:AddDebugText("SpellID:", Sid, "no longer exists. This was supposed to represent the spell", Sname);
+                        D:errln("SpellID:", Sid, "no longer exists. This was supposed to represent the spell", Sname);
                     end
+                    DS[Sname] = "_LOST SPELL_";
                 end
             elseif FromDIAG then
-                if DS[Sname] ~= (GetSpellInfo(Sid)) then
+                if (GetSpellInfo(Sid)) and DS[Sname] ~= (GetSpellInfo(Sid)) then
 
                     D:AddDebugText("Spell IDs", Sids[1] , "and", Sid, "have different translations:", DS[Sname], "and", (GetSpellInfo(Sid)) );
 
@@ -1204,10 +1294,14 @@ function D:UpdateMacro ()
     };
 
     --D:PrintLiteral(GetMacroIndexByName(D.CONF.MACRONAME));
-    if (GetMacroIndexByName(D.CONF.MACRONAME) ~= 0) then
-        -- D:Debug("Macro found");
-        EditMacro(D.CONF.MACRONAME, unpack(MacroParameters));
-    elseif ((GetNumMacros()) < 36) then
+    if GetMacroIndexByName(D.CONF.MACRONAME) ~= 0 then
+	if not D.profile.AllowMacroEdit then
+	    EditMacro(D.CONF.MACRONAME, unpack(MacroParameters));
+	    D:Debug("Macro updated");
+	else
+	    D:Debug("Macro not updated due to AllowMacroEdit");
+	end
+    elseif (GetNumMacros()) < 36 then
         CreateMacro(unpack(MacroParameters));
     else
         D:errln("Too many macros exist, Decursive cannot create its macro");
@@ -1258,9 +1352,9 @@ function D:LocalizeBindings ()
 
 end
 
-D.Revision = "6a02387";
-D.date = "2009-12-06T03:36:40Z";
-D.version = "2.4.5-3-g6a02387";
+D.Revision = "b39554a";
+D.date = "2010-09-26T17:24:44Z";
+D.version = "2.5.1-12-gb39554a";
 do
 
     if D.date ~= "@project".."-date-iso@" then
@@ -1279,7 +1373,7 @@ do
 
 end
 
-DcrLoadedFiles["DCR_init.lua"] = "2.4.5-3-g6a02387";
+T._LoadedFiles["DCR_init.lua"] = "2.5.1-12-gb39554a";
 
 -------------------------------------------------------------------------------
 
@@ -1294,34 +1388,34 @@ Simple replacements
 @project-revision@
     Turns into the highest revision of the entire project in integer form. e.g. 1234
     Note: does not work for git
-52d30db80af01ce4f980112eb5909bc2f0b97a29
+b39554ad91f919c454adcf1c6e4af74508acc33a
     Turns into the hash of the file in hex form. e.g. 106c634df4b3dd4691bf24e148a23e9af35165ea
     Note: does not work for svn
-6a023879de0c1857f9f6d9054401377e8807f182
+b39554ad91f919c454adcf1c6e4af74508acc33a
     Turns into the hash of the entire project in hex form. e.g. 106c634df4b3dd4691bf24e148a23e9af35165ea
     Note: does not work for svn
-52d30db
+b39554a
     Turns into the abbreviated hash of the file in hex form. e.g. 106c63 Note: does not work for svn
-6a02387
+b39554a
     Turns into the abbreviated hash of the entire project in hex form. e.g. 106c63
     Note: does not work for svn
 Archarodim
     Turns into the last author of the file. e.g. ckknight
 Archarodim
     Turns into the last author of the entire project. e.g. ckknight
-2009-12-06T03:32:56Z
+2010-09-26T17:24:44Z
     Turns into the last changed date (by UTC) of the file in ISO 8601. e.g. 2008-05-01T12:34:56Z
-2009-12-06T03:36:40Z
+2010-09-26T17:24:44Z
     Turns into the last changed date (by UTC) of the entire project in ISO 8601. e.g. 2008-05-01T12:34:56Z
-20091206033256
+20100926172444
     Turns into the last changed date (by UTC) of the file in a readable integer fashion. e.g. 20080501123456
-20091206033640
+20100926172444
     Turns into the last changed date (by UTC) of the entire project in a readable integer fashion. e.g. 2008050123456
 @file-timestamp@
     Turns into the last changed date (by UTC) of the file in POSIX timestamp. e.g. 1209663296
 @project-timestamp@
     Turns into the last changed date (by UTC) of the entire project in POSIX timestamp. e.g. 1209663296
-2.4.5-3-g6a02387
+2.5.1-12-gb39554a
     Turns into an approximate version of the project. The tag name if on a tag, otherwise it's up to the repo.
     :SVN returns something like "r1234"
     :Git returns something like "v0.1-873fc1"

@@ -1,6 +1,9 @@
 ﻿local L = LibStub("AceLocale-3.0"):NewLocale("TradeskillInfoUI", "enUS", true)
 if not L then return end
-
+TRADESKILL_INFO = "Tradeskill Info"
+TRADESKILLINFO_SEARCH = "Search";
+TRADESKILLINFO_RESET = "Reset"
+L["TradeskillInfo"] = true;
 L["Opposing"] = true
 L["Include recipes from opposing faction"] = true
 L["Name"] = true

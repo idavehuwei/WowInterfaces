@@ -3,8 +3,7 @@
 	GridStatus module for showing when a unit is driving a vehicle with a UI.
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local GridRoster = Grid:GetModule("GridRoster")
 
 local GridRoster = Grid:GetModule("GridRoster")

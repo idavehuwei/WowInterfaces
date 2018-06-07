@@ -1,0 +1,25 @@
+﻿## Interface: 30300
+## Title: GridAutoFrameSize
+## Notes: Auto sizes frame layout depending on group/raid size or predefined zone data
+## Author: smuggles, CrazyBenny of Stormrage-EU
+## X-Email: s_m AT centrum DOT cz
+## Credits: Pastamancer & Maia for Grid
+## Dependencies: Grid
+## LastUpdate: 2010-02-14T14:07:04Z
+## Version: r82
+## X-Curse-Packaged-Version: r82
+## X-Curse-Project-Name: GridAutoFrameSize
+## X-Curse-Project-ID: grid-auto-frame-size
+## X-Curse-Repository-ID: wow/grid-auto-frame-size/mainline
+
+libs\LibBabble-Zone-3.0\LibStub\LibStub.lua
+libs\LibBabble-Zone-3.0\lib.xml
+
+locale-enUS.lua
+locale-deDE.lua
+locale-koKR.lua
+locale-zhTW.lua
+locale-zhCN.lua
+locale-ruRU.lua
+
+GridAutoFrameSize.lua

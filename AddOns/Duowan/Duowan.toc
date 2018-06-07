@@ -1,0 +1,27 @@
+## Interface: 30300
+## Title: [Duowan] Duowan
+## Notes: The core library of duowan
+## Title-zhCN: [多玩] 多玩基本库
+## Notes-zhCN: 多玩基本库, 所有多玩插件的必须依赖此库, 请不要禁用.
+## Title-zhTW: [多玩] 多玩基本庫
+## Notes-zhTW: 多玩基本庫, 所有多玩插件的必須依賴此庫, 請不要禁用.
+## Author: dugu
+## X-Revision: Duowan
+## X-DuowanAddon: 基本库
+## SavedVariables: Duowan_CVar,  Duowan_Frames, DUOWAN_VERSION, Duowan_PublicVar
+
+Acelibs\embeds.xml
+
+Revision.lua
+Localization.lua
+ChangeLog.lua
+DuowanDebug.xml
+Duowan.lua
+ConfigFrame.xml
+PopFrame.xml
+DuowanPatch.lua
+
+ButonFacade\embeds.xml
+
+Modules\embeds.xml
+Configs\embeds.xml

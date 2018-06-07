@@ -1,7 +1,7 @@
 --[[
     This file is part of Decursive.
     
-    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
+    Decursive (v 2.5.1-12-gb39554a) add-on for World of Warcraft UI
     Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/?to=decursive.php )
 
     This is the continued work of the original Decursive (v1.9.4) by Quu
@@ -43,8 +43,9 @@
 --]=]
 
 
+local addonName, T = ...;
 -- big ugly scary fatal error message display function {{{
-if not DcrFatalError then
+if not T._FatalError then
 -- the beautiful error popup : {{{ -
 StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     text = "|cFFFF0000Decursive Error:|r\n%s",
@@ -57,20 +58,21 @@ StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     hideOnEscape = 1,
     showAlert = 1,
     }; -- }}}
-DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
+T._FatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
 end
 -- }}}
-if not DcrLoadedFiles or not DcrLoadedFiles["Dcr_DIAG.xml"] or not DcrLoadedFiles["Dcr_DIAG.lua"] then
-    if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (Dcr_DIAG.lua or Dcr_DIAG.xml not loaded)"); end;
-    DcrCorrupted = true;
+if not T._LoadedFiles or not T._LoadedFiles["Dcr_DIAG.xml"] or not T._LoadedFiles["Dcr_DIAG.lua"] then
+    if not DecursiveInstallCorrupted then T._FatalError("Decursive installation is corrupted! (Dcr_DIAG.lua or Dcr_DIAG.xml not loaded)"); end;
+    DecursiveInstallCorrupted = true;
     return;
 end
 
 
 local L = LibStub("AceLocale-3.0"):NewLocale("Decursive", "enUS", true);
 
-if not L then return end;
+if not L then return end
 
+BINDING_HEADER_DECURSIVE = "Decursive";
 L["ABOLISH_CHECK"] = "Check for \"Abolish\" before curing"
 L["ABOUT_AUTHOREMAIL"] = "AUTHOR E-MAIL"
 L["ABOUT_CREDITS"] = "CREDITS"
@@ -113,19 +115,19 @@ L["DEBUG_REPORT_HEADER"] = [=[|cFF11FF33Please report the content of this window
 Also tell in your report if you noticed any strange behavior of Decursive.
 ]=]
 L["DECURSIVE_DEBUG_REPORT"] = "**** |cFFFF0000Decursive Debug Report|r ****"
-L["DECURSIVE_DEBUG_REPORT_NOTIFY"] = "A debug report is available! Type |cFFFF0000/dcr report|r to see it"
+L["DECURSIVE_DEBUG_REPORT_NOTIFY"] = [=[A debug report is available!
+Type |cFFFF0000/dcr general report|r to see it.]=]
 L["DECURSIVE_DEBUG_REPORT_SHOW"] = "Debug report available!"
 L["DECURSIVE_DEBUG_REPORT_SHOW_DESC"] = "Show a debug report the author needs to see..."
 L["DEFAULT_MACROKEY"] = "`"
 L["DEV_VERSION_ALERT"] = [=[You are using a development version of Decursive.
 
-If you do not want to participate in testing new features/fixes, receive in-game debug reports, send issues to the author then DO NOT USE THIS VERSION and download the latest STABLE version on curse.com.
+If you do not want to participate in testing new features/fixes, receive in-game debug reports, send issues to the author then DO NOT USE THIS VERSION and download the latest STABLE version on curse.com or wowace.com.
 
 This message will be displayed only once per version]=]
 L["DEV_VERSION_EXPIRED"] = [=[This development version of Decursive has expired.
-Please, download the latest development version or use the current stable release on CURSE.COM.
-
-Thank you :-)]=]
+You should, download the latest development version or go back to the current stable release available on CURSE.COM or WOWACE.COM.
+This warning will be displayed every two days.]=]
 L["DEWDROPISGONE"] = "There is no DewDrop equivalent for Ace3. Alt-Right-Click to open the option panel."
 L["DISABLEWARNING"] = [=[Decursive has been disabled!
 
@@ -153,7 +155,7 @@ L["HIDE_LIVELIST"] = "Hide the live-list"
 L["HIDE_MAIN"] = "Hide Decursive Window"
 L["HIDESHOW_BUTTONS"] = "Hide/Show buttons"
 L["HLP_LEFTCLICK"] = "Left-Click"
-L["HLP_LL_ONCLICK_TEXT"] = [=[Clicking on the live-list is useless since WoW 2.0. You should read the FAQ in the "Readme.txt" file located in Decursive folder...
+L["HLP_LL_ONCLICK_TEXT"] = [=[Please, read the documentation to learn how to use this add-on. Just search for 'Decursive' on WoWAce.com
 (To move this list move the Decursive bar, /dcrshow and left-alt-click to move)]=]
 L["HLP_MIDDLECLICK"] = "Middle-Click"
 L["HLP_NOTHINGTOCURE"] = "There is nothing to cure!"
@@ -187,6 +189,8 @@ L["OPT_ADDDEBUFF_USAGE"] = "<Affliction name>"
 L["OPT_ADVDISP"] = "Advance display Options"
 L["OPT_ADVDISP_DESC"] = "Allow to set Transparency of the border and center separately, to set the space between each MUF"
 L["OPT_AFFLICTEDBYSKIPPED"] = "%s afflicted by %s will be skipped"
+L["OPT_ALLOWMACROEDIT"] = "Allow macro edition"
+L["OPT_ALLOWMACROEDIT_DESC"] = "Enable this to prevent Decursive from updating its macro, letting you edit it as you want."
 L["OPT_ALWAYSIGNORE"] = "Also ignore when not in combat"
 L["OPT_ALWAYSIGNORE_DESC"] = "If checked, this affliction will also be ignored when you are not in combat"
 L["OPT_AMOUNT_AFFLIC_DESC"] = "Defines the max number of cursed to display in the live-list"
@@ -200,6 +204,8 @@ L["OPT_CENTERTRANSP"] = "Center transparency"
 L["OPT_CENTERTRANSP_DESC"] = "Set the transparency of the center"
 L["OPT_CHARMEDCHECK_DESC"] = "If checked you'll be able to see and deal with charmed units"
 L["OPT_CHATFRAME_DESC"] = "Decursive's messages will be printed to the default chat frame"
+L["OPT_CHECKOTHERPLAYERS"] = "Check other players"
+L["OPT_CHECKOTHERPLAYERS_DESC"] = "Displays Decursive version among the players in your current group or guild (cannot display versions prior to Decursive 2.4.6)."
 L["OPT_CREATE_VIRTUAL_DEBUFF"] = "Create a virtual test affliction"
 L["OPT_CREATE_VIRTUAL_DEBUFF_DESC"] = "Lets you see how it looks like when an affliction is found"
 L["OPT_CUREPETS_DESC"] = "Pets will be managed and cured"
@@ -223,6 +229,8 @@ Checked by default]=]
 L["OPT_DEBUFFENTRY_DESC"] = "Select what class should be ignored in combat when afflicted by this affliction"
 L["OPT_DEBUFFFILTER"] = "Affliction filtering"
 L["OPT_DEBUFFFILTER_DESC"] = "Select afflictions to filter out by name and class while you are in combat"
+L["OPT_DISABLEABOLISH"] = "Do not use 'Abolish' spells"
+L["OPT_DISABLEABOLISH_DESC"] = "If enabled, Decursive will prefer 'Cure Disease' and 'Cure Poison' over their 'Abolish' equivalent."
 L["OPT_DISABLEMACROCREATION"] = "Disable macro creation"
 L["OPT_DISABLEMACROCREATION_DESC"] = "Decursive macro will no longer be created or maintained"
 L["OPT_DISEASECHECK_DESC"] = "If checked you'll be able to see and cure diseased units"
@@ -242,6 +250,9 @@ L["OPT_HIDEMFS_NEVER"] = "Never"
 L["OPT_HIDEMFS_NEVER_DESC"] = "Never auto-hide the MUF window"
 L["OPT_HIDEMFS_SOLO"] = "Solo"
 L["OPT_HIDEMFS_SOLO_DESC"] = "Hide the MUF window when you are not in a party or raid"
+L["OPT_HIDEMUFSHANDLE"] = "Hide the MUFs handle"
+L["OPT_HIDEMUFSHANDLE_DESC"] = [=[Hides the Micro-Unit Frames handle and disables the possibility to move them.
+Use the same command to get it back.]=]
 L["OPT_IGNORESTEALTHED_DESC"] = "Cloaked units will be ignored"
 L["OPTION_MENU"] = "Decursive Options Menu"
 L["OPT_LIVELIST"] = "Live list"
@@ -275,10 +286,16 @@ L["OPT_MFSCALE"] = "Scale of the micro-unit-frames"
 L["OPT_MFSCALE_DESC"] = "Set the size of the micro-unit-frames"
 L["OPT_MFSETTINGS"] = "Micro Unit Frame Settings"
 L["OPT_MFSETTINGS_DESC"] = "Set the micro units frame window options to suit your needs"
+L["OPT_MUFFOCUSBUTTON"] = "Focusing button:"
+L["OPT_MUFMOUSEBUTTONS"] = "Mouse buttons"
+L["OPT_MUFMOUSEBUTTONS_DESC"] = "Set the mouse-buttons you want to use for each Micro-Unit-Frame alert color."
 L["OPT_MUFSCOLORS"] = "Colors"
 L["OPT_MUFSCOLORS_DESC"] = "Change the colors of the Micro Unit Frames."
+L["OPT_MUFTARGETBUTTON"] = "Targeting button:"
 L["OPT_NOKEYWARN"] = "Warn if no key"
 L["OPT_NOKEYWARN_DESC"] = "Display a warning if no key is mapped."
+L["OPT_NOSTARTMESSAGES"] = "Disable welcome messages"
+L["OPT_NOSTARTMESSAGES_DESC"] = "Remove the three messages Decursive prints to the chat frame at every login."
 L["OPT_PLAYSOUND_DESC"] = "Play a sound if someone get cursed"
 L["OPT_POISONCHECK_DESC"] = "If checked you'll be able to see and cure poisoned units"
 L["OPT_PRINT_CUSTOM_DESC"] = "Decursive's messages will be printed in a custom chat frame"
@@ -296,6 +313,8 @@ L["OPT_REMOVETHISDEBUFF"] = "Remove this affliction"
 L["OPT_REMOVETHISDEBUFF_DESC"] = "Removes '%s' from the skip list"
 L["OPT_RESETDEBUFF"] = "Reset this affliction"
 L["OPT_RESETDTDCRDEFAULT"] = "Resets '%s' to Decursive default"
+L["OPT_RESETMUFMOUSEBUTTONS"] = "Reset"
+L["OPT_RESETMUFMOUSEBUTTONS_DESC"] = "Reset mouse button assignments to defaults."
 L["OPT_RESETOPTIONS"] = "Reset options to defaults"
 L["OPT_RESETOPTIONS_DESC"] = "Reset the current profile to the default values"
 L["OPT_RESTPROFILECONF"] = [=[Are you sure you want to reset the profile
@@ -307,6 +326,8 @@ L["OPT_SHOWBORDER"] = "Show the class-colored borders"
 L["OPT_SHOWBORDER_DESC"] = "A colored border will be displayed around the MUFs representing the unit's class"
 L["OPT_SHOWCHRONO"] = "Show chronometers"
 L["OPT_SHOWCHRONO_DESC"] = "The number of seconds elapsed since a unit has been afflicted is displayed"
+L["OPT_SHOWCHRONOTIMElEFT"] = "Time left"
+L["OPT_SHOWCHRONOTIMElEFT_DESC"] = "Display time left instead of time elapsed."
 L["OPT_SHOWHELP"] = "Show help"
 L["OPT_SHOWHELP_DESC"] = "Shows an detailed tooltip when you mouse-over a micro-unit-frame"
 L["OPT_SHOWMFS"] = "Show the Micro Units Frame"
@@ -318,6 +339,11 @@ L["OPT_SHOW_STEALTH_STATUS_DESC"] = "When a player is stealthed, his MUF will ta
 L["OPT_SHOWTOOLTIP_DESC"] = "Shows a detailed tooltips about curses in the live-list and on the MUFs"
 L["OPT_STICKTORIGHT"] = "Align MUF window to the right"
 L["OPT_STICKTORIGHT_DESC"] = "The MUF window will grow from right to left, the handle will be moved as necessary."
+L["OPT_TESTLAYOUT"] = "Test Layout"
+L["OPT_TESTLAYOUT_DESC"] = [=[Create fake units so you can test the display layout.
+(Wait a few seconds after clicking)]=]
+L["OPT_TESTLAYOUTUNUM"] = "Unit number"
+L["OPT_TESTLAYOUTUNUM_DESC"] = "Set the number of fake units to create."
 L["OPT_TIECENTERANDBORDER"] = "Tie center and border transparency"
 L["OPT_TIECENTERANDBORDER_OPT"] = "The transparency of the border is half the center transparency when checked"
 L["OPT_TIE_LIVELIST_DESC"] = "The live-list display is tied to \"Decursive\" bar display"
@@ -367,4 +393,4 @@ L["UNITSTATUS"] = "Unit Status: "
 
 
 
-DcrLoadedFiles["enUS.lua"] = "2.4.5-3-g6a02387";
+T._LoadedFiles["enUS.lua"] = "2.5.1-12-gb39554a";

@@ -1,0 +1,24 @@
+## Interface: 30300
+## Title: GridStatusRaidDebuff(WoTLK Dungeons)
+## Notes: Debuff List for WoTLK Dungeons
+## Author: Syronius(US Black Dragonflight)
+## Version: 1.0
+## Dependencies: GridStatusRaidDebuff
+
+Ahnkahet.lua
+Azjol.lua
+Culling.lua
+DrakTharon.lua
+Gundrak.lua
+Keep.lua
+Lightning.lua
+Nexus.lua
+Oculus.lua
+Pinnacle.lua
+Reflection.lua
+Saron.lua
+Souls.lua
+Stone.lua
+Trial.lua
+Violet.lua
+

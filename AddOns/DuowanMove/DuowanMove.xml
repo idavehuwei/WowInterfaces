@@ -1,0 +1,451 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+E:\repos\Duowan-Work\UI.xsd">	
+	<Script file="DuowanMove.lua"/>	
+
+	<!-- 经验条 -->
+	<StatusBar name="DuowanMoveXPBarTemplate" inherits="TextStatusBar" virtual="true">
+		<Size x="178" y="10"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentBkg">
+					<Size x="178" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="0" y="0"/>
+						</Anchor>
+					</Anchors>
+					<Color r="0" g="0" b="0" a="0.5"/>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture name="$parentBorders" file="Interface\AddOns\DuowanMove\img\xpbar">
+					<Size x="186" y="15"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset x="-3" y="-3"/>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.11328125" right="0.80859375" top="0.3125" bottom="0.78125"/>
+				</Texture>
+				<FontString name="$parentText" inherits="dwTextStatusBarText">
+					<Anchors>
+						<Anchor point="CENTER">
+							<Offset x="0" y="1"/>
+						</Anchor>
+					</Anchors>
+					<Color r="1" g="1" b="0"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
+		<BarColor r="0.1" g="0.5" b="0"/>		
+		<Frames>
+			<Frame name="$parentEvent">
+				<Scripts>
+					<OnLoad>
+						self:GetParent():Show();
+						DuowanMoveXPBar_OnLoad(self);
+					</OnLoad>
+					<OnEvent>
+						DuowanMoveXPBar_OnEvent(self, event, ...);
+					</OnEvent>
+				</Scripts>
+			</Frame>
+		</Frames>
+	</StatusBar>	
+	
+
+	<!-- 锁定并保存方案对话框 -->
+	<!--
+	<Frame name="DMSaveThemeFrame" toplevel="true" movable="true" enableMouse="true" frameStrata="DIALOG" hidden="true" parent="UIParent">
+		<Size>
+			<AbsDimension x="320" y="140"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOP">
+				<Offset>
+					<AbsDimension x="0" y="-40"/>
+				</Offset>
+			</Anchor>
+		</Anchors>	
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parenBG">
+					<Size><AbsDimension x="306" y="126"/></Size>
+					<Anchors>
+						<Anchor point="CENTER">
+							<Offset x="0" y="0"/>
+						</Anchor>
+					</Anchors>
+					<Color b="0.1" g="0.1" r="0.1" a="1.0"/>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitleText" inherits="GameFontHighlight" text="多玩界面">
+					<Size>
+						<AbsDimension x="290" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-20"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentNote" inherits="ChatFontSmall" text="保存并锁定设计好的界面方案">
+					<Size>
+						<AbsDimension x="190" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-44"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>	
+			</Layer>
+		</Layers>
+		<Frames>
+			<EditBox name="$parentName" autoFocus="false" inherits="InputBoxTemplate">
+				<Size>
+					<AbsDimension x="200" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="65" y="-60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</EditBox>				
+			<Button name="$parentOkay" inherits="UIPanelButtonTemplate" text="确定">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="55" y="20"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						DMSaveThemeFrameOkay_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>			
+			<Button name="$parentCancel" inherits="UIPanelButtonTemplate" text="取消">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentOkay" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="60" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Hide();
+						PlaySound("igMainMenuOption");
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				DMSaveThemeFrame_OnLoad(self);				
+			</OnLoad>
+			<OnShow>
+				DMSaveThemeFrame_OnShow(self);
+			</OnShow>
+			<OnDragStart>
+				self:StartMoving();
+				self.isMoving = true;
+			</OnDragStart>
+			<OnDragStop>
+				self:StopMovingOrSizing();
+				self.isMoving = false;
+			</OnDragStop>
+		</Scripts>
+	</Frame>
+	-->
+	<Frame name="DMMakeThemeFrame" toplevel="true" movable="true" enableMouse="true" frameStrata="DIALOG" hidden="true" parent="UIParent">
+		<Size>
+			<AbsDimension x="320" y="160"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOP">
+				<Offset>
+					<AbsDimension x="0" y="-40"/>
+				</Offset>
+			</Anchor>
+		</Anchors>	
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parenBG">
+					<Size><AbsDimension x="306" y="146"/></Size>
+					<Anchors>
+						<Anchor point="CENTER">
+							<Offset x="0" y="0"/>
+						</Anchor>
+					</Anchors>
+					<Color b="0.1" g="0.1" r="0.1" a="1.0"/>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitleText" inherits="GameFontHighlight" text="多玩界面">
+					<Size>
+						<AbsDimension x="290" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-20"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentNote" inherits="ChatFontSmall" text="保存并锁定设计好的界面方案">
+					<Size>
+						<AbsDimension x="190" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-44"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentNameLabel" inherits="ChatFontSmall" text="方案名">
+					<Size>
+						<AbsDimension x="60" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="10" y="-63"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentMinmaxButton" inherits="DuowanMoveMinmaxButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-5" y="-8"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnShow>
+						DMMakeThemeFrameMinmaxButton_OnShow(self);
+					</OnShow>
+					<OnClick>
+						DMMakeThemeFrameMinmaxButton_OnClick(self);
+					</OnClick>
+				</Scripts>				
+			</Button>
+			<!-- TODO: 调整字体大小 -->
+			<EditBox name="$parentName" autoFocus="false" inherits="InputBoxTemplate">
+				<Size>
+					<AbsDimension x="178" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="70" y="-60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</EditBox>
+			<Frame name="$parentHiddenFrame" inherits="UIDropDownMenuTemplate" hidden="true">				
+				<Anchors>
+					<Anchor point="CENTER"/>						
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						DMMakeThemeFrameHiddenFrame_OnLoad(self);
+					</OnLoad>
+				</Scripts>
+			</Frame>
+			<Button name="$parentDropdown">
+				<Size>
+					<AbsDimension x="26" y="26"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentName" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="3" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>					
+					<OnClick>
+						DMMakeThemeFrameDropdown_OnClick(self);
+					</OnClick>
+				</Scripts>
+				<NormalTexture file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up"/>
+				<PushedTexture file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down"/>
+				<DisabledTexture file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+			</Button>
+			<Button name="$parentRestoreButton">
+				<Size>
+					<AbsDimension x="26" y="26"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentDropdown" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="3" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						DMMakeThemeFrameRestoreButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+				<NormalTexture file="Interface\AddOns\DuowanMove\img\RestorButton-Normal"/>
+				<PushedTexture file="Interface\AddOns\DuowanMove\img\RestorButton-Push"/>			
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+			</Button>
+			<CheckButton name="$parentSkineBox" inherits="DuowanMoveCheckButtonTemplate" text="动作条皮肤">
+				<Size>
+					<AbsDimension x="26" y="26"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="-4" y="-6"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self.text = _G[self:GetName().."Text"];
+						self.text:SetFont(ChatFontNormal:GetFont(), 12);
+						self.text:SetText("动作条皮肤");
+					</OnLoad>
+					<OnShow>
+						DMMakeThemeFrameSkineBox_OnShow(self);
+					</OnShow>
+					<OnClick>
+						DMMakeThemeFrameSkineBox_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<Frame name="$parentChoiceSkin" inherits="DuowanMoveSpinBoxTemplate">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentSkineBox" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="75" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Button name="$parentStartMove" inherits="UIPanelButtonTemplate" text="新建方案">
+				<Size>
+					<AbsDimension x="90" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="27" y="16"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						DMMakeThemeFrameStartMove_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>	
+			<Button name="$parentLock" inherits="UIPanelButtonTemplate" text="锁定">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentStartMove" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						DMMakeThemeFrameLock_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentOkay" inherits="UIPanelButtonTemplate" text="确定">
+				<Size>
+					<AbsDimension x="60" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="-32" y="16"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						DMMakeThemeFrameOkay_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				DMMakeThemeFrame_OnLoad(self);
+			</OnLoad>
+			<OnShow>
+				DMMakeThemeFrame_OnShow(self);
+			</OnShow>
+			<OnMouseUp>
+				if (self.isMoving) then
+					self:StopMovingOrSizing();
+				end
+			</OnMouseUp>
+			<OnDragStart>
+				self:StartMoving();
+				self.isMoving = true;
+			</OnDragStart>
+			<OnDragStop>
+				self:StopMovingOrSizing();
+				self.isMoving = false;
+			</OnDragStop>
+		</Scripts>
+	</Frame>
+</Ui>

@@ -1,0 +1,13 @@
+﻿## Interface: 30300
+## Title: [Duowan] ChatPopo
+## Notes: The core library of duowan
+## Title-zhCN: [多玩] 聊天泡泡
+## Notes-zhCN: 队友头像后增加一个聊天泡泡信息提示
+## Title-zhTW: [多玩] 聊天泡泡
+## Notes-zhTW: 隊友頭像後增加一個聊天泡泡信息提示
+## Author: dugu
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+## SavedVariables: 
+
+ChatPopo.xml

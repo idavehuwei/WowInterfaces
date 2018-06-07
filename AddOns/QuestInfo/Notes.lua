@@ -7,7 +7,6 @@ local Mapster_Notes = CQI:NewModule(MODNAME, "AceConsole-3.0", "AceHook-3.0", "A
 
 local yardString = "%.0f yd";
 local _G = getfenv(0);
-
 CURRENT_DB_VERSION = 3
 
 local Tourist = LibStub("LibTourist-3.0")
@@ -17,7 +16,6 @@ local Tablet = AceLibrary("Tablet-2.0")
 local BZL = BZ:GetLookupTable();
 local BZH = BZ:GetUnstrictLookupTable()
 local BZR = BZ:GetReverseLookupTable()
-local db
 
 --from aceaddon-3.0
 local xpcall = xpcall
@@ -57,10 +55,7 @@ Dispatchers[0] = function(func)
 	return xpcall(func, errorhandler)
 end
 
-local function safecall(func, ...)
-	-- we check to see if the func is passed is actually a function here and don't error when it isn't
-	-- this safecall is used for optional functions like OnInitialize OnEnable etc. When they are not
-	-- present execution should continue without hinderance
+local function safecall(func, ...)	
 	if type(func) == "function" then
 		return Dispatchers[select('#', ...)](func, ...)
 	end
@@ -339,6 +334,7 @@ end
 
 --在大地图上增加文字
 local function AddToMagnifyingGlass(text)
+	--[[
 	magnifyingGlassTexts = {
 		L["Right-Click on map to zoom out"],
 		L["Left-Click on map to zoom in"],
@@ -351,6 +347,7 @@ local function AddToMagnifyingGlass(text)
 	end
 	tinsert(magnifyingGlassTexts, text)
 	WorldMapMagnifyingGlassButton:SetText(table.concat(magnifyingGlassTexts, "\n"));
+	]]
 end
 
 --注册一个icon
@@ -385,6 +382,7 @@ function Mapster_Notes:RegisterIcon(name, data)
 end
 
 local icon_cache = {}
+
 function Mapster_Notes:GetIconList()
 	local list = {}
 	for k, v in pairs(icons) do
@@ -520,12 +518,18 @@ local function getOptions()
 end
 
 function Mapster_Notes:OnInitialize()
+	-- 如果已经初始化
+	if (db) then return end
+	if (not CQI.db) then
+		CQI:OnInitialize();
+	end
+
 	self.db = CQI.db:RegisterNamespace(MODNAME, defaults);
 	db = self.db.profile
 	path = debugstack(1, 1, 0)
 	-- TODO:\\
 	if path:find("QuestInfo\\") then
-		path = [[Interface\AddOns\Cartographer_QuestInfo\Arrow]];
+		path = [[Interface\AddOns\QuestInfo\Arrow]];
 	else
 		error ("Can't determine path of arrow");
 	end
@@ -604,13 +608,13 @@ function Mapster_Notes:OnInitialize()
 	end
 
 	upgradeDatabase(self.db.char.pois)
-	--CQI:RegisterModuleOptions(MODNAME, getOptions, "Notes");
+	--CQI:RegisterModuleOptions(MODNAME, getOptions, "Notes");	
 	hooksecurefunc("WorldMapUnit_OnEnter", function()
 		WorldMapTooltip:SetFrameStrata("TOOLTIP")
 	end)
 end
 
-
+--[[右键添加标记]]--
 local pois, minimapPois
 local oldWorldMapMagnifyingGlassButtonText
 
@@ -620,7 +624,7 @@ function Mapster_Notes:OnEnable()
 	AddToMagnifyingGlass(L["Ctrl-Right-Click on map to add a note"]);
 	--[[ Hook ]]--
 	--修改于6.28
-	self:RawHookScript(WorldMapButton, "OnMouseUp", "WorldMapButton_OnClick")
+	--self:RawHookScript(WorldMapButton, "OnMouseUp", "WorldMapButton_OnClick")
 	self:SecureHook("ToggleFrame");
 
 	self:RegisterEvent("WORLD_MAP_UPDATE", function() self:RefreshMap(false) end);
@@ -645,10 +649,9 @@ function Mapster_Notes:OnEnable()
 	WorldMapDeathRelease:SetScript("OnMouseUp", func)
 
 	-- 创建一个slash命令 处理相关信息
-		--RegisterChatCommand(cmd, text)
-		--分为两种
-			--一种快速标记 玩家点击坐标 即能标注上去
-			--另一种 由系统进行标记 详细
+	--分为两种
+	--	一种快速标记 玩家点击坐标 即能标注上去
+	--	另一种 由系统进行标记 详细
 	if first then
 		local temp = {}
 		--快速make
@@ -695,7 +698,7 @@ function Mapster_Notes:OnEnable()
 	end
 	first = false;
 	if self.db.profile.showMinimapIcons then
-		Mapster_Notes_MinimapIcons = Mapster_Notes:ScheduleRepeatingTimer("UpdateMinimapIcons", 0)
+		Mapster_Notes_MinimapIcons = Mapster_Notes:ScheduleRepeatingTimer("UpdateMinimapIcons", 0.05)
 		self:RegisterEvent("MINIMAP_ZONE_CHANGED");
 		self:RegisterEvent("MINIMAP_UPDATE_ZOOM");
 		self:RegisterEvent("ZONE_CHANGED_NEW_AREA");
@@ -1275,6 +1278,10 @@ local function GetNoteDialog()
 	return frame
 end
 
+function Mapster_NotesGetValue()
+	return MpasterE;
+end
+
 local possiableIcons
 function Mapster_Notes:OpenNewNoteFrame(x, y, creator)
 	if not self:GetCurrentEnglishZoneName() then
@@ -1591,8 +1598,6 @@ function Mapster_Notes:OnNoteMenuRequest(zone, id, data, level, value, level2, l
 	if not data then
 		return defaultMenu(level, value, level2, level3, level4);
 	end
-
-	--print(zone, id, level, value, level2, level3, level4);
 end
 
 do
@@ -1624,12 +1629,12 @@ do
 			return str
 		end
 	end
-
+	
 	local dummy
 	local function newpoi(minimap)
 		local frame = next(cache)
 		if frame then
-			cache[frame] = nil
+			cache[frame] = nil	-- 清空缓存
 			frame:Show()
 			frame.minimap = minimap
 			if minimap then
@@ -1903,7 +1908,7 @@ do
 					Mapster_Notes:SendNoteToPlayer(poi.zone, x, y, player)
 				end
 			end
-			--右键目录
+			--右键菜单
 			local function generateMenu(button, level, menuList)
 				if (not level) then return end
 				if level == 1 then
@@ -1954,18 +1959,13 @@ do
 						end
 						--[[
 						local info = UIDropDownMenu_CreateInfo()
-						info.text = L["Send to player"];
-						info.tooltipTitle = L["Send to player"];
+						
 						info.]]
 						--[[
-						Dewdrop:AddLine(
-											"text", L["Send to player"],
-											"tooltipTitle", L["Send to player"],
-											"hasArrow", true,
-											"hasEditBox", true,
+						Dewdrop:AddLine(										
 											"editBoxText", UnitExists("target") and UnitIsPlayer("target") and UnitIsFriend("player", "target") and UnitName("target") or nil,
 											'editBoxFunc', sendNoteToPlayerFunc
-										);]]
+										);]]						
 					end
 				end
 			end
@@ -1995,106 +1995,7 @@ do
 								Mapster_Notes.handlers[this.creator]:OnNoteClick(this.zone, this.id, data)
 							end
 						end
-					elseif button == "RightButton" then
-						--[[
-						if not dummy then
-							dummy = CreateFrame("Frame");
-							local function editNoteFunc()
-								Mapster_Notes:ShowEditDialog(poi.zone, poi.id)
-								Dewdrop:Close()
-							end
-							local function deleteNoteFunc()
-								Mapster_Notes:DeleteNote(poi.zone, poi.id)
-							end
-							local function closeFunc()
-								Dewdrop:Close()
-							end
-							
-							local function sendNoteToGuildFunc()
-								if getrawpoi(poi.zone, poi.id) then
-									local x, y = getXY(poi.id)
-									Mapster_Notes:SendNoteToGuild(poi.zone, x, y)
-								end
-							end
-							local function sendNoteToGroupFunc()
-								if getrawpoi(poi.zone, poi.id) then
-									Mapster_Notes:SendNoteToGroup(poi.zone, getXY(poi.id))
-								end
-							end
-							local function defaultMenu(level, value, level2, level3, level4)
-								if level == 1 then
-									if poi.manual then
-										Dewdrop:AddLine(
-											'text', L["Edit note"],
-											'func', editNoteFunc
-										)
-									end
-									if poi.manual or not Mapster_Notes.cantDelete[poi.creator] then
-										Dewdrop:AddLine(
-											'text', L['Delete note'],
-											'func', deleteNoteFunc
-										)
-									end
-
-									Dewdrop:AddLine(
-										"text", L["Send"],
-										"hasArrow", true,
-										"value", "send"
-									);
-
-									Dewdrop:AddLine()
-
-									Dewdrop:AddLine(
-										'text', CANCEL,
-										'func', closeFunc
-									)
-								elseif level == 2 then
-									if value == "send" then
-										local bit = false
-										if GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0 then
-											Dewdrop:AddLine(
-												"text", L["Send to Party/Raid"],
-												"func", sendNoteToGroupFunc
-											)
-											bit =true
-										end
-										if IsInGuild() then
-											Dewdrop:AddLine(
-												"text", L["Send to guild"],
-												"func", sendNoteToGuildFunc
-											);
-											bit = true;
-										end
-
-										if bit then
-											Dewdrop:AddLine()
-										end
-
-										Dewdrop:AddLine(
-											"text", L["Send to player"],
-											"tooltipTitle", L["Send to player"],
-											"hasArrow", true,
-											"hasEditBox", true,
-											"editBoxText", UnitExists("target") and UnitIsPlayer("target") and UnitIsFriend("player", "target") and UnitName("target") or nil,
-											'editBoxFunc', sendNoteToPlayerFunc
-										);
-									end
-								end
-							end
-							Dewdrop:Register(dummy,
-								'children', function(level, value, level2, level3, level4)
-									--if Mapster_Notes.handlers[poi.creator] and type(Mapster_Notes.handlers[poi.creator].OnNoteMenuRequest == "function") then
-									--	local data = getrawpoi(poi.zone, poi.id, poi.creator);
-									--	if data then
-									--		Mapster_Notes.handlers[poi.creator]:OnNoteMenuRequest(poi.zone, poi.id, data, level, value, level2, level3, level4, defaultMenu)
-									--	end
-									--else
-										defaultMenu(level, value, level2, level3, level4)
-									--end
-								end,
-								'dontHook', true
-							)
-						end]]
+					elseif button == "RightButton" then						
 						poi = this
 						if Dewdrop:IsOpen(poi) then
 							Dewdrop:Close()
@@ -2120,7 +2021,9 @@ do
 		cache[x] = true
 		return nil
 	end
-
+	function CQI:Mapster_NotesNewPOI()
+		_foreach(newpoi, 80, false);
+	end
 	local del = function(self, id)
 		if id == 'del' then
 			return
@@ -2184,6 +2087,7 @@ do
 	local last_px, last_py
 
 	local x, y, zone
+	--MpasterE:RegisterEvent("PLAYER_REGEN_ENABLED");
 	function Mapster_Notes:GetCurrentPlayerPosition()
 		local px, py = GetPlayerMapPosition("player");
 		if px == last_px and py == last_py and x ~= nil then
@@ -2207,6 +2111,8 @@ do
 	end 
 end
 
+-------------------------
+-- 获得坐标点到玩家的距离
 function Mapster_Notes:GetDistanceToPoint(x, y, zone, px, py, pzone)
 	if not px then
 		px, py, pzone = self:GetCurrentPlayerPosition();
@@ -2672,6 +2578,7 @@ local function RefreshMap()
 		Mapster_Notes:ClearMap()
 		return
 	end
+	-- 不是强制 地图不同
 	if zone == lastMap and force == false then
 		return
 	end
@@ -2776,21 +2683,7 @@ function Mapster_Notes:SendNoteToPlayer(zone, x, y, player)
 	if not data then
 		return 
 	end
-		--SendChatMessage("text" [,"chatType" [,"language" ] [,"channel"]])
-	--send msg
-	--data.quest
-	--目前只对 questhelper进行服务
-	local tmpText;
-	if db == "QuestHelper" then
-		if data.title then
-			tmpText = data.title
-		else
-			tmpText = data.name
-		end
-		local msgText = data.quest.."  "..tmpText..L[" at "]..zone.." "..format("<%d, %d>", x*100, y*100);
-		--print(msgText, player)
-		SendChatMessage(msgText, "WHISPER", nil, player)
-	end
+	
 	return true
 end
 
@@ -2802,26 +2695,6 @@ local function sendNote(channel, zone, x, y)
 	end
 	
 	local tmpText;
-		--for questehelper db must have QuestHelper chars!
-	if db == "QuestHelper" then
-		if data.title then
-			tmpText = data.title
-		else
-			tmpText = data.name
-		end
-		local str = "";
-		if type(data.quest) == "table" then
-			for k, v in pairs(data.quest) do
-				str = str .. tostring(v);
-			end
-		elseif type(data.quest) == "string" then
-			str = data.quest;
-		end
-		local msgText = str.."  "..tmpText..L[" at "]..zone.." "..format("<%d, %d>", x*100, y*100);
-			--guild/party/raid channel
-		SendChatMessage(msgText, channel)
-	end
-
 	return true
 end
 
@@ -2899,17 +2772,25 @@ function Mapster_Notes:ToggleShowingMinimapIcons(_, value)
 	if value == nil then
 		value = not db.showMinimapIcons
 	end
+	
+	if (not db) then
+		self:OnInitialize();
+	end
+
 	db.showMinimapIcons = value
 
 	if Mapster_Notes:IsActiveNote() then
 		if not value then
-			Mapster_Notes:CancelTimer("Mapster_Notes_MinimapIcons", true)
+			Mapster_Notes:CancelTimer(Mapster_Notes_MinimapIcons, true)
 			Mapster_Notes:UnregisterEvent("MINIMAP_ZONE_CHANGED");
 			Mapster_Notes:UnregisterEvent("MINIMAP_UPDATE_ZOOM");
 			Mapster_Notes:UnregisterEvent("ZONE_CHANGED_NEW_AREA");
 			Mapster_Notes:UnregisterEvent("PLAYER_LEAVING_WORLD");
+			for id in pairs(minimapPois) do
+				minimapPois:del(id)
+			end
 		else
-			Mapster_Notes_MinimapIcons = Mapster_Notes:ScheduleRepeatingTimer("UpdateMinimapIcons", 0)
+			Mapster_Notes_MinimapIcons = Mapster_Notes:ScheduleRepeatingTimer("UpdateMinimapIcons", 0.05)
 			Mapster_Notes:RegisterEvent("MINIMAP_ZONE_CHANGED");
 			Mapster_Notes:RegisterEvent("MINIMAP_UPDATE_ZOOM");
 			Mapster_Notes:RegisterEvent("ZONE_CHANGED_NEW_AREA");
@@ -2941,11 +2822,9 @@ end
 
 function Mapster_Notes:IsActiveNote()
 	return true;
-	--return CQI:GetModuleEnabled(MODNAME)
 end
 
 function Mapster_Notes:ToggleActiveNote(_, value)
-	--CQI:SetModuleEnabled(MODNAME, value)
 	Mapster_Notes:ClearAllNotes()
 end
 
@@ -3022,6 +2901,14 @@ local function mysort(alpha, bravo)
 	return a_x*a_x + a_y*a_y < b_x*b_x + b_y*b_y
 end
 
+function _foreach(func, num, ...)
+	local b;
+	for i=1, num do
+		b = func(...);
+		b:Hide();
+	end	
+end
+
 function Mapster_Notes:IterateNearbyNotes(zone, x, y, radius, creator, max_notes, use_yards)
 	if not BZH[zone] then
 		if BZR[zone] then
@@ -3065,7 +2952,7 @@ function Mapster_Notes:IterateNearbyNotes(zone, x, y, radius, creator, max_notes
 	if use_yards then
 		yardWidthMult, yardHeightMult = Tourist:GetZoneYardSize(BZL[zone])
 		if not yardWidthMult then
-			local yardWidthMult, yardHeightMult = 1000, 1000* 2/3
+			yardWidthMult, yardHeightMult = 1000, 1000* 2/3
 		end
 	end
 
@@ -3102,7 +2989,6 @@ function Mapster_Notes:IterateNearbyNotes(zone, x, y, radius, creator, max_notes
 	
 	return iter, t, nil
 end
-
 
 function Mapster_Notes:GetNearbyNote(zone, x, y, radius, creator, use_yards)
 	if not BZH[zone] then
@@ -3159,6 +3045,7 @@ function Mapster_Notes:GetNearbyNote(zone, x, y, radius, creator, use_yards)
 	local data = zoneData[close_id]
 	return zone, x_p, y_p, type(data) == "string" and data or data.icon, creator, data
 end
+
 --[[ minimap show ]] --
 local MinimapSize = {
 	["indoor"] = {
@@ -3312,7 +3199,7 @@ local function CheckToUpdateMinimapIcons(x_, y_, x, y, force)
 					end
 				end
 				
-				poi:SetParent(Minimap)
+				poi:SetParent(MinimapCluster)
 				if type(icon) == "string" and icon:find("^Interface\\") then
 					poi:SetWidth(16*self.db.profile.minimapIconSize)
 					poi:SetHeight(16*self.db.profile.minimapIconSize)
@@ -3345,9 +3232,10 @@ local function CheckToUpdateMinimapIcons(x_, y_, x, y, force)
 end
 
 local Minimap = Minimap
-local rotateMinimap = GetCVar("rotateMinimap") == "1"
+local rotateMinimap = (GetCVar("rotateMinimap") == "1")
 local lastX, lastY, lastFacing = 1/0, 1/0, 1/0
 
+-- 刷新小地图标记
 function Mapster_Notes:UpdateMinimapIcons()
 	local self = Mapster_Notes
 	if isInInstance then
@@ -3365,14 +3253,18 @@ function Mapster_Notes:UpdateMinimapIcons()
 		return
 	end
 	local zoom = Minimap:GetZoom()
-	local diffZoom = zoom ~= lastZoom
+	local diffZoom = (zoom ~= lastZoom)
 	local tracking = GetTrackingTexture()
 	local diffTracking = tracking ~= lastTracking
 	local GetMinimapShape = GetMinimapShape
 	local minimapShape = GetMinimapShape and GetMinimapShape() or "ROUND"
 	local facing
 	if rotateMinimap then
-		facing = -GetPlayerFacing()
+		if GetPlayerFacing then
+			facing = GetPlayerFacing()
+		else
+			facing = -MiniMapCompassRing:GetFacing()
+		end
 	else
 		facing = lastFacing
 	end
@@ -3381,25 +3273,29 @@ function Mapster_Notes:UpdateMinimapIcons()
 		lastZoom = zoom
 		lastTracking = tracking
 		lastFacing = facing
+
 		local Minimap_Width = Minimap:GetWidth()/2
+		local Minimap_Height = Minimap:GetHeight()/2
 		lastX, lastY = x, y
 		CheckToUpdateMinimapIcons(x_, y_, x, y, diffZoom)
 		local radius = MinimapSize[indoors][lastZoom]
+		
 		for id, poi in pairs(minimapPois) do
 			if id ~= 'del' then
-				local px, py = self:PointToYards(getXY(id))
+				local px, py = self:PointToYards(getXY(id))				
 				local dx, dy = px - x, py - y
 				if rotateMinimap then
 					local sin = math.sin(facing)
 					local cos = math.cos(facing)
 					dx, dy = dx*cos - dy*sin, dx*sin + dy*cos
 				end
+
 				local diffX = dx / radius
 				local diffY = dy / radius
 				local dist
 				local alpha = 1
 				local round = true
-				if minimapShape == "ROUND" then
+				if minimapShape == "ROUND" then					
 					-- do nothing
 				elseif minimapShape == "SQUARE" then
 					round = false
@@ -3457,13 +3353,15 @@ function Mapster_Notes:UpdateMinimapIcons()
 				else
 					dist = math.max(diffX*diffX, diffY*diffY) / 0.9^2
 				end
-				if dist > 1 then
+				if dist > 1 then				
 					dist = dist^0.5
 					diffX = diffX/dist
 					diffY = diffY/dist 
 					alpha = 2 - dist*0.9
 				end
-				poi:SetPoint("CENTER", Minimap, "CENTER", diffX * Minimap_Width, -diffY * Minimap_Width)
+
+				poi:ClearAllPoints()
+				poi:SetPoint("CENTER", Minimap, "CENTER", diffX * Minimap_Width, -diffY * Minimap_Height)
 				poi:SetAlpha(alpha)
 			end
 		end
@@ -3471,14 +3369,10 @@ function Mapster_Notes:UpdateMinimapIcons()
 end
 
 function Mapster_Notes:PointToYards(x, y, zone)
-	local w, h
-	if not zone or zone == GetRealZoneText() then
-		w, h = currentYardWidth, currentYardHeight
-	else
-		w, h = Tourist:GetZoneYardSize(zone)
-		if not w then
-			w, h = 1000, 1000 * 2/3
-		end
+	local zone = zone or GetRealZoneText()
+	local w, h = Tourist:GetZoneYardSize(zone)
+	if not w then
+		w, h = 1000, 1000 * 2/3
 	end
 
 	if x then
@@ -3540,4 +3434,4 @@ function CQI_ToggleMinimapIcons(switch)
 	end	
 end
 
---CQI_ToggleMinimapIcons(false);
+CQI_ToggleMinimapIcons(false);

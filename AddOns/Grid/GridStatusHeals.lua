@@ -3,8 +3,7 @@
 	GridStatus module for tracking incoming healing spells.
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local HealComm = LibStub("LibHealComm-4.0", true)
 if not HealComm then return end

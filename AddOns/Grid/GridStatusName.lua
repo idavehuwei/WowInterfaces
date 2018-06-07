@@ -3,8 +3,7 @@
 	GridStatus module for tracking unit names.
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local GridRoster = Grid:GetModule("GridRoster")
 

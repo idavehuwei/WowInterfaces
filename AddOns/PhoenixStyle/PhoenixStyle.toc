@@ -1,0 +1,24 @@
+﻿## Interface: 30300
+## Title: Phoenix|cff7fff7fStyle|r   Core
+## Notes: /fen for more info
+## Title-zhCN: [多玩] 团长助手 
+## Notes-zhCN: 详细的分析战斗记录并找出灭团责任人
+## Title-zhTW: [多玩] 團長助手 
+## Notes-zhTW: 詳細的分析戰鬥記錄並找出滅團責任人
+## Author: Shurshik
+## Version: 1.496
+## URL: http://phoenix-wow.ru/
+## SavedVariablesPerCharacter: thisaddononoff, thisaddonwork, secrefmark, pssetmarknew, psfnopromrep, PS_Settings, psminibutenabl, psfchatadd, psoldvern,psversionday
+## X-DuowanAddon: 团队副本
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+Localization\localization-enEN.lua
+Localization\localization-zhCN.lua
+Localization\localization-zhTW.lua
+
+PhoenixStyle.lua
+PhoenixStyle.xml
+Modules\UI-framefunc.lua
+Modules\Timers.lua

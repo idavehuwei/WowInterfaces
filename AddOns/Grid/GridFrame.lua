@@ -2,8 +2,7 @@
 	GridFrame.lua
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local AceOO = AceLibrary("AceOO-2.0")
 local GridRange = Grid:GetModule("GridRange")
@@ -13,17 +12,16 @@ if media then media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\
 
 local GridFrame = Grid:NewModule("GridFrame")
 
-_G.GridFrame = GridFrame
 --{{{ FrameXML functions
 
 local function GridFrame_OnShow(self)
-	GridFrame:UpdateFrameUnits("GridFrame_OnShow")
+	GridFrame:UpdateFrameUnits()
 	GridFrame:TriggerEvent("Grid_UpdateLayoutSize")
 end
 
 local function GridFrame_OnAttributeChanged(self, name, value)
 	if name == "unit" then
-		GridFrame:UpdateFrameUnits("GridFrame_OnAttributeChanged")
+		GridFrame:UpdateFrameUnits()
 	elseif name == "type1" and (not value or value == "") then
 		self:SetAttribute("type1", "target")
 	end
@@ -33,7 +31,7 @@ local function GridFrame_Initialize(self)
 	GridFrame:RegisterFrame(self)
 
 	self:SetAttribute("toggleForVehicle", true)
-
+	
 	self:SetScript("OnShow", GridFrame_OnShow)
 	self:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
 end
@@ -125,8 +123,8 @@ function GridFrameClass.prototype:CreateFrames()
 
 	local bar_texture = f.HealingBar:GetStatusBarTexture()
 	if bar_texture then
-		bar_texture:SetHorizTile(false)
-		bar_texture:SetVertTile(false)
+		--bar_texture:SetHorizTile(false)
+		--bar_texture:SetVertTile(false)
 	end
 
 	f.HealingBar:SetOrientation("VERTICAL")
@@ -142,8 +140,8 @@ function GridFrameClass.prototype:CreateFrames()
 
 	bar_texture = f.Bar:GetStatusBarTexture()
 	if bar_texture then
-		bar_texture:SetHorizTile(false)
-		bar_texture:SetVertTile(false)
+		--bar_texture:SetHorizTile(false)
+		--bar_texture:SetVertTile(false)
 	end
 
 	f.Bar:SetOrientation("VERTICAL")
@@ -428,13 +426,13 @@ function GridFrameClass.prototype:SetFrameTexture(texture)
 
 	local bar_texture = self.frame.Bar:GetStatusBarTexture()
 	if bar_texture then
-		bar_texture:SetHorizTile(false)
-		bar_texture:SetVertTile(false)
+		--bar_texture:SetHorizTile(false)
+		--bar_texture:SetVertTile(false)
 	end
 	bar_texture = self.frame.HealingBar:GetStatusBarTexture()
 	if bar_texture then
-		bar_texture:SetHorizTile(false)
-		bar_texture:SetVertTile(false)
+		--bar_texture:SetHorizTile(false)
+		--bar_texture:SetVertTile(false)
 	end
 end
 
@@ -473,38 +471,19 @@ function GridFrameClass.prototype:SetBar(value, max)
 	if max == nil then
 		max = 100
 	end
-
-	local perc = value / max
-	self.frame.Bar:SetValue(perc * 100)
-
-	local coord = (perc > 0 and perc <= 1) and perc or 1
-	if GridFrame.db.profile.orientation == "VERTICAL" then
-		self.frame.Bar:GetStatusBarTexture():SetTexCoord(0, 1, 1 - coord, 1)
-	else
-		self.frame.Bar:GetStatusBarTexture():SetTexCoord(0, coord, 0, 1)
-	end
+	self.frame.Bar:SetValue(value / max * 100)
 end
 
 function GridFrameClass.prototype:SetHealingBar(value, max)
 	if max == nil then
 		max = 100
 	end
-
-	local perc = value / max
-	self.frame.HealingBar:SetValue(perc * 100)
-
-	local coord = (perc > 0 and perc <= 1) and perc or 1
-	if GridFrame.db.profile.orientation == "VERTICAL" then
-		self.frame.Bar:GetStatusBarTexture():SetTexCoord(0, 1, 1 - coord, 1)
-	else
-		self.frame.Bar:GetStatusBarTexture():SetTexCoord(0, coord, 0, 1)
-	end
-
+	self.frame.HealingBar:SetValue(value / max * 100)
 	self:UpdateHealingBarColor()
 end
 
 function GridFrameClass.prototype:SetBarColor(r, g, b, a)
-	if GridFrame.db.profile.invertBarColor2 then
+	if GridFrame.db.profile.invertBarColor then
 		self.frame.Bar:SetStatusBarColor(r, g, b, a)
 		self.frame.BarBG:SetVertexColor(r * 0.2, g * 0.2, b * 0.2, 1)
 	else
@@ -516,7 +495,7 @@ function GridFrameClass.prototype:SetBarColor(r, g, b, a)
 end
 
 function GridFrameClass.prototype:UpdateHealingBarColor()
-	if GridFrame.db.profile.invertBarColor2 then
+	if GridFrame.db.profile.invertBarColor then
 		local r, g, b, a = self.frame.Bar:GetStatusBarColor()
 		self.frame.HealingBar:SetStatusBarColor(r, g, b, a * GridFrame.db.profile.healingBar_intensity)
 	elseif self.frame.HealingBar:GetValue() > 0 then
@@ -532,7 +511,7 @@ end
 
 function GridFrameClass.prototype:InvertBarColor()
 	local r, g, b, a
-	if GridFrame.db.profile.invertBarColor2 then
+	if GridFrame.db.profile.invertBarColor then
 		r, g, b, a = self.frame.BarBG:GetVertexColor()
 	else
 		r, g, b, a = self.frame.Bar:GetStatusBarColor()
@@ -756,16 +735,13 @@ end
 GridFrame.frameClass = GridFrameClass
 GridFrame.InitialConfigFunction = GridFrame_Initialize
 
--- Added by Sharak@BigFoot
-GridFrame.frames = {}
-GridFrame.registeredFrames = {}
 --{{{  AceDB defaults
 
 GridFrame.defaultDB = {
-	frameHeight = 36,
-	frameWidth = 60,
+	frameHeight = 40,
+	frameWidth = 43,
 	borderSize = 1,
-	cornerSize = 6,
+	cornerSize = 7,
 	orientation = "HORIZONTAL",
 	textorientation = "VERTICAL",
 	enableText2 = false,
@@ -780,9 +756,9 @@ GridFrame.defaultDB = {
 	enableIconCooldown = true,
 	enableMouseoverHighlight = true,
 	debug = false,
-	invertBarColor2 = true,
+	invertBarColor = true,
 	showTooltip = "OOC",
-	textlength = 6,
+	textlength = 4,
 	healingBar_intensity = 0.5,
 	statusmap = {
 		["text"] = {
@@ -849,6 +825,9 @@ GridFrame.defaultDB = {
 			debuff_magic = true,
 			debuff_poison = true,
 			ready_check = true,
+			alert_raidicons_player = true,
+			alert_RaidDebuff = true,
+			alert_anubarak_pc = true,
 		}
 	},
 }
@@ -895,10 +874,10 @@ GridFrame.options = {
 			desc = L["Swap foreground/background colors on bars."],
 			order = 12,
 			get = function()
-				return GridFrame.db.profile.invertBarColor2
+				return GridFrame.db.profile.invertBarColor
 			end,
 			set = function(v)
-				GridFrame.db.profile.invertBarColor2 = v
+				GridFrame.db.profile.invertBarColor = v
 				GridFrame:InvertBarColor()
 			end,
 		},
@@ -1205,9 +1184,8 @@ function GridFrame:OnInitialize()
 	self.super.OnInitialize(self)
 	self.debugging = self.db.profile.debug
 
-	-- Removed by Sharak@BigFoot
-	-- self.frames = {}
-	-- self.registeredFrames = {}
+	self.frames = {}
+	self.registeredFrames = {}
 end
 
 function GridFrame:OnEnable()
@@ -1222,13 +1200,13 @@ function GridFrame:OnEnable()
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateFrameUnits")
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateFrameUnits")
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateFrameUnits")
-	self:RegisterBucketEvent("Grid_RosterUpdated", 0.5, "UpdateFrameUnits")
+	self:RegisterEvent("Grid_RosterUpdated", "UpdateFrameUnits")
 
 	if media then
 		media.RegisterCallback(self, "LibSharedMedia_Registered", "LibSharedMedia_Update")
 		media.RegisterCallback(self, "LibSharedMedia_SetGlobal", "LibSharedMedia_Update")
 	end
-
+	self:InvertBarColor()
 	self:Reset()
 end
 
@@ -1242,6 +1220,7 @@ end
 
 function GridFrame:OnDisable()
 	self:Debug("OnDisable")
+	self:InvertBarColor()
 	-- should probably disable and hide all of our frames here
 end
 
@@ -1255,7 +1234,7 @@ function GridFrame:Reset()
 	GridFrame:WithAllFrames(function(f) f:SetFrameFont(font, GridFrame.db.profile.fontSize, GridFrame.db.profile.fontOutline) end)
 
 	self:ResetAllFrames()
-	self:UpdateFrameUnits("Reset")
+	self:UpdateFrameUnits()
 	self:UpdateAllFrames()
 end
 
@@ -1264,7 +1243,7 @@ function GridFrame:RegisterFrame(frame)
 
 	self.registeredFrameCount = (self.registeredFrameCount or 0) + 1
 	self.registeredFrames[frame:GetName()] = self.frameClass:new(frame)
-	self:UpdateFrameUnits("RegisterFrame")
+	self:UpdateFrameUnits()
 end
 
 function GridFrame:WithAllFrames(func)
@@ -1316,13 +1295,12 @@ function GridFrame:GetCornerSize()
 	return self.db.profile.cornerSize
 end
 
-function GridFrame:UpdateFrameUnits(...)
-	self:Debug("UpdateFrameUnits", ...)
+function GridFrame:UpdateFrameUnits()
 	for frame_name, frame in pairs(self.registeredFrames) do
 		if frame.frame:IsVisible() then
 			local old_unit = frame.unit
 			local old_guid = frame.unitGUID
-			local unitid = SecureButton_GetModifiedUnit(frame.frame) -- frame:GetModifiedUnit()
+			local unitid = frame:GetModifiedUnit()
 			local guid = unitid and UnitGUID(unitid) or nil
 
 			if old_unit ~= unitid or old_guid ~= guid then

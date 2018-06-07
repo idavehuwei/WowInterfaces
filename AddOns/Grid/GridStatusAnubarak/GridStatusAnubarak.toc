@@ -1,0 +1,8 @@
+﻿## Interface: 30300
+## Title: GridStatusAnubarak
+## Notes: Adds a status to Grid for debuffs applied by Raid Bosses.
+## Notes-zhCN: 阿努巴拉克P3的刺骨之寒在Grid中自动编号
+## Author: 喵花教練
+## Dependencies: Grid
+
+GridStatusAnubarak.lua

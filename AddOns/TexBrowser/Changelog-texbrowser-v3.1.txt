@@ -1,0 +1,18 @@
+tag v3.1
+d83cfd9a5ff6771f8ee56898df9153beef2ef15c
+Chris Heald <cheald@gmail.com>
+2012-03-31 19:47:40 -0700
+
+Tagging as 3.1
+
+
+--------------------
+
+Chris Heald:
+	- Update datafile with the latest and greatest. Update the project to use the latest version of CrystalMPQ
+	- Add embeds.xml. Oops.
+	- Update TOC for 3.1. Oops.
+	- Update data for 3.1
+	- Update data for 3.0.3
+	- Add right-click-to-copy texture option
+	- Initial commit; includes MPQTextures source for generating data list

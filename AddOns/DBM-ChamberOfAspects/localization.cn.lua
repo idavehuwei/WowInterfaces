@@ -1,4 +1,8 @@
-﻿if GetLocale() ~= "zhCN" then return end
+﻿-- author: callmejames @《凤凰之翼》 一区藏宝海湾
+-- commit by: yaroot <yaroot AT gmail.com>
+
+
+if GetLocale() ~= "zhCN" then return end
 
 local L
 
@@ -10,7 +14,7 @@ local L
 L = DBM:GetModLocalization("Shadron")
 
 L:SetGeneralLocalization({
-	name 			= "沙德隆"
+	name = "沙德隆"
 })
 
 ----------------
@@ -19,7 +23,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Tenebron")
 
 L:SetGeneralLocalization({
-	name 			= "塔尼布隆"
+	name = "塔尼布隆"
 })
 
 ----------------
@@ -28,7 +32,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Vesperon")
 
 L:SetGeneralLocalization({
-	name 			= "维斯匹隆"
+	name = "维斯匹隆"
 })
 
 ------------------
@@ -37,35 +41,35 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Sartharion")
 
 L:SetGeneralLocalization({
-	name 			= "萨塔里奥"
+	name = "萨塔里奥"
 })
 
 L:SetWarningLocalization({
-	WarningTenebron		= "塔尼布隆到来",
-	WarningShadron		= "沙德隆到来",
-	WarningVesperon		= "维斯匹隆到来",
-	WarningFireWall		= "烈焰之啸",
+	WarningTenebron	        = "塔尼布隆到来",
+	WarningShadron	        = "沙德隆到来",
+	WarningVesperon	        = "维斯匹隆到来",
+	WarningFireWall	        = "烈焰之啸",
 	WarningVesperonPortal	= "维斯匹隆的传送门",
 	WarningTenebronPortal	= "塔尼布隆的传送门",
-	WarningShadronPortal	= "沙德隆的传送门"
+	WarningShadronPortal    = "沙德隆的传送门"
 })
 
 L:SetTimerLocalization({
-	TimerTenebron		= "塔尼布隆到来",
-	TimerShadron		= "沙德隆到来",
-	TimerVesperon		= "维斯匹隆到来"
+	TimerTenebron	= "塔尼布隆到来",
+	TimerShadron	= "沙德隆到来",
+	TimerVesperon	= "维斯匹隆到来"
 })
 
 L:SetOptionLocalization({
-	PlaySoundOnFireWall	= "为烈焰之啸播放音效",
-	AnnounceFails		= "公布踩中暗影裂隙和撞上烈焰之啸的玩家到团队频道 (需要团长或助理权限)",
-	TimerTenebron		= "为塔尼布隆到来显示计时条",
-	TimerShadron		= "为沙德隆到来显示计时条",
-	TimerVesperon		= "为维斯匹隆到来显示计时条",
-	WarningFireWall		= "为烈焰之啸显示特别警报",
-	WarningTenebron		= "提示塔尼布隆到来",
-	WarningShadron		= "提示沙德隆到来",
-	WarningVesperon		= "提示维斯匹隆到来",
+	PlaySoundOnFireWall	    = "为烈焰之啸播放音效",
+	AnnounceFails           = "公布踩中暗影裂隙和撞上烈焰之啸的玩家到团队频道 (需要团长或助理权限)",
+	TimerTenebron           = "为塔尼布隆到来显示计时条",
+	TimerShadron            = "为沙德隆到来显示计时条",
+	TimerVesperon           = "为维斯匹隆到来显示计时条",
+	WarningFireWall         = "为烈焰之啸显示特别警报",
+	WarningTenebron         = "提示塔尼布隆到来",
+	WarningShadron          = "提示沙德隆到来",
+	WarningVesperon         = "提示维斯匹隆到来",
 	WarningTenebronPortal	= "为塔尼布隆的传送门显示特别警报",
 	WarningShadronPortal	= "为沙德隆的传送门显示特别警报",
 	WarningVesperonPortal	= "为维斯匹隆的传送门显示特别警报"
@@ -74,9 +78,9 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Wall			= "%s周围的岩浆沸腾了起来！",
 	Portal			= "%s开始开启暮光传送门!",
-	NameTenebron		= "塔尼布隆",
+	NameTenebron	= "塔尼布隆",
 	NameShadron		= "沙德隆",
-	NameVesperon		= "维斯匹隆",
+	NameVesperon	= "维斯匹隆",
 	FireWallOn		= "烈焰之啸: %s",
 	VoidZoneOn		= "暗影裂隙: %s",
 	VoidZones		= "踩中暗影裂隙 (这一次): %s",
@@ -172,7 +176,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarnPhase2Soon		= "第二阶段 即将到来",
 	WarnPhase3Soon		= "第三阶段 即将到来",
-	TwilightCutterCast	= "施放暮光撕裂射线: 3秒后"
+	TwilightCutterCast	= "施放暮光撕裂射线: 5秒后"
 })
 
 L:SetOptionLocalization({
@@ -193,7 +197,7 @@ L:SetMiscLocalization({
 	MeteorCast		= "天空在燃烧！",
 	Phase2			= "暮光的世界将会让你痛不欲生！够胆量的就进来吧！",
 	Phase3			= "我就是交织的光影！凡人，在死亡之翼的使者面前颤抖吧！",
-	twilightcutter		= "黑暗能量正在这颗旋转的魔球中脉动！",
+	twilightcutter		= "这些环绕的球体散发着黑暗能量!",
 	YellCombustion		= "我中了炽焰燃烧！",
 	WhisperCombustion		= "你中了炽焰燃烧！快跑墙边！",
 	YellConsumption		= "我中了灵魂吞噬！",

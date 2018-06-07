@@ -1,0 +1,16 @@
+## Interface: 30300
+## Title: [Duowan] Duowan Quest
+## Notes: Displays quest levels, loads active quests into Questtracker and removes then upon completion, Notifies your party/raid members about your progress, allows to do most turn quests with a single click! 
+## Title-zhCN: [多玩] 任务增强
+## Notes-zhCN: 显示任务等级、自动通报任务进度等
+## Title-zhTW: [多玩] 任務增強
+## Notes-zhTW: 顯示任務等級、自動通報任務進度等
+## Author: dugu@bigfoot
+## X-DuowanAddon: 界面聊天
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 
+## SavedVariables:
+
+lib\Astrolabe\Load.xml
+DuowanQuest.lua

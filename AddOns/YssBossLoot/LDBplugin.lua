@@ -1,6 +1,4 @@
 
---local _, YssBossLoot = ...
-local YssBossLoot = YssBossLoot
 
 local broker = LibStub("LibDataBroker-1.1")
 local icon = LibStub("LibDBIcon-1.0")
@@ -14,9 +12,9 @@ local hovertip
 function YssBossLoot:SetupLDB()
 	self.ldbp = LibStub("LibDataBroker-1.1"):NewDataObject("YssBossLoot", {
 		icon = "Interface\\Addons\\YssBossLoot\\Art\\skullwhite",
-		label = "|cFF33FF99YssBossLoot|r",
+		label = "|cFF33FF99".. L["YssBossLoot"].."|r",
 		type = "launcher",
-		text  = "YssBossLoot",
+		text  = L["YssBossLoot"],
 		OnClick = function(clickedFrame, button)
 			if button == "RightButton" then
 				InterfaceOptionsFrame_OpenToCategory(YssBossLoot.optframe.YBL)
@@ -53,7 +51,7 @@ YssBossLoot.LDBdrop.HideMenu = function()
 end
 
 local function InstanceClick(button, arg1)
-	ShowUIPanel(WorldMapFrame)
+	ShowUIPanel(WorldMapFrame)	
 	SetMapByID(arg1)
 end
 

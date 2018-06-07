@@ -91,7 +91,7 @@ local function showPin(self)
 		local tooltip, pinset
 		if self.worldmap then
 			-- override default UI to hide the tooltip
-			WorldMapBlobFrame:SetScript("OnUpdate", nil)
+			--WorldMapBlobFrame:SetScript("OnUpdate", nil)
 			tooltip = WorldMapTooltip
 			pinset = worldmapPins
 		else
@@ -113,7 +113,7 @@ local function showPin(self)
 			text = text..format(" (%d)", lvl)
 		end
 		for id, pin in pairs(pinset) do
-			if pin:IsMouseOver() and pin.title and pin ~= self then
+			if MouseIsOver(pin) and pin.title and pin ~= self then
 				text = text .. "\n" .. format(tooltip_template, t[pin.nodeType].Alpha*255, t[pin.nodeType].Red*255, t[pin.nodeType].Green*255, t[pin.nodeType].Blue*255, pin.title)
 				local lvl = GatherMate.nodeMinHarvest[pin.nodeType][pin.nodeID]
 				if lvl then
@@ -131,7 +131,7 @@ end
 local function hidePin(self)
 	if self.worldmap then
 		-- restore default UI
-		WorldMapBlobFrame:SetScript("OnUpdate", WorldMapBlobFrame_OnUpdate)
+		--WorldMapBlobFrame:SetScript("OnUpdate", WorldMapBlobFrame_OnUpdate)
 		WorldMapTooltip:Hide()
 	else
 		GameTooltip:Hide()
@@ -191,7 +191,7 @@ local function generatePinMenu(self,level)
 		info.isTitle      = nil
 		info.notCheckable = nil
 		for id, pin in pairs(worldmapPins) do
-			if pin:IsMouseOver() and pin.title then
+			if MouseIsOver(pin) and pin.title then
 				info.text = L["Delete"] .. " :" ..pin.title
 				info.icon = nodeTextures[pin.nodeType][GatherMate:GetIDForNode(pin.nodeType, pin.title)]
 				info.func = deletePin
@@ -403,7 +403,7 @@ function Display:getMapPin()
 	-- create a new pin
 	pinCount = pinCount + 1
 	pin = CreateFrame("Button", "GatherMatePin"..pinCount, WorldMapButton)
-	pin:SetFrameLevel(5)
+	pin:SetFrameLevel(pin:GetFrameLevel() + 10)
 	pin:EnableMouse(true)
 	pin:SetWidth(16)
 	pin:SetHeight(16)
@@ -547,6 +547,8 @@ function Display:addMiniPin(pin, refresh)
 		end
 	end
 	-- finally show and SetPoint the pin
+
+	--print(diffX * minimapWidth, -diffY * minimapHeight)
 	if db.nodeRange or alpha >= 1 then
 		pin:Show()
 		pin:ClearAllPoints()
@@ -720,7 +722,7 @@ function Display:UpdateMiniMap(force)
 		minimapHeight = Minimap:GetHeight() / 2
 		minimapStrata = Minimap:GetFrameStrata()
 		minimapFrameLevel = Minimap:GetFrameLevel() + 5
-
+		--print("mapRadius = ", mapRadius)
 		-- calculate distance in yards
 		local _x, _y =  GatherMate:PointToYards(x, y, zone)
 		
@@ -759,6 +761,9 @@ function Display:UpdateMiniMap(force)
 	end
 end
 
+function Display:CleanMinimapPins()
+	clearpins(minimapPins);
+end
 --[[
 	Refresh the worldmap
 	we check profile preferences for what to display

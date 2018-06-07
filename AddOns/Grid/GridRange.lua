@@ -2,8 +2,7 @@
 	GridRange.lua
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local Gratuity = LibStub:GetLibrary("LibGratuity-3.0")
 

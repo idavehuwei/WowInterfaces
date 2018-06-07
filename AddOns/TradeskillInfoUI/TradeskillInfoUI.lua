@@ -61,12 +61,12 @@ function TradeskillInfoUI:OnInitialize()
 			SearchReagent = true,
 		}
 	}
-	self.db = LibStub("AceDB-3.0"):New("TradeskillInfoUIDB", dbDefaults)
+	self.db = LibStub("AceDB-3.0"):New("DuowanAddon_TradeskillInfoUIDB", dbDefaults)	
 end
 
 function TradeskillInfoUI:OnEnable()
 	if oSkin and oSkin.applySkin then
-		oSkin:applySkin(TradeskillInfoFrame);
+		oSkin:applySkin(TradeskillInfoFrame);		
 	elseif Skinner and Skinner.applySkin then
 		Skinner:removeRegions(TradeskillInfoAvailabilityDropDown);
 		Skinner:removeRegions(TradeskillInfoTradeskillsDropDown);
@@ -95,7 +95,7 @@ function TradeskillInfoUI:Frame_Show()
 	TradeskillInfoDetailScrollFrameBottom:Hide();
 
 	for key,val in pairs(self.options.buttons) do
-		local button = getglobal(key);
+		local button = dwGetglobal(key);
 		button:SetText(val.text);
 		if val.tooltip then
 			button.tooltipText = val.tooltip;
@@ -214,7 +214,7 @@ end
 TradeskillInfoUI.vars.numSkillButtons = 0
 
 local function getSkillButton(i)
-	local skillButton = getglobal("TradeskillInfoSkill"..i)
+	local skillButton = dwGetglobal("TradeskillInfoSkill"..i)
 	if not skillButton then
 		-- Create a new button. Assume button (i-1) was already created
 		skillButton = CreateFrame("Button", "TradeskillInfoSkill"..i, TradeskillInfoListFrame, "TradeskillInfoSkillButtonTemplate")
@@ -275,7 +275,7 @@ function TradeskillInfoUI:DoFrameUpdate()
 		TradeskillInfoKnown:SetText("");
 		TradeskillInfoCollapseAllButton:Disable();
 		for i=1, TradeskillInfoUI.cons.maxSkillReagents, 1 do
-			getglobal("TradeskillInfoReagent"..i):Hide();
+			dwGetglobal("TradeskillInfoReagent"..i):Hide();
 		end
 	else
 		TradeskillInfoCollapseAllButton:Enable();
@@ -313,7 +313,7 @@ function TradeskillInfoUI:DoFrameUpdate()
 	for i=1, buttonCount do
 		local skillIndex = i + skillOffset;
 		local skillButton = getSkillButton(i)
-		local skillButtonText = getglobal(skillButton:GetName() .. "Text")
+		local skillButtonText = dwGetglobal(skillButton:GetName() .. "Text")
 		-- Adjust width of buttons and their texts
 		skillButton:SetWidth(TradeskillInfoListScrollFrame:GetWidth()-34)
 		skillButtonText:SetWidth(TradeskillInfoListScrollFrame:GetWidth()-34)
@@ -345,7 +345,7 @@ function TradeskillInfoUI:DoFrameUpdate()
 
 			skillButton:SetID(skillIndex);
 			skillButton:Show();
-			local skillButtonHighlight = getglobal(skillButton:GetName() .. "Highlight")
+			local skillButtonHighlight = dwGetglobal(skillButton:GetName() .. "Highlight")
 			-- Handle headers
 			if ( skillType == "header" ) then
 				skillButton:SetText(skillName);
@@ -440,7 +440,7 @@ function TradeskillInfoUI:DoFrameSetSelection(id)
 	-- Hide all reagents at start.
 	-- When there is a cache update, misleading information appears on screen.
 	for i=1, TradeskillInfoUI.cons.maxSkillReagents, 1 do
-		local reagent = getglobal("TradeskillInfoReagent"..i);
+		local reagent = dwGetglobal("TradeskillInfoReagent"..i);
 		reagent:Hide();
 		reagent.tooltip = nil;
 		reagent.known = nil;
@@ -573,9 +573,9 @@ function TradeskillInfoUI:DoFrameSetSelection(id)
 			reagentName, reagentTexture, reagentCount, reagentLink, reagentItemString = self:GetTradeSkillReagentInfo(i)
 		end
 
-		local reagent = getglobal("TradeskillInfoReagent"..i)
-		local name = getglobal("TradeskillInfoReagent"..i.."Name");
-		local count = getglobal("TradeskillInfoReagent"..i.."Count");
+		local reagent = dwGetglobal("TradeskillInfoReagent"..i)
+		local name = dwGetglobal("TradeskillInfoReagent"..i.."Name");
+		local count = dwGetglobal("TradeskillInfoReagent"..i.."Count");
 		if ( not reagentName or not reagentTexture ) then
 			reagent:Hide();
 		else
@@ -618,7 +618,7 @@ end
 ----------------------------------------------------------------------
 function TradeskillInfoUI:SkillButton_OnClick(frame, button)
 	if ( button == "LeftButton" ) then
-		if IsShiftKeyDown() and ChatFrame1EditBox:IsVisible() then
+		if IsShiftKeyDown() and SELECTED_CHAT_FRAME.editBox:IsVisible() then
 			self:PasteRecipie(frame:GetID());
 		else
 			self:Frame_SetSelection(frame:GetID());
@@ -668,15 +668,15 @@ function TradeskillInfoUI:ReagentIcon_OnClick(frame, button)
 		if ( IsControlKeyDown() ) then
 			DressUpItemLink(frame.tooltip);
 		elseif IsShiftKeyDown() then
-			if ChatFrame1EditBox:IsVisible() then
+			if SELECTED_CHAT_FRAME.editBox:IsVisible() then
 				if frame.link then
-					ChatFrame1EditBox:Insert(frame.link);
+					SELECTED_CHAT_FRAME.editBox:Insert(frame.link);
 				else
-					ChatFrame1EditBox:Insert(frame.name);
+					SELECTED_CHAT_FRAME.editBox:Insert(frame.name);
 				end
 			end
 		elseif IsAltKeyDown() then
-			if ChatFrame1EditBox:IsVisible() then
+			if SELECTED_CHAT_FRAME.editBox:IsVisible() then
 				self:PasteRecipie(frame.id);
 			end
 		else
@@ -1375,7 +1375,7 @@ function TradeskillInfoUI:PasteRecipie(id)
 		end
 		skillLink = "|cffffd000|Henchant:" .. enchantId .. "|h[" .. enchantName .. "]|h|r";
 		if skillLink then
-			ChatFrame1EditBox:Insert(skillLink);
+			SELECTED_CHAT_FRAME.editBox:Insert(skillLink);
 			return;
 		end
 	end
@@ -1410,7 +1410,7 @@ function TradeskillInfoUI:PasteRecipie(id)
 		text = text .. " : " .. skillName .. "(" .. level .. ")";
 	end
 
-	ChatFrame1EditBox:Insert(text);
+	SELECTED_CHAT_FRAME.editBox:Insert(text);
 end
 
 do

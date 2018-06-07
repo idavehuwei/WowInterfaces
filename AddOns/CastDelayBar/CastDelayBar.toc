@@ -1,0 +1,15 @@
+## Interface: 30300
+## Title: [Duowan] CastDelayBar
+## Notes: 
+## Title-zhCN: [多玩] 施法延迟条 CastDelayBar
+## Notes-zhCN: 在施法条上增加一延迟条, 用以判断施法是否成功
+## Title-zhTW: [多玩] 施法延遲條 CastDelayBar
+## Notes-zhTW: 在施法條上增加一延遲條, 用以判斷施法是否成功
+## Author: dugu
+## X-DuowanAddon: 界面聊天
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 
+## SavedVariables: 
+
+CastDelayBar.lua

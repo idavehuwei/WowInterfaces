@@ -1,0 +1,30 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+E:\repos\Duowan-Work\UI.xsd">
+	<Script file="MapNotes.lua"/>
+	<CheckButton name="MapNodeIconTemplate" hidden="false" virtual="true">
+		<Size>
+			<AbsDimension x="16" y="16"/>
+		</Size>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parentIcon" setAllPoints="true"/>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick>
+				MapNodeIconButton_OnClick(self, button);
+			</OnClick>
+		</Scripts>
+		<HighlightTexture alphaMode="ADD" file="Interface\AddOns\MapNotes\icons\NodeHighlight"/>
+		<CheckedTexture alphaMode="ADD" file="Interface\AddOns\MapNotes\icons\NodeChecked"/>
+	</CheckButton>
+	<GameTooltip name="MapNotesTooltip" frameStrata="HIGH" hidden="false" toplevel="true" parent="WorldMapFrame" inherits="GameTooltipTemplate">
+		<Scripts>
+			<OnLoad>
+				self:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b);
+				self:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b);
+				self:SetOwner(UIParent, "ANCHOR_NONE");
+			</OnLoad>
+		</Scripts>
+	</GameTooltip>
+</Ui>

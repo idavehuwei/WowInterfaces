@@ -1,0 +1,192 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="svn://113.106.98.20/repos/Duowan-Work/UI.xsd">
+	<Script file="AspectPosionBar.lua"/>
+	<CheckButton name="AspectPosionButtonTemplate" inherits="SecureActionButtonTemplate, ActionButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="30" y="30"/>
+		</Size>
+		<Scripts>
+			<OnLoad>
+				AspectPosionButton_OnLoad(self);
+			</OnLoad>
+			<OnEnter>
+				AspectPosionButton_OnEnter(self);				
+			</OnEnter>
+			<PostClick>
+				AspectPosionButton_PostClick(self);
+			</PostClick>
+			<OnLeave function="GameTooltip_Hide"/>
+		</Scripts>
+	</CheckButton>
+	<Frame name="AspectPosionBar" parent="UIParent" enableMouse="true" hidden="false" inherits="SecureHandlerStateTemplate">
+		<Size>
+			<AbsDimension x="29" y="32"/>
+		</Size>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="MainMenuBar" relativePoint="TOPLEFT">
+				<Offset>
+					<AbsDimension x="30" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentLeft" file="Interface\ShapeshiftBar\ShapeshiftBar">
+					<Size x="47" y="38"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords left="0" right="0.734375" top="0" bottom="0.296875"/>
+				</Texture>
+				<Texture name="$parentMiddle" file="Interface\ShapeshiftBar\ShapeshiftBarMiddle">
+					<Size x="37" y="38"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="ShapeshiftBarLeft" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords left="0" right="2" top="0" bottom="1"/>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER">		
+				<Texture name="$parentRight" file="Interface\ShapeshiftBar\ShapeshiftBar">
+					<Size x="43" y="38"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="ShapeshiftBarMiddle" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords left="0.328125" right="1" top="0.3125" bottom="0.6015625"/>
+				</Texture>				
+			</Layer>
+		</Layers>
+		<Frames>
+		<!--
+			<Button name="$parentTab" inherits="AspectPosionBarTabTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="1" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnMouseDown>
+						if (not self.isMoving) then
+							self:GetParent():StartMoving();
+							self.isMoving = true;							
+						end
+					</OnMouseDown>
+					<OnMouseUp>
+						if (self.ismoving) then
+							self.ismoving = false;				
+							self:GetParent():StopMovingOrSizing();
+							AspectPosionBar_Jieguan(true);
+
+						end
+					</OnMouseUp>
+				</Scripts>
+			</Button>
+			-->
+			<CheckButton name="$parentButton1" inherits="AspectPosionButtonTemplate" id="1">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="10" y="3"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentButton2" inherits="AspectPosionButtonTemplate" id="2">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentButton1" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="8" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentButton3" inherits="AspectPosionButtonTemplate" id="3">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentButton2" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="7" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentButton4" inherits="AspectPosionButtonTemplate" id="4">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentButton3" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="7" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentButton5" inherits="AspectPosionButtonTemplate" id="5">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentButton4" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="7" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentButton6" inherits="AspectPosionButtonTemplate" id="6">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentButton5" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="7" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentButton7" inherits="AspectPosionButtonTemplate" id="7">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentButton6" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="7" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentButton8" inherits="AspectPosionButtonTemplate" id="8">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentButton7" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="7" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentButton9" inherits="AspectPosionButtonTemplate" id="9">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentButton8" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="7" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentButton10" inherits="AspectPosionButtonTemplate" id="10">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentButton9" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="7" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				AspectPosionBar_OnLoad(self);
+			</OnLoad>
+			<OnEvent>
+				AspectPosionBar_OnEvent(self, event, arg1);
+			</OnEvent>
+			<OnShow>
+				AspectPosionBar_OnShow(self);
+			</OnShow>
+			<OnHide>
+				AspectPosionBar_OnHide(self);
+			</OnHide>
+		</Scripts>
+	</Frame>
+</Ui>

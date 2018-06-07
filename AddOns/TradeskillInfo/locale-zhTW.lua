@@ -1,6 +1,8 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("TradeskillInfo", "zhTW", false)
 if not L then return end
 -- The translations I pinched from Babble-Tradeskill-2.2
+L["A"] = "拍賣"
+L["V"] = "販賣"
 L["Alchemy"]                    = "鍊金術"
 L["Blacksmithing"]              = "鍛造"
 L["Enchanting"]                 = "附魔"
@@ -428,3 +430,4 @@ L["Skill Level"] = "技能等級"
 L["Alchemist Finklestein"] = "鍊金師芬克斯坦"
 L["Larana Drome"] = "拉蕾娜·德羅姆"
 L["Frozo the Renowned"] = "有名的弗羅佐"
+L["Open Panel"] = "技能庫"

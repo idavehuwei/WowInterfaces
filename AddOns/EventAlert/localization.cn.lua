@@ -1,3 +1,21 @@
+local L = LibStub("AceLocale-3.0"):NewLocale("EventAlert", "zhCN");
+if L then
+	L["Event Alert Frame"] = "特效指示器";
+	L["EventAlert: You must unlock the alert frame in order to move it or reset it's position."] = "特效指示器: 你必须解锁报警框架后才能移动或者重置位置";
+	L["EventAlert Options"] = "特效指示器选项"
+	L["ShaysBell"] = "午夜魅影";
+	L["Flute"] = "长笛";
+	L["Netherwind"] = "灵风";
+	L["PolyCow"] = "宝利牛";
+	L["Rockbiter"] = "石化";
+	L["Yarrrr!"] = "呀呀呀";
+	L["Broken Heart"] = "心碎";
+	L["Millhouse 1!"] = "磨坊1";
+	L["Millhouse 2!"] = "磨坊2";
+	L["Pissed Satyr"] = "愤怒的萨梯";
+	L["Pissed Dwarf"] = "愤怒的侏儒";
+end
+
 if GetLocale() ~= "zhCN" then return end
 
 EA_TTIP_DOALERTSOUND = "事件触发时播放声音提示.";

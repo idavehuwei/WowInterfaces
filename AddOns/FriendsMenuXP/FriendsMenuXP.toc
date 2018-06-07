@@ -1,0 +1,16 @@
+## Interface: 30300
+## Author: Warbaby-二区暗影之月<凌翼>
+## Title: [Duowan] FriendsMenuXP
+## Notes: Hook extra menu to friend list, guild list and chat player
+## Title-zhCN: [多玩] 右键菜单增强 FriendsMenuXP
+## Notes-zhCN: 玩家超链接、查询列表、好友列表、工会列表中点击玩家名字右键菜单增加更多选择。此外，按住alt点玩家链接可以邀请，按住ctrl点玩家链接选定目标。
+## Title-zhTW: [多玩] 右鍵菜單增強 FriendsMenuXP
+## Notes-zhTW: 玩家超連結、查詢列表、好友列表、工會列表中點擊玩家名字右鍵功能表增加更多選擇。此外，按住alt點玩家連結可以邀請，按住ctrl點玩家連結選定目標。
+## X-DuowanAddon: 界面聊天
+## Dependencies: Duowan
+## X-Revision: Duowan
+## X-Repple: 辅助
+localization.zhCN.lua
+localization.enUS.lua
+localization.zhTW.lua
+FriendsMenuXP.xml

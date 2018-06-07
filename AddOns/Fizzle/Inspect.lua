@@ -1,5 +1,6 @@
-﻿local mod = Fizzle:NewModule("Inspect", "AceHook-3.0", "AceEvent-3.0")
+local mod = Fizzle:NewModule("Inspect", "AceHook-3.0", "AceEvent-3.0")
 local _G = _G
+local enable
 local ipairs, smatch, tonumber = ipairs, string.match, tonumber
 local slots = {
 	"Head",
@@ -22,7 +23,6 @@ local slots = {
 	"Trinket1",
 	"Relic",
 	"Tabard",
-	"Shirt",
 }
 local booted = false
 -- Make some blizz functions more local
@@ -38,6 +38,7 @@ function mod:OnInitialize()
 end
 
 function mod:OnEnable()
+	enable = true
 	if IsAddOnLoaded("Blizzard_InspectUI") then
 		self:SecureHookScript(InspectFrame, "OnShow", "InspectFrame_OnShow")
 		self:SecureHookScript(InspectFrame, "OnHide", "InspectFrame_OnHide")
@@ -49,6 +50,7 @@ end
 
 function mod:OnDisable()
 	-- Hide all borders if we get disabled.
+	enable = false
 	for _, item in ipairs(slots) do
 		local border = _G[item .."FizzspectB"]
 		if border then
@@ -81,29 +83,20 @@ function mod:UpdateBorders()
 		if id then
 			local link = GetInventoryItemLink("target", id)
 			local border = _G[item .."FizzspectB"]
-			local iLevelStr = _G[item.."FizzspectiLevel"]
-			if link and border then
+			if link then
 				local itemID = GetItemID(link)
-				local _, _, quality, iLevel = GetItemInfo(itemID)
+				local quality = select(3, GetItemInfo(itemID))
 				
 				if quality then
 					local r, g, b = GetItemQualityColor(quality)
 					border:SetVertexColor(r, g, b)
 					border:Show()
-					if Fizzle.db.profile.inspectiLevel then
-						iLevelStr:SetText(iLevel)
-						iLevelStr:Show()
-					end
 				else
 					border:Hide()
-					iLevelStr:Hide()
 				end
 			else
 				if border then
 					border:Hide()
-				end
-				if iLevelStr then
-					iLevelStr:Hide()
 				end
 			end
 		end
@@ -120,6 +113,9 @@ function mod:ADDON_LOADED()
 end
 
 function mod:InspectFrame_OnShow()
+	if (not enable) then
+		return;
+	end
 	-- Create the borders if we're just loading.
 	if not booted then
 		self:CreateBorders()

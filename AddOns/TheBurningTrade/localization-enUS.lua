@@ -2,7 +2,6 @@ if(GetLocale() == "enUS" or true) then
 
 -- ===================== Part for TradeFrameEnchanced ==================
 TBT_SPELL_RANK_PATTERN = "Rank (%d)";
-TBT_SPELL_PORTAL = "Portal"
 TBT_UNLOCK_SKILL_NAME="Pick Lock";
 _,_,TBT_GAMETOOLTIP_MADE_BY=string.find(string.gsub(ITEM_CREATED_BY,"%%s","(.+)"),"(<.+>)"); --TBT_GAMETOOLTIP_MADE_BY="<Made by (.+)>"
 TBT_SPELL_TABLE = {
@@ -39,20 +38,6 @@ TBT_SPELL_TABLE = {
 	}
 }
 -- =============== just localizate the above, the addon will function ok ========================= 
-
-TBT_PORTAL_1 = "Portal: Stonard"
-TBT_PORTAL_2 = "Portal: Theramore"
-TBT_PORTAL_3 = "Portal: Exodar"
-TBT_PORTAL_4 = "Portal: Ironforge"
-TBT_PORTAL_5 = "Portal: Orgrimmar"
-TBT_PORTAL_6 = "Portal: Silvermoon"
-TBT_PORTAL_7 = "Portal: Stormwind"
-TBT_PORTAL_8 = "Portal: Undercity"
-TBT_PORTAL_9 = "Portal: Darnassus"
-TBT_PORTAL_10 = "Portal: Thunder Bluff"
-TBT_PORTAL_11 = "Portal: Shattrath"
-TBT_PORTAL_12 = "Portal: Dalaran"
-
 TBT_LEFT_BUTTON = {
 	water		= "Water",
 	food		= "Food",
@@ -65,6 +50,8 @@ TBT_RIGHT_BUTTON = {
 	ask		= "ask",
 	thank		= "thx",
 }
+
+TBT_CANT_CREATE_AUCTION = "The auction button can't be clicked! Maybe addons confliction."
 -- ===================== Part for TradeLog ==================
 TRADE_LOG_MONEY_NAME = {
 	gold = "g",
@@ -111,6 +98,7 @@ TRADE_LOG_ANNOUNCE = "NOTIFY";
 TRADE_LOG_ANNOUNCE_TIP = "Check this to automatically announce after trading."
 
 -- ===================== Part for TradeList ==================
+TRADE_LIST_TOOLTIP = "Trade List"
 TRADE_LIST_CLEAR_HISTORY = "CLEAR"
 TRADE_LIST_SCALE = "Detail Scale"
 TRADE_LIST_FILTER = "Completed Only"
@@ -140,8 +128,5 @@ TRADE_LIST_DAY_SUFFIX = ""
 TRADE_LIST_COMPLETE_TOOLTIP = "Click to show detail";
 
 TRADE_LIST_CLEAR_CONFIRM = "Records before today will be totally cleared!";
-
-TBT_MINIMAP_TOOLTIP1 = "The Burning Trade"
-TBT_MINIMAP_TOOLTIP2 ="Click to Show Trade Log Panel"
 
 end

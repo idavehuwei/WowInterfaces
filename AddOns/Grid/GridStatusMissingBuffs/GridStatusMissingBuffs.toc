@@ -1,0 +1,26 @@
+﻿## Interface: 30300
+## Title: GridStatusMissingBuffs
+## Notes: Shows missing buffs and handles welfare and deluxe buffs as one (motw/gotw, blessings, etc.).  This lets you see when you need to apply a buff.
+## Notes-deDE: Zeigt fehlende Buffs.
+## Notes-koKR: 사라진 버프를 항상 표시합니다.
+## Notes-zhCN: [Grid] 显示缺少的增益。
+## Notes-zhTW: [Grid] 顯示缺少的增益。
+## Notes-ruRU: Показывает текущие баффы.
+## Author: Toadkiller, North101, msl
+## Version: 3.2.0.77
+## Dependencies: Grid
+## X-GridStatusModule: GridStatusMissingBuffs
+## X-Category: UnitFrame
+## X-Curse-Packaged-Version: 77 release
+## X-Curse-Project-Name: GridStatusMissingBuffs
+## X-Curse-Project-ID: grid-status-missing-buffs
+## X-Curse-Repository-ID: wow/grid-status-missing-buffs/mainline
+
+GridStatusMissingBuffsLocale-enUS.lua
+GridStatusMissingBuffsLocale-deDE.lua
+GridStatusMissingBuffsLocale-koKR.lua
+GridStatusMissingBuffsLocale-zhCN.lua
+GridStatusMissingBuffsLocale-zhTW.lua
+GridStatusMissingBuffsLocale-ruRU.lua
+
+GridStatusMissingBuffs.lua

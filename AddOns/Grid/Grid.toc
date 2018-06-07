@@ -1,40 +1,65 @@
 ## Interface: 30300
-## Title: Grid
-## Title-zhCN: |cffffe00a<|r|cffff7d0aGrid|r|cffffe00a>|r |cff0055FF核心|r
-## Title-zhTW: |cffffe00a<|r|cffff7d0aGrid|r|cffffe00a>|r |cff0055FF核心|r
-## Notes: |cffbc8f8fA modular, lightweight and screen-estate saving grid of party/raid unit frames.|r
-## Notes-zhCN: |cff00ff00Grid|r                                             |cffbc8f8f小巧的轻量级模块化队伍框架。|r
-## Notes-zhTW: |cff00ff00Grid|r                                             |cffbc8f8f精簡的團隊框架功能。|r
-## Author: Pastamancer and Maia
-## X-AceForum: 2525
+## Title: [Duowan] Grid
+## Title-zhCN: [多玩] 团队框架 Grid
+## Title-zhTW: [多玩] 團隊框架 Grid
+## Notes: A modular, lightweight, and screen-estate saving grid of party/raid unit frames.
+## Notes-zhCN: 小巧的轻量级模块化队伍/团队框架。
+## Notes-zhTW: 精簡的團隊框架功能
+## Version: 1.30300.1304
+## X-ReleaseDate: "$Date: 2010-06-23 06:51:18 +0000 (Wed, 23 Jun 2010) $"
+## Author: Pastamancer, Maia
+## Credits: Greltok, Phanx, Jerry
 ## X-Category: UnitFrame
-## X-RelSite-Curse: 9503
-## X-RelSite-WoWI: 5747
-## X-Website: http://www.wowace.com/projects/grid/
+## X-Website: http://www.wowace.com/addons/grid/
+## X-DuowanAddon: 团队副本
 ## SavedVariables: GridDB
-## DefaultState: enabled
+## Dependencies: Duowan
+## X-Revision: Duowan
 ## LoadOnDemand: 1
-## X-Revision: BigFoot
 
+#@no-lib-strip@
+libs\LibHealComm-4.0\LibHealComm-4.0.xml
+#@end-no-lib-strip@
+
+#@locales
+Locales\GridLocale-enUS.lua
 Locales\GridLocale-zhCN.lua
 Locales\GridLocale-zhTW.lua
 
+#@Grid
 GridCore.lua
 GridLDB.lua
 GridRoster.lua
 GridRange.lua
+GridStatus.lua
+GridFrame.lua
 GridLayout.lua
 GridLayoutLayouts.lua
-GridFrame.lua
-GridStatus.lua
-GridStatusAggro.lua
-GridStatusAuras.lua
-GridStatusHeals.lua
+
 GridStatusHealth.lua
-GridStatusMana.lua
+GridStatusAggro.lua
 GridStatusName.lua
-GridStatusRange.lua
-GridStatusReadyCheck.lua
+GridStatusMana.lua
+GridStatusHeals.lua
+GridStatusAuras.lua
 GridStatusTarget.lua
-GridStatusVehicle.lua
+GridStatusRange.lua
 GridStatusVoiceComm.lua
+GridStatusVehicle.lua
+GridStatusReadyCheck.lua
+
+#@ExtendsMod
+GridClickSets\embeds.xml
+GridAutoFrameSize\embeds.xml
+GridCooldownText\embeds.xml
+#@GridDynamicZoneSwitch\embeds.xml
+GridManaBars\embeds.xml
+GridStatusHots\embeds.xml
+GridStatusMissingBuffs\embeds.xml
+GridStatusRaidDebuff\embeds.xml
+GridStatusRD_WotLK\embeds.xml
+GridStatusRD_Dungeon\embeds.xml
+GridStatusThreat\embeds.xml
+GridIndicatorSideIcons\embeds.xml
+GridStatusRaidIcons\embeds.xml
+GridStatusAnubarak\embeds.xml

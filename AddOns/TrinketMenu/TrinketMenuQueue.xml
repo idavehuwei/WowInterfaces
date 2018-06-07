@@ -54,7 +54,7 @@
 		</Size>
 		<Scripts>
 			<OnLoad>
-				self:SetFrameLevel(getglobal("TrinketMenu_Tab"..self:GetID()):GetFrameLevel()+2)
+				self:SetFrameLevel(dwGetglobal("TrinketMenu_Tab"..self:GetID()):GetFrameLevel()+2)
 			</OnLoad>
 			<OnEnter>
 				TrinketMenu.OnTooltip(self)
@@ -113,12 +113,12 @@
 		</Layers>
 		<Scripts>
 			<OnEnter>
-				getglobal(self:GetName().."Highlight"):Show()
+				dwGetglobal(self:GetName().."Highlight"):Show()
 				TrinketMenu.SortTooltip(self)
 			</OnEnter>
 			<OnLeave>
 				if not self.lockedHighlight then
-					getglobal(self:GetName().."Highlight"):Hide()
+					dwGetglobal(self:GetName().."Highlight"):Hide()
 				end
 				GameTooltip:Hide()
 			</OnLeave>

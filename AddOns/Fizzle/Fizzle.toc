@@ -1,24 +1,27 @@
-﻿## Interface: 30300
-## X-BigfootType: 1
-## X-BigfootDesc: 在角色面板上显示装备耐久度和品质边框。
-## Title: Fizzle
+## Interface: 30300
+## Title: [Duowan] Fizzle
 ## Author: phyber
 ## Notes: Show item durability and quality in the character frame.
-## Notes-zhTW: 在角色視窗顯示耐久度。
-## Notes-zhCN: 在人物装备栏中显示物品品质与耐久度。
-## Version: v1.5.1
-## SavedVariablesPerCharacter: FizzleDB
+## Title-zhCN: [多玩] 装备耐久 Fizzle
+## Notes-zhCN: 在人物装备栏中显示物品品质与耐久度。|N|CFF0099FF需要基础函数库|R
+## Title-zhTW: [多玩] 裝備耐久 Fizzle
+## Notes-zhTW: 在人物裝備欄中顯示物品品質與耐久度。|N|CFF0099FF需要基礎函式庫|R
+## X-Repple: 辅助
+## Version: v1.3.2
+## SavedVariablesPerCharacter: DuowanAddon_FizzleDB
 ## X-Category: Inventory
 ## X-Embeds: Ace3
 ## X-RelSite-WoWI: 5018
 ## X-Website: http://phyber.wowinterface.com/
 ## X-WoWIPortal: phyber
 ## OptionalDeps: Ace3, Voyeur
-## X-Curse-Packaged-Version: v1.5.1
+## X-Curse-Packaged-Version: v1.3.2
 ## X-Curse-Project-Name: Fizzle
 ## X-Curse-Project-ID: fizzle
 ## X-Curse-Repository-ID: wow/fizzle/mainline
-
+## X-DuowanAddon: 商业物品
+## Dependencies: Duowan
+## X-Revision: Duowan
 #@no-lib-strip@
 embeds.xml
 #@end-no-lib-strip@

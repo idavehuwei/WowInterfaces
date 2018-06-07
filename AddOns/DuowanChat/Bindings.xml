@@ -1,0 +1,26 @@
+<Bindings>
+	<Binding name="DWCSAY" header="DWCTITLE">		
+		DWC_SetChatType("/s")
+	</Binding>
+	<Binding name="DWCPARTYCHANNEL" >		
+		DWC_SetChatType("/p")
+	</Binding>
+	<Binding name="DWCRAIDCHANNEL" >		
+		DWC_SetChatType("/raid")
+	</Binding>
+	<Binding name="DWCBGCHANNEL" >		
+		DWC_SetChatType("/bg")
+	</Binding>
+	<Binding name="DWCGUILDCHANNEL" >		
+		DWC_SetChatType("/g")
+	</Binding>
+	<Binding name="DWCYELL" >		
+		DWC_SetChatType("/Y")
+	</Binding>
+	<Binding name="DWCWHISPER" >		
+		DWC_SetChatType("/w")
+	</Binding>
+	<Binding name="DWCOFFICER" >		
+		DWC_SetChatType("/o")
+	</Binding>
+</Bindings>

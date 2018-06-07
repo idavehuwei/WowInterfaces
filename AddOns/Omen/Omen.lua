@@ -6,6 +6,7 @@
 -- ADDON_LOADED firing, as AceAddon-3.0 will call :OnInit() on any addon's
 -- ADDON_LOADED event due to needing to support submodules which may not be
 -- its their own addons.
+--[[
 LoadAddOn("Ace3")
 LoadAddOn("LibSharedMedia-3.0")
 LoadAddOn("AceGUI-3.0-SharedMediaWidgets")
@@ -14,7 +15,7 @@ LoadAddOn("LibRock-1.0")
 LoadAddOn("FuBarPlugin-3.0")
 LoadAddOn("LibDataBroker-1.1")
 LoadAddOn("LibDBIcon-1.0")
-
+]]
 
 -----------------------------------------------------------------------------
 -- Addon declaration
@@ -24,9 +25,9 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local LDB = LibStub("LibDataBroker-1.1", true)
 local LDBIcon = LDB and LibStub("LibDBIcon-1.0", true)
 Omen.version = GetAddOnMetadata("Omen", "Version")
-Omen.versionstring = "Omen v"..GetAddOnMetadata("Omen", "Version")
+Omen.versionstring = L["Omen"] .. " v"..GetAddOnMetadata("Omen", "Version")
 _G["Omen"] = Omen
-
+local first_show;
 
 -----------------------------------------------------------------------------
 -- Keybinding globals
@@ -62,7 +63,28 @@ local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local UnitExists, UnitGUID, UnitName, UnitClass, UnitHealth = UnitExists, UnitGUID, UnitName, UnitClass, UnitHealth
 local UnitIsPlayer, UnitPlayerControlled, UnitCanAttack = UnitIsPlayer, UnitPlayerControlled, UnitCanAttack
 local GetNumRaidMembers, GetNumPartyMembers = GetNumRaidMembers, GetNumPartyMembers
+--------------------
+-- Duowan Interface
+function OmenShowPanel()
+--[[
+	if(HideWhileResting == true)then return; end
+	if(HideInPVP == true)then return; end
+	if(HideWhenOOC == true)then return; end
+	Omen:Toggle(true);
+	Omen:UpdateVisible();
+	Omen:UpdateBars();
+	]]
+end
 
+function OmenToggle()
+	if (not Omen.Anchor:IsShown()) then
+		Omen:Toggle(true);
+	else
+		Omen:Toggle(false);
+	end
+	Omen:UpdateVisible();
+	Omen:UpdateBars();
+end
 
 -----------------------------------------------------------------------------
 -- Local variables used
@@ -85,8 +107,8 @@ local defaults = {
 		FrameStrata = "3-MEDIUM",
 		ClampToScreen = true,
 		Background = {
-			Texture = "Blizzard Dialog Background",
-			BorderTexture = "None",
+			Texture = "Blizzard Parchment",
+			BorderTexture = "Blizzard Dialog",
 			Color = {r = 1, g = 1, b = 1, a = 1,},
 			BorderColor = {r = 0.8, g = 0.6, b = 0, a = 1,},
 			Tile = false,
@@ -157,13 +179,12 @@ local defaults = {
 		ShowWith = {
 			UseShowWith = true,
 			Pet = true,
-			Alone = false,
+			Alone = true,
 			Party = true,
 			Raid = true,
 			-- Deprecated SV values
 			-- Resting = false, PVP = false, Dungeon = true, ShowOnlyInCombat = false,
---terry@bf change default here
-			HideWhileResting = false,
+			HideWhileResting = true,
 			HideInPVP = true,
 			HideWhenOOC = false,
 		},
@@ -186,6 +207,7 @@ local defaults = {
 			minimapPos = 220,
 			radius = 80,
 		},
+		Shown = true,
 	},
 }
 local guidNameLookup = {}   -- Format: guidNameLookup[guid] = "Unit Name"
@@ -306,7 +328,8 @@ local function stopmoving(self)
 		Omen:UpdateBars()
 		Omen.Anchor.IsMovingOrSizing = nil
 	end
-	if self == Omen.Anchor then db.Shown = self:IsShown() end
+
+	--if self == Omen.Anchor then db.Shown = self:IsShown() end
 end
 local function sizing(self)
 	local w = Omen.Anchor:GetWidth()
@@ -365,8 +388,13 @@ function Omen:CreateFrames()
 	self.Anchor:SetPoint("CENTER", UIParent, "CENTER")
 	self.Anchor:SetWidth(225)
 	self.Anchor:SetHeight(150)
-	self.Anchor:SetScript("OnHide", stopmoving)
-	self.Anchor:SetScript("OnShow", function(self) db.Shown = true end)
+	self.Anchor:SetScript("OnHide", function(self)	
+		stopmoving(self);
+		db.Shown = false;		
+	end)
+	self.Anchor:SetScript("OnShow", function(self) 
+		db.Shown = true;		
+	end)
 
 	-- Create Title
 	self.Title = CreateFrame("Button", "OmenTitle", self.Anchor)
@@ -380,13 +408,24 @@ function Omen:CreateFrames()
 	self.Title:SetScript("OnClick", Omen_DropDownMenu.OnClick)
 	self.Title.initMenuFunc = self.TitleQuickMenu
 	self.Title:RegisterForClicks("RightButtonUp")
+	
+	-- Create Close Button @duowan.com
+	self.closeButton = CreateFrame("Button", "OmenCloseButton", self.Anchor, "UIPanelCloseButton");
+	self.closeButton:SetPoint("TOPRIGHT", self.Anchor, "TOPRIGHT", 0, 2);
+	self.closeButton:SetFrameLevel(self.closeButton:GetFrameLevel() + 4);
+	self.closeButton:SetWidth(20);
+	self.closeButton:SetHeight(20);
+	self.closeButton:SetScript("OnClick", function(frame)
+		self.Anchor:Hide();
+		self.userHide = true;
+	end);
 
 	-- Create Title text
 	self.TitleText = self.Title:CreateFontString(nil, nil, "GameFontNormal")
 	self.TitleText:SetPoint("LEFT", self.Title, "LEFT", 8, 1)
 	self.TitleText:SetJustifyH("LEFT")
 	self.TitleText:SetTextColor(1, 1, 1, 1)
-	self.defaultTitle = "Omen|cffffcc003|r"
+	self.defaultTitle = L["Omen"] .. "|cffffcc003|r"
 	self.TitleText:SetText(self.defaultTitle)
 
 	-- Create Bar List
@@ -483,7 +522,7 @@ end
 
 function Omen:OnInitialize()
 	-- Create savedvariables
-	self.db = LibStub("AceDB-3.0"):New("Omen3DB", defaults)
+	self.db = LibStub("AceDB-3.0"):New("DuowanAddon_Omen3DB", defaults)
 	self.db.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
 	self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
 	self.db.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
@@ -493,11 +532,8 @@ function Omen:OnInitialize()
 	LSM.RegisterCallback(self, "LibSharedMedia_Registered", "UpdateUsedMedia")
 
 	self:CreateFrames()
-	self:SetupOptions()
-
-	-- Modified by Sharak@BigFoot
-	-- self:RegisterEvent("PLAYER_LOGIN")
-	self:PLAYER_LOGIN()
+	self:SetupOptions()	
+	Omen:PLAYER_LOGIN();	
 end
 
 function Omen:PLAYER_LOGIN()
@@ -505,7 +541,8 @@ function Omen:PLAYER_LOGIN()
 	-- PLAYER_LOGIN, hence we don't do it in OnEnable() which triggers on
 	-- the same event as well as on every subsequent Enable()/Disable() calls.
 	-- It cannot be earlier than PLAYER_LOGIN because layout-cache.txt
-	-- is loaded just before this event fires.
+	-- is loaded just before this event fires.	
+	self:UnregisterEvent("PLAYER_LOGIN")
 	self:SetAnchors(true)
 	self.Anchor:SetAlpha(db.Alpha)
 	self.Anchor:SetFrameStrata(strsub(db.FrameStrata, 3))
@@ -514,9 +551,7 @@ function Omen:PLAYER_LOGIN()
 	self:UpdateTitleBar()
 	self:UpdateGrips()
 	self:UpdateRaidClassColors()
-	self:ClearAll()
-	self:UnregisterEvent("PLAYER_LOGIN")
-	if not db.Shown then self.Anchor:Hide() end -- Auto-show/hide will override this later if enabled
+	self:ClearAll()	
 
 	-- Optional !ClassColors addon support
 	if CUSTOM_CLASS_COLORS then
@@ -538,7 +573,8 @@ function Omen:PLAYER_LOGIN()
 			end,
 		})
 		if LDBIcon and not IsAddOnLoaded("Broker2FuBar") and not IsAddOnLoaded("FuBar") then
-			LDBIcon:Register("Omen", OmenLauncher, db.MinimapIcon)
+			--print("Omen")
+			--LDBIcon:Register("Omen", OmenLauncher, db.MinimapIcon)
 		end
 	end
 
@@ -567,9 +603,10 @@ function Omen:PLAYER_LOGIN()
 		function Omen:OnFuBarClick(button)
 			if button == "RightButton" then self:ShowConfig() else self:Toggle() end
 		end
-		self.optionsFrames["FuBar"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Omen", L["FuBar Options"], self.versionstring, "FuBar")
+		self.optionsFrames["FuBar"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions(L["Omen"], L["FuBar Options"], self.versionstring, "FuBar")
 		self:UpdateFuBarSettings()
 	end
+
 end
 
 function Omen:OnEnable()
@@ -581,7 +618,7 @@ function Omen:OnEnable()
 	self:RegisterEvent("UNIT_PET", "PARTY_MEMBERS_CHANGED")
 	self:RegisterEvent("UNIT_NAME_UPDATE", "PARTY_MEMBERS_CHANGED")
 	self:RegisterEvent("PLAYER_PET_CHANGED", "PARTY_MEMBERS_CHANGED")
-	--self:RegisterEvent("RAID_ROSTER_UPDATE", "PARTY_MEMBERS_CHANGED") -- Is this needed?
+	--self:RegisterEvent("RAID_ROSTER_UPDATE", "PARTY_MEMBERS_CHANGED")
 
 	self:RegisterEvent("PLAYER_UPDATE_RESTING", "UpdateVisible")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -594,8 +631,15 @@ function Omen:OnEnable()
 		self:RegisterEvent("UNIT_TARGET")
 	end
 
-	self:PARTY_MEMBERS_CHANGED()
 	self:PLAYER_TARGET_CHANGED()
+	--self:ScheduleTimer(function()
+		if (not db.Shown) then 
+			self.Anchor:Hide();
+			first_show = true;
+		else
+			self.Anchor:Show();
+		end
+	--end, 0.5);	
 end
 
 function Omen:OnDisable()
@@ -710,9 +754,11 @@ end
 -- For public use
 function Omen:Toggle(setting)
 	-- Don't set the manualToggle flag if "Hide Omen on 0 bars" option is active
+
 	if not (db.Autocollapse and db.CollapseHide) then
 		manualToggle = true
 	end
+	self.userHide = false;
 	return self:_toggle(setting)
 end
 
@@ -721,6 +767,8 @@ function Omen:_toggle(setting)
 	if setting == nil then
 		setting = not self.Anchor:IsShown()
 	end
+	first_show = false;
+	if (self.userHide) then return end
 	if setting then
 		self.Anchor:Show()
 	else
@@ -734,28 +782,39 @@ function Omen:UpdateVisible(event)
 
 	-- Hide if HideWhenOOC option is on, we're not in combat, and the triggering event is not
 	-- "PLAYER_REGEN_DISABLED" (we're out of combat during this event just before entering combat)
-	if t.HideWhenOOC and not InCombatLockdown() and event ~= "PLAYER_REGEN_DISABLED" then
-		self:_toggle(false)
+	
+	if t.HideWhenOOC and not InCombatLockdown() then
+	
+		if(event == "PLAYER_REGEN_DISABLED")then
+			self:_toggle(true)
+		else
+			self:_toggle(false)
+		end
+
 		return
 	end
-
+	
 	-- Check for pet|party|raid|alone
-	local show = (t.Pet and UnitExists("pet")) or
+	local show = (t.Pet and UnitExists("pet") and first_show) or
 		(t.Party and inParty) or
 		(t.Raid and inRaid) or
-		(t.Alone and not inParty and not inRaid and not UnitExists("pet"))
+		(t.Alone and not inParty and not inRaid and not UnitExists("pet") and first_show)
 
 	-- Then hide override if necessary for resting|pvp
 	local inInstance, instanceType = IsInInstance()
 	if (t.HideWhileResting and IsResting()) or (t.HideInPVP and (instanceType == "pvp" or instanceType == "arena")) then
-		show = false
+		--show = false
 	end
 
 	-- Hide if Autocollapse and Hide Omen on 0 Bars are both active and there are 0 bars.
 	if db.Autocollapse and db.CollapseHide and self.BarList.barsShown == 0 then
 		show = false
 	end
-
+	--[[
+	if((not t.HideWhenOOC) and (not event) and (not show))then		
+		show=true;
+	end
+	]]
 	self:_toggle(show)
 end
 
@@ -1295,7 +1354,11 @@ end
 function Omen:PLAYER_ENTERING_WORLD()
 	manualToggle = false
 	wipe(guidNameLookup)
-	self:PARTY_MEMBERS_CHANGED()
+	-- self:PARTY_MEMBERS_CHANGED()
+	-- Added by Duowan
+	-- Omen:Toggle(true);
+	-- Omen:UpdateVisible();
+	-- Omen:UpdateBars();
 end
 
 
@@ -1777,6 +1840,7 @@ do
 		LibStub("AceConfigRegistry-3.0"):NotifyChange("Omen")
 	end
 	local function showConfig() Omen:ShowConfig() end
+
 	local function toggle() Omen:Toggle() end
 
 	function Omen.TitleQuickMenu(self, level)
@@ -1845,21 +1909,21 @@ end
 -- Omen config stuff
 
 function Omen:SetupOptions()
-	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Omen", self.GenerateOptions)
+	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(L["Omen"], self.GenerateOptions)
 	LibStub("AceConfig-3.0"):RegisterOptionsTable("OmenSlashCommand", self.OptionsSlash, "omen")
 
 	-- The ordering here matters, it determines the order in the Blizzard Interface Options
 	local ACD3 = LibStub("AceConfigDialog-3.0")
 	self.optionsFrames = {}
-	self.optionsFrames.Omen = ACD3:AddToBlizOptions("Omen", self.versionstring, nil, "General")
-	self.optionsFrames.ShowWhen = ACD3:AddToBlizOptions("Omen", L["Show When..."], self.versionstring, "ShowWhen")
-	self.optionsFrames.ShowClasses = ACD3:AddToBlizOptions("Omen", L["Show Classes..."], self.versionstring, "ShowClasses")
-	self.optionsFrames.TitleBar = ACD3:AddToBlizOptions("Omen", L["Title Bar Settings"], self.versionstring, "TitleBar")
-	self.optionsFrames.Bars = ACD3:AddToBlizOptions("Omen", L["Bar Settings"], self.versionstring, "Bars")
-	self.optionsFrames.Warnings = ACD3:AddToBlizOptions("Omen", L["Warning Settings"], self.versionstring, "Warnings")
+	self.optionsFrames.Omen = ACD3:AddToBlizOptions(L["Omen"], self.versionstring, nil, "General")
+	self.optionsFrames.ShowWhen = ACD3:AddToBlizOptions(L["Omen"], L["Show When..."], self.versionstring, "ShowWhen")
+	self.optionsFrames.ShowClasses = ACD3:AddToBlizOptions(L["Omen"], L["Show Classes..."], self.versionstring, "ShowClasses")
+	self.optionsFrames.TitleBar = ACD3:AddToBlizOptions(L["Omen"], L["Title Bar Settings"], self.versionstring, "TitleBar")
+	self.optionsFrames.Bars = ACD3:AddToBlizOptions(L["Omen"], L["Bar Settings"], self.versionstring, "Bars")
+	self.optionsFrames.Warnings = ACD3:AddToBlizOptions(L["Omen"], L["Warning Settings"], self.versionstring, "Warnings")
 	self:RegisterModuleOptions("OmenSlashCommand", self.OptionsSlash, L["Slash Command"])
 	self:RegisterModuleOptions("Profiles", function() return LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db) end, L["Profiles"])
-	self.optionsFrames.Help = ACD3:AddToBlizOptions("Omen", L["Help File"], self.versionstring, "Help")
+	self.optionsFrames.Help = ACD3:AddToBlizOptions(L["Omen"], L["Help File"], self.versionstring, "Help")
 end
 
 function Omen:RegisterModuleOptions(name, optionTbl, displayName)
@@ -1868,7 +1932,7 @@ function Omen:RegisterModuleOptions(name, optionTbl, displayName)
 	else
 		self.Options.args[name] = (type(optionTbl) == "function") and optionTbl() or optionTbl
 	end
-	self.optionsFrames[name] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Omen", displayName, self.versionstring, name)
+	self.optionsFrames[name] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions(L["Omen"], displayName, self.versionstring, name)
 end
 
 function Omen:ShowConfig()
@@ -2320,6 +2384,7 @@ Omen.Options = {
 							set = function(info, value)
 								db.ShowWith.HideWhenOOC = value
 								manualToggle = false
+								
 								if value then
 									Omen:RegisterEvent("PLAYER_REGEN_DISABLED", "UpdateVisible")
 									Omen:RegisterEvent("PLAYER_REGEN_ENABLED", "UpdateVisible")
@@ -2327,6 +2392,7 @@ Omen.Options = {
 									Omen:UnregisterEvent("PLAYER_REGEN_DISABLED")
 									Omen:UnregisterEvent("PLAYER_REGEN_ENABLED")
 								end
+								--Omen:Toggle(not db.ShowWith.HideWhenOOC);
 								Omen:UpdateVisible()
 								Omen:UpdateBars()
 							end,

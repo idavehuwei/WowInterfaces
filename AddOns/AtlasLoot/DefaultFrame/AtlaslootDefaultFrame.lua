@@ -180,205 +180,210 @@ Constructs the main category menu from a tiered table
 ]]
 function AtlasLoot_DewdropRegister()
 	AtlasLoot_Dewdrop:Register(AtlasLootDefaultFrame_Menu,
-        'point', function(parent)
+        'point', 
+	function(parent)
             return "TOP", "BOTTOM"
         end,
-		'children', function(level, value)
-			if level == 1 then
-				if AtlasLoot_DewDropDown then
-                    for k,v in ipairs(AtlasLoot_DewDropDown) do
-                        --If a link to show a submenu
-                        if (type(v[1]) == "table") and (type(v[1][1]) == "string") then
-                            local checked = false;
-                            if v[1][3] == "Submenu" then
-                                AtlasLoot_Dewdrop:AddLine(
-                                    'text', v[1][1],
-                                    'textR', 1,
-                                    'textG', 0.82,
-                                    'textB', 0,
-                                    'func', AtlasLoot_DewDropClick,
-                                    'arg1', v[1][2],
-                                    'arg2', v[1][1],
-                                    'arg3', v[1][3],
-                                    'notCheckable', true
-                                )
-                            elseif v[1][3] == "Table" and v[1][1] ~= "" then
-                                AtlasLoot_Dewdrop:AddLine(
-                                    'text', v[1][1],
-                                    'textR', 1,
-                                    'textG', 0.82,
-                                    'textB', 0,
-                                    'func', AtlasLoot_DewDropClick,
-                                    'arg1', v[1][2],
-                                    'arg2', v[1][1],
-                                    'arg3', v[1][3],
-                                    'notCheckable', true
-                                )
-                            end
-                        else
-                            local lock=0;
-                            --If an entry linked to a subtable
-                            for i,j in pairs(v) do
-                                if lock==0 then
-                                    AtlasLoot_Dewdrop:AddLine(
-                                        'text', i,
-                                        'textR', 1,
-                                        'textG', 0.82,
-                                        'textB', 0,
-                                        'hasArrow', true,
-                                        'value', j,
-                                        'notCheckable', true
-                                    )
-                                    lock=1;
-                                end
-                            end
-                        end
-                    end
-                end
-                --Close button
+	'children', 
+	function(level, value)
+		if level == 1 then
+			if AtlasLoot_DewDropDown2 then
+				for k,v in ipairs(AtlasLoot_DewDropDown2) do
+					--If a link to show a submenu			
+					if (type(v[1]) == "table") and (type(v[1][1]) == "string") then
+						local checked = false;
+							if v[1][3] == "Submenu" then				
+								AtlasLoot_Dewdrop:AddLine(
+								    'text', v[1][1],
+								    'textR', 1,
+								    'textG', 0.82,
+								    'textB', 0,
+								    'func', AtlasLoot_DewDropClick,
+								    'arg1', v[1][2],
+								    'arg2', v[1][1],
+								    'arg3', v[1][3],
+								    'notCheckable', true
+								)
+							 elseif v[1][3] == "Table" and v[1][1] ~= "" then
+								AtlasLoot_Dewdrop:AddLine(
+								    'text', v[1][1],
+								    'textR', 1,
+								    'textG', 0.82,
+								    'textB', 0,
+								    'func', AtlasLoot_DewDropClick,
+								    'arg1', v[1][2],
+								    'arg2', v[1][1],
+								    'arg3', v[1][3],
+								    'notCheckable', true
+								)
+							end
+						else
+							local lock=0;
+							--If an entry linked to a subtable
+							for i,j in pairs(v) do
+								if lock==0 then
+								    AtlasLoot_Dewdrop:AddLine(
+									'text', i,
+									'textR', 1,
+									'textG', 0.82,
+									'textB', 0,
+									'hasArrow', true,
+									'value', j,
+									'notCheckable', true
+								    )
+									lock=1;
+								end
+							end
+						end
+					end
+				end
+
+				--Close button
 				AtlasLoot_Dewdrop:AddLine(
-					'text', AL["Close Menu"],
-                    'textR', 0,
-                    'textG', 1,
-                    'textB', 1,
+					'text', 
+					AL["Close Menu"],
+					'textR', 0,
+					'textG', 1,
+					'textB', 1,
 					'func', function() AtlasLoot_Dewdrop:Close() end,
 					'notCheckable', true
 				)
 			elseif level == 2 then
 				if value then
-                    for k,v in ipairs(value) do
-                        if type(v) == "table" then
-                            if (type(v[1]) == "table") and (type(v[1][1]) == "string") then
-                                local checked = false;
-                                --If an entry to show a submenu
-                                if v[1][3] == "Submenu" then
-                                AtlasLoot_Dewdrop:AddLine(
-                                    'text', v[1][1],
-                                    'textR', 1,
-                                    'textG', 0.82,
-                                    'textB', 0,
-                                    'func', AtlasLoot_DewDropClick,
-                                    'arg1', v[1][2],
-                                    'arg2', v[1][1],
-                                    'arg3', v[1][3],
-                                    'notCheckable', true
-                                )
-                                --An entry to show a specific loot page
-                                elseif v[1][3] == "Table" and v[1][1] == "" then
-                                    AtlasLoot_Dewdrop:AddLine(
-                                        'text', AtlasLoot_TableNames[v[1][2]][1],
-                                        'textR', 1,
-                                        'textG', 0.82,
-                                        'textB', 0,
-                                        'func', AtlasLoot_DewDropClick,
-                                        'arg1', v[1][2],
-                                        'arg2', v[1][1],
-                                        'arg3', v[1][3],
-                                        'notCheckable', true
-                                    )
-                                else
-                                    AtlasLoot_Dewdrop:AddLine(
-                                        'text', v[1][1],
-                                        'textR', 1,
-                                        'textG', 0.82,
-                                        'textB', 0,
-                                        'func', AtlasLoot_DewDropClick,
-                                        'arg1', v[1][2],
-                                        'arg2', v[1][1],
-                                        'arg3', v[1][3],
-                                        'notCheckable', true
-                                    )
-                                end
-                            else
-                                local lock=0;
-                                --Entry to link to a sub table
-                                for i,j in pairs(v) do
-                                    if lock==0 then
-                                        AtlasLoot_Dewdrop:AddLine(
-                                            'text', i,
-                                            'textR', 1,
-                                            'textG', 0.82,
-                                            'textB', 0,
-                                            'hasArrow', true,
-                                            'value', j,
-                                            'notCheckable', true
-                                        )
-                                        lock=1;
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-                AtlasLoot_Dewdrop:AddLine(
+					for k,v in ipairs(value) do
+						if type(v) == "table" then
+							if (type(v[1]) == "table") and (type(v[1][1]) == "string") then
+								local checked = false;
+								--If an entry to show a submenu
+								
+								if v[1][3] == "Submenu" then
+									AtlasLoot_Dewdrop:AddLine(
+									    'text', v[1][1],
+									    'textR', 1,
+									    'textG', 0.82,
+									    'textB', 0,
+									    'func', AtlasLoot_DewDropClick,
+									    'arg1', v[1][2],
+									    'arg2', v[1][1],
+									    'arg3', v[1][3],
+									    'notCheckable', true
+									)
+								--An entry to show a specific loot page
+								elseif v[1][3] == "Table" and v[1][1] == "" then
+								    AtlasLoot_Dewdrop:AddLine(
+									'text', AtlasLoot_TableNames[v[1][2]][1],
+									'textR', 1,
+									'textG', 0.82,
+									'textB', 0,
+									'func', AtlasLoot_DewDropClick,
+									'arg1', v[1][2],
+									'arg2', v[1][1],
+									'arg3', v[1][3],
+									'notCheckable', true
+								    )
+								else
+								    AtlasLoot_Dewdrop:AddLine(
+									'text', v[1][1],
+									'textR', 1,
+									'textG', 0.82,
+									'textB', 0,
+									'func', AtlasLoot_DewDropClick,
+									'arg1', v[1][2],
+									'arg2', v[1][1],
+									'arg3', v[1][3],
+									'notCheckable', true
+								    )
+								end
+							else
+								local lock=0;
+								--Entry to link to a sub table
+								for i,j in pairs(v) do
+									if lock==0 then
+										AtlasLoot_Dewdrop:AddLine(
+										    'text', i,
+										    'textR', 1,
+										    'textG', 0.82,
+										    'textB', 0,
+										    'hasArrow', true,
+										    'value', j,
+										    'notCheckable', true
+										)
+										lock=1;
+									end
+								end
+							end
+						end
+					end
+				end
+				AtlasLoot_Dewdrop:AddLine(
 					'text', AL["Close Menu"],
-                    'textR', 0,
-                    'textG', 1,
-                    'textB', 1,
+					'textR', 0,
+					'textG', 1,
+					'textB', 1,
 					'func', function() AtlasLoot_Dewdrop:Close() end,
 					'notCheckable', true
 				)
-            elseif level == 3 then
-                --Essentially the same as level == 2
-                if value then
-                    for k,v in pairs(value) do
-                        if type(v[1]) == "string" then
-                            local checked = false;
-                            if v[3] == "Submenu" then
-                                AtlasLoot_Dewdrop:AddLine(
-                                    'text', v[1],
-                                    'textR', 1,
-                                    'textG', 0.82,
-                                    'textB', 0,
-                                    'func', AtlasLoot_DewDropClick,
-                                    'arg1', v[2],
-                                    'arg2', v[1],
-                                    'arg3', v[3],
-                                    'notCheckable', true
-                                )
-                            elseif v[3] == "Table" and v[1] == "" then
-                                AtlasLoot_Dewdrop:AddLine(
-                                    'text', AtlasLoot_TableNames[v[2]][1],
-                                    'textR', 1,
-                                    'textG', 0.82,
-                                    'textB', 0,
-                                    'func', AtlasLoot_DewDropClick,
-                                    'arg1', v[2],
-                                    'arg2', v[1],
-                                    'arg3', v[3],
-                                    'notCheckable', true
-                                )
-                            else
-                                AtlasLoot_Dewdrop:AddLine(
-                                    'text', v[1],
-                                    'textR', 1,
-                                    'textG', 0.82,
-                                    'textB', 0,
-                                    'func', AtlasLoot_DewDropClick,
-                                    'arg1', v[2],
-                                    'arg2', v[1],
-                                    'arg3', v[3],
-                                    'notCheckable', true
-                                )
-                            end
-                        elseif type(v) == "table" then
-                            AtlasLoot_Dewdrop:AddLine(
-                                'text', k,
-                                'textR', 1,
-                                'textG', 0.82,
-                                'textB', 0,
-                                'hasArrow', true,
-                                'value', v,
-                                'notCheckable', true
-                            )
-                        end
-                    end
-                end
-                AtlasLoot_Dewdrop:AddLine(
+			elseif level == 3 then
+				--Essentially the same as level == 2
+				if value then
+					for k,v in pairs(value) do
+						if type(v[1]) == "string" then
+							local checked = false;
+							if v[3] == "Submenu" then
+								AtlasLoot_Dewdrop:AddLine(
+								    'text', v[1],
+								    'textR', 1,
+								    'textG', 0.82,
+								    'textB', 0,
+								    'func', AtlasLoot_DewDropClick,
+								    'arg1', v[2],
+								    'arg2', v[1],
+								    'arg3', v[3],
+								    'notCheckable', true
+								)
+							elseif v[3] == "Table" and v[1] == "" then
+								AtlasLoot_Dewdrop:AddLine(
+								    'text', AtlasLoot_TableNames[v[2]][1],
+								    'textR', 1,
+								    'textG', 0.82,
+								    'textB', 0,
+								    'func', AtlasLoot_DewDropClick,
+								    'arg1', v[2],
+								    'arg2', v[1],
+								    'arg3', v[3],
+								    'notCheckable', true
+								)
+							else
+								AtlasLoot_Dewdrop:AddLine(
+								    'text', v[1],
+								    'textR', 1,
+								    'textG', 0.82,
+								    'textB', 0,
+								    'func', AtlasLoot_DewDropClick,
+								    'arg1', v[2],
+								    'arg2', v[1],
+								    'arg3', v[3],
+								    'notCheckable', true
+								)
+							end
+						elseif type(v) == "table" then
+						    AtlasLoot_Dewdrop:AddLine(
+							'text', k,
+							'textR', 1,
+							'textG', 0.82,
+							'textB', 0,
+							'hasArrow', true,
+							'value', v,
+							'notCheckable', true
+						    )
+						end
+					end
+				end
+				AtlasLoot_Dewdrop:AddLine(
 					'text', AL["Close Menu"],
-                    'textR', 0,
-                    'textG', 1,
-                    'textB', 1,
+					'textR', 0,
+					'textG', 1,
+					'textB', 1,
 					'func', function() AtlasLoot_Dewdrop:Close() end,
 					'notCheckable', true
 				)
@@ -432,15 +437,15 @@ function AtlasLoot_SetNewStyle(style)
 		AtlasLootDefaultFrame_Options:SetHeight(24)
 
 		local function SetButtons(path)
-		   getglobal(path):SetNormalTexture("Interface/AchievementFrame/UI-Achievement-Category-Background")
-		   getglobal(path):SetHeight(24)
-		   getglobal(path):SetPushedTexture("Interface/AchievementFrame/UI-Achievement-Category-Background")
-		   getglobal(path):SetHeight(24)
-		   local tex = getglobal(path):GetNormalTexture();
+		   dwGetglobal(path):SetNormalTexture("Interface/AchievementFrame/UI-Achievement-Category-Background")
+		   dwGetglobal(path):SetHeight(24)
+		   dwGetglobal(path):SetPushedTexture("Interface/AchievementFrame/UI-Achievement-Category-Background")
+		   dwGetglobal(path):SetHeight(24)
+		   local tex = dwGetglobal(path):GetNormalTexture();
 		   tex:SetTexCoord(0, 0.6640625, 0, 0.8);
 		   tex:SetHeight(32)
 		   
-		   local tex2 = getglobal(path):GetPushedTexture();
+		   local tex2 = dwGetglobal(path):GetPushedTexture();
 		   tex2:SetTexCoord(0, 0.6640625, 0, 0.8);
 		   tex2:SetHeight(32)
 		end
@@ -473,15 +478,15 @@ function AtlasLoot_SetNewStyle(style)
 		AtlasLootDefaultFrame_Options:SetHeight(20)
 
 		local function SetButtons(path)
-		   getglobal(path):SetNormalTexture("Interface/Buttons/UI-Panel-Button-Up")
-		   getglobal(path):SetHeight(20)
-		   getglobal(path):SetPushedTexture("Interface/Buttons/UI-Panel-Button-Down")
-		   getglobal(path):SetHeight(20)
-		   local tex = getglobal(path):GetNormalTexture();
+		   dwGetglobal(path):SetNormalTexture("Interface/Buttons/UI-Panel-Button-Up")
+		   dwGetglobal(path):SetHeight(20)
+		   dwGetglobal(path):SetPushedTexture("Interface/Buttons/UI-Panel-Button-Down")
+		   dwGetglobal(path):SetHeight(20)
+		   local tex = dwGetglobal(path):GetNormalTexture();
 		   tex:SetTexCoord(0, 0.625, 0, 0.6875);
 		   tex:SetHeight(20)
 		   
-		   local tex2 = getglobal(path):GetPushedTexture();
+		   local tex2 = dwGetglobal(path):GetPushedTexture();
 		   tex2:SetTexCoord(0, 0.625, 0, 0.6875);
 		   tex2:SetHeight(20)
 		end

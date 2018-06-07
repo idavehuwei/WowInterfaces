@@ -22,3 +22,6 @@ L["Show the repair cost minus the 10% faction discount."] = "顯示因聲望所�
 -- Inspect.lua
 L["Inspect"] = "觀察"
 L["Show item quality when inspecting people."] = "當觀察別人時顯示物品品質."
+L["pattern"] = "^耐久度 (%d+) / (%d+)$"
+L["REPAIR_ITEM"]="修理費用"
+L["NO_REPAIR"]="無需修理"

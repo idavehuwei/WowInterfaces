@@ -86,9 +86,9 @@ function CQI:UpdateSeriesContent()
 				"textR", r, "textG", g, "textB", b,
 				"func", function()
 					if IsShiftKeyDown() then
-						if ChatFrameEditBox:IsVisible() then
+						if SELECTED_CHAT_FRAME.editBox:IsVisible() then
 							local link = string.format("[%d] |cff808080|Hquest:%s:%s|h[%s]|h|r", q.level, q.id, q.level, q.title)
-							ChatFrameEditBox:Insert(link)
+							SELECTED_CHAT_FRAME.editBox:Insert(link)
 						end
 					elseif q.start_npc and q.start_npc.loc then
 						for zone in pairs(q.start_npc.loc) do

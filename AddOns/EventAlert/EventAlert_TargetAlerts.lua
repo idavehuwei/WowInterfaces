@@ -64,10 +64,12 @@ function EventAlert_Target_Events_Frame_AddSpell()
 	if spellID ~= nil and spellID ~= "" then
 		spellID = tonumber(spellID);
 		-- Check if is a valid spellID
-		local sname = GetSpellInfo(spellID);
+		local sname, rank = GetSpellInfo(spellID);
 		if (sname ~= nil) then
 			EventAlert_Target_Events_Frame_ClearTargetSpellList();
 			if EA_TarItems[EA_playerClass][spellID] == nil then EA_TarItems[EA_playerClass][spellID] = true end;
+			if (not rank) then rank = "" end
+			--EA_SpellID_DB[sname..rank] = spellID;
 			CreateFrames_CreateSpellFrame(spellID, true);
 			CreateFrames_RefreshTargetSpellList();
 		end

@@ -3,11 +3,14 @@
 	Simplified Chinese (简体中文) localization for Grid.
 ----------------------------------------------------------------------]]
 
-if GetLocale() ~= "zhCN" then return end
-local _, ns = ...
-ns.L = {
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
+
+if (GetLocale() == "zhCN") then
+local strings_zhCN = {
 
 --{{{ GridCore
+	["Grid"] = "团队框架",
+	["Grid Configuration"] = "团队框架配置",
 	["Debugging"] = "除错",
 	["Module debugging menu."] = "除错模块配置。",
 	["Debug"] = "除错",
@@ -16,6 +19,7 @@ ns.L = {
 	["Configure Grid"] = "配置 Grid",
 	["Hide minimap icon"] = "隐藏迷你地图按钮",
 	["Grid is disabled: use '/grid standby' to enable."] = "Gird 已被禁用：使用“/grid standby”命令启用。",
+	["None"] = "无",
 --	["Enable dual profile"] = "",
 --	["Automatically swap profiles when switching talent specs."] = "",
 --	["Dual profile"] = "",
@@ -55,10 +59,6 @@ ns.L = {
 	["Options for %s indicator."] = "%s提示器的选项。",
 	["Statuses"] = "状态",
 	["Toggle status display."] = "打开/关闭显示状态。",
-	
-	["Click to open the options in a GUI window."] = "点击打开设置面板",
-	["Right-Click to open the options in a drop-down menu."] = "右键点击打开下拉菜单",
-
 
 	-- Advanced options
 	["Advanced"] = "高级",
@@ -104,7 +104,7 @@ ns.L = {
 
 --{{{ GridLayout
 	["Layout"] = "布局",
-	["Options for GridLayout."] = "Grid 布局的选项。",
+	["Options for GridLayout."] = "团队框架布局的选项。",
 
 	["Drag this tab to move Grid."] = "拖动此标签移动 Grid。",
 	["Lock Grid to hide this tab."] = "锁定 Grid 隐藏此标签。",
@@ -387,5 +387,19 @@ ns.L = {
 	["Voice Chat"] = "语音",
 	["Talking"] = "正在说话",
 --}}}
-
+	["Font Outline"] = "字体描边",
+	["Adjust the font outline."] = "调整字体描边.",
+	["Thin"] = "细",
+	["Thick"] = "粗",
+	["By Class 10"] = "By Class 10",
+	["By Class 25"] = "By Class 25",	
+	["Click to open the options in a GUI window."] = "点击开启图形配置界面.",
+	["Right-Click to open the options in a drop-down menu."] = "右键点击打开下拉配置菜单.",
+	["Enable dual profile"] = "啟用雙重配置方案",
+	["Automatically swap profiles when switching talent specs."] = "当切换天赋时自动使用指定的配置方案.",
+	["Dual profile"] = "雙重配置方案",
+	["Select the profile to swap with the current profile when switching talent specs."] = "指定切换到相应天赋时的配置方案.",
 }
+
+L:RegisterTranslations("zhCN", function() return strings_zhCN end)
+end

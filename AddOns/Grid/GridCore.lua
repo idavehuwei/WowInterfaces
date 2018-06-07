@@ -2,15 +2,7 @@
 	GridCore.lua
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-
-if not ns.L then ns.L = { } end
-local L = setmetatable(ns.L, {
-	__index = function(t, k)
-		t[k] = k
-		return k
-	end
-})
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local waterfall = AceLibrary:HasInstance("Waterfall-1.0") and AceLibrary("Waterfall-1.0")
 
@@ -51,11 +43,19 @@ if waterfall then
 		desc = L["Configure Grid"],
 		guiHidden = true,
 		func = function()
-				waterfall:Open("Grid")
+				waterfall:Open(L["Grid"])
 		end,
 	}
 
-	waterfall:Register("Grid", "aceOptions", Grid.options, "title", "Grid Configuration")
+	waterfall:Register(L["Grid"], "aceOptions", Grid.options, "title", L["Grid Configuration"])
+
+	function Grid:OnClick ()
+		if waterfall:IsOpen(L["Grid"]) then
+			waterfall:Close(L["Grid"])
+		else
+			waterfall:Open(L["Grid"])
+		end
+	end
 end
 
 --}}}
@@ -231,43 +231,18 @@ end
 
 function Grid:OnEnable()
 	self:RegisterEvent("ADDON_LOADED")
-	-- Removed by Sharak@BigFoot
-	-- self:EnableModules()
+
+	--self:EnableModules()
+
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 
-	self:TriggerEvent("Grid_Enabled")
+	--self:TriggerEvent("Grid_Enabled")
 
 	activeTalentGroup = GetActiveTalentGroup()
 	self:CheckDualSpecState()
 	self:RegisterEvent("PLAYER_TALENT_UPDATE")
-	
-	-- Removed by Sharak@BigFoot
-	-- self:TriggerEvent("Grid_Enabled")
-
-	-- Added by Sharak@BigFoot
-	Grid:Disable();
-end
-
--- Added by Sharak@BigFoot
-function Grid:Enable()
-	self:Debug("Enable")
-	self:EnableModules()
-	self:TriggerEvent("Grid_Enabled")
-
-	self:PLAYER_ENTERING_WORLD()
-
-	local unit
-	for unit in GridRoster:IterateRoster(false) do
-		GridStatus:TriggerEvent("Grid_UnitChanged", unit.name, unit.unitid)
-	end
-end
-
-function Grid:Disable()
-	self:Debug("Disable")
-	self:TriggerEvent("Grid_Disabled")
-	self:DisableModules()
 end
 
 StaticPopupDialogs["GRID_DISABLED"] = {
@@ -281,8 +256,8 @@ function Grid:OnDisable()
 	self:Debug("OnDisable")
 	StaticPopup_Show("GRID_DISABLED")
 	self:Print(L["Grid is disabled: use '/grid standby' to enable."])
-	self:TriggerEvent("Grid_Disabled")
-	self:DisableModules()
+	--self:TriggerEvent("Grid_Disabled")
+	--self:DisableModules()
 end
 
 function Grid:OnProfileEnable()
@@ -395,7 +370,7 @@ function Grid:ADDON_LOADED(addon)
 	local name = GetAddOnMetadata(addon, "X-".. self.name .. "Module")
 	if not name then return end
 
-	local module = getglobal(name)
+	local module = dwGetglobal(name)
 	if not module or not module.name then return end
 
 	module.external = true
@@ -404,3 +379,32 @@ function Grid:ADDON_LOADED(addon)
 end
 
 --}}}
+-----------
+-- Added by dugu
+function Grid:Toggle(switch)
+	if (switch) then		
+		self:EnableModules()
+		self:TriggerEvent("Grid_Enabled")
+		--[[
+		self:PLAYER_ENTERING_WORLD();
+		
+		local unit
+		local GridRoster = Grid:GetModule("GridRoster")
+		local GridStatus =Grid:GetModule("GridStatus")
+		if (GridRoster) then
+			for unit in GridRoster:IterateRoster(false) do
+				GridStatus:TriggerEvent("Grid_UnitChanged", unit.name, unit.unitid)
+			end
+		end
+		]]
+	else		
+		self:TriggerEvent("Grid_Disabled")
+		self:DisableModules()
+	end	
+end
+
+function Grid_OpenConfig()
+	if (waterfall) then
+		waterfall:Open(L["Grid"]);
+	end	
+end

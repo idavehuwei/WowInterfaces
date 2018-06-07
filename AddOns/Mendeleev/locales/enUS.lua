@@ -1,5 +1,5 @@
-﻿local L = LibStub("AceLocale-3.0"):NewLocale("Mendeleev", "enUS", true)
-
+local L = LibStub("AceLocale-3.0"):NewLocale("Mendeleev", "enUS", true)
+L["Mendeleev"] = true;
 L["Toggle sets."] = true
 L["Toggle sets from showing information in the tooltip."] = true
 L["Toggle sets in the %s category."] = true
@@ -85,10 +85,6 @@ L["Crusade Card"] = true
 L["Vengeance Card"] = true
 L["Madness Card"] = true
 L["Wrath Card"] = true
-L["Illusion Card"] = true
-L["Berserker! Card"] = true
-L["Greatness Card"] = true
-L["Death Card"] = true
 
 -- Sources
 L["Drop"] = true
@@ -101,9 +97,6 @@ L["LBRS"] = true
 	
 L["Heroic"] = true
 	
-L["(10 Man)"] = true
-L["(25 Man)"] = true
-	
 -- Tier Sets
 L["Tier 1 Set"] = true
 L["Tier 2 Set"] = true
@@ -114,12 +107,6 @@ L["Tier 5 Set"] = true
 L["Tier 6 Set"] = true
 L["Tier 7.10 Set"] = true
 L["Tier 7.25 Set"] = true
-L["Tier 8.10 Set"] = true
-L["Tier 8.25 Set"] = true
-L["Tier 9.10 Set"] = true
-L["Tier 9.25 Set"] = true
-L["Tier 10.10 Set"] = true
-L["Tier 10.25 Set"] = true
 	
 -- Arena Sets
 L["Arena - Season 1 Set"] = true
@@ -129,9 +116,6 @@ L["Arena - Season 4 Set"] = true
 L["Arena - Season 5 Tier 1 Set"] = true
 L["Arena - Season 5 Tier 2 Set"] = true
 L["Arena - Season 5 Tier 3 Set"] = true
-L["Arena - Season 6 Set"] = true
-L["Arena - Season 7 Set"] = true
-L["Arena - Season 8 Set"] = true
 	
 L["%d%% alc/vol (%d proof)"] = true
 L[" (%d tickets)"] = true
@@ -152,11 +136,11 @@ L["Adamantite Deposit"] = true
 L["Fel Iron Deposit"] = true
 L["Khorium Vein"] = true
 L["Rich Adamantite Deposit"] = true
-L["Cobalt Deposit"] = true
-L["Rich Cobalt Deposit"] = true
-L["Saronite Deposit"] = true
-L["Rich Saronite Deposit"] = true
-L["Titanium Vein"] = true
+L["Cobalt Node"] = true
+L["Rich Cobalt Node"] = true
+L["Saronite Node"] = true
+L["Rich Saronite Node"] = true
+L["Titanium Node"] = true
 
 -- Categories
 L["CurrencyItems"] = true
@@ -169,10 +153,23 @@ L["Misc"] = true
 L["QuestMats"] = true
 L["Reagent"] = true
 L["Tradeskill"] = true
-	
+L['Drop:'] = true
 L["Trash Mobs"] = true
-L["Gunship Battle"] = true
 
+L['Loot'] = true
+L['Normal Loot'] = true
+L['Heroic Loot'] = true
+L['Normal 10-man Loot'] = true
+L['Normal 25-man Loot'] = true
+L['Heroic 10-man Loot'] = true
+L['Heroic 25-man Loot'] = true
+L["Non Boss Drops"] = true
+L['N'] = true
+L['H'] = true
+L['N10'] = true
+L['N25'] = true
+L['H10'] = true
+L['H25'] = true
 -- Timed Reward Chest
 L["Timed Reward Chest1"] = true
 L["Timed Reward Chest2"] = true
@@ -185,3 +182,12 @@ L["Toggle limiting the 'used in' tree to items the char can craft."] = true
 L["Badge of Justice"] = true
 L["G'eras"] = true
 L["Smith Hauthaa"] = true
+
+L["Poor"] = true
+L["Common"] = true
+L["Uncommon"] = true
+L["Rare"] = true
+L["Epic"] = true
+L["Legendary"] = true
+L["Artifact"] = true
+L["Heirloom"] = true

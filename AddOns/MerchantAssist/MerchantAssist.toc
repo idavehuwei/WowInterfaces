@@ -1,0 +1,14 @@
+## Interface: 30300
+## Title: [Duowan] Merchant Assist
+## Notes: when dialog with NPC,then Auto Repair your equip.
+## Title-zhCN: [多玩] 商业助手 MerchantAssist
+## Notes-zhCN: 与NPC对话时, 自动修理身上的装备, 自动售卖垃圾物品等.
+## Title-zhTW: [多玩] 商業助手 MerchantAssist
+## Notes-zhTW: 與NPC對話時,自動修理身上的裝備, 自動販賣垃圾物品等.
+## Author: dugu
+## SavedVariables: MerchatAssistDB, MerchatAssistAutoBuy
+## X-DuowanAddon: 商业物品
+## Dependencies: Duowan
+## X-Revision: Duowan
+
+MerchantAssist.xml

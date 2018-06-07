@@ -1,7 +1,7 @@
 --[[
     This file is part of Decursive.
     
-    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
+    Decursive (v 2.5.1-12-gb39554a) add-on for World of Warcraft UI
     Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/?to=decursive.php )
 
     This is the continued work of the original Decursive (v1.9.4) by Quu
@@ -41,8 +41,9 @@
 --
 --]=]
 
+local addonName, T = ...;
 -- big ugly scary fatal error message display function {{{
-if not DcrFatalError then
+if not T._FatalError then
 -- the beautiful error popup : {{{ -
 StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     text = "|cFFFF0000Decursive Error:|r\n%s",
@@ -55,29 +56,36 @@ StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     hideOnEscape = 1,
     showAlert = 1,
     }; -- }}}
-DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
+T._FatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
 end
 -- }}}
-if not DcrLoadedFiles or not DcrLoadedFiles["enUS.lua"] then
-    if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (enUS.lua not loaded)"); end;
-    DcrCorrupted = true;
+if not T._LoadedFiles or not T._LoadedFiles["enUS.lua"] then
+    if not DecursiveInstallCorrupted then T._FatalError("Decursive installation is corrupted! (enUS.lua not loaded)"); end;
+    DecursiveInstallCorrupted = true;
     return;
 end
 
 local L = LibStub("AceLocale-3.0"):NewLocale("Decursive", "zhTW");
 
 if not L then
-    DcrLoadedFiles["zhTW.lua"] = "2.4.5-3-g6a02387";
+    T._LoadedFiles["zhTW.lua"] = "2.5.1-12-gb39554a";
     return;
-end;
+end
 
+BINDING_HEADER_DECURSIVE = "一鍵驅散";
 L["ABOLISH_CHECK"] = "施法前檢查是否需要淨化"
+L["ABOUT_AUTHOREMAIL"] = "作者 E-Mail"
+L["ABOUT_CREDITS"] = "貢獻者"
+L["ABOUT_LICENSE"] = "許可"
+L["ABOUT_NOTES"] = "當單獨、小隊和團隊時清除有害狀態，並可使用高級過濾和優先等級系統。"
+L["ABOUT_OFFICIALWEBSITE"] = "官方網站"
+L["ABOUT_SHAREDLIBS"] = "共享庫"
 L["ABSENT"] = "不存在 (%s)"
 L["AFFLICTEDBY"] = "受 %s 影響"
 L["ALT"] = "ALt"
 L["AMOUNT_AFFLIC"] = "即時清單顯示人數: "
 L["ANCHOR"] = "Decursive 文字定位點"
-L["BINDING_NAME_DCRMUFSHOWHIDE"] = "顯示或隱藏 micro-unit frames"
+L["BINDING_NAME_DCRMUFSHOWHIDE"] = "顯示或隱藏 MUF"
 L["BINDING_NAME_DCRPRADD"] = "添加目標至優先名單"
 L["BINDING_NAME_DCRPRCLEAR"] = "清空優先名單"
 L["BINDING_NAME_DCRPRLIST"] = "顯示優先名單至聊天視窗"
@@ -105,28 +113,31 @@ L["DEBUG_REPORT_HEADER"] = [=[|cFF11FF33請報告此視窗的內容給 Archarodi
 |cFF009999（使用 CTRL+A 選擇所有 CTRL+C 復制文本到剪切板）|r
 如果發現 Decursive 任何奇怪的行為也一并報告。]=]
 L["DECURSIVE_DEBUG_REPORT"] = "**** |cFFFF0000Decursive 除錯報告|r ****"
-L["DECURSIVE_DEBUG_REPORT_NOTIFY"] = "一個出錯報告可用！輸入 |cFFFF0000/dcr report|r 查看"
+L["DECURSIVE_DEBUG_REPORT_NOTIFY"] = [=[一個出錯報告可用！
+輸入 |cFFFF0000/dcr general report|r 查看]=]
 L["DECURSIVE_DEBUG_REPORT_SHOW"] = "除錯報告可用！"
 L["DECURSIVE_DEBUG_REPORT_SHOW_DESC"] = "顯示作者需要看到的除錯報告…"
 L["DEFAULT_MACROKEY"] = "NONE"
 L["DEV_VERSION_ALERT"] = [=[您正在使用的是開發版本的 Decursive 。
 
-如果不想參加測試新功能與修復，得到遊戲中的除錯報告，發送問題給作者之後“不要使用此版本”並從 Curse.com下載最新的“穩定”版本。
+如果不想參加測試新功能與修復，得到遊戲中的除錯報告后發送問題給作者，請“不要使用此版本”並從 curse.com 和 wowace.com 下載最新的“穩定”版本。
 
 這條消息只將在版本更新中顯示一次
 
 使用開發版本 Decursive 的玩家開始遊戲顯示此提示。]=]
 L["DEV_VERSION_EXPIRED"] = [=[此開發版 Decursive 已過期。
-請從 CURSE.COM 下載最新的開發版或使用當前穩定版。
-謝謝！ ^_^
-關於：當用戶使用過期的開發版 Decursive 登錄時每次顯示。]=]
-L["DISABLEWARNING"] = [=[Decursive已停用!
+請從 CURSE.COM 和 WOWACE.COM 下載最新的開發版或使用當前穩定版。謝謝！ ^_^
+此提示每兩天顯示一次。
+
+說明：當用戶使用過期的開發版 Decursive 登錄時每次顯示。]=]
+L["DEWDROPISGONE"] = "沒有等同于 Ace3 的 DewDrop。Alt+點擊右鍵打開選項面板。"
+L["DISABLEWARNING"] = [=[Decursive 已停用！
 
 如欲啟用, 輸入 |cFFFFAA44/DCR ENABLE|r]=]
 L["DISEASE"] = "疾病"
 L["DONOT_BL_PRIO"] = "不添加優先名單的玩家到排除名單"
 L["FAILEDCAST"] = "|cFF22FFFF%s %s|r |cFFAA0000對|r %s釋放失敗\\n|cFF00AAAA%s|r"
-L["FOCUSUNIT"] = "監控目標"
+L["FOCUSUNIT"] = "監控單位"
 L["FUBARMENU"] = "Fubar 選單"
 L["FUBARMENU_DESC"] = "Fubar 圖示相關設定"
 L["GLOR1"] = "紀念 Glorfindal"
@@ -137,8 +148,9 @@ L["GLOR5"] = "他將永遠被我們所銘記。"
 L["HANDLEHELP"] = "拖曳移動所有的 Micro-UnitFrames (MUFs)"
 L["HIDE_LIVELIST"] = "隱藏即時清單"
 L["HIDE_MAIN"] = "隱藏 Decursive 視窗"
+L["HIDESHOW_BUTTONS"] = "顯示/隱藏按鈕"
 L["HLP_LEFTCLICK"] = "左-鍵"
-L["HLP_LL_ONCLICK_TEXT"] = "你不可以用點擊即時選單的方式解魔(因為相關的程式介面已經被封鎖)，請用微縮圖像以打地鼠的方式解魔，如果你沒看見微縮圖像的話，請先檢察 Decursive 的設定。"
+L["HLP_LL_ONCLICK_TEXT"] = "你不可以用點擊即時選單的方式解魔（因為相關的程式介面已經被封鎖），請用微縮圖像以打地鼠的方式解魔，如果你沒看見微縮圖像的話，請先檢察 Decursive 的設定。" -- Needs review
 L["HLP_MIDDLECLICK"] = "中-鍵"
 L["HLP_NOTHINGTOCURE"] = "沒有可處理的負面效果！"
 L["HLP_RIGHTCLICK"] = "右-鍵"
@@ -160,8 +172,9 @@ L["MAGIC"] = "魔法"
 L["MAGICCHARMED"] = "魔法誘惑"
 L["MISSINGUNIT"] = "找不到的單位"
 L["NORMAL"] = "一般"
-L["NOSPELL"] = "沒有適合的法術。"
+L["NOSPELL"] = "沒有可用法術"
 L["OPT_ABOLISHCHECK_DESC"] = "檢查玩家身上是否有淨化法術在運作。"
+L["OPT_ABOUT"] = "關於"
 L["OPT_ADDDEBUFF"] = "添加一負面效果到清單中"
 L["OPT_ADDDEBUFF_DESC"] = "將一個新的負面效果新增到清單中。"
 L["OPT_ADDDEBUFFFHIST"] = "新增一個最近受到的負面效果"
@@ -183,6 +196,8 @@ L["OPT_CENTERTRANSP"] = "中央透明度"
 L["OPT_CENTERTRANSP_DESC"] = "設定中間色塊的透明度"
 L["OPT_CHARMEDCHECK_DESC"] = "選取後你可以看見並處理被媚惑的玩家。"
 L["OPT_CHATFRAME_DESC"] = "顯示到預設的聊天視窗。"
+L["OPT_CHECKOTHERPLAYERS"] = "檢查其他玩家"
+L["OPT_CHECKOTHERPLAYERS_DESC"] = "顯示當前小隊或團隊玩家 Decursive 版本（不能顯示 Decursive 2.4.6之前的版本）。"
 L["OPT_CREATE_VIRTUAL_DEBUFF"] = "建立虛擬負面效果測試"
 L["OPT_CREATE_VIRTUAL_DEBUFF_DESC"] = "讓你看到當負面效果發生時的情形"
 L["OPT_CUREPETS_DESC"] = "寵物會被顯示出來也可淨化。"
@@ -192,7 +207,7 @@ L["OPT_CURINGOPTIONS_EXPLANATION"] = [=[
 選擇你想要治療的傷害類型，未經檢查的類型將被 Decursive 完全忽略。
 
 綠色數字確定優先的傷害。這一優先事項將影響幾方面：
-- 如果一個玩家獲得許多類型的減益效果，Decursive將優先顯示。
+- 如果一個玩家獲得許多類型的減益效果，Decursive 將優先顯示。
 - 滑鼠按鈕點擊將治療減益（第一法術是左鍵點擊，第二法術是右鍵點擊，等等…）
 
 所有這一切的說明文檔（請見）：
@@ -212,6 +227,7 @@ L["OPT_DISPLAYOPTIONS"] = "顯示設定"
 L["OPT_DONOTBLPRIO_DESC"] = "設定到優先清單的玩家不會被移入排除清單中。"
 L["OPT_ENABLEDEBUG"] = "啟用除錯"
 L["OPT_ENABLEDEBUG_DESC"] = "啟用除錯輸出"
+L["OPT_ENABLEDECURSIVE"] = "啟用 Decursive"
 L["OPT_FILTEROUTCLASSES_FOR_X"] = "在戰鬥中指定的職業%q將被忽略。"
 L["OPT_GENERAL"] = "一般選項"
 L["OPT_GROWDIRECTION"] = "反向顯示 MUFs"
@@ -223,14 +239,16 @@ L["OPT_HIDEMFS_NEVER"] = "從不"
 L["OPT_HIDEMFS_NEVER_DESC"] = "從不自動隱藏 MUF 視窗"
 L["OPT_HIDEMFS_SOLO"] = "單獨"
 L["OPT_HIDEMFS_SOLO_DESC"] = "當不在團隊中或隊伍中的時候隱藏 MUF 視窗"
+L["OPT_HIDEMUFSHANDLE"] = "隱藏 MUF 表頭"
+L["OPT_HIDEMUFSHANDLE_DESC"] = "隱藏微單元面板（MUF）表頭並禁止移動。"
 L["OPT_IGNORESTEALTHED_DESC"] = "忽略潛行的玩家。"
 L["OPTION_MENU"] = "Decursive 選項"
 L["OPT_LIVELIST"] = "即時清單"
 L["OPT_LIVELIST_DESC"] = "即時清單設定選項。"
 L["OPT_LLALPHA"] = "實況清單的透明度"
 L["OPT_LLALPHA_DESC"] = "變更 Decursive 工作條及實況清單的透明度(工作條必須設定為顯示)"
-L["OPT_LLSCALE"] = "設置即時列表縮放比例"
-L["OPT_LLSCALE_DESC"] = "設置狀態條以及其即時列表的大小（狀態條必須顯示）"
+L["OPT_LLSCALE"] = "縮放即時列表"
+L["OPT_LLSCALE_DESC"] = "設定 Decursive 狀態條以及其即時列表的大小（狀態條必須顯示）"
 L["OPT_LVONLYINRANGE"] = "只顯示法術有效範圍內的目標"
 L["OPT_LVONLYINRANGE_DESC"] = "即時清單只顯示淨化法術有效範圍內的目標。"
 L["OPT_MACROBIND"] = "設定巨集按鍵"
@@ -256,10 +274,16 @@ L["OPT_MFSCALE"] = "micro-unit-frames 大小"
 L["OPT_MFSCALE_DESC"] = "設定螢幕上 micro-unit-frames 的大小。"
 L["OPT_MFSETTINGS"] = "Micro Unit Frame 設定選項"
 L["OPT_MFSETTINGS_DESC"] = "設定 MUF 視窗以符合你的需求。"
+L["OPT_MUFFOCUSBUTTON"] = "監控按鈕："
+L["OPT_MUFMOUSEBUTTONS"] = "滑鼠按鈕"
+L["OPT_MUFMOUSEBUTTONS_DESC"] = "設定每個 MUF 滑鼠按鈕的警報顏色。"
 L["OPT_MUFSCOLORS"] = "顏色"
 L["OPT_MUFSCOLORS_DESC"] = "變更 MUFs 的顏色"
+L["OPT_MUFTARGETBUTTON"] = "目標按鈕："
 L["OPT_NOKEYWARN"] = "當沒有設定按鍵時警告"
 L["OPT_NOKEYWARN_DESC"] = "當巨集按鍵沒有設定時顯示警告"
+L["OPT_NOSTARTMESSAGES"] = "禁用歡迎訊息"
+L["OPT_NOSTARTMESSAGES_DESC"] = "移除每次登陸時在聊天框體顯示的三個 Decursive 訊息。"
 L["OPT_PLAYSOUND_DESC"] = "有玩家中了負面效果時發出音效。"
 L["OPT_POISONCHECK_DESC"] = "選取後你可以看見並清除中毒的玩家。"
 L["OPT_PRINT_CUSTOM_DESC"] = "顯示到自訂的聊天視窗。"
@@ -277,6 +301,8 @@ L["OPT_REMOVETHISDEBUFF"] = "移除此負面效果"
 L["OPT_REMOVETHISDEBUFF_DESC"] = "將 '%s' 從忽略清單移除。"
 L["OPT_RESETDEBUFF"] = "重置此負面效果"
 L["OPT_RESETDTDCRDEFAULT"] = "重置 '%s' 為 Decursive 預設值。"
+L["OPT_RESETMUFMOUSEBUTTONS"] = "重置"
+L["OPT_RESETMUFMOUSEBUTTONS_DESC"] = "重置滑鼠按鈕指派為默認。"
 L["OPT_RESETOPTIONS"] = "重置為原始設定"
 L["OPT_RESETOPTIONS_DESC"] = "回復目前的設定檔為原始設定"
 L["OPT_RESTPROFILECONF"] = [=[你確定要重置
@@ -288,19 +314,25 @@ L["OPT_SHOWBORDER"] = "顯示職業顏色邊框"
 L["OPT_SHOWBORDER_DESC"] = "MUFs 邊框會顯示出該玩家的職業代表顏色。"
 L["OPT_SHOWCHRONO"] = "顯示負面效果持續時間"
 L["OPT_SHOWCHRONO_DESC"] = "在 MUFs 上顯示負面效果持續的秒數"
+L["OPT_SHOWCHRONOTIMElEFT"] = "剩餘時間"
+L["OPT_SHOWCHRONOTIMElEFT_DESC"] = "顯示剩餘時間而不是消耗時間。"
 L["OPT_SHOWHELP"] = "顯示小提示"
 L["OPT_SHOWHELP_DESC"] = "當滑鼠移到一個 micro-unit-frame 上時顯示小提示。"
 L["OPT_SHOWMFS"] = "在螢幕上顯示 micro units Frame (MUF)"
 L["OPT_SHOWMFS_DESC"] = "如果你要在螢幕上按按鍵清除就必須點選這個設定。"
 L["OPT_SHOWMINIMAPICON"] = "迷你地圖圖標"
-L["OPT_SHOWMINIMAPICON_DESC"] = "啟用迷你地圖小圖標"
-L["OPT_SHOW_STEALTH_STATUS"] = [=[顯示潛行狀態
-使 MUFs 隱形狀態顯示的選項]=]
+L["OPT_SHOWMINIMAPICON_DESC"] = "啟用迷你地圖小圖示。"
+L["OPT_SHOW_STEALTH_STATUS"] = "顯示潛行狀態"
 L["OPT_SHOW_STEALTH_STATUS_DESC"] = [=[當玩家前行時，他的 MUF 將有一個特殊的顏色
 描述 SHOW_STEALTH_STATUS 選項]=]
 L["OPT_SHOWTOOLTIP_DESC"] = "在即時清單跟 MUFs 上顯示負面效果的小提示。"
 L["OPT_STICKTORIGHT"] = "將 MUF 視窗向右對齊"
 L["OPT_STICKTORIGHT_DESC"] = "設定這個選項將會使 MUF 視窗由右邊向左邊成長"
+L["OPT_TESTLAYOUT"] = "測試布局"
+L["OPT_TESTLAYOUT_DESC"] = [=[新建測試單位以測試顯示布局。
+（點擊後稍等片刻）]=]
+L["OPT_TESTLAYOUTUNUM"] = "單位數字"
+L["OPT_TESTLAYOUTUNUM_DESC"] = "設定新建測試單位數字。"
 L["OPT_TIECENTERANDBORDER"] = "固定 MUF 中央與邊框的透明度"
 L["OPT_TIECENTERANDBORDER_OPT"] = "選取時邊界的透明度固定為中央的一半。"
 L["OPT_TIE_LIVELIST_DESC"] = "即時清單顯示與否取決於 \"Decursive\" 工作條是否顯示。"
@@ -348,4 +380,4 @@ L["UNITSTATUS"] = "玩家狀態: "
 
 
 
-DcrLoadedFiles["zhTW.lua"] = "2.4.5-3-g6a02387";
+T._LoadedFiles["zhTW.lua"] = "2.5.1-12-gb39554a";

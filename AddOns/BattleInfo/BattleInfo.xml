@@ -1,0 +1,226 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Frame name="BIQuickSort" parent="BattlefieldFrame" frameStrata="DIALOG">
+		<Size>
+			<AbsDimension x="200" y="30"/>
+		</Size>
+			<Anchors>
+			<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT">
+				<Offset>
+							<AbsDimension x="205" y="155"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer>
+			<FontString name="$parentText" inherits="GameFontNormal" justifyH="left" justifyV="top" outline = "NORMAL" text="BATTLEINFO_LOACALE.QUICKJOINTEXT" >
+				<Size>
+					<AbsDimension x="250" y="30"/>
+				</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="-180" y="-30"/>
+							</Offset>
+						</Anchor>
+					</Anchors> 
+			</FontString>
+			</Layer>
+		</Layers>	
+		<Scripts>
+			<OnKeyUp>
+				BattleInfo_OnKey(arg1)
+			</OnKeyUp>
+			<OnEvent>
+				BattleInfo_OnKey()
+			</OnEvent>
+			<OnLoad>
+				self:RegisterEvent("BATTLEFIELDS_SHOW")
+				dwGetglobal(self:GetName() .. "Text"):SetText(BATTLEINFO_LOACALE.QUICKJOINTEXT);
+			</OnLoad>
+		</Scripts>	
+		<Frames>
+			<GameTooltip name="$parentTip" frameStrata="TOOLTIP" inherits="GameTooltipTemplate" hidden="false">
+			</GameTooltip>		
+			<Button name="$parentJoin">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="5" y="-30"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="50" y="14"></AbsDimension>
+				</Size>			
+			</Button>
+			<Button name="$parentScan" hidden="false" inherits="GameMenuButtonTemplate" text="BATTLEINFO_LOACALE.SEARCHBUTTON">
+				<Size>
+					<AbsDimension x="75" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentJoin" relativePoint="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetText(BATTLEINFO_LOACALE.SEARCHBUTTON);
+					</OnLoad>
+					<OnClick>
+						BattleInfo_SCan(self)							
+					</OnClick>			
+				</Scripts>
+			</Button>
+	     <Button name="$parentShowHide">
+	        <Size>
+	           <AbsDimension x="24" y="24" />
+	        </Size>
+	        <Anchors>
+	           <Anchor point="TOPLEFT" relativeTo="$parentScan" relativePoint="TOPRIGHT">
+	              <Offset>
+	                 <AbsDimension x="-25" y="26" />
+	              </Offset>
+	           </Anchor>
+	        </Anchors>
+	        <Scripts>
+	           <OnClick>
+	              BattleInfo_QsShowHide()
+	           </OnClick>
+	        </Scripts>
+	        <HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD" />
+	        <NormalFont inherits="GameFontNormal" />
+	        <PushedTextOffset>
+	           <AbsDimension x="0" y="0" />
+	        </PushedTextOffset>
+	     </Button>
+		</Frames>
+		<Scripts>
+			<OnShow>
+				if Skinner then
+					this:SetPoint("TOPLEFT","BattlefieldFrame","BOTTOMLEFT",200,90)
+				end
+			</OnShow>
+		</Scripts>
+	</Frame>
+
+	<Frame name="BattleInfoParent" parent="UIParent" movable="true" toplevel="true" enableMouse="true">
+		<Size>
+			<AbsDimension x="200" y="20"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOP">
+				<Offset>
+					<AbsDimension x="140" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				this:RegisterEvent("VARIABLES_LOADED")
+			</OnLoad>
+			<OnEvent>
+				BattleInfo_OnLoad(self)
+			</OnEvent>
+		</Scripts>
+	</Frame>
+
+	<Button name="BattleInfoTemplate" virtual="true" enableMouse="true">
+		<Size>
+			<AbsDimension x="40" y="10"/>
+		</Size>
+		<Layers>
+			<Layer level="BORDER">
+				<FontString name="$parentText" inherits="GameFontNormalSmall" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="40" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>	
+				<Scripts>
+					<OnMouseDown>
+						if ( arg1 == "LeftButton" )and (IsControlKeyDown() ) then
+							BattleInfoParent:StartMoving()
+						elseif ( arg1 == "RightButton" )and (IsControlKeyDown() ) then
+							BattleInfo_Reset()
+							BattleInfoParent:ClearAllPoints()
+							BattleInfoParent:SetPoint("TOP", -5,-15)
+						elseif (arg1 == "LeftButton") and ( IsAltKeyDown()) then
+							BattleInfo_ReportTo("BATTLEGROUND")
+						elseif (arg1 == "RightButton") and ( IsAltKeyDown()) then
+							if (UnitInRaid("player")) then
+								BattleInfo_ReportTo("RAID")
+							else
+								BattleInfo_ReportTo("PARTY")
+							end
+						end
+						
+					</OnMouseDown>
+					<OnMouseUp>
+						BattleInfoParent:StopMovingOrSizing()
+					</OnMouseUp>
+					<OnHide>
+						BattleInfoParent:StopMovingOrSizing()
+					</OnHide>
+					<OnEnter>
+						GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
+						GameTooltip:SetText(BATTLEINFO_LOACALE.TOOLTIP);
+					</OnEnter>
+					<OnLeave>
+						GameTooltip:Hide()
+					</OnLeave>
+				</Scripts>
+
+			<HighlightTexture file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar" alphaMode="ADD">
+			<Size>
+				<AbsDimension x="20" y="10"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOP">
+					<Offset>
+						<AbsDimension x="-10" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</HighlightTexture>
+
+
+	</Button>
+
+	<Button name="BattleInfo1" inherits="BattleInfoTemplate" parent="WorldStateAlwaysUpFrame">
+	</Button>
+
+	<Button name="BattleInfo0" inherits="BattleInfoTemplate" parent="WorldStateAlwaysUpFrame" >
+	</Button>
+
+	<Button name="BattleInfoSH" parent="WorldStateAlwaysUpFrame">
+		<Size>
+			<AbsDimension x="40" y="10"/>
+		</Size>
+		<Layers>
+			<Layer level="BORDER">
+				<FontString name="$parentText" inherits="GameFontNormalSmall" justifyH="LEFT" outline = "NORMAL">
+					<Size>
+						<AbsDimension x="200" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>		
+	</Button>	
+</Ui>

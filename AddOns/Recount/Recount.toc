@@ -1,11 +1,12 @@
 ﻿## Interface: 30300
 ## Title: Recount
-## Title-zhCN: |cffffe00a<|r|cffff7d0aRecount|r|cffffe00a>|r |cff0055FF伤害统计|r
-## Title-zhTW: |cffffe00a<|r|cffff7d0aRecount|r|cffffe00a>|r |cff0055FF傷害統計|r
-## Notes: |cffbc8f8fRecords Damage and Healing for Graph Based Display.|r
-## Notes-zhCN: |cff00ff00Recount|r                                             |cffbc8f8f图形化显示的伤害/治疗统计插件。|r
-## Notes-zhTW: |cff00ff00Recount|r                                             |cffbc8f8f圖形化顯示的傷害/治療統計插件。|r
-## Author: Cryect,Elsia
+## Notes: Records Damage and Healing for Graph Based Display
+## Title-zhCN: [多玩] 伤害统计 Recount
+## Notes-zhCN: 伤害/治疗技能的统计插件,可以统计个人和团队.|N|CFF0099FF需要基础函数库|R
+## Title-zhTW: [多玩] 傷害統計 Recount
+## Notes-zhTW: 傷害/治療技能的統計插件,可以統計個人和團隊.|N|CFF0099FF需要基礎函式庫|R
+## X-Repple: 团队
+## Author: Cryect, ported to 2.4 by Elsia
 ## OptionalDeps:  Ace3, LibSharedMedia-3.0, LibBossIDs-1.0, LibGraph-2.0, !ClassColors
 ## SavedVariables: RecountDB
 ## SavedVariablesPerCharacter: RecountPerCharDB
@@ -14,27 +15,33 @@
 ## X-Curse-Project-Name: Recount
 ## X-Curse-Project-ID: recount
 ## X-Curse-Repository-ID: wow/recount/mainline
+## X-DuowanAddon: 团队副本
+## Dependencies: Duowan
+## X-Revision: Duowan
 ## LoadOnDemand: 1
-## X-Revision: BigFoot
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
 
 locales\Recount-enUS.lua
 locales\Recount-zhTW.lua
 locales\Recount-zhCN.lua
 
 Recount.lua
+
 Fonts.lua
 colors.lua
 Widgets.lua
 WindowOrder.lua
+
 Fights.lua
 Recount_Modes.lua
-
 TrackerModules\TrackerModule_Dispels.lua
 TrackerModules\TrackerModule_Interrupts.lua
 TrackerModules\TrackerModule_Resurrection.lua
 TrackerModules\TrackerModule_CCBreakers.lua
 TrackerModules\TrackerModule_PowerGains.lua
-
 Tracker.lua
 roster.lua
 LazySync.lua
@@ -51,5 +58,4 @@ GUI_Report.lua
 GUI_Config.lua
 GUI_Realtime.lua
 
-BFRecount.lua
 GuessedAbsorbs_Mode.lua

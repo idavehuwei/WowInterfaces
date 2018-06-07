@@ -63,10 +63,12 @@ function EventAlert_Other_Events_Frame_AddSpell()
 	if spellID ~= nil and spellID ~= "" then
 		spellID = tonumber(spellID);	
 		-- Check if is a valid spellID
-		local sname = GetSpellInfo(spellID);
+		local sname, rank = GetSpellInfo(spellID);
 		if (sname ~= nil) then
 			EventAlert_Other_Events_Frame_ClearOtherSpellList();
 			if EA_Items[EA_CLASS_OTHER][spellID] == nil then EA_Items[EA_CLASS_OTHER][spellID] = true end;
+			if (not rank) then rank = "" end
+			--EA_SpellID_DB[sname..rank] = spellID;
 			CreateFrames_CreateSpellFrame(spellID);
 			CreateFrames_RefreshOtherSpellList();
 		end

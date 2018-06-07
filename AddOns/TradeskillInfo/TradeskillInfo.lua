@@ -1,7 +1,7 @@
 ﻿TradeskillInfo = LibStub("AceAddon-3.0"):NewAddon("TradeskillInfo", "AceEvent-3.0", "AceTimer-3.0", "AceConsole-3.0", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("TradeskillInfo")
 TradeskillInfo.version = GetAddOnMetadata("TradeskillInfo", "Version")
-TradeskillInfo.date = string.sub("$Date: 2010-09-05 02:03:02 +0000 (Sun, 05 Sep 2010) $", 8, 17);
+TradeskillInfo.date = string.sub("$Date: 2009-11-06 23:41:03 +0000 (Fri, 06 Nov 2009) $", 8, 17);
 
 BINDING_HEADER_TRADESKILLINFO = "Tradeskill Info";
 BINDING_NAME_TOGGLE_TRADESKILLINFO = "Toggle Tradeskill Info Window";
@@ -12,6 +12,7 @@ TradeskillInfo.vars.MouseButtons = { "LeftButton", "RightButton" };
 TradeskillInfo.vars.ShiftKeys = { IsShiftKeyDown, IsControlKeyDown, IsAltKeyDown };
 TradeskillInfo.libs = {};
 TradeskillInfo.libs.Abacus = LibStub("LibAbacus-3.0");
+TradeskillInfo.enableAddon = false;
 
 local function getIdFromLink(link)
   if not link then return end
@@ -106,6 +107,22 @@ local function CombineTable(t,c)
 	return s;
 end
 
+function TradeskillInfo_CreateButton()
+	--------------
+	-- 调整进度条长度
+	TradeSkillRankFrame:SetWidth(180);
+	TradeSkillRankFrameBorder:SetWidth(189);
+	TradeSkillFrameEditBox:SetPoint("TOPRIGHT", TradeSkillRankFrame, "BOTTOMRIGHT", 87, 0);
+	local button = CreateFrame("Button", "OpenTradesillInfoButton", TradeSkillFrame, "UIPanelButtonTemplate2");
+	button:SetWidth(80);
+	button:SetHeight(22);
+	button:SetPoint("TOPLEFT", "TradeSkillRankFrame", "TOPRIGHT", 5, 5);
+	button:SetText(L["Open Panel"]);
+	button:SetScript("OnClick", function(self)
+		TradeskillInfoUI_Toggle();
+	end);
+end
+
 function TradeskillInfo:OnInitialize()
 	local dbDefaults = {
 		profile = {
@@ -113,11 +130,11 @@ function TradeskillInfo:OnInitialize()
 			ShowSkillProfit = true,
 			ShowSkillAuctioneerProfit = true,
 			MoneyFormat = 1,
-			TooltipSource = true,
+			TooltipSource = false,
 			TooltipRecipeSource = true,
 			TooltipRecipePrice = true,
-			TooltipUsedIn = true,
-			TooltipUsableBy = true,
+			TooltipUsedIn = false,
+			TooltipUsableBy = false,
 			TooltipColorUsableBy = true,
 			TooltipKnownBy = {R=true,A=true,B=true,D=true,E=true,J=true,L=true,T=true,W=false,X=false,Z=true,Y=true,I=true},
 			TooltipLearnableBy = {R=true,A=true,B=true,D=true,E=true,J=true,L=true,T=true,W=false,X=false,Z=true,Y=true,I=true},
@@ -144,8 +161,8 @@ function TradeskillInfo:OnInitialize()
 			ColorStack = { r=1.0, g=1.0, b=1.0 },
 			ColorMarketValue = {r=0.80, g=0.90, b=0.2},
 			QuickSearch = true,
-			SearchMouseButton = 2,
-			SearchShiftKey = 1,
+			SearchMouseButton = 1,
+			SearchShiftKey = 2,
 			ColorAHRecipes = true,
 			AHColorLearnable = { r=1.0, g=1.0, b=1.0 },
 			AHColorAltLearnable = { r=0.1, g=1.0, b=0.1 },
@@ -164,25 +181,12 @@ function TradeskillInfo:OnInitialize()
 		}
 	}
 
-	self.db = LibStub("AceDB-3.0"):New("TradeskillInfoDB", dbDefaults)
+	self.db = LibStub("AceDB-3.0"):New("DuowanAddon_TradeskillInfoDB", dbDefaults)
 
 	self:RegisterChatCommand("tsi", "ChatCommand")
 	self:RegisterChatCommand("tradeskillinfo", "ChatCommand")
-
-
+	dwAsynCall("Blizzard_TradeSkillUI", "TradeskillInfo_CreateButton");
 	self:BuildWhereUsed();
-	if ( EarthFeature_AddButton ) then   --add by Isler
-		EarthFeature_AddButton(
-			{
-				id= "TradeskillInfo";
-				name= L["TradeskillInfo"];
-				subtext= "TradeskillInfo";
-				tooltip = TradeskillInfo_Cosmos_Tooltip_Text;
-				icon= "Interface\\Icons\\INV_Elemental_Mote_Nether";
-				callback= function() TradeskillInfo:UI_Toggle() end;
-			}
-		);
-	end
 end
 
 function TradeskillInfo:InitPlayer()
@@ -200,6 +204,26 @@ function TradeskillInfo:InitPlayer()
 	end
 end
 
+function TradeskillInfo:Toggle(switch)
+	if (switch) then
+		self.enableAddon = true;
+		self:RegisterEvent("TRADE_SKILL_SHOW", "OnTradeShow");
+		self:RegisterEvent("SKILL_LINES_CHANGED", "OnSkillUpdate");
+		self:RegisterEvent("ADDON_LOADED", "OnAddonLoaded");
+		if (OpenTradesillInfoButton) then
+			OpenTradesillInfoButton:Show();
+		end
+	else
+		self.enableAddon = false;
+		self:UnregisterEvent("TRADE_SKILL_SHOW");
+		self:UnregisterEvent("SKILL_LINES_CHANGED");
+		--self:UnregisterEvent("ADDON_LOADED");
+		if (OpenTradesillInfoButton) then
+			OpenTradesillInfoButton:Hide();
+		end
+	end	
+end
+
 function TradeskillInfo:OnEnable()
 	self:PopulateProfessionNames()
 	self:InitPlayer();
@@ -209,9 +233,7 @@ function TradeskillInfo:OnEnable()
 	self:SecureHook("MerchantItemButton_OnModifiedClick");
 	self:SecureHook("ChatFrame_OnHyperlinkShow");
 	self:HookAuctionUI();
-	self:RegisterEvent("TRADE_SKILL_SHOW", "OnTradeShow");
-	self:RegisterEvent("SKILL_LINES_CHANGED", "OnSkillUpdate");
-	self:RegisterEvent("ADDON_LOADED", "OnAddonLoaded");
+	
 	self:HookTooltips();
 	-- Get rid of legacy difficulty data
 	self.db.global.difficulty = nil
@@ -246,6 +268,14 @@ function TradeskillInfo:OnTradeShow()
 	if not IsTradeSkillLinked() then
 		self:ScheduleTimer("UpdateKnownRecipes",1);
 	end
+end
+
+function TradeskillInfoUI_Toggle()
+	TradeskillInfo:UI_Toggle();
+end
+
+function TradeskillInfoConfigToggle()
+	TradeskillInfo:ConfigToggle();
 end
 
 function TradeskillInfo:ChatCommand(input)
@@ -284,7 +314,7 @@ local hookedAuctionUi = false
 function TradeskillInfo:HookAuctionUI()
 	if AuctionFrame and not hookedAuctionUi then
 		for j=1,8 do
-			local button = getglobal("BrowseButton"..j.."Item");
+			local button = dwGetglobal("BrowseButton"..j.."Item");
 			self:HookScript(button,"OnClick","AuctionItemButton_OnClick");
 			button:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		end
@@ -325,10 +355,10 @@ function TradeskillInfo:GetExtraItemDataText(itemId, showVendorProfit, showDiffi
 		if showAuctioneerProfit then
 			-- Insert item value and reagent costs from auctioneer
 			local value,cost,profit = self:GetCombineAuctioneerCost(itemId)
-			text = string.format("A: %s - %s = %s",
-			                     self:GetMoneyString(value),
-			                     self:GetMoneyString(cost),
-			                     self:GetMoneyString(profit))
+			text = string.format(L["A"] .. ": %s - %s = %s",
+			                     self:GetMoneyString(value),	-- 价值
+			                     self:GetMoneyString(cost),		-- 花费
+			                     self:GetMoneyString(profit))	-- 利润
 		end
 		local sep = ""
 		if showVendorProfit then
@@ -336,10 +366,10 @@ function TradeskillInfo:GetExtraItemDataText(itemId, showVendorProfit, showDiffi
 			local value,cost,profit = self:GetCombineCost(itemId)
 			if text then sep = "\n" else text = "" end
 			text = text .. sep ..
-			       string.format("V: %s - %s = %s",
-			                     self:GetMoneyString(value),
-			                     self:GetMoneyString(cost),
-			                     self:GetMoneyString(profit))
+			       string.format(L["V"] .. ": %s - %s = %s",
+			                     self:GetMoneyString(value),	-- 价值
+			                     self:GetMoneyString(cost),		-- 花费
+			                     self:GetMoneyString(profit))	-- 利润
 		end
 		if showDifficulty then
 			if text then sep = "\n" else text = "" end
@@ -425,18 +455,19 @@ function TradeskillInfo:UpdateSpecializations()
 end
 
 function TradeskillInfo:MakeSpecialCase(id, spellId)
-	if id < 100 or not self.vars.specialcases[id] then
-		return id;
-	end
-	local specialIds=self.vars.specialcases[id]
-	for i in string.gmatch(specialIds, "(%d+)") do
-		i = tonumber(i)
-		local spellId2 = self:GetCombineEnchantId(i)
-		if spellId2 == spellId or spellId2 == -spellId then
-			return i
+	if (id) then		
+		if id < 100 or not self.vars.specialcases[id] then
+			return id;
+		end
+		local specialIds=self.vars.specialcases[id]
+		for i in string.gmatch(specialIds, "(%d+)") do
+			i = tonumber(i)
+			local spellId2 = self:GetCombineEnchantId(i)
+			if spellId2 == spellId or spellId2 == -spellId then
+				return i
+			end
 		end
 	end
-
 	return id;
 end
 
@@ -610,6 +641,9 @@ function TradeskillInfo:AuctionItemButton_OnClick(object, button)
 end
 
 function TradeskillInfo:Item_OnClick(button,link)
+	if (not self.enableAddon) then
+		return;
+	end
 	if self.db.profile.QuickSearch then
 		if button == self.vars.MouseButtons[self.db.profile.SearchMouseButton] then
 			local accept = true
@@ -786,7 +820,7 @@ function TradeskillInfo:GetCombineDescription(id)
 
 		TSIScanTooltip:ClearLines()
 		TSIScanTooltip:SetHyperlink(GetSpellLink(-id))
-		description = getglobal("TSIScanTooltipTextLeft3")
+		description = dwGetglobal("TSIScanTooltipTextLeft3")
 		if description then description = description:GetText() end
 	end
 	return description
@@ -829,7 +863,7 @@ function TradeskillInfo:GetCombineAvailability(id)
 			local skillLevel = self:GetCharSkillLevel(name,combineSkill);
 			local charSpec = self:GetCharSkillLevel(name,combineSpec);
 			if skillLevel and (combineSpec=="" or charSpec) then
-				if alt <= 1 and self:IsCombineKnowByChar(name,id) then
+				if alt == 0 and self:IsCombineKnowByChar(name,id) then
 					-- Known by alt has lowest priority
 					alt = 1;
 				elseif skillLevel >= combineLevel then
@@ -1224,7 +1258,7 @@ function TradeskillInfo:GetRecipeSources(recipe,opposing, tooltip, ShowRecipeSou
 					end
 					Rtext = self.vars.sources[s .. (f or "")]..": "..vname..", "..zone..pos..note
 					if level ~= "" then
-						local rep = getglobal("FACTION_STANDING_LABEL"..level);
+						local rep = dwGetglobal("FACTION_STANDING_LABEL"..level);
 						Rtext = Rtext.." "..faction.."-"..rep;
 					end
 					res = res .. Rtext;
@@ -1850,7 +1884,8 @@ end
 
 function TradeskillInfo:ConfigToggle()
 	self:LoadUI()
-
+	TradeskillInfo:OpenConfig();
+	--[[
 	if InterfaceOptionsFrame:IsVisible() and
 	   InterfaceOptionsFramePanelContainer.displayedPanel == self.OptionsPanel
 	then
@@ -1863,6 +1898,8 @@ function TradeskillInfo:ConfigToggle()
 			end
 		end
 	end
+	]]
+
 end
 
 ----------------------------------------------------------------------
@@ -1874,14 +1911,14 @@ function TradeskillInfo:AuctionFrameBrowse_Update()
 
 	for i=1, NUM_BROWSE_TO_DISPLAY do
 		local index = offset + i;
-		local button = getglobal("BrowseButton"..i);
+		local button = dwGetglobal("BrowseButton"..i);
 		if button:IsVisible() then
 			local iconTexture
 			local recipeLink
 			if button.Icon then  -- cached or from Auc-Advanced Compact-UI
 				iconTexture = button.Icon
 			else
-				button.Icon = getglobal("BrowseButton"..i.."ItemIconTexture"); -- cache the icon texture
+				button.Icon = dwGetglobal("BrowseButton"..i.."ItemIconTexture"); -- cache the icon texture
 				iconTexture = button.Icon
 			end
 			if button.id then  -- contains real index when sorted in Compact-UI level
@@ -1937,31 +1974,31 @@ end
 ----------------------------------------------------------------------
 
 function TradeskillInfo:ShowingSkillLevel()
-	return self.db.profile.ShowSkillLevel;
+	return self.enableAddon and self.db.profile.ShowSkillLevel;
 end
 
 function TradeskillInfo:ShowingSkillProfit()
-	return self.db.profile.ShowSkillProfit;
+	return self.enableAddon and self.db.profile.ShowSkillProfit;
 end
 
 function TradeskillInfo:ShowingSkillAuctioneerProfit()
-	return self.db.profile.ShowSkillAuctioneerProfit and (AucAdvanced and AucAdvanced.API or GetAuctionBuyout);
+	return (self.enableAddon and self.db.profile.ShowSkillAuctioneerProfit) and (AucAdvanced and AucAdvanced.API or GetAuctionBuyout);
 end
 
 function TradeskillInfo:ShowingTooltipUsedIn()
-	return self.db.profile.TooltipUsedIn;
+	return self.enableAddon and self.db.profile.TooltipUsedIn;
 end
 
 function TradeskillInfo:ShowingTooltipSource()
-	return self.db.profile.TooltipSource;
+	return self.enableAddon and self.db.profile.TooltipSource;
 end
 
 function TradeskillInfo:ShowingTooltipRecipeSource()
-	return self.db.profile.TooltipRecipeSource;
+	return self.enableAddon and self.db.profile.TooltipRecipeSource;
 end
 
 function TradeskillInfo:ShowingTooltipRecipePrice()
-	return self.db.profile.TooltipRecipePrice;
+	return self.enableAddon and self.db.profile.TooltipRecipePrice;
 end
 
 function TradeskillInfo:ShowingTooltipKnownBy(kind)
@@ -1981,15 +2018,15 @@ function TradeskillInfo:ShowingTrainerReagents()
 end
 
 function TradeskillInfo:ShowingTooltipUsableBy()
-	return self.db.profile.TooltipUsableBy;
+	return self.enableAddon and self.db.profile.TooltipUsableBy;
 end
 
 function TradeskillInfo:ShowingTooltipID()
-	return self.db.profile.TooltipID;
+	return self.enableAddon and self.db.profile.TooltipID;
 end
 
 function TradeskillInfo:ShowingTooltipStack()
-	return self.db.profile.TooltipStack;
+	return self.enableAddon and self.db.profile.TooltipStack;
 end
 
 function TradeskillInfo:ShowingTooltipMarketValue()
@@ -1997,15 +2034,15 @@ function TradeskillInfo:ShowingTooltipMarketValue()
 end
 
 function TradeskillInfo:ColoringAHRecipes()
-	return self.db.profile.ColorAHRecipes;
+	return self.enableAddon and self.db.profile.ColorAHRecipes;
 end
 
 function TradeskillInfo:ShowingTooltipBankedAmount()
-	return self.db.profile.TooltipBankedAmount;
+	return self.enableAddon and self.db.profile.TooltipBankedAmount;
 end
 
 function TradeskillInfo:ShowingTooltipAltAmount()
-	return self.db.profile.TooltipAltAmount;
+	return self.enableAddon and self.db.profile.TooltipAltAmount;
 end
 
 function TradeskillInfo:ShowColoredUsableByAltNames()
@@ -2078,7 +2115,7 @@ local ldb = LibStub:GetLibrary("LibDataBroker-1.1", true)
 if ldb then
 	ldb:NewDataObject("TradeSkillInfo", {
 		type = "launcher",
-		label = "TSI",
+		text = "专业",
 		icon = "Interface\\Icons\\INV_Elemental_Mote_Nether",
 		OnClick = function(frame, button)
 			if button == "LeftButton" then
@@ -2088,12 +2125,26 @@ if ldb then
 			end
 		end,
 		OnTooltipShow = function(tooltip)
-			tooltip:AddLine("|cffe0e0e0TradeskillInfo " .. TradeskillInfo.version .. "|r")
+			tooltip:AddLine("|cffe0e0e0专业技能信息总览|r")
 			if (select(4, GetAddOnInfo("TradeskillInfoUI"))) then
 				tooltip:AddLine("|cff30e030" .. L["Left Click"] .. "|r: " .. L["Open main window"])
 				tooltip:AddLine("|cff30e030" .. L["Right Click"] .. "|r: " .. L["Open configuration window"])
 			end
 		end,
 	})
+end
+
+----------------------------
+-- Duowan Interface
+function TradeskillInfo:ToggleMerchantUse(switch)
+	if (switch) then		
+		self.db.profile.TooltipSource = true;
+		self.db.profile.TooltipUsedIn = true;
+		self.db.profile.recipesource = true;
+	else
+		self.db.profile.TooltipSource = false;
+		self.db.profile.TooltipUsedIn = false;
+		self.db.profile.recipesource = false;
+	end
 end
 

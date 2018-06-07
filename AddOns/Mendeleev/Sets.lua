@@ -1,11 +1,11 @@
-锘縧ocal BB = LibStub("LibBabble-Boss-3.0"):GetLookupTable()
+local BB = LibStub("LibBabble-Boss-3.0"):GetLookupTable()
 local BZ = LibStub("LibBabble-Zone-3.0"):GetLookupTable()
 local BC = LibStub("LibBabble-Class-3.0"):GetLookupTable()
 local L = LibStub("AceLocale-3.0"):GetLocale("Mendeleev")
 
 MENDELEEV_SETS = {
 	{
-		name = L["Gathering skills"],
+		name = L["Gathering skills"],	-- 采集
 		setindex = "Tradeskill.Gather",
 		colour = "|cff8470FF",
 		header = L["Gathering skills"],
@@ -22,7 +22,7 @@ MENDELEEV_SETS = {
 		},
 	},
 	{
-		name = L["Crafted by"],
+		name = L["Crafted by"],		-- 制造
 		setindex = "Tradeskill.Crafted",
 		colour = "|cff8470ff",
 		header = L["Crafted by"],
@@ -54,7 +54,7 @@ MENDELEEV_SETS = {
 		},
 	},
 	{
-		name = L["Mine Gems"],
+		name = L["Mine Gems"],		-- 矿石
 		setindex = "Tradeskill.Gather.GemsInNodes",
 		colour = "|cffB0C4DE",
 		header = L["Found in"],
@@ -75,15 +75,15 @@ MENDELEEV_SETS = {
 			["Tradeskill.Gather.GemsInNodes.Fel Iron Deposit"] = L["Fel Iron Deposit"],
 			["Tradeskill.Gather.GemsInNodes.Khorium Vein"] = L["Khorium Vein"],
 			["Tradeskill.Gather.GemsInNodes.Rich Adamantite Deposit"] = L["Rich Adamantite Deposit"],
-			["Tradeskill.Gather.GemsInNodes.Cobalt Deposit"] = L["Cobalt Deposit"],
-			["Tradeskill.Gather.GemsInNodes.Rich Cobalt Deposit"] = L["Rich Cobalt Deposit"],
-			["Tradeskill.Gather.GemsInNodes.Saronite Deposit"] = L["Saronite Deposit"],
-			["Tradeskill.Gather.GemsInNodes.Rich Saronite Deposit"] = L["Rich Saronite Deposit"],
-			["Tradeskill.Gather.GemsInNodes.Titanium Vein"] = L["Titanium Vein"],
+			["Tradeskill.Gather.GemsInNodes.Cobalt Node"] = L["Cobalt Node"],
+			["Tradeskill.Gather.GemsInNodes.Rich Cobalt Node"] = L["Rich Cobalt Node"],
+			["Tradeskill.Gather.GemsInNodes.Saronite Node"] = L["Saronite Node"],
+			["Tradeskill.Gather.GemsInNodes.Rich Saronite Node"] = L["Rich Saronite Node"],
+			["Tradeskill.Gather.GemsInNodes.Titanium Node"] = L["Titanium Node"],
 		},
 	},
 	{
-		name = L["Trade skills"],
+		name = L["Trade skills"],		-- 交易技能
 		setindex = "Tradeskill.Mat.ByProfession",
 		colour = "|cffF5DEB3",
 		header = L["Component in"],
@@ -118,7 +118,7 @@ MENDELEEV_SETS = {
 		},
 	},
 	{
-		name = L["Class Reagents"],
+		name = L["Class Reagents"],		-- 职业药剂
 		setindex = "Misc.Reagent.Class",
 		colour = "|cffff00ff",
 		header = L["Classes"],
@@ -137,7 +137,7 @@ MENDELEEV_SETS = {
 		},
 	},
 	{
-		name = L["Food type"],
+		name = L["Food type"],		-- 食物种类
 		setindex = "Consumable.Food",
 		colour = "|cff87CEFA",
 		header = L["Food type"],
@@ -153,7 +153,7 @@ MENDELEEV_SETS = {
 		},
 	},
 	{
-		name = L["Recipe source"],
+		name = L["Recipe source"],	-- 配方来源
 		setindex = "Tradeskill.Recipe",
 		colour = "|cff8470FF",
 		header = L["Recipe source"],
@@ -178,7 +178,7 @@ MENDELEEV_SETS = {
 		},
 	},
 	{
-		name = L["Booze"],
+		name = L["Booze"],		-- 酒
 		setindex = "Misc",
 		colour = "|cffB0C4DE",
 		header = " ",
@@ -189,7 +189,7 @@ MENDELEEV_SETS = {
 		},
 	},
 	{
-		name = L["Darkmoon Faire"],
+		name = L["Darkmoon Faire"],	-- 暗月马戏团
 		setindex = "QuestMats.Darkmoon Faire.Turnin",
 		colour = "|cffFFFF00",
 		header = L["Darkmoon Faire"],
@@ -203,7 +203,7 @@ MENDELEEV_SETS = {
 		},
 	},
 	{
-		name = L["Darkmoon Faire Card"],
+		name = L["Darkmoon Faire Card"],	-- 暗月马戏团卡片
 		setindex = "QuestMats.Darkmoon Faire.Deck",
 		colour = "|cffFFFF00",
 		header = L["Darkmoon Faire Card"],
@@ -217,14 +217,10 @@ MENDELEEV_SETS = {
 			["QuestMats.Darkmoon Faire.Deck.Furies"] = L["Vengeance Card"],
 			["QuestMats.Darkmoon Faire.Deck.Lunacy"] = L["Madness Card"],
 			["QuestMats.Darkmoon Faire.Deck.Storms"] = L["Wrath Card"],
-			["QuestMats.Darkmoon Faire.Deck.Prisms"] = L["Illusion Card"],
-			["QuestMats.Darkmoon Faire.Deck.Chaos"] = L["Berserker! Card"],
-			["QuestMats.Darkmoon Faire.Deck.Nobles"] = L["Greatness Card"],
-			["QuestMats.Darkmoon Faire.Deck.Undeath"] = L["Death Card"],
 		},
 	},
 	{
-		name = L["Lockpicking"],
+		name = L["Lockpicking"],		-- 开锁
 		setindex = "Misc",
 		colour = "|cffFFFF00",
 		header = " ",
@@ -269,33 +265,26 @@ table.insert(MENDELEEV_SETS, {
 		["CurrencyItems.Arathi Basin Mark of Honor"] = 20559,
 		["CurrencyItems.Arcane Rune"] = 29736,
 		["CurrencyItems.Arctic Fur"] = 44128,
---		["CurrencyItems.Arena Points"] = 43307,
+		["CurrencyItems.Arena Points"] = 43307,
 		["CurrencyItems.Badge of Justice"] = 29434,
 		["CurrencyItems.Brewfest Prize Token"] = 37829,
 		["CurrencyItems.Burning Blossom"] = 23247,
-		["CurrencyItems.Champion's Seal"] = 44990,
 		["CurrencyItems.Coilfang Armaments"] = 24368,
-		["CurrencyItems.Coin of Ancestry"] = 21100,
 		["CurrencyItems.Dalaran Cooking Award"] = 43016,
 		["CurrencyItems.Dalaran Jewelcrafter's Token"] = 41596,
 		["CurrencyItems.Dream Shard"] = 34052,
-		["CurrencyItems.Emblem of Conquest"] = 45624,
-		["CurrencyItems.Emblem of Frost"] = 49426,
 		["CurrencyItems.Emblem of Heroism"] = 40752,
-		["CurrencyItems.Emblem of Triumph"] = 47241,
 		["CurrencyItems.Emblem of Valor"] = 40753,
 		["CurrencyItems.Glowcap"] = 24245,
 		["CurrencyItems.Halaa Battle Token"] = 26045,
 		["CurrencyItems.Halaa Research Token"] = 26044,
 		["CurrencyItems.Heavy Borean Leather"] = 38425,
 		["CurrencyItems.Holy Dust"] = 29735,
---		["CurrencyItems.Honor Points"] = 43308,
-		["CurrencyItems.Isle of Conquest Mark of Honor"] = 47395,
+		["CurrencyItems.Honor Points"] = 43308,
 		["CurrencyItems.Mark of Honor Hold"] = 24579,
 		["CurrencyItems.Mark of the Illidari"] = 32897,
 		["CurrencyItems.Mark of Thrallmar"] = 24581,
 		["CurrencyItems.Necrotic Rune"] = 22484,
-		["CurrencyItems.Noblegarden Chocolate"] = 44791,
 		["CurrencyItems.Spirit Shard"] = 28558,
 		["CurrencyItems.Stone Keeper's Shard"] = 43228,
 		["CurrencyItems.Strand of the Ancients Mark of Honor"] = 42425,

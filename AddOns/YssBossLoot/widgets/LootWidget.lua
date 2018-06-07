@@ -1,6 +1,5 @@
 local AceGUI = LibStub("AceGUI-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("YssBossLoot", true)
-
 --------------------------
 -- Button		        --
 --------------------------
@@ -50,7 +49,9 @@ do
 			_, _, _, hex = GetItemQualityColor(itemRarity or 1)
 			hex = hex.."%s"
 			else
-			hex = L['|cffff2222%s not cached!']
+				-- TODO: dugu added
+				hex = L['|cffff2222%s not cached!']
+			
 			itemName = item
 			--need to add a way to query the info
 		end
@@ -64,7 +65,7 @@ do
 			itemSubType = MONEY
 		end
 		if tonumber(rate) then
-			rate = string.format("%.1f%%", tonumber(rate))
+			rate = string.format("%.1f%%", tonumber(rate)/10)
 		else
 			rate = ''
 		end
@@ -106,11 +107,13 @@ do
 			self.itemName = itemName
 			local itemDropRate = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
 				itemDropRate:SetJustifyH("RIGHT")
-				itemDropRate:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT",-3,3)
+				itemDropRate:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT",-3,8)
 				itemDropRate:SetWidth(40)
 				itemDropRate:SetText("88.88%")
 			self.itemDropRate = itemDropRate
 			local itemType = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmallLeft")
+				local filename, fontHeight, flags = itemType:GetFont() 
+				itemType:SetFont(filename,10,flags)
 				itemType:SetPoint("LEFT", icon, "RIGHT",6,0)
 				itemType:SetPoint("BOTTOM", frame, "BOTTOM",0,3)
 				itemType:SetText("itemTypeHere")

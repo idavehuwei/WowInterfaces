@@ -2,11 +2,9 @@
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local zhTW = AceLocale:NewLocale("YssBossLoot", "zhTW")
 if not zhTW then return end
-
 zhTW["Show Boss Frame"] ="顯示首領框架"
 zhTW["2D Skulls"] = "2D骷髏"
 zhTW["3D_Skull_Detect_MSG"] = "|cffffd200YssBossLoot檢測到%s!|r|n|n你要將你的首領框架設定為3D骷髏嗎?"
-zhTW["Add Tooltip Info"] = "新增提示訊息資訊"
 zhTW["Animated Background"] = "動態背景"
 zhTW["Boss Font Size"] = "首領字型大小"
 zhTW["Boss Frame Size"] = "首領框架大小"
@@ -22,7 +20,6 @@ zhTW["Dungeon"] = "地城"
 zhTW["Equip Location Filter"] = "裝備位置篩選"
 zhTW["Filter"] = "篩選"
 zhTW["Filter All"] = "篩選全部"
-zhTW['|cffff2222%s not cached!'] = "|cffff2222%s 暫無數據"
 zhTW["Filter All desc"] = [=[由於多重篩選
 你很可能必須停用
 兩個或多個篩選之後使用
@@ -38,12 +35,12 @@ zhTW["Item Type Filter"] = "物品類型篩選"
 zhTW["Large Map"] = "大地圖"
 zhTW["Large Map with Objectives"] = "大地圖的具體目標"
 zhTW["Loot"] = "戰利品"
-zhTW["Loot Scaling"] = "戰利品比例"
+zhTW["Loot Scalling"] = "戰利品比例"
 zhTW["Minimap Icon"] = "小地圖圖示"
 zhTW["No Class Restriction"] = "沒有職業限定"
 zhTW["Normal 10-man Loot"] = "10人普通模式戰利品"
 zhTW["Normal 25-man Loot"] = "25人普通模式戰利品"
-zhTW['Non Boss Drops'] = "小怪掉落"
+zhTW['Trash Mobs'] = "小怪掉落"
 zhTW["Normal Loot"] = "普通模式戰利品"
 zhTW["Only equip location you have previously seen can be filtered by default"] = "預設值為只有你先前見過的裝備位置才能篩選"
 zhTW["Only item stats you have previously seen can be filtered by default"] = "預設值為只有你先前見過的物品能力值才可篩選"
@@ -69,3 +66,6 @@ zhTW["When selected this item type will be hidden unless multible subtypes are f
 zhTW["When selected this item type will be shown unless multible subtypes are found"] = "當選定此物品類型時將會被顯示，除非子類型被找到"
 zhTW["Yellow Checkmark:|nWe want this stat.|n|nGrey Checkmark:|nWe do not care if we have this stat or not.|n|nNo Checkmark:|nWe do not want this stat."] = "黃色複選標記:|n我需要此能力值。|n|n灰色複選標記:|n不在乎此能力值是否為我需要的。|n|n無複選標記:|n我不需要此能力值。"
 
+zhTW['|cffff2222%s not cached!'] = "|cffff2222%s 沒有數據!"
+
+zhTW['YssBossLoot'] = "副本掉落"

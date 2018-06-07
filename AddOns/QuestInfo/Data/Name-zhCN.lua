@@ -1,6 +1,7 @@
 if GetLocale() ~= "zhCN" then return end
 
 QuestInfo_Name = {
+	[34925] = "北海海怪",
 	[7996] = "守护者奇尔加",
 	[32497] = "米斯希尔萨·阿奈尔",
 	[33763] = "瑟利安·破晓",

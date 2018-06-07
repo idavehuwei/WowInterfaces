@@ -3,7 +3,6 @@ local L = LibStub("AceLocale-3.0"):NewLocale("Cartographer_QuestInfo", "enUS", t
 
 if (L) then
 -- Core.lua
-	L["Map Toggle"] = "Toggle CQI"
 	L["Enabled"] = true;
 	L["Suspend/resume this module."] = true;
 	L["Icon alpha"] = true;

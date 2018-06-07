@@ -1,6 +1,9 @@
 ﻿local L = LibStub("AceLocale-3.0"):NewLocale("TradeskillInfoUI", "zhTW", false)
 if not L then return end
-
+TRADESKILL_INFO = "商業技能庫"
+TRADESKILLINFO_SEARCH = "查詢";
+TRADESKILLINFO_RESET = "重置"
+L["TradeskillInfo"] = "商業技能資訊庫";
 L["Opposing"] = "陣營"
 L["Include recipes from opposing faction"] = "包含陣營"
 L["Name"] = "名稱"

@@ -1,0 +1,1443 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Button name="MerDKPFrameColumnHeaderTemplate" inherits="WhoFrameColumnHeaderTemplate" virtual="true">
+		<Scripts>
+			<OnClick>
+				if ( self.sortType ) then
+					MerDKP:ColumnHeader_OnClick(self.sortType);
+				end
+			</OnClick>
+		</Scripts>
+	</Button>
+
+	<Button name="MerDKPFrameListButtonTemplate" virtual="true" hidden="true">
+		<Size>
+			<AbsDimension x="370" y="16"/>
+		</Size>
+		<Layers>
+			<Layer level="BORDER">
+				<FontString name="$parentName" inherits="GameFontNormal" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="146" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="8" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentClass"  inherits="GameFontHighlightSmall" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="86" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentName" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentDKP" inherits="GameTooltipText" justifyH="RIGHT">
+					<Size>
+						<AbsDimension x="92" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentClass" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="-10" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>				
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+				dwGetglobal(this:GetName() .. "bg"):SetAlpha(0.1);
+			</OnLoad>
+			<OnClick>
+				MerDKP:DkpListButton_OnClick(arg1);
+			</OnClick>
+			<OnDoubleClick>
+				MerDKP_OpenPopupFrame("edit", MerDKP.tmp.id, this.name, this.class, this.dkp);
+			</OnDoubleClick>
+		</Scripts>
+		<NormalTexture name="$parentbg" file="Interface\Tooltips\UI-Tooltip-Background" hidden="true">
+			<Size>
+				<AbsDimension x="370" y="15"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT"/>
+			</Anchors>
+		</NormalTexture>
+		<HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD"/>			
+	</Button>
+	<CheckButton name="MerDKPFrameCheckButtonTemplate" inherits="UICheckButtonTemplate" virtual="true" hidden="true">
+		<Size>
+			<AbsDimension x="20" y="20"/>
+		</Size>
+		<HitRectInsets>
+			<AbsInset left="0" right="-30" top="0" bottom="0"/>
+		</HitRectInsets>
+		<Scripts>
+			<OnLoad>
+				MerDKPFrame_DkpClass_OnLoad(this:GetID())
+			</OnLoad>
+			<OnClick>
+				MerDKPFrame_DkpClass_OnClick(this:GetID())
+			</OnClick>
+		</Scripts>
+	</CheckButton>
+	<CheckButton name="MerDKPFrameClothButtonTemplate" virtual="true" hidden="true">
+		<Size>
+			<AbsDimension x="16" y="16"/>
+		</Size>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString name="$parentText" inherits="GameFontNormalSmall">
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="5" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Color r="0.96" g="0.96" b="0.1"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<HitRectInsets>
+			<AbsInset left="0" right="-30" top="0" bottom="0"/>
+		</HitRectInsets>
+		<Scripts>
+			<OnLoad>
+				MerDKPFrameClothButton_OnLoad(this:GetID())
+			</OnLoad>
+			<OnClick>
+				MerDKPFrameClothButton_OnClick(this:GetID())
+			</OnClick>
+		</Scripts>
+		<NormalTexture file="Interface\Buttons\UI-RadioButton">
+			<TexCoords left="0" right="0.25" top="0" bottom="1"/>
+		</NormalTexture>
+		<HighlightTexture file="Interface\Buttons\UI-RadioButton" alphaMode="ADD">
+			<TexCoords left="0.5" right="0.75" top="0" bottom="1"/>
+		</HighlightTexture>
+		<CheckedTexture file="Interface\Buttons\UI-RadioButton">
+			<TexCoords left="0.25" right="0.5" top="0" bottom="1"/>
+		</CheckedTexture>
+	</CheckButton>
+	<CheckButton name="MerDKPFrameOptionButtonTemplate" inherits="UICheckButtonTemplate" virtual="true" hidden="true">
+		<Size>
+			<AbsDimension x="22" y="22"/>
+		</Size>
+		<HitRectInsets>
+			<AbsInset left="0" right="-60" top="0" bottom="0"/>
+		</HitRectInsets>
+		<Scripts>
+			<OnClick>
+				MerDKP.opt[this.key] = this:GetChecked();
+			</OnClick>
+			<OnEnter>
+				if ( this.tooltipText ) then
+					GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
+					GameTooltip:SetText(this.tooltipText, nil, nil, nil, nil, 1);
+					GameTooltip:Show();
+				end
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</CheckButton>
+	<Slider name="MerDKPFrameOptionSliderTemplate" orientation="HORIZONTAL" virtual="true" enableMouse="true" hidden="true">
+        <Size>
+           <AbsDimension x="128" y="20"/>
+        </Size>
+        <Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="3" right="3" top="6" bottom="6" />
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="8" />
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="8" />
+			</EdgeSize>
+		</Backdrop>		
+		<Layers>
+			<Layer level="ARTWORK">
+                <FontString name="$parentText" inherits="GameFontNormalSmall">
+                    <Anchors>
+                       <Anchor point="RIGHT" relativePoint="LEFT">
+                           <Offset>
+                                <AbsDimension x="-6" y="0"/>
+                            </Offset>
+                       </Anchor>
+                     </Anchors>
+                </FontString>
+                <FontString name="$parentValue" inherits="GameFontHighlightSmall">
+                      <Anchors>
+                            <Anchor point="LEFT" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="6" y="0"/>
+                                </Offset>
+                            </Anchor>
+                       </Anchors>
+                 </FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnShow>
+				this.Onshow();
+			</OnShow>
+			<OnValueChanged>
+				this.OnValueChang();
+			</OnValueChanged>
+			<OnEnter>
+				if ( this.tooltipText ) then
+					GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
+					GameTooltip:SetText(this.tooltipText, nil, nil, nil, nil, 1);
+					GameTooltip:Show();
+				end
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+		<ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+            <Size>
+                <AbsDimension x="32" y="32" />
+             </Size>
+		</ThumbTexture>
+	</Slider>
+	
+	<Frame name="MerDKPFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
+		<Size>
+			<AbsDimension x="438" y="512"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<HitRectInsets>
+			<AbsInset left="0" right="30" top="0" bottom="70"/>
+		</HitRectInsets>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentPortraitTexture" file="Interface\QuestFrame\UI-QuestLog-BookIcon">
+					<Size>
+						<AbsDimension x="60" y="60"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="8" y="-6"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>	
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture name="$parentTopLeft" file="Interface\PaperDollInfoFrame\UI-Character-General-TopLeft">
+					<Size>
+						<AbsDimension x="256" y="256"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentTop" file="Interface\PaperDollInfoFrame\UI-Character-General-TopLeft">
+					<Size>
+						<AbsDimension x="60" y="256"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTopLeft" relativePoint="TOPRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.32" right="1" top="0" bottom="1"/>
+				</Texture>
+				<Texture name="$parentTopRight" file="Interface\PaperDollInfoFrame\UI-Character-General-TopRight">
+					<Size>
+						<AbsDimension x="128" y="256"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT"/>
+					</Anchors>
+				</Texture>				
+				<Texture name="$parentBotLeft" file="Interface\PaperDollInfoFrame\SkillFrame-BotLeft">
+					<Size>
+						<AbsDimension x="256" y="256"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentBot" file="Interface\PaperDollInfoFrame\SkillFrame-BotLeft">
+					<Size>
+						<AbsDimension x="60" y="256"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentBotLeft" relativePoint="TOPRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.36" right="0.8" top="0" bottom="1"/>
+				</Texture>
+				<Texture name="$parentBotRight" file="Interface\PaperDollInfoFrame\SkillFrame-BotRight">
+					<Size>
+						<AbsDimension x="128" y="256"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+				</Texture>
+				<FontString name="$parentText" inherits="GameFontNormal">
+					<Size>
+						<AbsDimension x="300" y="14"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parent" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="-6" y="-17"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-30" y="-8"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Frame name="$parentDropDown" inherits="UIDropDownMenuTemplate"/>
+			<Button name="$parentTab1" hidden="true" inherits="CharacterFrameTabButtonTemplate" id="1" text="DKP">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="16" y="45"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MerDKP:SubFrames_SelectTab(self:GetID());
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentTab2" hidden="true" inherits="CharacterFrameTabButtonTemplate" id="2" text="OPTION">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="-14" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>	
+						MerDKP:SubFrames_SelectTab(self:GetID());
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Frame name="$parentList" hidden="false">
+				<Size>
+					<AbsDimension x="372" y="333"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-45" y="-75"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture file="Interface\WorldStateFrame\WorldStateFinalScoreFrame-TopBackground">
+							<Size>
+								<AbsDimension x="372" y="30"/>
+							</Size>							
+							<Anchors>
+								<Anchor point="TOPLEFT"/>
+							</Anchors>
+							<TexCoords left="0" right="2.0" top="0" bottom="1.0"/>
+						</Texture>
+						<Texture name="$parentHorizontalBarLeft" file="Interface\ClassTrainerFrame\UI-ClassTrainer-HorizontalBar">
+							<Size>
+								<AbsDimension x="256" y="12"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="-3" y="-255"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0" right="1.0" top="0" bottom="0.25"/>
+						</Texture>
+						<Texture file="Interface\ClassTrainerFrame\UI-ClassTrainer-HorizontalBar">
+							<Size>
+								<AbsDimension x="124" y="12"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentHorizontalBarLeft" relativePoint="RIGHT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0" right="0.29296875" top="0.25" bottom="0.5"/>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<Texture name="$parent_OVERLAY_Right" file="Interface\Common\Common-Input-Border">
+							<Size>
+								<AbsDimension x="8" y="22"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="-2" y="32"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
+						</Texture>
+						<Texture name="$parent_OVERLAY_Middle" file="Interface\Common\Common-Input-Border">
+							<Size>
+								<AbsDimension x="150" y="22"/>
+							</Size>
+							<Anchors>
+								<Anchor point="RIGHT" relativeTo="$parent_OVERLAY_Right" relativePoint="LEFT"/>
+							</Anchors>
+							<TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
+						</Texture>
+						<Texture name="$parent_OVERLAY_Left" file="Interface\Common\Common-Input-Border">
+							<Size>
+								<AbsDimension x="8" y="22"/>
+							</Size>
+							<Anchors>
+								<Anchor point="RIGHT" relativeTo="$parent_OVERLAY_Middle" relativePoint="LEFT"/>
+							</Anchors>
+							<TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
+						</Texture>
+						<FontString name="$parentTotal" inherits="GameFontNormalSmall" justifyH="LEFT">
+							<Size>
+								<AbsDimension x="200" y="16"/>
+							</Size>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativeTo="$parentHorizontalBarLeft" relativePoint="TOPLEFT">
+									<Offset>
+										<AbsDimension x="14" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Button name="$parentBatEditButton"  hidden="true"> 
+						<Size>
+							<AbsDimension x="72" y="16"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentTotal" relativePoint="LEFT">
+								<Offset>
+									<AbsDimension x="254" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer level="ARTWORK">
+								<FontString name="$parentText" inherits="GameFontNormal" text="BATEDIT">
+									<Size>
+										<AbsDimension x="80" y="16"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT"/>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnClick>
+								StaticPopup_Show("MerDKP_BatEditDkp");
+							</OnClick>
+						</Scripts>
+						<HighlightTexture file="Interface\Buttons\UI-PlusButton-Hilight" alphaMode="ADD"/>
+					</Button>
+					<Button name="$parentAddMemberButton" hidden="true">
+						<Size>
+							<AbsDimension x="50" y="16"/>
+						</Size>
+						<Anchors>
+							<Anchor point="RIGHT" relativeTo="$parentBatEditButton" relativePoint="LEFT">
+								<Offset>
+									<AbsDimension x="-14" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer level="ARTWORK">
+								<FontString name="$ParnetText" inherits="GameFontNormal" text="ADD">
+									<Size>
+										<AbsDimension x="50" y="16"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT"/>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnClick>
+								MerDKP_OpenPopupFrame("add",MerDKP.tmp.id);
+							</OnClick>
+						</Scripts>
+						<HighlightTexture file="Interface\Buttons\UI-PlusButton-Hilight" alphaMode="ADD"/>
+					</Button>
+					<Button name="$parentSendButton" inherits="UIPanelButtonTemplate" text="SEND_LABEL">
+						<Size>
+							<AbsDimension x="80" y="22"/>
+						</Size>
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT">
+								<Offset>
+									<AbsDimension x="4" y="-24"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								MerDKP:SendButton_OnClick();				
+							</OnClick>
+						</Scripts>
+					</Button>					
+					<Button name="$parentWhisperButton" inherits="UIPanelButtonTemplate" text="WHISPER" hidden="true">
+						<Size>
+							<AbsDimension x="86" y="22"/>
+						</Size>
+						<Anchors>
+							<Anchor point="RIGHT" relativeTo="$parent_OVERLAY_Left" relativePoint="LEFT">	
+								<Offset>
+									<AbsDimension x="-4" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								MerDKP:WhisperButton_OnClick();
+							</OnClick>
+						</Scripts>
+					</Button>
+					
+					<Frame name="$parentDropDownMinDKP" inherits="UIDropDownMenuTemplate" id="1">
+						<Anchors>
+							<Anchor point="RIGHT" relativeTo="$parentSendButton" relativePoint="LEFT">
+								<Offset>
+									<AbsDimension x="13" y="-3"/>
+								</Offset>
+							</Anchor>
+						</Anchors>					
+						<Scripts>
+							<OnLoad>
+								UIDropDownMenu_Initialize(this, MerDKPFrame_DropDownMinDKP_Init);		
+								UIDropDownMenu_SetSelectedID(this, 1);
+								UIDropDownMenu_SetWidth(this,84);
+								UIDropDownMenu_SetButtonWidth(this,22);
+							</OnLoad>
+						</Scripts>
+					</Frame>
+					<Frame name="$parentDropDownChannel" inherits="UIDropDownMenuTemplate" id="1">
+						<Anchors>
+							<Anchor point="RIGHT" relativeTo="$parentDropDownMinDKP" relativePoint="LEFT">
+								<Offset>
+									<AbsDimension x="32" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>					
+						<Scripts>
+							<OnLoad>
+								UIDropDownMenu_Initialize(this, MerDKPFrame_DropDownChannel_Init);		
+								UIDropDownMenu_SetSelectedID(this, 1);
+								UIDropDownMenu_SetWidth(this,120);
+								UIDropDownMenu_SetButtonWidth(this,22);
+							</OnLoad>
+						</Scripts>
+					</Frame>
+					
+					<Button name="$parentGuildRosterDKPButton" inherits="UIPanelButtonTemplate" hidden="true" text="REFRESH">
+						<Size>
+							<AbsDimension x="55" y="22"/>
+						</Size>
+						<Anchors>
+							<Anchor point="RIGHT" relativeTo="$parentDropDownChannel" relativePoint="LEFT">
+								<Offset>
+									<AbsDimension x="17" y="3"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								StaticPopup_Show("MerDKP_GuildRosterDKP");
+							</OnClick>
+						</Scripts>
+						<NormalTexture inherits="UIPanelButtonDisabledTexture"/>
+					</Button>
+					
+					<CheckButton name="$parentRaidCheckButton" virtual="true">	
+						<Size>
+							<AbsDimension x="20" y="20"/>
+						</Size>
+						<Anchors>
+							<Anchor point="RIGHT" relativeTo="$parent_OVERLAY_Right" relativePoint="LEFT">
+								<Offset>
+									<AbsDimension x="0" y="-1"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<HitRectInsets>
+							<AbsInset left="-60" right="0" top="0" bottom="0"/>
+						</HitRectInsets>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString name="$parentText" inherits="GameFontNormalSmall" text="MerDKP_XML_RAIDMEMBERS">
+									<Anchors>
+										<Anchor point="TOPRIGHT">
+											<Offset>
+												<AbsDimension x="-30" y="-1"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnClick>
+								MerDKP:RaidCheckButton_OnClick();
+							</OnClick>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD"/>
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check"/>
+						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled"/>
+					</CheckButton>
+					<Button name="$parentColumnHeader1" inherits="MerDKPFrameColumnHeaderTemplate" text="NAME">
+						<Anchors>
+							<Anchor point="TOPLEFT"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>								
+								WhoFrameColumn_SetWidth(self,150);
+								self.sortType = "name";
+							</OnLoad>
+						</Scripts>
+					</Button>
+					<Button name="$parentColumnHeader2" inherits="MerDKPFrameColumnHeaderTemplate" text="CLASS">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentColumnHeader1" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="-2" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>								
+								WhoFrameColumn_SetWidth(self,90);
+								self.sortType = "class";
+							</OnLoad>
+						</Scripts>
+					</Button>
+					<Frame name="$parentColumnHeader3" inherits="UIDropDownMenuTemplate" id="1">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentColumnHeader2" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="-17" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>					
+						<Layers>
+							<Layer level="OVERLAY">
+								<Texture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight" alphaMode="ADD" hidden="true">
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset>
+												<AbsDimension x="15" y="3"/>
+											</Offset>
+										</Anchor>
+										<Anchor point="BOTTOMRIGHT">
+											<Offset>
+												<AbsDimension x="-30" y="-2"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnLoad>
+								UIDropDownMenu_Initialize(this, MerDKPFrame_DropDownDkpType_Init)
+								UIDropDownMenu_SetWidth(this,120);
+								UIDropDownMenu_SetButtonWidth(this,22);								
+								this.sortType = "dkp";
+							</OnLoad>
+							<OnEnter>
+								dwGetglobal(this:GetName() .. "HighlightTexture"):Show();
+							</OnEnter>
+							<OnLeave>
+								dwGetglobal(this:GetName() .. "HighlightTexture"):Hide();
+							</OnLeave>
+							<OnMouseUp>
+								MerDKP:ColumnHeader_OnClick(this.sortType);
+							</OnMouseUp>
+						</Scripts>
+					</Frame>
+					<Button name="$parentButton1" inherits="MerDKPFrameListButtonTemplate" id="1">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-26"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentButton2" inherits="MerDKPFrameListButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentButton1" relativePoint="BOTTOMLEFT"/>									
+						</Anchors>
+					</Button>
+					<Button name="$parentButton3" inherits="MerDKPFrameListButtonTemplate" id="3">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentButton2" relativePoint="BOTTOMLEFT"/>									
+						</Anchors>
+					</Button>
+					<Button name="$parentButton4" inherits="MerDKPFrameListButtonTemplate" id="4">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentButton3" relativePoint="BOTTOMLEFT"/>									
+						</Anchors>
+					</Button>
+					<Button name="$parentButton5" inherits="MerDKPFrameListButtonTemplate" id="5">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentButton4" relativePoint="BOTTOMLEFT"/>									
+						</Anchors>
+					</Button>
+					<Button name="$parentButton6" inherits="MerDKPFrameListButtonTemplate" id="6">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentButton5" relativePoint="BOTTOMLEFT"/>									
+						</Anchors>
+					</Button>
+					<Button name="$parentButton7" inherits="MerDKPFrameListButtonTemplate" id="7">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentButton6" relativePoint="BOTTOMLEFT"/>									
+						</Anchors>
+					</Button>
+					<Button name="$parentButton8" inherits="MerDKPFrameListButtonTemplate" id="8">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentButton7" relativePoint="BOTTOMLEFT"/>									
+						</Anchors>
+					</Button>
+					<Button name="$parentButton9" inherits="MerDKPFrameListButtonTemplate" id="9">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentButton8" relativePoint="BOTTOMLEFT"/>									
+						</Anchors>
+					</Button>
+					<Button name="$parentButton10" inherits="MerDKPFrameListButtonTemplate" id="10">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentButton9" relativePoint="BOTTOMLEFT"/>									
+						</Anchors>
+					</Button>
+					<Button name="$parentButton11" inherits="MerDKPFrameListButtonTemplate" id="11">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentButton10" relativePoint="BOTTOMLEFT"/>									
+						</Anchors>
+					</Button>
+					<Button name="$parentButton12" inherits="MerDKPFrameListButtonTemplate" id="12">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentButton11" relativePoint="BOTTOMLEFT"/>									
+						</Anchors>
+					</Button>
+					<Button name="$parentButton13" inherits="MerDKPFrameListButtonTemplate" id="13">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentButton12" relativePoint="BOTTOMLEFT"/>									
+						</Anchors>
+					</Button>
+					<ScrollFrame name="$parentScrollFrame" inherits="FauxScrollFrameTemplate" hidden="true">
+						<Size>
+							<AbsDimension x="372" y="230"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPRIGHT">
+								<Offset>
+									<AbsDimension x="-23" y="-26"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnVerticalScroll>
+								FauxScrollFrame_OnVerticalScroll(self,offset,16, MerDKPFrameList_OnVerticalScroll);
+							</OnVerticalScroll>
+						</Scripts>
+						<Layers>
+							<Layer level="BACKGROUND">
+								<Texture file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
+									<Size>
+										<AbsDimension x="31" y="226"/>
+									</Size>
+									<Anchors>
+										<Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
+											<Offset>
+												<AbsDimension x="-2" y="4"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+									<TexCoords left="0" right="0.484375" top="0" bottom="0.8828125"/>
+								</Texture>
+								<Texture file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
+									<Size>
+										<AbsDimension x="31" y="106"/>
+									</Size>
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT">
+											<Offset>
+												<AbsDimension x="-2" y="-2"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+									<TexCoords left="0.515625" right="1.0" top="0" bottom="0.4140625"/>
+								</Texture>
+							</Layer>
+						</Layers>
+					</ScrollFrame>
+					<CheckButton name="$parentCheckButton1" inherits="MerDKPFrameCheckButtonTemplate" id="1">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentHorizontalBarLeft" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="6" y="-1"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="$parentCheckButton2" inherits="MerDKPFrameCheckButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentCheckButton1" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="50" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="$parentCheckButton3" inherits="MerDKPFrameCheckButtonTemplate" id="3">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentCheckButton2" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="50" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="$parentCheckButton4" inherits="MerDKPFrameCheckButtonTemplate" id="4">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentCheckButton3" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="50" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="$parentCheckButton5" inherits="MerDKPFrameCheckButtonTemplate" id="5">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentCheckButton4" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="50" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="$parentCheckButton6" inherits="MerDKPFrameCheckButtonTemplate" id="6">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentCheckButton1" relativePoint="BOTTOMLEFT"/>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="$parentCheckButton7" inherits="MerDKPFrameCheckButtonTemplate" id="7">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentCheckButton6" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="50" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="$parentCheckButton8" inherits="MerDKPFrameCheckButtonTemplate" id="8">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentCheckButton7" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="50" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="$parentCheckButton9" inherits="MerDKPFrameCheckButtonTemplate" id="9">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentCheckButton8" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="50" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="$parentCheckButton10" inherits="MerDKPFrameCheckButtonTemplate" id="10">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentCheckButton9" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="50" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>					
+					<CheckButton name="$parentClothButton1" inherits="MerDKPFrameClothButtonTemplate" id="1">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentCheckButton6" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="2" y="-3"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="$parentClothButton2" inherits="MerDKPFrameClothButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentClothButton1" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="50" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="$parentClothButton3" inherits="MerDKPFrameClothButtonTemplate" id="3">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentClothButton2" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="50" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="$parentClothButton4" inherits="MerDKPFrameClothButtonTemplate" id="4">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentClothButton3" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="50" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="$parentClothButton5" inherits="MerDKPFrameClothButtonTemplate" id="5">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentClothButton4" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="50" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>					
+				</Frames>
+			</Frame>
+			<Frame name="$parentOption" hidden="true">
+				<Size>
+					<AbsDimension x="372" y="333"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-45" y="-75"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Frames>
+					<Button name="$parentOkayButton" inherits="UIPanelButtonTemplate" text="OKAY">
+						<Size>
+							<AbsDimension x="80" y="22"/>
+						</Size>
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT">
+								<Offset>
+									<AbsDimension x="4" y="-24"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								MerDKP:InitDataFrom();
+								MerDKP:SubFrames_SelectTab(1);
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Frame name="$parentCheckButtons">
+						<Size>
+							<AbsDimension x="362" y="158"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOP">
+								<Offset>
+									<AbsDimension x="0" y="-28"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="16"/>
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5"/>
+							</BackgroundInsets>
+						</Backdrop>					
+						<Layers>
+							<Layer level="BACKGROUND">
+								<FontString name="$parentText" inherits="GameFontHighlight" text="OPTIONS_MENU">
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset>
+												<AbsDimension x="4" y="16"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<CheckButton name="$parent1" inherits="MerDKPFrameOptionButtonTemplate" id="1">
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset>
+											<AbsDimension x="10" y="-8"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</CheckButton>
+							<CheckButton name="$parent2" inherits="MerDKPFrameOptionButtonTemplate" id="2">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="$parent1" relativePoint="RIGHT">	
+										<Offset>
+											<AbsDimension x="145" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</CheckButton>
+							<CheckButton name="$parent3" inherits="MerDKPFrameOptionButtonTemplate" id="3">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parent1" relativePoint="BOTTOMLEFT"/>	
+								</Anchors>
+							</CheckButton>
+							<CheckButton name="$parent4" inherits="MerDKPFrameOptionButtonTemplate" id="4">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="$parent3" relativePoint="RIGHT">	
+										<Offset>
+											<AbsDimension x="145" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</CheckButton>
+							<CheckButton name="$parent5" inherits="MerDKPFrameOptionButtonTemplate" id="5">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parent3" relativePoint="BOTTOMLEFT"/>	
+								</Anchors>
+							</CheckButton>
+							<CheckButton name="$parent6" inherits="MerDKPFrameOptionButtonTemplate" id="6">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="$parent5" relativePoint="RIGHT">	
+										<Offset>
+											<AbsDimension x="145" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</CheckButton>
+							<CheckButton name="$parent7" inherits="MerDKPFrameOptionButtonTemplate" id="7">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parent5" relativePoint="BOTTOMLEFT"/>	
+								</Anchors>
+							</CheckButton>
+							<CheckButton name="$parent8" inherits="MerDKPFrameOptionButtonTemplate" id="8">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="$parent7" relativePoint="RIGHT">	
+										<Offset>
+											<AbsDimension x="145" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</CheckButton>
+							<CheckButton name="$parent9" inherits="MerDKPFrameOptionButtonTemplate" id="9">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parent7" relativePoint="BOTTOMLEFT"/>	
+								</Anchors>
+							</CheckButton>
+							<CheckButton name="$parent10" inherits="MerDKPFrameOptionButtonTemplate" id="10">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="$parent9" relativePoint="RIGHT">	
+										<Offset>
+											<AbsDimension x="145" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</CheckButton>
+							<CheckButton name="$parent11" inherits="MerDKPFrameOptionButtonTemplate" id="11">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parent9" relativePoint="BOTTOMLEFT"/>	
+								</Anchors>
+							</CheckButton>
+							<CheckButton name="$parent12" inherits="MerDKPFrameOptionButtonTemplate" id="12">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="$parent11" relativePoint="RIGHT">	
+										<Offset>
+											<AbsDimension x="145" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</CheckButton>
+						</Frames>
+						<Scripts>
+							<OnLoad>
+								this:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6);
+								this:SetBackdropColor(0.4, 0.4, 0.4, 0.4);							
+							</OnLoad>
+						</Scripts>
+					</Frame>
+					<Frame name="$parentSliders">
+						<Size>
+							<AbsDimension x="362" y="106"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentCheckButtons" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-24"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="16"/>
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5"/>
+							</BackgroundInsets>
+						</Backdrop>					
+						<Layers>
+							<Layer level="BACKGROUND">
+								<FontString name="$parentText" inherits="GameFontHighlight" text="OPTIONS_MENU">
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset>
+												<AbsDimension x="4" y="16"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Slider name="$parent1" inherits="MerDKPFrameOptionSliderTemplate">
+								<Anchors>
+									<Anchor point="TOP">
+										<Offset>
+											<AbsDimension x="38" y="-10"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Slider>
+							<Slider name="$parent2" inherits="MerDKPFrameOptionSliderTemplate">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parent1" relativePoint="BOTTOMLEFT">	
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Slider>
+							<Slider name="$parent3" inherits="MerDKPFrameOptionSliderTemplate">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parent2" relativePoint="BOTTOMLEFT">	
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Slider>
+							<Slider name="$parent4" inherits="MerDKPFrameOptionSliderTemplate">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parent3" relativePoint="BOTTOMLEFT">	
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Slider>
+						</Frames>
+						<Scripts>
+							<OnLoad>
+								this:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6);
+								this:SetBackdropColor(0.4, 0.4, 0.4, 0.4);							
+							</OnLoad>
+						</Scripts>
+					</Frame>
+				</Frames>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				tinsert(UISpecialFrames, "MerDKPFrame");
+				PanelTemplates_SetNumTabs(this, 2);
+				PanelTemplates_SetTab(this, 1);
+				PanelTemplates_UpdateTabs(this);
+				this:RegisterEvent("ADDON_LOADED");
+				this:RegisterEvent("PLAYER_LOGOUT");
+				this:RegisterEvent("CHAT_MSG_WHISPER");
+				this:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE");
+			</OnLoad>
+			<OnEvent>	
+				MerDKP:OnEvent(this, event);
+			</OnEvent>
+			<OnMouseDown>
+				if(arg1 == "LeftButton") then
+					this:StartMoving();
+				end
+			</OnMouseDown>
+			<OnMouseUp>
+				if(arg1 == "LeftButton") then
+					this:StopMovingOrSizing();
+				end
+			</OnMouseUp>
+		</Scripts>
+	</Frame>
+
+	<Frame name="MerDKPEditFrame" toplevel="true" enableMouse="true" hidden="true" parent="MerDKPFrame">
+		<Size>
+			<AbsDimension x="212" y="180"/>
+		</Size>
+		<Anchors>
+           <Anchor point="CENTER" relativeTo="MerDKPFrame">
+				<Offset>
+					<AbsDimension x="0" y="-10"/>
+				</Offset>
+			</Anchor>
+        </Anchors>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontNormal">
+                    <Size>
+                        <AbsDimension x="200" y="28"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOP">
+                            <Offset>
+                                <AbsDimension x="0" y="-12"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+				<FontString name="$parentType" inherits="GameFontNormal" text="ZONE">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="17" y="-36"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTypeText" inherits="GameFontNormal">
+					<Size>
+						<AbsDimension x="123" y="18"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentType" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="5" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentName" inherits="GameFontNormal" text="NAME">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentType" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-8"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentNameText" inherits="GameFontHighlight">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentName" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="5" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentClass" inherits="GameFontNormal" text="CLASS">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-8"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentClassText" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentClass" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="5" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentDKP" inherits="GameFontNormal" text="DKP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentClass" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-8"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentDKPText" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentDKP" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="5" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<Texture file="Interface\FriendsFrame\UI-GuildMember-Patch">
+					<Size>
+						<AbsDimension x="256" y="32"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="12" y="3"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\DialogFrame\UI-DialogBox-Corner">
+					<Size>
+						<AbsDimension x="32" y="32"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="-6" y="-7"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-3" y="-3"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="$parentOkayButton" inherits="UIPanelButtonTemplate" text="OKAY">
+				<Size>
+					<AbsDimension x="96" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="10" y="12"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						MerDKP_SubmitPopupFrame(MerDKPEditFrame.action);
+						this:GetParent():Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentCancelButton" inherits="UIPanelButtonTemplate" text="CANCEL">
+				<Size>
+					<AbsDimension x="96" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentOkayButton" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="1" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						this:GetParent():Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<EditBox name="$parentNameBox" letters="18" autoFocus="false" inherits="InputBoxTemplate">
+				<Size>
+					<AbsDimension x="116" y="25"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentName" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="8" y="0"/>
+							</Offset>
+					</Anchor>
+				</Anchors>
+			</EditBox>
+			<EditBox name="$parentClassBox" letters="18" autoFocus="false" inherits="InputBoxTemplate">
+				<Size>
+					<AbsDimension x="116" y="25"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentClass" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="8" y="0"/>
+							</Offset>
+					</Anchor>
+				</Anchors>
+			</EditBox>
+			<EditBox name="$parentDKPBox" letters="18" autoFocus="false" inherits="InputBoxTemplate">
+				<Size>
+					<AbsDimension x="116" y="25"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentClassBox" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+				<Scripts>
+					<OnEnterPressed>
+						MerDKP_SubmitPopupFrame(MerDKPEditFrame.action);
+						this:GetParent():Hide();
+					</OnEnterPressed>
+				</Scripts>
+			</EditBox>
+		</Frames>
+	</Frame>
+	
+</Ui>

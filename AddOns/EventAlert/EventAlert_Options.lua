@@ -1,5 +1,9 @@
+local L = LibStub("AceLocale-3.0"):GetLocale("EventAlert");
+
 function EventAlert_Options_OnLoad()
     UIPanelWindows["EA_Options_Frame"] = {area = "center", pushable = 0};
+    EA_Options_Frame_Header_Text:SetFontObject(GameFontNormal);
+    EA_Options_Frame_Header_Text:SetText(L["EventAlert Options"]);
 end
 
 function EventAlert_Options_Init()
@@ -85,7 +89,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
 	local info;
 
 	info = {};
-	info.text = "ShaysBell";
+	info.text = L["ShaysBell"];
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 1;
     if ( info.value == selectedValue ) then
@@ -94,7 +98,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
 	info = {};
-	info.text = "Flute";
+	info.text = L["Flute"];
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 2;
     if ( info.value == selectedValue ) then
@@ -103,7 +107,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
     info = {};
-	info.text = "Netherwind";
+	info.text = L["Netherwind"];
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 3;
     if ( info.value == selectedValue ) then
@@ -112,7 +116,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
 	info = {};
-	info.text = "PolyCow";
+	info.text = L["PolyCow"];
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 4;
     if ( info.value == selectedValue ) then
@@ -121,7 +125,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
     info = {};
-	info.text = "Rockbiter";
+	info.text = L["Rockbiter"];
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 5;
     if ( info.value == selectedValue ) then
@@ -130,7 +134,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
 	info = {};
-	info.text = "Yarrrr!";
+	info.text = L["Yarrrr!"];
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 6;
     if ( info.value == selectedValue ) then
@@ -139,7 +143,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
     info = {};
-	info.text = "Broken Heart";
+	info.text = L["Broken Heart"];
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 7;
     if ( info.value == selectedValue ) then
@@ -148,7 +152,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
 	info = {};
-	info.text = "Millhouse 1!";
+	info.text = L["Millhouse 1!"];
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 8;
     if ( info.value == selectedValue ) then
@@ -157,7 +161,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
 	info = {};
-	info.text = "Millhouse 2!";
+	info.text = L["Millhouse 2!"];
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 9;
     if ( info.value == selectedValue ) then
@@ -166,7 +170,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
 	info = {};
-	info.text = "Pissed Satyr";
+	info.text = L["Pissed Satyr"];
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 10;
     if ( info.value == selectedValue ) then
@@ -175,7 +179,7 @@ function EventAlert_Options_AlertSoundSelect_Initialize()
     UIDropDownMenu_AddButton(info);
 
 	info = {};
-	info.text = "Pissed Dwarf";
+	info.text = L["Pissed Dwarf"];
 	info.func = EventAlert_Options_AlertSoundSelect_OnClick;
 	info.value = 11;
     if ( info.value == selectedValue ) then

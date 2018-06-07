@@ -18,7 +18,7 @@ local AL = AceLocale:NewLocale("AtlasLoot", "enUS", true);
 
 --Register translations
 if AL then
-
+	AL["|cffFF8400AtlasLoot Enhanced v"] = true;
 	-- Text strings for UI objects
 	AL["AtlasLoot"] = true;
 	AL["Select Loot Table"] = true;
@@ -583,12 +583,6 @@ if AL then
 	AL["Statue Generator"] = true;
 	AL["Landro's Gift"] = true;
 	AL["Blazing Hippogryph"] = true;
-
-	-- Twelvth set
-	AL["Icecrown"] = true;
-	AL["Wooly White Rhino"] = true;
-	AL["Ethereal Portal"] = true;
-	AL["Paint Bomb"] = true;
 
 	-- Battleground Brackets
 	AL["BG/Open PvP Rewards"] = true;

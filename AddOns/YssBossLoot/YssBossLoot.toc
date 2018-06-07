@@ -1,33 +1,27 @@
-## Interface: 30300
-## Title: YssBossLoot
-## Title-zhCN: [大脚][集]副本掉落
-## Title-zhTW: [大腳][集]副本掉落
-## Notes: |cffbc8f8fDisplays Instance Maps.|r
-## Notes-zhCN: |cff00ff00YssBossLoot|r                                             |cffbc8f8f显示副本中的首领与小怪可能掉落的物品。|r
-## Notes-zhTW: |cff00ff00YssBossLoot|r                                             |cffbc8f8f顯示副本中的首領與小怪可能掉落的物品。|r
-## X-Curse-Packaged-Version: v1.0.3
-## X-Curse-Project-Name: YssBossLoot
-## X-Curse-Project-ID: yssbossloot
-## X-Curse-Repository-ID: wow/yssbossloot/mainline
+﻿## Interface: 30300
+## Title: [Duowan] YssBossLoot
+## Title-zhCN: [多玩] 首领掉落 YssBossLoot
+## Title-zhTW: [多玩] 首領掉落 YssBossLoot
+## Notes: Displays Instance Maps
 ## Author: Yssaril
-## Version: v1.0.3
+## Version: 
+## SavedVariables: YssBossLootDB
+## X-DuowanAddon: 地图
+## Dependencies: Duowan
+## X-Revision: Duowan
 ## LoadOnDemand: 1
-## Dependency: BigFoot
-## X-Revision: BigFoot
-## SavedVariables: YssBossLootDB, YssBossLootMissingTranslations
 
-g.lua
+#@Libs\LibInstanceLootData-1.0\lib.xml
 
 Localization\enUS.lua
 Localization\zhCN.lua
 Localization\zhTW.lua
-Localization\bonus.lua
 
 widgets\LootWidget.lua
 Data\BossData.lua
-Tooltip.lua
 Core.lua
 ItemQuery.lua
+Loot_Access.lua
 Options.lua
 LDBplugin.lua
 WorldMapSupport.lua

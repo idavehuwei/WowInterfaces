@@ -31,26 +31,6 @@ function EventAlert_Class_Events_Frame_Init()
 		panel3:SetHorizontalScroll(0);
 end
 
-function EventAlert_Alert_Events_Frame_Init()
-	local framewidht = EA_Alt_Alerts_Frame:GetWidth();
-	local panel3 = CreateFrame("ScrollFrame", "EA_Alt_Alerts_Frame_SpellListFrameScroll", EA_Alt_Alerts_Frame, "UIPanelScrollFrameTemplate");
-	local scc = CreateFrame("Frame", "EA_Alt_Alerts_Frame_SpellListFrame", panel3);
-	panel3:SetScrollChild(scc);
-	panel3:SetPoint("TOPLEFT", EA_Alt_Alerts_Frame, "TOPLEFT", 15, -30);
-	scc:SetPoint("TOPLEFT", panel3, "TOPLEFT", 0, 0);
-	panel3:SetWidth(framewidht-45);
-	panel3:SetHeight(395);
-	scc:SetWidth(framewidht-45);
-	scc:SetHeight(395);
-	panel3:SetHorizontalScroll(-50);
-	panel3:SetVerticalScroll(50);
-	panel3:SetBackdrop({bgFile="Interface\\DialogFrame\\UI-DialogBox-Background", edgeFile="", tile = false, tileSize = 0, edgeSize = 0, insets = { left = 0, right = 0, top = 0, bottom = 0 }});
-	panel3:SetScript("OnVerticalScroll", function()  end);
-	panel3:EnableMouse(true);
-	panel3:SetVerticalScroll(0);
-	panel3:SetHorizontalScroll(0);
-end
-
 -- function pairsByKeys (t, f)
 -- 	local a = {}
 -- 		for n in pairs(t) do table.insert(a, n) end
@@ -83,10 +63,12 @@ function EventAlert_Class_Events_Frame_AddSpell()
 	if spellID ~= nil and spellID ~= "" then
 		spellID = tonumber(spellID);
 		-- Check if is a valid spellID
-		local sname = GetSpellInfo(spellID);
+		local sname, rank = GetSpellInfo(spellID);
 		if (sname ~= nil) then
 			EventAlert_Class_Events_Frame_ClearPrimarySpellList();
 			if EA_Items[EA_playerClass][spellID] == nil then EA_Items[EA_playerClass][spellID] = true end;
+			if (not rank) then rank = "" end
+			--EA_SpellID_DB[sname..rank] = spellID;
 			CreateFrames_CreateSpellFrame(spellID);
 			CreateFrames_RefreshPrimarySpellList();
 		end
@@ -109,7 +91,7 @@ function EventAlert_Class_Events_Frame_DelSpell()
 				IsCurrSpell = true;
 			end;
 		end
-
+	
 		-- Check if is a spell in current list
 		if (IsCurrSpell) then
 			EventAlert_Class_Events_Frame_ClearPrimarySpellList();

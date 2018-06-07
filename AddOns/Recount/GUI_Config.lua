@@ -817,9 +817,9 @@ function me:SetupWindowOptions(parent)
 	slider:SetPoint("TOP", theFrame, "TOP", 0, -58)
 	slider:SetScript("OnValueChanged",function(this) Recount.db.profile.Scaling=math.floor(this:GetValue()*100+0.5)/100;getglobal(this:GetName().."Text"):SetText(L["Window Scaling"]..": "..Recount.db.profile.Scaling);Recount:ScaleWindows(Recount.db.profile.Scaling) end)
 	slider:SetScript("OnMouseUp", function() me:ScaleConfigWindow(Recount.db.profile.Scaling) end)
-	getglobal(slider:GetName().."High"):SetText("1.5");
-	getglobal(slider:GetName().."Low"):SetText("0.5");
-	getglobal(slider:GetName().."Text"):SetText(L["Window Scaling"]..": "..Recount.db.profile.Scaling)
+	dwGetglobal(slider:GetName().."High"):SetText("1.5");
+	dwGetglobal(slider:GetName().."Low"):SetText("0.5");
+	dwGetglobal(slider:GetName().."Text"):SetText(L["Window Scaling"]..": "..Recount.db.profile.Scaling)
 
 --[[	theFrame.ShowCurAndLast=me:CreateSavedCheckbox(L["Autoswitch Shown Fight"],theFrame,"Window","ShowCurAndLast")
 	theFrame.ShowCurAndLast:SetPoint("TOPLEFT",theFrame,"TOPLEFT",8,-82)
@@ -1189,10 +1189,10 @@ function me:SetupButtonOptions(parent)
 	slider:SetWidth(180)
 	slider:SetHeight(16)
 	slider:SetPoint("TOP", theFrame, "TOP", 0, -96-16) -- Elsia: TODO this number will need adjusting to accommodate the paging config change
-	slider:SetScript("OnValueChanged",function(this) getglobal(this:GetName().."Text"):SetText(L["Row Height"]..": "..this:GetValue());Recount.db.profile.MainWindow.RowHeight=this:GetValue();Recount:BarsChanged() end)
-	getglobal(slider:GetName().."High"):SetText("35");
-	getglobal(slider:GetName().."Low"):SetText("8");
-	getglobal(slider:GetName().."Text"):SetText(L["Row Height"]..": "..slider:GetValue())
+	slider:SetScript("OnValueChanged",function(this) dwGetglobal(this:GetName().."Text"):SetText(L["Row Height"]..": "..this:GetValue());Recount.db.profile.MainWindow.RowHeight=this:GetValue();Recount:BarsChanged() end)
+	dwGetglobal(slider:GetName().."High"):SetText("35");
+	dwGetglobal(slider:GetName().."Low"):SetText("8");
+	dwGetglobal(slider:GetName().."Text"):SetText(L["Row Height"]..": "..slider:GetValue())
 
 	slider = CreateFrame("Slider", "Recount_ConfigWindow_RowSpacing_Slider", theFrame,"OptionsSliderTemplate")
 	theFrame.RowSpacingSlider=slider
@@ -1202,10 +1202,10 @@ function me:SetupButtonOptions(parent)
 	slider:SetWidth(180)
 	slider:SetHeight(16)
 	slider:SetPoint("TOP", theFrame, "TOP", 0, -130-16)
-	slider:SetScript("OnValueChanged",function(this) getglobal(this:GetName().."Text"):SetText(L["Row Spacing"]..": "..this:GetValue());Recount.db.profile.MainWindow.RowSpacing=this:GetValue();Recount:BarsChanged() end)
-	getglobal(slider:GetName().."High"):SetText("4");
-	getglobal(slider:GetName().."Low"):SetText("0");
-	getglobal(slider:GetName().."Text"):SetText(L["Row Spacing"]..": "..slider:GetValue())
+	slider:SetScript("OnValueChanged",function(this) dwGetglobal(this:GetName().."Text"):SetText(L["Row Spacing"]..": "..this:GetValue());Recount.db.profile.MainWindow.RowSpacing=this:GetValue();Recount:BarsChanged() end)
+	dwGetglobal(slider:GetName().."High"):SetText("4");
+	dwGetglobal(slider:GetName().."Low"):SetText("0");
+	dwGetglobal(slider:GetName().."Text"):SetText(L["Row Spacing"]..": "..slider:GetValue())
 
 	theFrame.TotalBar=CreateFrame("CheckButton",nil,theFrame)
 	me:ConfigureCheckbox(theFrame.TotalBar)

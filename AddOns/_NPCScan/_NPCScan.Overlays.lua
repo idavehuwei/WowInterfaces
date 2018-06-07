@@ -4,7 +4,7 @@
   ****************************************************************************]]
 
 
-local AddOnName, _NPCScan = ...;
+local AddOnName, _NPCScan = "_NPCScan", _NPCScan;
 local me = LibStub( "AceEvent-3.0" ):Embed( {} );
 _NPCScan.Overlays = me;
 

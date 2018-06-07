@@ -1,9 +1,13 @@
 ﻿local L = AceLibrary("AceLocale-2.2"):new("PallyPower")
-
-L:RegisterTranslations("zhCN", function() return {
-	AURAS = "Auras", -- Requires localization
-	AURAS_DESC = "Auras monitoring enable/disable", -- Requires localization
-	AUTOASSIGN = "Auto-Assign", -- Requires localization
+if (GetLocale() == "zhCN") then
+	PALLY_POWER_TEXT = "祝福管理"
+end
+L:RegisterTranslations("zhCN", function() return 
+{
+	["PallyPower Options"] = "祝福管理配置",
+	AURAS = "光环", 
+	AURAS_DESC = "开启/关闭光环监视", 
+	AUTOASSIGN = "自动分配", 
 	AUTOBTN = "显示自动祝福按钮",
 	AUTOBTN_DESC = "显示/隐藏自动祝福按钮",
 	AUTOBUFF = "自动祝福",
@@ -27,42 +31,55 @@ L:RegisterTranslations("zhCN", function() return {
 	DISPCOL = "列数",
 	DISPCOL_DESC = "设置列数",
 	DISP_DESC = "祝福施加窗口的设置",
+	DISPEDGES = "显示按钮的边缘", 
+	DISPEDGES_DESC = "显示玩家按钮的边缘", 
 	DISPGAP = "间隔",
 	DISPGAP_DESC = "设置按钮间距",
 	DISPPL = "玩家按钮",
 	DISPPL_DESC = "玩家按钮方向设置",
 	DISPROWS = "行数",
 	DISPROWS_DESC = "设置行数",
-	DRAGHANDLE = "左键拖动以移动\n单击以锁定或解锁\n右键单击以打开设置",
+	DRAGHANDLE = [=[左键拖动以移动
+单击以锁定或解锁
+右键单击以打开设置]=],
 	ENABLED = "启用",
 	FREEASSIGN = "自由配置",
 	FREEASSIGN_DESC = "允许其他非团队领袖/助理人员更改你的祝福配置",
 	GREATER = "强效祝福",
 	GREATER_DESC = "启用/禁用强效祝福",
-	HIDECB = "Auto-Hide Class Buttons", -- Requires localization
-	HIDECB_DESC = "Auto-Hide Class Buttons", -- Requires localization
+	HIDECB = "自动隐藏职业按钮", 
+	HIDECB_DESC = "自动隐藏职业按钮", 
 	HIDEDH = "隐藏拖动柄",
 	HIDEDH_DESC = "显示/隐藏拖动柄",
 	HIDEPB = "隐藏玩家按钮",
 	HIDEPB_DESC = "显示/隐藏玩家按钮",
+	IGNOREEXTRA = "忽略6-8组", 
+	IGNOREEXTRADESC = "忽略作为替补的6-8组的玩家", 
+	LAYOUT = "布局", 
+	LAYOUT_DESC = "自定义布局", 
 	PP_CLEAR = "清除",
 	PP_OPTIONS = "设置",
 	PP_RAS1 = "--- 圣骑士祝福分配 ---",
 	PP_RAS2 = "--- 分配通告结束 ---",
 	PP_REFRESH = "刷新",
 	RESET = "重置位置",
-	RESET_DESC = "将所有PallyPower窗口的位置重置回屏幕中央",
+	RESET_DESC = "将所有祝福管理窗口的位置重置回屏幕中央",
 	RFBUFF = "正义之怒",
 	RFBUFF_DESC = "启用/禁用正义之怒监视器",
+	RFUSE = "正义之怒", 
+	RFUSE_DESC = "启用/禁用正义之怒", 
 	SBUFF = "智能选择祝福",
 	SBUFF_DESC = "在选择祝福时为某些职业忽略特定的祝福",
+	SEAL = "圣印", 
+	SEAL_DESC = "圣印", 
 	SHOWPARTY = "在小队时显示",
 	SHOWPARTY_DESC = "当加入一个小队后显示/隐藏祝福施加窗口",
 	SHOWSINGLE = "在单独时显示",
 	SHOWSINGLE_DESC = "当单独一人显示/隐藏祝福施加窗口",
-	SKIN = "Skin", -- Requires localization
-	SKIN_DESC = "Apply a custom background to buff buttons", -- Requires localization
+	SKIN = "皮肤", 
+	SKIN_DESC = "应用自定义背景到祝福按钮", 
 	WAIT = "等待所有队友",
 	WAIT_DESC = "是否等待所有队友都在线且都在祝福范围内才施放祝福",
 }
+ 
 end)

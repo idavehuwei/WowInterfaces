@@ -1,4 +1,4 @@
-﻿QuestInfo_Zone = {
+QuestInfo_Zone = {
 	[1] = "Dun Morogh",
 	[3] = "Badlands",
 	[4] = "Blasted Lands",
@@ -140,7 +140,6 @@
 	[4415] = "The Violet Hold",
 	[4494] = "The Old Kingdom",
 	[4500] = "The Eye of Eternity",
-	[4742] = "Hrothgar's Landing",
 }
 
 if LibStub then

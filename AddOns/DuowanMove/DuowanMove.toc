@@ -1,0 +1,22 @@
+## Interface: 30300
+## Title: [Duowan] DuowanMove
+## Notes: 
+## Title-zhCN: [多玩] 多玩界面
+## Notes-zhCN: 允许你移动系统所有的界面元素
+## Title-zhTW: [多玩] 多玩介面
+## Notes-zhTW: 允許你移動系統所有的介面元素
+## Author: dugu
+## X-DuowanAddon: 界面聊天
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 
+## SavedVariablesPerCharacter: DuowanMove_DB
+
+Localizaiton\embed.xml
+themes\embeds.xml
+
+template.xml
+DuowanMove.xml
+
+# BlizzMove
+BlizzMove\BlizzMove.lua

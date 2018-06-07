@@ -1,4 +1,4 @@
-﻿-- $Id: constants.tw.lua 2726 2010-07-18 17:31:56Z arith $
+﻿-- $Id: constants.tw.lua 2667 2010-06-02 21:14:55Z StingerSoft $
 --[[
 constants.tw.lua
 This file defines an AceLocale table for all the various text strings needed
@@ -20,7 +20,8 @@ local AL = AceLocale:NewLocale("AtlasLoot", "zhTW", false);
 if AL then
 
 	--Text strings for UI objects
-	AL["AtlasLoot"] = "AtlasLoot";
+	AL["AtlasLoot"] = "副本掉落";
+	AL["|cffFF8400AtlasLoot Enhanced v"] = "|cffFF8400副本掉落 v";
 	AL["Select Loot Table"] = "選擇物品表格";
 	AL["Select Sub-Table"] = "選擇子表格";
 	AL["Drop Rate: "] = "掉落機率: ";
@@ -194,7 +195,7 @@ if AL then
 	AL["Old Level 80 PvP Sets"] = "舊等級 80 PvP 套裝";
 	AL["Arena Season 7/8 Sets"] = "競技場第七/八季 PvP 套裝";
 	AL["PvP Class Items"] = "PvP 職業物品";
-	AL["NOT AVAILABLE ANYMORE"] = "已不再提供";
+	AL["NOT AVAILABLE ANYMORE"] = "再也無法使用";
 
 	--World Events
 	AL["Abyssal Council"] = "深淵議會";
@@ -317,7 +318,7 @@ if AL then
 	AL["Scrolls"] = "卷軸";
 	AL["Off-Hand Items"] = "副手物品";
 	AL["Reagents"] = "材料";
-	AL["Book of Glyph Mastery"] = "雕紋精通之書";
+	AL["Book of Glyph Mastery"] = "雕紋專精書籍";
 
 	--Leatherworking
 	AL["Leather Armor"] = "皮甲護甲";
@@ -584,19 +585,15 @@ if AL then
 	AL["Landro's Gift"] = "藍卓的禮物";
 	AL["Blazing Hippogryph"] = "熾熱的角鷹獸";
 
-	-- Twelvth set
-	AL["Icecrown"] = "寒冰皇冠";
-	AL["Wooly White Rhino"] = "白色蓬毛犀牛";
-	AL["Ethereal Portal"] = "以太傳送門";
-	AL["Paint Bomb"] = "漆彈";
-
 	--Battleground Brackets
 	AL["BG/Open PvP Rewards"] = "燃燒遠征開放 PvP 獎勵";
 	AL["Misc. Rewards"] = "雜項獎勵";
+	AL["Level 10-19 Rewards"] = "等級 10～19 獎勵";
 	AL["Level 20-39 Rewards"] = "等級 20～39 獎勵";
 	AL["Level 20-29 Rewards"] = "等級 20～29 獎勵";
 	AL["Level 30-39 Rewards"] = "等級 30～39 獎勵";
 	AL["Level 40-49 Rewards"] = "等級 40～49 獎勵";
+	AL["Level 50-59 Rewards"] = "等級 50～59 獎勵";
 	AL["Level 60 Rewards"] = "等級 60 獎勵";
 
 	--Brood of Nozdormu Paths

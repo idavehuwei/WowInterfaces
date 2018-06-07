@@ -2,7 +2,6 @@ if(GetLocale() == "zhCN") then
 
 -- ===================== Part for TradeFrameEnchanced ==================
 TBT_SPELL_RANK_PATTERN = "等级 (%d)";
-TBT_SPELL_PORTAL = "传送门"
 TBT_UNLOCK_SKILL_NAME="开锁";
 _,_,TBT_GAMETOOLTIP_MADE_BY=string.find(string.gsub(ITEM_CREATED_BY,"%%s","(.+)"),"(<.+>)"); --TBT_GAMETOOLTIP_MADE_BY="<由(.+)制造>"
 TBT_SPELL_TABLE = {
@@ -39,20 +38,6 @@ TBT_SPELL_TABLE = {
 	}
 }
 -- =============== just localizate the above, the addon will function ok ========================= 
-
-TBT_PORTAL_1 = "传送门：斯通纳德"
-TBT_PORTAL_2 = "传送门：塞拉摩"
-TBT_PORTAL_3 = "传送门：埃索达"
-TBT_PORTAL_4 = "传送门：铁炉堡"
-TBT_PORTAL_5 = "传送门：奥格瑞玛"
-TBT_PORTAL_6 = "传送门：银月城"
-TBT_PORTAL_7 = "传送门：暴风城"
-TBT_PORTAL_8 = "传送门：幽暗城"
-TBT_PORTAL_9 = "传送门：达纳苏斯"
-TBT_PORTAL_10 = "传送门：雷霆崖"
-TBT_PORTAL_11 = "传送门：沙塔斯"
-TBT_PORTAL_12 = "传送门：达拉然"
-
 TBT_LEFT_BUTTON = {
 	water		= "水",
 	food		= "食",
@@ -65,6 +50,8 @@ TBT_RIGHT_BUTTON = {
 	ask		= "要",
 	thank		= "谢",
 }
+
+TBT_CANT_CREATE_AUCTION = "无法进行拍卖，拍卖按钮不可用，可能是插件冲突。"
 -- ===================== Part for TradeLog ==================
 TRADE_LOG_MONEY_NAME = {
 	gold = "g",
@@ -111,6 +98,7 @@ TRADE_LOG_ANNOUNCE = "通告";
 TRADE_LOG_ANNOUNCE_TIP = "选中就会将交易信息发送到指定的频道"
 
 -- ===================== Part for TradeList ==================
+TRADE_LIST_TOOLTIP = "交易记录"
 TRADE_LIST_CLEAR_HISTORY = "清除记录"
 TRADE_LIST_SCALE = "详情窗口缩放"
 TRADE_LIST_FILTER = "仅列出成功交易"
@@ -140,8 +128,5 @@ TRADE_LIST_DAY_SUFFIX = "日"
 TRADE_LIST_COMPLETE_TOOLTIP = "点击鼠标左键查看交易的详细信息";
 
 TRADE_LIST_CLEAR_CONFIRM = "今天以外的记录都将被清除!";
-
-TBT_MINIMAP_TOOLTIP1 = "交易助手"
-TBT_MINIMAP_TOOLTIP2 = "点击显示交易详情面板"
 
 end

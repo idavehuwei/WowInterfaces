@@ -19,7 +19,7 @@ PallyPower.options = {
 			name = L["BSC"],
 			type = "range",
 			desc = L["BSC_DESC"],
-			min = 0.5,
+			min = 0.4,
 			max = 1.5,
 			step = 0.05,
 			get = "BuffScale",
@@ -29,7 +29,7 @@ PallyPower.options = {
 			name = L["CSC"],
 			type = "range",
 			desc = L["CSC_DESC"],
-			min = 0.5,
+			min = 0.4,
 			max = 1.5,
 			step = 0.05,
 			get = "ConfigScale",
@@ -70,9 +70,9 @@ PallyPower.options = {
 			desc = L["DISP_DESC"],
 			args = {
 			    layout = {
-					name = "Layout",
+					name = L["LAYOUT"],
 					type = "text",
-					desc = "Custom Layout",
+					desc = L["LAYOUT_DESC"],
 					get = "layout",
 					set = "layout",
 					validate = {
@@ -81,6 +81,7 @@ PallyPower.options = {
 						"Layout 2",
 						"Layout 3",
 						"Layout 4",
+						"Layout 5",
 					},
 				},
 				skin = {
@@ -129,6 +130,17 @@ PallyPower.options = {
 					step = 1,
 					get = "displayGapping",
 					set = "displayGapping",	
+				},
+				edges = {
+					name = L["DISPEDGES"],
+					type = "toggle",
+					desc = L["DISPEDGES_DESC"],
+					get = "ToggleEdges",
+					set = "ToggleEdges",
+					map = {
+						[false]= L["DISABLED"], 
+						[true] = L["ENABLED"]
+					},
 				},
 				calign = {
 					name = L["DISPCL"],
@@ -265,18 +277,46 @@ PallyPower.options = {
 						},
 					},
 				},
-				rfbuff = {
+				rfs ={
 					name = L["RFBUFF"],
-					type = "toggle",
-					desc = L["RFBUFF_DESC"],
-					get = "ToggleRF",
-					set = "ToggleRF",
-					map = {
-						[false]=L["DISABLED"],
-						[true] = L["ENABLED"]
+					type = "group",
+					desc = L["RFBUFF"],
+					args = {
+						rfbuff = {
+							name = L["RFBUFF"],
+							type = "toggle",
+							desc = L["RFBUFF_DESC"],
+							get = "ToggleRFButton",
+							set = "ToggleRFButton",
+							map = {
+								[false]=L["DISABLED"],
+								[true] = L["ENABLED"]
+							},
+						},
+						seal = {
+							name = L["SEAL"],
+							type = "range",
+							desc = L["SEAL_DESC"],
+							get = "ToggleSeal",
+							set = "ToggleSeal",
+							min = 1,
+							max = 9,
+							step = 1,
+						},
+						rfury = {
+							name = L["RFUSE"],
+							type = "toggle",
+							desc = L["RFUSE_DESC"],
+							get = "ToggleRF",
+							set = "ToggleRF",
+							map = {
+								[false]=L["DISABLED"],
+								[true] = L["ENABLED"]
+							},
+						},
 					},
 				},
-  				auras = {
+				auras = {
 					name = L["AURAS"],
 					type = "toggle",
 					desc = L["AURAS_DESC"],
@@ -285,6 +325,17 @@ PallyPower.options = {
 					map = {
 						[false]=L["DISABLED"],
 						[true] = L["ENABLED"]
+					},
+				},
+				extras = {
+					name = L["IGNOREEXTRA"],
+					type = "toggle",
+					desc = L["IGNOREEXTRADESC"],
+					get = "ToggleExtras",
+					set = "ToggleExtras",
+					map = {
+						[false]=L["DISABLED"],
+						[true] =L["ENABLED"]
 					},
 				},
 			},      -- display args
@@ -305,11 +356,17 @@ end
 
 function PallyPower:skinButtons(value)
 	if not value then
-		return self.opt.skin;
+		return self.opt.skin
 	else
-    	self.opt.skin = value;
-		PallyPower:ApplySkin(value);
+    	self.opt.skin = value
+		PallyPower:ApplySkin(value)
 	end
+end
+
+function PallyPower:ToggleEdges(value)
+	if type(value) == "nil" then return self.opt.display.edges end
+	self.opt.display.edges = value
+	PallyPower:ApplySkin(self.opt.skin)	
 end
 
 function PallyPower:layout(value)
@@ -355,10 +412,22 @@ function PallyPower:ToggleSmartBuffs(value)
 	self.opt.smartbuffs = value;
 end
 
-function PallyPower:ToggleRF(value)
+function PallyPower:ToggleRFButton(value)
 	if type(value) == "nil" then return self.opt.rfbuff end
 	self.opt.rfbuff = value
 	PallyPower:UpdateLayout()
+end
+
+function PallyPower:ToggleRF(value)
+	if type(value) == "nil" then return self.opt.rf end
+	self.opt.rf = value
+	PallyPower:RFAssign(self.opt.rf)
+end
+
+function PallyPower:ToggleSeal(value)
+	if type(value) == "nil" then return self.opt.seal end
+	self.opt.seal = value
+	PallyPower:SealAssign(self.opt.seal)
 end
 
 function PallyPower:ToggleFA(value)
@@ -410,4 +479,10 @@ function PallyPower:ToggleAuras(value)
 	if type(value) == "nil" then return self.opt.auras end
 	self.opt.auras = value;
 	PallyPower:UpdateLayout();
+end
+
+function PallyPower:ToggleExtras(value)
+	if type(value) == "nil" then return self.opt.extras end
+	self.opt.extras = value;
+	PallyPower:UpdateRoster();
 end

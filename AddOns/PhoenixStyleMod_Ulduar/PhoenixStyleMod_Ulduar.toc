@@ -1,0 +1,29 @@
+﻿## Interface: 30300
+## Title: Phoenix|cff7fff7fStyle|r - Ulduar
+## Notes: PhoenixStyle Ulduar Module
+## Title-zhCN: [多玩] 团长助手 - 奥杜尔模块
+## Notes-zhCN: 详细的分析战斗记录并找出灭团责任人
+## Title-zhTW: [多玩] 團長助手 - 奧杜亞模塊
+## Notes-zhTW: 詳細的分析戰鬥記錄並找出滅團責任人
+## Author: Shurshik
+## SavedVariablesPerCharacter: whererepbossulda, bosspartul, bosspartul2, wherereportlevichat1, wherereportlevichat2, wherereportyogg, yoggvar, yoggvar2, primyogg, yoggspisokp
+## X-DuowanAddon: 团队副本
+## Dependencies: Duowan, PhoenixStyle
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+Localization\localization-enEN.lua
+Localization\localization-zhCN.lua
+Localization\localization-zhTW.lua
+
+PhoenixStyleUlduar.lua
+Algalon.lua
+Yogg-Saron.lua
+FlameLeviathan.lua
+Mimiron.lua
+Hodir.lua
+AssemblyOfIron.lua
+Vezax.lua
+Thorim.lua
+Yogg-fail.lua
+PhoenixStyleMod_Ulduar.xml

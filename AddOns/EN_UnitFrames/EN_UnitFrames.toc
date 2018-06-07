@@ -1,29 +1,18 @@
-﻿## Interface: 30300
-## X-BigfootType: 1
-## X-BigfootDesc: 头像增强插件EUF(Enigma Unit Frames)增强显示头像，显示目标的目标的目标，并显示破甲值等信息，小队头像显示队员职业等级 并显示生命值及法力值。
-## Title: Enigma Unit Frames
-## Title-zhTW: |r|cFF005672[Euf頭像]|rEnigma Unit Frames
-## Title-zhCN: |r|cFF005672[Euf头像]|rEnigma Unit Frames
+## Interface: 30300
+## Title: [Duowan] Enigma Unit Frames
 ## Notes: Enhanced Unit Frames including HP/MP values, class, race, level tag, and more ...
-## Notes-zhTW: 增強顯示頭像，顯示目標的目標的目標，破甲值，隊員職業等級 生命值及法力值等信息，隊友目標，隊友施法條
-## Notes-zhCN: 增强显示头像，显示目标的目标的目标，破甲值，队友职业等级 生命值及法力值等信息，队友目标，队友施法条
-## Version: 4.1.1
-## Author: Enigma, ported to 1.12 by Luodan, ported to 2.5 by 死性不改@CN, ported to 3.0 by 曉漁@巨龍之喉TW, ported to 3.3 by 野雷@鬼霧峰TW, ported to 4.1 by 誰機@鬼霧峰TW
-## SavedVariables: EUF_Options
-## X-Curse-Packaged-Version: 4.1.1.0
-## X-Curse-Project-Name: Enigma Unit Frames
-## X-Curse-Project-ID: en_unitframes
-## X-Curse-Repository-ID: wow/en_unitframes/mainline
+## Title-zhCN: [多玩] 头像增强 EN_UnitFrames
+## Notes-zhCN: 增强显示头像，显示目标的目标的目标，小队头像显示队员职业等级，并显示生命值及法力值|nShift点击并拖动即可改变头像位置|n
+## Title-zhTW: [多玩] 頭像增強 EN_UnitFrames
+## Notes-zhTW: 增強顯示頭像，顯示目標的目標的目標，小隊頭像顯示隊員職業等級，並顯示生命值及法力值|nShift點擊並拖動即可改變頭像位置|n
+## X-Repple: 頭像
+## Version: 3.1.1
+## Author: Enigma
+## X-DuowanAddon: 界面聊天
+## SavedVariables: DuowanAddon_EUF_Options
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 
+
 
 EN_UnitFrames.xml
-EN_PartyTarget.xml
-EN_Options.xml
-EN_HpMpXp.xml
-EN_PartyInfo.xml
-EN_TargetInfo.xml
-EN_ToT.xml
-EN_FocusFrame.xml
-EN_ClassIcon.xml
-EN_3DPortrait.xml
-EN_PartyCastBar.xml
-EN_PartyIcon.xml

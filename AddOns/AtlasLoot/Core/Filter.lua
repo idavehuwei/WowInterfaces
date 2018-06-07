@@ -13,7 +13,6 @@ AtlasLoote_CreateFilterOptions()
 ]]
 local BabbleInventory = AtlasLoot_GetLocaleLibBabble("LibBabble-Inventory-3.0")
 local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
-
 local OptionsLoadet = false
 
 AtlasLootFilterDB = {};
@@ -118,21 +117,21 @@ function AtlasLoot_HideNoUsableItems()
 
 	AtlasLoot_Data["FilterList"] = {}
 	for i=1,30 do
-		local info = getglobal("AtlasLootItem_"..i.."_Extra"):GetText()
-		if getglobal("AtlasLootItem_"..i):IsShown() then
+		local info = dwGetglobal("AtlasLootItem_"..i.."_Extra"):GetText()
+		if dwGetglobal("AtlasLootItem_"..i):IsShown() then
 			local xgo = true
 			local countOld = count
 			itemCount = itemCount + 1
 			countAll = countAll + count
 			count = 0
-			local xitemID = getglobal("AtlasLootItem_"..i).itemID
-			local xspellitemID = getglobal("AtlasLootItem_"..i).spellitemID
+			local xitemID = dwGetglobal("AtlasLootItem_"..i).itemID
+			local xspellitemID = dwGetglobal("AtlasLootItem_"..i).spellitemID
 			local xitemTexture = tablebase[itemCount][3]
 			local xitemExtraText = AtlasLoot_FixText(tablebase[itemCount][5])
 			local xitemExtraTextSave = xitemExtraText
 			-- remove the "-"
 			xitemExtraText = gsub(xitemExtraText, "-", "") 
-			local xitemNameText = getglobal("AtlasLootItem_"..i.."_Name"):GetText()
+			local xitemNameText = dwGetglobal("AtlasLootItem_"..i.."_Name"):GetText()
 			
 			if xitemExtraText and xitemExtraText ~= "" then
 				for k = 1,#FilterSort do
@@ -251,7 +250,7 @@ local function CreateCheckButton(parrent, text, num)
 		Check:SetWidth(25)
 		Check:SetHeight(25)
 		Check:SetScript("OnShow", function()
-			getglobal(this:GetName().."Text"):SetText(BabbleInventory[text]);
+			dwGetglobal(this:GetName().."Text"):SetText(BabbleInventory[text]);
 			if AtlasLootFilterDB[num][text] then
 				this:SetChecked(1);
 			else

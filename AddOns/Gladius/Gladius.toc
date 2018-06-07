@@ -1,25 +1,30 @@
-﻿## Interface: 30300
-## Title: Gladius
-## Title-zhCN: [大脚][集]竞技助手
-## Title-zhTW: [大腳][集]競技助手
-## Notes: |cffbc8f8fArena enemy unit frames.|r
-## Notes-zhCN: |cff00ff00Gladius|r                                             |cffbc8f8f竞技场敌人的头像插件。|r
-## Notes-zhTW: |cff00ff00Gladius|r                                             |cffbc8f8f競技場敵人的頭像插件。|r
-## Version: v1.2.0
-## Author: Proditor, Rinu
-## SavedVariables: GladiusDB
+## Interface: 30300
+## Title: [Duowan] Gladius
+## Notes: Arena enemy unit frames
+## Title-zhCN: [多玩] 竞技场大师 Gladius
+## Notes-zhCN: 显示竞技场中敌对玩家头像
+## Title-zhTW: [多玩] 競技場大師 Gladius
+## Notes-zhTW: 顯示競技場中敵對玩家頭像
+## Version: v1.0.1
+## Author: Proditor
+## X-DuowanAddon: PvP
+## SavedVariables: DuowanAddon_GladiusDB
 ## OptionalDeps: Ace3, LibStub, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets
-## X-Revision: BigFoot
+## X-Curse-Packaged-Version: v1.0.1
+## X-Curse-Project-Name: Gladius
+## X-Curse-Project-ID: gladius
+## X-Curse-Repository-ID: wow/gladius/mainline
+## Dependencies: Duowan
+## X-Revision: Duowan
 ## LoadOnDemand: 1
+
 
 localization\enUS.lua
 localization\zhCN.lua
 localization\zhTW.lua
 
+
 Gladius.lua
 auralist.lua
-speclist.lua
-cooldownlist.lua
-drlist.lua
 options.lua
 frame.lua

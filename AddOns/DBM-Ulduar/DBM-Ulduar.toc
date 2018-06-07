@@ -1,27 +1,31 @@
-﻿## Interface: 30300
+## Interface: 30300
 ## X-Compatible-With: 40000 
-## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r Ulduar
-## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 奥杜尔
-## Title-zhtw:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 奧杜亞
-## Notes-zhCN: |cff00ff00DBM-Ulduar|r
-## Notes-zhTW: |cff00ff00DBM-Ulduar|r
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ulduar|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ульдуар|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0울두아르|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奧杜亞|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奥杜尔|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ulduar|r
 ## LoadOnDemand: 1
-## X-Revision: BigFoot
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMUlduar_SavedVars, DBMUlduar_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-Name: Ulduar
+## X-DBM-Mod-Name-ruRU: Ульдуар
+## X-DBM-Mod-Name-koKR: 울두아르
 ## X-DBM-Mod-Name-zhTW: 奧杜亞
 ## X-DBM-Mod-Name-zhCN: 奥杜尔
+## X-DBM-Mod-Name-esES: Ulduar
 ## X-DBM-Mod-Sort: 204
 ## X-DBM-Mod-LoadZoneID: 530
+## X-DuowanAddon: 团队副本
+## X-Revision: Duowan
 
 localization.en.lua
-localization.cn.lua
 localization.tw.lua
-
+localization.cn.lua
 MapSizes.lua
 FlameLeviathan.lua
 Ignis.lua

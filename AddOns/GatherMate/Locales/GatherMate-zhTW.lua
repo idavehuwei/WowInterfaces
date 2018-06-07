@@ -5,6 +5,7 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("GatherMate", "zhTW")
 if not L then return end
 
+L["GatherMate"] = "採集助手"
 L["Add this location to Cartographer_Waypoints"] = "將該地點加入 Cartographer_Waypoints"
 L["Add this location to TomTom waypoints"] = "將該地點加入 TomTom waypoints"
 L["Always show"] = "總是顯示"

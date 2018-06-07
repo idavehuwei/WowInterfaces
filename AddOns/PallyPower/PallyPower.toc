@@ -1,24 +1,25 @@
 ﻿## Interface: 30300
-## Title: Pally Power
-## Title-zhCN: [大脚][集]祝福管理
-## Title-zhTW: [大腳][集]祝福管理
-## Notes: |cffbc8f8fRaid/Party Paladin buffs.|r
-## Notes-zhCN: |cff00ff00PallyPower|r                                             |cffbc8f8f为团队提供圣骑士祝福管理功能。|r
-## Notes-zhTW: |cff00ff00PallyPower|r                                             |cffbc8f8f為團隊提供聖騎士祝福管理功能。|r
+## Title: PallyPower
+## Notes: Raid/Party Paladin buffs
+## Title-zhCN: [多玩] 祝福管理
+## Notes-zhCN: 圣骑士祝福管理
+## Title-zhTW: [多玩] 祝福管理
+## Notes-zhTW: 聖騎士祝福管理
 ## Author: Aznamir
-## Version: b3.2.3 
-## DefaultState: enabled
-## LoadOnDemand: 1
-## X-Revision: BigFoot
+## Version: b3.2.14 
 ## OptionalDeps: Ace2, RosterLib, DewdropLib
 ## X-Category: Paladin
+## X-DuowanAddon: 职业辅助
 ## X-Embeds: Ace2, RosterLib, DewdropLib
 ## X-RelSite-Curse: 3738
 ## SavedVariables: PallyPowerDB, PallyPower_Assignments, PallyPower_NormalAssignments, PallyPower_AuraAssignments, PallyPower_SavedPresets
-## X-Curse-Packaged-Version: b3.2.3
-## X-Curse-Project-Name: PallyPower
-## X-Curse-Project-ID: pally-power
-## X-Curse-Repository-ID: wow/pally-power/mainline
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
 
 locale\enUS.lua
 locale\zhCN.lua

@@ -1195,7 +1195,7 @@ function Recount:ScanGUIDTooltip(nameGUID)
 	local textLeft, textRight, ttextLeft, ttextRight;
 
 	for idx = 1, RecountTempTooltip:NumLines() do
-		ttextLeft = getglobal(tooltipName.."TextLeft"..idx)
+		ttextLeft = dwGetglobal(tooltipName.."TextLeft"..idx)
 		if ttextLeft then
 			textLeft = ttextLeft:GetText()
 			if textLeft then
@@ -1205,7 +1205,7 @@ function Recount:ScanGUIDTooltip(nameGUID)
 			textLeft = nil
 		end
 			
-		ttextRight = getglobal(tooltipName.."TextRight"..idx)
+		ttextRight = dwGetglobal(tooltipName.."TextRight"..idx)
 		if ttextRight then
 			textRight = ttextRight:GetText()
 			if textRight then

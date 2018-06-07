@@ -402,7 +402,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 	  <Scripts>
 		  <OnMouseWheel>
 			  if InCombatLockdown() then return false end
-			  local pname = getglobal(self:GetName() .. "Name"):GetText()
+			  local pname = dwGetglobal(self:GetName() .. "Name"):GetText()
 			  PallyPower:PerformPlayerCycle(arg1, pname, self:GetAttribute("classID"));
 			  PallyPower:ButtonsUpdate();
 		  </OnMouseWheel> 
@@ -418,7 +418,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			  <Offset x="0" y="0"/>
 		  </Anchor>
 	  </Anchors>
-	  <Frames>
+	  <Frames>	  
 		  <CheckButton name="PallyPowerAnchor" enableMouse="true" frameStrata="LOW" inherits="SecureHandlerStateTemplate">
 			  <Scripts>
 				  <OnLoad>
@@ -462,10 +462,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 	  </Frames>
 	  <Scripts>
 		<OnLoad>
-			if (RegisterForSaveFrame) then
-				RegisterForSaveFrame(self);
-			end
-
+			dwRegisterForSaveFrame(self);
 		</OnLoad>
 	  </Scripts>
   </Frame>
@@ -1449,25 +1446,25 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				  </Anchor>
 			  </Anchors>
 			  <Scripts>
-				  <OnEnter>
-					  PallyPowerConfig_ShowCredits()
-				  </OnEnter> 
-				  <OnLeave>
-					  HideUIPanel(GameTooltip);
-				  </OnLeave> 
-          			  <OnMouseDown>
-					  PallyPowerConfigFrame_MouseDown(arg1)
-				  </OnMouseDown>
-				  <OnMouseUp>
-					  PallyPowerConfigFrame_MouseUp()
-				  </OnMouseUp>
-				  <OnUpdate>
-					  PallyPowerConfigGrid_Update()
-				  </OnUpdate>
+					<OnEnter>
+						PallyPowerConfig_ShowCredits()
+					</OnEnter> 
+					<OnLeave>
+						HideUIPanel(GameTooltip);
+					</OnLeave> 
+          			<OnMouseDown>
+						PallyPowerConfigFrame_MouseDown(arg1)
+					</OnMouseDown>
+					<OnMouseUp>
+						PallyPowerConfigFrame_MouseUp()
+					</OnMouseUp>
+					<OnUpdate>
+						PallyPowerConfigGrid_Update()
+					</OnUpdate>
 			  </Scripts>
 			  <Layers>
 				  <Layer level="OVERLAY">
-					  <FontString name="$parentText" inherits="GameFontNormal" text="Pally Power" justifyH="CENTER">
+					  <FontString name="$parentText" inherits="GameFontNormal" text="PALLY_POWER_TEXT" justifyH="CENTER">
 						  <Size>
 							  <AbsDimension x="100" y="12" /> 
 						  </Size>

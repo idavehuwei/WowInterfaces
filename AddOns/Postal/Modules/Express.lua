@@ -11,7 +11,7 @@ local _G = getfenv(0)
 
 function Postal_Express:MAIL_SHOW()
 	if Postal.db.profile.Express.EnableAltClick and not self:IsHooked(GameTooltip, "OnTooltipSetItem") then
-		self:HookScript(GameTooltip, "OnTooltipSetItem")
+		self:SecureHookScript(GameTooltip, "OnTooltipSetItem")
 		self:RawHook("ContainerFrameItemButton_OnModifiedClick", true)
 	end
 	self:RegisterEvent("MAIL_CLOSED", "Reset")
@@ -35,7 +35,7 @@ function Postal_Express:OnEnable()
 	self:RegisterEvent("MAIL_SHOW")
 	if Postal.db.profile.Express.MouseWheel then
 		MailFrame:EnableMouseWheel(true)
-		self:HookScript(MailFrame, "OnMouseWheel")
+		Postal_Express:HookScript(MailFrame, "OnMouseWheel")
 	end
 end
 

@@ -1,15 +1,36 @@
+DuowanAddon_TradeLog_Enabled = true;
+SLASH_TRADELOGTOGGLE1 = "/tradelog";
+SlashCmdList["TRADELOGTOGGLE"] = function(msg)
+	DuowanAddon_TradeLog_Enabled = not DuowanAddon_TradeLog_Enabled;
+	TradeLog_Toggle(true);
+end
+
+function TradeLog_Toggle(switch)
+	if (switch) then
+		TBT_AnnounceChannelDropDown:Show();
+		TBT_AnnounceCB:Show();
+		if(tbtMinimapFrame) then tbtMinimapFrame:Show() end		
+		DuowanAddon_TradeLog_Enabled = true;
+	else
+		TBT_AnnounceChannelDropDown:Hide();
+		TBT_AnnounceCB:Hide();
+		if(tbtMinimapFrame) then tbtMinimapFrame:Hide() end		
+		DuowanAddon_TradeLog_Enabled = false;
+	end
+end
+
 SLASH_TRADELOGSHOW1 = "/tbtdebug";
 SlashCmdList["TRADELOGSHOW"] = function(msg)
 	DEFAULT_CHAT_FRAME:AddMessage("(debug)TradeId-"..msg.." |Htradelog:"..msg.."|h[DETAIL]|h:");
-	TBT_CURRENT_TRADE = TradeLog_TradesHistory[0+msg];
+	TBT_CURRENT_TRADE = DuowanAddon_TradeLog_TradesHistory[0+msg];
 	TradeLog_OutputLog();
-	table.remove(TradeLog_TradesHistory, getn(TradeLog_TradesHistory));
+	table.remove(DuowanAddon_TradeLog_TradesHistory, getn(DuowanAddon_TradeLog_TradesHistory));
 end
 
 TBT_CURRENT_TRADE = nil;
 
 local function curr()
-	if(not TBT_CURRENT_TRADE) then 
+	if(not TBT_CURRENT_TRADE) then
 		TBT_CURRENT_TRADE = TradeLog_CreateNewTrade();
 	end
 	return TBT_CURRENT_TRADE;
@@ -46,8 +67,9 @@ function TradeLog_OnLoad(self)
 	cb:SetHeight(26);
 	TBT_AnnounceCBText:SetText(TRADE_LOG_ANNOUNCE);
 	cb.tooltipText = TRADE_LOG_ANNOUNCE_TIP;
-	cb:SetScript("OnClick", function(self) TradeLog_Announce_Checked = self:GetChecked()and true or false; end);
+	cb:SetScript("OnClick", function(self) DuowanAddon_TradeLog_Announce_Checked = self:GetChecked()and true or false; end);
 
+	self:RegisterEvent("VARIABLES_LOADED");
 	self:RegisterEvent("TRADE_SHOW");
 	self:RegisterEvent("TRADE_CLOSED");
 	self:RegisterEvent("TRADE_REQUEST_CANCEL");
@@ -59,32 +81,11 @@ function TradeLog_OnLoad(self)
 	self:RegisterEvent("TRADE_ACCEPT_UPDATE");
 	self:RegisterEvent("UI_INFO_MESSAGE");
 	self:RegisterEvent("UI_ERROR_MESSAGE");
-	TradeLog_OnVariableLoad()
-end
-
-function TradeLog_OnVariableLoad()
-	if(not TradeLog_TradesHistory) then
-		TradeLog_TradesHistory = {};
-	end
-
-	for k, v in pairs(TradeLog_TradesHistory) do
-		if(not v.id) then
-			v.id = k
-		end
-	end
-
-	if(not TradeLog_AnnounceChannel) then
-		TradeLog_AnnounceChannel ="WHISPER";
-	end
-
-	UIDropDownMenu_Initialize(TBT_AnnounceChannelDropDown, TBT_AnnounceChannelDropDown_Initialize);
-	UIDropDownMenu_SetSelectedValue(TBT_AnnounceChannelDropDown, TradeLog_AnnounceChannel);
-
-	if(TradeLog_Announce_Checked) then TBT_AnnounceCB:SetChecked(1); end;
-
 end
 
 function TradeLog_OnEvent(self, event, ...)
+	if(not DuowanAddon_TradeLog_Enabled and event~="VARIABLES_LOADED") then return end
+
 	local arg1 = ...;
 	if (event=="UI_ERROR_MESSAGE") then
 		if(arg1==ERR_TRADE_BAG_FULL or arg1==ERR_TRADE_MAX_COUNT_EXCEEDED or arg1==ERR_TRADE_TARGET_BAG_FULL or arg1==ERR_TRADE_TARGET_MAX_COUNT_EXCEEDED) then
@@ -121,7 +122,27 @@ function TradeLog_OnEvent(self, event, ...)
 		end
 		TradeLog_UpdateMoney();
 	elseif (event=="VARIABLES_LOADED") then
-		
+		if(not DuowanAddon_TradeLog_TradesHistory) then
+			DuowanAddon_TradeLog_TradesHistory = {};
+		end
+
+		for k, v in pairs(DuowanAddon_TradeLog_TradesHistory) do
+			if(not v.id) then
+				v.id = k
+			end
+		end
+
+		--if(not DuowanAddon_TradeLog_AnnounceChannel) then
+		--	DuowanAddon_TradeLog_AnnounceChannel ="WHISPER";
+		--end
+
+		--UIDropDownMenu_Initialize(TBT_AnnounceChannelDropDown, TBT_AnnounceChannelDropDown_Initialize);
+		--UIDropDownMenu_SetSelectedValue(TBT_AnnounceChannelDropDown, DuowanAddon_TradeLog_AnnounceChannel);
+
+		--if(DuowanAddon_TradeLog_Announce_Checked) then TBT_AnnounceCB:SetChecked(1); end;
+
+		TradeLog_Toggle(false);
+
 	end
 
 	if (event=="TRADE_REQUEST_CANCEL") then --judge the trade distance for further analysing the cancel reason
@@ -140,8 +161,8 @@ function TradeLog_OnEvent(self, event, ...)
 end
 
 function TradeLog_UpdateItemInfo(id, unit, items)
-	local funcInfo = getglobal("GetTrade"..unit.."ItemInfo");
-	local funcLink = getglobal("GetTrade"..unit.."ItemLink");
+	local funcInfo = dwGetglobal("GetTrade"..unit.."ItemInfo");
+	local funcLink = dwGetglobal("GetTrade"..unit.."ItemLink");
 
 	local name, texture, numItems, quality, isUsable, enchantment;
 	--why GetTradePlayerItemInfo and GetTradeTargetItemInfo return different things?
@@ -220,8 +241,8 @@ function TradeLog_OutputLog()
 		end
 		return;
 	end
-	curr().id = TBT_nextId(TradeLog_TradesHistory);
-	table.insert(TradeLog_TradesHistory, curr());
+	curr().id = TBT_nextId(DuowanAddon_TradeLog_TradesHistory);
+	table.insert(DuowanAddon_TradeLog_TradesHistory, curr());
 	if(type(TradeListScrollFrame_Update)=="function") then TradeListScrollFrame_Update(); end
 
 	numPlayer = 0; numTarget = 0;
@@ -307,7 +328,7 @@ function TradeLog_OutputLog()
 		DEFAULT_CHAT_FRAME:AddMessage(msg, 1, 0.1, 0.1);
 	end
 
-	if(TBT_AnnounceCB:GetChecked()) then
+	if(TBT_EnableAnnounce) then
 		TradeLog_AnnounceTrade(curr());
 	end	
 end
@@ -378,9 +399,11 @@ function TradeLog_AnnounceTrade(trade)
 		msg = string.gsub(msg, "%%r", trade.reason);
 	end
 
-	local channel = TradeLog_FindAnnounceChannel(TradeLog_AnnounceChannel);
+	local channel = TradeLog_FindAnnounceChannel(DuowanAddon_TradeLog_AnnounceChannel);
 	if(channel=="WHISPER")then
 		SendChatMessage(msg,channel,nil,trade.who);
+	elseif (channel =="SELF") then
+		print(msg);
 	else
 		SendChatMessage(msg,channel);
 	end
@@ -440,11 +463,11 @@ end
 function TBT_AnnounceChannelDropDown_OnClick(self)
 	UIDropDownMenu_SetSelectedValue(TBT_AnnounceChannelDropDown, self.value);
 	TBT_AnnounceCB:SetChecked(1);
-	TradeLog_AnnounceChannel = self.value;
+	DuowanAddon_TradeLog_AnnounceChannel = self.value;
 end
 
 function TBT_AnnounceChannelDropDown_Initialize()
-	local selectedValue = UIDropDownMenu_GetSelectedValue(getglobal("TBT_AnnounceChannelDropDown"));
+	local selectedValue = UIDropDownMenu_GetSelectedValue(dwGetglobal("TBT_AnnounceChannelDropDown"));
 	local info;
 
 	info = {};
@@ -500,3 +523,34 @@ function TBT_nextId(tab)
 	end
 	return n+1;
 end;
+
+------------------
+-- Added by dugu Duowan Interface
+local AnnounceChannels = {};
+if (GetLocale() == "zhCN") then
+	AnnounceChannels["密聊"] = "WHISPER";
+	AnnounceChannels["团队"] = "RAID";
+	AnnounceChannels["说"] = "SAY";
+	AnnounceChannels["小队"] = "PARTY";
+	AnnounceChannels["大喊"] = "YELL";	
+elseif (GetLocale() == "zhTW") then
+	AnnounceChannels["密聊"] = "WHISPER";
+	AnnounceChannels["團隊"] = "RAID";
+	AnnounceChannels["小隊"] = "PARTY";
+	AnnounceChannels["說"] = "SAY";
+	AnnounceChannels["大喊"] = "YELL";
+else
+	AnnounceChannels["Whisper"] = "WHISPER";
+	AnnounceChannels["Raid"] = "RAID";
+	AnnounceChannels["Party"] = "PARTY";
+	AnnounceChannels["Say"] = "SAY";
+	AnnounceChannels["Yell"] = "YELL";	
+end
+-- 缺省为密聊
+function TBT_SetAnnounceChannel(name)
+	DuowanAddon_TradeLog_AnnounceChannel = AnnounceChannels[name] or "WHISPER"; 
+end
+
+function TBT_EnableAnnounceToggle(switch)
+	TBT_EnableAnnounce = switch;
+end

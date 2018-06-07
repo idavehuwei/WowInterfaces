@@ -1,6 +1,6 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("Mendeleev", "zhCN", false)
 if not L then return end
-
+L["Mendeleev"] = "物品信息";
 L["Toggle sets."] = "切换显示类别。"
 L["Toggle sets from showing information in the tooltip."] = "指定是否在提示信息上显示类别信息。"
 L["Toggle sets in the %s category."] = "切换显示 %s 类别。"
@@ -86,10 +86,6 @@ L["Crusade Card"] = "暗月卡片：远征"
 L["Vengeance Card"] = "暗月卡片：复仇"
 L["Madness Card"] = "暗月卡片：疯狂"
 L["Wrath Card"] = "暗月卡片：怒火"
-L["Illusion Card"] = "暗月卡片：幻象"
-L["Berserker! Card"] = "暗月卡片：狂暴！"
-L["Greatness Card"] = "暗月卡片：伟大"
-L["Death Card"] = "暗月卡片：死亡"
 
 -- Sources
 L["Drop"] = "掉落"
@@ -102,9 +98,6 @@ L["LBRS"] = "黑石塔下层"
 	
 L["Heroic"] = "英雄模式"
 	
-L["10 Man"] = "10人"
-L["25 Man"] = "25人"
-	
 -- Tier Sets
 L["Tier 1 Set"] 		= "T1 套装"
 L["Tier 2 Set"] 		= "T2 套装"
@@ -115,12 +108,6 @@ L["Tier 5 Set"] 		= "T5 套装"
 L["Tier 6 Set"] 		= "T6 套装"
 L["Tier 7.10 Set"] = "T7 10人套装"
 L["Tier 7.25 Set"] = "T7 25人套装"
-L["Tier 8.10 Set"] = "T8 10人套装"
-L["Tier 8.25 Set"] = "T8 25人套装"
-L["Tier 9.10 Set"] = "T9 10人套装"
-L["Tier 9.25 Set"] = "T9 25人套装"
-L["Tier 10.10 Set"] = "T10 10人套装"
-L["Tier 10.25 Set"] = "T10 25人套装"
 	
 -- Arena Sets
 L["Arena - Season 1 Set"] = "竞技场：第1赛季套装"
@@ -130,9 +117,6 @@ L["Arena - Season 4 Set"] = "竞技场：第4赛季套装"
 L["Arena - Season 5 Tier 1 Set"] = "竞技场：第5赛季套装1"
 L["Arena - Season 5 Tier 2 Set"] = "竞技场：第5赛季套装2"
 L["Arena - Season 5 Tier 3 Set"] = "竞技场：第5赛季套装3"
-L["Arena - Season 6 Set"] = "竞技场：第6赛季套装"
-L["Arena - Season 7 Set"] = "竞技场：第7赛季套装"
-L["Arena - Season 8 Set"] = "竞技场：第8赛季套装"
 	
 L["%d%% alc/vol (%d proof)"] = "酒精浓度：%d%%"
 L[" (%d tickets)"] = " （%d张票）"
@@ -153,11 +137,12 @@ L["Adamantite Deposit"] = "精金矿脉"
 L["Fel Iron Deposit"] = "魔铁矿脉"
 L["Khorium Vein"] = "氪金矿脉"
 L["Rich Adamantite Deposit"] = "富精金矿脉"
-L["Cobalt Deposit"] = "钴矿脉"
-L["Rich Cobalt Deposit"] = "富钴矿脉"
-L["Saronite Deposit"] = "蓝铜矿脉"
-L["Rich Saronite Deposit"] = "富蓝铜矿脉"
-L["Titanium Vein"] = "泰坦神铁矿脉"
+-- check below
+L["Cobalt Node"] = "钴矿脉"
+L["Rich Cobalt Node"] = "富钴矿脉"
+L["Saronite Node"] = "萨隆邪铁矿脉"
+L["Rich Saronite Node"] = "富萨隆邪铁矿脉"
+L["Titanium Node"] = "泰坦神铁矿脉"
 
 -- Categories
 L["CurrencyItems"] = "通货物品"
@@ -170,9 +155,23 @@ L["Misc"] = "其他"
 L["QuestMats"] = "任务奖励"
 L["Reagent"] = "职业施法材料"
 L["Tradeskill"] = "商业技能"
-	
+L['Drop:'] = "掉落来源:";
 L["Trash Mobs"] = "小怪掉落"
-
+-- 掉落查询
+L['Loot'] = '战利品'
+L['Normal Loot'] = '普通模式掉落'
+L['Heroic Loot'] = '英雄模式掉落'
+L['Normal 10-man Loot'] = '10人普通掉落'
+L['Normal 25-man Loot'] = '25人普通掉落'
+L['Heroic 10-man Loot'] = '10人英雄掉落'
+L['Heroic 25-man Loot'] = '25人英雄掉落'
+L["Non Boss Drops"] = "非BOSS掉落"
+L['N'] = '普通'
+L['H'] = '英雄'
+L['N10'] = '普通10'
+L['N25'] = '普通25'
+L['H10'] = '英雄10'
+L['H25'] = '英雄25'
 -- Timed Reward Chest
 L["Timed Reward Chest1"] = "限时击杀首领奖励1"
 L["Timed Reward Chest2"] = "限时击杀首领奖励2"
@@ -185,3 +184,13 @@ L["Toggle limiting the 'used in' tree to items the char can craft."] = "指定�
 L["Badge of Justice"] = "公正徽章"
 L["G'eras"] = "基厄拉斯"
 L["Smith Hauthaa"] = "铁匠霍尔萨"
+
+L["Poor"] = "粗糙"
+L["Common"] = "普通"
+L["Uncommon"] = "优秀"
+L["Rare"] = "精良"
+L["Epic"] = "史诗"
+L["Legendary"] = "传说"
+L["Artifact"] = "神器"
+L["Heirloom"] = "传家宝"
+

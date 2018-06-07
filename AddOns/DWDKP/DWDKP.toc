@@ -1,0 +1,20 @@
+## Interface: 30300
+## Title: [Duowan] DWDKP
+## Notes: note dkp
+## Title-zhCN: [多玩] 多玩DKP
+## Notes-zhCN: 记录RAID活动并可以导出字符串上传至dkp.duowan.com
+## Title-zhTW: [多玩] 多玩DKP
+## Notes-zhTW: 記錄RAID活動並可以導出字串上傳至dkp.duowan.com
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+## X-DuowanAddon: 团队副本
+## SavedVariables: CT_RaidTracker_Online,CT_RaidTracker_RaidLog,CT_RaidTracker_Options,CT_RaidTracker_SortOptions,CT_RaidTracker_ItemOptions,CT_RaidTracker_ItemOptions_selected,CT_RaidTracker_VersionFix,CT_RaidTracker_GetCurrentRaid,CT_RaidTracker_TimeOffsetStatus,CT_RaidTracker_CustomZoneTriggers,CT_RaidTracker_TTout,CT_RaidTracker_Items,CT_RaidTracker_Jihefen,DKPSystem,MerDKPDB
+
+CT_RaidTracker\CT_RaidTrackerOptions.xml
+CT_RaidTracker\CT_RaidTrackerItemOptions.xml
+CT_RaidTracker\CT_RaidTracker.xml
+MerDKP\dkp_list.lua
+MerDKP\MerDKP.lua
+MerDKP\MerDKP.xml
+DWDKPForm.xml

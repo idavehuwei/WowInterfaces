@@ -1,42 +1,22 @@
 ## Interface: 30300
-## X-Curse-Packaged-Version: 2.4.5-3-g6a02387
-## X-Curse-Project-Name: Decursive
-## X-Curse-Project-ID: decursive
-## X-Curse-Repository-ID: wow/decursive/mainline
-
-## Title: Decursive
-## Title-zhCN: [大脚][集]一键驱散
-## Title-zhTW: [大腳][集]一鍵驅散
-## Notes: |cffbc8f8fAffliction display and cleaning for solo, group and raids with advanced filtering and priority system.|r
-## Notes-zhCN: |cff00ff00Decursive|r                                             |cffbc8f8f提供显示和清除负面效果的功能，并提供相应的高级过滤和优先级系统。|r
-## Notes-zhTW: |cff00ff00Decursive|r                                             |cffbc8f8f提供驅魔輔助功能，包含進階的顯示及過濾功能。|r
-
-## SavedVariables: DecursiveDB
-
-## Version: 2.4.5
+## Title: [Duoan] Decursive |cff7fff7f -Ace2-|r
+## Notes: Affliction display and cleaning for solo, group and raids with advanced filtering and priority system.
+## Title-zhCN: [多玩] 一键驱散 Decursive
+## Notes-zhCN: 帮助有驱散技能的职业一键驱散诅咒，魔法，毒等DEBUFF，右键点击插件条弹出设置菜单。
+## Title-zhTW: [多玩] 一鍵驅散 Decursive
+## Notes-zhTW: 提供驅魔輔助功能，包含進階的顯示及過濾功能
+## Version: 2.5.1-12-gb39554a
 ## Author: Archarodim
-## X-License: GNU GPL
-
-
-## X-License: All Rights Reserved
-
-## OptionalDeps: Ace3, CallbackHandler-1.0, LibQTip-1.0, LibDataBroker-1.1, LibDBIcon-1.0 
-
-## LoadManagers: AddonLoader
-## X-LoadOn-Class: Mage, Priest, Paladin, Druid, Hunter, Warlock, Shaman
-
-
-## X-Embeds: Ace3, LibStub, CallbackHandler-1.0, LibQTip-1.0, LibDataBroker-1.1, LibDBIcon-1.0
-
-## X-ReleaseDate: "2009-12-06T03:36:40Z"
+## X-ReleaseDate: "2010-09-26T17:24:44Z"
 ## X-Category: Combat
-## X-Website: http://www.2072productions.com/to/decursive.php
-## X-Credits: Sylvin (Full french translation), Peter Sun, Ananhaid (ZhTW and zhCN translation), Fenlis, Chkid (koKR translation), Hemathio, Swix (Russian Translation), Floyddotnet, Dessa, Farook (German translation)
-
-## X-AceForum: 4195
-
+## X-Website: http://www.2072productions.com/?to=decursive.php
+## X-Credits: Sylvin (Full french translation), Peter Sun (ZhTW translation), Fenlis (koKR translation)
 ## X-eMail: archarodim@teaser.fr
-## X-Revision: BigFoot
+## SavedVariablesPerCharacter: DcrCharDB
+## SavedVariables: DecursiveDB
+## X-DuowanAddon: 团队副本
+## Dependencies: Duowan
+## X-Revision: Duowan
 ## LoadOnDemand: 1
 
 Dcr_DIAG.lua

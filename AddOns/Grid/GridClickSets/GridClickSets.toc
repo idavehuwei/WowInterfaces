@@ -1,0 +1,12 @@
+﻿## Interface: 30300
+## Title: GridClickSets
+## Notes: Set the clicking action for Grid buttons
+## Author: Warbaby
+## Version: 1.01
+## Dependencies: Grid
+## X-Curse-Packaged-Version: 1.1
+## X-Curse-Project-Name: GridClickSets
+## X-Curse-Project-ID: gridclicksets
+## X-Curse-Repository-ID: wow/gridclicksets/mainline
+
+embeds.xml

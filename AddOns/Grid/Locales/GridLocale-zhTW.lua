@@ -2,12 +2,13 @@
 	GridLocale-zhTW.lua
 	Traditional Chinese (正體中文) localization for Grid.
 ----------------------------------------------------------------------]]
-
-if GetLocale() ~= "zhTW" then return end
-local _, ns = ...
-ns.L = {
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
+if GetLocale() == "zhTW" then 
+local strings_zhTW = {
 
 --{{{ GridCore
+	["Grid"] = "團隊框架",
+	["Grid Configuration"] = "團隊框架配置",
 	["Debugging"] = "除錯",
 	["Module debugging menu."] = "除錯模組設定。",
 	["Debug"] = "除錯",
@@ -77,11 +78,7 @@ ns.L = {
 	["Adjust the font settings"] = "調整字型。",
 	["Font Size"] = "字型大小",
 	["Adjust the font size."] = "調整字型大小。",
---	["Font Outline"] = "",
---	["Adjust the font outline."] = "",
---	["None"] = "",
---	["Thin"] = "",
---	["Thick"] = "",
+	["None"] = "無",
 	["Orientation of Frame"] = "框架排列方式",
 	["Set frame orientation."] = "設定框架排列方式。",
 	["Orientation of Text"] = "文字排列方式",
@@ -383,5 +380,19 @@ ns.L = {
 	["Voice Chat"] = "語音",
 	["Talking"] = "說話中",
 --}}}
-
+	["Font Outline"] = "字體描邊",
+	["Adjust the font outline."] = "調整字體描邊.",
+	["Thin"] = "細",
+	["Thick"] = "粗",
+	["By Class 10"] = "By Class 10",
+	["By Class 25"] = "By Class 25",	
+	["Click to open the options in a GUI window."] = "點擊開啟圖形配置介面.",
+	["Right-Click to open the options in a drop-down menu."] = "右鍵點擊打開下拉配置菜單.",
+	["Enable dual profile"] = "Enable dual profile",
+	["Automatically swap profiles when switching talent specs."] = "當切換天賦時自動使用指定的配置方案.",
+	["Dual profile"] = "Dual profile",
+	["Select the profile to swap with the current profile when switching talent specs."] = "指定切換到相應天賦時的配置檔",
 }
+
+L:RegisterTranslations("zhTW", function() return strings_zhTW end)
+end

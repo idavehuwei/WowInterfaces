@@ -4,7 +4,7 @@
   ****************************************************************************]]
 
 
-local _NPCScan = select( 2, ... );
+local _NPCScan = _NPCScan;
 local me = CreateFrame( "Button", "_NPCScanButton", UIParent, "SecureActionButtonTemplate,SecureHandlerShowHideTemplate" );
 _NPCScan.Button = me;
 

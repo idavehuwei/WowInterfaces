@@ -1,0 +1,44 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="svn://113.106.98.20/repos/Duowan-Work/UI.xsd">
+	<!-- 配置文件 -->
+
+	<Script file="dkp.lua"/>
+	<Script file="Arena.lua"/>
+	<Script file="BattleGround.lua"/>	
+	<Script file="RaidModule.lua"/>	
+	<Script file="Trinket.lua"/>	
+	<Script file="MerchantAssist.lua"/>
+	<Script file="TheBurningTrade.lua"/>
+	<Script file="RangeDisplay.lua"/>
+	<Script file="ChatMod.lua"/>
+	<Script file="MyInventory.lua"/>
+	<Script file="Items.lua"/>
+	<Script file="CharacterInfo.lua"/>
+	<Script file="TinyTip.lua"/>
+	<Script file="EN_UnitFrames.lua"/>	
+	<Script file="dct.lua"/>
+	<Script file="ActionButton.lua"/>
+	<Script file="Mail.lua"/>
+	<Script file="Quest.lua"/>
+	<!--<Script file="WorldMap.lua"/>-->
+	<Script file="SexyMap.lua"/>
+	<Script file="Tradeskill.lua"/>
+	<Script file="LearningAid.lua"/>	
+	<Script file="ChannelClean.lua"/>
+	<Script file="DuowanMove.lua"/>
+	<Script file="ClassMod.lua"/>		
+	<Script file="TitanPanel.lua"/>	
+	<Script file="DuowanBar.lua"/>
+	<Script file="Love.lua"/>
+	<Script file="BuffTimer.lua"/>
+	<Script file="EventAlert.lua"/>	
+	<Script file="EquipSwitcher.lua"/>
+	<Script file="Loot.lua"/>
+	<Script file="AttackTimer.lua"/>
+	
+	<Script file="HealthText.lua"/>
+	<Script file="SpellTimer.lua"/>
+	<Script file="AuctionMod.lua"/>
+	<Script file="GatherMate.lua"/>
+	<Script file="Accountant.lua"/>
+	
+</Ui>

@@ -1,0 +1,15 @@
+﻿## Interface: 30300
+## Title: [Duowan] DuowanTradeskill
+## Notes: 
+## Title-zhCN: [多玩] 制作增强
+## Notes-zhCN: 扩展游戏自带的制作界面
+## Title-zhTW: [多玩] 製作增強
+## Notes-zhTW: 擴展遊戲自帶的製作介面
+## Author: dugu
+## X-DuowanAddon: 商业物品
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 
+## SavedVariables: 
+
+DuowanTradeskill.lua

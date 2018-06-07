@@ -1,0 +1,19 @@
+## Interface: 30300
+## Author: kunda
+## Title: GridIndicatorSideIcons
+## Notes: Adds four icon indicators to Grid (top, bottom, left and right).
+## Notes-deDE: Erweitert Grid um vier Symbolindikatoren (oben, unten, links und rechts).
+## Notes-zhTW: [Grid] 在 Grid 框架中加入4個圖標提示（上部、下部、左部與右部）。
+## Notes-zhCN: [Grid] 在 Grid 框体中加入4个图标提示（上部、下部、左部和右部）。
+## Version: 30300-2
+## Dependencies: Grid
+## X-Curse-Packaged-Version: r50
+## X-Curse-Project-Name: GridIndicatorSideIcons
+## X-Curse-Project-ID: grid-indicator-side-icons
+## X-Curse-Repository-ID: wow/grid-indicator-side-icons/mainline
+
+GridIndicatorSideIcons-localization-enUS.lua
+GridIndicatorSideIcons-localization-zhTW.lua
+GridIndicatorSideIcons-localization-zhCN.lua
+
+GridIndicatorSideIcons.lua

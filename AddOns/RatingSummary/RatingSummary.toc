@@ -1,0 +1,17 @@
+## Interface: 30300
+## Title: [Duowan] RatingSummary
+## Notes: Compare your equipments bonus of all status with other players.
+## Title-zhCN: [多玩] 装备属性合计 RatingSummary
+## Notes-zhCN: 显示角色装备提供的属性奖励，并可以与其他玩家对比。|N|CFF0099FF需要基础函数库|R
+## Title-zhTW: [多玩] 裝備屬性合計 RatingSummary
+## Notes-zhTW: 顯示角色裝備提供的屬性獎勵，並可以與其他玩家對比。|N|CFF0099FF需要基礎函式庫|R
+## X-Repple: 辅助
+## Author-Origin: slashboy @ 九藜方舟 Dreamland  yyslash@gmail.com / lasthime @ 幻物梵天 艾森纳 
+## Author: Warbaby - 聖光之願<冰封十字軍>
+## X-DuowanAddon: 商业物品
+## OptionalDeps: StatLogicLib, LibStatLogic-1.1
+## Dependencies: Duowan
+## X-Revision: Duowan
+embeds.xml
+Localization.lua
+RatingSummary.xml

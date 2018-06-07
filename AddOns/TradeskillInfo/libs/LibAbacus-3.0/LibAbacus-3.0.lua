@@ -1,6 +1,6 @@
 --[[
 Name: LibAbacus-3.0
-Revision: $Rev: 46 $
+Revision: $Rev: 2247 $
 Author(s): ckknight (ckknight@gmail.com)
 Website: http://ckknight.wowinterface.com/
 Documentation: http://www.wowace.com/wiki/LibAbacus-3.0
@@ -10,7 +10,7 @@ License: LGPL v2.1
 ]]
 
 local MAJOR_VERSION = "LibAbacus-3.0"
-local MINOR_VERSION = tonumber(("$Revision: 46 $"):match("(%d+)")) + 90000
+local MINOR_VERSION = tonumber(("$Revision: 2247 $"):match("(%d+)")) + 90000
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub") end
 local Abacus, oldLib = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -57,6 +57,17 @@ if not DAYS_ABBR_P1 then
 
 	SECONDS_ABBR_S1 = gsub(SECONDS_ABBR, ".*|4(.-):.-;.*", "%1")
 	SECONDS_ABBR_P1 = gsub(SECONDS_ABBR, ".*|4.-:(.-);.*", "%1")
+
+	if GetLocale() == "zhCN" then
+		HOURS_ABBR_P1 = gsub(HOURS_ABBR, ".* (.-)", "%1")
+		MINUTES_ABBR_P1 = gsub(MINUTES_ABBR, ".* (.-)", "%1")
+		SECONDS_ABBR_P1 = gsub(SECONDS_ABBR, ".* (.-)", "%1")
+	elseif GetLocale() == "zhTW" then
+		DAYS_ABBR_P1 = DAYS
+		HOURS_ABBR_P1 = HOURS
+		MINUTES_ABBR_P1 = MINS_ABBR
+		SECONDS_ABBR_P1 = SECONDS
+	end
 else
 	DAYS_ABBR_S1 = DAYS_ABBR 
 	HOURS_ABBR_S1 = HOURS_ABBR
@@ -79,40 +90,18 @@ local L_SECOND_ONELETTER_ABBR = SECOND_ONELETTER_ABBR:gsub("%s*%%d%s*", "")
 
 local L_UNDETERMINED = "Undetermined"
 
-if ( GetLocale() =="koKR" ) then
-	L_UNDETERMINED = "측정불가"
-elseif ( GetLocale() == "zhTW" ) then
+if ( GetLocale() == "zhTW" ) then
 	COPPER_ABBR = "銅"
 	SILVER_ABBR = "銀"
 	GOLD_ABBR = "金"
 
 	L_UNDETERMINED = "未定義的"
-	
---***************************************
--- zhCN Chinese Simplify
--- 2007/09/19 CN3羽月 雪夜之狼
--- 请保留本翻译作者名 谢谢
--- E=mail:xionglingfeng@Gmail.com
--- Website:http://www.wowtigu.org  (Chs)
---***************************************
 elseif ( GetLocale() == "zhCN" ) then
 	COPPER_ABBR = "铜"
 	SILVER_ABBR = "银"
 	GOLD_ABBR = "金"
 
 	L_UNDETERMINED = "未定义的"
---***************************************
--- ruRU Russian, 2008-08-04
--- Author: SLA80, sla80x at Gmail com
---***************************************
-elseif ( GetLocale() == "ruRU" ) then
-	GOLD, SILVER, COPPER = "золота", "серебра", "меди"
-	GOLD_ABBR, SILVER_ABBR, COPPER_ABBR = "з", "с", "м"
-	DAYS_ABBR_P1 = "дней"
-	HOURS_ABBR_S1, HOURS_ABBR_P1 = "ч.", "ч."
-	MINUTES_ABBR_S1, MINUTES_ABBR_P1 = "мин.", "мин."
-	SECONDS_ABBR_S1, SECONDS_ABBR_P1 = "сек.", "сек."
-	L_UNDETERMINED = "Неопределено"
 end
 
 local inf = 1/0
@@ -536,6 +525,7 @@ local function compat()
 	end})
 	AceLibrary:Register(Abacus20, "Abacus-2.0", MINOR_VERSION*1000)
 end
+
 if AceLibrary then
 	compat()
 elseif Rock then

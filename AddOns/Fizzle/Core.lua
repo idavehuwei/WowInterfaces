@@ -8,12 +8,14 @@ local defaults = {
 		Invert = false,
 		HideText = false,
 		DisplayWhenFull = true,
+		repairCost = true,
 		modules = {
 			["Inspect"] = true,
 		},
-		inspectiLevel = false,
 	},
 }
+
+Fizzle.enable = true;
 local L = LibStub("AceLocale-3.0"):GetLocale("Fizzle")
 local fontSize = 12
 local _G = _G
@@ -116,39 +118,50 @@ local function getOptions()
 						Fizzle:DisableModule("Inspect")
 					end
 				end,
-			},
-			inspectilevel = {
-				name = "Inspect iLevels",
-				desc = "Show the iLevel on an inspected characters items.",
-				type = "toggle",
-				disabled = function() return not db.modules["Inspect"] end,
-				order = 610,
-				width = "full",
-				get = function() return db.inspectiLevel end,
-				set = function()
-					db.inspectiLevel = not db.inspectiLevel
-				end,
 			}
 		}
 	}
 	return options
 end
 
+local function Update_RepairCost(cost)	
+	local framex = CharacterFrameMoneyFrame:GetName();
+	if(cost>0)then
+		CharacterFrameMoneyFrame.RepairText:SetText(L["REPAIR_ITEM"]);
+	else
+		CharacterFrameMoneyFrame.RepairText:SetText(L["NO_REPAIR"]);
+	end
+	MoneyFrame_Update(framex, cost);
+end
+
 function Fizzle:OnInitialize()
+	local moneyFrame, RMoney;
 	-- Grab our db
-	self.db = LibStub("AceDB-3.0"):New("FizzleDB", defaults)
+	self.db = LibStub("AceDB-3.0"):New("DuowanAddon_FizzleDB", defaults)
 	db = self.db.profile
-	-- Register our options
-	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Fizzle", getOptions)
-	LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Fizzle", GetAddOnMetadata("Fizzle", "Title"))
-	-- Register chat command to open options dialog
-	self:RegisterChatCommand("fizzle", function() InterfaceOptionsFrame_OpenToCategory(GetAddOnMetadata("Fizzle", "Title")) end)
-	self:RegisterChatCommand("fizz", function() InterfaceOptionsFrame_OpenToCategory(GetAddOnMetadata("Fizzle", "Title")) end)
+
+	local moneyTooltip = CreateFrame("GameTooltip", "moneyFrameTooltip", nil, "GameTooltipTemplate")
+	moneyTooltip:SetOwner(UIParent, "ANCHOR_NONE")
+	moneyTooltip:SetAlpha(0);
+
+	moneyFrame = CreateFrame("Frame", "CharacterFrameMoneyFrame", PaperDollFrame, "SmallMoneyFrameTemplate")
+	MoneyFrame_SetType(moneyFrame, "STATIC");	
+	moneyFrame:SetPoint("BOTTOMLEFT", PlayerStatFrameLeftDropDown, "TOPLEFT", 24, 4);
+	
+	RMoney = moneyFrame:CreateFontString(moneyFrame:GetName().."RepairMoney","ARTWORK", "GameFontNormal");	
+	RMoney:SetPoint("BOTTOMLEFT", moneyFrame, "TOPLEFT", -2, 2);	
+	RMoney:SetTextColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
+	RMoney:SetText(L["REPAIR_ITEM"]);
+	CharacterFrameMoneyFrame.RepairText = RMoney;
+
+	--Update_RepairCost();
+	self:RegisterChatCommand("fizzle", function() InterfaceOptionsFrame_OpenToCategory(LibStub("AceConfigDialog-3.0").BlizOptions["Fizzle"].frame) end)
+	self:RegisterChatCommand("fizz", function() InterfaceOptionsFrame_OpenToCategory(LibStub("AceConfigDialog-3.0").BlizOptions["Fizzle"].frame) end)
 end
 
 function Fizzle:OnEnable()
-	self:SecureHookScript(CharacterFrame, "OnShow", "CharacterFrame_OnShow")
-	self:SecureHookScript(CharacterFrame, "OnHide", "CharacterFrame_OnHide")
+	CharacterFrame:HookScript("OnShow", Fizzle_CharacterFrame_OnShow)
+	CharacterFrame:HookScript("OnHide", Fizzle_CharacterFrame_OnHide)
 	if not bordersCreated then
 		self:MakeTypeTable()
 	end
@@ -161,39 +174,38 @@ function Fizzle:OnDisable()
 	self:HideBorders()
 end
 
+function Fizzle_Toggle(switch)
+	if (switch) then
+		Fizzle.enable = true;
+		Fizzle:UpdateItems();
+	else
+		Fizzle.enable = false;
+		for _, item in ipairs(items) do
+			_G[item .. "FizzleS"]:SetText("")
+		end
+	end
+end
+
 function Fizzle:CreateBorder(slottype, slot, name, hasText)
 	local gslot = _G[slottype..slot.."Slot"]
-	local height = 68
-	local width = 68
-	-- Ammo slot is smaller than the rest.
-	if slot == "Ammo" then
-		height = 58
-		width = 58
-	end
 	if gslot then
 		-- Create border
 		local border = gslot:CreateTexture(slot .. name .. "B", "OVERLAY")
 		border:SetTexture("Interface\\Buttons\\UI-ActionButton-Border")
 		border:SetBlendMode("ADD")
 		border:SetAlpha(0.75)
-		border:SetHeight(height)
-		border:SetWidth(width)
+		border:SetHeight(68)
+		border:SetWidth(68)
 		border:SetPoint("CENTER", gslot, "CENTER", 0, 1)
 		border:Hide()
 
 		-- Check if we need a text field creating
 		if hasText then
 			local str = gslot:CreateFontString(slot .. name .. "S", "OVERLAY")
-			local font, _, flags = NumberFontNormal:GetFont()
-			str:SetFont(font, fontSize, flags)
+			local font, _, flags = ChatFontNormal:GetFont()
+			str:SetFont(font, fontSize, "OUTLINE")
 			str:SetPoint("CENTER", gslot, "BOTTOM", 0, 8)
 		end
-
-		-- Strings for iLevels
-		local iLevelStr = gslot:CreateFontString(slot .. name .. "iLevel", "OVERLAY")
-		local font, _, flags = NumberFontNormal:GetFont()
-		iLevelStr:SetFont(font, fontSize, flags)
-		iLevelStr:SetPoint("CENTER", gslot, "TOP", 0, -5)
 	end
 end
 
@@ -224,7 +236,6 @@ function Fizzle:MakeTypeTable()
 		"Trinket1",
 		"Relic",
 		"Tabard",
-		"Shirt",
 	}
          
 	for _, item in ipairs(items) do
@@ -252,9 +263,10 @@ end
 function Fizzle:UpdateItems()
 	-- Don't update unless the charframe is open.
 	-- No point updating what we can't see.
-	if CharacterFrame:IsVisible() then
+	if CharacterFrame:IsVisible() then		
 		-- Go and set the durability string for each slot that has an item equipped that has durability.
 		-- Thanks Tekkub again for the base of this code.
+		local CostSum = 0;
 		for _, item in ipairs(items) do
 			local id, _ = GetInventorySlotInfo(item .. "Slot")
 			local str = _G[item.."FizzleS"]
@@ -285,13 +297,22 @@ function Fizzle:UpdateItems()
 				-- No durability in slot, so hide the text.
 				str:SetText("")
 			end
-             
+            
+			if (db.repairCost) then
+				local lHasItem, _, lRepairCost = moneyFrameTooltip:SetInventoryItem("player", id);
+				if (lHasItem) then
+					CostSum = CostSum + lRepairCost;
+				end
+			end
 			--Finally, colour the borders
 			if db.Border then
 				self:ColourBorders(id, item)
 			end
 		end
          
+		 if (db.repairCost) then
+		 	Update_RepairCost(CostSum);
+		 end
 		-- Colour the borders of ND items
 		if db.Border then
 			self:ColourBordersND()
@@ -299,15 +320,19 @@ function Fizzle:UpdateItems()
 	end
 end
 
-function Fizzle:CharacterFrame_OnShow()
-	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "UpdateItems")
-	self:RegisterBucketEvent("UPDATE_INVENTORY_DURABILITY", 0.5, "UpdateItems")
-	self:UpdateItems()
+function Fizzle_CharacterFrame_OnShow()
+	if (not Fizzle.enable) then
+		return;
+	end
+	
+	Fizzle:RegisterEvent("UNIT_INVENTORY_CHANGED", "UpdateItems")
+	Fizzle:RegisterBucketEvent("UPDATE_INVENTORY_DURABILITY", 0.5, "UpdateItems")
+	Fizzle:UpdateItems()
 end
 
-function Fizzle:CharacterFrame_OnHide()
-	self:UnregisterEvent("UNIT_INVENTORY_CHANGED")
-	self:UnregisterBucket("UPDATE_INVENTORY_DURABILITY")
+function Fizzle_CharacterFrame_OnHide()
+	Fizzle:UnregisterEvent("UNIT_INVENTORY_CHANGED")
+	Fizzle:UnregisterBucket("UPDATE_INVENTORY_DURABILITY")
 end
 
 -- Border colouring split into two functions so I only need to iterate over each table once.
@@ -363,5 +388,15 @@ function Fizzle:HideBorders()
 		if border then
 			border:Hide()
 		end
+	end
+end
+
+function Fizzle:ToggleCost(switch)
+	if (switch) then
+		db.repairCost = true;
+		CharacterFrameMoneyFrame:Show();
+	else
+		db.repairCost = false;
+		CharacterFrameMoneyFrame:Hide();
 	end
 end

@@ -371,6 +371,7 @@ function ImportHelper:GetImportDatabase(info,k)
 	return db["importers"][info.arg].Databases[k]
 end
 function ImportHelper:SetImportDatabase(info,k,state)
+	print("k, state", k, state)
 	db["importers"][info.arg].Databases[k] = state
 end
 function ImportHelper:GetAutoImport(info, k)
@@ -864,12 +865,14 @@ options.args.cleanup = {
 
 
 -- GatherMateData Import config tree
+--[[
 options.args.importing = {
  	type = "group",
 	name = L["Import Data"],
 	order = 10,
 	args = {},
 }
+]]
 ImportHelper.db_options = {
 	["Merge"] = L["Merge"],
 	["Overwrite"] = L["Overwrite"]
@@ -885,7 +888,9 @@ ImportHelper.expac_data = {
 	["TBC"] = L["The Burning Crusades"],
 	["WRATH"] = L["Wrath of the Lich King"],
 }
+
 imported["GatherMate_Data"] = false
+--[[
 options.args.importing.args.GatherMateData = {
  	type = "group",
 	name = "GatherMateData", -- addon name to import from, don't localize
@@ -993,7 +998,6 @@ options.args.importing.args.GatherMateData = {
 		}
 	},
 }
-
 options.args.faq_group = {
 	type = "group",
 	name = L["FAQ"],
@@ -1012,7 +1016,7 @@ options.args.faq_group = {
 		},
 	},
 }
-
+]]
 
 --[[
 	Initialize the Config System
@@ -1023,10 +1027,23 @@ function Config:OnInitialize()
 	options.plugins["profiles"] = { profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(GatherMate.db) }
 	self.options = options
 	self.importHelper = ImportHelper
-	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("GatherMate", options)
-	LibStub("AceConfigDialog-3.0"):AddToBlizOptions("GatherMate", "GatherMate")
-	self:RegisterChatCommand("gathermate", function() LibStub("AceConfigDialog-3.0"):Open("GatherMate") end )
+	--LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("GatherMate", options)
+	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("GatherMate", options.args.display.args.filters)	
+	--LibStub("AceConfigDialog-3.0"):AddToBlizOptions("GatherMate", "GatherMate")
+	--self:RegisterChatCommand("gathermate", function() LibStub("AceConfigDialog-3.0"):Open("GatherMate") end )
 	self:RegisterMessage("GatherMateConfigChanged")
+	---------------
+	-- Modified by dugu	
+	self.optionButton = CreateFrame("Button", "GatherMapOptionButton", WorldMapFrame, "UIPanelButtonTemplate");
+	self.optionButton:SetWidth(100);
+	self.optionButton:SetHeight(28);
+	self.optionButton:SetPoint("TOPRIGHT", WorldMapFrame, "TOPRIGHT", -20, -34);
+	self.optionButton:SetFrameLevel(self.optionButton:GetFrameLevel() + 4);
+	self.optionButton:SetText(L["GatherMate"]);
+	self.optionButton:SetScript("OnClick", function()
+		LibStub("AceConfigDialog-3.0"):Open("GatherMate");
+	end);
+	
 	if DataBroker then
 		local launcher = DataBroker:NewDataObject("GatherMate", {
 		    type = "launcher",
@@ -1037,6 +1054,7 @@ function Config:OnInitialize()
 end
 
 function Config:OnEnable()
+	self:PreImportData()
 	self:CheckAutoImport()	
 end
 
@@ -1048,15 +1066,25 @@ function Config:GatherMateConfigChanged()
 	db = GatherMate.db.profile
 end
 
-function Config:CheckAutoImport()
-	for k,v in pairs(db.importers) do
+function Config:PreImportData()
+	--------------
+	-- 全部合并
+	db["importers"]["GatherMate_Data"]["Style"] = "Merge";
+	db["importers"]["GatherMate_Data"]["autoImport"] = true;
+	for k, v in pairs(ImportHelper.db_tables) do
+		db["importers"]["GatherMate_Data"]["Databases"][k] = true;
+	end
+end
+
+function Config:CheckAutoImport()	
+	for k,v in pairs(db.importers) do		
 		local verline = GetAddOnMetadata(k, "X-Generated-Version")
 		if verline and v["autoImport"] then 
 			local dataVersion = tonumber(verline:match("%d+"))
-			if dataVersion and dataVersion > v["lastImport"] then
+			if dataVersion and (not v["lastImport"] or dataVersion > v["lastImport"]) then
 				local loaded, reason = LoadAddOn(k)
 				local addon = LibStub("AceAddon-3.0"):GetAddon(k)
-				if loaded then
+				if addon then
 					local filter = nil
 					if v.expacOnly then
 						filter = v.expac

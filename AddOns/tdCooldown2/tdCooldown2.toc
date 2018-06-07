@@ -1,0 +1,23 @@
+## Interface: 30300
+## Title: tdCooldown2
+## Notes: Cooldown Count for Everything.
+## Title-zhCN: [多玩] 冷却计时
+## Notes-zhCN: 显示动作按键的冷却计时和着色超出距离的动作按键
+## Title-zhTW: [多玩] 冷卻計時
+## Notes-zhTW: 顯示動作按鍵的冷卻計時和著色超出距離的動作按鍵
+## Author: ldz5
+## Version: 30000.4
+## SavedVariables: tCD2DB, CoolLineDB
+## SavedVariablesPerCharacter: tCDblackData, tCDcoolingData
+## X-DuowanAddon: 战斗
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 0
+
+localization\localization.lua
+localization\localization.cn.lua
+localization\localization.tw.lua
+
+main.lua
+core\embed.xml
+addons\addons.xml

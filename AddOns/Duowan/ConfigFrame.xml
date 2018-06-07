@@ -1,0 +1,827 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ E:\repos\Duowan-Work\InterfaceBLZ-TW\FrameXML\UI.xsd" xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="ConfigFrame.lua"/>
+	<Font name="ConfigFont" inherits="ChatFontNormal" virtual="true"/>
+	<Font name="dwTextStatusBarText" inherits="SystemFont_Outline_Small" virtual="true">
+		<Color r="1.0" g="1.0" b="1.0"/>
+	</Font>
+	<Font name="dwNumberFontNormal" inherits="SystemFont_Outline_Small" virtual="true">
+		<Color r="1.0" g="1.0" b="1.0"/>
+	</Font>
+	<!-- 标签模板 -->
+	<Button name="DuowanFrameTabTemplate" inherits="TabButtonTemplate" virtual="true">
+		<Scripts>
+			<PreClick>
+				PanelTemplates_Tab_OnClick(self, DuowanConfigFrame);			
+			</PreClick>
+		</Scripts>
+	</Button>
+	<!-- 勾选框模板 -->
+	<CheckButton name="dwCheckButtonTemplate" inherits="UICheckButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="24" y="24"/>
+		</Size>
+		<Frames>
+			<Button name="$parentHitArea">
+				<Size>
+					<AbsDimension x="180" y="25"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+					</OnLoad>
+					<OnClick>
+						self:GetParent():Click();
+					</OnClick>
+					<OnEnter>
+						if (self:GetParent().text) then
+							self:GetParent().text:SetTextColor(1, 1, 1);
+						end
+						if (type(self:GetParent().callback) == "function") then
+							dwCheckButton_OnEnter(self:GetParent());
+						end
+					</OnEnter>
+					<OnLeave>
+						if (self:GetParent().text) then
+							self:GetParent().text:SetTextColor(1, 0.82, 0);
+						end
+						if (type(self:GetParent().callback) == "function") then
+							dwCheckButton_OnLeave(self:GetParent());
+						end
+					</OnLeave>
+				</Scripts>
+			</Button>			
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				self.text = dwGetglobal(self:GetName().."Text");
+			</OnLoad>
+		</Scripts>
+	</CheckButton>
+	<!-- ModButton 模板 -->
+	<CheckButton name="dwModButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="28" y="28"/>
+		</Size>
+		<Layers>
+			<Layer level="BACKGROUND">	
+				<Texture name="$parentBorder" file="Interface\AddOns\Duowan\textures\dwmh-an1" hidden="false">
+					<Size>
+						<AbsDimension x="32" y="32"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="-2" y="2"/>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.0546875" right="0.609375" top="0.0546875" bottom="0.609375"/>
+				</Texture>
+				<Texture name="$parentUnChecked" file="Interface\AddOns\Duowan\textures\dwmh-an2" hidden="false">
+					<Size>
+						<AbsDimension x="128" y="30"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="31" y="1"/>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentChecked" file="Interface\AddOns\Duowan\textures\dwmh-an4" hidden="true">
+					<Size>
+						<AbsDimension x="128" y="30"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="31" y="1"/>
+						</Anchor>
+					</Anchors>
+				</Texture>				
+			</Layer>
+			<Layer level="BORDER">
+				<Texture name="$parentMouseOver" file="Interface\AddOns\Duowan\textures\dwmh-an3" hidden="true">
+					<Size>
+						<AbsDimension x="128" y="30"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="31" y="1"/>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">				
+				<Texture name="$parentIcon" setAllPoints="true" hidden="false">
+					<Size>
+						<AbsDimension x="24" y="24"/>
+					</Size>
+				</Texture>
+				<FontString name="$parentName" inherits="GameFontNormalSmall" hidden="false" justifyH="LEFT"  >
+					<Size>
+						<AbsDimension x="103" y="22"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="15" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<FontHeight>
+						<AbsValue val="12"/>
+					</FontHeight>
+				</FontString>
+				<FontString name="$parentSubName" inherits="SubSpellFont" hidden="true" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="79" y="18"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="4"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="$parentShine" inherits="AutoCastShineTemplate">
+				<Anchors>
+					<Anchor point="CENTER">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="28" y="28"/>
+				</Size>
+			</Frame>
+			<Button name="$parentHitArea">
+				<Size>
+					<AbsDimension x="145" y="30"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+					</OnLoad>
+					<OnEnter>
+						dwGetglobal(self:GetParent():GetName() .. "MouseOver"):Show();
+					</OnEnter>
+					<OnLeave>
+						dwGetglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
+					</OnLeave>
+					<OnClick>
+						self:GetParent():Click();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnClick>
+					dwModButton_OnClick(self);
+			  </OnClick>
+			<OnEnter>
+					dwModButton_OnEnter(self);
+			  </OnEnter>
+			<OnLeave>
+					dwModButton_OnLeave(self);
+			  </OnLeave>
+		</Scripts>
+		<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+	</CheckButton>
+	<!--Spin box-->
+	<Frame name="dwSpinBoxTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="200" y="28"/>
+		</Size>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentTitle" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" nonspacewrap="true">
+					<Size>
+						<AbsDimension x="80" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT">
+							<Offset>
+								<AbsDimension x="5" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Color r="1.0" g="0.82" b="0"/>
+				</FontString>
+				<FontString name="$parentText" inherits="GameFontNormal"  justifyV="MIDDLE" nonspacewrap="true">
+					<Size>
+						<AbsDimension x="80" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT">
+							<Offset>
+								<AbsDimension x="100" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Color r="1.0" g="1.0" b="1.0"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentPrev">
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTitle" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						dwSpinBoxPrev_OnLoad(self);
+					</OnLoad>
+					<OnClick>
+						dwSpinBoxPrev_OnClick(self);
+					</OnClick>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Down"/>
+				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+			</Button>
+			<Button name="$parentNext">
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="RIGHT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						dwSpinBoxNext_OnLoad(self);
+					</OnLoad>
+					<OnClick>
+						dwSpinBoxNext_OnClick(self);
+					</OnClick>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
+				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+			</Button>
+			<EditBox name="$parentEditBox" inherits="InputBoxTemplate" autoFocus="false" hidden="true">
+				<Size>
+					<AbsDimension x="70" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentPrev" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="4" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						--self:SetNumeric(true);
+					</OnLoad>
+					<OnTextChanged>
+						dwSpinBoxEditBox_OnTextChanged(self);
+					</OnTextChanged>
+					<OnTabPressed>
+						dwSpinBoxEditBox_OnTabPressed(self);
+					</OnTabPressed>
+				</Scripts>
+			</EditBox>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				self.text = _G[self:GetName() .. "Title"];
+				self.content = _G[self:GetName() .. "Text"];
+			</OnLoad>
+		</Scripts>
+	</Frame>
+	<!-- 小地图按键 -->
+	<Button name="DuowanMinimapButton" parent="Minimap" toplevel="true" movable="true" frameStrata="LOW" enableMouse="true">
+		<Size>
+			<AbsDimension x="33" y="33"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER" relativeTo="Minimap">
+				<Offset>
+					<AbsDimension x="-49" y="-58"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentIcon" file="Interface\AddOns\Duowan\UiLogo">
+					<Size>
+						<AbsDimension x="21" y="21"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="7" y="-6"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.075" right="0.925" top="0.075" bottom="0.925"/>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\Minimap\MiniMap-TrackingBorder">
+					<!-- 	<Texture file="Interface\AddOns\Duowan\textures\Border"> -->
+					<Size>
+						<AbsDimension x="56" y="56"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				dwMinimapButton_OnLoad(self);	
+			</OnLoad>
+			<OnEnter>
+				dwMinimapButton_OnEnter(self);
+			</OnEnter>
+			<OnLeave>
+				dwMinimapButton_OnLeave();
+			</OnLeave>
+			<OnDragStart>
+				dwMinimapButton_DragStart(self);
+				DuowanMinimapButtonIcon:SetPoint("TOPLEFT", DuowanMinimapButton, "TOPLEFT", 8, -8);
+			</OnDragStart>
+			<OnDragStop>
+				dwMinimapButton_DragEnd(self);
+				DuowanMinimapButtonIcon:SetPoint("TOPLEFT", DuowanMinimapButton, "TOPLEFT", 6, -6);
+			</OnDragStop>
+			<OnUpdate>
+				if (self.IsDragging) then 				
+					dwMinimapButton_UpdateDragPosition(self); 
+				end
+			</OnUpdate>
+			<OnClick>
+				dwMinimapButton_OnClick(self, button);
+			</OnClick>
+			<OnMouseDown>
+				DuowanMinimapButtonIcon:SetPoint("TOPLEFT", DuowanMinimapButton, "TOPLEFT", 8, -8);
+			</OnMouseDown>
+			<OnMouseUp>
+				DuowanMinimapButtonIcon:SetPoint("TOPLEFT", DuowanMinimapButton, "TOPLEFT", 6, -6);
+			</OnMouseUp>
+		</Scripts>
+		<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD"/>
+	</Button>
+	<!-- ESC面板 -->
+	<Button name="DuowanMenuButtonOptions" inherits="GameMenuButtonTemplate" parent="GameMenuFrame">
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="TOP">
+				<Offset>
+					<AbsDimension x="0" y="-37"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Scripts>
+			<OnShow>
+				self:SetText(DUOWAN_ADDONS_NAME);
+			</OnShow>
+			<OnClick>
+				PlaySound("igMainMenuOption");
+				ShowUIPanel(DuowanConfigFrame);
+			</OnClick>
+		</Scripts>
+	</Button>
+	<!-- 配置面板 -->
+	<Frame name="DuowanConfigFrame" movable="true" enableMouse="true" hidden="true" toplevel="true" parent="UIParent">
+		<Size>
+			<AbsDimension x="640" y="460"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER">
+				<Offset x="25" y="20"/>
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<!-- 左边 -->
+				<Texture name="$parentContBackGroundLeft" file="Interface\AddOns\Duowan\textures\dwmh-bg1">
+					<Size>
+						<AbsDimension x="215" y="460"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="0" y="0"/>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<!-- 中间1 -->
+				<Texture name="$parentContBackGroundMiddle1" file="Interface\AddOns\Duowan\textures\dwmh-bg2">
+					<Size>
+						<AbsDimension x="215" y="460"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentContBackGroundLeft" relativePoint="TOPRIGHT">
+							<Offset x="0" y="0"/>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<!-- 中间2 -->
+				<Texture name="$parentContBackGroundMiddle2" file="Interface\AddOns\Duowan\textures\dwmh-bg3">
+					<Size>
+						<AbsDimension x="215" y="460"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentContBackGroundMiddle1" relativePoint="TOPRIGHT">
+							<Offset x="0" y="0"/>
+						</Anchor>
+					</Anchors>
+				</Texture>
+					<!-- 右边 -->
+				<Texture name="$parentContBackGroundRigtht" file="Interface\AddOns\Duowan\textures\dwmh-bg4">
+					<Size>
+						<AbsDimension x="64" y="460"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentContBackGroundMiddle2" relativePoint="TOPRIGHT">
+							<Offset x="0" y="0"/>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture name="$parentBookLeft" file="Interface\AddOns\Duowan\textures\dwmh-bg5">
+					<Size><AbsDimension x="428" y="460"></AbsDimension></Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="31" y="-84"/>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentBookRight" file="Interface\AddOns\Duowan\textures\dwmh-bg7">
+					<Size><AbsDimension x="427" y="460"></AbsDimension></Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="346" y="-84"/>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>		
+		<Frames>
+			<CheckButton name="$parentModButton1" inherits="dwModButtonTemplate" id="1">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="40" y="-95"/>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentModButton2" inherits="dwModButtonTemplate" id="2">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentModButton1">
+						<Offset x="150" y="0"/>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentModButton3" inherits="dwModButtonTemplate" id="3">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentModButton1" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="-14"/>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentModButton4" inherits="dwModButtonTemplate" id="4">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentModButton2" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="-14"/>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentModButton5" inherits="dwModButtonTemplate" id="5">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentModButton3" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="-14"/>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentModButton6" inherits="dwModButtonTemplate" id="6">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentModButton4" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="-14"/>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentModButton7" inherits="dwModButtonTemplate" id="7">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentModButton5" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="-14"/>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentModButton8" inherits="dwModButtonTemplate" id="8">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentModButton6" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="-14"/>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentModButton9" inherits="dwModButtonTemplate" id="9">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentModButton7" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="-14"/>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentModButton10" inherits="dwModButtonTemplate" id="10">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentModButton8" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="-14"/>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentModButton11" inherits="dwModButtonTemplate" id="11">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentModButton9" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="-14"/>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="$parentModButton12" inherits="dwModButtonTemplate" id="12">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentModButton10" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="-14"/>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<!-- 标签 -->
+			<Button name="$parentTab1" inherits="DuowanFrameTabTemplate" id="1" text="DUOWAN_CONFIG_TAB_NORMAL">
+				<Size>
+					<AbsDimension x="100" y="25"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+						<Offset x="35" y="-81"/>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>						
+						PanelTemplates_TabResize(self, 0, 80);
+						--self:SetFrameLevel(self:GetFrameLevel() + 4);
+						dwGetglobal(self:GetName().."HighlightTexture"):SetWidth(self:GetTextWidth() + 31);
+					</OnLoad>
+					<OnClick>
+						DuowanConfigFrame_NormalTab_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentTab2" inherits="DuowanFrameTabTemplate" id="2" text="DUOWAN_CONFIG_TAB_RAID">
+				<Size>
+					<AbsDimension x="100" y="25"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="$parentTab1" relativePoint="BOTTOMRIGHT">
+						<Offset x="2" y="0"/>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>		
+						PanelTemplates_TabResize(self, 0, 80);
+						--self:SetFrameLevel(self:GetFrameLevel() + 4);
+						dwGetglobal(self:GetName().."HighlightTexture"):SetWidth(self:GetTextWidth() + 31);
+					</OnLoad>
+					<OnShow function="PanelTemplates_DeselectTab"/>
+					<OnClick>
+						DuowanConfigFrame_RaidTab_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<!-- 换页 -->
+			<Button name="$parentPrevButton" text="DUOWAN_PRVE_PAGE" inherits="UIPanelButtonTemplate" hidden="false">
+				<Size>
+					<AbsDimension x="70" y="25"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="65" y="-345"/>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString inherits="GameFontNormal" justifyH="CENTER" text="PREV">
+							<Anchors>
+								<Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						dwPrePage_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentNextButton" text="DUOWAN_NEXT_PAGE" inherits="UIPanelButtonTemplate" hidden="false">
+				<Size>
+					<AbsDimension x="70" y="25"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentPrevButton" relativePoint="TOPRIGHT">
+						<Offset x="80" y="0"/>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString inherits="GameFontNormal" justifyH="CENTER" text="NEXT">
+							<Anchors>
+								<Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						dwNextPage_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<!-- 右边配置面板 -->
+			<ScrollFrame name="$parentScrollFrame" inherits="UIPanelScrollFrameTemplate">
+				<Size>
+					<AbsDimension x="325" y="290"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="300" y="-86"/>
+					</Anchor>
+				</Anchors>
+				<ScrollChild>
+					<Frame name="$parentChild">
+						<Size>
+							<AbsDimension x="290" y="270"/>
+						</Size>
+					</Frame>
+				</ScrollChild>
+			</ScrollFrame>
+			<Button name="$parentCloseButton" inherits="UIPanelCloseButton" hidden="false">
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="30" y="-15"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						BtnClose_OnClick();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentVersionButton">
+				<Size>
+					<AbsDimension x="100" y="25"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="530" y="-58"/>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<Texture name="$parentLine" hidden="true">
+							<Size>
+								<AbsDimension x="100" y="1"/>
+							</Size>
+							<Anchors>
+								<Anchor point="BOTTOM">
+									<Offset>
+										<AbsDimension x="0" y="4"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<Color r="1.0" g="1" b="1" a="0.8"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>
+						DuowanConfigFrame_VersionButton_OnLoad(self);
+					</OnLoad>
+					<OnClick>
+						DuowanConfigFrame_VersionButton_OnClick(self);
+					</OnClick>
+					<OnEnter>
+						DuowanConfigFrame_VersionButton_OnEnter(self);
+					</OnEnter>
+					<OnLeave>
+						DuowanConfigFrame_VersionButton_OnLeave(self);
+					</OnLeave>
+				</Scripts>
+				<NormalFont style="ChatFontSmall"/>
+				<HighlightFont style="ChatFontSmall"/>
+				<DisabledFont style="ChatFontSmall"/>
+			</Button>
+			<Button name="$parentACPButton" inherits="UIPanelButtonTemplate" text="DUOWAN_CONFIG_ACP">
+				<Size>
+					<AbsDimension x="120" y="25"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset x="80" y="30"/>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						DuowanConfigFrame_ACPButton_OnLoad(self);
+					</OnLoad>
+					<OnClick>
+						DuowanConfigFrame_ACPButton_OnClick(self, button);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentLeaveButton" inherits="UIPanelButtonTemplate" text="DUOWAN_CONFIG_LEV">
+				<Size>
+					<AbsDimension x="90" y="25"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset x="-50" y="30"/>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						DuowanConfigFrame_LevButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentHeadText" inherits="GameFontNormal" text="DUOWAN_COFNIG_TEXT">
+					<Size>
+						<AbsDimension x="100" y="20"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset x="20" y="-30"/>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentPageText" inherits="GameFontNormal" text="1/3">
+					<Size>
+						<AbsDimension x="53" y="27"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset x="145" y="90"/>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>				
+				dwConfigFrame_OnLoad(self);
+			</OnLoad>
+			<OnDragStart>
+				self:StartMoving();
+				self.isMoving = true;
+			</OnDragStart>
+			<OnDragStop>
+				self:StopMovingOrSizing();
+				self.isMoving = false;
+			</OnDragStop>
+			<OnShow>
+				dwConfigFrame_OnShow(self);
+			</OnShow>
+			<OnHide>
+				dwConfigFrame_OnHide(self);
+			</OnHide>
+			<OnEvent>
+				dwConfigFrame_OnEvent(self, event, ...);
+			</OnEvent>
+			<OnMouseDown>				
+				self:SetToplevel(true);
+			</OnMouseDown>
+		</Scripts>
+	</Frame>
+</Ui>

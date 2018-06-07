@@ -3,16 +3,17 @@
   * _NPCScan.lua - Scans NPCs near you for specific rare NPC IDs.              *
   ****************************************************************************]]
 
-
-local me = select( 2, ... );
+local me = LibStub("AceAddon-3.0"):NewAddon("_NPCScan");
 _NPCScan = me;
-local L = me.L;
+local L = LibStub("AceLocale-3.0"):GetLocale("_NPCScan");
+me.L = L;
 
 me.Frame = CreateFrame( "Frame" );
 me.Version = GetAddOnMetadata( ..., "Version" ):match( "^([%d.]+)" );
 
 me.Options = {
 	Version = me.Version;
+	EnableScan = true,
 };
 me.OptionsCharacter = {
 	Version = me.Version;
@@ -342,9 +343,6 @@ function me.AchievementRemove ( AchievementID )
 	end
 end
 
-
-
-
 --- Enables printing cache lists on login.
 -- @return True if changed.
 function me.SetCacheWarnings ( Enable )
@@ -500,17 +498,19 @@ do
 			AchievementNPCDeactivate( me.Achievements[ AchievementID ], NpcID );
 		end
 
-		local Valid, InvalidReason = true;
-		local Tamable = me.TamableIDs[ NpcID ];
-		if ( Tamable ) then
-			Valid, InvalidReason = OnFoundTamable( NpcID, Name );
-		end
+		if (me.Options.EnableScan) then
+			local Valid, InvalidReason = true;
+			local Tamable = me.TamableIDs[ NpcID ];
+			if ( Tamable ) then
+				Valid, InvalidReason = OnFoundTamable( NpcID, Name );
+			end
 
-		if ( Valid ) then
-			me.Print( L[ Tamable and "FOUND_TAMABLE_FORMAT" or "FOUND_FORMAT" ]:format( Name ), GREEN_FONT_COLOR );
-			me.Button:SetNPC( NpcID, Name ); -- Sends added and found overlay messages
-		elseif ( InvalidReason ) then
-			me.Print( InvalidReason );
+			if ( Valid ) then
+				me.Print( L[ Tamable and "FOUND_TAMABLE_FORMAT" or "FOUND_FORMAT" ]:format( Name ), GREEN_FONT_COLOR );
+				me.Button:SetNPC( NpcID, Name ); -- Sends added and found overlay messages
+			elseif ( InvalidReason ) then
+				me.Print( InvalidReason );
+			end
 		end
 	end
 
@@ -781,3 +781,42 @@ else -- Zone information is known
 end
 
 SlashCmdList[ "_NPCSCAN" ] = me.SlashCommand;
+
+
+-----------------
+-- interface
+local function GetEnabled ( Name ) 
+	local Options = _NPCScanOverlayOptions; --_NPCScan.Overlay.Options;	
+	return _NPCScan.Options.EnableScan and Options.Modules[ Name ] ~= false;
+end
+
+local modules = {"Minimap", "BattlefieldMinimap", "WorldMap"};
+function _NPCScan:Toggle(switch)
+	if (switch) then
+		self.Options.EnableScan = true;
+	else
+		self.Options.EnableScan = false;
+	end
+	
+	for i, Name in pairs(modules) do
+		if (GetEnabled( Name )) then
+			_NPCScan.Overlay.Modules["Enable"](Name);
+		else
+			_NPCScan.Overlay.Modules["Disable"](Name);
+		end
+	end
+end
+
+function _NPCScan:OpenConfig()
+	InterfaceOptionsFrame_OpenToCategory(_NPCScan.Config);
+end
+
+function _NPCScan:Minimap_Toggle(switch)
+	if (switch) then
+		_NPCScanOverlayOptions.Modules["Minimap"] = true;
+		_NPCScan.Overlay.Modules["Enable"]("Minimap");
+	else
+		_NPCScanOverlayOptions.Modules["Minimap"] = false;
+		_NPCScan.Overlay.Modules["Disable"]("Minimap");
+	end
+end

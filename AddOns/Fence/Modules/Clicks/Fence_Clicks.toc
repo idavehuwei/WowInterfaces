@@ -1,0 +1,22 @@
+﻿## Interface: 30000
+## Title: Fence [|cffeda55fClicks|r]
+## Notes: Add many clicky shortcuts to the auction house.
+## Notes-deDE: Ein Auktionshaus AddOn, um das Leben eines jeden Hehlers zu vereinfachen.
+## Notes-zhTW: 一個幫助玩家在拍賣場買賣的插件。
+## Notes-zhCN: 一个可以使玩家的拍卖行操作更加便利的小插件，官方版由Taburiss汉化。
+## Version: 1.0
+## Author: Neriak
+## Depends: Fence
+## X-Category: Interface Enhancements
+## X-Credits: Random, phyber, Rowne, Kaelten, Vincent (D.A.Down)
+## X-AceForum: 3255
+## LoadMangers: AddonLoader, ForkliftGnome
+## X-LoadOn-AuctionHouse: true
+## X-Curse-Packaged-Version: v1.3
+## X-Curse-Project-Name: Fence
+## X-Curse-Project-ID: fence
+## X-Curse-Repository-ID: wow/fence/mainline
+
+Locales\locales.xml
+
+Fence_Clicks.lua

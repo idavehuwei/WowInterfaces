@@ -1,7 +1,7 @@
-﻿--[[
+--[[
     This file is part of Decursive.
     
-    Decursive (v 2.4.5-3-g6a02387) add-on for World of Warcraft UI
+    Decursive (v 2.5.1-12-gb39554a) add-on for World of Warcraft UI
     Copyright (C) 2006-2007-2008-2009 John Wellesz (archarodim AT teaser.fr) ( http://www.2072productions.com/?to=decursive.php )
 
     This is the continued work of the original Decursive (v1.9.4) by Quu
@@ -42,8 +42,9 @@
 --
 --]=]
 
+local addonName, T = ...;
 -- big ugly scary fatal error message display function {{{
-if not DcrFatalError then
+if not T._FatalError then
 -- the beautiful error popup : {{{ -
 StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     text = "|cFFFF0000Decursive Error:|r\n%s",
@@ -56,23 +57,30 @@ StaticPopupDialogs["DECURSIVE_ERROR_FRAME"] = {
     hideOnEscape = 1,
     showAlert = 1,
     }; -- }}}
-DcrFatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
+T._FatalError = function (TheError) StaticPopup_Show ("DECURSIVE_ERROR_FRAME", TheError); end
 end
 -- }}}
-if not DcrLoadedFiles or not DcrLoadedFiles["enUS.lua"] then
-    if not DcrCorrupted then DcrFatalError("Decursive installation is corrupted! (enUS.lua not loaded)"); end;
-    DcrCorrupted = true;
+if not T._LoadedFiles or not T._LoadedFiles["enUS.lua"] then
+    if not DecursiveInstallCorrupted then T._FatalError("Decursive installation is corrupted! (enUS.lua not loaded)"); end;
+    DecursiveInstallCorrupted = true;
     return;
 end
 
 local L = LibStub("AceLocale-3.0"):NewLocale("Decursive", "zhCN");
 
 if not L then
-    DcrLoadedFiles["zhCN.lua"] = "2.4.5-3-g6a02387";
+    T._LoadedFiles["zhCN.lua"] = "2.5.1-12-gb39554a";
     return;
 end;
 
+BINDING_HEADER_DECURSIVE = "一键驱散";
 L["ABOLISH_CHECK"] = "在施法前检测是否需要净化"
+L["ABOUT_AUTHOREMAIL"] = "作者 E-Mail"
+L["ABOUT_CREDITS"] = "贡献者"
+L["ABOUT_LICENSE"] = "许可"
+L["ABOUT_NOTES"] = "当单独、小队和团队时清除有害状态，并可使用高级过滤和优先等级系统。"
+L["ABOUT_OFFICIALWEBSITE"] = "官方网站"
+L["ABOUT_SHAREDLIBS"] = "共享库"
 L["ABSENT"] = "不存在 （%s）"
 L["AFFLICTEDBY"] = "受%s影响"
 L["ALT"] = "Alt"
@@ -105,22 +113,25 @@ L["CURSE"] = "诅咒"
 L["DEBUG_REPORT_HEADER"] = [=[|cFF11FF33请报告此窗口的内容给 Archarodim+DcrReport@teaser.fr|r
 |cFF009999（使用 CTRL+A 选择所有 CTRL+C 复制文本到剪切板）|r
 如果发现 Decursive 任何奇怪的行为也一并报告。]=]
-L["DECURSIVE_DEBUG_REPORT"] = "**** |cFFFF0000Decursive 除错报告|r ****"
-L["DECURSIVE_DEBUG_REPORT_NOTIFY"] = "一个除错报告可用！输入 |cFFFF0000/dcr report|r 查看"
+L["DECURSIVE_DEBUG_REPORT"] = "**** |cFFFF0000一键驱散 除错报告|r ****"
+L["DECURSIVE_DEBUG_REPORT_NOTIFY"] = [=[一个除错报告可用！输入
+|cFFFF0000/dcr general report|r 查看]=]
 L["DECURSIVE_DEBUG_REPORT_SHOW"] = "除错报告可用！"
 L["DECURSIVE_DEBUG_REPORT_SHOW_DESC"] = "显示作者需要看到的除错报告…"
 L["DEFAULT_MACROKEY"] = "`"
-L["DEV_VERSION_ALERT"] = [=[您正在使用的是开发版本的 Decursive 。
+L["DEV_VERSION_ALERT"] = [=[您正在使用的是开发版本的 一键驱散 。
 
-如果不想参加测试新功能与修复，得到游戏中的除错报告，发送问题给作者之后“不要使用此版本”并从 Curse.com 下载最新的“稳定”版本。
+如果不想参加测试新功能与修复，得到游戏中的除错报告后发送问题给作者，请“不要使用此版本”并从 curse.com 和 wowace.com 下载最新的“稳定”版本。
 
 这条消息只将在版本更新中显示一次
 
 使用开发版本 Decursive 的玩家开始游戏显示此提示。]=]
 L["DEV_VERSION_EXPIRED"] = [=[此开发版 Decursive 已过期。
-请从 CURSE.COM 下载最新的开发版或使用当前稳定版。
-谢谢！ ^_^
-关于：当用户使用过期的开发版 Decursive 登录时每次显示。]=]
+请从 CURSE.COM 或 WOWACE.COM 下载最新的开发版或使用当前稳定版。谢谢！ ^_^
+此提示每两天显示一次。
+
+说明：当用户使用过期的开发版 Decursive 登录时每次显示。]=]
+L["DEWDROPISGONE"] = "没有等同于 Ace3 的 DewDrop。Alt+右键点击打开选项面板。"
 L["DISABLEWARNING"] = [=[Decursive 已被禁用！
 
 要重新启用，输入 |cFFFFAA44/DCR ENABLE|r]=]
@@ -128,7 +139,7 @@ L["DISEASE"] = "疾病"
 L["DONOT_BL_PRIO"] = "不将优先列表中的玩家加入黑名单"
 L["FAILEDCAST"] = [=[|cFF22FFFF%s %s|r |cFFAA0000未能施放于|r %s
 |cFF00AAAA%s|r]=]
-L["FOCUSUNIT"] = "设为焦点"
+L["FOCUSUNIT"] = "焦点单位"
 L["FUBARMENU"] = "FuBar 选项"
 L["FUBARMENU_DESC"] = "FuBar 的相关设定"
 L["GLOR1"] = "纪念 Glorfindal"
@@ -139,8 +150,10 @@ L["GLOR5"] = "他将永远被我们所铭记。"
 L["HANDLEHELP"] = "拖拽移动 MUF"
 L["HIDE_LIVELIST"] = "隐藏实时列表"
 L["HIDE_MAIN"] = "隐藏状态条"
+L["HIDESHOW_BUTTONS"] = "显示/隐藏按钮"
 L["HLP_LEFTCLICK"] = "鼠标左键"
-L["HLP_LL_ONCLICK_TEXT"] = "由于暴雪禁用函数的缘故，点击实时列表已经不能驱散负面效果了"
+L["HLP_LL_ONCLICK_TEXT"] = [=[请先阅读此文档来学习如何使用此插件。在 WoWAce.com 网站搜索“Decursive”
+（从 Decursive 计时条移除此列表，/dcrshow 命令并左Alt+点击移除）]=]
 L["HLP_MIDDLECLICK"] = "鼠标中键"
 L["HLP_NOTHINGTOCURE"] = "没有可处理的负面效果！"
 L["HLP_RIGHTCLICK"] = "鼠标右键"
@@ -164,6 +177,7 @@ L["MISSINGUNIT"] = "丢失单位"
 L["NORMAL"] = "一般"
 L["NOSPELL"] = "没有相关技能"
 L["OPT_ABOLISHCHECK_DESC"] = "设置是否显示和净化带有“驱毒术”增益效果的玩家。"
+L["OPT_ABOUT"] = "关于"
 L["OPT_ADDDEBUFF"] = "新增"
 L["OPT_ADDDEBUFF_DESC"] = "向列表中新增一个负面效果。"
 L["OPT_ADDDEBUFFFHIST"] = "新增一个最近受到的负面效果"
@@ -172,6 +186,7 @@ L["OPT_ADDDEBUFF_USAGE"] = "<负面效果名称>"
 L["OPT_ADVDISP"] = "高级显示选项"
 L["OPT_ADVDISP_DESC"] = "允许分别设置面板和边框的透明度，以及 MUF 的间距。"
 L["OPT_AFFLICTEDBYSKIPPED"] = "%s受到%s的影响，但将被忽略。"
+L["OPT_ALLOWMACROEDIT"] = "允许使用宏模式"
 L["OPT_ALWAYSIGNORE"] = "不在战斗状态时也忽略"
 L["OPT_ALWAYSIGNORE_DESC"] = "选中后不在状态时此负面效果也会被忽略。"
 L["OPT_AMOUNT_AFFLIC_DESC"] = "设置实时列表显示的最大玩家数目。"
@@ -185,6 +200,8 @@ L["OPT_CENTERTRANSP"] = "面板透明度"
 L["OPT_CENTERTRANSP_DESC"] = "设置面板的透明度"
 L["OPT_CHARMEDCHECK_DESC"] = "选中后你将可以查看和处理被诱惑的玩家。"
 L["OPT_CHATFRAME_DESC"] = "提示信息将显示在默认聊天窗口中。"
+L["OPT_CHECKOTHERPLAYERS"] = "检查其他玩家"
+L["OPT_CHECKOTHERPLAYERS_DESC"] = "显示当前小队或团队玩家 一键驱散 版本（不能显示 一键驱散 2.4.6之前的版本）。"
 L["OPT_CREATE_VIRTUAL_DEBUFF"] = "创建一个虚拟的测试用负面效果"
 L["OPT_CREATE_VIRTUAL_DEBUFF_DESC"] = "让你看看出现负面效果时的界面是什么样子"
 L["OPT_CUREPETS_DESC"] = "宠物也会被检查和净化。"
@@ -210,16 +227,17 @@ L["OPT_DEBUFFENTRY_DESC"] = "选择在战斗中哪些受到此负面效果影响
 L["OPT_DEBUFFFILTER"] = "负面效果过滤"
 L["OPT_DEBUFFFILTER_DESC"] = "根据名称和职业选择在战斗中要过滤掉的负面效果"
 L["OPT_DISABLEMACROCREATION"] = "禁止创建宏"
-L["OPT_DISABLEMACROCREATION_DESC"] = "Decursive 宏将不再创建和保留"
+L["OPT_DISABLEMACROCREATION_DESC"] = "一键驱散 宏将不再创建和保留"
 L["OPT_DISEASECHECK_DESC"] = "选中后你将可以查看和净化受到疾病效果影响的玩家。"
 L["OPT_DISPLAYOPTIONS"] = "显示选项"
 L["OPT_DONOTBLPRIO_DESC"] = "优先列表中的玩家不会被加入黑名单。"
 L["OPT_ENABLEDEBUG"] = "启用除错"
 L["OPT_ENABLEDEBUG_DESC"] = "启用除错输出"
+L["OPT_ENABLEDECURSIVE"] = "启用 一键驱散"
 L["OPT_FILTEROUTCLASSES_FOR_X"] = "在战斗中指定的职业%q将被忽略。"
 L["OPT_GENERAL"] = "一般选项"
 L["OPT_GROWDIRECTION"] = "反向显示 MUF"
-L["OPT_GROWDIRECTION_DESC"] = "MUF将从下向上显示。"
+L["OPT_GROWDIRECTION_DESC"] = "MUF 将从下向上显示。"
 L["OPT_HIDELIVELIST_DESC"] = "显示所有受到负面效果影响的玩家列表。"
 L["OPT_HIDEMFS_GROUP"] = "单人/小队"
 L["OPT_HIDEMFS_GROUP_DESC"] = "不在团队中时隐藏微单元面板（MUF）"
@@ -227,6 +245,8 @@ L["OPT_HIDEMFS_NEVER"] = "从不"
 L["OPT_HIDEMFS_NEVER_DESC"] = "从不隐藏"
 L["OPT_HIDEMFS_SOLO"] = "单人"
 L["OPT_HIDEMFS_SOLO_DESC"] = "在没有组队或者团队时隐藏微单元面板（MUF）"
+L["OPT_HIDEMUFSHANDLE"] = "隐藏 MUF 表头"
+L["OPT_HIDEMUFSHANDLE_DESC"] = "隐藏微单元面板（MUF）表头并禁止移动。"
 L["OPT_IGNORESTEALTHED_DESC"] = "处于潜行状态的玩家会被忽略。"
 L["OPTION_MENU"] = "选项设置"
 L["OPT_LIVELIST"] = "实时列表"
@@ -242,7 +262,7 @@ L["OPT_MACROBIND_DESC"] = [=[绑定一键驱散宏的按键。
 
 按你想設定的按键后按 'Enter' 键保存设置(鼠标需要移动到编辑区域之外)]=]
 L["OPT_MACROOPTIONS"] = "宏选项"
-L["OPT_MACROOPTIONS_DESC"] = "有关 Decursive 创建的宏的选项设置"
+L["OPT_MACROOPTIONS_DESC"] = "有关 一键驱散 创建的宏的选项设置"
 L["OPT_MAGICCHARMEDCHECK_DESC"] = "选中后你将可以查看和净化受到魔法诱惑效果影响的玩家。"
 L["OPT_MAGICCHECK_DESC"] = "选中后你将可以查看和净化受到不良魔法效果影响的玩家。"
 L["OPT_MAXMFS"] = "最大单位数"
@@ -260,10 +280,16 @@ L["OPT_MFSCALE"] = "MUF 缩放比例"
 L["OPT_MFSCALE_DESC"] = "设置微单元面板（MUF）的大小。"
 L["OPT_MFSETTINGS"] = "微单元面板（MUF）选项"
 L["OPT_MFSETTINGS_DESC"] = "关于微单元面板（MUF）的选项设置。"
+L["OPT_MUFFOCUSBUTTON"] = "焦点按钮："
+L["OPT_MUFMOUSEBUTTONS"] = "鼠标按钮"
+L["OPT_MUFMOUSEBUTTONS_DESC"] = "设置每个 MUF 鼠标按钮的警报颜色。"
 L["OPT_MUFSCOLORS"] = "颜色"
 L["OPT_MUFSCOLORS_DESC"] = "更改关于微单元面板（MUF）的颜色"
+L["OPT_MUFTARGETBUTTON"] = "目标按钮："
 L["OPT_NOKEYWARN"] = "没有映射按键"
 L["OPT_NOKEYWARN_DESC"] = "没有映射按键"
+L["OPT_NOSTARTMESSAGES"] = "禁用欢迎信息"
+L["OPT_NOSTARTMESSAGES_DESC"] = "移除每次登陆时在聊天框体显示的三个 一键驱散 信息。"
 L["OPT_PLAYSOUND_DESC"] = "有玩家受到负面效果影响时播放声音提示。"
 L["OPT_POISONCHECK_DESC"] = "选中后你将可以查看和净化受到中毒效果影响的玩家。"
 L["OPT_PRINT_CUSTOM_DESC"] = "提示信息将显示在自定义聊天窗口中。"
@@ -282,6 +308,8 @@ L["OPT_RESETDEBUFF"] = "重置"
 L["OPT_RESETDTDCRDEFAULT"] = [=[将
 %s
 恢复默认值。]=]
+L["OPT_RESETMUFMOUSEBUTTONS"] = "重置"
+L["OPT_RESETMUFMOUSEBUTTONS_DESC"] = "重置鼠标按钮指派为默认。"
 L["OPT_RESETOPTIONS"] = "恢复默认设置"
 L["OPT_RESETOPTIONS_DESC"] = "将当前选项设置方案恢复到默认值"
 L["OPT_RESTPROFILECONF"] = "你确定要将选项设置方案“(%s) %s”恢复默认值吗？"
@@ -291,6 +319,8 @@ L["OPT_SHOWBORDER"] = "显示职业彩色边框"
 L["OPT_SHOWBORDER_DESC"] = "MUF 边框将会显示出代表该玩家职业的颜色。"
 L["OPT_SHOWCHRONO"] = "显示计时"
 L["OPT_SHOWCHRONO_DESC"] = "显示单位受到不良效果的时间"
+L["OPT_SHOWCHRONOTIMElEFT"] = "剩余时间"
+L["OPT_SHOWCHRONOTIMElEFT_DESC"] = "显示剩余时间而不是消耗时间。"
 L["OPT_SHOWHELP"] = "显示帮助信息"
 L["OPT_SHOWHELP_DESC"] = "当鼠标移动到 MUF 上时显示信息提示窗口。"
 L["OPT_SHOWMFS"] = "在屏幕上显示 MUF"
@@ -302,6 +332,11 @@ L["OPT_SHOW_STEALTH_STATUS_DESC"] = "当玩家前行时，他的 MUF 将有一�
 L["OPT_SHOWTOOLTIP_DESC"] = "在实时列表以及微单元面板（MUF）上显示信息提示。"
 L["OPT_STICKTORIGHT"] = "将微单元面板（MUF）向右对齐"
 L["OPT_STICKTORIGHT_DESC"] = "这个选项将会使微单元面板（MUF）向右对齐"
+L["OPT_TESTLAYOUT"] = "测试布局"
+L["OPT_TESTLAYOUT_DESC"] = [=[新建测试单位以测试显示布局。
+（点击后稍等片刻）]=]
+L["OPT_TESTLAYOUTUNUM"] = "单位数字"
+L["OPT_TESTLAYOUTUNUM_DESC"] = "设置新建测试单位数字。"
 L["OPT_TIECENTERANDBORDER"] = "绑定面板和边框的透明度"
 L["OPT_TIECENTERANDBORDER_OPT"] = "选中时边框的透明度为面板的一半。"
 L["OPT_TIE_LIVELIST_DESC"] = "实时列表将和状态条一起 显示/隐藏。"
@@ -329,15 +364,15 @@ L["SCAN_LENGTH"] = "实时检测时间间隔（秒）："
 L["SHIFT"] = "Shift"
 L["SHOW_MSG"] = "如果需要显示状态条，请输入 /dcrshow。"
 L["SHOW_TOOLTIP"] = "在实时列表中显示信息提示"
-L["SKIP_LIST_STR"] = "Decursive 忽略列表"
+L["SKIP_LIST_STR"] = "一键驱散 忽略列表"
 L["SKIP_SHOW"] = "S"
 L["SPELL_FOUND"] = "找到%s法术！"
 L["STEALTHED"] = "已潜行"
 L["STR_CLOSE"] = "关闭"
-L["STR_DCR_PRIO"] = "Decursive 优先"
-L["STR_DCR_SKIP"] = "Decursive 忽略"
+L["STR_DCR_PRIO"] = "一键驱散 优先"
+L["STR_DCR_SKIP"] = "一键驱散 忽略"
 L["STR_GROUP"] = "小队"
-L["STR_OPTIONS"] = "Decursive 选项"
+L["STR_OPTIONS"] = "一键驱散 选项"
 L["STR_OTHER"] = "其他"
 L["STR_POP"] = "快速添加列表"
 L["STR_QUICK_POP"] = "快速添加器"
@@ -349,4 +384,4 @@ L["UNITSTATUS"] = "玩家状态："
 
 
 
-DcrLoadedFiles["zhCN.lua"] = "2.4.5-3-g6a02387";
+T._LoadedFiles["zhCN.lua"] = "2.5.1-12-gb39554a";

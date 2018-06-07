@@ -1,0 +1,30 @@
+## Interface: 30300
+## Title: [Duowan] DWGKP
+## Notes: Duowan GKP
+## Title-zhCN: [多玩] 多玩金团助手
+## Notes-zhCN: 多玩金团队活动记分系统
+## Title-zhTW: [多玩] 多玩金團助手
+## Notes-zhTW: 多玩金團隊活動記分系統
+## Author: dugu
+## X-DuowanAddon: 团队副本
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+## SavedVariables: 
+## SavedVariablesPerCharacter: DWGKP_DB, DWGKP_Config
+
+#@localization
+Localization\locale.xml
+
+#@Template
+Template.xml
+
+#@dataCore
+core.lua
+
+#@view
+DWGKP.xml
+
+#@options
+options.lua
+LDBplugin.lua

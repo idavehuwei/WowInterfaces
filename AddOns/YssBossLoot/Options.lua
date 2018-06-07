@@ -1,6 +1,5 @@
 
---local _, YBL = ...
-local YBL = YssBossLoot
+local YBL =YssBossLoot
 
 local L = LibStub("AceLocale-3.0"):GetLocale("YssBossLoot", true)
 local icon = LibStub("LibDBIcon-1.0")
@@ -14,8 +13,6 @@ YBL.skulls = {
 		[5] = "|TInterface\\WorldMap\\Skull_64Green:26|t",
 		[6] = "|TInterface\\WorldMap\\Skull_64Purple:26|t",
 		[7] = "|TInterface\\WorldMap\\Skull_64Red:26|t",
-		[8] = "|TInterface\\WorldMap\\Skull_64Grey:26|t",
-		[9] = "|TInterface\\WorldMap\\3DSkull_64Grey:26|t",
 	},
 	["info"] = {
 		[1] = "Interface\\Addons\\YssBossLoot\\Art\\skullwhite",
@@ -25,10 +22,10 @@ YBL.skulls = {
 		[5] = "Interface\\WorldMap\\Skull_64Green",
 		[6] = "Interface\\WorldMap\\Skull_64Purple",
 		[7] = "Interface\\WorldMap\\Skull_64Red",
-		[8] = "Interface\\WorldMap\\Skull_64Grey",
-		[9] = "Interface\\WorldMap\\3DSkull_64Grey",
 	},
 }
+
+
 
 YBL.MainOption = {
 	type="group",
@@ -41,6 +38,7 @@ YBL.MainOption = {
 			type = "toggle",
 			name = L['Minimap Icon'],
 			order = 1,
+			width = "full",
 			get = function() return not YBL.db.profile.LibDBIcon.hide end,
 			set = function(info, val)
 				YBL.db.profile.LibDBIcon.hide = not val
@@ -48,20 +46,6 @@ YBL.MainOption = {
 					icon:Show("YssBossLoot")
 				else
 					icon:Hide("YssBossLoot")
-				end
-			end,
-		},
-		addtooltipinfo = {
-			type = "toggle",
-			name = L['Add Tooltip Info'],
-			order = 50,
-			get = function() return YBL.db.profile.addtooltipinfo end,
-			set = function(info, val)
-				YBL.db.profile.addtooltipinfo = val
-				if val then
-					YBL:EnableTooltipInfo()
-				else
-					YBL:DisableTooltipInfo()
 				end
 			end,
 		},
@@ -114,7 +98,6 @@ YBL.MainOption = {
 				end
 			end,
 			set = function(info, val)
-				--print(tostring(val))
 				YBL.db.profile.OpentoCurrentlySelectedGroupDifficulty = val
 			end,
 			disabled = function() return not YBL.db.profile.OpentoCurrentInstanceDifficulty end,
@@ -149,7 +132,7 @@ YBL.MainOption = {
 			values = YBL.skulls.options,
 			width = 'half',
 			get = function(info, key)
-				return YBL.db.profile.twoDskull == key
+				return YBL.db.profile.twoDskull == key 
 			end,
 			set = function(info, key, val)
 				if val then
@@ -164,7 +147,7 @@ YBL.MainOption = {
 			type="group",
 			width = 'fill',
 			handler = YBL,
-			name = L["Loot Scaling"],
+			name = L["Loot Scalling"],
 			inline = true,
 			order = 500,
 			args = {

@@ -1,0 +1,15 @@
+## Interface: 30300
+## Title: [Duowan] AspectPosionBar
+## Notes: Aspect Posion Bar
+## Title-zhCN: [多玩] 职业守护条
+## Notes-zhCN: 为猎人、盗贼、法师和术士提供职业专属守护条
+## Title-zhTW: [多玩] 職業守護條
+## Notes-zhTW: 為獵人、盜賊、法師和術士提供職業專屬守護條
+## Author: dugu
+## X-DuowanAddon:职业辅助
+## Dependencies: Duowan
+## X-Revision: Duowan
+## LoadOnDemand: 1
+## SavedVariables: 
+
+AspectPosionBar.xml

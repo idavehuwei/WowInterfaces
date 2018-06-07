@@ -1,6 +1,8 @@
 local L = AceLibrary("AceLocale-2.2"):new("PallyPower")
-
-L:RegisterTranslations("enUS", function() return {
+PALLY_POWER_TEXT = "Pally Power"
+L:RegisterTranslations("enUS", function() return 
+{
+	["PallyPower Options"] = "PallyPower Options",
 	AURAS = "Auras",
 	AURAS_DESC = "Auras monitoring enable/disable",
 	AUTOASSIGN = "Auto-Assign",
@@ -27,13 +29,17 @@ L:RegisterTranslations("enUS", function() return {
 	DISPCOL = "Columns",
 	DISPCOL_DESC = "Set number of columns",
 	DISP_DESC = "Buff Buttons settings",
+	DISPEDGES = "Display Button Edges",
+	DISPEDGES_DESC = "Display Edges for Player Buttons",
 	DISPGAP = "Gapping",
 	DISPGAP_DESC = "Gapping between buttons",
 	DISPPL = "Player Buttons",
 	DISPPL_DESC = "Direction for Player Buttons",
 	DISPROWS = "Rows",
 	DISPROWS_DESC = "Set number of rows",
-	DRAGHANDLE = "Left Mouse Drag to move BuffBar\nLeft Click to Lock / Unlock\nRight Click for options",
+	DRAGHANDLE = [=[Left Mouse Drag to move BuffBar
+	Left Click to Lock / Unlock
+	Right Click for options]=],
 	ENABLED = "Enabled",
 	FREEASSIGN = "Free assignment",
 	FREEASSIGN_DESC = "Allow others to change your blessings without being leader/promoted",
@@ -45,6 +51,10 @@ L:RegisterTranslations("enUS", function() return {
 	HIDEDH_DESC = "Show/Hide Drag Handle",
 	HIDEPB = "Hide Player Buttons",
 	HIDEPB_DESC = "Show/Hide Player Buttons",
+	IGNOREEXTRA = "Ignore groups 6-8",
+	IGNOREEXTRADESC = "Ignore people on stand-by placed in groups 6 to 8",
+	LAYOUT = "Layout",
+	LAYOUT_DESC = "Custom Layout",
 	PP_CLEAR = "Clear",
 	PP_OPTIONS = "Options",
 	PP_RAS1 = "--- Paladin assignments ---",
@@ -54,8 +64,12 @@ L:RegisterTranslations("enUS", function() return {
 	RESET_DESC = "Reset all PallyPower frames back to center",
 	RFBUFF = "Righteous Fury / Seals",
 	RFBUFF_DESC = "Righteous Fury monitoring enable/disable",
+	RFUSE = "Righteous Fury",
+	RFUSE_DESC = "Righteous Fury on/off",
 	SBUFF = "Smart Buffs",
 	SBUFF_DESC = "Skip some buffs for certain classes",
+	SEAL = "Seal",
+	SEAL_DESC = "Seal",
 	SHOWPARTY = "Show in Party",
 	SHOWPARTY_DESC = "Show/Hide Buff Bar when in Party",
 	SHOWSINGLE = "Show when single",
@@ -64,5 +78,6 @@ L:RegisterTranslations("enUS", function() return {
 	SKIN_DESC = "Apply a custom background to buff buttons",
 	WAIT = "Wait for all people",
 	WAIT_DESC = "Whether to wait for all people to be in range and online to buff a class.",
-	}
+}
+ 
 end)

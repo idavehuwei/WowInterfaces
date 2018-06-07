@@ -5,8 +5,7 @@
 	http://www.wowace.com/forums/index.php?topic=2525.msg143457#msg143457
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local GridStatusVoiceComm = Grid:GetModule("GridStatus"):NewModule("GridStatusVoiceComm")
 GridStatusVoiceComm.menuName = L["Voice Chat"]

@@ -1,0 +1,307 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+  <CheckButton name="SetButtonTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="19" y="18"/>
+    </Size>
+	<Scripts>
+		<OnClick>
+			EquipSwitcher:SetButtonOnClick(self:GetID())
+		</OnClick>
+		<OnEnter>
+			EquipSwitcher:ShowTooltip(self, self:GetID())
+		</OnEnter>
+		<OnLeave>
+			GameTooltip:Hide();
+		</OnLeave>
+	</Scripts>
+    <NormalTexture file="Interface\PetPaperDollFrame\UI-PetHappiness"/>
+  </CheckButton>
+
+  <Frame name="EquipSwitcher_Bar" toplevel="true" frameStrata="MEDIUM" parent="PlayerFrame">
+    <Size>
+      <AbsDimension x="242" y="24"/>
+    </Size>
+
+    <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="PlayerFrame" relativePoint="TOPLEFT">
+        <Offset>
+          <AbsDimension x="98" y="0"/>
+        </Offset>
+      </Anchor>
+    </Anchors>
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parentTexture" file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="242" y="24"/>
+          </Size>
+          <TexCoords left="0" right="0.9375" top="0" bottom="0.359375"/>
+        </Texture>
+      </Layer>
+    </Layers>
+
+    <Frames>
+	      <CheckButton name="$parentSetButtonConfig" inherits="SetButtonTemplate">
+        <Size>
+          <AbsDimension x="19" y="18"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="20" y="-2"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+		<Scripts>
+			<OnClick>
+				ToggleCharacter("PaperDollFrame");
+				if not GearManagerDialog:IsShown() then
+					GearManagerDialog:Show()
+				end
+			</OnClick>
+			<OnEnter>
+				local L = LibStub("AceLocale-3.0"):GetLocale("EquipSwitcher");
+				GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+				GameTooltip:AddLine(L["一键换装"]..": ");
+				GameTooltip:AddLine(L["点击打开设置面板"]);
+				GameTooltip:Show();
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+        <NormalTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.0234375" right="0.09375" top="0.375" bottom="0.640625"/>
+        </NormalTexture>
+
+        <PushedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.0234375" right="0.09375" top="0.671875" bottom="0.9375"/>
+        </PushedTexture>
+
+        <HighlightTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarH" alphaMode="ADD" />
+      </CheckButton>
+
+      <CheckButton name="$parentSetButton1" inherits="SetButtonTemplate" hidden = "true" id="1">
+        <Size>
+          <AbsDimension x="19" y="18"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSetButtonConfig">
+            <Offset>
+              <AbsDimension x="3" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <NormalTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.109375" right="0.1796875" top="0.375" bottom="0.640625"/>
+        </NormalTexture>
+        <PushedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.109375" right="0.1796875" top="0.671875" bottom="0.9375"/>
+        </PushedTexture>
+        <CheckedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarC" alphaMode="ADD" />
+        <HighlightTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarH" alphaMode="ADD" />
+      </CheckButton>
+
+      <CheckButton name="$parentSetButton2" inherits="SetButtonTemplate" hidden = "true" id="2">
+        <Size>
+          <AbsDimension x="19" y="18"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSetButton1">
+            <Offset>
+              <AbsDimension x="3" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <NormalTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.1953125" right="0.265625" top="0.375" bottom="0.640625"/>
+        </NormalTexture>
+        <PushedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.1953125" right="0.265625" top="0.671875" bottom="0.9375"/>
+        </PushedTexture>
+        <CheckedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarC" alphaMode="ADD" />
+        <HighlightTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarH" alphaMode="ADD" />
+      </CheckButton>
+      <!--3 -->
+      <CheckButton name="$parentSetButton3" inherits="SetButtonTemplate" hidden = "true" id="3">
+        <Size>
+          <AbsDimension x="19" y="18"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSetButton2">
+            <Offset>
+              <AbsDimension x="3" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <NormalTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.28125" right="0.3515625" top="0.375" bottom="0.640625"/>
+        </NormalTexture>
+        <PushedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.28125" right="0.3515625" top="0.671875" bottom="0.9375"/>
+        </PushedTexture>
+        <CheckedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarC" alphaMode="ADD" />
+        <HighlightTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarH" alphaMode="ADD" />
+      </CheckButton>
+      <!-- 4 -->
+      <CheckButton name="$parentSetButton4" inherits="SetButtonTemplate" hidden = "true" id="4">
+        <Size>
+          <AbsDimension x="19" y="18"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSetButton3">
+            <Offset>
+              <AbsDimension x="3" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <NormalTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.3671875" right="0.4375" top="0.375" bottom="0.640625"/>
+        </NormalTexture>
+        <PushedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.3671875" right="0.4375" top="0.671875" bottom="0.9375"/>
+        </PushedTexture>
+        <CheckedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarC" alphaMode="ADD" />
+        <HighlightTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarH" alphaMode="ADD" />
+      </CheckButton>      
+      <!-- 5 -->
+      <CheckButton name="$parentSetButton5" inherits="SetButtonTemplate" hidden = "true" id="5">
+        <Size>
+          <AbsDimension x="19" y="18"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSetButton4">
+            <Offset>
+              <AbsDimension x="3" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <NormalTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.453125" right="0.5234375" top="0.375" bottom="0.640625"/>
+        </NormalTexture>
+        <PushedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.453125" right="0.5234375" top="0.671875" bottom="0.9375"/>
+        </PushedTexture>
+        <CheckedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarC" alphaMode="ADD" />
+        <HighlightTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarH" alphaMode="ADD" />
+      </CheckButton>
+      <!-- 6 -->
+      <CheckButton name="$parentSetButton6" inherits="SetButtonTemplate" hidden = "true" id="6">
+        <Size>
+          <AbsDimension x="19" y="18"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSetButton5">
+            <Offset>
+              <AbsDimension x="3" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <NormalTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.5390625" right="0.609375" top="0.375" bottom="0.640625"/>
+        </NormalTexture>
+        <PushedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.5390625" right="0.609375" top="0.671875" bottom="0.9375"/>
+        </PushedTexture>
+        <CheckedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarC" alphaMode="ADD" />
+        <HighlightTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarH" alphaMode="ADD" />
+      </CheckButton>
+      <!-- 7 -->
+      <CheckButton name="$parentSetButton7" inherits="SetButtonTemplate" hidden = "true" id="7">
+        <Size>
+          <AbsDimension x="19" y="18"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSetButton6">
+            <Offset>
+              <AbsDimension x="3" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <NormalTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.625" right="0.6953125" top="0.375" bottom="0.640625"/>
+        </NormalTexture>
+        <PushedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.625" right="0.6953125" top="0.671875" bottom="0.9375"/>
+        </PushedTexture>
+        <CheckedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarC" alphaMode="ADD" />
+        <HighlightTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarH" alphaMode="ADD" />
+      </CheckButton>
+      <!-- 8 -->
+      <CheckButton name="$parentSetButton8" inherits="SetButtonTemplate" hidden = "true" id="8">
+        <Size>
+          <AbsDimension x="19" y="18"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSetButton7">
+            <Offset>
+              <AbsDimension x="3" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <NormalTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.7109375" right="0.78125" top="0.375" bottom="0.640625"/>
+        </NormalTexture>
+        <PushedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarA">
+          <Size>
+            <AbsDimension x="19" y="18"/>
+          </Size>
+          <TexCoords left="0.7109375" right="0.78125" top="0.671875" bottom="0.9375"/>
+        </PushedTexture>
+        <CheckedTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarC" alphaMode="ADD" />
+        <HighlightTexture file="Interface\AddOns\EquipSwitcher\textures\EquipSwitcherBarH" alphaMode="ADD" />
+      </CheckButton>
+    </Frames>
+  </Frame>
+</Ui>

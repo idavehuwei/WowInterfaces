@@ -1,0 +1,26 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+E:\repos\Duowan-Work\UI.xsd">
+	<Button name="Fence_ScaneButtonTempalte" virtual="true">
+		<Size>
+			<AbsDimension x="128" y="64"/>
+		</Size>
+		<HitRectInsets>
+			<AbsInset left="0" right="0" top="0" bottom="22"/>
+		</HitRectInsets>
+		<ButtonText name="$parentText"/>
+		<!--
+		<NormalFont style="GameFontNormal"/>
+		<HighlightFont style="GameFontHighlight"/>
+-->
+		<NormalTexture file="Interface\AddOns\Fence\Modules\Scan\Texture\Normal">
+			<Size>
+				<AbsDimension x="128" y="64"/>
+			</Size>
+		</NormalTexture>
+		<HighlightTexture file="Interface\AddOns\Fence\Modules\Scan\Texture\Highlight">
+			<Size>
+				<AbsDimension x="128" y="64"/>
+			</Size>
+		</HighlightTexture>
+	</Button>
+</Ui>

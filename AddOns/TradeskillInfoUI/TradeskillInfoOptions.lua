@@ -75,6 +75,7 @@ local tooltipOptions = {
 			inline = true,
 			order = 1,
 			args = {
+				--[[
 				source = {
 					name = L["Source"],
 					desc = L["Show the source of the item"],
@@ -87,6 +88,7 @@ local tooltipOptions = {
 					type = "toggle",
 					arg = "TooltipUsedIn",
 				},
+				]]
 				usableby = {
 					name = L["Usable by"],
 					desc = L["Show who can use an item"],
@@ -158,12 +160,14 @@ local tooltipOptions = {
 					type = "toggle",
 					arg = "TooltipMarketValue",
 				},
+				--[[
 				recipesource = {
 					name = L["Recipe Source"],
 					desc = L["Show the source of recipes"],
 					type = "toggle",
 					arg = "TooltipRecipeSource",
 				},
+				]]
 				recipeprice = {
 					name = L["Recipe Price"],
 					desc = L["Show the price of recipes sold by vendors"],
@@ -513,11 +517,16 @@ local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 
 options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(TradeskillInfo.db)
 
-AceConfigRegistry:RegisterOptionsTable("TradeskillInfo", options)
+AceConfigRegistry:RegisterOptionsTable(L["TradeskillInfo"], options)
+
+function TradeskillInfo:OpenConfig()
+	AceConfigDialog:Open(L["TradeskillInfo"]);
+end
+--[[
 TradeskillInfo.OptionsPanel =
 	AceConfigDialog:AddToBlizOptions("TradeskillInfo", "TradeskillInfo")
 
---[[
+
 TradeskillInfo.OptionsPanel =
 	AceConfigDialog:AddToBlizOptions("TradeskillInfo", "TradeskillInfo", nil, "general")
 AceConfigDialog:AddToBlizOptions("TradeskillInfo", L["Tooltip"], "TradeskillInfo", "tooltip")

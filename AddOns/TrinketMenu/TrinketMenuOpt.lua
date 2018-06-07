@@ -47,7 +47,7 @@ function TrinketMenu.InitOptions()
 	TrinketMenu.MoveMinimapButton()
 	local item
 	for i=1,#(TrinketMenu.CheckOptInfo) do
-		item = getglobal("TrinketMenu_Opt"..TrinketMenu.CheckOptInfo[i][1].."Text")
+		item = dwGetglobal("TrinketMenu_Opt"..TrinketMenu.CheckOptInfo[i][1].."Text")
 		if item then
 			item:SetText(TrinketMenu.CheckOptInfo[i][3])
 			item:SetTextColor(.95,.95,.95)
@@ -80,9 +80,11 @@ end
 
 function TrinketMenu.ToggleFrame(frame)
 	if frame:IsVisible() then
+		TrinketMenuPerOptions.userHide = false;
 		frame:Hide()
 	else
 		frame:Show()
+		PlaySound("GAMEGENERICBUTTONPRESS")
 	end
 end
 
@@ -124,7 +126,6 @@ function TrinketMenu.DragMinimapButton()
 end
 
 function TrinketMenu.MinimapButton_OnClick()
-	PlaySound("GAMEGENERICBUTTONPRESS")
 	if IsShiftKeyDown() then
 		TrinketMenuOptions.Locked = TrinketMenuOptions.Locked=="ON" and "OFF" or "ON"
 		TrinketMenu.ReflectLock()
@@ -151,16 +152,16 @@ function TrinketMenu.ValidateChecks()
 	local check,button
 	for i=1,#(TrinketMenu.CheckOptInfo) do
 		check = TrinketMenu.CheckOptInfo[i]
-		button = getglobal("TrinketMenu_Opt"..check[1])
+		button = dwGetglobal("TrinketMenu_Opt"..check[1])
 		if button then
 			button:SetChecked(TrinketMenuOptions[check[1]]=="ON")
 			if check[5] then
 				if TrinketMenuOptions[check[5]]=="ON" then
 					button:Enable()
-					getglobal("TrinketMenu_Opt"..check[1].."Text"):SetTextColor(.95,.95,.95)
+					dwGetglobal("TrinketMenu_Opt"..check[1].."Text"):SetTextColor(.95,.95,.95)
 				else
 					button:Disable()
-					getglobal("TrinketMenu_Opt"..check[1].."Text"):SetTextColor(.5,.5,.5)
+					dwGetglobal("TrinketMenu_Opt"..check[1].."Text"):SetTextColor(.5,.5,.5)
 				end
 			end
 		end
@@ -180,8 +181,7 @@ function TrinketMenu.OptColumnsSlider_OnValueChanged(self)
 	end
 end
 
--- Modify by dugu@bigfoot 10/27/2008
-local S = BLibrary("BScale");
+-- Modify by dugu 10/27/2008
 function TrinketMenu.OptMainScaleSlider_OnValueChanged(self)
 	if TrinketMenuPerOptions then
 		TrinketMenuPerOptions.MainScale = self:GetValue()
@@ -192,7 +192,7 @@ function TrinketMenu.OptMainScaleSlider_OnValueChanged(self)
 		else
 			TrinketMenu_OptMainScaleSliderText:SetText(format("Main Scale: %.2f",TrinketMenuPerOptions.MainScale));
 		end		
-		S:SetScale(TrinketMenu_MainFrame, TrinketMenuPerOptions.MainScale)
+		dwSetScale(TrinketMenu_MainFrame, TrinketMenuPerOptions.MainScale)
 	end
 end
 
@@ -206,7 +206,7 @@ function TrinketMenu.OptMenuScaleSlider_OnValueChanged(self)
 		else
 			TrinketMenu_OptMenuScaleSliderText:SetText(format("Menu Scale: %.2f",TrinketMenuPerOptions.MenuScale));		
 		end		
-		S:SetScale(TrinketMenu_MenuFrame, TrinketMenuPerOptions.MenuScale)
+		dwSetScale(TrinketMenu_MenuFrame, TrinketMenuPerOptions.MenuScale)
 	end
 end
 
@@ -274,7 +274,7 @@ function TrinketMenu.ReflectCooldownFont()
 end
 
 function TrinketMenu.SetCooldownFont(button)
-	local item = getglobal(button.."Time")
+	local item = dwGetglobal(button.."Time")
 	if TrinketMenuOptions.LargeCooldown=="ON" then
 		item:SetFont("Fonts\\FRIZQT__.TTF",16,"OUTLINE")
 		item:SetTextColor(1,.82,0,1)
@@ -311,12 +311,12 @@ function TrinketMenu.Tab_OnClick(id)
 		TrinketMenu_ProfilesFrame:Hide()
 	end
 	for i=1,3 do
-		tab = getglobal("TrinketMenu_Tab"..i)
+		tab = dwGetglobal("TrinketMenu_Tab"..i)
 		if tab then
 			tab:UnlockHighlight()
 		end
 	end
-	getglobal("TrinketMenu_Tab"..id):LockHighlight()
+	dwGetglobal("TrinketMenu_Tab"..id):LockHighlight()
 	if id==1 then
 		TrinketMenu_SubOptFrame:Show()
 		if TrinketMenu_SubQueueFrame then
