@@ -3,17 +3,22 @@
 ## Title-zhCN: [多玩] 距离显示 RangeDisplay
 ## Title-zhTW: [多玩] 距離顯示 RangeDisplay
 ## Author: mitch0
-## Version: 3.1
-## Notes: Estimated range display. type /rangedisplay for help
+## Version: 3.8.3
+## Notes: Estimated range display. Type /rangedisplay for config
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Always: true
-## SavedVariables: DuowanAddon_RangeDisplayDB3
-## OptionalDeps: !!!CWDGLibsPack, LibStub, CallbackHandler-1.0, LibRangeCheck-2.0, Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, LibDBIcon-1.0
+## SavedVariables: RangeDisplayDB3
+## OptionalDeps: !!!CWDGLibsPack, LibStub, CallbackHandler-1.0, LibRangeCheck-2.0, Ace3, LibSharedMedia-3.0, LibDualSpec-1.0
+
 ## X-Category: Combat
 ## X-DuowanAddon: 界面聊天
 ## X-License: Public Domain
 ## X-RelSite-WoWI: 7297
 ## X-Credits: sayclub (koKR), lcncg (zhCN, zhTW), Carylon (deDE), Pixel (frFR), Argonavt (ruRU), Swix (ruRU), StingerSoft (ruRU)
+## X-Curse-Packaged-Version: r311
+## X-Curse-Project-Name: RangeDisplay
+## X-Curse-Project-ID: range-display
+## X-Curse-Repository-ID: wow/range-display/mainline
 
 ## X-Localizations: enUS, enGB, deDE, zhCN, zhTW, koKR, ruRU, frFR, esES
 ## X-CompatibleLocales: enUS, enGB, deDE, frFR, esES, zhCN, zhTW, koKR, ruRU

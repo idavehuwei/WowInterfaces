@@ -26,5 +26,6 @@ E:\repos\Duowan-Work\UI.xsd">
     <Script file="LibQTip-1.0\LibQTip-1.0.lua"/>
     <Script file="SimpleSticky.lua"/><!-- 简单的吸附 -->
     <Script file="FuBarPlugin-2.0\FuBarPlugin-2.0.lua"/>
+    <Script file="LibDualSpec-1.0\LibDualSpec-1.0.lua"/>
     <!--<Script file="LibUnitFrame-1.0\LibUnitFrame-1.0.lua"/>-->
 </Ui>

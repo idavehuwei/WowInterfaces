@@ -88,7 +88,7 @@ if (dwIsConfigurableAddOn("dct")) then
             FIGHTING_OPTION3,
             "",
             "DctDamage",
-            1,
+            0,
             function (arg)
                 if(arg==1)then
                     if (not dwIsAddOnLoaded("dct_damage")) then
@@ -113,7 +113,7 @@ if (dwIsConfigurableAddOn("dct")) then
             FIGHTING_OPTION4,
             "",
             "DctSpellAlert",
-            1,
+            0,
             function (arg)
                 if(arg==1)then
                     if (not dwIsAddOnLoaded("dct_spellAlert")) then

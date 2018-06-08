@@ -44,14 +44,14 @@ if (dwIsConfigurableAddOn("RangeDisplay")) then
         "RANDDISPLAY_ENABLED",
         1,
         function (arg)
-            if(arg==1)then
-                if (not dwIsAddOnLoaded("RangeDisplay")) then
-                    dwLoadAddOn("RangeDisplay");
-                end
-                SetRangeDisplayUnits("TARGET",true);
-            else
-                if (dwIsAddOnLoaded("RangeDisplay")) then
-                    SetRangeDisplayUnits("TARGET",false);
+            if (not dwIsAddOnLoaded("RangeDisplay")) then
+                dwLoadAddOn("RangeDisplay");
+            end
+            if (dwIsAddOnLoaded("RangeDisplay")) then
+                if (arg == 1) then
+                    SetRangeDisplayUnits("TARGET", true);
+                else
+                    SetRangeDisplayUnits("TARGET", false);
                 end
             end
         end
@@ -64,12 +64,10 @@ if (dwIsConfigurableAddOn("RangeDisplay")) then
         "LockPosition",
         1,
         function (arg)
-            if arg==1 then
-                if (dwIsAddOnLoaded("RangeDisplay")) then
+            if (dwIsAddOnLoaded("RangeDisplay")) then
+                if arg == 1 then
                     RangeDisplayLocked(true);
-                end
-            else
-                if (dwIsAddOnLoaded("RangeDisplay")) then
+                else
                     RangeDisplayLocked(false);
                 end
             end

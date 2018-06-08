@@ -18,7 +18,6 @@ local filePrefix = "../"
 ]]
 local files = {
 	"RangeDisplay.lua",
-	"Options.lua",
 }
 
 --[[
