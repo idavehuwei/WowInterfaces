@@ -2,14 +2,8 @@
 ## X-BigfootType: 1
 ## X-BigfootDesc: 全面的商业技能列表查询数据库。
 ## Title: Ackis Recipe List
-## Title-frFR: Ackis Recipe List 2.0
-## Title-deDE: Ackis Rezeptliste 2.0
-## Title-koKR: Ackis의 제조법 리스트 2.0
-## Title-esMX: Ackis Recipe List 2.0
-## Title-ruRU: Ackis Recipe List 2.0
-## Title-zhCN: Ackis Recipe List
-## Title-esES: Ackis Recipe List 2.0
-## Title-zhTW: Ackis Recipe List
+## Title-zhCN: [商业] Ackis Recipe List
+## Title-zhTW: [商业] Ackis Recipe List
 #@end-non-debug@
 #@debug@
 # ## Title: Ackis Recipe List - Development Version
@@ -21,13 +15,7 @@
 
 #@non-debug@
 ## Notes: Ackis Recipe List is an addon which will scan your trade skills and provide information on how to obtain recipes. It works for all tradeskills including Runeforging.
-## Notes-frFR: Ackis Recipe List est un addon qui analyse vos métiers et fournit des informations sur la façon d'obtenir les recettes manquantes. Il fonctionne pour tous les métiers, y compris Runeforge.
-## Notes-deDE: Ackis Recipelist ist ein AddOn, das deine Berufe durchsucht und dir mitteilt, wo du fehlende Rezepte bekommst. Es funktioniert mit allen Berufen, inklusive Runenschmiedens.
-## Notes-koKR: Ackis Recipe List|1은;는; 당신의 전문 기술들을 훑어서 제조법들을 얻는 방법에 대한 정보를 제공할 애드온입니다. 룬 벼리기를 포함하여 모든 전문 기술들에 작용합니다.
-## Notes-esMX: Muestra una lista de recetas inexistentes para sus Habilidades de Comercio. Funciona con todas las habilidades comerciales, incluidas venenos y entrenamiento de bestias del cazador.
-## Notes-ruRU: Сканирует ваши профессии и составляет список отсутствующих рецептов. Также отображает информацию о способах их приобретения.
 ## Notes-zhCN: 扫描并告知如何获取缺失配方的详细商业技能信息插件。
-## Notes-esES: Ackis Recipe List es un addon que escanea tus habilidades comerciales y provee información de cómo obtener las recetas. Funciona para todas las habilidades comerciales, incluida Forja de Runas.
 ## Notes-zhTW: 掃描並告知如何獲取缺失配方的詳細商業技能訊息插件。
 #@end-non-debug@
 #@debug@

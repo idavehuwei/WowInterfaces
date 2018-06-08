@@ -2,6 +2,7 @@
 ## X-BigfootType: 1
 ## X-BigfootDesc: Auctionator拍卖大师插件，提示您所有相似的范围价格供您选择，可根据当前服务器最低价格或你选中的其它玩家价格或者历史拍卖价格拍卖，还可以根据你设置的价格范围打一定折扣，让你的拍卖的物品总是服务上合适的价格，不会有人说你是JS了=。=节省了大量文字输入及计算查询的工作。
 ## Title: Auctionator
+## Title-zhCN: [商业] 拍卖行助手 Auctionator
 ## Version: 2.6.3
 ## Author: Zirco
 ## X-Website: http://auctionator-addon.com

@@ -2,7 +2,7 @@
 ## X-BigfootType: 1
 ## X-BigfootDesc: AlreadyKnown已学图纸配方着色插件，可以着色商人和拍卖行内你已经学会的配方、图纸，已学图纸配方默认着色为绿色。
 ## Title: AlreadyKnown
-## Title-zhCN: [商业] 已学图纸配方着色 AlreadyKnown
+## Title-zhCN: [商业] 已学配方着色 AlreadyKnown
 ## Notes: Colorizes items that you already know in default merchant and auction frames.
 ## Notes-zhCN: 可以着色商人和拍卖行内你已经学会的配方、图纸，已学图纸配方默认着色为绿色。
 ## Author: villiv

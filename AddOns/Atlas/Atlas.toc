@@ -1,13 +1,10 @@
 ﻿## Interface: 30300
 ## Title: Atlas
-## Title-zhTW: |r|cFF0099FF[地圖]|rAtlas 地圖集
+## Title-zhCN: Atlas |r|cFF0099FF[副本地图]|r
+## Title-zhTW: |r|cFF0099FF[地圖]|r Atlas 地圖集
 ## Notes: Instance Map Browser
-## Notes-deDE: Instanzkarten-Browser
-## Notes-frFR: Navigateur de cartes d'instances
 ## Notes-zhTW: Atlas 地圖集主程式
 ## Notes-zhCN: 副本地图浏览器
-## Notes-esES: Navegador de Mapas de Mazmorras
-## Notes-ruRU: Обозреватель подземелий
 ## Version: 1.17.0
 ## X-Date: August, 2010
 ## Author: Dan Gilbert
@@ -25,12 +22,9 @@
 Libs\LibBabble.lua
 
 Locale\Atlas-enUS.lua
-Locale\Atlas-ruRU.lua
-Locale\Atlas-deDE.lua
-Locale\Atlas-frFR.lua
 Locale\Atlas-zhCN.lua
-Locale\Atlas-esES.lua
 Locale\Atlas-zhTW.lua
+
 AtlasMaps.lua
 
 AtlasDropDown.lua
