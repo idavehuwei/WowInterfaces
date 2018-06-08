@@ -72,7 +72,6 @@ function EUF_HpMpXp_OnEvent(self, event, ...)
         EUF_PartyFrameHPMP_Update();
         EUF_PartyFrameDisplay_Update();
     elseif event == "PLAYER_TARGET_CHANGED" then
-        EUF_UpdateFramesPosition();
         EUF_TargetFrameHPMP_Update();
     elseif event == "PLAYER_ENTERING_WORLD" then
         EUF_Frame_Update();
@@ -596,27 +595,27 @@ end
 
 function PowerFrame_Position(class,canShow)
     if canShow == 1 then
-		if ( class == "WARLOCK" ) then
-			Place(ShardBarFrame,"TOP", "PlayerFrame","BOTTOM", 54, 25);
-		elseif ( class == "DRUID" ) then
-			Place(EclipseBarFrame,"TOP", "PlayerFrame","BOTTOM", 54, 20);
-		--elseif ( class == "PALADIN" ) then
-		--	Place(PaladinPowerBar,"TOP", "PlayerFrame","BOTTOM", 54, 30);
-		elseif ( class == "DEATHKNIGHT" ) then
-			Place(RuneFrame,"TOP", "PlayerFrame","BOTTOM", 54, 20);
-		end;
-		Place(PetFrame,"TOP", "PlayerFrame","BOTTOM", 20, 10);
+        if ( class == "WARLOCK" ) then
+            Place(ShardBarFrame,"TOP", "PlayerFrame","BOTTOM", 54, 25);
+        elseif ( class == "DRUID" ) then
+            Place(EclipseBarFrame,"TOP", "PlayerFrame","BOTTOM", 54, 20);
+        --elseif ( class == "PALADIN" ) then
+        --  Place(PaladinPowerBar,"TOP", "PlayerFrame","BOTTOM", 54, 30);
+        elseif ( class == "DEATHKNIGHT" ) then
+            Place(RuneFrame,"TOP", "PlayerFrame","BOTTOM", 54, 20);
+        end;
+        Place(PetFrame,"TOP", "PlayerFrame","BOTTOM", 20, 10);
     else
         if ( class == "WARLOCK" ) then
-			Place(ShardBarFrame,"TOP", "PlayerFrame","BOTTOM", 54, 35);
-		elseif ( class == "DRUID" ) then
-			Place(EclipseBarFrame,"TOP", "PlayerFrame","BOTTOM", 54, 30);
-		--elseif ( class == "PALADIN" ) then
-		--	Place(PaladinPowerBar,"TOP", "PlayerFrame","BOTTOM", 54, 40);
-		elseif ( class == "DEATHKNIGHT" ) then
-			Place(RuneFrame,"TOP", "PlayerFrame","BOTTOM", 54, 30);
-		end;
-		Place(PetFrame,"TOP", "PlayerFrame","BOTTOM", 20, 20);
+            Place(ShardBarFrame,"TOP", "PlayerFrame","BOTTOM", 54, 35);
+        elseif ( class == "DRUID" ) then
+            Place(EclipseBarFrame,"TOP", "PlayerFrame","BOTTOM", 54, 30);
+        --elseif ( class == "PALADIN" ) then
+        --  Place(PaladinPowerBar,"TOP", "PlayerFrame","BOTTOM", 54, 40);
+        elseif ( class == "DEATHKNIGHT" ) then
+            Place(RuneFrame,"TOP", "PlayerFrame","BOTTOM", 54, 30);
+        end;
+        Place(PetFrame,"TOP", "PlayerFrame","BOTTOM", 20, 20);
     end
 end
 

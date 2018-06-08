@@ -14,9 +14,10 @@
 ## X-Curse-Repository-ID: wow/en_unitframes/mainline
 ## X-DuowanAddon: 界面聊天
 ## SavedVariables: DuowanAddon_EUF_Options
-## Dependencies: Duowan
+
+## Dependencies: Duowan, Titan
 ## X-Revision: Duowan
-## LoadOnDemand: 
+## LoadOnDemand:
 
 EN_UnitFrames.xml
 EN_PartyTarget.xml
