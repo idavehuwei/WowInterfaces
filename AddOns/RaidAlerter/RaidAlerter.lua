@@ -1,6 +1,6 @@
 ﻿--初始设置
 RaidAlerter_SET = {
-OnOff = true,						--启用警报
+OnOff = false,						--启用警报
 RAIDMODE_MAX_GROUP = 5,				--团队模式
 Party_Alerter = true,				--5人小队
 OnlySelfCHAN = false,				--仅本机
@@ -216,7 +216,7 @@ local RaidAlerter_EVENT_LIST = {
 ]]
 
 ------------------
--- Duowan Interface 
+-- Duowan Interface
 local RaidAlerter_Enabled = false;
 function RaidAlerter_Toggle(switch)
 	if (switch) then
@@ -343,7 +343,7 @@ function RaidAlerter_OnLoad(self)
 	SLASH_RaidAlerter2 = "/ral";
 	SlashCmdList["RaidAlerter"] = function(msg)
 		RaidAlerter_SlashCommand(msg);
-	end	
+	end
 end
 
 function RaidAlerter_SlashCommand(msg)

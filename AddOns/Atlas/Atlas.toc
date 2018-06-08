@@ -1,6 +1,6 @@
 ﻿## Interface: 30300
 ## Title: Atlas
-## Title-zhCN: Atlas |r|cFF0099FF[副本地图]|r
+## Title-zhCN: Atlas |r|cFF0099FF[核心]|r
 ## Title-zhTW: |r|cFF0099FF[地圖]|r Atlas 地圖集
 ## Notes: Instance Map Browser
 ## Notes-zhTW: Atlas 地圖集主程式
