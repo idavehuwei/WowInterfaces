@@ -5,12 +5,19 @@ if not L then return end
 L["You have no bugs, yay!"] = "没有发生错误。\\^o^//"
 
 -- BugSack window
+L["Clear"] = "清除"
+L["Reload"] = "重载"
+
 L["Next >"] = "下一个>"
 L["< Previous"] = "<前一个"
 L["Send bugs"] = "发送错误"
 L["Today"] = "今日"
 L["Sent by %s (%s)"] = "%s发送（%s）"
 L["Local (%s)"] = "本地（%s）"
+
+L["All bugs"] = "全部"
+L["Current session"] = "当前会话"
+L["Previous session"] = "上一个会话"
 
 L["Send"] = "发送"
 L["Send all bugs from the currently viewed session (%d) in the sack to the player specified below."] = "发送当前查看会话（%d）所有错误给下列玩家。"

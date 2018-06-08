@@ -101,7 +101,7 @@ do
     end
 
     local countLabel, sessionLabel, textArea = nil, nil, nil, nil
-    local nextButton, prevButton, sendButton = nil, nil, nil
+    local nextButton, prevButton, sendButton, clearButton, reloadButton = nil, nil, nil, nil, nil
 
     local sessionFormat = "%s - |cffff4411%s|r - |cff44ff44%d|r" -- <date> - <sent by> - <session id>
     local countFormat = "%d/%d" -- 1/10
@@ -138,8 +138,8 @@ do
         HideUIPanel(BugSackFrame)
 
         window:SetFrameStrata("FULLSCREEN_DIALOG")
-        window:SetWidth(500)
-        window:SetHeight(500 / 1.618)
+        window:SetWidth(600)
+        window:SetHeight(600 / 1.618)
         window:SetPoint("CENTER")
         window:SetMovable(true)
         window:EnableMouse(true)
@@ -230,9 +230,33 @@ do
         sessionLabel:SetTextColor(1, 1, 1, 1)
 
         countLabel = window:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-        countLabel:SetPoint("TOPRIGHT", titlebg, -6, -3)
+        countLabel:SetPoint("TOPRIGHT", titlebg, -130, -3)
         countLabel:SetJustifyH("RIGHT")
         countLabel:SetTextColor(1, 1, 1, 1)
+
+        reloadButton = CreateFrame("Button", "BugSackReloadButton", window, "UIPanelButtonTemplate2")
+        reloadButton:SetPoint("TOPRIGHT", titlebg, -56, 2)
+        reloadButton:SetWidth(56)
+        reloadButton:SetHeight(21)
+        reloadButton:SetText(L["Reload"])
+        reloadButton:SetScript("OnClick", function()
+            ReloadUI();
+        end)
+
+        clearButton = CreateFrame("Button", "BugSackClearButton", window, "UIPanelButtonTemplate2")
+        clearButton:SetPoint("TOPRIGHT", titlebg, 2, 2)
+        clearButton:SetWidth(56)
+        clearButton:SetHeight(21)
+        clearButton:SetText(L["Clear"])
+        clearButton:SetScript("OnClick", function()
+            BugSack:Reset();
+            countLabel:SetText()
+            sessionLabel:SetText(("%s (%d)"):format(L["Today"], BugGrabber:GetSessionId()))
+            textArea:SetText(L["You have no bugs, yay!"])
+            nextButton:Disable()
+            prevButton:Disable()
+            if sendButton then sendButton:Disable() end
+        end)
 
         nextButton = CreateFrame("Button", "BugSackNextButton", window, "UIPanelButtonTemplate2")
         nextButton:SetPoint("BOTTOMRIGHT", window, -11, 16)
@@ -292,7 +316,7 @@ do
         local all = CreateFrame("Button", "BugSackTabAll", window, "CharacterFrameTabButtonTemplate")
         all:SetFrameStrata("FULLSCREEN")
         all:SetPoint("TOPLEFT", window, "BOTTOMLEFT", 0, 8)
-        all:SetText("All bugs")
+        all:SetText(L["All bugs"])
         all:SetScript("OnLoad", nil)
         all:SetScript("OnShow", nil)
         all:SetScript("OnClick", setActiveMethod)
@@ -302,7 +326,7 @@ do
         local session = CreateFrame("Button", "BugSackTabSession", window, "CharacterFrameTabButtonTemplate")
         session:SetFrameStrata("FULLSCREEN")
         session:SetPoint("LEFT", all, "RIGHT")
-        session:SetText("Current session")
+        session:SetText(L["Current session"])
         session:SetScript("OnLoad", nil)
         session:SetScript("OnShow", nil)
         session:SetScript("OnClick", setActiveMethod)
@@ -312,7 +336,7 @@ do
         local last = CreateFrame("Button", "BugSackTabLast", window, "CharacterFrameTabButtonTemplate")
         last:SetFrameStrata("FULLSCREEN")
         last:SetPoint("LEFT", session, "RIGHT")
-        last:SetText("Previous session")
+        last:SetText(L["Previous session"])
         last:SetScript("OnLoad", nil)
         last:SetScript("OnShow", nil)
         last:SetScript("OnClick", setActiveMethod)

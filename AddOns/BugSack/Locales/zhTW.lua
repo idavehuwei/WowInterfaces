@@ -5,12 +5,19 @@ if not L then return end
 L["You have no bugs, yay!"] = "沒有發生錯誤。\\^o^//"
 
 -- BugSack window
+L["Clear"] = "清除"
+L["Reload"] = "重载"
+
 L["Next >"] = "下一個>"
 L["< Previous"] = "<前一個"
 L["Send bugs"] = "發送錯誤"
 L["Today"] = "今日"
 L["Sent by %s (%s)"] = "%s發送（%s）"
 L["Local (%s)"] = "本地（%s）"
+
+L["All bugs"] = "全部"
+L["Current session"] = "当前会话"
+L["Previous session"] = "上一个会话"
 
 L["Send"] = "發送"
 L["Send all bugs from the currently viewed session (%d) in the sack to the player specified below."] = "發送當前查看會話（%d）所有錯誤給下列玩家。"
@@ -44,4 +51,4 @@ L["There's a bug in your soup!"] = "這裡有一個噁心的錯誤！"
 -- LDB
 L["|cffeda55fClick|r to open BugSack with the last bug. |cffeda55fShift-Click|r to reload the user interface. |cffeda55fAlt-Click|r to clear the sack."] = "|cffeda55f點擊|r打開BugSack 及最後一錯誤信息。|cffeda55fShift-點擊|r重新加載用戶界面。|cffeda55fAlt-點擊|r清除儲存錯誤信息。"
 L["Minimap icon"] = "小地圖按鈕"
-L["Toggle the minimap icon."] = "切換小地圖按鈕。" 
+L["Toggle the minimap icon."] = "切換小地圖按鈕。"

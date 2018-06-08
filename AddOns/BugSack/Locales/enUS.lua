@@ -5,12 +5,19 @@ if not L then return end
 L["You have no bugs, yay!"] = true
 
 -- BugSack window
+L["Clear"] = true
+L["Reload"] = true
+
 L["Next >"] = true
 L["< Previous"] = true
 L["Send bugs"] = true
 L["Today"] = true
 L["Sent by %s (%s)"] = true
 L["Local (%s)"] = true
+
+L["All bugs"] = true
+L["Current session"] = true
+L["Previous session"] = true
 
 L["Send"] = true
 L["Send all bugs from the currently viewed session (%d) in the sack to the player specified below."] = true

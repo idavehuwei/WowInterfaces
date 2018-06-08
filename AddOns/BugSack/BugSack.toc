@@ -22,13 +22,8 @@
 ## X-Curse-Repository-ID: wow/bugsack/mainline
 
 Locales\enUS.lua
-Locales\frFR.lua
 Locales\zhCN.lua
-Locales\deDE.lua
-Locales\koKR.lua
-Locales\esES.lua
 Locales\zhTW.lua
-Locales\ruRU.lua
 
 config.lua
 BugSack.lua
