@@ -82,10 +82,10 @@ local defaults = {
         units = {
             ["**"] = {
                 enabled = true,
-                point = "BOTTOM",
-                relPoint = "BOTTOM",
-                x = -7,
-                y = 169,
+                point = "CENTER",
+                relPoint = "CENTER",
+                x = 0,
+                y = -260,
                 font = DefaultFontName,
                 fontSize = 24,
                 fontOutline = "",
@@ -93,11 +93,9 @@ local defaults = {
                 enemyOnly = false,
                 maxRangeOnly = false,
                 suffix = "",
-
                 rangeLimit = 100,
                 overLimitDisplay = false,
                 overLimitSuffix = " +",
-
                 frameWidth = DefaultFrameWidth,
                 frameHeight = DefaultFrameHeight,
                 bgEnabled = false,
@@ -108,7 +106,6 @@ local defaults = {
                 bgEdgeSize = 16,
                 bgColor = makeColor(1, 1, 1),
                 bgBorderColor = makeColor(0.8, 0.6, 0.0),
-
                 oorSection = {
                     enabled = true,
                     color = makeColor(0.9, 0.055, 0.075),
@@ -147,8 +144,8 @@ local defaults = {
 local function isTargetValid(ud)
     local unit = ud.unit
     return UnitExists(unit) and (not UnitIsDeadOrGhost(unit))
-            and (not ud.db.enemyOnly or UnitCanAttack("player", unit))
-            and (not UnitIsUnit(unit, "player"))
+        and (not ud.db.enemyOnly or UnitCanAttack("player", unit))
+        and (not UnitIsUnit(unit, "player"))
 end
 
 local function targetChanged(ud)
@@ -160,7 +157,7 @@ local function targetChanged(ud)
     end
 end
 
-local function profileChanged(ud, db) 
+local function profileChanged(ud, db)
     ud.db = db
 end
 
@@ -234,7 +231,7 @@ local function applyFontSettings(ud)
 end
 
 local function applySettings(ud)
-	--print(ud.name);
+    --print(ud.name);
     if (ud.db.enabled) then
         ud:enable()
         ud.mainFrame:ClearAllPoints()
@@ -264,9 +261,11 @@ local function createOverlay(ud)
     ud.overlayText:SetPoint("BOTTOM", ud.mainFrame, "BOTTOM", 0, 0)
     ud.overlayText:SetText(L[unit])
 end
+
 function RangeDisplayOpenConfigDialog()
-	RangeDisplay:openConfigDialog();
+    RangeDisplay:openConfigDialog();
 end
+
 local function createFrame(ud)
     local unit = ud.unit
     ud.isMoving = false
@@ -428,9 +427,9 @@ local units = {
         name = L["pet"], -- to make Babelfish happy
         event = "UNIT_PET",
         targetChanged = function(ud, event, unitId, ...)
-                if (unitId ~= "player") then return end
-                targetChanged(ud, event, unitId, ...)
-            end
+            if (unitId ~= "player") then return end
+            targetChanged(ud, event, unitId, ...)
+        end
     },
 }
 

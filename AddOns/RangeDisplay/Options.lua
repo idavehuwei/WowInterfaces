@@ -99,16 +99,13 @@ local function addUnitOptions(ud, order)
                 max = MaxRangeLimit,
                 step = 1,
                 order = 118,
-
             },
-
             suffix = {
                 type = 'input',
                 name = L["Suffix"],
                 desc = L["A free-form suffix to append to the range display when you are in range"],
                 order = 119,
             },
-
             overLimitDisplay = {
                 type = 'toggle',
                 name = L["Over limit display"],
@@ -122,9 +119,9 @@ local function addUnitOptions(ud, order)
                 order = 125,
                 disabled = function() return not ud.db.enabled or not ud.db.overLimitDisplay end,
             },
-
             font = {
-                type = "select", dialogControl = 'LSM30_Font',
+                type = "select",
+                dialogControl = 'LSM30_Font',
                 name = L["Font"],
                 --desc = L["Font"],
                 values = AceGUIWidgetLSMlists.font,
@@ -185,14 +182,16 @@ local function addUnitOptions(ud, order)
                         order = 6,
                     },
                     bgTexture = {
-                        type = "select", dialogControl = 'LSM30_Background',
+                        type = "select",
+                        dialogControl = 'LSM30_Background',
                         order = 11,
                         name = L["Background Texture"],
                         desc = L["Texture to use for the frame's background"],
                         values = AceGUIWidgetLSMlists.background,
                     },
                     bgBorderTexture = {
-                        type = "select", dialogControl = 'LSM30_Border',
+                        type = "select",
+                        dialogControl = 'LSM30_Border',
                         order = 12,
                         name = L["Border Texture"],
                         desc = L["Texture to use for the frame's border"],
@@ -227,7 +226,9 @@ local function addUnitOptions(ud, order)
                         order = 16,
                         name = L["Background Tile Size"],
                         desc = L["The size used to tile the background texture"],
-                        min = 16, max = 256, step = 1,
+                        min = 16,
+                        max = 256,
+                        step = 1,
                         disabled = function() return not ud.db.enabled or not ud.db.bgEnabled or not ud.db.bgTile end,
                     },
                     bgEdgeSize = {
@@ -235,7 +236,9 @@ local function addUnitOptions(ud, order)
                         order = 17,
                         name = L["Border Thickness"],
                         desc = L["The thickness of the border"],
-                        min = 1, max = 16, step = 1,
+                        min = 1,
+                        max = 16,
+                        step = 1,
                     },
                 },
             },
@@ -463,27 +466,26 @@ end
 local function getUnitOption(ud, info)
     return ud.db[info[#info]]
 end
-function SetRangeDisplayUnits(ud,value)
 
-
-	if ud=="TARGET" then
-		--print(RangeDisplay.units[1].name);
-		RangeDisplay.units[1].db["enabled"]=value;
-		RangeDisplay:applySettings();
-	elseif ud=="FOCUS" then
-		--print(RangeDisplay.units[2].name);
-		RangeDisplay.units[2].db["enabled"]=value;
-		RangeDisplay:applySettings();
-	elseif ud=="PET" then
-		--print(RangeDisplay.units[3].name);
-		RangeDisplay.units[3].db["enabled"]=value;
-		RangeDisplay:applySettings();
-	end
-
+function SetRangeDisplayUnits(ud, value)
+    if ud == "TARGET" then
+        --print(RangeDisplay.units[1].name);
+        RangeDisplay.units[1].db["enabled"] = value;
+        RangeDisplay:applySettings();
+    elseif ud == "FOCUS" then
+        --print(RangeDisplay.units[2].name);
+        RangeDisplay.units[2].db["enabled"] = value;
+        RangeDisplay:applySettings();
+    elseif ud == "PET" then
+        --print(RangeDisplay.units[3].name);
+        RangeDisplay.units[3].db["enabled"] = value;
+        RangeDisplay:applySettings();
+    end
 end
+
 local function setUnitOption(ud, info, value)
-  ud.db[info[#info]] = value
-  ud:applySettings()
+    ud.db[info[#info]] = value
+    ud:applySettings()
 end
 
 local function getSectionOption(ud, info)
@@ -517,12 +519,12 @@ local function setUnitColor(ud, info, r, g, b, a)
 end
 
 local function getSectionColor(ud, info)
-    local dbcolor =  ud.db[info[#info - 1]][info[#info]]
+    local dbcolor = ud.db[info[#info - 1]][info[#info]]
     return getColor(ud, dbcolor)
 end
 
 local function setSectionColor(ud, info, r, g, b, a)
-    local dbcolor =  ud.db[info[#info - 1]][info[#info]]
+    local dbcolor = ud.db[info[#info - 1]][info[#info]]
     setColor(ud, dbcolor, r, g, b, a)
 end
 
@@ -537,13 +539,14 @@ local function getBGColor(ud, info)
     local dbcolor = ud.db[info[#info]]
     return getColor(ud, dbcolor)
 end
+
 function SetRangeDisplayEnable()
---applySettings(RangeDisplay.units[1]);
-	--applySettings(RangeDisplay.units[1]);
-	--applySettings(RangeDisplay.units[2]);
-	--applySettings(RangeDisplay.units[3]);
-	
+    --applySettings(RangeDisplay.units[1]);
+    --applySettings(RangeDisplay.units[1]);
+    --applySettings(RangeDisplay.units[2]);
+    --applySettings(RangeDisplay.units[3]);
 end
+
 local function isUnitDisabled(ud, info)
 
     return not ud.db.enabled
@@ -577,7 +580,7 @@ function RangeDisplay:registerSubOptions(name, opts)
 end
 
 function RangeDisplay:setupOptions()
-	
+
     addConfigFunctions(self.units)
     self:setupLDB()
     AceConfig:RegisterOptionsTable(self.AppName, options.args.main)
@@ -586,7 +589,7 @@ function RangeDisplay:setupOptions()
         local unitOpts = addUnitOptions(ud, 100 + i)
         ud.opts = self:registerSubOptions(ud.unit, unitOpts)
     end
-    local profiles =  AceDBOptions:GetOptionsTable(self.db)
+    local profiles = AceDBOptions:GetOptionsTable(self.db)
     profiles.order = 900
     options.args.profiles = profiles
     self.profiles = self:registerSubOptions('profiles', profiles)
@@ -648,9 +651,10 @@ function RangeDisplay:getOption(info)
 end
 
 function RangeDisplayLocked(value)
-	RangeDisplay.db.profile["locked"] = value;
-	RangeDisplay:applySettings()
+    RangeDisplay.db.profile["locked"] = value;
+    RangeDisplay:applySettings()
 end
+
 function RangeDisplay:setOption(info, value)
 
     self.db.profile[info[#info]] = value
