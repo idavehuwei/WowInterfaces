@@ -427,8 +427,8 @@ if (class == "DEATHKNIGHT" and not dwRuneFrameHasOtherAddOn()) then
         },
         {
             text = RUNEFRAME_MENU_SCALE_TEXT,
-            arg1 = 0.5,	-- min value
-            arg2 = 2,	-- max value
+            arg1 = 0.5, -- min value
+            arg2 = 2,   -- max value
             notCheckable = true,
             func = function(self, arg1, arg2)
                 Duowan_ShowPopRange(
