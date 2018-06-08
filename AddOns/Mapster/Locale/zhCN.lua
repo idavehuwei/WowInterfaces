@@ -4,6 +4,7 @@
 
 local L = LibStub("AceLocale-3.0"):NewLocale("Mapster", "zhCN")
 if not L then return end
+L["Atlas Map"] = "Atlas地图"
 L["Mapster"] = "地图增强"
 L["Profiles"] = "配置方案"
 L["Accuracy"] = "高精度"

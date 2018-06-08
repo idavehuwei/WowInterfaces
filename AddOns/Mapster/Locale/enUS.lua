@@ -8,7 +8,7 @@ debug = true
 --@end-debug@]===]
 
 local L = LibStub("AceLocale-3.0"):NewLocale("Mapster", "enUS", true, debug)
-
+L["Atlas Map"] = true
 L["Accuracy"] = true
 L["Adjust the size of the Player Arrow on the Map for better visibility."] = true
 L["Alpha"] = true
