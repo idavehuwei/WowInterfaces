@@ -21,6 +21,7 @@ if (GetLocale() == "zhCN") then
     EUF_FOCUSFRAME_EANBLE           = "显示焦点头像";
     EUF_FOCUSTARGET_EANBLE          = "显示焦点的目标的头像"
     -- party
+    EUF_PARTYFRAME_HIDE             = "隐藏小队框架";
     EUF_PARTYFRAME_ENABLE           = "显示队友头像扩展";
     EUF_PARTYFRAME_TARGET           = "显示队友目标";
     EUF_SHOW_PARTYBUFF              = "显示队友BUFF";
@@ -51,6 +52,7 @@ elseif (GetLocale() == "zhTW") then
     EUF_FOCUSFRAME_EANBLE           = "顯示焦點頭像";
     EUF_FOCUSTARGET_EANBLE          = "顯示焦點的目標的頭像"
 
+    EUF_PARTYFRAME_HIDE             = "隐藏小队框架";
     EUF_PARTYFRAME_ENABLE           = "顯示隊友頭像擴展";
     EUF_PARTYFRAME_TARGET           = "顯示隊友目標";
     EUF_SHOW_PARTYBUFF              = "顯示隊友BUFF";
@@ -80,6 +82,7 @@ else
     EUF_FOCUSFRAME_EANBLE           = "显示焦点头像";
     EUF_FOCUSTARGET_EANBLE          = "显示焦点的目标的头像"
 
+    EUF_PARTYFRAME_HIDE             = "隐藏小队框架";
     EUF_PARTYFRAME_ENABLE           = "显示队友头像扩展";
     EUF_PARTYFRAME_TARGET           = "显示队友目标";
     EUF_SHOW_PARTYBUFF              = "显示队友BUFF";
@@ -385,6 +388,26 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
             end
         end,
         1
+    );
+
+    dwRegisterCheckButton(
+        "EN_UnitFrames",
+        EUF_PARTYFRAME_HIDE,
+        "",
+        "PartyFrameHide",
+        0,
+        function (arg)
+            if (not dwIsAddOnLoaded("EN_UnitFrames")) then
+                dwLoadAddOn("EN_UnitFrames");
+            end
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
+                    EUF_Options_Update("PARTYHIDE", 1);
+                else
+                    EUF_Options_Update("PARTYHIDE", 0);
+                end
+            end
+        end
     );
 
     dwRegisterCheckButton(
