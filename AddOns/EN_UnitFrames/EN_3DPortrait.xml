@@ -1,0 +1,159 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+    <Script file="EN_3DPortrait.lua"/>
+
+    <Frame name="EUF_3DPortraitFrame" hidden="true">
+        <Scripts>
+            <OnLoad>
+                EUF_3DPortrait_OnLoad(self);
+            </OnLoad>
+            <OnEvent>
+                EUF_3DPortrait_OnEvent(self,event,...);
+            </OnEvent>
+            <OnUpdate>
+                EUF_3DPortrait_Update(self, elapsed);
+            </OnUpdate>
+        </Scripts>
+    </Frame>
+
+    <Frame name="EUF_3DPortraitFramePartyChecker" hidden="true">
+        <Scripts>
+            <OnLoad>
+                 EUF_3DPortrait_TimerMeshCheck = 0;
+            </OnLoad>
+            <OnUpdate>
+                EUF_3DPortrait_TimerMeshCheck = EUF_3DPortrait_TimerMeshCheck + elapsed;
+                if EUF_3DPortrait_TimerMeshCheck > 5 then
+                    EUF_3DPortrait_LoadPartyMesh("party1");
+                    EUF_3DPortrait_LoadPartyMesh("party2");
+                    EUF_3DPortrait_LoadPartyMesh("party3");
+                    EUF_3DPortrait_LoadPartyMesh("party4");
+                    EUF_3DPortrait_TimerMeshCheck = 0;
+                end
+            </OnUpdate>
+        </Scripts>
+    </Frame>
+
+    <PlayerModel frameStrata="BACKGROUND" name="EUF_3DPortrait_PlayerModel" hidden="true" parent="PlayerFrame">
+        <Size>
+            <AbsDimension x="49" y="55"/>
+        </Size>
+        <Anchors>
+            <Anchor point="CENTER" relativePoint="CENTER" relativeTo="PlayerPortrait">
+            <Offset>
+                <AbsDimension x="0" y="-2"/>
+            </Offset>
+            </Anchor>
+        </Anchors>
+        <Scripts>
+            <OnShow>
+                self:SetCamera(0);
+            </OnShow>
+        </Scripts>
+    </PlayerModel>
+
+    <PlayerModel frameStrata="BACKGROUND" name="EUF_3DPortrait_TargetModel" hidden="true" parent="TargetFrame">
+        <Size>
+            <AbsDimension x="49" y="55"/>
+        </Size>
+        <Anchors>
+            <Anchor point="CENTER" relativePoint="CENTER" relativeTo="TargetFramePortrait">
+            <Offset>
+                <AbsDimension x="0" y="-2"/>
+            </Offset>
+            </Anchor>
+        </Anchors>
+        <Scripts>
+            <OnShow>
+                self:SetCamera(0);
+            </OnShow>
+        </Scripts>
+    </PlayerModel>
+    <PlayerModel frameStrata="BACKGROUND" name="EUF_3DPortrait_FocusModel" hidden="true" parent="TgFocusFrame">
+    <Size>
+        <AbsDimension x="49" y="55"/>
+    </Size>
+    <Anchors>
+        <Anchor point="CENTER" relativePoint="CENTER" relativeTo="TgFocusPortrait">
+            <Offset>
+                <AbsDimension x="0" y="-2"/>
+            </Offset>
+            </Anchor>
+        </Anchors>
+        <Scripts>
+            <OnShow>
+                self:SetCamera(0);
+            </OnShow>
+        </Scripts>
+    </PlayerModel>
+    <PlayerModel frameStrata="BACKGROUND" name="EUF_3DPortrait_Party1Model" hidden="true" parent="PartyMemberFrame1">
+        <Size>
+            <AbsDimension x="30" y="33"/>
+        </Size>
+        <Anchors>
+            <Anchor point="CENTER" relativePoint="CENTER" relativeTo="PartyMemberFrame1Portrait">
+            <Offset>
+                <AbsDimension x="1" y="-1"/>
+            </Offset>
+            </Anchor>
+        </Anchors>
+        <Scripts>
+            <OnShow>
+                self:SetCamera(0);
+            </OnShow>
+        </Scripts>
+    </PlayerModel>
+
+    <PlayerModel frameStrata="BACKGROUND" name="EUF_3DPortrait_Party2Model" hidden="true" parent="PartyMemberFrame2">
+        <Size>
+            <AbsDimension x="30" y="33"/>
+        </Size>
+        <Anchors>
+            <Anchor point="CENTER" relativePoint="CENTER" relativeTo="PartyMemberFrame2Portrait">
+            <Offset>
+                <AbsDimension x="1" y="-1"/>
+            </Offset>
+            </Anchor>
+        </Anchors>
+        <Scripts>
+            <OnShow>
+                self:SetCamera(0);
+            </OnShow>
+        </Scripts>
+    </PlayerModel>
+
+    <PlayerModel frameStrata="BACKGROUND" name="EUF_3DPortrait_Party3Model" hidden="true" parent="PartyMemberFrame3">
+        <Size>
+            <AbsDimension x="30" y="33"/>
+        </Size>
+        <Anchors>
+            <Anchor point="CENTER" relativePoint="CENTER" relativeTo="PartyMemberFrame3Portrait">
+            <Offset>
+                <AbsDimension x="1" y="-1"/>
+            </Offset>
+            </Anchor>
+        </Anchors>
+        <Scripts>
+            <OnShow>
+                self:SetCamera(0);
+            </OnShow>
+        </Scripts>
+    </PlayerModel>
+
+    <PlayerModel frameStrata="BACKGROUND" name="EUF_3DPortrait_Party4Model" hidden="true" parent="PartyMemberFrame4">
+        <Size>
+            <AbsDimension x="30" y="33"/>
+        </Size>
+        <Anchors>
+            <Anchor point="CENTER" relativePoint="CENTER" relativeTo="PartyMemberFrame4Portrait">
+            <Offset>
+                <AbsDimension x="1" y="-1"/>
+            </Offset>
+            </Anchor>
+        </Anchors>
+        <Scripts>
+            <OnShow>
+                self:SetCamera(0);
+            </OnShow>
+        </Scripts>
+    </PlayerModel>
+</Ui>

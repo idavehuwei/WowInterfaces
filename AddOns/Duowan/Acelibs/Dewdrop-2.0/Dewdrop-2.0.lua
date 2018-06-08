@@ -1,6 +1,6 @@
 ﻿--[[
 Name: Dewdrop-2.0
-Revision: $Rev: 320 $
+Revision: $Rev: 321 $
 Author(s): ckknight (ckknight@gmail.com)
 Website: http://ckknight.wowinterface.com/
 Documentation: http://wiki.wowace.com/index.php/Dewdrop-2.0
@@ -11,7 +11,7 @@ License: LGPL v2.1
 ]]
 
 local MAJOR_VERSION = "Dewdrop-2.0"
-local MINOR_VERSION = tonumber(strmatch("$Revision: 320 $", "%d+")) + 90000
+local MINOR_VERSION = tonumber(strmatch("$Revision: 321 $", "%d+")) + 90000
 
 if not AceLibrary then error(MAJOR_VERSION .. " requires AceLibrary") end
 if not AceLibrary:IsNewVersion(MAJOR_VERSION, MINOR_VERSION) then return end

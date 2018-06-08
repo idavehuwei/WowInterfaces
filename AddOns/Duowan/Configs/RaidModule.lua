@@ -207,7 +207,7 @@ if (dwIsConfigurableAddOn("PhoenixStyle")) then
         RAID_MOD_LEADER_ENABLE,
         RAID_MOD_LEADER_ENABLE_DESC,
         "psEnable",
-        0,
+        1,
         function (arg)
             if(arg==1)then
                 if (not dwIsAddOnLoaded("PhoenixStyle")) then
@@ -422,7 +422,7 @@ if (dwIsConfigurableAddOn("oRA3")) then
         RAID_MOD_ORA3_ENABLE,
         DUOWAN_RELOAD_DESC,
         "oRA3Enable",
-        0,
+        1,
         function (arg)
             if(arg==1)then
                 if (not dwIsAddOnLoaded("oRA3")) then
@@ -484,7 +484,7 @@ if (dwIsConfigurableAddOn("Omen")) then
         RAID_MOD_OMEN_ENABLE,
         DUOWAN_RELOAD_DESC,
         "OmenEnable",
-        0,
+        1,
         function (arg)
             if(arg==1)then
                 if (not dwIsAddOnLoaded("Omen")) then
@@ -536,7 +536,7 @@ if (dwIsConfigurableAddOn("Clique")) then
         RAID_MOD_CLIQUE_ENABLE,
         DUOWAN_RELOAD_DESC,
         "CliqueEnable",
-        0,
+        1,
         function (arg)
             if(arg==1)then
                 if (not dwIsAddOnLoaded("Clique")) then
@@ -580,7 +580,7 @@ if (dwIsConfigurableAddOn("Grid")) then
         RAID_MOD_GRID_ENABLE,
         nil,
         "GridEnable",
-        0,
+        1,
         function (arg)
             if(arg==1)then
                 if (not dwIsAddOnLoaded("Grid")) then
@@ -632,7 +632,7 @@ if (dwIsConfigurableAddOn("Recount")) then
         RAID_MOD_RECOUNT_ENABLE,
         DUOWAN_RELOAD_DESC,
         "RecountEnable",
-        0,
+        1,
         function (arg)
             if(arg==1)then
                 if (not dwIsAddOnLoaded("Recount")) then
@@ -675,7 +675,7 @@ if (dwIsConfigurableAddOn("Decursive")) then
         RAID_MOD_DECURSIVE_ENABLE,
         DUOWAN_RELOAD_DESC,
         "DecursiveEnable",
-        0,
+        1,
         function (arg)
             if(arg==1)then
                 if (not dwIsAddOnLoaded("Decursive")) then
@@ -823,7 +823,7 @@ if ((PlayerClass == "DRUID" or PlayerClass == "WARRIOR" or PlayerClass == "PALAD
         RAID_MOD_OPTITAUNT_ENABLE,
         nil,
         "OptiTauntEnable",
-        0,
+        1,
         function (arg)
             if(arg==1)then
                 if (not dwIsAddOnLoaded("OptiTaunt")) then
@@ -937,7 +937,7 @@ if (dwIsConfigurableAddOn("RaidAlerter")) then
         RAID_MOD_RAIDALERTER_ENABLE,
         RAID_MOD_RAIDALERTER_DESC,
         "RaidAlerterEnable",
-        0,
+        1,
         function (arg)
             if(arg==1)then
                 if (not dwIsAddOnLoaded("RaidAlerter")) then
@@ -999,7 +999,7 @@ if (dwIsConfigurableAddOn("AtlasLoot")) then
         RAID_MOD_ATLASLOOT_ENABLE,
         DUOWAN_RELOAD_DESC,
         "AtlasLootEnable",
-        0,
+        1,
         function (arg)
             if(arg==1)then
                 if (not dwIsAddOnLoaded("AtlasLoot")) then

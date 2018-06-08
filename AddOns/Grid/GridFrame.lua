@@ -738,10 +738,10 @@ GridFrame.InitialConfigFunction = GridFrame_Initialize
 --{{{  AceDB defaults
 
 GridFrame.defaultDB = {
-	frameHeight = 40,
-	frameWidth = 43,
+	frameHeight = 36,
+	frameWidth = 60,
 	borderSize = 1,
-	cornerSize = 7,
+	cornerSize = 6,
 	orientation = "HORIZONTAL",
 	textorientation = "VERTICAL",
 	enableText2 = false,
@@ -758,7 +758,7 @@ GridFrame.defaultDB = {
 	debug = false,
 	invertBarColor = true,
 	showTooltip = "OOC",
-	textlength = 4,
+	textlength = 6,
 	healingBar_intensity = 0.5,
 	statusmap = {
 		["text"] = {

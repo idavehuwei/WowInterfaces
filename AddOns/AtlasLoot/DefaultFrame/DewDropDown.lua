@@ -809,7 +809,7 @@ AtlasLoot_DewDropDown_SubTables = {
 		{ AL["Faction Champions"], "TrialoftheCrusaderFactionChampions_A" },
 		{ BabbleBoss["The Twin Val'kyr"], "TrialoftheCrusaderTwinValkyrs_A" },
 		{ BabbleBoss["Anub'arak"], "TrialoftheCrusaderAnubarak_A" },
-		{ AL["Tribute Run"], "TrialoftheCrusaderTribute_AHEROIC" },
+		{ AL["Tribute Run"], "TrialoftheCrusaderTributeHEROIC_A" },
 		{ AL["Trial of the Crusader Patterns/Plans"], "TrialoftheCrusaderPatterns_A" },
 	},
 	["VaultofArchavon_A"] = {

@@ -39,7 +39,7 @@ if (dwIsConfigurableAddOn("GatherMate") ) then
         GATHERMATE_ENABLE,
         nil,
         "GatherMateEnable",
-        0,
+        1,
         function (arg)
             if (arg == 1) then
                 dwLoadAddOn("GatherMate");

@@ -161,12 +161,12 @@ GridLayout.defaultDB = {
 		bg = L["By Group 40"],
 	},
 
-	horizontal = false,
+	horizontal = true,
 	clamp = true,
 	FrameLock = false,
 
 	Padding = 1,
-	Spacing = 10,
+	Spacing = 6,
 	ScaleSize = 1.0,
 	borderTexture = "Blizzard Tooltip",
 	BorderR = .5,
@@ -179,8 +179,9 @@ GridLayout.defaultDB = {
 	BackgroundA = .65,
 
 	anchor = "TOPLEFT",
-	groupAnchor = "TOPLEFT",
-	hideTab = true,
+	anchorRel = "BOTTOMLEFT",
+	groupAnchor = "BOTTOMLEFT",
+	hideTab = false,
 
 	PosX = 500,
 	PosY = -400,

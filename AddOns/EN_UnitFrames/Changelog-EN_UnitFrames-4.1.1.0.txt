@@ -1,0 +1,76 @@
+------------------------------------------------------------------------
+r8 | seigi | 2011-05-24 14:47:45 +0000 (Tue, 24 May 2011) | 1 line
+Changed paths:
+   A /tags/4.1.1.0 (from /trunk:7)
+
+Tagging as 4.1.1.0
+------------------------------------------------------------------------
+r6 | seigi | 2011-05-24 14:39:51 +0000 (Tue, 24 May 2011) | 1 line
+Changed paths:
+   M /trunk/EN_UnitFramesLocal.lua
+
+fix locale error
+------------------------------------------------------------------------
+r4 | seigi | 2011-05-24 11:48:37 +0000 (Tue, 24 May 2011) | 1 line
+Changed paths:
+   M /trunk/EN_HpMpXp.lua
+   A /trunk/EN_PartyIcon.lua
+   A /trunk/EN_PartyIcon.xml
+   M /trunk/EN_UnitFrames.lua
+   M /trunk/EN_UnitFrames.toc
+   M /trunk/EN_UnitFramesLocal.lua
+
+4.1.1
+------------------------------------------------------------------------
+r2 | seigi | 2011-05-05 17:54:49 +0000 (Thu, 05 May 2011) | 12 lines
+Changed paths:
+   A /trunk/EN_3DPortrait.lua
+   A /trunk/EN_3DPortrait.xml
+   A /trunk/EN_Buff.lua
+   A /trunk/EN_ClassIcon.blp
+   A /trunk/EN_ClassIcon.lua
+   A /trunk/EN_ClassIcon.xml
+   A /trunk/EN_FocusFrame.lua
+   A /trunk/EN_FocusFrame.xml
+   A /trunk/EN_HpMpXp.lua
+   A /trunk/EN_HpMpXp.tga
+   A /trunk/EN_HpMpXp.xml
+   A /trunk/EN_Options.lua
+   A /trunk/EN_Options.xml
+   A /trunk/EN_PartyCastBar.lua
+   A /trunk/EN_PartyCastBar.xml
+   A /trunk/EN_PartyInfo.lua
+   A /trunk/EN_PartyInfo.xml
+   A /trunk/EN_PartyTarget.lua
+   A /trunk/EN_PartyTarget.xml
+   A /trunk/EN_TargetInfo.lua
+   A /trunk/EN_TargetInfo.xml
+   A /trunk/EN_ToT.lua
+   A /trunk/EN_ToT.xml
+   A /trunk/EN_UnitFrames.lua
+   A /trunk/EN_UnitFrames.toc
+   A /trunk/EN_UnitFrames.xml
+   A /trunk/EN_UnitFramesLocal.lua
+   A /trunk/StatusBar.tga
+
+Compatitable to World of Warcraft 4.1
+　● Remove EUF function: set frame movable
+　● Reconfig of frame position:
+　　　a. Warlock -ShardBarFrame
+　　　b. PALADIN - PaladinPowerBar
+　● Pet frame is attach to player frame nowRelease for wow 4.1
+* Compatitable to World of Warcraft 4.1
+* Remove EUF function: set frame movable
+* Reconfig of frame position:
+ # Warlock -ShardBarFrame
+ # PALADIN - PaladinPowerBar
+* Pet frame is attach to player frame now
+------------------------------------------------------------------------
+r1 | root | 2011-05-03 06:38:11 +0000 (Tue, 03 May 2011) | 1 line
+Changed paths:
+   A /branches
+   A /tags
+   A /trunk
+
+"en_unitframes/mainline: Initial Import"
+------------------------------------------------------------------------

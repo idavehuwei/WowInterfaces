@@ -3,7 +3,10 @@ if (GetLocale() == "zhCN") then
     -- player
     EUF_PLAYERFRAME_ENABLE          = "开启玩家头像扩展";
     EUF_PLAYERFRAME_XPBAR           = "显示经验条";
-    EUF_PLAYERFRAME_ELITE           = "显示精英边框";
+    EUF_PLAYERFRAME_BORDER          = "显示精英边框";
+    EUF_PLAYERFRAME_BORDER_STYLE    = "边框样式";
+    EUF_PLAYERFRAME_BORDER_ELITE    = "精英";
+    EUF_PLAYERFRAME_BORDER_RARE     = "稀有";
     EUF_PLAYERFRAME_CLASSICON       = "显示职业图标";
     -- target
     EUF_TARGETFRAME_ENABLE          = "开启目标头像扩展";
@@ -30,7 +33,10 @@ elseif (GetLocale() == "zhTW") then
     EUF_TITLE = "頭像增強";
     EUF_PLAYERFRAME_ENABLE          = "開啟玩家頭像擴展";
     EUF_PLAYERFRAME_XPBAR           = "顯示經驗條";
-    EUF_PLAYERFRAME_ELITE           = "顯示精英邊框";
+    EUF_PLAYERFRAME_BORDER          = "顯示精英邊框";
+    EUF_PLAYERFRAME_BORDER_STYLE    = "边框样式";
+    EUF_PLAYERFRAME_BORDER_ELITE    = "精英";
+    EUF_PLAYERFRAME_BORDER_RARE     = "稀有";
     EUF_PLAYERFRAME_CLASSICON       = "顯示職業圖示";
 
     EUF_TARGETFRAME_ENABLE          = "開啟目標頭像擴展";
@@ -56,7 +62,10 @@ else
     EUF_TITLE = "头像增强";
     EUF_PLAYERFRAME_ENABLE          = "开启玩家头像扩展";
     EUF_PLAYERFRAME_XPBAR           = "显示经验条";
-    EUF_PLAYERFRAME_ELITE           = "显示精英边框";
+    EUF_PLAYERFRAME_BORDER          = "显示精英边框";
+    EUF_PLAYERFRAME_BORDER_STYLE    = "边框样式";
+    EUF_PLAYERFRAME_BORDER_ELITE    = "精英";
+    EUF_PLAYERFRAME_BORDER_RARE     = "稀有";
     EUF_PLAYERFRAME_CLASSICON       = "显示职业图标";
 
     EUF_TARGETFRAME_ENABLE          = "开启目标头像扩展";
@@ -96,17 +105,22 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
         "PlayerFrameExtend",
         1,
         function (arg)
-            if (arg == 1) then
-                if (not dwIsAddOnLoaded("EN_UnitFrames")) then
-                    dwLoadAddOn("EN_UnitFrames");
-                end
-
-                EUF_Options_Update("PLAYERHPMP",1);
-                EUF_Options_Update("PLAYERPETHPMP",1);
-            else
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EUF_Options_Update("PLAYERHPMP",0);
-                    EUF_Options_Update("PLAYERPETHPMP",0);
+            if (not dwIsAddOnLoaded("EN_UnitFrames")) then
+                dwLoadAddOn("EN_UnitFrames");
+            end
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
+                    EUF_Options_Update("PLAYERHP",1);
+                    EUF_Options_Update("PLAYERMP",1);
+                    EUF_Options_Update("PLAYERPETHPMP", 1);
+                    EUF_Options_Update("PLAYERPOSITION", 1);
+                    EUF_Options_Update("PLAYEREXTBAR", 1);
+                else
+                    EUF_Options_Update("PLAYERHP",0);
+                    EUF_Options_Update("PLAYERMP",0);
+                    EUF_Options_Update("PLAYERPETHPMP", 0);
+                    EUF_Options_Update("PLAYERPOSITION", 0);
+                    EUF_Options_Update("PLAYEREXTBAR", 0);
                 end
             end
         end
@@ -119,17 +133,71 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
         "PlayerFrameXPBar",
         1,
         function (arg)
-            if (arg == 1) then
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EUF_XPBarToggle(true);
-                end
-            else
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EUF_XPBarToggle(false);
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
+                    EUF_Options_Update("PLAYERXP", 1);
+                else
+                    EUF_Options_Update("PLAYERXP", 0);
                 end
             end
         end,
         1
+    );
+
+    dwRegisterCheckButton(
+        "EN_UnitFrames",
+        EUF_PLAYERFRAME_CLASSICON,
+        "",
+        "PlayerFrameClassIcon",
+        1,
+        function (arg)
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
+                    EUF_Options_Update("PLAYERCLASSICONSMALL", 1);
+                else
+                    EUF_Options_Update("PLAYERCLASSICONSMALL", 0);
+                end
+            end
+
+        end,
+        1
+    );
+
+    dwRegisterCheckButton(
+        "EN_UnitFrames",
+        EUF_PLAYERFRAME_BORDER,
+        "",
+        "PlayerFrameBorder",
+        1,
+        function(arg)
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
+                    EUF_Options_Update("PLAYERFRM", 1);
+                else
+                    EUF_Options_Update("PLAYERFRM", 0);
+                end
+            end
+        end,
+        1
+    );
+
+    dwRegisterSpinBox(
+        "EN_UnitFrames",
+        EUF_PLAYERFRAME_BORDER_STYLE,
+        nil,
+        "PlayerFrameBorderStyle",
+        { EUF_PLAYERFRAME_BORDER_ELITE, EUF_PLAYERFRAME_BORDER_RARE },
+        EUF_PLAYERFRAME_BORDER_ELITE,
+        function(arg)
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == EUF_PLAYERFRAME_BORDER_ELITE) then
+                    EUF_Options_Update("PLAYERRARE", 0);
+                else
+                    EUF_Options_Update("PLAYERRARE", 1);
+                end
+            end
+        end,
+        2
     );
 
     dwRegisterCheckButton(
@@ -143,11 +211,15 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
                 if (not dwIsAddOnLoaded("EN_UnitFrames")) then
                     dwLoadAddOn("EN_UnitFrames");
                 end
-                EUF_Options_Update("TARGETHPMP",1);
+                EUF_Options_Update("TARGETHP",1);
+                EUF_Options_Update("TARGETMP", 1);
+                EUF_Options_Update("TARGETINFO", 1);
                 EUF_Options_Update("TARGETCLASSICONSMALL",1);
             else
                 if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EUF_Options_Update("TARGETHPMP",0);
+                    EUF_Options_Update("TARGETHP",0);
+                    EUF_Options_Update("TARGETMP", 1);
+                    EUF_Options_Update("TARGETINFO", 1);
                     EUF_Options_Update("TARGETCLASSICONSMALL",0);
                 end
             end
@@ -156,18 +228,18 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
 
     dwRegisterCheckButton(
         "EN_UnitFrames",
-        EUF_TARGETFRAME_PERCENT    ,
+        EUF_TARGETFRAME_PERCENT,
         "",
         "TargetPercent",
         1,
         function (arg)
-            if (arg == 1) then
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EUF_Options_Update("TARGETHPMPPERCENT",1);
-                end
-            else
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EUF_Options_Update("TARGETHPMPPERCENT",0);
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
+                    EUF_Options_Update("TARGETHPPERCENT", 1);
+                    EUF_Options_Update("TARGETMPPERCENT", 1);
+                else
+                    EUF_Options_Update("TARGETHPPERCENT", 0);
+                    EUF_Options_Update("TARGETMPPERCENT", 0);
                 end
             end
         end,
@@ -181,16 +253,14 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
         "TOT",
         1,
         function (arg)
-            if (arg == 1) then
-                if (not dwIsAddOnLoaded("EN_UnitFrames")) then
-                    dwLoadAddOn("EN_UnitFrames");
-                end
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    dwTargetTOT_Toggle(true);
-                end
-            else
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    dwTargetTOT_Toggle(false);
+            if (not dwIsAddOnLoaded("EN_UnitFrames")) then
+                dwLoadAddOn("EN_UnitFrames");
+            end
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
+                    EUF_Options_Update("TARGETTARGETFRAME", 1);
+                else
+                    EUF_Options_Update("TARGETTARGETFRAME", 0);
                 end
             end
         end
@@ -201,15 +271,13 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
         EUF_TARGETTARGETTARGET,
         "",
         "TOTOT",
-        1,
+        0,
         function (arg)
-            if (arg == 1) then
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EN_ToToT_Toggle(true);
-                end
-            else
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EN_ToToT_Toggle(false);
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
+                    EUF_Options_Update("TARGETTARGETTARGETFRAME", 1);
+                else
+                    EUF_Options_Update("TARGETTARGETTARGETFRAME", 0);
                 end
             end
         end,
@@ -223,13 +291,11 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
         "FocusFrame",
         1,
         function (arg)
-            if (arg == 1) then
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
                     SetCVar("fullSizeFocusFrame", "1");
                     FocusFrame_SetSmallSize(false, true);
-                end
-            else
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                else
                     SetCVar("fullSizeFocusFrame", "0");
                     FocusFrame_SetSmallSize(true, true);
                 end
@@ -239,19 +305,29 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
 
     dwRegisterCheckButton(
         "EN_UnitFrames",
-        EUF_PARTYFRAME_ENABLE ,
+        EUF_PARTYFRAME_ENABLE,
         "",
         "PartyExtend",
         1,
         function (arg)
-            if (arg == 1) then
-                if (not dwIsAddOnLoaded("EN_UnitFrames")) then
-                    dwLoadAddOn("EN_UnitFrames");
-                end
-                EUF_PartyInfoToggle(true);
-            else
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EUF_PartyInfoToggle(false);
+            if (not dwIsAddOnLoaded("EN_UnitFrames")) then
+                dwLoadAddOn("EN_UnitFrames");
+            end
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
+                    EUF_Options_Update("PARTYHP", 1);
+                    EUF_Options_Update("PARTYMP", 1);
+                    EUF_Options_Update("PARTYLEVEL", 1);
+                    EUF_Options_Update("PARTYCLASS", 1);
+                    EUF_Options_Update("PARTYCOLOR", 1);
+                    EUF_Options_Update("PARTYCLASSICONSMALL", 1);
+                else
+                    EUF_Options_Update("PARTYHP", 0);
+                    EUF_Options_Update("PARTYMP", 0);
+                    EUF_Options_Update("PARTYLEVEL", 0);
+                    EUF_Options_Update("PARTYCLASS", 0);
+                    EUF_Options_Update("PARTYCOLOR", 0);
+                    EUF_Options_Update("PARTYCLASSICONSMALL", 0);
                 end
             end
         end
@@ -259,18 +335,16 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
 
     dwRegisterCheckButton(
         "EN_UnitFrames",
-        EUF_PARTYFRAME_TARGET    ,
+        EUF_PARTYFRAME_TARGET,
         "",
         "PartyTarget",
         1,
         function (arg)
-            if (arg == 1) then
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    PartyTarget_Toggle(true);
-                end
-            else
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    PartyTarget_Toggle(false);
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
+                    EUF_Options_Update("PARTYTARGET", 1);
+                else
+                    EUF_Options_Update("PARTYTARGET", 0);
                 end
             end
         end,
@@ -284,13 +358,11 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
         "PartyBuff",
         1,
         function (arg)
-            if (arg == 1) then
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EUF_TogglePartyBuffs(true);
-                end
-            else
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EUF_TogglePartyBuffs(false);
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
+                    EUF_Options_Update("PARTYBUFF", 1);
+                else
+                    EUF_Options_Update("PARTYBUFF", 0);
                 end
             end
         end,
@@ -304,13 +376,11 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
         "PartyCast",
         1,
         function (arg)
-            if (arg == 1) then
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    PartyCast_Toggle(true)
-                end
-            else
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    PartyCast_Toggle(false);
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
+                    EUF_Options_Update("PARTYCAST", 1);
+                else
+                    EUF_Options_Update("PARTYCAST", 0);
                 end
             end
         end,
@@ -324,16 +394,20 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
         "3DPortrait",
         1,
         function (arg)
-            if (arg == 1) then
-                if (not dwIsAddOnLoaded("EN_UnitFrames")) then
-                    dwLoadAddOn("EN_UnitFrames");
-                end
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EUF_Options_Update("3DPORTRAIT",1);
-                end
-            else
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EUF_Options_Update("3DPORTRAIT",0);
+            if (not dwIsAddOnLoaded("EN_UnitFrames")) then
+                dwLoadAddOn("EN_UnitFrames");
+            end
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
+                    EUF_Options_Update("PLAYER3DPORTRAIT", 1);
+                    EUF_Options_Update("TARGET3DPORTRAIT", 1);
+                    EUF_Options_Update("FOCUS3DPORTRAIT", 1);
+                    EUF_Options_Update("PARTY3DPORTRAIT", 1);
+                else
+                    EUF_Options_Update("PLAYER3DPORTRAIT", 0);
+                    EUF_Options_Update("TARGET3DPORTRAIT", 0);
+                    EUF_Options_Update("FOCUS3DPORTRAIT", 0);
+                    EUF_Options_Update("PARTY3DPORTRAIT", 0);
                 end
             end
         end
@@ -346,16 +420,18 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
         "AutoHealthColor",
         1,
         function (arg)
-            if (arg == 1) then
-                if (not dwIsAddOnLoaded("EN_UnitFrames")) then
-                    dwLoadAddOn("EN_UnitFrames");
-                end
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EUF_Options_Update("AUTOHEALTHCOLOR",1);
-                end
-            else
-                if (dwIsAddOnLoaded("EN_UnitFrames")) then
-                    EUF_Options_Update("AUTOHEALTHCOLOR",0);
+            if (not dwIsAddOnLoaded("EN_UnitFrames")) then
+                dwLoadAddOn("EN_UnitFrames");
+            end
+            if (dwIsAddOnLoaded("EN_UnitFrames")) then
+                if (arg == 1) then
+                    EUF_Options_Update("PLAYERAUTOHEALTHCOLOR", 1);
+                    EUF_Options_Update("TARGETAUTOHEALTHCOLOR", 1);
+                    EUF_Options_Update("PARTYAUTOHEALTHCOLOR", 1);
+                else
+                    EUF_Options_Update("PLAYERAUTOHEALTHCOLOR", 0);
+                    EUF_Options_Update("TARGETAUTOHEALTHCOLOR", 0);
+                    EUF_Options_Update("PARTYAUTOHEALTHCOLOR", 0);
                 end
             end
         end

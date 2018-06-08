@@ -111,7 +111,7 @@ if (dwIsConfigurableAddOn("Love")) then
         DUOWAN_BUTTON_FACADE_ENABLE,
         nil,
         "DuowanBarSkin",
-        0,
+        1,
         function (arg)
             if arg==1 then
                 if (dwIsAddOnLoaded("Love")) then

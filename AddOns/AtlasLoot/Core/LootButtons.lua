@@ -238,8 +238,8 @@ function AtlasLootItem_OnClick(arg1)
             ChatEdit_InsertLink(itemLink);
         elseif(IsShiftKeyDown() and AtlasLoot.db.profile.AllLinks) then
             ChatEdit_InsertLink(color.."|Hitem:"..this.itemID..":0:0:0:0:0:0:0|h["..name.."]|h|r");
-        elseif(SELECTED_CHAT_FRAME.editBox and SELECTED_CHAT_FRAME.editBox:IsVisible() and IsShiftKeyDown()) then
-            SELECTED_CHAT_FRAME.editBox:Insert(name);  -- <-- this line just inserts plain text, does not need any adjustment
+        elseif(ChatFrameEditBox and ChatFrameEditBox:IsVisible() and IsShiftKeyDown()) then
+            ChatFrameEditBox:Insert(name);  -- <-- this line just inserts plain text, does not need any adjustment
         --If control-clicked, use the dressing room
         elseif(IsControlKeyDown() and iteminfo) then
             DressUpItemLink(itemLink);

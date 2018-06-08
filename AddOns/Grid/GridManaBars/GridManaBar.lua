@@ -7,7 +7,7 @@ local SML = LibStub("LibSharedMedia-3.0", true)
 local mbDB = AceLibrary("AceAddon-2.0"):new("AceDB-2.0")
 mbDB:RegisterDB("ManaBarDB", "ManaBarDBPC")
 mbDB:RegisterDefaults("profile", {
-	size = 0.3,
+	size = 0.15,
 	side = "Right",
 } )
 ]]

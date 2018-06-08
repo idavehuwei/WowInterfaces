@@ -6,9 +6,9 @@
 ## Notes: AtlasLoot loot tables from world events
 ## Notes-zhCN: AtlasLoot Enhanced 的户外首领掉落信息
 ## Notes-zhTW: AtlasLoot 世界事件物品掉落資料庫
-## Author: Daviesh
-## Version: v5.11.01
-## X-eMail: oma_daviesh@hotmail.com
+## Author: Hegarol
+## Version: v5.11.04
+## X-eMail: manager@atlasloot.net
 ## X-Category: Map
 ## X-License: GPL v2
 ## X-DuowanAddon: 地图
@@ -16,6 +16,10 @@
 ## Dependencies: AtlasLoot
 ## LoadOnDemand: 1
 ## X-Revision: Duowan
+## X-Curse-Packaged-Version: v5.11.04
+## X-Curse-Project-Name: Atlasloot Enhanced
+## X-Curse-Project-ID: atlasloot-enhanced
+## X-Curse-Repository-ID: wow/atlasloot-enhanced/mainline
 
 worldevents.lua
 localization.lua
