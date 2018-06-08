@@ -15,7 +15,7 @@ Acelibs\embeds.xml
 Revision.lua
 Localization.lua
 ChangeLog.lua
-DuowanDebug.xml
+#DuowanDebug.xml
 Duowan.lua
 ConfigFrame.xml
 PopFrame.xml
