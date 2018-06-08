@@ -26,18 +26,14 @@
 ## X-Curse-Project-ID: skillet
 ## X-Curse-Repository-ID: wow/skillet/mainline
 
-#### List of embedded Ace2 libraries
-embeds.xml
+## Dependencies: Duowan
+## X-DuowanAddon: 商业物品
+## X-Revision: Duowan
 
 #### Localization files
 Locale\Locale-enUS.lua
-Locale\Locale-ruRU.lua
-Locale\Locale-deDE.lua
 Locale\Locale-zhTW.lua
 Locale\Locale-zhCN.lua
-Locale\Locale-koKR.lua
-Locale\Locale-frFR.lua
-Locale\Locale-esES.lua
 
 #### Main files
 LibPossessions.lua

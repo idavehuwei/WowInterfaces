@@ -16,5 +16,8 @@
 ## X-Curse-Project-ID: bug-grabber
 ## X-Curse-Repository-ID: wow/bug-grabber/mainline
 
+## X-Revision: Duowan
+## X-DuowanAddon: 基本库
+
 BugGrabber.lua
 

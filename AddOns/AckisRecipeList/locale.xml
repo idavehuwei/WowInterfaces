@@ -5,14 +5,8 @@
 <!--@non-debug@-->
 <Include file="Locales\enUS.lua"/>
 <!--@end-non-debug@-->
-<Include file="Locales\koKR.lua"/>
-<Include file="Locales\frFR.lua"/>
 <Include file="Locales\zhCN.lua"/>
 <Include file="Locales\zhTW.lua"/>
-<Include file="Locales\deDE.lua"/>
-<Include file="Locales\esES.lua"/>
-<Include file="Locales\esMX.lua"/>
-<Include file="Locales\ruRU.lua"/>
 
 <!--@debug@
 <Include file="Locales\devel-enUS.lua"/>

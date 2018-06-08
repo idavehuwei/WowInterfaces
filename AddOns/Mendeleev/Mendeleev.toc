@@ -20,11 +20,7 @@
 ## X-Date: 2009-01-02T20:26:50Z
 ## Dependencies: Duowan
 ## X-Revision: Duowan
-## LoadOnDemand: 
-
-#@LibPeriodicTable-3.1
-LibPeriodicTable-3.1\modules.xml
-#@LibPeriodicTable-3.1
+## LoadOnDemand:
 
 locales\enUS.lua
 locales\zhCN.lua

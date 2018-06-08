@@ -21,6 +21,9 @@
 ## X-Curse-Project-ID: bugsack
 ## X-Curse-Repository-ID: wow/bugsack/mainline
 
+## X-Revision: Duowan
+## X-DuowanAddon: 基本库
+
 Locales\enUS.lua
 Locales\zhCN.lua
 Locales\zhTW.lua

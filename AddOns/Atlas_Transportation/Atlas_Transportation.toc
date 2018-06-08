@@ -20,6 +20,9 @@
 ## X-Category: Map
 ## RequiredDeps: Atlas
 
+## X-DuowanAddon: 地图
+## X-Revision: Duowan
+
 Locale\Atlas_Transportation-enUS.lua
 Locale\Atlas_Transportation-ruRU.lua
 Locale\Atlas_Transportation-deDE.lua

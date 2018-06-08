@@ -14,7 +14,8 @@
 ## X-Curse-Project-ID: texbrowser
 ## X-Curse-Repository-ID: wow/texbrowser/mainline
 
-embeds.xml
+## Dependencies: Duowan
+
 AceGUI3-TextureWidget.lua
 Data.lua
 TexBrowser.lua

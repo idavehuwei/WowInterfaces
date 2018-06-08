@@ -20,6 +20,9 @@
 ## X-Category: Map
 ## RequiredDeps: Atlas
 
+## X-DuowanAddon: 地图
+## X-Revision: Duowan
+
 Locale\Atlas_DungeonLocs-enUS.lua
 Locale\Atlas_DungeonLocs-ruRU.lua
 Locale\Atlas_DungeonLocs-frFR.lua

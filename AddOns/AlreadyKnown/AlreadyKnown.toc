@@ -11,4 +11,7 @@
 ## X-LoadOn-Merchant: true
 ## X-LoadOn-AuctionHouse: true
 
+## X-DuowanAddon: 商业物品
+## X-Revision: Duowan
+
 AlreadyKnown.lua

@@ -60,10 +60,9 @@
 ## X-LoadOn-Events: TRADE_SKILL_SHOW
 ## X-LoadOn-TRADE_SKILL_SHOW: AddonLoader:LoadAddOn("AckisRecipeList"); AckisRecipeList:TRADE_SKILL_SHOW()
 
-#@no-lib-strip@
-# Libraries
-embeds.xml
-#@end-no-lib-strip@
+## Dependencies: Duowan
+## X-DuowanAddon: 商业物品
+## X-Revision: Duowan
 
 # Localization files
 locale.xml

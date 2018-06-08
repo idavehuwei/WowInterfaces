@@ -18,11 +18,10 @@
 ## X-OptionsFrame: AtlasOptionsFrame
 ## SavedVariablesPerCharacter: AtlasOptions
 
-Libs\LibStub.lua
-Libs\CallbackHandler-1.0.lua
-Libs\LibDataBroker-1.1.lua
-Libs\LibBabble-Zone-3.0\lib.xml
-Libs\LibBabble-SubZone-3.0\lib.xml
+## Dependencies: Duowan
+## X-DuowanAddon: 地图
+## X-Revision: Duowan
+
 Libs\LibBabble.lua
 
 Locale\Atlas-enUS.lua

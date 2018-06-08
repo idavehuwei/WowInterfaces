@@ -20,6 +20,9 @@
 ## X-Category: Map
 ## RequiredDeps: Atlas
 
+## X-DuowanAddon: 地图
+## X-Revision: Duowan
+
 Locale\Atlas_Battlegrounds-enUS.lua
 Locale\Atlas_Battlegrounds-ruRU.lua
 Locale\Atlas_Battlegrounds-frFR.lua
