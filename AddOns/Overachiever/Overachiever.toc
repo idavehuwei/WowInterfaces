@@ -1,6 +1,4 @@
 ## Interface: 30300
-## X-BigfootType: 1
-## X-BigfootDesc: 增强系统自带的成就面板。
 ## Title: Overachiever
 ## Title-zhCN: Overachiever - 成就面板增强工具
 ## Version: 0.54
@@ -8,13 +6,14 @@
 ## Notes: Tools and tweaks to make the lives of players seeking Achievements a little bit easier.
 ## SavedVariables: Overachiever_Settings, Overachiever_CharVars_Default
 ## SavedVariablesPerCharacter: Overachiever_CharVars, Overachiever_CharVars_Consumed
-## OptionalDeps: LibBabble-Zone-3.0, LibBabble-Inventory-3.0
 ## X-WoWI-ID: 11361
 ## X-Curse-Packaged-Version: r56
 ## X-Curse-Project-Name: Overachiever - achievement tools and tweaks
 ## X-Curse-Project-ID: overachiever
 ## X-Curse-Repository-ID: wow/overachiever/mainline
 
+## OptionalDeps: LibBabble-Zone-3.0, LibBabble-Inventory-3.0
+## Dependencies: Duowan
 ## X-Revision: Duowan
 ## X-DuowanAddon: 界面聊天
 ## LoadOnDemand:
