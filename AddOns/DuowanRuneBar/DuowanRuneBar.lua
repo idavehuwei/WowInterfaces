@@ -98,7 +98,7 @@ function DuowanRuneBar_Update()
     if (EnableDkMod) then
         dwSetCVar("DuowanConfig", "RuneFrameScale", 1.2);
         if (value == 0) then
-            Place(RuneFrame, "BOTTOM", "UIParent", "BOTTOM", 0, 175)
+            Place(RuneFrame, "BOTTOM", "UIParent", "BOTTOM", 0, 270)
         else
             LoadRuneFramePos();
         end
