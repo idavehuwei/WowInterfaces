@@ -9,15 +9,7 @@
 ## X-License: GPL v2
 ## X-Website: http://www.atlasloot.net
 ## X-Embeds: Ace3, DewdropLib, FuBarPlugin-2.0, LibBabble-Boss-3.0, LibBabble-Faction-3.0, LibBabble-Inventory-3.0, LibBabble-Zone-3.0
-## Title-deDE: AtlasLoot Enhanced
-## Notes-deDE: Zeigt mögliche Beute von Bossen
-## Title-frFR: AtlasLoot Enhanced
-## Notes-frFR: Montre le butin possible des boss
-## Title-esES: AtlasLoot Enhanced
-## Notes-esES: Muestra el posible botin de los jefes finales
-## Title-koKR: AtlasLoot Enhanced
-## Notes-koKR: Shows the possible loot from the bosses
-## Title-zhCN: 副本掉落 AtlastLoot
+## Title-zhCN: |r|cFF0099FF[地图]|r AtlastLoot |r|cFF0099FF[核心]|r
 ## Notes-zhCN: 显示副本中的首领与小怪可能掉落的物品
 ## Title-zhTW: |r|cFF0099FF[地圖]|rAL 物品掉落主程式
 ## Notes-zhTW: 顯示首領與小怪可能掉落的物品，並可查詢各陣營與戰場的獎勵物品、套裝物品等

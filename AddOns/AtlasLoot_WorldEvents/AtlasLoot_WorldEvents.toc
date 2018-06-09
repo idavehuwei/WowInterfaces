@@ -1,7 +1,6 @@
 ﻿## Interface: 30300
 ## Title: AtlasLoot_WorldEvents
-## Title-deDE: AtlasLoot |cFF0099FF[Welt-Loot]|r
-## Title-zhCN: 副本掉落 |cFF0099FF[户外首领]|r
+## Title-zhCN: |r|cFF0099FF[地图]|r AtlasLoot |r|cFF0099FF[户外首领]|r
 ## Title-zhTW: |r|cFF0099FF[地圖]|rAL 世界事件
 ## Notes: AtlasLoot loot tables from world events
 ## Notes-zhCN: AtlasLoot Enhanced 的户外首领掉落信息

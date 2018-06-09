@@ -8,6 +8,10 @@
 ## Notes-zhTW: Shift點擊購買物品時的,可以成組購買物品
 ## X-Repple: 辅助
 
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+## LoadOnDemand:
+
 CogsBagSpace.lua
 Localization.enUS.lua
 Localization.zhCN.lua

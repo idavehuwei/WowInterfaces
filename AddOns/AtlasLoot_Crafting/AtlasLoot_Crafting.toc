@@ -1,7 +1,7 @@
 ﻿## Interface: 30300
 ## Title: AtlasLoot_Crafting
-## Title-zhCN: 副本掉落 |cFF0099FF[交易技能]|r
-## Title-zhTW: |r|cFF0099FF[地圖]|rAL 商業技能
+## Title-zhCN: |r|cFF0099FF[地图]|r AtlasLoot |r|cFF0099FF[交易技能]|r
+## Title-zhTW: |r|cFF0099FF[地圖]|r AL 商業技能
 ## Notes: AtlasLoot loot tables of Crafting Items
 ## Notes-deDE: AtlasLoot loot tables of Crafting Items
 ## Notes-zhCN: AtlasLoot 交易技能制造出的物品表

@@ -1,7 +1,7 @@
 ﻿## Interface: 30300
 ## Title: Atlas |r|cFF0099FF[Dungeon Locs]|r
-## Title-zhTW: |r|cFF0099FF[地圖]|rAtlas 地下城位置地圖
-## Title-zhCN: Atlas |r|cFF0099FF[副本分布图]|r
+## Title-zhTW: |r|cFF0099FF[地圖]|r Atlas 地下城位置地圖
+## Title-zhCN: |r|cFF0099FF[地图]|r Atlas |r|cFF0099FF[副本分布图]|r
 ## Notes: Dungeon Locations
 ## Notes-zhCN: 副本分布图
 ## Notes-zhTW: Atlas 地下城位置地圖模組，顯示各個地下城 (副本) 所在位置

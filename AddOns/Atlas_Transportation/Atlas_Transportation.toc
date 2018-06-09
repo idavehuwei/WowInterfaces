@@ -1,7 +1,7 @@
 ﻿## Interface: 30300
 ## Title: Atlas |r|cFF0099FF[Transportation]|r
-## Title-zhTW: |r|cFF0099FF[地圖]|rAtlas 交通網路圖
-## Title-zhCN: Atlas |r|cFF0099FF[飞行路线图]|r
+## Title-zhTW: |r|cFF0099FF[地圖]|r Atlas 交通網路圖
+## Title-zhCN: |r|cFF0099FF[地图]|r Atlas |r|cFF0099FF[飞行路线图]|r
 ## Notes: Transportation Maps
 ## Notes-zhCN: 飞行路线图
 ## Notes-zhTW: Atlas 交通網路圖模組

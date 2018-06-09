@@ -1,10 +1,12 @@
 ## Interface: 30300
-## X-BigfootType: 1
-## X-BigfootDesc: PowerSource是一款小插件，在Buff或者Debuff的鼠标提示信息里显示是谁施放了这个Buff或Debuff。
 ## Title: PowerSource
 ## Title-zhCN: [辅助] 法术来源 PowerSource
 ## Version: 1.1.0
 ## Notes: Adds the name of the player who cast a buff or debuff to its tooltip.
+## Notes-zhCN: 在 Buff 或者 Debuff 的提示信息里显示是谁施放了这个 Buff 或 Debuff。
 ## Author: L'ombra
+
+## X-Revision: Duowan
+## X-DuowanAddon:职业辅助
 
 PowerSource.lua

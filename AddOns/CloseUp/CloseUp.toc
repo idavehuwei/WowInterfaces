@@ -12,4 +12,8 @@
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Always: delayed
 
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+## LoadOnDemand:
+
 core.lua

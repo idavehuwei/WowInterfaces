@@ -1,6 +1,5 @@
 ## Title: Quartz
 ## Interface: 30300
-## Notes: Modular casting bar.
 ## Author: Nevcairiel, Nymbia
 ## Version: 3.0.3
 ## X-License: GPL v2
@@ -10,9 +9,7 @@
 ## X-Curse-Project-ID: quartz
 ## X-Curse-Repository-ID: wow/quartz/mainline
 
-## Title-ruRU: Кварц
-## Notes-ruRU: Модульная полоса применений.
-## Notes-frFR: Barres d'incantation modulaires.
+## Notes: Modular casting bar.
 ## Notes-zhCN: 模块化施法条。
 ## Notes-zhTW: 模組化施法條。
 
@@ -20,6 +17,9 @@
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, SharedMedia, FlightMap
 
 ## Dependencies: Duowan
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+## LoadOnDemand:
 
 locale\locale.xml
 

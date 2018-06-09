@@ -6,10 +6,11 @@
 ## Title-zhTW: [多玩] 職業守護條
 ## Notes-zhTW: 為獵人、盜賊、法師和術士提供職業專屬守護條
 ## Author: dugu
-## X-DuowanAddon:职业辅助
+## SavedVariables:
+
 ## Dependencies: Duowan
 ## X-Revision: Duowan
+## X-DuowanAddon:职业辅助
 ## LoadOnDemand: 1
-## SavedVariables: 
 
 AspectPosionBar.xml

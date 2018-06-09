@@ -1,8 +1,8 @@
 ## Interface: 30300
 ## Title: Duowan Rune Bar
-## Title-zhCN: DK符文条 DuowanRuneBar
+## Title-zhCN: [多玩] 死亡骑士符文条 DuowanRuneBar
 ## Notes: Rune enhancement bar for DK
-## Notes-zhCN: DK 增强符文条。
+## Notes-zhCN: 死亡骑士增强符文条。
 ## Author: Duowan
 
 ## LoadManagers: AddonLoader

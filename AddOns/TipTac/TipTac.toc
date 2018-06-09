@@ -1,13 +1,12 @@
 ## Interface: 30300
-## X-BigfootType: 1
-## X-BigfootDesc: 强大的鼠标提示信息增强插件，高度多样+自由化
 ## Version: 10.05.01
 ## Title: TipTac
-## Title-zhCN: [辅助] 鼠标提示 TipTac
-## Title-zhTW: [輔助] 鼠标提示 TipTac
+## Title-zhCN: [界面] 鼠标提示 TipTac
+## Title-zhTW: [介面] 鼠标提示 TipTac
 ## Author: Aezay (Earthen Ring EU)
 ## Notes: Highly Customizable Tooltip Enhancement Addon
-## Notes-zhTW: TipTac高度自定義的強化提示訊息工具。命令：/tip。[繁體化 - andy52005]
+## Notes-zhCN: TipTac 高度自定义的强化提示信息工具。命令：/tip。
+## Notes-zhTW: TipTac 高度自定義的強化提示訊息工具。命令：/tip。
 ## SavedVariables: TipTac_Config
 
 ## X-Revision: Duowan

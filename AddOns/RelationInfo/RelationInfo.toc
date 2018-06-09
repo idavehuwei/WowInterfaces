@@ -7,7 +7,11 @@
 ## Notes-zhTW: 保存你在遊戲中的關係信息(好友和公會)
 ## Version: 1.0.3
 ## Author: dugu
-## X-Revision: 
+## X-Revision:
 ## SavedVariablesPerCharacter: RelationInfoDB
+
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+## LoadOnDemand:
 
 RelationInfo.lua

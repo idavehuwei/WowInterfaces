@@ -1,7 +1,11 @@
 ﻿## Interface: 30300
-## Title: |cFFFF8080熊熊魔兽问号物品插件|bearwow.com|wowbear.cn
 ## Version: 3.3.5
+## Title: |cFFFF8080问号物品修复|r - 熊熊魔兽
 ## Notes: 熊熊魔兽问号物品插件
 ## Notes-zhCN: 熊熊魔兽修复物品问号插件
 ## Notes-zhTW: 熊熊魔獸修復物品問號插件
+
+## X-DuowanAddon: 商业物品
+## X-Revision: Duowan
+
 FixItemIcon.lua

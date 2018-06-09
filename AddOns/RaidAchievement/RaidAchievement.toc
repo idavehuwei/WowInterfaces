@@ -6,11 +6,16 @@
 ## Author: Shurshik
 ## Version: 1.036
 ## Notes: /fena or /rach for more info
+## Notes-zhCN: /fena 或 /rach 显示更多信息
 ## Notes-ruRU: /фена или /рейдач - для открытия настроек
 ## URL: http://phoenix-wow.ru/
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariablesPerCharacter: thisaddonworkea, pseashowfailreas, pseashownewvervar, wherereportraidach, wherereportpartyach,raquantrepeatach,raquantrepeatachtm,raoldvern
+
+## X-Revision: Duowan
+## X-DuowanAddon:职业辅助
+
 Localization\localization-enEN.lua
 Localization\localization-ruRU.lua
 Localization\localization-deDE.lua
@@ -19,5 +24,6 @@ Localization\localization-esES.lua
 Localization\localization-koKR.lua
 Localization\localization-zhTW.lua
 Localization\localization-zhCN.lua
+
 RaidAchievement.lua
 RaidAchievement.xml

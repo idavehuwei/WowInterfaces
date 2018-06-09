@@ -1,7 +1,7 @@
 ﻿## Interface: 30300
 ## Title: Atlas |r|cFF0099FF[Battlegrounds]|r
-## Title-zhTW: |r|cFF0099FF[地圖]|rAtlas 戰場地圖
-## Title-zhCN: Atlas |r|cFF0099FF[战场地图]|r
+## Title-zhTW: |r|cFF0099FF[地圖]|r Atlas 戰場地圖
+## Title-zhCN: |r|cFF0099FF[地图]|r Atlas |r|cFF0099FF[战场地图]|r
 ## Notes: Battleground Maps
 ## Notes-zhCN: 战场地图
 ## Notes-zhTW: Atlas 戰場地圖模組

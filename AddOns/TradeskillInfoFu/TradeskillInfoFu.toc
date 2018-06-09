@@ -1,14 +1,19 @@
 ## Interface: 30300
 ## Title: TradeskillInfo Fu
-## Title-zhCN: [商业] 商业技能资料库 小地图按钮
-## Title-zhTW: [商業] 商業技能資料庫 小地圖按鍵
+## Title-zhCN: [多玩] 商业技能资料库 小地图按钮
+## Title-zhTW: [多玩] 商業技能資料庫 小地圖按鍵
 ## Notes: Minimap button for TradeskillInfo
+## Notes-zhCN: 商业技能资料库小地图按钮 TradeskillInfoFu
+## Notes-zhTW: 商業技能資料庫小地圖按鍵 TradeskillInfoFu
 ## Author: Daviesh
 ## Version: v5.06.02
 ## X-License: GPL v2
 ## SavedVariables: TradeskillInfoFuDB
 ## Dependencies: TradeskillInfo
 ## OptionalDeps: Ace2, FuBarPlugin-2.0, TabletLib, FuBar
+
+## X-DuowanAddon: 商业物品
+## X-Revision: Duowan
 
 Locales.lua
 TradeskillInfoFu.lua

@@ -1,12 +1,12 @@
 ## Interface: 30300
-## X-BigfootType: 1
-## X-BigfootDesc: 强大的鼠标提示信息增强插件，高度多样+自由化
 ## Version: 10.02.27
 ## Title: TipTacTalents
-## Title-zhTW: |cFF00FF00[介面]|r|cFF05d8e5TipTacTalents【天賦提示訊息】|r|cFFf734de - 100227|r
+## Title-zhCN: [界面] 鼠标提示 |cFF05d8e5天賦提示訊息|r
+## Title-zhTW: [介面] 鼠标提示 |cFF05d8e5天賦提示訊息|r
 ## Author: Aezay (Earthen Ring EU)
 ## Notes: Adds Talent Spec to Player Tooltips
-## Notes-zhTW: TipTac提示訊息增強工具-天賦模組。命令：/tip。[繁體化 - andy52005]
+## Notes-zhCN: TipTac 提示信息增强工具-天赋模块。命令：/tip。
+## Notes-zhTW: TipTac 提示訊息增強工具-天賦模組。命令：/tip。
 
 ## OptionalDeps: TipTac
 ## X-Revision: Duowan

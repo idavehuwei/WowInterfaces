@@ -1,7 +1,7 @@
 ﻿## Interface: 30300
 ## Title: Atlas |r|cFF0099FF[Outdoor Raids]|r
-## Title-zhTW: |r|cFF0099FF[地圖]|rAtlas 戶外首領地圖
-## Title-zhCN: Atlas |r|cFF0099FF[户外首领分布图]|r
+## Title-zhTW: |r|cFF0099FF[地圖]|r Atlas 戶外首領地圖
+## Title-zhCN: |r|cFF0099FF[地图]|r Atlas |r|cFF0099FF[户外首领分布图]|r
 ## Notes: Outdoor Raid Encounters
 ## Notes-zhCN: 户外首领分布图
 ## Notes-zhTW: Atlas 戶外首領地圖模組

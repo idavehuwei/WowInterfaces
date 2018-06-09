@@ -1,13 +1,11 @@
 ## Interface: 30300
 ## Title: [Duowan] TradeskillInfo UI
-## Title-zhCN: [多玩] 商业技能信息库 设置 TradeskillInfoUI
-## Title-zhTW: [多玩] 商業技能資訊庫 設置 TradeskillInfoUI
+## Title-zhCN: [多玩] 商业技能信息库 设置
+## Title-zhTW: [多玩] 商業技能資訊庫 設置
 ## Author: wmrojer
 ## Notes: Complete Tradeskill Info UI
 ## Notes-zhCN: 商业技能资料库设置窗口 TradeskillInfoUI
 ## Notes-zhTW: 商業技能資料庫設置窗口 TradeskillInfoUI
-## Notes-esES: UI con Info Completa de las Habilidades de Comercio
-## Notes-koKR: ???? ?? UI
 ## X-DuowanAddon: 商业物品
 ## Version: 1.6.0
 ## SavedVariables: DuowanAddon_TradeskillInfoUIDB
@@ -23,6 +21,7 @@
 ## X-Curse-Repository-ID: wow/tradeskill-info/mainline
 ## Dependencies: Duowan
 ## X-Revision: Duowan
+
 locale-enUS.lua
 locale-ruRU.lua
 locale-esES.lua

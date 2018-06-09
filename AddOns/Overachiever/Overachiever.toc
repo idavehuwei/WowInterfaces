@@ -2,6 +2,7 @@
 ## X-BigfootType: 1
 ## X-BigfootDesc: 增强系统自带的成就面板。
 ## Title: Overachiever
+## Title-zhCN: Overachiever - 成就面板增强工具
 ## Version: 0.54
 ## Author: Tuhljin
 ## Notes: Tools and tweaks to make the lives of players seeking Achievements a little bit easier.
@@ -13,6 +14,10 @@
 ## X-Curse-Project-Name: Overachiever - achievement tools and tweaks
 ## X-Curse-Project-ID: overachiever
 ## X-Curse-Repository-ID: wow/overachiever/mainline
+
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+## LoadOnDemand:
 
 #@no-lib-strip@
 libs\LibBabble-Zone-3.0\LibStub\LibStub.lua

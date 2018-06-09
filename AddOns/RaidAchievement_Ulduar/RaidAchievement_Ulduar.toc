@@ -9,6 +9,10 @@
 ## Dependencies: RaidAchievement
 ## LoadOnDemand: 1
 ## SavedVariablesPerCharacter: preaspisokon
+
+## X-Revision: Duowan
+## X-DuowanAddon:职业辅助
+
 Localization\localization-enEN.lua
 Localization\localization-ruRU.lua
 Localization\localization-deDE.lua
@@ -16,6 +20,7 @@ Localization\localization-frFR.lua
 Localization\localization-esES.lua
 Localization\localization-zhTW.lua
 Localization\localization-zhCN.lua
+
 RaidAchievement_Ulduar.lua
 RaidAchievement_Uldabosses.lua
 RaidAchievement_Ulduar.xml

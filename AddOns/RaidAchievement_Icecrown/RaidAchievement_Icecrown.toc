@@ -9,6 +9,10 @@
 ## Dependencies: RaidAchievement
 ## LoadOnDemand: 1
 ## SavedVariablesPerCharacter: icraspisokon
+
+## X-Revision: Duowan
+## X-DuowanAddon:职业辅助
+
 Localization\localization-enEN.lua
 Localization\localization-ruRU.lua
 Localization\localization-deDE.lua

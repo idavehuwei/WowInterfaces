@@ -10,4 +10,8 @@
 ## Author: Kirkburn
 ## URL: http://bbs.game.mop.com/viewthread.php?tid=1503056
 
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+## LoadOnDemand:
+
 ClearFont.lua

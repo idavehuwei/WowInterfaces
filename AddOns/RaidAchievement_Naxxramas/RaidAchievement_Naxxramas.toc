@@ -9,6 +9,10 @@
 ## Dependencies: RaidAchievement
 ## LoadOnDemand: 1
 ## SavedVariablesPerCharacter: nxraspisokon
+
+## X-Revision: Duowan
+## X-DuowanAddon:职业辅助
+
 Localization\localization-enEN.lua
 Localization\localization-ruRU.lua
 Localization\localization-deDE.lua
@@ -17,6 +21,7 @@ Localization\localization-esES.lua
 Localization\localization-zhTW.lua
 Localization\localization-koKR.lua
 Localization\localization-zhCN.lua
+
 RaidAchievement_Naxxramas.lua
 RaidAchievement_Naxxramasbosses.lua
 RaidAchievement_Naxxramas.xml

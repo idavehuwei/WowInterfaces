@@ -1,10 +1,10 @@
 ﻿## Interface: 30300
 ## Title: Atlas
-## Title-zhCN: Atlas |r|cFF0099FF[核心]|r
+## Title-zhCN: |r|cFF0099FF[地图]|r Atlas |r|cFF0099FF[核心]|r
 ## Title-zhTW: |r|cFF0099FF[地圖]|r Atlas 地圖集
 ## Notes: Instance Map Browser
 ## Notes-zhTW: Atlas 地圖集主程式
-## Notes-zhCN: 副本地图浏览器
+## Notes-zhCN: Atlas 副本地图浏览器
 ## Version: 1.17.0
 ## X-Date: August, 2010
 ## Author: Dan Gilbert

@@ -3,10 +3,12 @@
 ## X-BigfootDesc: |cFF4488FF此模块依赖于 TipTac|r Adds Talent Spec to Player Tooltips。
 ## Version: 10.05.01
 ## Title: TipTacOptions
-## Title-zhTW: |cFF00FF00[介面]|r|cFF05d8e5TipTacOptions【提示訊息選單】|r|cFFf734de - 100501|r
+## Title-zhCN: [界面] 鼠标提示 |cFF05d8e5提示信息选项|r
+## Title-zhTW: [介面] 鼠标提示 |cFF05d8e5提示訊息選單|r
 ## Author: Aezay (Earthen Ring EU)
 ## Notes: Option Dialog for TipTac
-## Notes-zhTW: TipTac提示訊息增強工具選單。命令：/tip。[繁體化 - andy52005]
+## Notes-zhCN: TipTac 提示信息增强工具选项。命令：/tip。
+## Notes-zhTW: TipTac 提示訊息增強工具選單。命令：/tip。
 
 ## Dependencies: TipTac
 ## X-Revision: Duowan

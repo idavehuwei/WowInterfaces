@@ -1,7 +1,13 @@
 ## Interface: 30300
 ## Title: SpellID
+## Title-zhCN: 法术 ID 显示
 ## Version: 1.01
 ## Notes: Adds SpellIDs to the various tooltips in game
+## Notes-zhCN: 在有游戏中不同提示中添加法术ID显示
 ## Author: Silverwind
+
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+## LoadOnDemand:
 
 core.lua

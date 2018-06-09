@@ -5,8 +5,6 @@
 ## Notes: Complete Tradeskill Info
 ## Notes-zhTW: 完整的商業技能百科 TradeskillInfo
 ## Notes-zhCN: 完整的专业技能百科 TradeskillInfo
-## Notes-esES: Informarcion Completa de las Habilidades de Comercio
-## Notes-koKR: ???? ??? ?? ?!
 ## Author: wmrojer
 ## X-DuowanAddon: 商业物品
 ## eMail: evenue.wow@gmail.com

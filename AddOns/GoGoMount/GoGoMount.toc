@@ -2,16 +2,15 @@
 ## Title: GoGoMount
 ## Version: 0003030900
 ## Notes: One-key solution for mounting/dismounting, supports spells, shapeshifting
-## Notes-enGB: One-key solution for mounting/dismounting, supports spells, shapeshifting
-## Notes-deDE: Notes-deDE: Ein-Tasten-Lösung für das Auf- und Absitzen von Reittieren, unterstützt auch Zaubersprüche und Gestaltwandlung
-## Notes-esES: Una clave para la solución de montaje / desmontaje, apoya hechizos, shapeshifting
-## Notes-esMX: Una clave para la solución de montaje / desmontaje, apoya hechizos, shapeshifting
-## Notes-frFR: Une solution clé pour le montage / démontage, soutient sorts, shapeshifting
-## Notes-ruRU: Одним из ключей решения для монтажа / демонтажа, поддерживает заклинаний, shapeshifting
+## Notes-zhCN: 一键上下马，支持召唤和变形
 ## Notes-zhTW: 一鍵上下馬，支援召喚和變形
-## Notes-koKR: 탈것의 타기/내리기를 위한 1 키 해결, 주문, 변신 지원
 ## Author: Tiker (Rulix) @ Altar of Storms
 ## SavedVariablesPerCharacter: GoGo_Prefs GoGo_DebugLog
 ## X-Email:  gogo@funkymonkey.org
 ## X-OriginalVersion: Tak teh Troll @ Shadowsong EU
+
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+## LoadOnDemand:
+
 GoGoMount.xml

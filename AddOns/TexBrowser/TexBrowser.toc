@@ -1,6 +1,8 @@
 ## Interface: 30300
 ## Title: TexBrowser
+## Title-zhCN: [界面] 纹理浏览器 TexBrowser
 ## Notes: A texture browser for developers and UI modders
+## Notes-zhCN: 一个用于开发人员和 UI 模型修改人员的纹理浏览器。
 ## Author: Antiarc
 ## OptionalDeps: Ace3
 ## X-Embeds: Ace3
@@ -15,6 +17,9 @@
 ## X-Curse-Repository-ID: wow/texbrowser/mainline
 
 ## Dependencies: Duowan
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+## LoadOnDemand:
 
 AceGUI3-TextureWidget.lua
 Data.lua
