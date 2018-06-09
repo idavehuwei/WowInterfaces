@@ -21,7 +21,7 @@ function EUF_PartyInfo_OnLoad(this)
     this:RegisterEvent("UPDATE_INSTANCE_INFO");
 end
 
-function EUF_PartyInfo_OnEvent(self,event,...)
+function EUF_PartyInfo_OnEvent(self, event, ...)
     if event == "VARIABLES_LOADED"
         or event == "WORLD_MAP_UPDATE"
         or event == "PLAYER_ENTERING_WORLD"
@@ -42,7 +42,7 @@ function EUF_PartyInfo_Update(unit)
         return;
     end;
 
-    local unitExists, _,unitId = string.find(unit, "^party(%d)$");
+    local unitExists, _, unitId = string.find(unit, "^party(%d)$");
 
     if not unitExists then
         return;
@@ -57,10 +57,10 @@ function EUF_PartyInfo_Update(unit)
                 class = string.sub(class, 1, 3);
             end;
 
-            getglobal("EUF_PartyInfo"..unitId.."Class"):SetText(class);
+            getglobal("EUF_PartyInfo" .. unitId .. "Class"):SetText(class);
         end;
     else
-        getglobal("EUF_PartyInfo"..unitId.."Class"):SetText("");
+        getglobal("EUF_PartyInfo" .. unitId .. "Class"):SetText("");
     end;
 
     -- Set level
@@ -72,10 +72,10 @@ function EUF_PartyInfo_Update(unit)
                 level = "??";
             end;
 
-            getglobal("EUF_PartyInfo"..unitId.."Level"):SetText(level);
+            getglobal("EUF_PartyInfo" .. unitId .. "Level"):SetText(level);
         end;
     else
-        getglobal("EUF_PartyInfo"..unitId.."Level"):SetText("");
+        getglobal("EUF_PartyInfo" .. unitId .. "Level"):SetText("");
     end;
 end
 
@@ -83,7 +83,7 @@ function EUF_FramePartyInfo_Update()
     local i;
 
     for i = 1, GetNumPartyMembers(), 1 do
-        EUF_PartyInfo_Update("party"..i);
+        EUF_PartyInfo_Update("party" .. i);
     end;
 end
 
@@ -92,12 +92,12 @@ function EUF_PartyMember_CheckClass()
 
     if n > 0 then
         for i = 1, n do
-            local _, enClass = UnitClass("party"..i);
+            local _, enClass = UnitClass("party" .. i);
 
             if EUF_CurrentOptions["PARTYCOLOR"] == 1 and enClass then
-                getglobal("PartyMemberFrame"..i.."Name"):SetTextColor(RAID_CLASS_COLORS[enClass].r,RAID_CLASS_COLORS[enClass].g,RAID_CLASS_COLORS[enClass].b);
+                getglobal("PartyMemberFrame" .. i .. "Name"):SetTextColor(RAID_CLASS_COLORS[enClass].r, RAID_CLASS_COLORS[enClass].g, RAID_CLASS_COLORS[enClass].b);
             else
-                getglobal("PartyMemberFrame"..i.."Name"):SetTextColor(1, 0.8, 0);
+                getglobal("PartyMemberFrame" .. i .. "Name"):SetTextColor(1, 0.8, 0);
             end;
         end;
     end;
@@ -107,40 +107,46 @@ function EUF_Options_DisablePartyFrame()
     local EUF_LOCK = InCombatLockdown();
     local i;
     for i = 1, 4 do
-        if(EUF_LOCK == 1) then
-            _G["PartyMemberFrame"..i]:RegisterEvent("PLAYER_REGEN_ENABLED")
+        if (EUF_LOCK == 1) then
+            _G["PartyMemberFrame" .. i]:RegisterEvent("PLAYER_REGEN_ENABLED")
         else
-            _G["PartyMemberFrame"..i]:UnregisterEvent("PLAYER_REGEN_ENABLED");
+            _G["PartyMemberFrame" .. i]:UnregisterEvent("PLAYER_REGEN_ENABLED");
             HIDE_PARTY_INTERFACE = "1";
             HidePartyFrame();
-            _G["PartyMemberFrame"..i]:UnregisterAllEvents();
-            _G["PartyMemberFrame"..i.."HealthBar"]:UnregisterAllEvents();
-            _G["PartyMemberFrame"..i.."ManaBar"]:UnregisterAllEvents();
+            _G["PartyMemberFrame" .. i]:UnregisterAllEvents();
+            _G["PartyMemberFrame" .. i .. "HealthBar"]:UnregisterAllEvents();
+            _G["PartyMemberFrame" .. i .. "ManaBar"]:UnregisterAllEvents();
         end;
     end;
-end;
+end
+
+;
 function EUF_Options_EnablePartyFrame()
     local EUF_LOCK = InCombatLockdown();
     local i;
     for i = 1, 4 do
-        if(EUF_LOCK == 1) then
-            _G["PartyMemberFrame"..i]:RegisterEvent("PLAYER_REGEN_ENABLED")
+        if (EUF_LOCK == 1) then
+            _G["PartyMemberFrame" .. i]:RegisterEvent("PLAYER_REGEN_ENABLED")
         else
             HIDE_PARTY_INTERFACE = "0";
-            _G["PartyMemberFrame"..i]:RegisterAllEvents();
-            _G["PartyMemberFrame"..i.."HealthBar"]:RegisterAllEvents();
-            _G["PartyMemberFrame"..i.."ManaBar"]:RegisterAllEvents();
-            _G["PartyMemberFrame"..i]:UnregisterEvent("PLAYER_REGEN_ENABLED");
-            if (not UnitInRaid("player") ) then
+            _G["PartyMemberFrame" .. i]:RegisterAllEvents();
+            _G["PartyMemberFrame" .. i .. "HealthBar"]:RegisterAllEvents();
+            _G["PartyMemberFrame" .. i .. "ManaBar"]:RegisterAllEvents();
+            _G["PartyMemberFrame" .. i]:UnregisterEvent("PLAYER_REGEN_ENABLED");
+            if (not UnitInRaid("player")) then
                 ShowPartyFrame();
             end;
         end;
     end;
-end;
+end
+
+;
 function EUF_HidePartyToggle()
     if EUF_CurrentOptions["PARTYHIDE"] == 1 then
         EUF_Options_DisablePartyFrame();
     else
         EUF_Options_EnablePartyFrame();
     end;
-end;
+end
+
+;
