@@ -2,7 +2,7 @@
 -- * Titan Gold Tracker.lua - VERSION 2.3.2
 -- **************************************************************************
 -- * by Poena @ Area 52
--- * This mod will display all the gold held by toons in the same faction on 
+-- * This mod will display all the gold held by toons in the same faction on
 -- * on the same server.  I have also incorporated the Titan Money functionality
 -- * of displaying money session stats.
 -- *
@@ -12,7 +12,7 @@
 -- *               clarify some muddy .lua programming routines early on.
 -- *          Malreth @ Silver Hand and Zanek @ Malfurion who assisted me
 -- *               in clarifying the sort routines.
--- * Updates for the new TitanPanel: Titan Development Team        
+-- * Updates for the new TitanPanel: Titan Development Team
 -- *               (HonorGoG, jaketodd422, joejanko, Lothayer, Tristanian)
 -- **************************************************************************
 
@@ -70,11 +70,11 @@ local _G = getfenv(0);
 -- DESC : Registers the add on upon it loading
 -- **************************************************************************
 function TitanPanelGoldTrackerButton_OnLoad(self)
-     self.registry = { 
+     self.registry = {
           id = TITAN_GOLDTRACKER_ID,
           builtIn = 1,
           version = TITAN_GOLDTRACKER_VERSION,
-          menuText = LB["TITAN_GOLDTRACKER_MENU_TEXT"], 
+          menuText = LB["TITAN_GOLDTRACKER_MENU_TEXT"],
           tooltipTitle = LB["TITAN_GOLDTRACKER_TOOLTIP"],
           tooltipTextFunction = "TitanPanelGoldTrackerButton_GetTooltipText",
           buttonTextFunction = "TitanPanelGoldTrackerButton_GetButtonText",
@@ -84,16 +84,16 @@ function TitanPanelGoldTrackerButton_OnLoad(self)
      self:RegisterEvent("PLAYER_MONEY");
      self:RegisterEvent("ADDON_LOADED");
      self:RegisterEvent("UNIT_NAME_UPDATE");
-     
-     -- support for picking up money     
-     TitanGoldTracker:SecureHook("OpenCoinPickupFrame",TitanGoldTracker_OpenCoinPickupFrame);     
-     
-     if (not GoldArray) then 
+
+     -- support for picking up money
+     TitanGoldTracker:SecureHook("OpenCoinPickupFrame",TitanGoldTracker_OpenCoinPickupFrame);
+
+     if (not GoldArray) then
           GoldArray={};
           GoldArray["VIEWALL"] = true
           GoldArray["DISPLAYGPH"] = true
      end
-     
+
 end
 
 
@@ -102,18 +102,18 @@ end
 -- DESC : Create repeating timer when plugin is visible
 -- **************************************************************************
 function TitanPanelGoldTrackerButton_OnShow()
-	if not GoldTrackerTimer and GoldArray and GoldArray["DISPLAYGPH"] then		
-		GoldTrackerTimer = TitanGoldTracker:ScheduleRepeatingTimer(TitanPanelPluginHandle_OnUpdate, 1, updateTable)
-	end
+    if not GoldTrackerTimer and GoldArray and GoldArray["DISPLAYGPH"] then
+        GoldTrackerTimer = TitanGoldTracker:ScheduleRepeatingTimer(TitanPanelPluginHandle_OnUpdate, 1, updateTable)
+    end
 end
 
 -- **************************************************************************
 -- NAME : TitanPanelGoldTrackerButton_OnHide()
 -- DESC : Destroy repeating timer when plugin is hidden
 -- **************************************************************************
-function TitanPanelGoldTrackerButton_OnHide()	
-	TitanGoldTracker:CancelTimer(GoldTrackerTimer, true)
-	GoldTrackerTimer = nil;     
+function TitanPanelGoldTrackerButton_OnHide()
+    TitanGoldTracker:CancelTimer(GoldTrackerTimer, true)
+    GoldTrackerTimer = nil;
 end
 
 -- **************************************************************************
@@ -131,7 +131,7 @@ function TitanGoldTracker_OnEvent(self, event, ...)
 
      if ( event == "PLAYER_ENTERING_WORLD" ) then
           GOLDTRACKER_ENTERINGWORLD = true;
-          if (GOLDTRACKER_VARIABLES_LOADED) then          		
+          if (GOLDTRACKER_VARIABLES_LOADED) then
                TitanPanelGoldTrackerButton_Initialize_Array(self);
           end
           return;
@@ -145,7 +145,7 @@ function TitanGoldTracker_OnEvent(self, event, ...)
           return;
      end
 end
- 
+
 -- *******************************************************************************************
 -- NAME: TitanPanelGoldTrackerButton_GetTooltipText()
 -- DESC: Gets our tool-tip text, what appears when we hover over our item on the Titan bar.
@@ -153,15 +153,15 @@ end
 function TitanPanelGoldTrackerButton_GetTooltipText(self, id)
      -- the following code will parse the database and then display all members from the same faction/server
      -- to the user
-          
+
      local server = GetCVar("realmName").."::"..UnitFactionGroup("Player");
-	 --Print(format("GOLDTRACKER_INDEX => %s", tostring(GOLDTRACKER_INDEX)));
-	 --Print(format("GoldArray[GOLDTRACKER_INDEX] => %s", tostring(GoldArray[GOLDTRACKER_INDEX])));
+     --Print(format("GOLDTRACKER_INDEX => %s", tostring(GOLDTRACKER_INDEX)));
+     --Print(format("GoldArray[GOLDTRACKER_INDEX] => %s", tostring(GoldArray[GOLDTRACKER_INDEX])));
      GoldArray[GOLDTRACKER_INDEX] = TitanPanelGoldTracker_ParseArray(GoldArray[GOLDTRACKER_INDEX]);
-	
+
     local currentMoneyRichText = ""; -- initialize the variable to hold the array
 
-     -- This next section will sort the array based on user preference 
+     -- This next section will sort the array based on user preference
      -- either by name, or by gold amount decending.
 
      local GoldArraySorted = {};
@@ -173,19 +173,19 @@ function TitanPanelGoldTrackerButton_GetTooltipText(self, id)
                end
           end
      end
-     
+
      if (GoldArray["SORTBYNAME"]) then
           table.sort(GoldArraySorted);
      else
-          table.sort(GoldArraySorted, function (key1, key2) return GoldArray[key1] > GoldArray[key2] end) 
+          table.sort(GoldArraySorted, function (key1, key2) return GoldArray[key1] > GoldArray[key2] end)
      end
-     
-     for i = 1, getn(GoldArraySorted) do 
+
+     for i = 1, getn(GoldArraySorted) do
           local character, charserver = string.match(GoldArraySorted[i], '(.*)_(.*)');
           if (character) then
                if (charserver == server) then
                     if (mod(GoldArray[GoldArraySorted[i]],10) == 0) then
-                         currentMoneyRichText = currentMoneyRichText.."\n"..character.."\t"..TitanUtils_GetHighlightText(format(L["TITAN_MONEY_FORMAT"], TitanPanelGoldTracker_BreakMoney(floor(GoldArray[GoldArraySorted[i]]/10))));                    
+                         currentMoneyRichText = currentMoneyRichText.."\n"..character.."\t"..TitanUtils_GetHighlightText(format(L["TITAN_MONEY_FORMAT"], TitanPanelGoldTracker_BreakMoney(floor(GoldArray[GoldArraySorted[i]]/10))));
                     end
                end
           end
@@ -214,23 +214,23 @@ function TitanPanelGoldTrackerButton_GetTooltipText(self, id)
           GOLDTRACKER_COLOR = TITAN_GOLDTRACKER_GREEN;
           GOLDTRACKER_SESS_STATUS = LB["TITAN_GOLDTRACKER_SESS_EARNED"];
           GOLDTRACKER_PERHOUR_STATUS = LB["TITAN_GOLDTRACKER_PERHOUR_EARNED"];
-     end     
+     end
 
-	sessionMoneyRichText = sessionMoneyRichText..GOLDTRACKER_SESS_STATUS.."\t"..TitanUtils_GetColoredText(format(L["TITAN_MONEY_FORMAT"], TitanPanelGoldTracker_BreakMoney(sesstotal)),GOLDTRACKER_COLOR).."\n";
-          
-	if (GoldArray["DISPLAYGPH"]) then
-		sessionMoneyRichText = sessionMoneyRichText..GOLDTRACKER_PERHOUR_STATUS.."\t"..TitanUtils_GetColoredText(format(L["TITAN_MONEY_FORMAT"], TitanPanelGoldTracker_BreakMoney(perhour)),GOLDTRACKER_COLOR);
-	end
-     
-     
-	local final_tooltip = LB["TITAN_GOLDTRACKER_TOOLTIPTEXT"].." : "..GetCVar("realmName").." : "..select(2,UnitFactionGroup("Player"));
-	if (UnitFactionGroup("Player")=="Alliance") then
-		GOLDTRACKER_COLOR = TITAN_GOLDTRACKER_GREEN;
-	else
-		GOLDTRACKER_COLOR = TITAN_GOLDTRACKER_RED;
-	end     
+    sessionMoneyRichText = sessionMoneyRichText..GOLDTRACKER_SESS_STATUS.."\t"..TitanUtils_GetColoredText(format(L["TITAN_MONEY_FORMAT"], TitanPanelGoldTracker_BreakMoney(sesstotal)),GOLDTRACKER_COLOR).."\n";
 
-	return ""..TitanUtils_GetColoredText(final_tooltip,GOLDTRACKER_COLOR)..currentMoneyRichText..sessionMoneyRichText;     
+    if (GoldArray["DISPLAYGPH"]) then
+        sessionMoneyRichText = sessionMoneyRichText..GOLDTRACKER_PERHOUR_STATUS.."\t"..TitanUtils_GetColoredText(format(L["TITAN_MONEY_FORMAT"], TitanPanelGoldTracker_BreakMoney(perhour)),GOLDTRACKER_COLOR);
+    end
+
+
+    local final_tooltip = LB["TITAN_GOLDTRACKER_TOOLTIPTEXT"].." : "..GetCVar("realmName").." : "..select(2,UnitFactionGroup("Player"));
+    if (UnitFactionGroup("Player")=="Alliance") then
+        GOLDTRACKER_COLOR = TITAN_GOLDTRACKER_GREEN;
+    else
+        GOLDTRACKER_COLOR = TITAN_GOLDTRACKER_RED;
+    end
+
+    return ""..TitanUtils_GetColoredText(final_tooltip,GOLDTRACKER_COLOR)..currentMoneyRichText..sessionMoneyRichText;
 end
 
 
@@ -239,13 +239,13 @@ end
 -- DESC: This routines determines which gold total the ui wants (server or player) then calls it and returns it
 -- *******************************************************************************************
 function TitanPanelGoldTrackerButton_FindGold()
-     
+
      local server = GetCVar("realmName").."::"..UnitFactionGroup("Player");
 
      GoldArray[GOLDTRACKER_INDEX] = TitanPanelGoldTracker_ParseArray(GoldArray[GOLDTRACKER_INDEX]);
-     
+
     local ttlgold = 0;
-     
+
      if (GoldArray["VIEWALL"]) then
           for index, money in pairs(GoldArray) do
                local character, charserver = string.match(index, '(.*)_(.*)');
@@ -259,7 +259,7 @@ function TitanPanelGoldTrackerButton_FindGold()
           end
      else
           ttlgold = GetMoney("player");
-     end     
+     end
 
      return ttlgold;
 end
@@ -269,11 +269,11 @@ end
 -- DESC: Calculates total gold for display
 -- *******************************************************************************************
 function TitanPanelGoldTrackerButton_TotalGold()
-     
+
      local server = GetCVar("realmName").."::"..UnitFactionGroup("Player");
      GoldArray[GOLDTRACKER_INDEX] = TitanPanelGoldTracker_ParseArray(GoldArray[GOLDTRACKER_INDEX]);
     local ttlgold = 0;
-     
+
      for index, money in pairs(GoldArray) do
           local character, charserver = string.match(index, '(.*)_(.*)');
           if (character) then
@@ -292,9 +292,9 @@ end
 -- DESC: Builds the right click config menu
 -- *******************************************************************************************
 function TitanPanelRightClickMenu_PrepareGoldTrackerMenu()
-	if UIDROPDOWNMENU_MENU_LEVEL == 1 then
+    if UIDROPDOWNMENU_MENU_LEVEL == 1 then
      -- Menu title
-     TitanPanelRightClickMenu_AddTitle(LB["TITAN_GOLDTRACKER_ITEMNAME"]);     
+     TitanPanelRightClickMenu_AddTitle(LB["TITAN_GOLDTRACKER_ITEMNAME"]);
 
      -- Function to toggle button gold view
      if (GoldArray["VIEWALL"]) then
@@ -302,7 +302,7 @@ function TitanPanelRightClickMenu_PrepareGoldTrackerMenu()
      else
           TitanPanelRightClickMenu_AddCommand(LB["TITAN_GOLDTRACKER_TOGGLE_ALL_TEXT"], TITAN_GOLDTRACKER_ID,"TitanPanelGoldTrackerButton_Toggle");
      end
-          
+
      -- Function to toggle display sort
      if (GoldArray["SORTBYNAME"]) then
           TitanPanelRightClickMenu_AddCommand(LB["TITAN_GOLDTRACKER_TOGGLE_SORT_GOLD"], TITAN_GOLDTRACKER_ID,"TitanPanelGoldTrackerSort_Toggle");
@@ -316,7 +316,7 @@ function TitanPanelRightClickMenu_PrepareGoldTrackerMenu()
      else
           TitanPanelRightClickMenu_AddCommand(LB["TITAN_GOLDTRACKER_TOGGLE_GPH_SHOW"], TITAN_GOLDTRACKER_ID,"TitanPanelGoldTrackerGPH_Toggle");
      end
-          
+
      -- A blank line in the menu
      TitanPanelRightClickMenu_AddSpacer();
 
@@ -329,92 +329,92 @@ function TitanPanelRightClickMenu_PrepareGoldTrackerMenu()
                TitanPanelRightClickMenu_AddCommand(LB["TITAN_GOLDTRACKER_TOGGLE_PLAYER_SHOW"], TITAN_GOLDTRACKER_ID,"TitanPanelGoldTrackerShowToon_Toggle");
           end
      end
-		
-		-- Delete toon
-		local info = {};
-		info.text = LB["TITAN_GOLDTRACKER_DELETE_PLAYER"];
-		info.value = "ToonDelete";
-		info.hasArrow = 1;
-		UIDropDownMenu_AddButton(info);		
-		
+
+        -- Delete toon
+        local info = {};
+        info.text = LB["TITAN_GOLDTRACKER_DELETE_PLAYER"];
+        info.value = "ToonDelete";
+        info.hasArrow = 1;
+        UIDropDownMenu_AddButton(info);
+
      -- A blank line in the menu
      TitanPanelRightClickMenu_AddSpacer();
-     
-     -- Function to clear the enter database     
+
+     -- Function to clear the enter database
      local info = {};
      info.text = LB["TITAN_GOLDTRACKER_CLEAR_DATA_TEXT"];
      info.func = TitanGoldTracker_ClearDB;
      UIDropDownMenu_AddButton(info);
-     
+
      TitanPanelRightClickMenu_AddCommand(LB["TITAN_GOLDTRACKER_RESET_SESS_TEXT"], TITAN_GOLDTRACKER_ID, "TitanPanelGoldTrackerButton_ResetSession");
-     
+
      -- A blank line in the menu
      TitanPanelRightClickMenu_AddSpacer();
-     
+
      -- Generic function to toggle and hide
      TitanPanelRightClickMenu_AddCommand(L["TITAN_PANEL_MENU_HIDE"], TITAN_GOLDTRACKER_ID, TITAN_PANEL_MENU_FUNC_HIDE);
-     
+
   end
-     
+
      if UIDROPDOWNMENU_MENU_LEVEL == 2 and UIDROPDOWNMENU_MENU_VALUE == "ToonDelete" then
-			local info = {};
-			info.text = LB["TITAN_GOLDTRACKER_FACTION_PLAYER_ALLY"];
-			info.value = "Alliance";
-			info.hasArrow = 1;
-			UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
-						
-			info.text = LB["TITAN_GOLDTRACKER_FACTION_PLAYER_HORDE"];
-			info.value = "Horde";
-			info.hasArrow = 1;
-			UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
-		 end
-		
-		if UIDROPDOWNMENU_MENU_LEVEL == 3 and UIDROPDOWNMENU_MENU_VALUE == "Alliance" then
-			local info = {};
-			local name = GetUnitName("player");
-			local server = GetRealmName();
-			for index, money in pairs(GoldArray) do
-      				local character, charserver = string.match(index, "(.*)_(.*)::Alliance");
-      				if character then
-					info.text = character.." - "..charserver;
-					info.value = character;
-					info.func = function()
-						local rementry = character.."_"..charserver.."::Alliance";
-						GoldArray[rementry] = nil;
-						MoneyFrame_Update("TitanPanelGoldTrackerButton", GetMoney("player"));
-					end
-					-- cannot delete current character
-					if name == character and server == charserver then
-						info.disabled = 1;
-					else
-						info.disabled = nil;
-					end
-					UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
-				end
-			end
-		elseif UIDROPDOWNMENU_MENU_LEVEL == 3 and UIDROPDOWNMENU_MENU_VALUE == "Horde" then
-			local info = {};
-			local name = GetUnitName("player");
-			local server = GetRealmName();
-			for index, money in pairs(GoldArray) do
-      				local character, charserver = string.match(index, "(.*)_(.*)::Horde");
-      				if character then
-				info.text = character.." - "..charserver;
-				info.value = character;
-				info.func = function()
-					local rementry = character.."_"..charserver.."::Horde";
-					GoldArray[rementry] = nil;
-					MoneyFrame_Update("TitanPanelGoldTrackerButton", GetMoney("player"))								
-				end
-				if name == character and server == charserver then
-					info.disabled = 1;
-				else
-					info.disabled = nil;
-				end
-				UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
-			end
-		end		
-	end
+            local info = {};
+            info.text = LB["TITAN_GOLDTRACKER_FACTION_PLAYER_ALLY"];
+            info.value = "Alliance";
+            info.hasArrow = 1;
+            UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
+
+            info.text = LB["TITAN_GOLDTRACKER_FACTION_PLAYER_HORDE"];
+            info.value = "Horde";
+            info.hasArrow = 1;
+            UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
+         end
+
+        if UIDROPDOWNMENU_MENU_LEVEL == 3 and UIDROPDOWNMENU_MENU_VALUE == "Alliance" then
+            local info = {};
+            local name = GetUnitName("player");
+            local server = GetRealmName();
+            for index, money in pairs(GoldArray) do
+                    local character, charserver = string.match(index, "(.*)_(.*)::Alliance");
+                    if character then
+                    info.text = character.." - "..charserver;
+                    info.value = character;
+                    info.func = function()
+                        local rementry = character.."_"..charserver.."::Alliance";
+                        GoldArray[rementry] = nil;
+                        MoneyFrame_Update("TitanPanelGoldTrackerButton", GetMoney("player"));
+                    end
+                    -- cannot delete current character
+                    if name == character and server == charserver then
+                        info.disabled = 1;
+                    else
+                        info.disabled = nil;
+                    end
+                    UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
+                end
+            end
+        elseif UIDROPDOWNMENU_MENU_LEVEL == 3 and UIDROPDOWNMENU_MENU_VALUE == "Horde" then
+            local info = {};
+            local name = GetUnitName("player");
+            local server = GetRealmName();
+            for index, money in pairs(GoldArray) do
+                    local character, charserver = string.match(index, "(.*)_(.*)::Horde");
+                    if character then
+                info.text = character.." - "..charserver;
+                info.value = character;
+                info.func = function()
+                    local rementry = character.."_"..charserver.."::Horde";
+                    GoldArray[rementry] = nil;
+                    MoneyFrame_Update("TitanPanelGoldTrackerButton", GetMoney("player"))
+                end
+                if name == character and server == charserver then
+                    info.disabled = 1;
+                else
+                    info.disabled = nil;
+                end
+                UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
+            end
+        end
+    end
 end
 
 -- **************************************************************************
@@ -423,18 +423,18 @@ end
 -- **************************************************************************
 function TitanPanelGoldTrackerButton_ClearData(self)
      GOLDTRACKER_INITIALIZED = false;
-     
+
      REMEMBER_VIEWALL =      GoldArray["VIEWALL"];
      REMEMBER_SORTBYNAME = GoldArray["SORTBYNAME"];
      REMEMBER_SHOWGPH = GoldArray["DISPLAYGPH"];
-     
+
      GoldArray = {};
      TitanPanelGoldTrackerButton_Initialize_Array(self);
 
      GoldArray["VIEWALL"] = REMEMBER_VIEWALL;
      GoldArray["SORTBYNAME"] = REMEMBER_SORTBYNAME;
      GoldArray["DISPLAYGPH"] = REMEMBER_SHOWGPH;
-          
+
      DEFAULT_CHAT_FRAME:AddMessage(LB["TITAN_GOLDTRACKER_DB_CLEARED"], 1.0, 0.0, 1.0 );
 end
 
@@ -443,7 +443,7 @@ end
 -- DESC : Build the gold array for the server/faction
 -- **************************************************************************
 function TitanPanelGoldTrackerButton_Initialize_Array(self)
-     if (GOLDTRACKER_INITIALIZED) then return; end          
+     if (GOLDTRACKER_INITIALIZED) then return; end
 
      self:UnregisterEvent("VARIABLES_LOADED");
      self:UnregisterEvent("PLAYER_ENTERING_WORLD");
@@ -476,21 +476,21 @@ function TitanPanelGoldTrackerButton_Initialize_Array(self)
                end
           end
      end
-     
+
      GOLDTRACKER_INDEX = UnitName("player").."_"..GetCVar("realmName").."::"..UnitFactionGroup("Player");
-     
+
      if (GoldArray[GOLDTRACKER_INDEX] == nil) then
           GoldArray[GOLDTRACKER_INDEX] = GetMoney("player")*10;
      end
-     
+
      GoldArray[GOLDTRACKER_INDEX] = TitanPanelGoldTracker_ParseArray(GoldArray[GOLDTRACKER_INDEX]);
 
      GOLDTRACKER_STARTINGGOLD = GetMoney("player");
      GOLDTRACKER_SESSIONSTART = GetTime();
 
      -- MoneyFrame_Update("TitanPanelGoldTrackerButton", TitanPanelGoldTrackerButton_FindGold());
-	MoneyFrame_Update("TitanPanelGoldTrackerButton", GOLDTRACKER_STARTINGGOLD);
-	GOLDTRACKER_INITIALIZED = true;
+    MoneyFrame_Update("TitanPanelGoldTrackerButton", GOLDTRACKER_STARTINGGOLD);
+    GOLDTRACKER_INITIALIZED = true;
 end
 
 -- *******************************************************************************************
@@ -518,11 +518,11 @@ end
 function TitanPanelGoldTrackerGPH_Toggle()
      GoldArray["DISPLAYGPH"] = not GoldArray["DISPLAYGPH"];
      if not GoldTrackerTimer and GoldArray["DISPLAYGPH"] then
-			GoldTrackerTimer = TitanGoldTracker:ScheduleRepeatingTimer(TitanPanelPluginHandle_OnUpdate, 1, updateTable)
-		 elseif GoldTrackerTimer and not GoldArray["DISPLAYGPH"] then
-		 	TitanGoldTracker:CancelTimer(GoldTrackerTimer, true)
-			GoldTrackerTimer = nil;     
-		end
+            GoldTrackerTimer = TitanGoldTracker:ScheduleRepeatingTimer(TitanPanelPluginHandle_OnUpdate, 1, updateTable)
+         elseif GoldTrackerTimer and not GoldArray["DISPLAYGPH"] then
+            TitanGoldTracker:CancelTimer(GoldTrackerTimer, true)
+            GoldTrackerTimer = nil;
+        end
 end
 
 -- *******************************************************************************************
@@ -532,10 +532,10 @@ end
 function TitanPanelGoldTrackerButton_ResetSession()
      GOLDTRACKER_STARTINGGOLD = GetMoney("player");
      GOLDTRACKER_SESSIONSTART = GetTime();
-     
+
      DEFAULT_CHAT_FRAME:AddMessage(LB["TITAN_GOLDTRACKER_SESSION_RESET"], 1.0, 0.0, 1.0 );
 end
-     
+
 -- *******************************************************************************************
 -- NAME: TitanPanelGoldTracker_BreakMoney(money)
 -- DESC: This routine was borrowed from TitanPanel [Money] - breaks down gold into denominations
@@ -548,7 +548,7 @@ function TitanPanelGoldTracker_BreakMoney(money)
           local copper = mod(money, COPPER_PER_SILVER);
           return gold, silver, copper;
      end
-end     
+end
 
 -- *******************************************************************************************
 -- NAME: TitanPanelGoldTracker_ParseArray(tooninfo)
@@ -579,7 +579,7 @@ function TitanPanelGoldTrackerShowToon_Toggle()
      end
 
      MoneyFrame_Update("TitanPanelGoldTrackerButton", GetMoney("player"));
-end     
+end
 
 -- support for picking up money
 -- extra functions
@@ -591,13 +591,13 @@ end
 -- *******************************************************************************************
 function TitanPanelGoldTrackerCopperButton_OnClick(self, button)
      if (button == "LeftButton") then
-	if (AccountantButton_OnClick) then
-		AccountantButton_OnClick();
-	else
-		local parent = self:GetParent();
-		OpenCoinPickupFrame(1, MoneyTypeInfo[parent.moneyType].UpdateFunc(), parent);
-		parent.hasPickup = 1;
-	end
+    if (AccountantButton_OnClick) then
+        AccountantButton_OnClick();
+    else
+        local parent = self:GetParent();
+        OpenCoinPickupFrame(1, MoneyTypeInfo[parent.moneyType].UpdateFunc(), parent);
+        parent.hasPickup = 1;
+    end
      end
 end
 
@@ -608,13 +608,13 @@ end
 -- *******************************************************************************************
 function TitanPanelGoldTrackerSilverButton_OnClick(self, button)
      if (button == "LeftButton") then
-	if (AccountantButton_OnClick) then
-		AccountantButton_OnClick();
-	else
-		local parent = self:GetParent();
-		OpenCoinPickupFrame(COPPER_PER_SILVER, MoneyTypeInfo[parent.moneyType].UpdateFunc(), parent);
-		parent.hasPickup = 1;
-	 end
+    if (AccountantButton_OnClick) then
+        AccountantButton_OnClick();
+    else
+        local parent = self:GetParent();
+        OpenCoinPickupFrame(COPPER_PER_SILVER, MoneyTypeInfo[parent.moneyType].UpdateFunc(), parent);
+        parent.hasPickup = 1;
+     end
      end
 end
 
@@ -625,13 +625,13 @@ end
 -- *******************************************************************************************
 function TitanPanelGoldTrackerGoldButton_OnClick(self, button)
      if (button == "LeftButton") then
-	if (AccountantButton_OnClick) then
-		AccountantButton_OnClick();
-	else
-		local parent = self:GetParent();
-		OpenCoinPickupFrame(COPPER_PER_GOLD, MoneyTypeInfo[parent.moneyType].UpdateFunc(), parent);
-		parent.hasPickup = 1;
-	end
+    if (AccountantButton_OnClick) then
+        AccountantButton_OnClick();
+    else
+        local parent = self:GetParent();
+        OpenCoinPickupFrame(COPPER_PER_GOLD, MoneyTypeInfo[parent.moneyType].UpdateFunc(), parent);
+        parent.hasPickup = 1;
+    end
      end
 end
 
@@ -640,9 +640,9 @@ end
 -- DESC: Create pickup frame and deliver money
 -- VARS: multiplier = money type, maxMoney = amount available, parent = parent function
 -- *******************************************************************************************
-function TitanGoldTracker_OpenCoinPickupFrame(multiplier, maxMoney, parent)    
+function TitanGoldTracker_OpenCoinPickupFrame(multiplier, maxMoney, parent)
      CoinPickupFrame:Hide();
-     
+
      position = TitanUtils_GetRealPosition(TITAN_GOLDTRACKER_ID);
 
 
@@ -650,16 +650,16 @@ function TitanGoldTracker_OpenCoinPickupFrame(multiplier, maxMoney, parent)
      if scale == nil then scale = 1; end
 
      if (parent:GetName() == "TitanPanelGoldTrackerButton") then
-          if (position == TITAN_PANEL_PLACE_TOP) then 
-			--local panelYOffset = TitanMovable_GetPanelYOffset(TITAN_PANEL_PLACE_TOP, TitanPanelGetVar("BothBars"));
+          if (position == TITAN_PANEL_PLACE_TOP) then
+            --local panelYOffset = TitanMovable_GetPanelYOffset(TITAN_PANEL_PLACE_TOP, TitanPanelGetVar("BothBars"));
                CoinPickupFrame:ClearAllPoints();
                CoinPickupFrame:SetPoint("TOPLEFT", parent:GetName(), "BOTTOMLEFT", -10, -4 * scale);
-               CoinPickupFrame:SetFrameStrata("FULLSCREEN");               
+               CoinPickupFrame:SetFrameStrata("FULLSCREEN");
           else
                CoinPickupFrame:ClearAllPoints();
                CoinPickupFrame:SetPoint("BOTTOMLEFT", parent:GetName(), "TOPLEFT", -10, 0);
                CoinPickupFrame:SetFrameStrata("FULLSCREEN");
-          end          
+          end
      else
           CoinPickupFrame:ClearAllPoints();
           CoinPickupFrame:SetPoint("BOTTOMRIGHT", parent:GetName(), "TOPRIGHT", 0, 0);
@@ -669,18 +669,18 @@ function TitanGoldTracker_OpenCoinPickupFrame(multiplier, maxMoney, parent)
 end
 
 function TitanGoldTracker_ClearDB()
-	StaticPopupDialogs["TITANGOLDTRACKER_CLEAR_DATABASE"] = {
-	text = TitanUtils_GetNormalText(L["TITAN_PANEL_MENU_TITLE"].." "..LB["TITAN_GOLDTRACKER_MENU_TEXT"]).."\n\n"..LB["TITAN_GOLDTRACKER_CLEAR_DATA_WARNING"],
-	button1 = ACCEPT,
-	button2 = CANCEL,
-	OnAccept = function(self)
-	local frame = _G["TitanPanelGoldTrackerButton"]
+    StaticPopupDialogs["TITANGOLDTRACKER_CLEAR_DATABASE"] = {
+    text = TitanUtils_GetNormalText(L["TITAN_PANEL_MENU_TITLE"].." "..LB["TITAN_GOLDTRACKER_MENU_TEXT"]).."\n\n"..LB["TITAN_GOLDTRACKER_CLEAR_DATA_WARNING"],
+    button1 = ACCEPT,
+    button2 = CANCEL,
+    OnAccept = function(self)
+    local frame = _G["TitanPanelGoldTrackerButton"]
   TitanPanelGoldTrackerButton_ClearData(frame)
-	end,	
-	showAlert = 1,
-	timeout = 0,
-	whileDead = 1,
-	hideOnEscape = 1
-	};
-	StaticPopup_Show("TITANGOLDTRACKER_CLEAR_DATABASE");
+    end,
+    showAlert = 1,
+    timeout = 0,
+    whileDead = 1,
+    hideOnEscape = 1
+    };
+    StaticPopup_Show("TITANGOLDTRACKER_CLEAR_DATABASE");
 end
