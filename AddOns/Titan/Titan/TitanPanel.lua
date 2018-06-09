@@ -170,7 +170,8 @@ function TitanPanel_CreateBarTextures()
     local screenWidth = TitanPanelBarButton:GetWidth() or GetScreenWidth()
     numOfTextures = floor(screenWidth / 256)
     numOfTexturesHider = (numOfTextures * 2) + 1
-    local lastTextureWidth = screenWidth - (numOfTextures * 256)
+--    local lastTextureWidth = screenWidth - (numOfTextures * 256)
+    local lastTextureWidth = screenWidth
 
     -- Handle TitanPanelBarButton Textures
     for i = 0, numOfTextures do
@@ -768,14 +769,14 @@ function TitanPanelBarButton_OnLoad(self)
     --add Blizzard Configuration Panel
     AceConfig:RegisterOptionsTable(L["Titan Panel Main"], options)
     --[[
-	AceConfig:RegisterOptionsTable("Titan Panel Transparency Control", optionsTrans)
-	AceConfig:RegisterOptionsTable("Titan Panel Panel Control", optionsUIScale)
-	AceConfig:RegisterOptionsTable("Titan Panel Skin Control", optionsSkins)
-	AceConfigDialog:AddToBlizOptions("Titan Panel Main", L["TITAN_PANEL"])
-	AceConfigDialog:AddToBlizOptions("Titan Panel Panel Control", "Titan "..L["TITAN_UISCALE_MENU_TEXT"], L["TITAN_PANEL"])
-	AceConfigDialog:AddToBlizOptions("Titan Panel Transparency Control", "Titan "..L["TITAN_TRANS_MENU_TEXT_SHORT"], L["TITAN_PANEL"])
-	 AceConfigDialog:AddToBlizOptions("Titan Panel Skin Control", "Titan "..L["TITAN_PANEL_MENU_TEXTURE_SETTINGS"], L["TITAN_PANEL"])
-	]]
+    AceConfig:RegisterOptionsTable("Titan Panel Transparency Control", optionsTrans)
+    AceConfig:RegisterOptionsTable("Titan Panel Panel Control", optionsUIScale)
+    AceConfig:RegisterOptionsTable("Titan Panel Skin Control", optionsSkins)
+    AceConfigDialog:AddToBlizOptions("Titan Panel Main", L["TITAN_PANEL"])
+    AceConfigDialog:AddToBlizOptions("Titan Panel Panel Control", "Titan "..L["TITAN_UISCALE_MENU_TEXT"], L["TITAN_PANEL"])
+    AceConfigDialog:AddToBlizOptions("Titan Panel Transparency Control", "Titan "..L["TITAN_TRANS_MENU_TEXT_SHORT"], L["TITAN_PANEL"])
+     AceConfigDialog:AddToBlizOptions("Titan Panel Skin Control", "Titan "..L["TITAN_PANEL_MENU_TEXTURE_SETTINGS"], L["TITAN_PANEL"])
+    ]]
     --register slash commands for Titan Panel
     --print("titan onload")
     SlashCmdList["TitanPanel"] = TitanPanel_RegisterSlashCmd;
@@ -2187,27 +2188,27 @@ function TitanPanel_MainMenu(self)
         UIDropDownMenu_AddButton(info);
     end
     --[[
-	-- panel control menu
-	info = {};
-	info.text = L["TITAN_UISCALE_MENU_TEXT"];
-	info.value = "PanelControl";
-	info.func = function() InterfaceOptionsFrame_OpenToCategory("Titan "..L["TITAN_UISCALE_MENU_TEXT"]) end
-	UIDropDownMenu_AddButton(info);
+    -- panel control menu
+    info = {};
+    info.text = L["TITAN_UISCALE_MENU_TEXT"];
+    info.value = "PanelControl";
+    info.func = function() InterfaceOptionsFrame_OpenToCategory("Titan "..L["TITAN_UISCALE_MENU_TEXT"]) end
+    UIDropDownMenu_AddButton(info);
 
-	-- transparency menu
-	info = {};
-	info.text = L["TITAN_TRANS_MENU_TEXT_SHORT"];
-	info.value = "Transparency";
-	info.func = function() InterfaceOptionsFrame_OpenToCategory("Titan "..L["TITAN_TRANS_MENU_TEXT_SHORT"]) end
-	UIDropDownMenu_AddButton(info);
+    -- transparency menu
+    info = {};
+    info.text = L["TITAN_TRANS_MENU_TEXT_SHORT"];
+    info.value = "Transparency";
+    info.func = function() InterfaceOptionsFrame_OpenToCategory("Titan "..L["TITAN_TRANS_MENU_TEXT_SHORT"]) end
+    UIDropDownMenu_AddButton(info);
 
-	-- texture settings option menu
-	info = {};
-	info.text = L["TITAN_PANEL_MENU_TEXTURE_SETTINGS"];
-	info.value = "SkinSettings";
-	info.func = function() InterfaceOptionsFrame_OpenToCategory("Titan "..L["TITAN_PANEL_MENU_TEXTURE_SETTINGS"]) end
-	UIDropDownMenu_AddButton(info);
-	]]
+    -- texture settings option menu
+    info = {};
+    info.text = L["TITAN_PANEL_MENU_TEXTURE_SETTINGS"];
+    info.value = "SkinSettings";
+    info.func = function() InterfaceOptionsFrame_OpenToCategory("Titan "..L["TITAN_PANEL_MENU_TEXTURE_SETTINGS"]) end
+    UIDropDownMenu_AddButton(info);
+    ]]
     TitanPanelRightClickMenu_AddSpacer();
     TitanPanelRightClickMenu_AddTitle(L["TITAN_PANEL_MENU_PROFILES"]);
 
