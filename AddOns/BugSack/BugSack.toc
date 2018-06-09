@@ -21,6 +21,7 @@
 ## X-Curse-Project-ID: bugsack
 ## X-Curse-Repository-ID: wow/bugsack/mainline
 
+## Dependencies: Duowan
 ## X-Revision: Duowan
 ## X-DuowanAddon: 基本库
 

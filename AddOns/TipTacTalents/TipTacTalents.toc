@@ -6,7 +6,12 @@
 ## Title-zhTW: |cFF00FF00[介面]|r|cFF05d8e5TipTacTalents【天賦提示訊息】|r|cFFf734de - 100227|r
 ## Author: Aezay (Earthen Ring EU)
 ## Notes: Adds Talent Spec to Player Tooltips
-## OptionalDeps: TipTac
 ## Notes-zhTW: TipTac提示訊息增強工具-天賦模組。命令：/tip。[繁體化 - andy52005]
+
+## OptionalDeps: TipTac
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+## LoadOnDemand:
+
 Localization.lua
 core.lua

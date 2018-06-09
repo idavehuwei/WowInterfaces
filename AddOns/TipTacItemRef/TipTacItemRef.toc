@@ -7,5 +7,11 @@
 ## Author: Aezay (Earthen Ring EU)
 ## Notes: Improved ItemRefTooltip
 ## Notes-zhTW: TipTac強化物品提示訊息工具。命令：/tip。[繁體化 - andy52005]
+
+## OptionalDeps: TipTac
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+## LoadOnDemand:
+
 Localization.lua
 core.lua

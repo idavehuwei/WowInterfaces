@@ -13,6 +13,9 @@
 ## X-Credits: elsia
 
 ## OptionalDeps: LibSharedMedia-3.0, LibSharedMedia-2.0, SharedMediaLib
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+## LoadOnDemand:
 
 Core.lua
 SharedMediaAdditionalFonts.lua

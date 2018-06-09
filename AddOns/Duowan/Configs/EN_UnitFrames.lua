@@ -139,6 +139,7 @@ if (dwIsConfigurableAddOn("EN_UnitFrames")) then
             if (dwIsAddOnLoaded("EN_UnitFrames")) then
                 if (arg == 1) then
                     EUF_Options_Update("PLAYERXP", 1);
+                    EUF_Options_Update("PLAYERXPAUTO", 0);
                 else
                     EUF_Options_Update("PLAYERXP", 0);
                 end

@@ -12,11 +12,11 @@
 ## X-Curse-Project-Name: Enigma Unit Frames
 ## X-Curse-Project-ID: en_unitframes
 ## X-Curse-Repository-ID: wow/en_unitframes/mainline
-## X-DuowanAddon: 界面聊天
 ## SavedVariables: DuowanAddon_EUF_Options
 
-## Dependencies: Duowan, Titan
+## Dependencies: Duowan
 ## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
 ## LoadOnDemand:
 
 EN_UnitFrames.xml

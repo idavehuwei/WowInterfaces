@@ -7,8 +7,12 @@
 ## Author: Aezay (Earthen Ring EU)
 ## Notes: Option Dialog for TipTac
 ## Notes-zhTW: TipTac提示訊息增強工具選單。命令：/tip。[繁體化 - andy52005]
+
 ## Dependencies: TipTac
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
 ## LoadOnDemand: 1
+
 Localization.lua
 Libs\AzDropDown.lua
 Libs\AzOptionsFactory.lua

@@ -368,31 +368,31 @@ function dwRuneFrameHasOtherAddOn()
 
     return false;
 end
-
-function dwUpdateRuneFrame()
-    local _,class = UnitClass("player");
-    if (class~="DEATHKNIGHT" or dwRuneFrameHasOtherAddOn()) then
-        return;
-    end
-    local value = dwRawGetCVar("DuowanConfig", "isRuneFrameMove", 0);
-    local scale = dwRawGetCVar("DuowanConfig", "RuneFrameScale", 1);
-    dwSetScale(RuneFrame, scale);
-    if (value == 0) then
-        if (PetFrame:IsVisible()) then
-            RuneFrame:ClearAllPoints();
-            RuneFrame:SetPoint("TOP","PetFrame","BOTTOM", 25, 4);
-        else
-            RuneFrame:ClearAllPoints();
-            RuneFrame:SetPoint("TOP", "PlayerFrame","BOTTOM", 90, 15);
-        end
-    else
-        local pos = dwRawGetCVar("DuowanConfig", "RuneFramePos", nil);
-        if (pos and type(pos) == "table" and not RuneFrame.isMoving) then
-            RuneFrame:ClearAllPoints();
-            RuneFrame:SetPoint(unpack(pos));
-        end
-    end
-end
+--
+--function dwUpdateRuneFrame()
+--    local _,class = UnitClass("player");
+--    if (class~="DEATHKNIGHT" or dwRuneFrameHasOtherAddOn()) then
+--        return;
+--    end
+--    local value = dwRawGetCVar("DuowanConfig", "isRuneFrameMove", 0);
+--    local scale = dwRawGetCVar("DuowanConfig", "RuneFrameScale", 1);
+--    dwSetScale(RuneFrame, scale);
+--    if (value == 0) then
+--        if (PetFrame:IsVisible()) then
+--            RuneFrame:ClearAllPoints();
+--            RuneFrame:SetPoint("TOP","PetFrame","BOTTOM", 25, 4);
+--        else
+--            RuneFrame:ClearAllPoints();
+--            RuneFrame:SetPoint("TOP", "PlayerFrame","BOTTOM", 90, 15);
+--        end
+--    else
+--        local pos = dwRawGetCVar("DuowanConfig", "RuneFramePos", nil);
+--        if (pos and type(pos) == "table" and not RuneFrame.isMoving) then
+--            RuneFrame:ClearAllPoints();
+--            RuneFrame:SetPoint(unpack(pos));
+--        end
+--    end
+--end
 end
 
 ---------------
