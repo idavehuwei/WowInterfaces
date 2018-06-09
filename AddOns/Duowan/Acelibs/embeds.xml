@@ -3,15 +3,15 @@ E:\repos\Duowan-Work\UI.xsd">
     <!-- 基本类库 -->
     <Include file="Ace2\lib.xml"/>
     <Include file="Ace3\lib.xml"/>
+    <Include file="UTF8\lib.xml"/>
     <!-- 以下类库根据需要变动 -->
-    <Script file="Libs\Window-1.0\Window-1.0.lua"/>
+    <Script file="Window-1.0\Window-1.0.lua"/>
     <Script file="Waterfall-1.0\Waterfall-1.0.lua"/>
     <Include file="LibBabble-3.0\lib.xml"/>
     <Script file="LibTourist-3.0\LibTourist-3.0.lua"/><!-- InstanceMaps & QuestInfo -->
     <Script file="Dewdrop-2.0\Dewdrop-2.0.lua"/><!-- ... -->
     <Script file="Tablet-2.0\Tablet-2.0.lua"/><!-- ... -->
     <Script file="LibButtonFacade\LibButtonFacade.lua"/>
-    <Include file="UTF8\lib.xml"/>
     <Script file="LibTipHooker-1.1\LibTipHooker-1.1.lua"/><!--  RatingBuster -->
     <Script file="LibStatLogic-1.1\LibStatLogic-1.1.lua"/><!-- RatingBuster & RatingSummary -->
     <Script file="LibDataBroker-1.1\LibDataBroker-1.1.lua"/><!-- ... -->
@@ -25,11 +25,11 @@ E:\repos\Duowan-Work\UI.xsd">
     <Script file="LibSink-2.0\LibSink-2.0.lua"/>
     <Script file="LibBossIDs-1.0\LibBossIDs-1.0.lua"/><!-- Recount -->
     <Script file="LibGraph-2.0\LibGraph-2.0.lua"/><!-- Recount -->
-    <Include file="libs\LibAboutPanel\lib.xml"/>
-    <Include file="libs\LibSharedMedia-3.0\lib.xml"/>
+    <Include file="LibAboutPanel\lib.xml"/>
+    <Include file="LibSharedMedia-3.0\lib.xml"/>
     <Script file="LibQTip-1.0\LibQTip-1.0.lua"/>
     <Script file="SimpleSticky.lua"/><!-- 简单的吸附 -->
     <Script file="FuBarPlugin-2.0\FuBarPlugin-2.0.lua"/>
     <Script file="LibDualSpec-1.0\LibDualSpec-1.0.lua"/>
-    <Script file="Libs\Abacus-2.0\Abacus-2.0.lua"/>
+    <Script file="Abacus-2.0\Abacus-2.0.lua"/>
 </Ui>
