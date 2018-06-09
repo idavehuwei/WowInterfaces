@@ -22,7 +22,7 @@ if (GetLocale() == "zhCN") then
     L['Set sequence to ascend'] = '正序整理'
     L['Ctrl + Right-Click'] = 'Ctrl + 右键'
     L['Set sequence to descend'] = '逆序整理'
-elseif(GetLocale() == "zhTW") then
+elseif (GetLocale() == "zhTW") then
     L['Click'] = '點擊'
     L['Pack'] = '整理'
     L['LClick'] = '鼠标左键 正序整理'
@@ -44,7 +44,6 @@ else
         ['Pack'] = 'Pack',
         ['LClick'] = 'Left-Click ascend',
         ['RClick'] = 'Right-Click descend',
-
         ['Alt + Left-Click'] = 'Alt + Left-Click',
         ['Packup guildbank'] = 'Packup guildbank',
         ['Shift + Left-Click'] = 'Shift + Right-Click',
@@ -65,34 +64,31 @@ local function OnClick(self, button)
     if self.packType == "guildbank" then
         access = 3
     end
-    if(access)then
+    if (access) then
         JPack:Pack(access);
 
         return;
     end
-    if(self:GetName()=="CombuctorFrame2Sort")then
-        JPack.bankOpened=true;
+    if (self:GetName() == "CombuctorFrame2Sort") then
+        JPack.bankOpened = true;
     else
-        JPack.bankOpened=false;
+        JPack.bankOpened = false;
     end
 
-    if(button=="RightButton")then
+    if (button == "RightButton") then
         --print("RightButton");
         --JPack:Pack(access,1)
         --JPack.bankOpened
+        JPack_Order("asc");
+        JPack:pack(nil);
+    end
+    if (button == "LeftButton") then
+        --print("LeftButton")
+        --JPack:Pack(access,2);
         JPack_Order("");
         JPack:pack(nil);
     end
-    if(button=="LeftButton") then
-        --print("LeftButton");
-        JPack_Order("asc");
-        --JPack:Pack(access,2)
-        JPack:pack(nil);
-    end
-
-
 end
-
 
 local function OnEnter(self)
     GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
@@ -109,7 +105,7 @@ local function OnLeave()
 end
 
 function BuildButton(parent, width, height, point1, point2, point3)
-    local f = CreateFrame('Button', parent:GetName().."Sort", parent, 'UIPanelButtonTemplate')
+    local f = CreateFrame('Button', parent:GetName() .. "Sort", parent, 'UIPanelButtonTemplate')
 
     f:SetWidth(width)
     f:SetHeight(height)
@@ -124,7 +120,7 @@ function BuildButton(parent, width, height, point1, point2, point3)
     return f
 end
 
-local function ADDON_LOADED(self,event,addon)
+local function ADDON_LOADED(self, event, addon)
     if addon ~= 'Blizzard_GuildBankUI' then return end
     button = BuildButton(GuildBankFrame, 80, 26, 'TOPRIGHT', -25, -15)
     button.packType = "guildbank"
@@ -137,7 +133,7 @@ local function onLoad()
     if IsAddOnLoaded('ArkInventory') then
         local i = 1
         while i do
-            local arkframe = _G['ARKINV_Frame'..i]
+            local arkframe = _G['ARKINV_Frame' .. i]
             if not arkframe then break end
             button = BuildButton(arkframe, 50, 25, 'TOPRIGHT', -135, -15)
             button.packType = "bag"
@@ -157,7 +153,7 @@ local function onLoad()
         button.packType = "bag"
     elseif IsAddOnLoaded('Combuctor') then
         --CombuctorFrame1Search:SetPoint('TOPRIGHT',-166,-44)
-        CombuctorFrame2Search:SetPoint('TOPRIGHT',-166,-44)
+        CombuctorFrame2Search:SetPoint('TOPRIGHT', -166, -44)
         button = BuildButton(CombuctorFrame1, 45, 25, 'TOPRIGHT', -50, -40)
         button.packType = "bag"
         button = BuildButton(CombuctorFrame2, 45, 25, 'TOPRIGHT', -50, -40)
