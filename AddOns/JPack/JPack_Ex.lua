@@ -69,7 +69,7 @@ local function OnClick(self, button)
 
         return;
     end
-    if (self:GetName() == "CombuctorFrame2Sort") then
+    if (self:GetName() == "OneBankFrameSort") then
         JPack.bankOpened = true;
     else
         JPack.bankOpened = false;
