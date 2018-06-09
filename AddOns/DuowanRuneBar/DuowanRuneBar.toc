@@ -1,0 +1,18 @@
+## Interface: 30300
+## Title: Duowan Rune Bar
+## Title-zhCN: DK符文条 DuowanRuneBar
+## Notes: Rune enhancement bar for DK
+## Notes-zhCN: DK 增强符文条。
+## Author: Duowan
+
+## LoadManagers: AddonLoader
+## X-LoadOn-Merchant: true
+## X-LoadOn-AuctionHouse: true
+
+## OptionalDeps: EN_UnitFrames
+## Dependencies: Duowan
+## X-DuowanAddon: 界面聊天
+## X-Revision: Duowan
+## LoadOnDemand: 1
+
+DuowanRuneBar.xml

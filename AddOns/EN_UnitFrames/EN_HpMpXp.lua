@@ -594,29 +594,26 @@ function EUF_CanXPBarShow()
 end
 
 function PowerFrame_Position(class,canShow)
-    if canShow == 1 then
-        if ( class == "WARLOCK" ) then
-            Place(ShardBarFrame,"TOP", "PlayerFrame","BOTTOM", 54, 25);
-        elseif ( class == "DRUID" ) then
-            Place(EclipseBarFrame,"TOP", "PlayerFrame","BOTTOM", 54, 20);
-        --elseif ( class == "PALADIN" ) then
-        --  Place(PaladinPowerBar,"TOP", "PlayerFrame","BOTTOM", 54, 30);
-        elseif ( class == "DEATHKNIGHT" ) then
-            Place(RuneFrame,"TOP", "PlayerFrame","BOTTOM", 54, 20);
-        end;
-        Place(PetFrame,"TOP", "PlayerFrame","BOTTOM", 20, 10);
-    else
-        if ( class == "WARLOCK" ) then
-            Place(ShardBarFrame,"TOP", "PlayerFrame","BOTTOM", 54, 35);
-        elseif ( class == "DRUID" ) then
-            Place(EclipseBarFrame,"TOP", "PlayerFrame","BOTTOM", 54, 30);
-        --elseif ( class == "PALADIN" ) then
-        --  Place(PaladinPowerBar,"TOP", "PlayerFrame","BOTTOM", 54, 40);
-        elseif ( class == "DEATHKNIGHT" ) then
-            Place(RuneFrame,"TOP", "PlayerFrame","BOTTOM", 54, 30);
-        end;
-        Place(PetFrame,"TOP", "PlayerFrame","BOTTOM", 20, 20);
+    local function calcOfsY(yOfs)
+        if (canShow == 1) then
+            return yOfs;
+        else
+            return yOfs + 10;
+        end
     end
+
+    if (class == "WARLOCK") then
+        Place(ShardBarFrame, "TOP", "PlayerFrame", "BOTTOM", 64, calcOfsY(25));
+    elseif (class == "DRUID") then
+        Place(EclipseBarFrame, "TOP", "PlayerFrame", "BOTTOM", 64, calcOfsY(20));
+    --elseif ( class == "PALADIN" ) then
+    --    Place(PaladinPowerBar,"TOP", "PlayerFrame","BOTTOM", 64, calcOfsY(30));
+    elseif (class == "DEATHKNIGHT") then
+        if (dwRawGetCVar("DuowanConfig", "EnableDkMod", false) == false) then
+            Place(RuneFrame, "TOP", "PlayerFrame", "BOTTOM", 64, calcOfsY(20));
+        end
+    end;
+    Place(PetFrame, "TOP", "PlayerFrame", "BOTTOM", 20, calcOfsY(10));
 end
 
 function TargetHitIndicator_OnEvent(self, event, ...)

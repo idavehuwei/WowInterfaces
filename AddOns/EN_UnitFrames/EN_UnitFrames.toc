@@ -14,6 +14,7 @@
 ## X-Curse-Repository-ID: wow/en_unitframes/mainline
 ## SavedVariables: DuowanAddon_EUF_Options
 
+## OptionalDeps: Titan
 ## Dependencies: Duowan
 ## X-Revision: Duowan
 ## X-DuowanAddon: 界面聊天

@@ -220,8 +220,6 @@ if (dwIsConfigurableAddOn("HunterMod") and class == "HUNTER") then
         function (arg)
             if (arg == 1) then
                 dwLoadAddOn("HunterMod");
-            else
-
             end
         end
     );
@@ -258,7 +256,7 @@ if (dwIsConfigurableAddOn("HunterMod") and class == "HUNTER") then
                 end
             else
                 if (dwIsAddOnLoaded("HunterMod")) then
-                AutoShot:ToggleLock(false);
+                    AutoShot:ToggleLock(false);
                 end
             end
         end,
@@ -367,7 +365,6 @@ if (dwIsConfigurableAddOn("AspectPosionBar") and  (class == "ROGUE" or class == 
         function (arg)
             if (arg == 1) then
                 dwLoadAddOn("AspectPosionBar");
-
                 AspectPosionBar_Toggle(true);
             else
                 if (dwIsAddOnLoaded("AspectPosionBar")) then
@@ -384,7 +381,6 @@ if (dwIsConfigurableAddOn("AspectPosionBar") and  (class == "ROGUE" or class == 
             if (dwIsAddOnLoaded("AspectPosionBar")) then
                 --dwShowKeyBindingFrame("HEADER_ASPECTBAR");
                 dwShowKeyBindingFrame("SHAPESHIFTBUTTON1");
-
             end
         end,
         1
@@ -394,170 +390,38 @@ end
 
 -----------
 -- DK
-if (class == "DEATHKNIGHT" and not dwRuneFrameHasOtherAddOn()) then
-    RuneFrame:SetMovable(true);
-    local EnableDkMod = true;
-    local function RuneFrameOnStartMove()
-        local value = dwRawGetCVar("DuowanConfig", "RuneFrameScale", 1);
-        dwSetScale(RuneFrame, value);
-        dwSetCVar("DuowanConfig", "isRuneFrameMove", 1);
-        RuneFrame:StartMoving();
-        RuneFrame.isMoving = true;
-    end
-
-    local function RuneFrameOnResetPos()
-        dwSetCVar("DuowanConfig", "RuneFrameScale", 1);
-        dwSetCVar("DuowanConfig", "isRuneFrameMove", 0);
-        RuneFrame.isMoving = false;
-        dwUpdateRuneFrame();
-    end
-
-    local function RuneFrameOnStopMove()
-        RuneFrame:StopMovingOrSizing();
-        RuneFrame.isMoving = false;
-        local pos = {RuneFrame:GetPoint()};
-        dwSetCVar("DuowanConfig", "RuneFramePos", pos);
-    end
-
-    local Dropdown_Options = {
-        {
-            text = RUNEFRAME_MENU_TITLE_TEXT,
-            notCheckable = true,
-            isTitle = true,
-        },
-        {
-            text = RUNEFRAME_MENU_SCALE_TEXT,
-            arg1 = 0.5, -- min value
-            arg2 = 2,   -- max value
-            notCheckable = true,
-            func = function(self, arg1, arg2)
-                Duowan_ShowPopRange(
-                    arg1,
-                    arg2,
-                    dwRawGetCVar("DuowanConfig", "RuneFrameScale", 1),
-                    0.05,
-                    true,
-                    function(value)
-                        dwSetScale(RuneFrame, value);
-                        dwSetCVar("DuowanConfig", "RuneFrameScale", value);
-                    end,
-                    nil,
-                    function(value)
-                        dwSetCVar("DuowanConfig", "RuneFrameScale", value);
-                    end,
-                    nil
-                );
-            end,
-        },
-        {
-            text = CANCEL,
-            notCheckable = true,
-            func = function()
-            end,
-        },
-    };
-
-    for i=1, 6 do
-        rune = _G["RuneButtonIndividual"..i];
-        rune:RegisterForClicks("LeftButtonDown", "RightButtonDown");
-        rune:SetScript("OnMouseDown", function(self, button)
-            if (not (EnableDkMod and IsShiftKeyDown())) then
-                return;
-            end
-
-            if (button == "LeftButton") then
-                RuneFrameOnStartMove();
-            end
-        end);
-        DWEasyMenu_Register(rune, Dropdown_Options);
-        rune:SetScript("OnMouseUp", function(self, button)
-            if (RuneFrame.isMoving) then
-                RuneFrameOnStopMove();
-            end
-        end);
-    end
-
-    hooksecurefunc("RuneButton_OnEnter", function(self)
-        if (EnableDkMod) then
-            GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT");
-            GameTooltip:ClearLines();
-            GameTooltip:SetText(self.tooltipText);
-            GameTooltip:AddLine("|cff00aeff".. RUNEFRAME_MENU_TIP_TEXT1.."|r");
-            GameTooltip:Show();
-        end
-    end);
-
-    hooksecurefunc("UnitFrame_SetUnit", function(self, unit, healthbar, manabar)
-        if ((self==PlayerFrame or self==PetFrame) and unit=="player") then
-            dwUpdateRuneFrame();
-        end
-    end)
-
-    local function RuneFrameCenterPos()
-        local value = dwRawGetCVar("DuowanConfig", "isRuneFrameMove", 0);
-        if (value == 0) then
-            dwSetCVar("DuowanConfig", "RuneFrameScale", 1.2);
-            RuneFrameOnStartMove();
-            RuneFrame:ClearAllPoints();
-            RuneFrame:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 175);
-            RuneFrameOnStopMove();
-        end
-    end
-
-    function DKMod_Toggle(switch)
-        local rune;
-        if (switch) then
-            EnableDkMod = true;
-            RuneFrameCenterPos();
-        else
-            EnableDkMod = false;
-            RuneFrameOnResetPos();
-        end
-    end
-
-    local frame = CreateFrame("Frame");
-    frame.time = 0;
-    dwRegisterCheckButton(
-        "ClassModule",
+if (dwIsConfigurableAddOn("DuowanRuneBar") and (class == "DEATHKNIGHT")) then
+    dwRegisterCheckButton("ClassModule",
         CLASSMOD_RUNFRAME_ENABLE,
         "",
         "EnableDkMod",
         1,
-        function (arg)
-            if (arg == 1) then
-                DKMod_Toggle(true);
-            else
-                DKMod_Toggle(false);
+        function(arg)
+            if (not dwIsAddOnLoaded("DuowanRuneBar")) then
+                dwLoadAddOn("DuowanRuneBar");
             end
-        end
-    );
+            if (dwIsAddOnLoaded("DuowanRuneBar")) then
+                if (arg == 1) then
+                    DuowanRuneBar_Enable(true);
+                else
+                    DuowanRuneBar_Enable(false);
+                end
+            end
+        end);
 
-    dwRegisterCheckButton(
-        "ClassModule",
+    dwRegisterCheckButton("ClassModule",
         CLASSMOD_RUNFRAME_ALPHA,
         "",
         "Alpha",
         1,
-        function (arg)
-            if (arg == 1) then
-                frame:SetScript("OnUpdate", function(self, elapsed)
-                    self.time = self.time + 1;
-                    if (self.time > 0.05) then
-                        self.time = 0;
-                        if (UnitExists("target")) then
-                            RuneFrame:SetAlpha(1);
-                        else
-                            RuneFrame:SetAlpha(0.2);
-                        end
-                    end
-                end);
-            else
-                frame:SetScript("OnUpdate", nil);
-                RuneFrame:SetAlpha(1);
+        function(arg)
+            if (dwIsAddOnLoaded("DuowanRuneBar")) then
+                if (arg == 1) then
+                    DuowanRuneBar_AlphaToggle(true);
+                else
+                    DuowanRuneBar_AlphaToggle(false);
+                end
             end
         end,
-        1
-    );
+        1);
 end
-
-
