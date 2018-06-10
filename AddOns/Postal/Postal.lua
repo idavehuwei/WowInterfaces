@@ -46,7 +46,6 @@ local defaults = {
 }
 local _G = getfenv(0)
 local t = {}
-local aboutFrame
 
 -- Use a common frame and setup some common functions for the Postal dropdown menus
 local Postal_DropDownMenu = CreateFrame("Frame", "Postal_DropDownMenu")
@@ -364,6 +363,7 @@ function Postal.Menu(self, level)
 end
 
 function Postal:CreateAboutFrame()
+    local aboutFrame = Postal.aboutFrame
     if not aboutFrame and Chatter and ChatterCopyFrame then
         aboutFrame = ChatterCopyFrame
         aboutFrame.editBox = Chatter:GetModule("Chat Copy").editBox
@@ -406,6 +406,7 @@ function Postal:CreateAboutFrame()
         local close = CreateFrame("Button", nil, aboutFrame, "UIPanelCloseButton")
         close:SetPoint("TOPRIGHT", aboutFrame, "TOPRIGHT")
     end
+    Postal.aboutFrame = aboutFrame;
     Postal.CreateAboutFrame = nil -- Kill ourselves
 end
 
