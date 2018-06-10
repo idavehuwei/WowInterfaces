@@ -80,7 +80,7 @@ if (dwIsConfigurableAddOn("QuestInfo")--[[ or dwIsConfigurableAddOn("QuestHelper
         QUEST_INFO_ENABLE,
         nil,
         "QuestInfoEnable",
-        0,
+        1,
         function (arg)
             --local isBF = dwRawGetCVar("QuestMod", "QuestHelper", 0);
             if(arg==1)then

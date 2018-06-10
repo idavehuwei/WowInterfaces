@@ -426,7 +426,7 @@ local defaults = {
     profile = {
         showCreator = true,--显示创建者的名字
         showYardsAway = false,--显示码数
-        iconSize = 1,--图标大小
+        iconSize = 0.65,--图标大小
         minimapIconSize = 0.65,--mini map地图大小
         showMinimapIcons = false,
         notesPerDB = 25,--数据量
@@ -650,8 +650,8 @@ function Mapster_Notes:OnEnable()
 
     -- 创建一个slash命令 处理相关信息
     --分为两种
-    --	一种快速标记 玩家点击坐标 即能标注上去
-    --	另一种 由系统进行标记 详细
+    --  一种快速标记 玩家点击坐标 即能标注上去
+    --  另一种 由系统进行标记 详细
     if first then
         local temp = {}
         --快速make
@@ -1634,7 +1634,7 @@ do
     local function newpoi(minimap)
         local frame = next(cache)
         if frame then
-            cache[frame] = nil	-- 清空缓存
+            cache[frame] = nil  -- 清空缓存
             frame:Show()
             frame.minimap = minimap
             if minimap then

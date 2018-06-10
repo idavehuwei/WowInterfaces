@@ -187,7 +187,6 @@ function CQI_ToggleAutoUpdate(switch)
     else
         CQI.db.profile.autoUpdate = false;
     end
-
 end
 
 function CQI:ToggleCartoButton(mode)
@@ -278,15 +277,15 @@ function CQI:GotoQuestZone(zone)
 
     self:UpdateMapInfo();
 
-    if(Tourist:IsInstance(zone)) and (InstanceMaps)then
+    if (Tourist:IsInstance(zone)) and (InstanceMaps) then
         InstanceMaps:ShowInstance(BZR[zone]);
         return;
     end
     if CQI_WORLD[zone] then
-            local idx = CQI_WORLD[zone]
-            SetMapZoom(idx[1], idx[2])
+        local idx = CQI_WORLD[zone]
+        SetMapZoom(idx[1], idx[2])
     elseif Tourist:IsInstance(zone) and Cartographer_InstanceMaps then
-            Cartographer_InstanceMaps:ShowInstance(BZR[zone])
+        Cartographer_InstanceMaps:ShowInstance(BZR[zone])
     end
 end
 
@@ -313,7 +312,7 @@ function CQI:ShowActiveQuests(tracked_only, all_zones)
         local q = self:GetQuest(uid)
         if q and (not tracked_only or IsQuestWatched(qid)) then
             --if q.start_npc and complete ~= 1 then
-            --	self:AddQuestNotes(q.title_full, L["Quest Start"], "start", q.start_npc, zone)
+            --  self:AddQuestNotes(q.title_full, L["Quest Start"], "start", q.start_npc, zone)
             --end
             if (complete) then
                 if q.end_npc then
