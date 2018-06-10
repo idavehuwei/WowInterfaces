@@ -140,6 +140,7 @@ QuestInfo_Zone = {
 	[4415] = "The Violet Hold",
 	[4494] = "The Old Kingdom",
 	[4500] = "The Eye of Eternity",
+	[4742] = "Hrothgar's Landing",
 }
 
 if LibStub then
