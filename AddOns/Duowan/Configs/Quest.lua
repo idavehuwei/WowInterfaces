@@ -265,7 +265,7 @@ if (dwIsConfigurableAddOn("DuowanQuest")) then
         FASTQUEST_QUESTFORMAT_TITLE,
         nil,
         "EnableQuestFormat",
-        0,
+        1,
         function (arg)
             if (arg == 1) then
                 if (dwIsAddOnLoaded("DuowanQuest")) then

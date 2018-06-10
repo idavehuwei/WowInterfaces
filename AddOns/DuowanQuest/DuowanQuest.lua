@@ -452,9 +452,9 @@ function D:ChangeTitle(questLogTitle, questLogTitleText, level, questTag, sugges
             end
             DifTag = (" (" .. questTag .. ") ");
 
-            if (questTag == LFG_TYPE_DUNGEON) then LevelTag = "d";
-            elseif (questTag == RAID) then LevelTag = "r";
-            elseif (questTag == PVP) then LevelTag = "p";
+            if (questTag == LFG_TYPE_DUNGEON) then LevelTag = "D";
+            elseif (questTag == RAID) then LevelTag = "R";
+            elseif (questTag == PVP) then LevelTag = "P";
             else LevelTag = "+";
             end
 
@@ -489,6 +489,7 @@ end
 function D:WatchFrame_Update()
     local maxWidth = 0;
     if (self.db.Level) then
+        local questWidth = 0;
         local questIndex = 1;
         local questLogTitleText, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily, title;
         local numQuestWatches = GetNumQuestWatches();
@@ -501,6 +502,7 @@ function D:WatchFrame_Update()
                 while i <= #WATCHFRAME_QUESTLINES do
                     local line = WATCHFRAME_QUESTLINES[i].text
                     local text = line:GetText() or ''
+                    questWidth = max(line:GetStringWidth() + WATCHFRAME_ITEM_WIDTH, questWidth);
 
                     if strmatch(text, title) then
                         self:ChangeTitle(line, title, level, questTag, suggestedGroup, isHeader, isDaily, true);
@@ -510,6 +512,12 @@ function D:WatchFrame_Update()
                         i = i + 1
                     end
                 end
+            end
+        end
+
+        if (WatchFrame and WatchFrame:IsVisible()) then
+            if (questWidth > WatchFrame:GetWidth()) then
+                WatchFrame_SetWidth(1);
             end
         end
     end
