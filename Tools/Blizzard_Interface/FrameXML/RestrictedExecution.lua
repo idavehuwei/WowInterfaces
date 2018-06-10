@@ -42,7 +42,6 @@ local IsFrameHandle = IsFrameHandle;
 
 ---------------------------------------------------------------------------
 -- RESTRICTED CLOSURES
-
 local function SelfScrub(self)
     if (self ~= nil and IsFrameHandle(self)) then
         return self;
@@ -86,7 +85,7 @@ local function BuildRestrictedClosure(body, env, signature)
 
     -- Include a \n before end to stop shenanigans with comments
     local def, err =
-        loadstring("return function (" .. signature .. ") " .. body .. "\nend", body);
+    loadstring("return function (" .. signature .. ") " .. body .. "\nend", body);
     if (def == nil) then
         return nil, err;
     end
@@ -146,53 +145,50 @@ end
 
 -- Mapping table from restricted table 'proxy' to the 'real' storage
 local LOCAL_Restricted_Tables = {};
-setmetatable(LOCAL_Restricted_Tables, { __mode="k" });
+setmetatable(LOCAL_Restricted_Tables, { __mode = "k" });
 
 -- Metatable common to all restricted tables (This introduces one
 -- level of indirection in every use as a means to share the same
 -- metatable between all instances)
 local LOCAL_Restricted_Table_Meta = {
     __index = function(t, k)
-                  local real = LOCAL_Restricted_Tables[t];
-                  return real[k];
-              end,
-
+        local real = LOCAL_Restricted_Tables[t];
+        return real[k];
+    end,
     __newindex = function(t, k, v)
-                     local real = LOCAL_Restricted_Tables[t];
-                     if (not issecure()) then
-                         error("Cannot insecurely modify restricted table");
-                         return;
-                     end
-                     local tv = type(v);
-                     if ((tv ~= "string") and (tv ~= "number")
-                         and (tv ~= "boolean") and (tv ~= "nil")
-                             and ((tv ~= "userdata")
-                                  or not (LOCAL_Restricted_Tables[v]
-                                          or  IsFrameHandle(v)))) then
-                         error("Invalid value type '" .. tv .. "'");
-                         return;
-                     end
-                     local tk = type(k);
-                     if ((tk ~= "string") and (tk ~= "number")
-                         and (tk ~= "boolean")
-                             and ((tk ~= "userdata")
-                                  or not (IsFrameHandle(k)))) then
-                         error("Invalid key type '" .. tk .. "'");
-                         return;
-                     end
-                     real[k] = v;
-                 end,
-
+        local real = LOCAL_Restricted_Tables[t];
+        if (not issecure()) then
+            error("Cannot insecurely modify restricted table");
+            return;
+        end
+        local tv = type(v);
+        if ((tv ~= "string") and (tv ~= "number")
+            and (tv ~= "boolean") and (tv ~= "nil")
+            and ((tv ~= "userdata")
+            or not (LOCAL_Restricted_Tables[v]
+            or IsFrameHandle(v)))) then
+            error("Invalid value type '" .. tv .. "'");
+            return;
+        end
+        local tk = type(k);
+        if ((tk ~= "string") and (tk ~= "number")
+            and (tk ~= "boolean")
+            and ((tk ~= "userdata")
+            or not (IsFrameHandle(k)))) then
+            error("Invalid key type '" .. tk .. "'");
+            return;
+        end
+        real[k] = v;
+    end,
     __len = function(t)
-                local real = LOCAL_Restricted_Tables[t];
-                return #real;
-            end,
-
+        local real = LOCAL_Restricted_Tables[t];
+        return #real;
+    end,
     __metatable = false, -- False means read-write proxy
 }
 
 local LOCAL_Readonly_Restricted_Tables = {};
-setmetatable(LOCAL_Readonly_Restricted_Tables, { __mode="k" });
+setmetatable(LOCAL_Readonly_Restricted_Tables, { __mode = "k" });
 
 local function CheckReadonlyValue(ret)
     if (type(ret) == "userdata") then
@@ -210,19 +206,16 @@ end
 -- indirection so that a single metatable is viable)
 local LOCAL_Readonly_Restricted_Table_Meta = {
     __index = function(t, k)
-                  local real = LOCAL_Restricted_Tables[t];
-                  return CheckReadonlyValue(real[k]);
-              end,
-
+        local real = LOCAL_Restricted_Tables[t];
+        return CheckReadonlyValue(real[k]);
+    end,
     __newindex = function(t, k, v)
-                     error("Table is read-only");
-                 end,
-
+        error("Table is read-only");
+    end,
     __len = function(t)
-                local real = LOCAL_Restricted_Tables[t];
-                return #real;
-            end,
-
+        local real = LOCAL_Restricted_Tables[t];
+        return #real;
+    end,
     __metatable = true, -- True means read-only proxy
 }
 
@@ -256,7 +249,7 @@ local function RestrictedTable_Readonly_index(t, k)
 end
 
 getmetatable(LOCAL_Readonly_Restricted_Tables).__index
-    = RestrictedTable_Readonly_index;
+= RestrictedTable_Readonly_index;
 
 -- table = RestrictedTable_create(...)
 --
@@ -554,10 +547,10 @@ local LOCAL_Table_Namespace = {
 --
 -- environment     -- The new restricted environment table
 -- manageFunc      -- Management function to set/clear working and proxy
---                    environments.
+-- environments.
 --
 -- The management function takes two parameters
---    manageFunc(set, workingTable, controlHandle)
+-- manageFunc(set, workingTable, controlHandle)
 --
 -- set is a boolean;  If it's true then the working table is set to the
 -- specified value (pushing any previous environment onto a stack). If
@@ -586,7 +579,9 @@ local function CreateRestrictedEnvironment(base)
             if (k == "control") then return control; end
         end
         return v;
-    end;
+    end
+
+    ;
 
     local function meta_newindex(t, k, v)
         working[k] = v;
@@ -711,16 +706,16 @@ end
 -- Import any functions initialized by other/earier files
 if (RESTRICTED_FUNCTIONS_SCOPE) then
     PopulateGlobalFunctions(RESTRICTED_FUNCTIONS_SCOPE,
-                            LOCAL_Restricted_Global_Functions);
+        LOCAL_Restricted_Global_Functions);
     RESTRICTED_FUNCTIONS_SCOPE = nil;
 end
 
 PopulateGlobalFunctions(LOCAL_Table_Namespace,
-                        LOCAL_Restricted_Global_Functions);
+    LOCAL_Restricted_Global_Functions);
 
 -- Create the environment
 local LOCAL_Function_Environment, LOCAL_Function_Environment_Manager =
-    CreateRestrictedEnvironment(LOCAL_Restricted_Global_Functions);
+CreateRestrictedEnvironment(LOCAL_Restricted_Global_Functions);
 
 -- Protect from injection via the string metatable index
 -- Assume for now that 'string' is relatively clean
@@ -728,13 +723,13 @@ local strmeta = getmetatable("x");
 local newmetaindex = {};
 for k, v in pairs(string) do newmetaindex[k] = v; end
 setmetatable(newmetaindex, {
-                 __index = function(t,k)
-                               if (not issecure()) then
-                                   return string[k];
-                               end
-                           end;
-                 __metatable = false;
-             });
+    __index = function(t, k)
+        if (not issecure()) then
+            return string[k];
+        end
+    end;
+    __metatable = false;
+});
 strmeta.__index = newmetaindex;
 strmeta.__metatable = string;
 strmeta = nil;
@@ -746,7 +741,7 @@ newmetaindex = nil;
 -- An automatically populating table keyed by function signature with
 -- values that are closure factories for those signatures.
 
-local LOCAL_Closure_Factories = { };
+local LOCAL_Closure_Factories = {};
 
 local function ClosureFactories_index(t, signature)
     if (type(signature) ~= "string") then
@@ -778,7 +773,7 @@ local function ReleaseAndReturn(workingEnv, ctrlHandle, pcallFlag, ...)
     if (pcallFlag) then
         return ...;
     end
-    error("Call failed: " .. tostring( (...) ) );
+    error("Call failed: " .. tostring((...)));
 end
 
 -- ? = CallRestrictedClosure(signature, workingEnv, onupdate, body, ...)
@@ -822,6 +817,6 @@ function CallRestrictedClosure(signature, workingEnv, ctrlHandle, body, ...)
     end
 
     LOCAL_Function_Environment_Manager(true, workingEnv, ctrlHandle);
-    return ReleaseAndReturn(workingEnv, ctrlHandle, pcall( closure, ... ) );
+    return ReleaseAndReturn(workingEnv, ctrlHandle, pcall(closure, ...));
 end
 

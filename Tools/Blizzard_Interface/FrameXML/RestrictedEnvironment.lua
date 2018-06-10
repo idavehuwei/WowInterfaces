@@ -61,9 +61,9 @@ function tostringall(...)
 end
 
 local LOCAL_PrintHandler =
-    function(...)
-        DEFAULT_CHAT_FRAME:AddMessage(strjoin(" ", tostringall(...)));
-    end
+function(...)
+    DEFAULT_CHAT_FRAME:AddMessage(strjoin(" ", tostringall(...)));
+end
 
 function setprinthandler(func)
     if (type(func) ~= "function") then
@@ -173,65 +173,65 @@ local OTHER_SAFE_FUNCTION_NAMES = {
 };
 
 -- Copy the direct functions into the table
-for _, name in ipairs( DIRECT_MACRO_CONDITIONAL_NAMES ) do
+for _, name in ipairs(DIRECT_MACRO_CONDITIONAL_NAMES) do
     RESTRICTED_FUNCTIONS_SCOPE[name] = _G[name];
 end
 
 -- Copy the other safe functions into the table
-for _, name in ipairs( OTHER_SAFE_FUNCTION_NAMES ) do
+for _, name in ipairs(OTHER_SAFE_FUNCTION_NAMES) do
     RESTRICTED_FUNCTIONS_SCOPE[name] = _G[name];
 end
 
 -- Now create the remainder (ENV is just an alias for brevity)
 local ENV = RESTRICTED_FUNCTIONS_SCOPE;
 
-function ENV.PlayerCanAttack( unit )
-    return UnitCanAttack( "player", unit )
+function ENV.PlayerCanAttack(unit)
+    return UnitCanAttack("player", unit)
 end
 
-function ENV.PlayerCanAssist( unit )
-    return UnitCanAssist( "player", unit )
+function ENV.PlayerCanAssist(unit)
+    return UnitCanAssist("player", unit)
 end
 
 function ENV.PlayerIsChanneling()
-    return (UnitChannelInfo( "player" ) ~= nil)
+    return (UnitChannelInfo("player") ~= nil)
 end
 
 function ENV.PlayerPetSummary()
-    return UnitCreatureFamily( "pet" ), (UnitName( "pet" ))
+    return UnitCreatureFamily("pet"), (UnitName("pet"))
 end
 
 function ENV.PlayerInCombat()
-    return UnitAffectingCombat( "player" ) or UnitAffectingCombat( "pet" )
+    return UnitAffectingCombat("player") or UnitAffectingCombat("pet")
 end
 
 function ENV.PlayerInGroup()
-    return ( GetNumRaidMembers() > 0 and "raid" )
-        or ( GetNumPartyMembers() > 0 and "party" )
+    return (GetNumRaidMembers() > 0 and "raid")
+        or (GetNumPartyMembers() > 0 and "party")
 end
 
 function ENV.UnitHasVehicleUI(unit)
-	unit = tostring(unit);
-	return UnitHasVehicleUI(unit) and 
-		(UnitCanAssist("player", unit:gsub("(%D+)(%d*)", "%1pet%2")) and true) or 
-		(UnitCanAssist("player", unit) and false);
+    unit = tostring(unit);
+    return UnitHasVehicleUI(unit) and
+        (UnitCanAssist("player", unit:gsub("(%D+)(%d*)", "%1pet%2")) and true) or
+        (UnitCanAssist("player", unit) and false);
 end
 
 function ENV.RegisterStateDriver(frameHandle, ...)
-	return RegisterStateDriver(GetFrameHandleFrame(frameHandle), ...)
+    return RegisterStateDriver(GetFrameHandleFrame(frameHandle), ...)
 end
 
-local safeActionTypes = {["spell"] = true, ["companion"] = true, ["item"] = true, ["macro"] = true}
+local safeActionTypes = { ["spell"] = true, ["companion"] = true, ["item"] = true, ["macro"] = true }
 local function scrubActionInfo(actionType, ...)
-	if ( safeActionTypes[actionType]) then
-		return actionType, ...
-	else
-		return actionType
-	end
+    if (safeActionTypes[actionType]) then
+        return actionType, ...
+    else
+        return actionType
+    end
 end
 
 function ENV.GetActionInfo(...)
-	return scrubActionInfo(GetActionInfo(...));
+    return scrubActionInfo(GetActionInfo(...));
 end
 
 ENV = nil;

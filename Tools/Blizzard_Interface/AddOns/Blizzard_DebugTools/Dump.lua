@@ -12,18 +12,18 @@
 ---------------------------------------------------------------------------
 local DT = {};
 
-DEVTOOLS_MAX_ENTRY_CUTOFF = 30;    -- Maximum table entries shown
+DEVTOOLS_MAX_ENTRY_CUTOFF = 30; -- Maximum table entries shown
 DEVTOOLS_LONG_STRING_CUTOFF = 200; -- Maximum string size shown
-DEVTOOLS_DEPTH_CUTOFF = 10;        -- Maximum table depth
-DEVTOOLS_USE_TABLE_CACHE = true;   -- Look up table names
-DEVTOOLS_USE_FUNCTION_CACHE = true;-- Look up function names
-DEVTOOLS_USE_USERDATA_CACHE = true;-- Look up userdata names
-DEVTOOLS_INDENT='  ';              -- Indentation string
+DEVTOOLS_DEPTH_CUTOFF = 10; -- Maximum table depth
+DEVTOOLS_USE_TABLE_CACHE = true; -- Look up table names
+DEVTOOLS_USE_FUNCTION_CACHE = true; -- Look up function names
+DEVTOOLS_USE_USERDATA_CACHE = true; -- Look up userdata names
+DEVTOOLS_INDENT = '  '; -- Indentation string
 
-local DEVTOOLS_TYPE_COLOR="|cff88ff88";
-local DEVTOOLS_TABLEREF_COLOR="|cffffcc00";
-local DEVTOOLS_CUTOFF_COLOR="|cffff0000";
-local DEVTOOLS_TABLEKEY_COLOR="|cff88ccff";
+local DEVTOOLS_TYPE_COLOR = "|cff88ff88";
+local DEVTOOLS_TABLEREF_COLOR = "|cffffcc00";
+local DEVTOOLS_CUTOFF_COLOR = "|cffff0000";
+local DEVTOOLS_TABLEKEY_COLOR = "|cff88ccff";
 
 local FORMATS = {};
 -- prefix type suffix
@@ -62,7 +62,7 @@ end
 
 local function prepSimple(val, context)
     local valType = type(val);
-    if (valType == "nil")  then
+    if (valType == "nil") then
         return "nil";
     elseif (valType == "number") then
         return val;
@@ -78,9 +78,9 @@ local function prepSimple(val, context)
             (DEVTOOLS_LONG_STRING_CUTOFF > 0)) then
             local more = l - DEVTOOLS_LONG_STRING_CUTOFF;
             val = string_sub(val, 1, DEVTOOLS_LONG_STRING_CUTOFF);
-            return string_gsub(string_format("%q...+%s",val,more),"[|]", "||");
+            return string_gsub(string_format("%q...+%s", val, more), "[|]", "||");
         else
-            return string_gsub(string_format("%q",val),"[|]", "||");
+            return string_gsub(string_format("%q", val), "[|]", "||");
         end
     elseif (valType == "function") then
         local fName = context:GetFunctionName(val);
@@ -125,14 +125,14 @@ end
 local function DevTools_InitFunctionCache(context)
     local ret = {};
 
-    for _,k in ipairs(DT.functionSymbols) do
+    for _, k in ipairs(DT.functionSymbols) do
         local v = getglobal(k);
         if (type(v) == 'function') then
             ret[v] = '[' .. k .. ']';
         end
     end
 
-    for k,v in pairs(getfenv(0)) do
+    for k, v in pairs(getfenv(0)) do
         if (type(v) == 'function') then
             if (not ret[v]) then
                 ret[v] = '[' .. k .. ']';
@@ -146,17 +146,17 @@ end
 local function DevTools_InitUserdataCache(context)
     local ret = {};
 
-    for _,k in ipairs(DT.userdataSymbols) do
+    for _, k in ipairs(DT.userdataSymbols) do
         local v = getglobal(k);
         if (type(v) == 'table') then
-            local u = rawget(v,0);
+            local u = rawget(v, 0);
             if (type(u) == 'userdata') then
                 ret[u] = k .. '[0]';
             end
         end
     end
 
-    for k,v in pairs(getfenv(0)) do
+    for k, v in pairs(getfenv(0)) do
         if (type(v) == 'table') then
             local u = rawget(v, 0);
             if (type(u) == 'userdata') then
@@ -225,7 +225,7 @@ local function DevTools_DumpTableContents(val, prefix, firstPrefix, context)
     local nextK, nextV = iter(val, nil);
 
     while (nextK) do
-        local k,v = nextK, nextV;
+        local k, v = nextK, nextV;
         nextK, nextV = iter(val, k);
 
         showCount = showCount + 1;
@@ -242,17 +242,17 @@ local function DevTools_DumpTableContents(val, prefix, firstPrefix, context)
             context.depth = oldDepth + 1;
 
             local rp = string_format(FORMATS.tableKeyAssignPrefix, firstPrefix,
-                                     prepKey);
+                prepKey);
             firstPrefix = prefix;
             DevTools_DumpValue(v, prefix, rp,
-                               (nextK and ",") or '',
-                               context);
+                (nextK and ",") or '',
+                context);
         end
     end
     local cutoff = showCount - DEVTOOLS_MAX_ENTRY_CUTOFF;
     if ((cutoff > 0) and (DEVTOOLS_MAX_ENTRY_CUTOFF > 0)) then
-        context:Write(string_format(FORMATS.tableEntriesSkipped,firstPrefix,
-                                    cutoff));
+        context:Write(string_format(FORMATS.tableEntriesSkipped, firstPrefix,
+            cutoff));
     end
     context.key = oldKey;
     context.depth = oldDepth;
@@ -267,40 +267,40 @@ function DevTools_DumpValue(val, prefix, firstPrefix, suffix, context)
         local uName = context:GetUserdataName(val, 'value');
         if (uName) then
             context:Write(string_format(FORMATS.opaqueTypeValName,
-                                        firstPrefix, valType, uName, suffix));
+                firstPrefix, valType, uName, suffix));
         else
             context:Write(string_format(FORMATS.opaqueTypeVal,
-                                        firstPrefix, valType, suffix));
+                firstPrefix, valType, suffix));
         end
         return;
     elseif (valType == "function") then
         local fName = context:GetFunctionName(val, 'value');
         if (fName) then
             context:Write(string_format(FORMATS.opaqueTypeValName,
-                                        firstPrefix, valType, fName, suffix));
+                firstPrefix, valType, fName, suffix));
         else
             context:Write(string_format(FORMATS.opaqueTypeVal,
-                                        firstPrefix, valType, suffix));
+                firstPrefix, valType, suffix));
         end
         return;
-    elseif (valType ~= "table")  then
+    elseif (valType ~= "table") then
         context:Write(string_format(FORMATS.simpleValue,
-                                    firstPrefix,prepSimple(val, context),
-                                    suffix));
+            firstPrefix, prepSimple(val, context),
+            suffix));
         return;
     end
 
     local cacheName = context:GetTableName(val);
     if (cacheName) then
         context:Write(string_format(FORMATS.tableReference,
-                                    firstPrefix, cacheName, suffix));
+            firstPrefix, cacheName, suffix));
         return;
     end
 
     if ((context.depth >= DEVTOOLS_DEPTH_CUTOFF) and
         (DEVTOOLS_DEPTH_CUTOFF > 0)) then
         context:Write(string_format(FORMATS.tableTooDeep,
-                                    firstPrefix, suffix));
+            firstPrefix, suffix));
         return;
     end
 
@@ -311,7 +311,7 @@ function DevTools_DumpValue(val, prefix, firstPrefix, suffix, context)
     context:Write(firstPrefix);
     firstPrefix = prefix;
     local anyContents = DevTools_DumpTableContents(val, prefix, firstPrefix,
-                                                   context);
+        context);
     context:Write(oldPrefix .. "}" .. suffix);
 end
 
@@ -330,7 +330,7 @@ function DevTools_RunDump(value, context)
     local valType = type(value);
     if (type(value) == 'table') then
         local any =
-            DevTools_DumpTableContents(value, prefix, firstPrefix, context);
+        DevTools_DumpTableContents(value, prefix, firstPrefix, context);
         if (context.Result) then
             return context:Result();
         end
@@ -354,11 +354,11 @@ function DevTools_Dump(value, startKey)
     };
 
     context.GetTableName = Pick_Cache_Function(DevTools_Cache_Table,
-                                               DEVTOOLS_USE_TABLE_CACHE);
+        DEVTOOLS_USE_TABLE_CACHE);
     context.GetFunctionName = Pick_Cache_Function(DevTools_Cache_Function,
-                                                  DEVTOOLS_USE_FUNCTION_CACHE);
+        DEVTOOLS_USE_FUNCTION_CACHE);
     context.GetUserdataName = Pick_Cache_Function(DevTools_Cache_Userdata,
-                                                  DEVTOOLS_USE_USERDATA_CACHE);
+        DEVTOOLS_USE_USERDATA_CACHE);
     context.Write = DevTools_Write;
 
     DevTools_RunDump(value, context);
@@ -366,13 +366,13 @@ end
 
 function DevTools_DumpCommand(msg, editBox)
     forceinsecure();
-    if (string_match(msg,"^[A-Za-z_][A-Za-z0-9_]*$")) then
+    if (string_match(msg, "^[A-Za-z_][A-Za-z0-9_]*$")) then
         WriteMessage("Dump: " .. msg);
         local val = _G[msg];
         local tmp = {};
         if (val == nil) then
             local key = string_format(FORMATS.tableKeyAssignPrefix,
-                                      '', prepSimpleKey(msg, {}));
+                '', prepSimpleKey(msg, {}));
             WriteMessage(key .. "nil,");
         else
             tmp[msg] = val;
@@ -382,7 +382,7 @@ function DevTools_DumpCommand(msg, editBox)
     end
 
     WriteMessage("Dump: value=" .. msg);
-    local func,err = loadstring("return " .. msg);
+    local func, err = loadstring("return " .. msg);
     if (not func) then
         WriteMessage("Dump: ERROR: " .. err);
     else
@@ -396,11 +396,11 @@ DT.userdataSymbols = {};
 local funcSyms = DT.functionSymbols;
 local userSyms = DT.userdataSymbols;
 
-for k,v in pairs(getfenv(0)) do
+for k, v in pairs(getfenv(0)) do
     if (type(v) == 'function') then
         table.insert(funcSyms, k);
     elseif (type(v) == 'table') then
-        if (type(rawget(v,0)) == 'userdata') then
+        if (type(rawget(v, 0)) == 'userdata') then
             table.insert(userSyms, k);
         end
     end

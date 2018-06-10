@@ -50,9 +50,9 @@ local InCombatLockdown = InCombatLockdown;
 -- Frame Handles -- Userdata handles referencing explicitly protected frames
 --
 -- LOCAL_FrameHandle_Protected_Frames -- handle keys, frame surrogate values
---                                       (explicitly protected)
+-- (explicitly protected)
 -- LOCAL_FrameHandle_Other_Frames -- handle keys, frame surrogate values
---                                   (possibly protected)
+-- (possibly protected)
 -- LOCAL_FrameHandle_Lookup -- frame keys, handle values
 --
 -- The lookup table auto-populates via an __index metamethod
@@ -109,6 +109,7 @@ local function FrameHandleLookup_index(t, frame)
     end
     return handle;
 end
+
 setmetatable(LOCAL_FrameHandle_Lookup, { __index = FrameHandleLookup_index; });
 
 -- Gets the handle for a frame (if available)
@@ -126,7 +127,6 @@ end
 -- Action implementation support function
 --
 -- GetHandleFrame -- Get the frame for a handle
-
 local function GetUnprotectedHandleFrame(handle)
     local frame = LOCAL_FrameHandle_Protected_Frames[handle];
     if (not frame) then
@@ -156,16 +156,22 @@ end
 
 ---------------------------------------------------------------------------
 -- "GETTER" methods
+function HANDLE:GetName() return GetUnprotectedHandleFrame(self):GetName() end
 
-function HANDLE:GetName()   return GetUnprotectedHandleFrame(self):GetName() end
+function HANDLE:GetID() return GetHandleFrame(self):GetID() end
 
-function HANDLE:GetID()     return GetHandleFrame(self):GetID()     end
-function HANDLE:IsShown()   return GetHandleFrame(self):IsShown()   end
+function HANDLE:IsShown() return GetHandleFrame(self):IsShown() end
+
 function HANDLE:IsVisible() return GetHandleFrame(self):IsVisible() end
-function HANDLE:GetWidth()  return GetHandleFrame(self):GetWidth()  end
+
+function HANDLE:GetWidth() return GetHandleFrame(self):GetWidth() end
+
 function HANDLE:GetHeight() return GetHandleFrame(self):GetHeight() end
-function HANDLE:GetRect()   return GetHandleFrame(self):GetRect() end
-function HANDLE:GetScale()  return GetHandleFrame(self):GetScale()  end
+
+function HANDLE:GetRect() return GetHandleFrame(self):GetRect() end
+
+function HANDLE:GetScale() return GetHandleFrame(self):GetScale() end
+
 function HANDLE:GetEffectiveScale()
     return GetHandleFrame(self):GetEffectiveScale()
 end
@@ -173,13 +179,17 @@ end
 -- Cannot expose GetAlpha since alpha is not protected
 
 function HANDLE:GetFrameLevel()
-    return GetHandleFrame(self):GetFrameLevel()  end
+    return GetHandleFrame(self):GetFrameLevel()
+end
+
 function HANDLE:GetObjectType()
     return GetUnprotectedHandleFrame(self):GetObjectType()
 end
+
 function HANDLE:IsObjectType(ot)
     return GetUnprotectedHandleFrame(self):IsObjectType(tostring(ot))
 end
+
 function HANDLE:IsProtected()
     return GetUnprotectedHandleFrame(self):IsProtected();
 end
@@ -196,7 +206,7 @@ function HANDLE:GetAttribute(name)
     end
     if (tv == "userdata" and
         (LOCAL_FrameHandle_Protected_Frames[val]
-         or LOCAL_FrameHandle_Other_Frames[val])) then
+            or LOCAL_FrameHandle_Other_Frames[val])) then
         return val;
     end
     return nil;
@@ -210,7 +220,7 @@ function HANDLE:GetFrameRef(label)
     local tv = type(val);
     if (tv == "userdata" and
         (LOCAL_FrameHandle_Protected_Frames[val]
-         or LOCAL_FrameHandle_Other_Frames[val])) then
+            or LOCAL_FrameHandle_Other_Frames[val])) then
         return val;
     end
     return nil;
@@ -229,15 +239,15 @@ function HANDLE:GetEffectiveAttribute(name, button, prefix, suffix)
     end
     if (suffix ~= nil) then suffix = tostring(suffix) end
     local val = SecureButton_GetModifiedAttribute(GetHandleFrame(self),
-                                                  name, button, prefix,
-                                                  suffix);
+        name, button, prefix,
+        suffix);
     local tv = type(val);
     if (tv == "string" or tv == "number" or tv == "boolean" or val == nil) then
         return val;
     end
     if (tv == "userdata" and
         (LOCAL_FrameHandle_Protected_Frames[val]
-         or LOCAL_FrameHandle_Other_Frames[val])) then
+            or LOCAL_FrameHandle_Other_Frames[val])) then
         return val;
     end
     return nil;
@@ -294,7 +304,7 @@ end
 
 function HANDLE:GetChildren()
     return FrameHandleMapper(not InCombatLockdown(),
-                             GetHandleFrame(self):GetChildren());
+        GetHandleFrame(self):GetChildren());
 end
 
 function HANDLE:GetChildList(tbl)
@@ -303,7 +313,7 @@ end
 
 function HANDLE:GetParent()
     return FrameHandleMapper(not InCombatLockdown(),
-                             GetHandleFrame(self):GetParent());
+        GetHandleFrame(self):GetParent());
 end
 
 -- NOTE: Cannot allow the frame to figure out if it has mouse focus
@@ -315,7 +325,7 @@ function HANDLE:GetMousePosition()
     local l, b, w, h = frame:GetRect()
     if (not w or not h or w == 0 or h == 0) then return nil; end
     local e = frame:GetEffectiveScale();
-    x, y = x / e, y /e;
+    x, y = x / e, y / e;
     x = x - l
     y = y - b
     if x < 0 or x > w or y < 0 or y > h then
@@ -383,7 +393,6 @@ end
 
 ---------------------------------------------------------------------------
 -- "SETTER" methods and actions
-
 function HANDLE:Show(skipAttr)
     local frame = GetHandleFrame(self);
     frame:Show();
@@ -421,8 +430,8 @@ function HANDLE:SetAlpha(alpha)
 end
 
 local _set_points = {
-    TOP=true; BOTTOM=true; LEFT=true; RIGHT=true; CENTER=true;
-    TOPLEFT=true; BOTTOMLEFT=true; TOPRIGHT=true; BOTTOMRIGHT=true;
+    TOP = true; BOTTOM = true; LEFT = true; RIGHT = true; CENTER = true;
+    TOPLEFT = true; BOTTOMLEFT = true; TOPRIGHT = true; BOTTOMRIGHT = true;
 };
 
 function HANDLE:ClearAllPoints()
@@ -513,8 +522,8 @@ function HANDLE:SetAttribute(name, value)
     if (tv ~= "string" and tv ~= "nil" and tv ~= "number"
         and tv ~= "boolean") then
         if (not (tv == "userdata" and
-                 (LOCAL_FrameHandle_Protected_Frames[value]
-                  or LOCAL_FrameHandle_Other_Frames[value]))) then
+            (LOCAL_FrameHandle_Protected_Frames[value]
+                or LOCAL_FrameHandle_Other_Frames[value]))) then
             error("Invalid attribute value");
             return;
         end
@@ -638,7 +647,6 @@ end
 
 ---------------------------------------------------------------------------
 -- Type specific methods
-
 function HANDLE:Disable()
     local frame = GetHandleFrame(self);
     if (not frame:IsObjectType("Button")) then

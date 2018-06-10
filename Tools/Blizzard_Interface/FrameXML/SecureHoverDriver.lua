@@ -32,7 +32,7 @@ local function RectSet_Create(l, r, b, t, TTL, S)
         S[4] = l; S[5] = r; S[6] = b; S[7] = t;
         S[8] = l; S[9] = r; S[10] = b; S[11] = t;
     else
-        S = { "new", tonumber(TTL) or 0, 1, l, r, b, t,  l, r, b, t }
+        S = { "new", tonumber(TTL) or 0, 1, l, r, b, t, l, r, b, t }
     end
     return S;
 end
@@ -54,7 +54,7 @@ local function RectSet_Add(S, NL, NR, NB, NT)
 
     local MAXIDX = (N - 1) * 4 + FRAME_INDEX;
     for i = FRAME_INDEX, MAXIDX, 4 do
-        SL, SR, SB, ST = S[i], S[i+1], S[i+2], S[i+3];
+        SL, SR, SB, ST = S[i], S[i + 1], S[i + 2], S[i + 3];
 
         if ((NL >= SL) and (NR <= SR) and (NB >= SB) and (NT <= ST)) then
             -- Wholly contained, dont need to add.
@@ -64,7 +64,7 @@ local function RectSet_Add(S, NL, NR, NB, NT)
         if ((NL <= SL) and (NR >= SR) and (NB <= SB) and (NT >= ST)) then
             -- Wholly contains existing, replace unless it's the first
             if (i > 7) then
-                S[i], S[i+1], S[i+2], S[i+3] = NL, NR, NB, NT;
+                S[i], S[i + 1], S[i + 2], S[i + 3] = NL, NR, NB, NT;
                 return;
             end
         end
@@ -73,7 +73,7 @@ local function RectSet_Add(S, NL, NR, NB, NT)
     -- Finally if we didn't find a match, add this one to the end
     S[COUNT_INDEX] = N + 1;
     local i = MAXIDX + 4;
-    S[i], S[i+1], S[i+2], S[i+3] = NL, NR, NB, NT;
+    S[i], S[i + 1], S[i + 2], S[i + 3] = NL, NR, NB, NT;
 end
 
 -- Check if a set of coordinates is over the rect set
@@ -81,8 +81,8 @@ local function RectSet_IsOver(S, X, Y)
     local N = S[COUNT_INDEX];
     local MAXIDX = N * 4 + BOUNDING_INDEX;
     for i = BOUNDING_INDEX, MAXIDX, 4 do
-        local R = (X >= S[i]) and (X <= S[i+1]) and
-            (Y >= S[i+2]) and (Y <= S[i+3]);
+        local R = (X >= S[i]) and (X <= S[i + 1]) and
+            (Y >= S[i + 2]) and (Y <= S[i + 3]);
 
         if (R) then
             if (i > BOUNDING_INDEX) then return true, ((i - 3) / 4); end
@@ -220,17 +220,17 @@ local function SecureUnregisterAutoHide(frame)
 end
 
 local function SecureHoverDriverManager_OnAttributeChanged(self, name, value)
-    if ( not value ) then
+    if (not value) then
         return;
     end
-    if ( name == "setframe" ) then
+    if (name == "setframe") then
         return;
-    elseif ( name == "unregister" ) then
+    elseif (name == "unregister") then
         local frame = value;
         if (frame) then
             SecureUnregisterAutoHide(frame);
         end
-    elseif ( name == "register" ) then
+    elseif (name == "register") then
         local duration = tonumber(value);
         if (not duration) then
             return;
@@ -242,7 +242,7 @@ local function SecureHoverDriverManager_OnAttributeChanged(self, name, value)
         if (frame) then
             SecureRegisterAutoHide(frame, duration);
         end
-    elseif ( name == "add" ) then
+    elseif (name == "add") then
         local child = value;
         local frame = self:GetAttribute("setframe");
         if (frame and child) then

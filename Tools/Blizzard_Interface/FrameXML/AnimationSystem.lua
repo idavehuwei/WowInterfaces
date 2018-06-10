@@ -8,57 +8,56 @@ local AnimatingFrames = {};
 local AnimUpdateFrame = CreateFrame("Frame");
 
 local function Animation_UpdateFrame(self, animElapsed, animTable)
-	local totalTime = animTable.totalTime
-	if ( animElapsed and (animElapsed < totalTime)) then	--Should be animating
-		local elapsedFraction = self.animReverse and (1-animElapsed/totalTime) or (animElapsed/totalTime);
-		animTable.updateFunc(self, animTable.getPosFunc(self, elapsedFraction));
-	else	--Just finished animating
-		animTable.updateFunc(self, animTable.getPosFunc(self, self.animReverse and 0 or 1));
-		self.animating = false;
-		
-		AnimatingFrames[self][animTable.updateFunc] = 0;	--We use 0 instead of nil'ing out because we don't want to mess with 'next' (used in pairs)
-		
-		if ( self.animPostFunc ) then
-			self.animPostFunc(self);
-		end
+    local totalTime = animTable.totalTime
+    if (animElapsed and (animElapsed < totalTime)) then --Should be animating
+        local elapsedFraction = self.animReverse and (1 - animElapsed / totalTime) or (animElapsed / totalTime);
+        animTable.updateFunc(self, animTable.getPosFunc(self, elapsedFraction));
+    else --Just finished animating
+        animTable.updateFunc(self, animTable.getPosFunc(self, self.animReverse and 0 or 1));
+        self.animating = false;
 
-	end
+        AnimatingFrames[self][animTable.updateFunc] = 0; --We use 0 instead of nil'ing out because we don't want to mess with 'next' (used in pairs)
+
+        if (self.animPostFunc) then
+            self.animPostFunc(self);
+        end
+    end
 end
 
 local totalElapsed = 0;
 local function Animation_OnUpdate(self, elapsed)
-	totalElapsed = totalElapsed + elapsed;
-	local isAnyFrameAnimating = false;
-	for frame, frameTable in pairs(AnimatingFrames) do
-		for frameTable, animTable in pairs(frameTable) do
-			if ( animTable ~= 0 ) then
-				Animation_UpdateFrame(frame, totalElapsed - frame.animStartTime, animTable);
-				isAnyFrameAnimating = true;
-			end
-		end
-	end
-	if ( not isAnyFrameAnimating ) then
-		table.wipe(AnimatingFrames);
-		AnimUpdateFrame:SetScript("OnUpdate", nil);
-	end
+    totalElapsed = totalElapsed + elapsed;
+    local isAnyFrameAnimating = false;
+    for frame, frameTable in pairs(AnimatingFrames) do
+        for frameTable, animTable in pairs(frameTable) do
+            if (animTable ~= 0) then
+                Animation_UpdateFrame(frame, totalElapsed - frame.animStartTime, animTable);
+                isAnyFrameAnimating = true;
+            end
+        end
+    end
+    if (not isAnyFrameAnimating) then
+        table.wipe(AnimatingFrames);
+        AnimUpdateFrame:SetScript("OnUpdate", nil);
+    end
 end
 
 function SetUpAnimation(frame, animTable, postFunc, reverse)
-	if ( type(animTable.updateFunc) == "string" ) then
-		animTable.updateFunc = frame[animTable.updateFunc];
-	end
-	if ( not AnimatingFrames[frame] ) then
-		AnimatingFrames[frame] = {};
-	end
-	
-	AnimatingFrames[frame][animTable.updateFunc] = animTable;
-	
-	frame.animStartTime = totalElapsed;
-	frame.animReverse = reverse;	
-	frame.animPostFunc = postFunc;
-	frame.animating = true;
-	
-	animTable.updateFunc(frame, animTable.getPosFunc(frame, frame.animReverse and 1 or 0));
-	
-	AnimUpdateFrame:SetScript("OnUpdate", Animation_OnUpdate);
+    if (type(animTable.updateFunc) == "string") then
+        animTable.updateFunc = frame[animTable.updateFunc];
+    end
+    if (not AnimatingFrames[frame]) then
+        AnimatingFrames[frame] = {};
+    end
+
+    AnimatingFrames[frame][animTable.updateFunc] = animTable;
+
+    frame.animStartTime = totalElapsed;
+    frame.animReverse = reverse;
+    frame.animPostFunc = postFunc;
+    frame.animating = true;
+
+    animTable.updateFunc(frame, animTable.getPosFunc(frame, frame.animReverse and 1 or 0));
+
+    AnimUpdateFrame:SetScript("OnUpdate", Animation_OnUpdate);
 end

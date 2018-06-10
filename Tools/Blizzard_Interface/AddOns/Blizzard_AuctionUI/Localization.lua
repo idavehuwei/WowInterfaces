@@ -1,8 +1,8 @@
 -- This file is executed at the end of addon load
 
 -- Auction tabs
-for i=1, 3 do
-	getglobal("AuctionFrameTab"..i.."Text"):SetPoint("CENTER", "AuctionFrameTab"..i, "CENTER", 0, 5);
+for i = 1, 3 do
+    getglobal("AuctionFrameTab" .. i .. "Text"):SetPoint("CENTER", "AuctionFrameTab" .. i, "CENTER", 0, 5);
 end
 
 -- Auction Browse Headers

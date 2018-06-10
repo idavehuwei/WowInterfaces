@@ -88,10 +88,10 @@ end
 
 local LOCAL_Managed_Environments = {};
 setmetatable(LOCAL_Managed_Environments,
-             {
-                 __index = ManagedEnvironmentsIndex,
-                 __mode = "k",
-             });
+    {
+        __index = ManagedEnvironmentsIndex,
+        __mode = "k",
+    });
 
 function GetManagedEnvironment(envKey)
     return rawget(LOCAL_Managed_Environments, envKey);
@@ -99,7 +99,6 @@ end
 
 ---------------------------------------------------------------------------
 -- Standard invocation for header executions and child executions
-
 local function SecureHandler_Self_Execute(self, signature, body, ...)
     if (type(body) ~= "string") then return; end
 
@@ -113,7 +112,7 @@ local function SecureHandler_Self_Execute(self, signature, body, ...)
     local controlHandle = LOCAL_Managed_Controls[environment];
 
     return CallRestrictedClosure(signature, environment, controlHandle,
-                                 body, selfHandle, ...);
+        body, selfHandle, ...);
 end
 
 local function SecureHandler_Other_Execute(header, self, signature, body, ...)
@@ -125,12 +124,11 @@ local function SecureHandler_Other_Execute(header, self, signature, body, ...)
     local environment = LOCAL_Managed_Environments[header];
     local controlHandle = LOCAL_Managed_Controls[environment];
     return CallRestrictedClosure(signature, environment, controlHandle,
-                                 body, selfHandle, ...);
+        body, selfHandle, ...);
 end
 
 ---------------------------------------------------------------------------
 -- Script handlers for various header templates
-
 function SecureHandler_OnSimpleEvent(self, snippetAttr)
     local body = self:GetAttribute(snippetAttr);
     if (body) then
@@ -142,7 +140,7 @@ function SecureHandler_OnClick(self, snippetAttr, button, down)
     local body = self:GetAttribute(snippetAttr);
     if (body) then
         SecureHandler_Self_Execute(self, "self,button,down",
-                                   body, button, down);
+            body, button, down);
     end
 end
 
@@ -166,7 +164,7 @@ function SecureHandler_StateOnAttributeChanged(self, name, value)
         local body = self:GetAttribute("_onstate-" .. stateid);
         if (body) then
             SecureHandler_Self_Execute(self, "self,stateid,newstate",
-                                       body, stateid, value);
+                body, stateid, value);
         end
     end
 end
@@ -179,7 +177,7 @@ function SecureHandler_AttributeOnAttributeChanged(self, name, value)
     local body = self:GetAttribute("_onattributechanged");
     if (body) then
         SecureHandler_Self_Execute(self, "self,name,value",
-                                   body, name, value);
+            body, name, value);
     end
 end
 
@@ -211,17 +209,17 @@ local function PickupAny(kind, target, detail, ...)
         PickupSpell(target, detail)
     elseif kind == 'companion' then
         PickupCompanion(target, detail)
-        elseif kind == 'equipmentset' then
-                PickupEquipmentSet(target);
+    elseif kind == 'equipmentset' then
+        PickupEquipmentSet(target);
     end
 end
 
 function SecureHandler_OnDragEvent(self, snippetAttr, button)
     local body = self:GetAttribute(snippetAttr);
     if (body) then
-        PickupAny( SecureHandler_Self_Execute(self,
-                                              "self,button,kind,value,...",
-                                              body, button, GetCursorInfo()) );
+        PickupAny(SecureHandler_Self_Execute(self,
+            "self,button,kind,value,...",
+            body, button, GetCursorInfo()));
     end
 end
 
@@ -243,18 +241,18 @@ local function CreateWrapClosure(handler, header, preBody, postBody)
     local wrap;
     if (postBody) then
         wrap = function(self, ...)
-                   if (self == MAGIC_UNWRAP) then
-                       return header, preBody, postBody;
-                   end
-                   return handler(self, header, preBody, postBody, wrap, ...);
-               end
+            if (self == MAGIC_UNWRAP) then
+                return header, preBody, postBody;
+            end
+            return handler(self, header, preBody, postBody, wrap, ...);
+        end
     else
         wrap = function(self, ...)
-                   if (self == MAGIC_UNWRAP) then
-                       return header, preBody, nil;
-                   end
-                   return handler(self, header, preBody, nil, wrap, ...);
-               end
+            if (self == MAGIC_UNWRAP) then
+                return header, preBody, nil;
+            end
+            return handler(self, header, preBody, nil, wrap, ...);
+        end
     end
     return wrap;
 end
@@ -330,14 +328,14 @@ end
 
 -- Wrapper handler for clicks
 local function Wrapped_Click(self, header, preBody, postBody, wrap,
-                             button, down, ...)
+button, down, ...)
     local message, newbutton;
 
-    if ( IsWrapEligible(self) ) then
+    if (IsWrapEligible(self)) then
         newbutton, message =
-            SecureHandler_Other_Execute(header, self,
-                                        "self,button,down", preBody,
-                                        button, down);
+        SecureHandler_Other_Execute(header, self,
+            "self,button,down", preBody,
+            button, down);
         if (newbutton == false) then
             return;
         end
@@ -350,21 +348,21 @@ local function Wrapped_Click(self, header, preBody, postBody, wrap,
 
     if (postBody and message ~= nil) then
         SecureHandler_Other_Execute(header, self,
-                                    "self,message,button,down",
-                                    postBody,
-                                    message, button, down);
+            "self,message,button,down",
+            postBody,
+            message, button, down);
     end;
 end
 
 local function Wrapped_OnEnter(self, header, preBody, postBody, wrap,
-                               motion, ...)
+motion, ...)
     local allow, message;
-    if ( motion ) then
+    if (motion) then
         self:SetAttribute("_wrapentered", true);
-        if ( IsWrapEligible(self) ) then
+        if (IsWrapEligible(self)) then
             allow, message =
-                SecureHandler_Other_Execute(header, self, "self",
-                                            preBody);
+            SecureHandler_Other_Execute(header, self, "self",
+                preBody);
         end
 
         if (allow == false) then
@@ -376,19 +374,19 @@ local function Wrapped_OnEnter(self, header, preBody, postBody, wrap,
 
     if (postBody and message ~= nil) then
         SecureHandler_Other_Execute(header, self, "self,message",
-                                    postBody, message);
+            postBody, message);
     end
 end
 
 local function Wrapped_OnLeave(self, header, preBody, postBody, wrap,
-                               motion, ...)
+motion, ...)
     local allow, message;
-    if ( motion and self:GetAttribute("_wrapentered")) then
+    if (motion and self:GetAttribute("_wrapentered")) then
         self:SetAttribute("_wrapentered", nil);
-        if ( IsWrapEligible(self) ) then
+        if (IsWrapEligible(self)) then
             allow, message =
-                SecureHandler_Other_Execute(header, self, "self",
-                                            preBody);
+            SecureHandler_Other_Execute(header, self, "self",
+                preBody);
             if (allow == false) then
                 return;
             end
@@ -399,53 +397,53 @@ local function Wrapped_OnLeave(self, header, preBody, postBody, wrap,
 
     if (postBody and message ~= nil) then
         SecureHandler_Other_Execute(header, self, "self,message",
-                                    postBody, message);
+            postBody, message);
     end
 end
 
 local function CreateSimpleWrapper(beforeSignature, afterSignature)
     return function(self, header, preBody, postBody, wrap,
-                    ...)
-               local allow, message;
-               if ( IsWrapEligible(self) ) then
-                   allow, message =
-                       SecureHandler_Other_Execute(header,
-                                                   self, beforeSignature,
-                                                   preBody, ...);
-                   if (allow == false) then
-                       return;
-                   end
-               end
+    ...)
+        local allow, message;
+        if (IsWrapEligible(self)) then
+            allow, message =
+            SecureHandler_Other_Execute(header,
+                self, beforeSignature,
+                preBody, ...);
+            if (allow == false) then
+                return;
+            end
+        end
 
-               securecall(SafeCallWrappedHandler, self, wrap, ...);
+        securecall(SafeCallWrappedHandler, self, wrap, ...);
 
-               if ( postBody and message ~= nil ) then
-                   SecureHandler_Other_Execute(header,
-                                               self, afterSignature,
-                                               postBody, message, ...);
-               end
-           end;
+        if (postBody and message ~= nil) then
+            SecureHandler_Other_Execute(header,
+                self, afterSignature,
+                postBody, message, ...);
+        end
+    end;
 end
 
 local Wrapped_ShowHide = CreateSimpleWrapper("self", "self,message");
 
 local Wrapped_MouseWheel = CreateSimpleWrapper("self,offset",
-                                               "self,message,offset");
+    "self,message,offset");
 
 local function Wrapped_Drag(self, header, preBody, postBody, wrap, ...)
     local message;
-    if ( IsWrapEligible(self) ) then
+    if (IsWrapEligible(self)) then
         local selfHandle = GetFrameHandle(self, true);
         if (selfHandle) then
             local environment = LOCAL_Managed_Environments[header];
             local controlHandle = LOCAL_Managed_Controls[environment];
             local button = ...;
             local type, target, x1, x2, x3 =
-                CallRestrictedClosure("self,button,kind,value,...",
-                                      environment,
-                                      controlHandle, preBody,
-                                      selfHandle, button,
-                                      GetCursorInfo());
+            CallRestrictedClosure("self,button,kind,value,...",
+                environment,
+                controlHandle, preBody,
+                selfHandle, button,
+                GetCursorInfo());
             if (type == false) then
                 return;
             elseif (type == "message") then
@@ -459,21 +457,21 @@ local function Wrapped_Drag(self, header, preBody, postBody, wrap, ...)
 
     securecall(SafeCallWrappedHandler, self, wrap, ...);
 
-    if ( postBody and message ~= nil ) then
+    if (postBody and message ~= nil) then
         SecureHandler_Other_Execute(header, self,
-                                    "self,message,button",
-                                    postBody, message, ...);
+            "self,message,button",
+            postBody, message, ...);
     end
 end
 
 local function Wrapped_Attribute(self, header, preBody, postBody, wrap,
-                                 name, value, ...)
+name, value, ...)
     local allow, message;
-    if ( (not name:match("^_")) and IsWrapEligible(self) ) then
+    if ((not name:match("^_")) and IsWrapEligible(self)) then
         allow, message =
-            SecureHandler_Other_Execute(header, self,
-                                        "self,name,value", preBody,
-                                        name, value);
+        SecureHandler_Other_Execute(header, self,
+            "self,name,value", preBody,
+            name, value);
         if (allow == false) then
             return;
         end
@@ -481,10 +479,10 @@ local function Wrapped_Attribute(self, header, preBody, postBody, wrap,
 
     securecall(SafeCallWrappedHandler, self, wrap, name, value, ...);
 
-    if ( postBody and message ~= nil ) then
+    if (postBody and message ~= nil) then
         SecureHandler_Other_Execute(header, self,
-                                    "self,message,name,value",
-                                    postBody, message, name, value);
+            "self,message,name,value",
+            postBody, message, name, value);
     end
 end
 
@@ -535,7 +533,7 @@ local function API_OnAttributeChanged(self, name, value)
 
     -- _execute runs code in the context of a header
     if (name == "_execute") then
-        local frame =  self:GetAttribute("_apiframe");
+        local frame = self:GetAttribute("_apiframe");
         self:SetAttribute("_execute", nil);
         if (type(value) ~= "string") then
             error("Invalid execute body");
@@ -548,8 +546,8 @@ local function API_OnAttributeChanged(self, name, value)
 
     -- _wrap wraps a script handler in a secure wrapper
     if (name == "_wrap") then
-        local frame =  self:GetAttribute("_apiframe");
-        local header =  self:GetAttribute("_apiheader");
+        local frame = self:GetAttribute("_apiframe");
+        local header = self:GetAttribute("_apiheader");
         local preBody = self:GetAttribute("_apiprebody");
         local postBody = self:GetAttribute("_apipostbody");
         self:SetAttribute("_wrap", nil);
@@ -583,15 +581,15 @@ local function API_OnAttributeChanged(self, name, value)
             error("Unsupported script type '" .. value .. "'");
         end
         local wrapper = CreateWrapper(frame, value, header,
-                                      handler, preBody, postBody);
+            handler, preBody, postBody);
         frame:SetScript(script, wrapper);
         return;
     end
 
     -- _unwrap restores a previously wrapped handler
     if (name == "_unwrap") then
-        local frame =  self:GetAttribute("_apiframe");
-        local data =  self:GetAttribute("_apidata");
+        local frame = self:GetAttribute("_apiframe");
+        local data = self:GetAttribute("_apidata");
         if (data) then
             self:SetAttribute("_apidata", nil);
         end
@@ -622,7 +620,7 @@ local function API_OnAttributeChanged(self, name, value)
     -- _frame-<label> creates a frame reference
     local frameid = name:match("^_frame%-(.+)");
     if (frameid) then
-        local frame =  self:GetAttribute("_apiframe");
+        local frame = self:GetAttribute("_apiframe");
         self:SetAttribute(name, nil);
         if (not IsValidFrame(frame)) then
             error("Invalid destination frame");
@@ -643,7 +641,7 @@ end
 -- Frame used as both an attribute repository for API functions as well
 -- as the OnUpdate timer source for timer and OnUpdate dispatch
 local LOCAL_API_Frame = CreateFrame("Frame", "SecureHandlersUpdateFrame",
-                                nil, "SecureFrameTemplate");
+    nil, "SecureFrameTemplate");
 
 LOCAL_API_Frame:SetScript("OnAttributeChanged", API_OnAttributeChanged);
 
@@ -737,15 +735,13 @@ end
 ---------------------------------------------------------------------------
 -- Helper Methods, these are just friendly wrappers for the
 -- global functions.
-
-
 local function SecureHandlerMethod_Execute(self, body)
     -- Kept as a wrapper for consistency
     return SecureHandlerExecute(self, body);
 end
 
 local function SecureHandlerMethod_WrapScript(self, frame, script,
-                                              preBody, postBody)
+preBody, postBody)
     -- Wrapped since args are in different order
     return SecureHandlerWrapScript(frame, script, self, preBody, postBody);
 end
@@ -769,7 +765,6 @@ end
 
 ---------------------------------------------------------------------------
 -- Control handle methods
-
 function LOCAL_CTRL:Run(body, ...)
     local frame = LOCAL_Managed_Control_Frames[self];
     if (not frame) then
@@ -788,7 +783,7 @@ function LOCAL_CTRL:Run(body, ...)
         return;
     end
     return scrub(CallRestrictedClosure("self,...",
-                                       env, self, body, selfHandle, ...));
+        env, self, body, selfHandle, ...));
 end
 
 function LOCAL_CTRL:RunFor(otherHandle, body, ...)
@@ -807,7 +802,7 @@ function LOCAL_CTRL:RunFor(otherHandle, body, ...)
     end
     local env = LOCAL_Managed_Environments[frame];
     return scrub(CallRestrictedClosure("self,...",
-                                       env, self, body, otherHandle, ...));
+        env, self, body, otherHandle, ...));
 end
 
 function LOCAL_CTRL:RunAttribute(snippetAttr, ...)
@@ -833,11 +828,11 @@ function LOCAL_CTRL:RunAttribute(snippetAttr, ...)
         return
     end
     return scrub(CallRestrictedClosure("self,...",
-                                       env, self, body, selfHandle, ...));
+        env, self, body, selfHandle, ...));
 end
 
 local function ChildUpdate_Helper(environment, controlHandle,
-                                  scriptid, message, ...)
+scriptid, message, ...)
     local scriptattr;
     if (scriptid ~= nil) then
         scriptid = tostring(scriptid);
@@ -858,8 +853,8 @@ local function ChildUpdate_Helper(environment, controlHandle,
                 local selfHandle = GetFrameHandle(child, true);
                 if (selfHandle) then
                     CallRestrictedClosure("self,scriptid,message",
-                                          environment, controlHandle, body,
-                                          selfHandle, scriptid, message);
+                        environment, controlHandle, body,
+                        selfHandle, scriptid, message);
                 end
             end
         end
@@ -903,7 +898,7 @@ function LOCAL_CTRL:CallMethod(methodName, ...)
     -- Use a pcall wrapper here to ensure that execution continues
     -- regardless
     local ok, err =
-        securecall(pcall, CallMethod_inner, frame, methodName, scrub(...));
+    securecall(pcall, CallMethod_inner, frame, methodName, scrub(...));
     if (err) then
         SoftError(err);
     end

@@ -1,6 +1,3 @@
-
-
-
 function LocalizePost()
-	-- Put all locale specific string adjustments here
+    -- Put all locale specific string adjustments here
 end

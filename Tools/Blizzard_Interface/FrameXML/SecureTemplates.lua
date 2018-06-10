@@ -26,9 +26,9 @@ ATTRIBUTE_NOOP = "";
 -- Internal helper function for modifier parsing
 local strsplit = strsplit;
 local function ParseSplitModifierString(...)
-    for i=1, select('#', ...) do
+    for i = 1, select('#', ...) do
         local mod, rep = strsplit(':', (select(i, ...)));
-        if ( IsModifiedClick(mod) ) then
+        if (IsModifiedClick(mod)) then
             return rep or mod:lower();
         end
     end
@@ -58,171 +58,170 @@ end
 -- the old style prefix functionality is used.
 function SecureButton_GetModifierPrefix(frame)
     -- Handle optional frame modifiers attribute
-    if ( frame ) then
+    if (frame) then
         local modlist = frame:GetAttribute("modifiers");
-        if ( modlist ) then
+        if (modlist) then
             local prefix = SecureButton_ParseModifierString(modlist);
-            if ( prefix ) then
+            if (prefix) then
                 return prefix .. "-";
             end
         end
     end
 
     local prefix = "";
-    if ( IsShiftKeyDown() ) then
-        prefix = "shift-"..prefix;
+    if (IsShiftKeyDown()) then
+        prefix = "shift-" .. prefix;
     end
-    if ( IsControlKeyDown() ) then
-        prefix = "ctrl-"..prefix;
+    if (IsControlKeyDown()) then
+        prefix = "ctrl-" .. prefix;
     end
-    if ( IsAltKeyDown() ) then
-        prefix = "alt-"..prefix;
+    if (IsAltKeyDown()) then
+        prefix = "alt-" .. prefix;
     end
     return prefix;
 end
 
 function SecureButton_GetButtonSuffix(button)
-    if ( button == "LeftButton" ) then
+    if (button == "LeftButton") then
         return "1";
-    elseif ( button == "RightButton" ) then
+    elseif (button == "RightButton") then
         return "2";
-    elseif ( button == "MiddleButton" ) then
+    elseif (button == "MiddleButton") then
         return "3";
-    elseif ( button == "Button4" ) then
+    elseif (button == "Button4") then
         return "4";
-	elseif ( button == "Button5" ) then
-		return "5";
-	elseif ( button == "Button6" ) then
-		return "6";
-	elseif ( button == "Button7" ) then
-		return "7";
-	elseif ( button == "Button8" ) then
-		return "8";    
-	elseif ( button == "Button9" ) then
-		return "9";
-	elseif ( button == "Button10" ) then
-		return "10";
-	elseif ( button == "Button11" ) then
-		return "11";
-	elseif ( button == "Button12" ) then
-		return "12";
-	elseif ( button == "Button13" ) then
-		return "13";
-	elseif ( button == "Button14" ) then
-		return "14";
-	elseif ( button == "Button15" ) then
-		return "15";
-	elseif ( button == "Button16" ) then
-		return "16";
-	elseif ( button == "Button17" ) then
-		return "17";
-	elseif ( button == "Button18" ) then
-		return "18";    
-	elseif ( button == "Button19" ) then
-		return "19";
-	elseif ( button == "Button20" ) then
-		return "20";
-	elseif ( button == "Button21" ) then
-		return "21";
-	elseif ( button == "Button22" ) then
-		return "22";
-	elseif ( button == "Button23" ) then
-		return "23";
-	elseif ( button == "Button24" ) then
-		return "24";
-	elseif ( button == "Button25" ) then
-		return "25";
-	elseif ( button == "Button26" ) then
-		return "26";
-	elseif ( button == "Button27" ) then
-		return "27";
-	elseif ( button == "Button28" ) then
-		return "28";    
-	elseif ( button == "Button29" ) then
-		return "29";
-	elseif ( button == "Button30" ) then
-		return "30";
-	elseif ( button == "Button31" ) then
-		return "31";
-	elseif ( button and button ~= "" ) then
+    elseif (button == "Button5") then
+        return "5";
+    elseif (button == "Button6") then
+        return "6";
+    elseif (button == "Button7") then
+        return "7";
+    elseif (button == "Button8") then
+        return "8";
+    elseif (button == "Button9") then
+        return "9";
+    elseif (button == "Button10") then
+        return "10";
+    elseif (button == "Button11") then
+        return "11";
+    elseif (button == "Button12") then
+        return "12";
+    elseif (button == "Button13") then
+        return "13";
+    elseif (button == "Button14") then
+        return "14";
+    elseif (button == "Button15") then
+        return "15";
+    elseif (button == "Button16") then
+        return "16";
+    elseif (button == "Button17") then
+        return "17";
+    elseif (button == "Button18") then
+        return "18";
+    elseif (button == "Button19") then
+        return "19";
+    elseif (button == "Button20") then
+        return "20";
+    elseif (button == "Button21") then
+        return "21";
+    elseif (button == "Button22") then
+        return "22";
+    elseif (button == "Button23") then
+        return "23";
+    elseif (button == "Button24") then
+        return "24";
+    elseif (button == "Button25") then
+        return "25";
+    elseif (button == "Button26") then
+        return "26";
+    elseif (button == "Button27") then
+        return "27";
+    elseif (button == "Button28") then
+        return "28";
+    elseif (button == "Button29") then
+        return "29";
+    elseif (button == "Button30") then
+        return "30";
+    elseif (button == "Button31") then
+        return "31";
+    elseif (button and button ~= "") then
         return "-" .. tostring(button);
     end
     return "";
 end
 
 function SecureButton_GetModifiedAttribute(frame, name, button, prefix, suffix)
-    if ( not prefix ) then
+    if (not prefix) then
         prefix = SecureButton_GetModifierPrefix(frame);
     end
-    if ( not suffix ) then
+    if (not suffix) then
         suffix = SecureButton_GetButtonSuffix(button);
     end
     local value = frame:GetAttribute(prefix, name, suffix);
-    if ( not value and (frame:GetAttribute("useparent-"..name) or
-                        frame:GetAttribute("useparent*")) ) then
+    if (not value and (frame:GetAttribute("useparent-" .. name) or
+        frame:GetAttribute("useparent*"))) then
         local parent = frame:GetParent();
-        if ( parent ) then
+        if (parent) then
             value = SecureButton_GetModifiedAttribute(parent, name, button, prefix, suffix);
         end
     end
-    if ( value == ATTRIBUTE_NOOP ) then
+    if (value == ATTRIBUTE_NOOP) then
         value = nil;
     end
     return value;
 end
+
 function SecureButton_GetAttribute(frame, name)
     return SecureButton_GetModifiedAttribute(frame, name, nil, "", "");
 end
 
 function SecureButton_GetModifiedUnit(self, button)
-	local unit = SecureButton_GetModifiedAttribute(self, "unit", button);
-	if ( unit ) then
-		local unitsuffix = SecureButton_GetModifiedAttribute(self, "unitsuffix", button);
-		if ( unitsuffix ) then
-			unit = unit .. unitsuffix;
-			-- map raid1pet to raidpet1
-			unit = gsub(unit, "^([^%d]+)([%d]+)[pP][eE][tT]", "%1pet%2");
-			unit = gsub(unit, "^[pP][lL][aA][yY][eE][rR][pP][eE][tT]", "pet");
-		end
-		
-		local noPet, hadPet = unit:gsub("[pP][eE][tT](%d)", "%1");
-		if ( hadPet == 0 ) then
-			noPet, hadPet = unit:gsub("^[pP][eE][tT]", "player");
-		end
-		local noPetNoTarget, hadTarget = noPet:gsub("[tT][aA][rR][gG][eE][tT]", "");
-		if ( UnitHasVehicleUI(noPetNoTarget) and 
-				SecureButton_GetModifiedAttribute(self, "toggleForVehicle", button) and
-				(noPetNoTarget == noPetNoTarget:gsub("^[mM][oO][uU][sS][eE][oO][vV][eE][rR]", "")
-				                               :gsub("^[fF][oO][cC][uU][sS]", "")
-				                               :gsub("^[aA][rR][eE][nN][aA]%d", ""))
-				-- NOTE: using these 3 gsubs is faster than a :lower() call and a table lookup
-				-- "target" is not included in the above check because it is already filtered out earlier on
-				) then
-			if ( hadPet ~= 0 ) then
-				unit = noPet;
-			elseif ( (hadTarget == 0) or SecureButton_GetModifiedAttribute(self, "allowVehicleTarget", button) ) then
-				unit = unit:gsub("^[pP][lL][aA][yY][eE][rR]", "pet"):gsub("^([%a]+)([%d]+)", "%1pet%2");
-			end
-		end
-		
-		return unit;
-	end
-	if ( SecureButton_GetModifiedAttribute(self, "checkselfcast", button) ) then
-		if ( IsModifiedClick("SELFCAST") ) then
-			return "player";
-		end
-	end
-	if ( SecureButton_GetModifiedAttribute(self, "checkfocuscast", button) ) then
-		if ( IsModifiedClick("FOCUSCAST") ) then
-			return "focus";
-		end
-	end
+    local unit = SecureButton_GetModifiedAttribute(self, "unit", button);
+    if (unit) then
+        local unitsuffix = SecureButton_GetModifiedAttribute(self, "unitsuffix", button);
+        if (unitsuffix) then
+            unit = unit .. unitsuffix;
+            -- map raid1pet to raidpet1
+            unit = gsub(unit, "^([^%d]+)([%d]+)[pP][eE][tT]", "%1pet%2");
+            unit = gsub(unit, "^[pP][lL][aA][yY][eE][rR][pP][eE][tT]", "pet");
+        end
+
+        local noPet, hadPet = unit:gsub("[pP][eE][tT](%d)", "%1");
+        if (hadPet == 0) then
+            noPet, hadPet = unit:gsub("^[pP][eE][tT]", "player");
+        end
+        local noPetNoTarget, hadTarget = noPet:gsub("[tT][aA][rR][gG][eE][tT]", "");
+        if (UnitHasVehicleUI(noPetNoTarget) and
+            SecureButton_GetModifiedAttribute(self, "toggleForVehicle", button) and
+            (noPetNoTarget == noPetNoTarget:gsub("^[mM][oO][uU][sS][eE][oO][vV][eE][rR]", ""):gsub("^[fF][oO][cC][uU][sS]", ""):gsub("^[aA][rR][eE][nN][aA]%d", ""))
+        -- NOTE: using these 3 gsubs is faster than a :lower() call and a table lookup
+        -- "target" is not included in the above check because it is already filtered out earlier on) then
+            if (hadPet ~= 0) then
+                unit = noPet;
+            elseif ((hadTarget == 0) or SecureButton_GetModifiedAttribute(self, "allowVehicleTarget", button)) then
+                unit = unit:gsub("^[pP][lL][aA][yY][eE][rR]", "pet"):gsub("^([%a]+)([%d]+)", "%1pet%2");
+            end
+        end
+
+        return unit;
+    end
+    if (SecureButton_GetModifiedAttribute(self, "checkselfcast", button)) then
+        if (IsModifiedClick("SELFCAST")) then
+            return "player";
+        end
+    end
+    if (SecureButton_GetModifiedAttribute(self, "checkfocuscast", button)) then
+        if (IsModifiedClick("FOCUSCAST")) then
+            return "focus";
+        end
+    end
 end
+
 function SecureButton_GetUnit(self)
     local unit = SecureButton_GetAttribute(self, "unit");
-    if ( unit ) then
+    if (unit) then
         local unitsuffix = SecureButton_GetAttribute(self, "unitsuffix");
-        if ( unitsuffix ) then
+        if (unitsuffix) then
             unit = unit .. unitsuffix;
             -- map raid1pet to raidpet1
             unit = gsub(unit, "^([^%d]+)([%d]+)[pP][eE][tT]", "%1pet%2");
@@ -282,155 +281,155 @@ end
 local SECURE_ACTIONS = {};
 
 SECURE_ACTIONS.actionbar =
-    function (self, unit, button)
-        local action = SecureButton_GetModifiedAttribute(self, "action", button);
-        if ( action == "increment" ) then
-            ActionBar_PageUp();
-        elseif ( action == "decrement" ) then
-            ActionBar_PageDown();
-        elseif ( tonumber(action) ) then
-            ChangeActionBarPage(action);
+function(self, unit, button)
+    local action = SecureButton_GetModifiedAttribute(self, "action", button);
+    if (action == "increment") then
+        ActionBar_PageUp();
+    elseif (action == "decrement") then
+        ActionBar_PageDown();
+    elseif (tonumber(action)) then
+        ChangeActionBarPage(action);
+    else
+        local a, b = strmatch(action, "^(%d+),%s*(%d+)$");
+        if (GetActionBarPage() == tonumber(a)) then
+            ChangeActionBarPage(b);
         else
-            local a, b = strmatch(action, "^(%d+),%s*(%d+)$");
-            if ( GetActionBarPage() == tonumber(a) ) then
-                ChangeActionBarPage(b);
-            else
-                ChangeActionBarPage(a);
-            end
+            ChangeActionBarPage(a);
         end
-    end;
+    end
+end;
 
 SECURE_ACTIONS.action =
-    function (self, unit, button)
-        local action = ActionButton_CalculateAction(self, button);
-        if ( action ) then
-            -- Save macros in case the one for this action is being edited
-            securecall("MacroFrame_SaveMacro");
+function(self, unit, button)
+    local action = ActionButton_CalculateAction(self, button);
+    if (action) then
+        -- Save macros in case the one for this action is being edited
+        securecall("MacroFrame_SaveMacro");
 
-            UseAction(action, unit, button);
-        end
-    end;
+        UseAction(action, unit, button);
+    end
+end;
 
 SECURE_ACTIONS.pet =
-    function (self, unit, button)
-        local action =
-            SecureButton_GetModifiedAttribute(self, "action", button);
-        if ( action ) then
-            CastPetAction(action, unit);
-        end
-    end;
-   
-SECURE_ACTIONS.multispell = 
-    function (self, unit, button)
-        local action = ActionButton_CalculateAction(self, button);
-        local spell = SecureButton_GetModifiedAttribute(self, "spell", button);
-        if ( action and spell ) then
-            SetMultiCastSpell(action, tonumber(spell) or spell);
-        end
-    end;
+function(self, unit, button)
+    local action =
+    SecureButton_GetModifiedAttribute(self, "action", button);
+    if (action) then
+        CastPetAction(action, unit);
+    end
+end;
+
+SECURE_ACTIONS.multispell =
+function(self, unit, button)
+    local action = ActionButton_CalculateAction(self, button);
+    local spell = SecureButton_GetModifiedAttribute(self, "spell", button);
+    if (action and spell) then
+        SetMultiCastSpell(action, tonumber(spell) or spell);
+    end
+end;
 
 SECURE_ACTIONS.spell =
-    function (self, unit, button)
-        local spell = SecureButton_GetModifiedAttribute(self, "spell", button);
-        local spellID = tonumber(spell);
-        if ( spellID) then
-            CastSpellByID(spellID, unit);
-        elseif ( spell ) then
-            CastSpellByName(spell, unit);
-        end
-    end;
+function(self, unit, button)
+    local spell = SecureButton_GetModifiedAttribute(self, "spell", button);
+    local spellID = tonumber(spell);
+    if (spellID) then
+        CastSpellByID(spellID, unit);
+    elseif (spell) then
+        CastSpellByName(spell, unit);
+    end
+end;
 
 SECURE_ACTIONS.item =
-    function (self, unit, button)
-        local item = SecureButton_GetModifiedAttribute(self, "item", button);
-        if ( not item ) then
-            -- Backwards compatibility code, deprecated but still handled for now.
-            local bag = SecureButton_GetModifiedAttribute(self, "bag", button);
-            local slot = SecureButton_GetModifiedAttribute(self, "slot", button);
-            if ( bag and slot ) then
-                item = bag.." "..slot;
-            else
-                item = slot;
-            end
+function(self, unit, button)
+    local item = SecureButton_GetModifiedAttribute(self, "item", button);
+    if (not item) then
+        -- Backwards compatibility code, deprecated but still handled for now.
+        local bag = SecureButton_GetModifiedAttribute(self, "bag", button);
+        local slot = SecureButton_GetModifiedAttribute(self, "slot", button);
+        if (bag and slot) then
+            item = bag .. " " .. slot;
+        else
+            item = slot;
         end
-        if ( item ) then
-            local name, bag, slot = SecureCmdItemParse(item);
-            if ( IsEquippableItem(name) and not IsEquippedItem(name) ) then
-                EquipItemByName(name);
-            else
-                SecureCmdUseItem(name, bag, slot, unit);
-            end
+    end
+    if (item) then
+        local name, bag, slot = SecureCmdItemParse(item);
+        if (IsEquippableItem(name) and not IsEquippedItem(name)) then
+            EquipItemByName(name);
+        else
+            SecureCmdUseItem(name, bag, slot, unit);
         end
-    end;
+    end
+end;
 
 SECURE_ACTIONS.macro =
-    function (self, unit, button)
-        local macro = SecureButton_GetModifiedAttribute(self, "macro", button);
-        if ( macro ) then
-            -- Save macros in case the one for this action is being edited
-            securecall("MacroFrame_SaveMacro");
+function(self, unit, button)
+    local macro = SecureButton_GetModifiedAttribute(self, "macro", button);
+    if (macro) then
+        -- Save macros in case the one for this action is being edited
+        securecall("MacroFrame_SaveMacro");
 
-            RunMacro(macro, button);
-        else
-            local text =
-                SecureButton_GetModifiedAttribute(self, "macrotext", button);
-            if ( text ) then
-                RunMacroText(text, button);
-            end
+        RunMacro(macro, button);
+    else
+        local text =
+        SecureButton_GetModifiedAttribute(self, "macrotext", button);
+        if (text) then
+            RunMacroText(text, button);
         end
-    end;
+    end
+end;
 
 SECURE_ACTIONS.cancelaura =
-    function (self, unit, button)
-        local index = SecureButton_GetModifiedAttribute(self, "index", button);
-        if ( index ) then
-            CancelUnitBuff(unit, index);
-        else
-            local spell = SecureButton_GetModifiedAttribute(self, "spell", button);
-            local rank = SecureButton_GetModifiedAttribute(self, "rank", button);
-            CancelUnitBuff(unit, spell, rank);
-        end
-    end;
+function(self, unit, button)
+    local index = SecureButton_GetModifiedAttribute(self, "index", button);
+    if (index) then
+        CancelUnitBuff(unit, index);
+    else
+        local spell = SecureButton_GetModifiedAttribute(self, "spell", button);
+        local rank = SecureButton_GetModifiedAttribute(self, "rank", button);
+        CancelUnitBuff(unit, spell, rank);
+    end
+end;
 
 SECURE_ACTIONS.stop =
-    function (self, unit, button)
-        if ( SpellIsTargeting() ) then
-            SpellStopTargeting();
-        end
-    end;
+function(self, unit, button)
+    if (SpellIsTargeting()) then
+        SpellStopTargeting();
+    end
+end;
 
 SECURE_ACTIONS.target =
-    function (self, unit, button)
-        if ( unit ) then
-            if ( unit == "none" ) then
-                ClearTarget();
-            elseif ( SpellIsTargeting() ) then
-                SpellTargetUnit(unit);
-            elseif ( CursorHasItem() ) then
-                DropItemOnUnit(unit);
-            else
-                TargetUnit(unit);
-            end
+function(self, unit, button)
+    if (unit) then
+        if (unit == "none") then
+            ClearTarget();
+        elseif (SpellIsTargeting()) then
+            SpellTargetUnit(unit);
+        elseif (CursorHasItem()) then
+            DropItemOnUnit(unit);
+        else
+            TargetUnit(unit);
         end
-    end;
+    end
+end;
 
 SECURE_ACTIONS.focus =
-    function (self, unit, button)
-        return FocusUnit(unit);
-    end;
+function(self, unit, button)
+    return FocusUnit(unit);
+end;
 
 SECURE_ACTIONS.assist =
-    function (self, unit, button)
-        return AssistUnit(unit);
-    end;
+function(self, unit, button)
+    return AssistUnit(unit);
+end;
 
 local function SecureAction_ManageAssignment(assignment, action, unit)
-    if ( not action or action == "set" ) then
+    if (not action or action == "set") then
         SetPartyAssignment(assignment, unit);
-    elseif ( action == "clear" ) then
+    elseif (action == "clear") then
         ClearPartyAssignment(assignment, unit);
-    elseif ( action == "toggle" ) then
-        if ( GetPartyAssignment(assignment, unit) ) then
+    elseif (action == "toggle") then
+        if (GetPartyAssignment(assignment, unit)) then
             ClearPartyAssignment(assignment, unit);
         else
             SetPartyAssignment(assignment, unit);
@@ -439,41 +438,41 @@ local function SecureAction_ManageAssignment(assignment, action, unit)
 end
 
 SECURE_ACTIONS.maintank =
-    function (self, unit, button)
-        local action = SecureButton_GetModifiedAttribute(self, "action", button);
-        SecureAction_ManageAssignment("maintank", action, unit);
-    end;
+function(self, unit, button)
+    local action = SecureButton_GetModifiedAttribute(self, "action", button);
+    SecureAction_ManageAssignment("maintank", action, unit);
+end;
 
 SECURE_ACTIONS.mainassist =
-    function (self, unit, button)
-        local action = SecureButton_GetModifiedAttribute(self, "action", button);
-        SecureAction_ManageAssignment("mainassist", action, unit);
-    end;
+function(self, unit, button)
+    local action = SecureButton_GetModifiedAttribute(self, "action", button);
+    SecureAction_ManageAssignment("mainassist", action, unit);
+end;
 
 SECURE_ACTIONS.click =
-    function (self, unit, button)
-        local delegate =
-            SecureButton_GetModifiedAttribute(self, "clickbutton", button);
-        if ( delegate ) then
-            delegate:Click(button);
-        end
-    end;
+function(self, unit, button)
+    local delegate =
+    SecureButton_GetModifiedAttribute(self, "clickbutton", button);
+    if (delegate) then
+        delegate:Click(button);
+    end
+end;
 
 SECURE_ACTIONS.attribute =
-    function (self, unit, button)
-        local frame =
-            SecureButton_GetModifiedAttribute(self, "attribute-frame", button);
-        if ( not frame ) then
-            frame = self;
-        end
-        local name =
-            SecureButton_GetModifiedAttribute(self, "attribute-name", button);
-        local value =
-            SecureButton_GetModifiedAttribute(self, "attribute-value", button);
-        if ( name ) then
-            frame:SetAttribute(name, value);
-        end
-    end;
+function(self, unit, button)
+    local frame =
+    SecureButton_GetModifiedAttribute(self, "attribute-frame", button);
+    if (not frame) then
+        frame = self;
+    end
+    local name =
+    SecureButton_GetModifiedAttribute(self, "attribute-name", button);
+    local value =
+    SecureButton_GetModifiedAttribute(self, "attribute-value", button);
+    if (name) then
+        frame:SetAttribute(name, value);
+    end
+end;
 
 function SecureActionButton_OnClick(self, button, down)
     -- TODO check with Tom etc if this is kosher
@@ -486,22 +485,22 @@ function SecureActionButton_OnClick(self, button, down)
     local unit = SecureButton_GetModifiedUnit(self, button);
 
     -- Remap button suffixes based on the disposition of the unit (contributed by Iriel and Cladhaire)
-    if ( unit ) then
+    if (unit) then
         local origButton = button;
-        if ( UnitCanAttack("player", unit) )then
+        if (UnitCanAttack("player", unit)) then
             button = SecureButton_GetModifiedAttribute(self, "harmbutton", button) or button;
-        elseif ( UnitCanAssist("player", unit) )then
+        elseif (UnitCanAssist("player", unit)) then
             button = SecureButton_GetModifiedAttribute(self, "helpbutton", button) or button;
         end
 
         -- The unit may have changed based on button remapping
-        if ( button ~= origButton ) then
+        if (button ~= origButton) then
             unit = SecureButton_GetModifiedUnit(self, button);
         end
     end
 
     -- Don't do anything if our unit doesn't exist
-    if ( unit and unit ~= "none" and not UnitExists(unit) ) then
+    if (unit and unit ~= "none" and not UnitExists(unit)) then
         return;
     end
 
@@ -509,43 +508,43 @@ function SecureActionButton_OnClick(self, button, down)
     local actionType = SecureButton_GetModifiedAttribute(self, "type", button);
 
     -- Perform the requested action!
-    if ( actionType ) then
+    if (actionType) then
         -- Re TODO: GMA call allows generic click handler snippets; it's second to prevent values set on the frame from suppressing it
-       local atRisk = false;
+        local atRisk = false;
         local handler = SECURE_ACTIONS[actionType]
         if not handler then
             atRisk = true; -- user-provided function, be careful
-            handler = SecureButton_GetModifiedAttribute(self, "_"..actionType, button);
+            handler = SecureButton_GetModifiedAttribute(self, "_" .. actionType, button);
         end
-        if ( not handler ) then
+        if (not handler) then
             atRisk = false; -- functions retrieved from table keys carry their own taint
             handler = rawget(self, actionType);
         end
-        if ( type(handler) == 'function' ) then
+        if (type(handler) == 'function') then
             -- TODO actiontype is ignored by internal handlers, presently left in to facilitate multi-purpose custom handlers; would we rather remove it entirely?
-            if atRisk then 
+            if atRisk then
                 forceinsecure();
             end
             handler(self, unit, button, actionType);
 
-        elseif ( type(handler) == 'string' ) then
-            SecureHandler_OnClick(self, "_"..actionType, button, down);
+        elseif (type(handler) == 'string') then
+            SecureHandler_OnClick(self, "_" .. actionType, button, down);
         end
     end
 
     -- Target predefined item, if we just cast a spell that targets an item
-    if ( SpellCanTargetItem() ) then
+    if (SpellCanTargetItem()) then
         local bag = SecureButton_GetModifiedAttribute(self, "target-bag", button);
         local slot = SecureButton_GetModifiedAttribute(self, "target-slot", button);
-        if ( slot ) then
-            if ( bag ) then
+        if (slot) then
+            if (bag) then
                 UseContainerItem(bag, slot);
             else
                 UseInventoryItem(slot);
             end
         else
             local item = SecureButton_GetModifiedAttribute(self, "target-item", button);
-            if ( item ) then
+            if (item) then
                 SpellTargetItem(item);
             end
         end
@@ -561,8 +560,8 @@ end
 
 function SecureUnitButton_OnClick(self, button)
     local type = SecureButton_GetModifiedAttribute(self, "type", button);
-    if ( type == "menu" ) then
-        if ( SpellIsTargeting() ) then
+    if (type == "menu") then
+        if (SpellIsTargeting()) then
             SpellStopTargeting();
             return;
         end
@@ -606,13 +605,13 @@ function SecureGroupHeader_OnLoad(self)
 end
 
 function SecureGroupHeader_OnEvent(self, event, ...)
-    if ( (event == "PARTY_MEMBERS_CHANGED" or event == "UNIT_NAME_UPDATE") and self:IsVisible() ) then
+    if ((event == "PARTY_MEMBERS_CHANGED" or event == "UNIT_NAME_UPDATE") and self:IsVisible()) then
         SecureGroupHeader_Update(self);
     end
 end
 
 function SecureGroupHeader_OnAttributeChanged(self, name, value)
-    if ( self:IsVisible() ) then
+    if (self:IsVisible()) then
         SecureGroupHeader_Update(self);
     end
 end
@@ -620,7 +619,7 @@ end
 -- relativePoint, xMultiplier, yMultiplier = getRelativePointAnchor( point )
 -- Given a point return the opposite point and which axes the point
 -- depends on.
-local function getRelativePointAnchor( point )
+local function getRelativePointAnchor(point)
     point = strupper(point);
     if (point == "TOP") then
         return "BOTTOM", 0, -1;
@@ -643,32 +642,32 @@ local function getRelativePointAnchor( point )
     end
 end
 
-function ApplyUnitButtonConfiguration( ... )
+function ApplyUnitButtonConfiguration(...)
     for i = 1, select("#", ...), 1 do
         local frame = select(i, ...);
         local anchor = frame:GetAttribute("initial-anchor");
         local width = tonumber(frame:GetAttribute("initial-width") or nil);
-        local height = tonumber(frame:GetAttribute("initial-height")or nil);
-        local scale = tonumber(frame:GetAttribute("initial-scale")or nil);
+        local height = tonumber(frame:GetAttribute("initial-height") or nil);
+        local scale = tonumber(frame:GetAttribute("initial-scale") or nil);
         local unitWatch = frame:GetAttribute("initial-unitWatch");
-        if ( anchor ) then
+        if (anchor) then
             local point, relPoint, xOffset, yOffset = strsplit(",", anchor);
             relPoint = relPoint or point;
             xOffset = tonumber(xOffset) or 0;
             yOffset = tonumber(yOffset) or 0;
             frame:SetPoint(point, frame:GetParent(), relPoint, xOffset, yOffset);
         end
-        if ( width ) then
+        if (width) then
             frame:SetWidth(width);
         end
-        if ( height ) then
+        if (height) then
             frame:SetHeight(height);
         end
-        if ( scale ) then
+        if (scale) then
             frame:SetScale(scale);
         end
-        if ( unitWatch ) then
-            if ( unitWatch == "state" ) then
+        if (unitWatch) then
+            if (unitWatch == "state") then
                 RegisterUnitWatch(frame, true);
             else
                 RegisterUnitWatch(frame);
@@ -680,17 +679,17 @@ function ApplyUnitButtonConfiguration( ... )
     end
 end
 
-local function ApplyConfig( header, newChild, defaultConfigFunction )
+local function ApplyConfig(header, newChild, defaultConfigFunction)
     local configFunction = header.initialConfigFunction or defaultConfigFunction;
-    if ( type(configFunction) == "function" ) then
+    if (type(configFunction) == "function") then
         configFunction(newChild);
         return true;
     end
 end
 
-function SetupUnitButtonConfiguration( header, newChild, defaultConfigFunction )
+function SetupUnitButtonConfiguration(header, newChild, defaultConfigFunction)
     newChild:AllowAttributeChanges();
-    if ( securecall(ApplyConfig, header, newChild, defaultConfigFunction) ) then
+    if (securecall(ApplyConfig, header, newChild, defaultConfigFunction)) then
         ApplyUnitButtonConfiguration(newChild);
     end
 end
@@ -699,7 +698,7 @@ local pairs = pairs;
 local ipairs = ipairs;
 
 -- empties tbl and assigns the value true to each key passed as part of ...
-local function fillTable( tbl, ... )
+local function fillTable(tbl, ...)
     for key in pairs(tbl) do
         tbl[key] = nil;
     end
@@ -712,7 +711,7 @@ end
 
 -- same as fillTable() except that each key is also stored in
 -- the array portion of the table in order
-local function doubleFillTable( tbl, ... )
+local function doubleFillTable(tbl, ...)
     fillTable(tbl, ...);
     for i = 1, select("#", ...), 1 do
         tbl[i] = select(i, ...);
@@ -729,7 +728,7 @@ local tempTable = {};
 local function configureChildren(self)
     local point = self:GetAttribute("point") or "TOP"; --default anchor point of "TOP"
     local relativePoint, xOffsetMult, yOffsetMult = getRelativePointAnchor(point);
-    local xMultiplier, yMultiplier =  abs(xOffsetMult), abs(yOffsetMult);
+    local xMultiplier, yMultiplier = abs(xOffsetMult), abs(yOffsetMult);
     local xOffset = self:GetAttribute("xOffset") or 0; --default of 0
     local yOffset = self:GetAttribute("yOffset") or 0; --default of 0
     local sortDir = self:GetAttribute("sortDir") or "ASC"; --sort ascending by default
@@ -740,8 +739,8 @@ local function configureChildren(self)
     local numDisplayed = unitCount - (startingIndex - 1);
     local unitsPerColumn = self:GetAttribute("unitsPerColumn");
     local numColumns;
-    if ( unitsPerColumn and numDisplayed > unitsPerColumn ) then
-        numColumns = min( ceil(numDisplayed / unitsPerColumn), (self:GetAttribute("maxColumns") or 1) );
+    if (unitsPerColumn and numDisplayed > unitsPerColumn) then
+        numColumns = min(ceil(numDisplayed / unitsPerColumn), (self:GetAttribute("maxColumns") or 1));
     else
         unitsPerColumn = numDisplayed;
         numColumns = 1;
@@ -752,7 +751,7 @@ local function configureChildren(self)
 
     numDisplayed = loopFinish - (loopStart - 1);
 
-    if ( sortDir == "DESC" ) then
+    if (sortDir == "DESC") then
         loopStart = unitCount - (startingIndex - 1);
         loopFinish = loopStart - (numDisplayed - 1);
         step = -1;
@@ -760,27 +759,27 @@ local function configureChildren(self)
 
     -- ensure there are enough buttons
     local needButtons = max(1, numDisplayed);
-    if not ( self:GetAttribute("child"..needButtons) ) then
+    if not (self:GetAttribute("child" .. needButtons)) then
         local buttonTemplate = self:GetAttribute("template");
         local templateType = self:GetAttribute("templateType") or "Button";
         local name = self:GetName();
-        if not ( name ) then
+        if not (name) then
             self:Hide();
             return;
         end
         for i = 1, needButtons, 1 do
             local childAttr = "child" .. i;
-            if not ( self:GetAttribute(childAttr) ) then
-                local newButton = CreateFrame(templateType, name.."UnitButton"..i, self, buttonTemplate);
+            if not (self:GetAttribute(childAttr)) then
+                local newButton = CreateFrame(templateType, name .. "UnitButton" .. i, self, buttonTemplate);
                 SetupUnitButtonConfiguration(self, newButton);
                 self:SetAttribute(childAttr, newButton);
-                self:SetAttribute("frameref-"..childAttr, GetFrameHandle(newButton));
+                self:SetAttribute("frameref-" .. childAttr, GetFrameHandle(newButton));
             end
         end
     end
 
     local columnAnchorPoint, columnRelPoint, colxMulti, colyMulti;
-    if ( numColumns > 1 ) then
+    if (numColumns > 1) then
         columnAnchorPoint = self:GetAttribute("columnAnchorPoint");
         columnRelPoint, colxMulti, colyMulti = getRelativePointAnchor(columnAnchorPoint);
     end
@@ -792,22 +791,22 @@ local function configureChildren(self)
     for i = loopStart, loopFinish, step do
         buttonNum = buttonNum + 1;
         columnUnitCount = columnUnitCount + 1;
-        if ( columnUnitCount > unitsPerColumn ) then
+        if (columnUnitCount > unitsPerColumn) then
             columnUnitCount = 1;
             columnNum = columnNum + 1;
         end
 
-        local unitButton = self:GetAttribute("child"..buttonNum);
+        local unitButton = self:GetAttribute("child" .. buttonNum);
         unitButton:Hide();
         unitButton:ClearAllPoints();
-        if ( buttonNum == 1 ) then
+        if (buttonNum == 1) then
             unitButton:SetPoint(point, currentAnchor, point, 0, 0);
-            if ( columnAnchorPoint ) then
+            if (columnAnchorPoint) then
                 unitButton:SetPoint(columnAnchorPoint, currentAnchor, columnAnchorPoint, 0, 0);
             end
 
-        elseif ( columnUnitCount == 1 ) then
-            local columnAnchor = self:GetAttribute("child"..(buttonNum - unitsPerColumn));
+        elseif (columnUnitCount == 1) then
+            local columnAnchor = self:GetAttribute("child" .. (buttonNum - unitsPerColumn));
             unitButton:SetPoint(columnAnchorPoint, columnAnchor, columnRelPoint, colxMulti * columnSpacing, colyMulti * columnSpacing);
 
         else
@@ -820,23 +819,23 @@ local function configureChildren(self)
     end
     repeat
         buttonNum = buttonNum + 1;
-        local unitButton = self:GetAttribute("child"..buttonNum);
-        if ( unitButton ) then
+        local unitButton = self:GetAttribute("child" .. buttonNum);
+        if (unitButton) then
             unitButton:Hide();
             unitButton:SetAttribute("unit", nil);
         end
-    until not ( unitButton )
+    until not (unitButton)
 
     local unitButton = self:GetAttribute("child1");
     local unitButtonWidth = unitButton:GetWidth();
     local unitButtonHeight = unitButton:GetHeight();
-    if ( numDisplayed > 0 ) then
-        local width = xMultiplier * (unitsPerColumn - 1) * unitButtonWidth + ( (unitsPerColumn - 1) * (xOffset * xOffsetMult) ) + unitButtonWidth;
-        local height = yMultiplier * (unitsPerColumn - 1) * unitButtonHeight + ( (unitsPerColumn - 1) * (yOffset * yOffsetMult) ) + unitButtonHeight;
+    if (numDisplayed > 0) then
+        local width = xMultiplier * (unitsPerColumn - 1) * unitButtonWidth + ((unitsPerColumn - 1) * (xOffset * xOffsetMult)) + unitButtonWidth;
+        local height = yMultiplier * (unitsPerColumn - 1) * unitButtonHeight + ((unitsPerColumn - 1) * (yOffset * yOffsetMult)) + unitButtonHeight;
 
-        if ( numColumns > 1 ) then
-            width = width + ( (numColumns -1) * abs(colxMulti) * (width + columnSpacing) );
-            height = height + ( (numColumns -1) * abs(colyMulti) * (height + columnSpacing) );
+        if (numColumns > 1) then
+            width = width + ((numColumns - 1) * abs(colxMulti) * (width + columnSpacing));
+            height = height + ((numColumns - 1) * abs(colyMulti) * (height + columnSpacing));
         end
 
         self:SetWidth(width);
@@ -844,8 +843,8 @@ local function configureChildren(self)
     else
         local minWidth = self:GetAttribute("minWidth") or (yMultiplier * unitButtonWidth);
         local minHeight = self:GetAttribute("minHeight") or (xMultiplier * unitButtonHeight);
-        self:SetWidth( max(minWidth, 0.1) );
-        self:SetHeight( max(minHeight, 0.1) );
+        self:SetWidth(max(minWidth, 0.1));
+        self:SetHeight(max(minHeight, 0.1));
     end
 end
 
@@ -854,19 +853,19 @@ local function GetGroupHeaderType(self)
 
     local nRaid = GetNumRaidMembers();
     local nParty = GetNumPartyMembers();
-    if ( nRaid > 0 and self:GetAttribute("showRaid") ) then
+    if (nRaid > 0 and self:GetAttribute("showRaid")) then
         type = "RAID";
-    elseif ( (nRaid > 0 or nParty > 0) and self:GetAttribute("showParty") ) then
+    elseif ((nRaid > 0 or nParty > 0) and self:GetAttribute("showParty")) then
         type = "PARTY";
-    elseif ( self:GetAttribute("showSolo") ) then
+    elseif (self:GetAttribute("showSolo")) then
         type = "SOLO";
     end
-    if ( type ) then
-        if ( type == "RAID" ) then
+    if (type) then
+        if (type == "RAID") then
             start = 1;
             stop = nRaid;
         else
-            if ( type == "SOLO" or self:GetAttribute("showPlayer") ) then
+            if (type == "SOLO" or self:GetAttribute("showPlayer")) then
                 start = 0;
             else
                 start = 1;
@@ -879,21 +878,21 @@ end
 
 local function GetGroupRosterInfo(type, index)
     local _, unit, name, subgroup, className, role;
-    if ( type == "RAID" ) then
-        unit = "raid"..index;
+    if (type == "RAID") then
+        unit = "raid" .. index;
         name, _, subgroup, _, _, className, _, _, _, role = GetRaidRosterInfo(index);
     else
-        if ( index > 0 ) then
-            unit = "party"..index;
+        if (index > 0) then
+            unit = "party" .. index;
         else
             unit = "player";
         end
-        if ( UnitExists(unit) ) then
+        if (UnitExists(unit)) then
             name = UnitName(unit);
             _, className = UnitClass(unit);
-            if ( GetPartyAssignment("MAINTANK", unit) ) then
+            if (GetPartyAssignment("MAINTANK", unit)) then
                 role = "MAINTANK";
-            elseif ( GetPartyAssignment("MAINASSIST", unit) ) then
+            elseif (GetPartyAssignment("MAINASSIST", unit)) then
                 role = "MAINASSIST";
             end
         end
@@ -914,43 +913,40 @@ function SecureGroupHeader_Update(self)
 
     -- See if this header should be shown
     local type, start, stop = GetGroupHeaderType(self);
-    if ( not type ) then
+    if (not type) then
         configureChildren(self);
         return;
     end
 
-    if ( not groupFilter and not nameList ) then
+    if (not groupFilter and not nameList) then
         groupFilter = "1,2,3,4,5,6,7,8";
     end
 
-    if ( groupFilter ) then
+    if (groupFilter) then
         -- filtering by a list of group numbers and/or classes
         fillTable(tokenTable, strsplit(",", groupFilter));
         local strictFiltering = self:GetAttribute("strictFiltering"); -- non-strict by default
         for i = start, stop, 1 do
             local unit, name, subgroup, className, role = GetGroupRosterInfo(type, i);
-            if ( name and
+            if (name and
                 ((not strictFiltering) and
-                 (tokenTable[subgroup] or tokenTable[className] or (role and tokenTable[role])) -- non-strict filtering
-             ) or
-                (tokenTable[subgroup] and tokenTable[className]) -- strict filtering
-            ) then
+                    (tokenTable[subgroup] or tokenTable[className] or (role and tokenTable[role])) -- non-strict filtering) or
+                (tokenTable[subgroup] and tokenTable[className]) -- strict filtering) then
                 tinsert(sortingTable, name);
                 sortingTable[name] = unit;
-                if ( groupBy == "GROUP" ) then
+                if (groupBy == "GROUP") then
                     groupingTable[name] = subgroup;
 
-                elseif ( groupBy == "CLASS" ) then
+                elseif (groupBy == "CLASS") then
                     groupingTable[name] = className;
 
-                elseif ( groupBy == "ROLE" ) then
+                elseif (groupBy == "ROLE") then
                     groupingTable[name] = role;
-
                 end
             end
         end
 
-        if ( groupBy ) then
+        if (groupBy) then
             local groupingOrder = self:GetAttribute("groupingOrder");
             doubleFillTable(tokenTable, strsplit(",", groupingOrder));
             for k in pairs(tempTable) do
@@ -962,12 +958,12 @@ function SecureGroupHeader_Update(self)
                     groupingTable[k] = nil;
                 end
                 for index, name in ipairs(sortingTable) do
-                    if ( groupingTable[name] == grouping ) then
+                    if (groupingTable[name] == grouping) then
                         tinsert(groupingTable, name);
                         tempTable[name] = true;
                     end
                 end
-                if ( sortMethod == "NAME" ) then -- sort by ID by default
+                if (sortMethod == "NAME") then -- sort by ID by default
                     table.sort(groupingTable);
                 end
                 for _, name in ipairs(groupingTable) do
@@ -979,11 +975,11 @@ function SecureGroupHeader_Update(self)
                 groupingTable[k] = nil;
             end
             for index, name in ipairs(sortingTable) do
-                if not ( tempTable[name] ) then
+                if not (tempTable[name]) then
                     tinsert(groupingTable, name);
                 end
             end
-            if ( sortMethod == "NAME" ) then -- sort by ID by default
+            if (sortMethod == "NAME") then -- sort by ID by default
                 table.sort(groupingTable);
             end
             for _, name in ipairs(groupingTable) do
@@ -995,9 +991,8 @@ function SecureGroupHeader_Update(self)
                 sortingTable[index] = name;
             end
 
-        elseif ( sortMethod == "NAME" ) then -- sort by ID by default
+        elseif (sortMethod == "NAME") then -- sort by ID by default
             table.sort(sortingTable);
-
         end
 
     else
@@ -1005,20 +1000,19 @@ function SecureGroupHeader_Update(self)
         doubleFillTable(sortingTable, strsplit(",", nameList));
         for i = start, stop, 1 do
             local unit, name = GetGroupRosterInfo(type, i);
-            if ( sortingTable[name] ) then
+            if (sortingTable[name]) then
                 sortingTable[name] = unit;
             end
         end
         for i = #sortingTable, 1, -1 do
             local name = sortingTable[i];
-            if ( sortingTable[name] == true ) then
+            if (sortingTable[name] == true) then
                 tremove(sortingTable, i);
             end
         end
-        if ( sortMethod == "NAME" ) then
+        if (sortMethod == "NAME") then
             table.sort(sortingTable);
         end
-
     end
 
     configureChildren(self);
@@ -1039,22 +1033,22 @@ function SecureGroupPetHeader_OnLoad(self)
 end
 
 function SecureGroupPetHeader_OnEvent(self, event, ...)
-    if ( (event == "PARTY_MEMBERS_CHANGED" or event == "UNIT_NAME_UPDATE" or event == "UNIT_PET") and self:IsVisible() ) then
+    if ((event == "PARTY_MEMBERS_CHANGED" or event == "UNIT_NAME_UPDATE" or event == "UNIT_PET") and self:IsVisible()) then
         SecureGroupPetHeader_Update(self);
     end
 end
 
 function SecureGroupPetHeader_OnAttributeChanged(self, name, value)
-    if ( self:IsVisible() ) then
+    if (self:IsVisible()) then
         SecureGroupPetHeader_Update(self);
     end
 end
 
 local function GetPetUnit(type, index)
-    if ( type == "RAID" ) then
-        return "raidpet"..index;
-    elseif ( index > 0 ) then
-        return "partypet"..index;
+    if (type == "RAID") then
+        return "raidpet" .. index;
+    elseif (index > 0) then
+        return "partypet" .. index;
     else
         return "pet";
     end
@@ -1074,52 +1068,49 @@ function SecureGroupPetHeader_Update(self)
 
     -- See if this header should be shown
     local type, start, stop = GetGroupHeaderType(self);
-    if ( not type ) then
+    if (not type) then
         configureChildren(self);
         return;
     end
 
-    if ( not groupFilter and not nameList ) then
+    if (not groupFilter and not nameList) then
         groupFilter = "1,2,3,4,5,6,7,8";
     end
 
-    if ( groupFilter ) then
+    if (groupFilter) then
         -- filtering by a list of group numbers and/or classes
         fillTable(tokenTable, strsplit(",", groupFilter));
         local strictFiltering = self:GetAttribute("strictFiltering"); -- non-strict by default
         for i = start, stop, 1 do
             local unit, name, subgroup, className, role = GetGroupRosterInfo(type, i);
             local petUnit = GetPetUnit(type, i);
-            if ( filterOnPet ) then
+            if (filterOnPet) then
                 name = UnitName(petUnit);
             end
-            if not ( useOwnerUnit ) then
+            if not (useOwnerUnit) then
                 unit = petUnit;
             end
-            if ( UnitExists(petUnit) ) then
-                if ( name and
+            if (UnitExists(petUnit)) then
+                if (name and
                     ((not strictFiltering) and
-                     (tokenTable[subgroup] or tokenTable[className] or (role and tokenTable[role])) -- non-strict filtering
-                 ) or
-                    (tokenTable[subgroup] and tokenTable[className]) -- strict filtering
-                ) then
+                        (tokenTable[subgroup] or tokenTable[className] or (role and tokenTable[role])) -- non-strict filtering) or
+                    (tokenTable[subgroup] and tokenTable[className]) -- strict filtering) then
                     tinsert(sortingTable, name);
                     sortingTable[name] = unit;
-                    if ( groupBy == "GROUP" ) then
+                    if (groupBy == "GROUP") then
                         groupingTable[name] = subgroup;
 
-                    elseif ( groupBy == "CLASS" ) then
+                    elseif (groupBy == "CLASS") then
                         groupingTable[name] = className;
 
-                    elseif ( groupBy == "ROLE" ) then
+                    elseif (groupBy == "ROLE") then
                         groupingTable[name] = role;
-
                     end
                 end
             end
         end
 
-        if ( groupBy ) then
+        if (groupBy) then
             local groupingOrder = self:GetAttribute("groupingOrder");
             doubleFillTable(tokenTable, strsplit(",", groupingOrder));
             for k in pairs(tempTable) do
@@ -1131,12 +1122,12 @@ function SecureGroupPetHeader_Update(self)
                     groupingTable[k] = nil;
                 end
                 for index, name in ipairs(sortingTable) do
-                    if ( groupingTable[name] == grouping ) then
+                    if (groupingTable[name] == grouping) then
                         tinsert(groupingTable, name);
                         tempTable[name] = true;
                     end
                 end
-                if ( sortMethod == "NAME" ) then -- sort by ID by default
+                if (sortMethod == "NAME") then -- sort by ID by default
                     table.sort(groupingTable);
                 end
                 for _, name in ipairs(groupingTable) do
@@ -1148,11 +1139,11 @@ function SecureGroupPetHeader_Update(self)
                 groupingTable[k] = nil;
             end
             for index, name in ipairs(sortingTable) do
-                if not ( tempTable[name] ) then
+                if not (tempTable[name]) then
                     tinsert(groupingTable, name);
                 end
             end
-            if ( sortMethod == "NAME" ) then -- sort by ID by default
+            if (sortMethod == "NAME") then -- sort by ID by default
                 table.sort(groupingTable);
             end
             for _, name in ipairs(groupingTable) do
@@ -1164,9 +1155,8 @@ function SecureGroupPetHeader_Update(self)
                 sortingTable[index] = name;
             end
 
-        elseif ( sortMethod == "NAME" ) then -- sort by ID by default
+        elseif (sortMethod == "NAME") then -- sort by ID by default
             table.sort(sortingTable);
-
         end
 
     else
@@ -1175,42 +1165,40 @@ function SecureGroupPetHeader_Update(self)
         for i = start, stop, 1 do
             local unit, name = GetGroupRosterInfo(type, i);
             local petUnit = GetPetUnit(type, i);
-            if ( filterOnPet ) then
+            if (filterOnPet) then
                 name = UnitName(petUnit);
             end
-            if not ( useOwnerUnit ) then
+            if not (useOwnerUnit) then
                 unit = petUnit;
             end
-            if ( sortingTable[name] and UnitExists(petUnit) ) then
+            if (sortingTable[name] and UnitExists(petUnit)) then
                 sortingTable[name] = unit;
             end
         end
         for i = #sortingTable, 1, -1 do
             local name = sortingTable[i];
-            if ( sortingTable[name] == true ) then
+            if (sortingTable[name] == true) then
                 tremove(sortingTable, i);
             end
         end
-        if ( sortMethod == "NAME" ) then
+        if (sortMethod == "NAME") then
             table.sort(sortingTable);
         end
-
     end
 
-    if ( useOwnerUnit and filterOnPet ) then
+    if (useOwnerUnit and filterOnPet) then
         -- sorting table currently contains pet unit strings and needs to contain owner unit strings
         for i, name in ipairs(sortingTable) do
             local unit = sortingTable[name];
             sortingTable[name] = gsub(unit, "raidpet([%d]+)", "raid%1");
         end
 
-    elseif ( not useOwnerUnit and not filterOnPet ) then
+    elseif (not useOwnerUnit and not filterOnPet) then
         -- sorting table currently contains owner unit strings and needs to contain pet unit strings
         for i, name in ipairs(sortingTable) do
             local unit = sortingTable[name];
             sortingTable[name] = gsub(unit, "raid([%d]+)", "raidpet%1");
         end
-
     end
 
     configureChildren(self);
