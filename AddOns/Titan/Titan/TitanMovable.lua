@@ -378,7 +378,6 @@ function Titan_CastingBarFrame_UpdatePosition()
     end
 end
 
-
 function Titan_ContainerFrames_Relocate()
     local panelYOffset = TitanMovable_GetPanelYOffset(TITAN_PANEL_PLACE_BOTTOM, TitanPanelGetVar("BothBars"), 1);
     -- Get the Blizzard offsets from the relevant table

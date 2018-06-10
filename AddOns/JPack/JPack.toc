@@ -1,19 +1,29 @@
 ## Interface: 30300
+## X-Curse-Packaged-Version: 0.7.11
+## X-Curse-Project-Name: JPack
+## X-Curse-Project-ID: jpack
+## X-Curse-Repository-ID: wow/jpack/mainline
+
 ## Title: [Duowan] JPack
 ## Notes: Quick (re)sort out your items in your bags/bank/guildbank!
 ## Title-zhCN: [多玩] 背包整理 JPack
 ## Title-zhTW: [多玩] 背包整理 JPack
 ## Notes-zhCN: 快速的整理玩家的背包、银行和公会银行
 ## Notes-zhTW: 快速的整理玩家的背包、銀行和公會銀行
-## Version: 0.7.4
+## Version: 0.7.11
 ## X-DuowanAddon: 商业物品
-## Dependencies: Duowan
 ## X-Revision: Duowan
-## LoadOnDemand: 
-## SavedVariables: DuowanAddon_JPackDB
-# ## OptionalDeps: !!!CWDGLibsPack, tekDebug
+## LoadOnDemand:
+## SavedVariables: JPackDB
 ## Author: Jason Green, yleaf, 阳一
+## OptionalDeps: tekDebug
+## X-ProjectHome: http://wow.curseforge.com/addons/jpack/
 
 localization\locales.xml
 JPack.lua
+
+JPackConfig.lua
+
 JPack_Ex.lua
+core.lua
+
