@@ -155,6 +155,7 @@ function CQI:OnEnable()
     self:EnableWatchButton()
     self:RegisterEvent("QUEST_QUERY_COMPLETE");
     self:RegisterEvent("PLAYER_TARGET_CHANGED");
+    self:RegisterEvent("PLAYER_ENTERING_WORLD");
     Quixote.RegisterCallback(self, "Quest_Gained", "AutoUpdateQuest")
     Quixote.RegisterCallback(self, "Quest_Abandoned", "AutoUpdateQuest")
     Quixote.RegisterCallback(self, "Quest_Complete", "AutoUpdateQuest")
@@ -246,6 +247,8 @@ function CQI:QUEST_QUERY_COMPLETE()
     end
 end
 
+function CQI:PLAYER_ENTERING_WORLD()
+end
 
 function CQI:PLAYER_TARGET_CHANGED()
     self.lastC = self.curentC or UnitClassification("target");

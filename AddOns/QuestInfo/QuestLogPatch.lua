@@ -6,8 +6,26 @@ local Quixote = LibStub("LibQuixote-2.0")
 -- local C = Cartographer
 local CQI = Cartographer_QuestInfo
 
--------------------------------------------------------------------
+local COI_QUEST_SELECTED
+local COI_QUEST_SELECTED_ID
+local COI_QUEST_SELECTED_IS_HEADER = nil
 
+-------------------------------------------------------------------
+local function UpdateQuestSelection()
+    COI_QUEST_SELECTED = GetQuestLogSelection();
+    COI_QUEST_SELECTED_ID = select(9, GetQuestLogTitle(COI_QUEST_SELECTED))
+    COI_QUEST_SELECTED_IS_HEADER = select(5, GetQuestLogTitle(COI_QUEST_SELECTED))
+end
+
+local function UpdateQuestLogSelection()
+    if (not COI_QUEST_SELECTED) then
+        UpdateQuestSelection();
+    end
+    if (not COI_QUEST_SELECTED_IS_HEADER) then
+        SelectQuestLogEntry(COI_QUEST_SELECTED);
+        QuestLog_UpdateQuestDetails(true);
+    end
+end
 ----
 -- for start and end npc, the CQI_Data is:
 -- {
@@ -22,6 +40,8 @@ local CQI = Cartographer_QuestInfo
 -- }
 ----
 function CQI:Hook_QuestLog_UpdateQuestDetails()
+    UpdateQuestSelection();
+
     self:CloseSeriesFrame()
     self:CloseLocationFrame()
 
@@ -131,6 +151,8 @@ function CQI:OnButtonClick(this, button, data)
 
     if zone_count == 1 then
         self:OpenQuestMap(map.quest, map.title, type, last_zone, map.zones[last_zone])
+        WorldMap_OpenToQuest(COI_QUEST_SELECTED_ID, "UIParent");
+        UpdateQuestLogSelection();
     elseif zone_count > 1 then
         self:OpenLocationFrame(map)
     end
@@ -309,7 +331,12 @@ function CQI:Hook_ExpandQuestHeader()
     self:ScheduleTimer("Hook_QuestLog_Update", 0, self)
 end
 
+function CQI:Hook_WorldMap_OpenToQuest()
+    UpdateQuestLogSelection();
+end
+
 -------------------------------------------------------------------
+
 
 local function QuestIconFaded(title)
     local objectives, complete = select(6, Quixote:GetQuest(title))
@@ -393,6 +420,7 @@ function CQI:PatchQuestLog()
         self:SecureHook("QuestLog_UpdateQuestDetails", "Hook_QuestLog_UpdateQuestDetails")
         self:SecureHook("QuestLog_Update", "Hook_QuestLog_Update")
         self:SecureHook("ExpandQuestHeader", "Hook_ExpandQuestHeader")
+        self:SecureHook("WorldMap_OpenToQuest", "Hook_WorldMap_OpenToQuest")
         self:RegisterEvent("GOSSIP_SHOW")
         self:RegisterEvent("QUEST_GREETING")
     end, 1, self);
