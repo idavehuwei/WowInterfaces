@@ -38,15 +38,15 @@ local pairs = _G.pairs
 -------------------------------------------------------------------------------
 local LibStub = LibStub
 
-local MODNAME		= "Ackis Recipe List"
-local addon		= LibStub("AceAddon-3.0"):GetAddon(MODNAME)
+local MODNAME = "Ackis Recipe List"
+local addon = LibStub("AceAddon-3.0"):GetAddon(MODNAME)
 
-local BFAC		= LibStub("LibBabble-Faction-3.0"):GetLookupTable()
-local L			= LibStub("AceLocale-3.0"):GetLocale(MODNAME)
+local BFAC = LibStub("LibBabble-Faction-3.0"):GetLookupTable()
+local L = LibStub("AceLocale-3.0"):GetLocale(MODNAME)
 
-local private		= select(2, ...)
+local private = select(2, ...)
 
-local Player		= private.Player
+local Player = private.Player
 
 -------------------------------------------------------------------------------
 -- Constants
@@ -64,65 +64,65 @@ local A_MAX = 9
 -- Functions
 -------------------------------------------------------------------------------
 function Player:HasProperRepLevel(rep_data)
-	if not rep_data then
-		return true
-	end
-	local is_alliance = Player.faction == BFAC["Alliance"]
-	local player_rep = Player["Reputation"]
-	local FAC = private.faction_ids
-	local has_faction = true
+    if not rep_data then
+        return true
+    end
+    local is_alliance = Player.faction == BFAC["Alliance"]
+    local player_rep = Player["Reputation"]
+    local FAC = private.faction_ids
+    local has_faction = true
 
-	for rep_id, rep_info in pairs(rep_data) do
-		for rep_level in pairs(rep_info) do
-			if rep_id == FAC.HONOR_HOLD or rep_id == FAC.THRALLMAR then
-				rep_id = is_alliance and FAC.HONOR_HOLD or FAC.THRALLMAR
-			elseif rep_id == FAC.MAGHAR or rep_id == FAC.KURENAI then
-				rep_id = is_alliance and FAC.KURENAI or FAC.MAGHAR
-			end
-			local rep_name = private.reputation_list[rep_id].name
+    for rep_id, rep_info in pairs(rep_data) do
+        for rep_level in pairs(rep_info) do
+            if rep_id == FAC.HONOR_HOLD or rep_id == FAC.THRALLMAR then
+                rep_id = is_alliance and FAC.HONOR_HOLD or FAC.THRALLMAR
+            elseif rep_id == FAC.MAGHAR or rep_id == FAC.KURENAI then
+                rep_id = is_alliance and FAC.KURENAI or FAC.MAGHAR
+            end
+            local rep_name = private.reputation_list[rep_id].name
 
-			if not player_rep[rep_name] or player_rep[rep_name] < rep_level then
-				has_faction = false
-			else
-				has_faction = true
-				break
-			end
-		end
-	end
-	return has_faction
+            if not player_rep[rep_name] or player_rep[rep_name] < rep_level then
+                has_faction = false
+            else
+                has_faction = true
+                break
+            end
+        end
+    end
+    return has_faction
 end
 
 function Player:HasRecipeFaction(recipe)
-	local flagged_horde = recipe:IsFlagged("common1", "HORDE")
-	local flagged_alliance = recipe:IsFlagged("common1", "ALLIANCE")
+    local flagged_horde = recipe:IsFlagged("common1", "HORDE")
+    local flagged_alliance = recipe:IsFlagged("common1", "ALLIANCE")
 
-	if self.faction == BFAC["Alliance"] and flagged_horde and not flagged_alliance then
-		return false
-	elseif self.faction == BFAC["Horde"] and flagged_alliance and not flagged_horde then
-		return false
-	end
-	return true
+    if self.faction == BFAC["Alliance"] and flagged_horde and not flagged_alliance then
+        return false
+    elseif self.faction == BFAC["Horde"] and flagged_alliance and not flagged_horde then
+        return false
+    end
+    return true
 end
 
 -- Sets the player's professions. Used when the AddOn initializes and when a profession has been learned or unlearned.
 -- TODO: Make the AddOn actually detect when a profession is learned/unlearned, then call this function. -Torhal
 function Player:SetProfessions()
-	local profession_list = self.professions
+    local profession_list = self.professions
 
-	for i in pairs(profession_list) do
-		profession_list[i] = false
-	end
+    for i in pairs(profession_list) do
+        profession_list[i] = false
+    end
 
-	for index = 1, 25, 1 do
-		local spell_name = GetSpellName(index, BOOKTYPE_SPELL)
+    for index = 1, 25, 1 do
+        local spell_name = GetSpellName(index, BOOKTYPE_SPELL)
 
-		if not spell_name or index == 25 then
-			break
-		end
+        if not spell_name or index == 25 then
+            break
+        end
 
-		-- Check for false in the profession_list - a nil entry means we don't care about the spell.
-		if profession_list[spell_name] == false then
-			profession_list[spell_name] = true
-		end
-	end
+        -- Check for false in the profession_list - a nil entry means we don't care about the spell.
+        if profession_list[spell_name] == false then
+            profession_list[spell_name] = true
+        end
+    end
 end
