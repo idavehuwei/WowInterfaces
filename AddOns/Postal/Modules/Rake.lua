@@ -6,24 +6,24 @@ Postal_Rake.description = L["Prints the amount of money collected during a mail 
 local money
 
 function Postal_Rake:OnEnable()
-	self:RegisterEvent("MAIL_SHOW")
-	self:RegisterEvent("MAIL_CLOSED")
+    self:RegisterEvent("MAIL_SHOW")
+    self:RegisterEvent("MAIL_CLOSED")
 end
 
 -- Disabling modules unregisters all events/hook automatically
 function Postal_Rake:OnDisable()
-	self:UnregisterEvent("MAIL_SHOW");
-	self:UnregisterEvent("MAIL_CLOSED");
+    self:UnregisterEvent("MAIL_SHOW");
+    self:UnregisterEvent("MAIL_CLOSED");
 end
 
 function Postal_Rake:MAIL_SHOW()
-	money = GetMoney()	
+    money = GetMoney()
 end
 
 function Postal_Rake:MAIL_CLOSED()
-	self:UnregisterEvent("MAIL_CLOSED")
-	money = GetMoney() - money
-	if money > 0 then
-		Postal:Print(L["Collected"].." "..Postal:GetMoneyString(money))
-	end
+    self:UnregisterEvent("MAIL_CLOSED")
+    money = GetMoney() - money
+    if money > 0 then
+        Postal:Print(L["Collected"].." "..Postal:GetMoneyString(money))
+    end
 end
