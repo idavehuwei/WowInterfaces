@@ -37,3 +37,5 @@ Modules\Select.lua
 Modules\TradeBlock.lua
 Modules\Rake.lua
 Modules\BlackBook.lua
+Modules\DoNotWant.lua
+Modules\CarbonCopy.lua
