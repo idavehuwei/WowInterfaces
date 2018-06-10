@@ -69,14 +69,17 @@ function EUF_HpMpXp_OnEvent(self, event, ...)
     elseif event == "UNIT_PET" then
         EUF_PetFrameHPMP_Update();
     elseif event == "PARTY_MEMBERS_CHANGED" then
+        EUF_UpdateFramesPosition();
         EUF_PartyFrameHPMP_Update();
         EUF_PartyFrameDisplay_Update();
+        EUF_PartyMemberFrame_Update();
     elseif event == "PLAYER_TARGET_CHANGED" then
         EUF_TargetFrameHPMP_Update();
     elseif event == "PLAYER_ENTERING_WORLD" then
         EUF_Frame_Update();
         PlayerHp_Update();
         PlayerPower_Update();
+        EUF_PartyMemberFrame_Update();
     elseif event == "UNIT_LEVEL" or event == "UNIT_DISPLAYPOWER" then
         EUF_HP_Update(arg1);
         EUF_MP_Update(arg1);
@@ -241,6 +244,20 @@ function EUF_PartyFrameHPMP_Update()
         EUF_HP_Update("party"..i);
         EUF_MP_Update("party"..i);
     end;
+end
+
+function EUF_PartyMemberFrame_Update()
+    for i = 1, GetNumPartyMembers() do
+        PartyMemberFrame_UpdateMember(_G["PartyMemberFrame" .. i])
+        PartyMemberFrame_UpdateArt(_G["PartyMemberFrame" .. i])
+        PartyMemberFrame_UpdateAssignedRoles(_G["PartyMemberFrame" .. i])
+        PartyMemberFrame_UpdateLeader(_G["PartyMemberFrame" .. i])
+    end;
+    if (TitanMovableFrame_CheckFrames and TitanPanelGetVar and TitanMovableFrame_MoveFrames and TitanMovableFrame_AdjustBlizzardFrames) then
+        TitanMovableFrame_CheckFrames(TitanPanelGetVar("Position"));
+        TitanMovableFrame_MoveFrames(TitanPanelGetVar("Position"), TitanPanelGetVar("AuxScreenAdjust"));
+        TitanMovableFrame_AdjustBlizzardFrames();
+    end
 end
 
 -- HP/MP/XP
