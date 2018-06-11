@@ -21,9 +21,9 @@ L["Ahn'Qiraj"] = "安其拉";
 L["RandomMount"] = "随机坐骑";
 L["Mount"] = "坐骑";
 
-if GetLocale()=="zhCN" then
-	BINDING_HEADER_EZICONS= "团队标记"
-	BINDING_NAME_EZICONS_SETICON = "设置标记"
-	BINDING_NAME_EZICONS_REMOVEICON = "删除标记"
-	BINDING_NAME_EZICONS_RESETICONS= "重置标记"
+if GetLocale() == "zhCN" then
+    BINDING_HEADER_EZICONS = "团队标记"
+    BINDING_NAME_EZICONS_SETICON = "设置标记"
+    BINDING_NAME_EZICONS_REMOVEICON = "删除标记"
+    BINDING_NAME_EZICONS_RESETICONS = "重置标记"
 end

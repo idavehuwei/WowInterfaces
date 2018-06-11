@@ -1,146 +1,154 @@
 QuickCompare = LibStub("AceAddon-3.0"):NewAddon("QuickCompare", "AceHook-3.0");
 -------------------
--- ±»œµÕ≥µƒ∏¸∞Ùµƒ◊∞±∏±»Ωœ
+-- ÊØîÁ≥ªÁªüÁöÑÊõ¥Ê£íÁöÑË£ÖÂ§áÊØîËæÉ
 -------------------
 local useAttribute = true;
 
-function QuickCompare:GameTooltip_ShowCompareItem(tooltip, shift)	
-	local tooltip = tooltip or GameTooltip;
-	local item, link = tooltip:GetItem();
-	if (IsControlKeyDown() or not link) then
-		return;
-	end
-	
-	-- “‘œ¬Frame ±∫ˆ¬‘
-	local frame = GetMouseFocus() and GetMouseFocus():GetName() or "";	
-	if strfind(frame,"^Character.*Slot$")		-- ◊∞±∏¿∏∫ˆ¬‘
-		or strfind(frame,"^TempEnchant%d+$")	-- ¡Ÿ ±ƒß∑®∫ˆ¬‘
-		or strfind(frame, "^TM_Button")			--  Œ∆∑¿∏∫ˆ¬‘
-		or strfind(frame, "^TrinketMenu")		--  Œ∆∑¿∏∫ˆ¬‘
-	then return end
-	--correct anchor if tooltip is in right half of screen
-	local anchor, align="TOPLEFT", "TOPRIGHT";
-	local scale = tooltip:GetScale();
-	local escale = tooltip:GetEffectiveScale();
+function QuickCompare:GameTooltip_ShowCompareItem(tooltip, shift)
+    local tooltip = tooltip or GameTooltip;
+    local item, link = tooltip:GetItem();
+    if (IsControlKeyDown() or not link) then
+        return;
+    end
 
-	
-	local item1 = nil;
-	local item2 = nil;
-	local shoptip1 = dwGetglobal("ShoppingTooltip"..1);
-	local shoptip2 = dwGetglobal("ShoppingTooltip"..2);
-	if (shoptip1:SetHyperlinkCompareItem(link, 1, shift, tooltip) ) then
-		item1 = true;
-	end
-	if ( shoptip2:SetHyperlinkCompareItem(link, 2, shift, tooltip) ) then
-		item2 = true;
-	end
+    -- ‰ª•‰∏ãFrameÊó∂ÂøΩÁï•
+    local frame = GetMouseFocus() and GetMouseFocus():GetName() or "";
+    if strfind(frame,"^Character.*Slot$")       -- Ë£ÖÂ§áÊ†èÂøΩÁï•
+        or strfind(frame,"^TempEnchant%d+$")    -- ‰∏¥Êó∂È≠îÊ≥ïÂøΩÁï•
+        or strfind(frame, "^TM_Button")         -- È•∞ÂìÅÊ†èÂøΩÁï•
+        or strfind(frame, "^TrinketMenu")       -- È•∞ÂìÅÊ†èÂøΩÁï•
+    then return end
+    --correct anchor if tooltip is in right half of screen
+    local anchor, align="TOPLEFT", "TOPRIGHT";
+    local scale = tooltip:GetScale();
+    local escale = tooltip:GetEffectiveScale();
 
-	-- find correct side
-	local rightDist = 0;
-	local leftPos = tooltip:GetLeft();
-	local rightPos = tooltip:GetRight();
-	if ( not rightPos ) then
-		rightPos = 0;
-	end
-	if ( not leftPos ) then
-		leftPos = 0;
-	end
+    local item1 = nil;
+    local item2 = nil;
+    local item3 = nil;
+    local shoptip1 = dwGetglobal("ShoppingTooltip"..1);
+    local shoptip2 = dwGetglobal("ShoppingTooltip"..2);
+    local shoptip3 = dwGetglobal("ShoppingTooltip"..3);
+    --local shoptip1, shoptip2, shoptip3 = unpack(tooltip.shoppingTooltips);
+    if (shoptip1:SetHyperlinkCompareItem(link, 1, shift, tooltip) ) then
+        item1 = true;
+    end
+    if ( shoptip2:SetHyperlinkCompareItem(link, 2, shift, tooltip) ) then
+        item2 = true;
+    end
+    if (shoptip3:SetHyperlinkCompareItem(link, 3, shift, tooltip)) then
+        item3 = true;
+    end
 
-	rightDist = GetScreenWidth() - rightPos;
-	leftDist = leftPos;
+    -- find correct side
+    local rightDist = 0;
+    local leftPos = tooltip:GetLeft();
+    local rightPos = tooltip:GetRight();
+    if ( not rightPos ) then
+        rightPos = 0;
+    end
+    if ( not leftPos ) then
+        leftPos = 0;
+    end
 
-	if (leftPos and (rightDist < leftPos)) then		
-		anchor, align = "TOPRIGHT", "TOPLEFT";
-	end
+    rightDist = GetScreenWidth() - rightPos;
+    --leftDist = leftPos;
 
-	local totalWidth = 0;
-	if ( item1  ) then
-		totalWidth = totalWidth + shoptip1:GetWidth();
-	end
-	if ( item2  ) then
-		totalWidth = totalWidth + shoptip2:GetWidth();
-	end
+    if (leftPos and (rightDist < leftPos)) then
+        anchor, align = "TOPRIGHT", "TOPLEFT";
+    end
 
-	local offsetx, offsety = GetCursorPosition();
-	local realRightPos = rightPos * escale;
-	local realLeftPos = leftPos * escale;
+    local totalWidth = 0;
+    if ( item1  ) then
+        totalWidth = totalWidth + shoptip1:GetWidth();
+    end
+    if ( item2  ) then
+        totalWidth = totalWidth + shoptip2:GetWidth();
+    end
+    if (item3) then
+        totalWidth = totalWidth + shoptip3:GetWidth();
+    end
 
-	if (anchor == "TOPLEFT" and offsetx > realRightPos) then
-		anchor, align = "TOPRIGHT", "TOPLEFT";
-	elseif (anchor == "TOPRIGHT" and offsetx < realLeftPos) then
-		anchor, align = "TOPLEFT", "TOPRIGHT";
-	end
+    local offsetx, offsety = GetCursorPosition();
+    local realRightPos = rightPos * escale;
+    local realLeftPos = leftPos * escale;
 
-	if (anchor == "TOPRIGHT" and totalWidth > leftPos * escale) then
-		anchor, align = "TOPLEFT", "TOPRIGHT";
-	elseif (anchor == "TOPLEFT" and (rightPos * escale + totalWidth) >  GetScreenWidth() * escale) then
-		anchor, align = "TOPRIGHT", "TOPLEFT";
-	end
+    if (anchor == "TOPLEFT" and offsetx > realRightPos) then
+        anchor, align = "TOPRIGHT", "TOPLEFT";
+    elseif (anchor == "TOPRIGHT" and offsetx < realLeftPos) then
+        anchor, align = "TOPLEFT", "TOPRIGHT";
+    end
 
-	-- see if we should slide the tooltip
-	if ( tooltip:GetAnchorType() ) then
-		if ( (anchor == "TOPRIGHT") and (totalWidth > leftPos) ) then
-			tooltip:SetAnchorType(tooltip:GetAnchorType(), (totalWidth - leftPos), 0);
-		elseif ( (anchor == "TOPLEFT") and (rightPos + totalWidth) >  GetScreenWidth() ) then
-			tooltip:SetAnchorType(tooltip:GetAnchorType(), -((rightPos + totalWidth) - GetScreenWidth()), 0);
-		end
-	end
-	
-	local anchorframe = tooltip;
-	local dy = 0;
+    if (anchor == "TOPRIGHT" and totalWidth > leftPos * escale) then
+        anchor, align = "TOPLEFT", "TOPRIGHT";
+    elseif (anchor == "TOPLEFT" and (rightPos * escale + totalWidth) >  GetScreenWidth() * escale) then
+        anchor, align = "TOPRIGHT", "TOPLEFT";
+    end
 
-	for i=1, 2 do			
-		local shoptip = dwGetglobal("ShoppingTooltip"..i);
-		
-		if (shoptip:SetHyperlinkCompareItem(link, i, shift, tooltip)) then			
-			shoptip:SetOwner(tooltip, "ANCHOR_NONE");	
-			if (useAttribute) then
-				shoptip:SetHyperlinkCompareItem(link, i, shift, tooltip);
-			else
-				shoptip:SetHyperlinkCompareItem(link, i, shift);
-			end
-			
-			shoptip:ClearAllPoints();
+    -- see if we should slide the tooltip
+    if ( tooltip:GetAnchorType() ) then
+        if ( (anchor == "TOPRIGHT") and (totalWidth > leftPos) ) then
+            tooltip:SetAnchorType(tooltip:GetAnchorType(), (totalWidth - leftPos), 0);
+        elseif ( (anchor == "TOPLEFT") and (rightPos + totalWidth) >  GetScreenWidth() ) then
+            tooltip:SetAnchorType(tooltip:GetAnchorType(), -((rightPos + totalWidth) - GetScreenWidth()), 0);
+        end
+    end
 
-			local shoptiptext = dwGetglobal(shoptip:GetName().."TextLeft1");			
-			local newtext = "|cffE0E0E0["..CURRENTLY_EQUIPPED.. "]|r";
-			shoptiptext:SetText("|cffE0E0E0["..CURRENTLY_EQUIPPED.. "]|r");			
+    local anchorframe = tooltip;
+    local dy = 0;
 
-			local bottom, top=shoptip:GetBottom(), shoptip:GetTop();
-			local uibottom, uitop=UIParent:GetBottom(),UIParent:GetTop();
-			if (bottom and bottom*scale-10<=uibottom) then				
-				dy = uibottom-bottom+(10*scale);			
-			end
-	
-			shoptip:SetPoint(anchor, anchorframe, align, 0, dy);
-			shoptip:SetScale(scale);
-			shoptip:Show(); 
+    for i=1, 3 do
+        local shoptip = dwGetglobal("ShoppingTooltip"..i);
 
-			--last comparison tooltip becomes anchorframe for next comparison tooltip
-			anchorframe = shoptip;
-			dy = 0;
-		end
-	end
+        if (shoptip:SetHyperlinkCompareItem(link, i, shift, tooltip)) then
+            shoptip:SetOwner(tooltip, "ANCHOR_NONE");
+            if (useAttribute) then
+                shoptip:SetHyperlinkCompareItem(link, i, shift, tooltip);
+            else
+                shoptip:SetHyperlinkCompareItem(link, i, shift);
+            end
+
+            shoptip:ClearAllPoints();
+
+            local shoptiptext = dwGetglobal(shoptip:GetName().."TextLeft1");
+            local newtext = "|cffE0E0E0["..CURRENTLY_EQUIPPED.. "]|r";
+            shoptiptext:SetText("|cffE0E0E0["..CURRENTLY_EQUIPPED.. "]|r");
+
+            local bottom, top=shoptip:GetBottom(), shoptip:GetTop();
+            local uibottom, uitop=UIParent:GetBottom(),UIParent:GetTop();
+            if (bottom and bottom*scale-10<=uibottom) then
+                dy = uibottom-bottom+(10*scale);
+            end
+
+            shoptip:SetPoint(anchor, anchorframe, align, 0, dy);
+            shoptip:SetScale(scale);
+            shoptip:Show();
+
+            --last comparison tooltip becomes anchorframe for next comparison tooltip
+            anchorframe = shoptip;
+            dy = 0;
+        end
+    end
 end
 
-function QuickCompare:Toggle(switch)	
-	if (switch) then
-		self:SecureHook("GameTooltip_ShowCompareItem");	
-		self:SecureHookScript(GameTooltip, "OnTooltipSetItem", "GameTooltip_ShowCompareItem");
-	
-		dwGetglobal("ShoppingTooltip1"):SetBackdropColor(0.3,0.3,0.0);
-		dwGetglobal("ShoppingTooltip2"):SetBackdropColor(0.3,0.3,0.0);	
-	else		
-		self:Unhook(GameTooltip, "OnTooltipSetItem");
-		self:Unhook("GameTooltip_ShowCompareItem");
-	end	
+function QuickCompare:Toggle(switch)
+    if (switch) then
+        self:SecureHook("GameTooltip_ShowCompareItem");
+        self:SecureHookScript(GameTooltip, "OnTooltipSetItem", "GameTooltip_ShowCompareItem");
+
+        dwGetglobal("ShoppingTooltip1"):SetBackdropColor(0.3,0.3,0.0);
+        dwGetglobal("ShoppingTooltip2"):SetBackdropColor(0.3,0.3,0.0);
+    else
+        self:Unhook(GameTooltip, "OnTooltipSetItem");
+        self:Unhook("GameTooltip_ShowCompareItem");
+    end
 end
 
 
 function QuickCompare:ToggleAttri(switch)
-	if (switch) then
-		useAttribute = true;
-	else
-		useAttribute = false;
-	end
+    if (switch) then
+        useAttribute = true;
+    else
+        useAttribute = false;
+    end
 end

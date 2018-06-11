@@ -21,9 +21,9 @@ L["Ahn'Qiraj"] = "安其拉";
 L["RandomMount"] = "隨機坐騎";
 L["Mount"] = "坐騎";
 
-if GetLocale()=="zhCN" then
-	BINDING_HEADER_EZICONS= "團隊標記"
-	BINDING_NAME_EZICONS_SETICON = "設置標記"
-	BINDING_NAME_EZICONS_REMOVEICON = "刪除標記"
-	BINDING_NAME_EZICONS_RESETICONS= "重置標記"
+if GetLocale() == "zhCN" then
+    BINDING_HEADER_EZICONS = "團隊標記"
+    BINDING_NAME_EZICONS_SETICON = "設置標記"
+    BINDING_NAME_EZICONS_REMOVEICON = "刪除標記"
+    BINDING_NAME_EZICONS_RESETICONS = "重置標記"
 end
