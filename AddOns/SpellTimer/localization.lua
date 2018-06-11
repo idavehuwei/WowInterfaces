@@ -254,6 +254,7 @@ if (GetLocale() == "zhCN") then
     SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["冰冷触摸"] = { nil };
     SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["鲜血印记"] = { nil };
     SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["冰封之韧"] = { "buff", nil, nil, nil, { ["live"] = 1 } };
+    SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["孤寂"] = { "buff", nil, nil, nil, { ["live"] = 1 } };
     SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["狂乱"] = { "buff", nil, nil, nil, { ["live"] = 1 } };
     SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["吸血鬼之血"] = { "buff", nil, nil, nil, { ["live"] = 1 } };
     SPELL_TIMER_PATTERN_TABLE["DEATHKNIGHT"]["巫妖之躯"] = { "buff", nil, nil, nil, { ["live"] = 1 } };
