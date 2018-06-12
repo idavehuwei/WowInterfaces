@@ -171,6 +171,9 @@ function D:OnEnable()
 
     self:UpdatePOIs();
     self:QuestUpdate();
+
+    BlizzardOptionsPanel_SetCVarSafe("watchFrameWidth", "1", nil)
+    self:WatchFrame_Update();
 end
 
 function D:OnDisable()
@@ -182,6 +185,10 @@ function D:OnDisable()
     dwSetCVar("DuowanConfig", "isWatchFrameJG", 0);
     --self:Unhook("AddQuestWatch");
     --self:Unhook("RemoveQuestWatch");
+
+    BlizzardOptionsPanel_SetCVarSafe("watchFrameWidth", "0", nil)
+    WatchFrame_SetWidth(GetCVar("watchFrameWidth"));
+    WatchFrame_Update();
 end
 
 function D:DragButton_OnEnter(self)
@@ -464,15 +471,17 @@ function D:ChangeTitle(questLogTitle, questLogTitleText, level, questTag, sugges
 
         LevelString = "[" .. level .. LevelTag .. "] ";
 
+        local titleString;
         if (Watch) then
-            questLogTitle:SetText(ColorTag .. LevelString .. questLogTitleText .. DifTag);
+            titleString = ColorTag .. LevelString .. questLogTitleText .. DifTag;
         else
             if (suggestedGroup > 0) then
-                questLogTitle:SetText(ColorTag .. " " .. LevelString .. questLogTitleText .. " (" .. suggestedGroup .. ") ");
+                titleString = ColorTag .. " " .. LevelString .. questLogTitleText .. " (" .. suggestedGroup .. ") ";
             else
-                questLogTitle:SetText(ColorTag .. " " .. LevelString .. questLogTitleText .. " ");
+                titleString = ColorTag .. " " .. LevelString .. questLogTitleText .. " ";
             end
         end
+        questLogTitle:SetText(titleString);
     end
 end
 
@@ -484,6 +493,20 @@ end
 
 function D:GetSafeQuestName(name)
     return name:gsub('%-', '%%-'):gsub('%.', '%%.'):gsub('%?', '%%?')
+end
+
+function D:QuestWatchTitleButton_Resize(questWatchTitle, width)
+    local Contents = questWatchTitle:GetText();
+    questWatchTitle:SetWidth(0);
+    questWatchTitle:SetText(Contents);
+    questWatchTitle:SetWidth(width * 1.2);
+
+    if (width > WatchFrame:GetWidth()) then
+        BlizzardOptionsPanel_SetCVarSafe("watchFrameWidth", "1", nil)
+        WatchFrame_SetWidth(GetCVar("watchFrameWidth"));
+        WatchFrame_Update();
+        WatchFrame:SetWidth(width)
+    end
 end
 
 function D:WatchFrame_Update()
@@ -500,24 +523,21 @@ function D:WatchFrame_Update()
                 title = self:GetSafeQuestName(questLogTitleText);
                 local i = 1;
                 while i <= #WATCHFRAME_QUESTLINES do
-                    local line = WATCHFRAME_QUESTLINES[i].text
-                    local text = line:GetText() or ''
-                    questWidth = max(line:GetStringWidth() + WATCHFRAME_ITEM_WIDTH, questWidth);
+                    local line = WATCHFRAME_QUESTLINES[i]
+                    local linetext = line.text;
+                    local text = linetext:GetText() or ''
+                    questWidth = max(linetext:GetStringWidth() + WATCHFRAME_ITEM_WIDTH, questWidth);
 
                     if strmatch(text, title) then
-                        self:ChangeTitle(line, title, level, questTag, suggestedGroup, isHeader, isDaily, true);
-                        maxWidth = max(maxWidth, line:GetWidth())
+                        self:ChangeTitle(linetext, title, level, questTag, suggestedGroup, isHeader, isDaily, true);
+                        maxWidth = max(maxWidth, linetext:GetWidth())
+                        questWidth = max(maxWidth, questWidth)
+                        self:QuestWatchTitleButton_Resize(linetext, questWidth)
                         break
                     else
                         i = i + 1
                     end
                 end
-            end
-        end
-
-        if (WatchFrame and WatchFrame:IsVisible()) then
-            if (questWidth > WatchFrame:GetWidth()) then
-                WatchFrame_SetWidth(1);
             end
         end
     end

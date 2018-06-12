@@ -18,8 +18,8 @@ function cwdg_WatchRaidGroupButtons()
 end
 
 function cwdg_WatchPetActionBar()
---	PetActionBarFrame:SetAttribute("unit", "pet");
---	RegisterUnitWatch(PetActionBarFrame);
+--  PetActionBarFrame:SetAttribute("unit", "pet");
+--  RegisterUnitWatch(PetActionBarFrame);
 end
 
 local cwdg_button = CreateFrame("Frame");
@@ -159,41 +159,41 @@ end
 -- 解决奖励动作条冷却时间和主动做条冲突问题
 --
 --function Duowan_FixActionBarCooldown()
---	local frame = DWActionBarAnchorFrame or CreateFrame("Frame", "DWActionBarAnchorFrame", UIParent, "SecureHandlerStateTemplate");
+--  local frame = DWActionBarAnchorFrame or CreateFrame("Frame", "DWActionBarAnchorFrame", UIParent, "SecureHandlerStateTemplate");
 --
---	for i=1, NUM_ACTIONBAR_BUTTONS, 1 do
---		dwGetglobal("ActionButton" .. i):SetParent(frame);
---	end
+--  for i=1, NUM_ACTIONBAR_BUTTONS, 1 do
+--      dwGetglobal("ActionButton" .. i):SetParent(frame);
+--  end
 --
---	frame:Execute([[
---		buttons = table.new(self:GetChildren());
---	]])
+--  frame:Execute([[
+--      buttons = table.new(self:GetChildren());
+--  ]])
 --
---	RegisterStateDriver(frame, "vis", "[bonusbar:1] hide; [bonusbar:2] hide; [bonusbar:3] hide; [bonusbar:4] hide; [bonusbar:6] hide; show");
---	frame:SetAttribute("_onstate-vis", [[
---		if (newstate == "show") then
---			for i, button in ipairs(buttons) do
---				button:Show();
---				button:SetAttribute("statehidden", nil);
---			end
---		else
---			for i, button in ipairs(buttons) do
---				button:Hide();
---				button:SetAttribute("statehidden", 1);
---			end
---		end
---	]]
---	);
---	MainMenuBar:SetFrameStrata("LOW");
---	BonusActionBarFrame:SetFrameStrata("MEDIUM");
+--  RegisterStateDriver(frame, "vis", "[bonusbar:1] hide; [bonusbar:2] hide; [bonusbar:3] hide; [bonusbar:4] hide; [bonusbar:6] hide; show");
+--  frame:SetAttribute("_onstate-vis", [[
+--      if (newstate == "show") then
+--          for i, button in ipairs(buttons) do
+--              button:Show();
+--              button:SetAttribute("statehidden", nil);
+--          end
+--      else
+--          for i, button in ipairs(buttons) do
+--              button:Hide();
+--              button:SetAttribute("statehidden", 1);
+--          end
+--      end
+--  ]]
+--  );
+--  MainMenuBar:SetFrameStrata("LOW");
+--  BonusActionBarFrame:SetFrameStrata("MEDIUM");
 --end
 --
 --local ccframe = CreateFrame("Frame");
 --ccframe:RegisterEvent("ADDON_LOADED");
 --ccframe:SetScript("OnEvent", function(self, event, addon)
---	if (addon == "Duowan") then
---		Duowan_FixActionBarCooldown();
---	end
+--  if (addon == "Duowan") then
+--      Duowan_FixActionBarCooldown();
+--  end
 --end);
 
 ---------------------
