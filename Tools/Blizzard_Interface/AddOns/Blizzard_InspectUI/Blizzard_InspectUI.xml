@@ -12,9 +12,9 @@
                 </Offset>
             </Anchor>
         </Anchors>
-		<HitRectInsets>
-			<AbsInset left="0" right="30" top="0" bottom="45"/>
-		</HitRectInsets>
+        <HitRectInsets>
+            <AbsInset left="0" right="30" top="0" bottom="45"/>
+        </HitRectInsets>
         <Layers>
             <Layer level="ARTWORK">
                 <Texture name="InspectFramePortrait">
@@ -72,7 +72,7 @@
                     <OnLoad function="RaiseFrameLevel"/>
                 </Scripts>
             </Button>
-			<Button name="InspectFrameTab1" inherits="CharacterFrameTabButtonTemplate" id="1" text="CHARACTER">
+            <Button name="InspectFrameTab1" inherits="CharacterFrameTabButtonTemplate" id="1" text="CHARACTER">
                 <Anchors>
                     <Anchor point="CENTER" relativePoint="BOTTOMLEFT">
                         <Offset>
@@ -81,15 +81,15 @@
                     </Anchor>
                 </Anchors>
                 <Scripts>
-					<OnClick function="InspectFrameTab_OnClick"/>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:SetText(CHARACTER_INFO, 1.0,1.0,1.0 );
-					</OnEnter>
-					<OnLeave function="GameTooltip_Hide"/>
+                    <OnClick function="InspectFrameTab_OnClick"/>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                        GameTooltip:SetText(CHARACTER_INFO, 1.0,1.0,1.0 );
+                    </OnEnter>
+                    <OnLeave function="GameTooltip_Hide"/>
                 </Scripts>
-			</Button>
-			<Button name="InspectFrameTab2" inherits="CharacterFrameTabButtonTemplate" id="2" text="PVP">
+            </Button>
+            <Button name="InspectFrameTab2" inherits="CharacterFrameTabButtonTemplate" id="2" text="PVP">
                 <Anchors>
                    <Anchor point="LEFT" relativeTo="InspectFrameTab1" relativePoint="RIGHT">
                         <Offset>
@@ -98,38 +98,38 @@
                     </Anchor>
                 </Anchors>
                 <Scripts>
-					<OnClick function="InspectFrameTab_OnClick"/>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:SetText(PLAYER_V_PLAYER, 1.0,1.0,1.0 );
-					</OnEnter>
-					<OnLeave function="GameTooltip_Hide"/>
+                    <OnClick function="InspectFrameTab_OnClick"/>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                        GameTooltip:SetText(PLAYER_V_PLAYER, 1.0,1.0,1.0 );
+                    </OnEnter>
+                    <OnLeave function="GameTooltip_Hide"/>
                 </Scripts>
-			</Button>
-			<Button name="InspectFrameTab3" inherits="CharacterFrameTabButtonTemplate" id="3" text="TALENTS">
-				<Anchors>
-				   <Anchor point="LEFT" relativeTo="InspectFrameTab2" relativePoint="RIGHT">
-						<Offset>
-							<AbsDimension x="-16" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick function="InspectFrameTab_OnClick"/>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:SetText(TALENTS, 1.0,1.0,1.0 );
-					</OnEnter>
-					<OnLeave function="GameTooltip_Hide"/>
-				</Scripts>
-			</Button>
-		</Frames>
+            </Button>
+            <Button name="InspectFrameTab3" inherits="CharacterFrameTabButtonTemplate" id="3" text="TALENTS">
+                <Anchors>
+                   <Anchor point="LEFT" relativeTo="InspectFrameTab2" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-16" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick function="InspectFrameTab_OnClick"/>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                        GameTooltip:SetText(TALENTS, 1.0,1.0,1.0 );
+                    </OnEnter>
+                    <OnLeave function="GameTooltip_Hide"/>
+                </Scripts>
+            </Button>
+        </Frames>
         <Scripts>
-			<OnLoad function="InspectFrame_OnLoad"/>
+            <OnLoad function="InspectFrame_OnLoad"/>
             <OnEvent function="InspectFrame_OnEvent"/>
             <OnShow function="InspectFrame_OnShow"/>
-			<OnHide function="InspectFrame_OnHide"/>
-			<OnUpdate function="InspectFrame_OnUpdate"/>
+            <OnHide function="InspectFrame_OnHide"/>
+            <OnUpdate function="InspectFrame_OnUpdate"/>
         </Scripts>
     </Frame>
 </Ui>

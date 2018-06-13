@@ -59,10 +59,10 @@
          inherits="SecureHandlerBaseTemplate" virtual="true">
     <Scripts>
       <OnDragStart>
-	SecureHandler_OnDragEvent(self, "_ondragstart", button);
+    SecureHandler_OnDragEvent(self, "_ondragstart", button);
       </OnDragStart>
       <OnReceiveDrag>
-	SecureHandler_OnDragEvent(self, "_onreceivedrag");
+    SecureHandler_OnDragEvent(self, "_onreceivedrag");
       </OnReceiveDrag>
     </Scripts>
   </Frame>
@@ -83,23 +83,23 @@
          inherits="SecureHandlerBaseTemplate" virtual="true">
     <Scripts>
       <OnMouseUp>
-	SecureHandler_OnMouseUpDown(self, "_onmouseup", button);
+    SecureHandler_OnMouseUpDown(self, "_onmouseup", button);
       </OnMouseUp>
       <OnMouseDown>
-	SecureHandler_OnMouseUpDown(self, "_onmousedown", button);
+    SecureHandler_OnMouseUpDown(self, "_onmousedown", button);
       </OnMouseDown>
     </Scripts>
   </Frame>
 
   <Frame name="SecureHandlerMouseWheelTemplate"
-	 inherits="SecureHandlerBaseTemplate" virtual="true">
+     inherits="SecureHandlerBaseTemplate" virtual="true">
     <Scripts>
       <OnLoad>
-	SecureHandler_OnLoad(self);
-	self:EnableMouseWheel();
+    SecureHandler_OnLoad(self);
+    self:EnableMouseWheel();
       </OnLoad>
       <OnMouseWheel>
-	SecureHandler_OnMouseWheel(self, "_onmousewheel", delta);
+    SecureHandler_OnMouseWheel(self, "_onmousewheel", delta);
       </OnMouseWheel>
     </Scripts>
   </Frame>

@@ -4,40 +4,40 @@
     <Button name="InspectPaperDollItemSlotButtonTemplate" inherits="ItemButtonTemplate" virtual="true">
         <Scripts>
             <OnLoad>
-				InspectPaperDollItemSlotButton_OnLoad(self);
-			</OnLoad>
+                InspectPaperDollItemSlotButton_OnLoad(self);
+            </OnLoad>
             <OnEvent>
-				InspectPaperDollItemSlotButton_OnEvent(self, event, ...);
-			</OnEvent>
+                InspectPaperDollItemSlotButton_OnEvent(self, event, ...);
+            </OnEvent>
             <OnClick>
-				HandleModifiedItemClick(GetInventoryItemLink(InspectFrame.unit, self:GetID()));
-			</OnClick>
-			<OnUpdate>
-				CursorOnUpdate(self);
-				if ( GameTooltip:IsOwned(self) ) then
-					InspectPaperDollItemSlotButton_OnEnter(self);
-				end
-			</OnUpdate>
+                HandleModifiedItemClick(GetInventoryItemLink(InspectFrame.unit, self:GetID()));
+            </OnClick>
+            <OnUpdate>
+                CursorOnUpdate(self);
+                if ( GameTooltip:IsOwned(self) ) then
+                    InspectPaperDollItemSlotButton_OnEnter(self);
+                end
+            </OnUpdate>
             <OnEnter>
-				InspectPaperDollItemSlotButton_OnEnter(self, motion);
-			</OnEnter>
+                InspectPaperDollItemSlotButton_OnEnter(self, motion);
+            </OnEnter>
             <OnLeave>
-				GameTooltip:Hide();
-				ResetCursor();
-			</OnLeave>
+                GameTooltip:Hide();
+                ResetCursor();
+            </OnLeave>
         </Scripts>
-		<NormalTexture file="Interface\Buttons\UI-Quickslot2">
-			<Size>
-				<AbsDimension x="64" y="64"/>
-			</Size>
-			<Anchors>
-				<Anchor point="CENTER">
-					<Offset>
-						<AbsDimension x="0" y="-1"/>
-					</Offset>
-				</Anchor>
-			</Anchors>
-		</NormalTexture>
+        <NormalTexture file="Interface\Buttons\UI-Quickslot2">
+            <Size>
+                <AbsDimension x="64" y="64"/>
+            </Size>
+            <Anchors>
+                <Anchor point="CENTER">
+                    <Offset>
+                        <AbsDimension x="0" y="-1"/>
+                    </Offset>
+                </Anchor>
+            </Anchors>
+        </NormalTexture>
     </Button>
     <Frame name="InspectPaperDollFrame" setAllPoints="true" parent="InspectFrame" id="1">
         <Layers>
@@ -129,47 +129,47 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad function="InspectModelFrame_OnLoad"/>
-					<OnEvent>
-						self:RefreshUnit();
-					</OnEvent>
+                    <OnEvent>
+                        self:RefreshUnit();
+                    </OnEvent>
                     <OnUpdate function="InspectModelFrame_OnUpdate"/>
                 </Scripts>
-				<Frames>
-					<Button name="InspectModelRotateLeftButton">
-						<Size>
-							<AbsDimension x="35" y="35"/>
-						</Size>
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="InspectModelFrame" relativePoint="TOPLEFT"/>
-						</Anchors>
-						<Scripts>
-							<OnLoad>
-								self:RegisterForClicks("LeftButtonDown", "LeftButtonUp");
-							</OnLoad>
-							<OnClick function="InspectModelRotateLeftButton_OnClick"/>
-						</Scripts>
-						<NormalTexture file="Interface\Buttons\UI-RotationLeft-Button-Up"/>
-						<PushedTexture file="Interface\Buttons\UI-RotationLeft-Button-Down"/>
-						<HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
-					</Button>
-					<Button name="InspectModelRotateRightButton">
-						<Size>
-							<AbsDimension x="35" y="35"/>
-						</Size>
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="InspectModelRotateLeftButton" relativePoint="TOPRIGHT"/>
-						</Anchors>
-						<Scripts>
-							<OnLoad>
-								self:RegisterForClicks("LeftButtonDown", "LeftButtonUp");
-							</OnLoad>
-							<OnClick function="InspectModelRotateRightButton_OnClick"/>
-						</Scripts>
-						<NormalTexture file="Interface\Buttons\UI-RotationRight-Button-Up"/>
-						<PushedTexture file="Interface\Buttons\UI-RotationRight-Button-Down"/>
-						<HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
-					</Button>
-				</Frames>
+                <Frames>
+                    <Button name="InspectModelRotateLeftButton">
+                        <Size>
+                            <AbsDimension x="35" y="35"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeTo="InspectModelFrame" relativePoint="TOPLEFT"/>
+                        </Anchors>
+                        <Scripts>
+                            <OnLoad>
+                                self:RegisterForClicks("LeftButtonDown", "LeftButtonUp");
+                            </OnLoad>
+                            <OnClick function="InspectModelRotateLeftButton_OnClick"/>
+                        </Scripts>
+                        <NormalTexture file="Interface\Buttons\UI-RotationLeft-Button-Up"/>
+                        <PushedTexture file="Interface\Buttons\UI-RotationLeft-Button-Down"/>
+                        <HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
+                    </Button>
+                    <Button name="InspectModelRotateRightButton">
+                        <Size>
+                            <AbsDimension x="35" y="35"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeTo="InspectModelRotateLeftButton" relativePoint="TOPRIGHT"/>
+                        </Anchors>
+                        <Scripts>
+                            <OnLoad>
+                                self:RegisterForClicks("LeftButtonDown", "LeftButtonUp");
+                            </OnLoad>
+                            <OnClick function="InspectModelRotateRightButton_OnClick"/>
+                        </Scripts>
+                        <NormalTexture file="Interface\Buttons\UI-RotationRight-Button-Up"/>
+                        <PushedTexture file="Interface\Buttons\UI-RotationRight-Button-Down"/>
+                        <HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
+                    </Button>
+                </Frames>
             </PlayerModel>
             <Button name="InspectHeadSlot" inherits="InspectPaperDollItemSlotButtonTemplate">
                 <Anchors>

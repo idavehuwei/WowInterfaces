@@ -12,9 +12,9 @@
                 </Offset>
             </Anchor>
         </Anchors>
-		<HitRectInsets>
-			<AbsInset left="0" right="30" top="0" bottom="45"/>
-		</HitRectInsets>
+        <HitRectInsets>
+            <AbsInset left="0" right="30" top="0" bottom="45"/>
+        </HitRectInsets>
         <Layers>
             <Layer level="ARTWORK">
                 <Texture name="CharacterFramePortrait">
@@ -76,18 +76,18 @@
             </Button>
             <Button name="CharacterFrameTab1" inherits="CharacterFrameTabButtonTemplate" id="1" text="CHARACTER">
                 <Anchors>
-					<Anchor point="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="11" y="46"/>
-						</Offset>
-					</Anchor>
+                    <Anchor point="BOTTOMLEFT">
+                        <Offset>
+                            <AbsDimension x="11" y="46"/>
+                        </Offset>
+                    </Anchor>
                 </Anchors>
                 <Scripts>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:SetText(MicroButtonTooltipText(CHARACTER_INFO, "TOGGLECHARACTER0"), 1.0,1.0,1.0 );
-					</OnEnter>
-					<OnLeave function="GameTooltip_Hide"/>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                        GameTooltip:SetText(MicroButtonTooltipText(CHARACTER_INFO, "TOGGLECHARACTER0"), 1.0,1.0,1.0 );
+                    </OnEnter>
+                    <OnLeave function="GameTooltip_Hide"/>
                 </Scripts>
             </Button>
             <Button name="CharacterFrameTab2" inherits="CharacterFrameTabButtonTemplate" id="2" text="PETS">
@@ -99,14 +99,14 @@
                     </Anchor>
                 </Anchors>
                 <Scripts>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:SetText(MicroButtonTooltipText(PETS, "TOGGLECHARACTER3"), 1.0,1.0,1.0 );
-					</OnEnter>
-					<OnLeave function="GameTooltip_Hide"/>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                        GameTooltip:SetText(MicroButtonTooltipText(PETS, "TOGGLECHARACTER3"), 1.0,1.0,1.0 );
+                    </OnEnter>
+                    <OnLeave function="GameTooltip_Hide"/>
                 </Scripts>
             </Button>
-			<Button name="CharacterFrameTab3" inherits="CharacterFrameTabButtonTemplate" id="3" text="REPUTATION_ABBR">
+            <Button name="CharacterFrameTab3" inherits="CharacterFrameTabButtonTemplate" id="3" text="REPUTATION_ABBR">
                 <Anchors>
                    <Anchor point="LEFT" relativeTo="CharacterFrameTab2" relativePoint="RIGHT">
                         <Offset>
@@ -115,14 +115,14 @@
                     </Anchor>
                 </Anchors>
                 <Scripts>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:SetText(MicroButtonTooltipText(REPUTATION, "TOGGLECHARACTER2"), 1.0,1.0,1.0 );
-					</OnEnter>
-					<OnLeave function="GameTooltip_Hide"/>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                        GameTooltip:SetText(MicroButtonTooltipText(REPUTATION, "TOGGLECHARACTER2"), 1.0,1.0,1.0 );
+                    </OnEnter>
+                    <OnLeave function="GameTooltip_Hide"/>
                 </Scripts>
             </Button>
-			<Button name="CharacterFrameTab4" inherits="CharacterFrameTabButtonTemplate" id="4" text="SKILLS_ABBR">
+            <Button name="CharacterFrameTab4" inherits="CharacterFrameTabButtonTemplate" id="4" text="SKILLS_ABBR">
                 <Anchors>
                    <Anchor point="LEFT" relativeTo="CharacterFrameTab3" relativePoint="RIGHT">
                         <Offset>
@@ -131,14 +131,14 @@
                     </Anchor>
                 </Anchors>
                 <Scripts>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:SetText(MicroButtonTooltipText(SKILLS, "TOGGLECHARACTER1"), 1.0,1.0,1.0 );
-					</OnEnter>
-					<OnLeave function="GameTooltip_Hide"/>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                        GameTooltip:SetText(MicroButtonTooltipText(SKILLS, "TOGGLECHARACTER1"), 1.0,1.0,1.0 );
+                    </OnEnter>
+                    <OnLeave function="GameTooltip_Hide"/>
                 </Scripts>
             </Button>
-			<Button name="CharacterFrameTab5" inherits="CharacterFrameTabButtonTemplate" id="5" text="CURRENCY" hidden="true">
+            <Button name="CharacterFrameTab5" inherits="CharacterFrameTabButtonTemplate" id="5" text="CURRENCY" hidden="true">
                 <Anchors>
                    <Anchor point="LEFT" relativeTo="CharacterFrameTab4" relativePoint="RIGHT">
                         <Offset>
@@ -147,19 +147,19 @@
                     </Anchor>
                 </Anchors>
                 <Scripts>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:SetText(MicroButtonTooltipText(CURRENCY, "TOGGLECURRENCY"), 1.0,1.0,1.0 );
-					</OnEnter>
-					<OnLeave function="GameTooltip_Hide"/>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                        GameTooltip:SetText(MicroButtonTooltipText(CURRENCY, "TOGGLECURRENCY"), 1.0,1.0,1.0 );
+                    </OnEnter>
+                    <OnLeave function="GameTooltip_Hide"/>
                 </Scripts>
             </Button>
         </Frames>
         <Scripts>
-			<OnLoad function="CharacterFrame_OnLoad"/>
+            <OnLoad function="CharacterFrame_OnLoad"/>
             <OnEvent function="CharacterFrame_OnEvent"/>
             <OnShow function="CharacterFrame_OnShow"/>
-			<OnHide function="CharacterFrame_OnHide"/>
+            <OnHide function="CharacterFrame_OnHide"/>
         </Scripts>
     </Frame>
 </Ui>
