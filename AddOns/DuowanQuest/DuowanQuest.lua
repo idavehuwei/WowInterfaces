@@ -400,8 +400,8 @@ function D:Watch(questIndex, auto)
                 UIErrorsFrame:AddMessage(format(QUEST_WATCH_TOO_MANY, MAX_WATCHABLE_QUESTS), 1.0, 0.1, 0.1, 1.0);
                 return;
                 --elseif ( WatchFrame_GetRemainingSpace() < WatchFrame_GetHeightNeededForQuest(questIndex) ) then
-                --	UIErrorsFrame:AddMessage(OBJECTIVES_WATCH_TOO_MANY, 1.0, 0.1, 0.1, 1.0);
-                --	return
+                --  UIErrorsFrame:AddMessage(OBJECTIVES_WATCH_TOO_MANY, 1.0, 0.1, 0.1, 1.0);
+                --  return
             end
 
             AddQuestWatch(questIndex);
@@ -507,6 +507,14 @@ function D:QuestWatchTitleButton_Resize(questWatchTitle, width)
         WatchFrame_Update();
         WatchFrame:SetWidth(width)
     end
+
+--    if (WatchFrame.collapsed) then
+--        WatchFrame_Expand(WatchFrame);
+--        WatchFrame_Collapse(WatchFrame);
+--    else
+--        WatchFrame_Collapse(WatchFrame);
+--        WatchFrame_Expand(WatchFrame);
+--    end
 end
 
 function D:WatchFrame_Update()

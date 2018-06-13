@@ -185,15 +185,36 @@ end
 ----------------------------- Hook Set Unit -----------------------------------
 function GearScore_HookSetUnit(arg1, arg2)
     if (GS_PlayerIsInCombat or (InspectFrame and InspectFrame:IsShown())) then return; end
-    local Name = GameTooltip:GetUnit();
+    local Name, unitId = GameTooltip:GetUnit();
     local MouseOverGearScore, MouseOverAverage = 0, 0
-    if (CanInspect("mouseover")) and (UnitName("mouseover") == Name) and not (GS_PlayerIsInCombat) then
-        if GS_MouseOver ~= UnitName("mouseover") and not (InspectFrame and InspectFrame:IsShown()) then
-            NotifyInspect("mouseover");
-            GS_MouseOver = UnitName("mouseover")
+    local targetType;
+
+    if (UnitIsUnit(unitId, "player")) then
+        targetType = "player";
+    elseif (UnitIsPlayer(unitId)) then
+        if (CanInspect("mouseover")) then
+            targetType = "mouseover";
+        else
+            if (UnitIsUnit(unitId, "target")) then
+                targetType = "target";
+            else
+                targetType = nil;
+                return;
+            end
         end
     end
-    MouseOverGearScore, MouseOverAverage = GearScore_GetScore(Name, "mouseover");
+
+    if (not CheckInteractDistance(targetType, 1)) then
+        return;
+    end
+
+    if (GS_MouseOver ~= UnitName("mouseover") and not (InspectFrame and InspectFrame:IsShown())) then
+        if (CanInspect(targetType)) then
+            NotifyInspect(targetType);
+        end
+        GS_MouseOver = UnitName(targetType)
+    end
+    MouseOverGearScore, MouseOverAverage = GearScore_GetScore(Name, targetType);
 
     if (MouseOverGearScore) and (MouseOverGearScore > 0) and (GS_Settings["Player"] == 1) then
         local Red, Blue, Green = GearScore_GetQuality(MouseOverGearScore)
@@ -259,7 +280,8 @@ function GearScore_HookItem(ItemName, ItemLink, Tooltip)
     local ItemScore, ItemLevel, EquipLoc, Red, Green, Blue, PVPScore, ItemEquipLoc = GearScore_GetItemScore(ItemLink);
     if (ItemScore >= 0) then
         if (GS_Settings["Item"] == 1) then
-            if (ItemLevel) and (GS_Settings["Level"] == 1) then Tooltip:AddDoubleLine(L["GearScore: "] .. ItemScore, "(iLevel " .. ItemLevel .. ")", Red, Blue, Green, Red, Blue, Green);
+            if (ItemLevel) and (GS_Settings["Level"] == 1) then
+                Tooltip:AddDoubleLine(L["GearScore: "] .. ItemScore, L["(iLevel: "] .. tostring(ItemLevel) .. ")", Red, Blue, Green, Red, Blue, Green);
                 if (PlayerEnglishClass == "HUNTER") then
                     if (ItemEquipLoc == "INVTYPE_RANGEDRIGHT") or (ItemEquipLoc == "INVTYPE_RANGED") then
                         Tooltip:AddLine(L["HunterScore: "] .. floor(ItemScore * 5.3224), Red, Blue, Green)
@@ -284,7 +306,7 @@ function GearScore_HookItem(ItemName, ItemLink, Tooltip)
         end
     else
         if (GS_Settings["Level"] == 1) and (ItemLevel) then
-            Tooltip:AddLine(L["iLevel "] .. ItemLevel)
+            Tooltip:AddLine(L["(iLevel: "] .. tostring(ItemLevel) .. ")")
         end
     end
 end
@@ -315,11 +337,15 @@ function GS_Toggle(tog)
     if tog then
         GS_Settings["Player"] = 1
         GS_Settings["Item"] = 1
+        GS_Settings["Compare"] = 1
+        GS_Settings["Level"] = 1
         PersonalGearScore:Show()
         GearScore2:Show()
     else
         GS_Settings["Player"] = 0
         GS_Settings["Item"] = 0
+        GS_Settings["Compare"] = 0
+        GS_Settings["Level"] = 0
         PersonalGearScore:Hide()
         GearScore2:Hide()
     end
