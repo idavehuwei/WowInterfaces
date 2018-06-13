@@ -87,15 +87,15 @@ function CQI:CreateQueryButton(index, qID, oID, qIndex, Completed)
         button:SetPoint("RIGHT", line, "LEFT", 10, -2);
         button.oID = oID;
     else
---		if (not Completed) then
---			button = self:QuestPOI_DisplayButton("WatchFrameLines", QUEST_POI_NUMERIC, qIndex, qID);
---		else
---			button = self:QuestPOI_DisplayButton("WatchFrameLines", QUEST_POI_COMPLETE_IN, qIndex, qID);
---		end
---		CQI_NPCButtons[button] = 1;
---		button.qIndex = qIndex;
---		local line = WATCHFRAME_QUESTLINES[index];
---		button:SetPoint("RIGHT", line, "LEFT", 0, 0);
+--        if (not Completed) then
+--            button = self:QuestPOI_DisplayButton("WatchFrameLines", QUEST_POI_NUMERIC, qIndex, qID);
+--        else
+--            button = self:QuestPOI_DisplayButton("WatchFrameLines", QUEST_POI_COMPLETE_IN, qIndex, qID);
+--        end
+--        CQI_NPCButtons[button] = 1;
+--        button.qIndex = qIndex;
+--        local line = WATCHFRAME_QUESTLINES[index];
+--        button:SetPoint("RIGHT", line, "LEFT", 0, 0);
     end
 
     if (button) then
@@ -166,7 +166,7 @@ function CQI:WatchFrame_Update()
                 end
                 if (isComplete) then
                     --if (GetQuestLogIsAutoComplete(qIndex)) then
-                    --	index = index + 2;
+                    --  index = index + 2;
                     --else
                         index = index + 1;
                     --end
