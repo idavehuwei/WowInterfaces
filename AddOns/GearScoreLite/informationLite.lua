@@ -1,4 +1,3 @@
-
 GS_ItemTypes = {
     ["INVTYPE_RELIC"] = { ["SlotMOD"] = 0.3164, ["ItemSlot"] = 18 },
     ["INVTYPE_TRINKET"] = { ["SlotMOD"] = 0.5625, ["ItemSlot"] = 33 },
@@ -40,7 +39,6 @@ GS_Special = {
     ["B"] = "Official Sponsor of GearScore",
     ["C"] = "Official GearScore Guild",
     ["Pauladin"] = { ["Realm"] = "Elune", ["Type"] = "B" },
-
     ["Wolfric"] = { ["Realm"] = "Khaz'Goroth", ["Type"] = "B" },
     ["Coastar"] = { ["Realm"] = "Khaz'Goroth", ["Type"] = "B" },
     ["Alekzander"] = { ["Realm"] = "Agamaggan", ["Type"] = "B" },
@@ -63,29 +61,28 @@ GS_Special = {
     ["Andresh"] = { ["Realm"] = "Uldaman", ["Type"] = "B" },
     ["Atelyn"] = { ["Realm"] = "Thunderhorn", ["Type"] = "B" },
     ["Jubali"] = { ["Realm"] = "Frostmourne", ["Type"] = "B" },
-
     ["Arxkanite"] = { ["Realm"] = "Detheroc", ["Type"] = "A" },
     ["Josephsmith"] = { ["Realm"] = "Detheroc", ["Type"] = "B" },
     ["Choku"] = { ["Realm"] = "Magtheridon", ["Type"] = "B" },
     ["Murmilude"] = { ["Realm"] = "Blade's Edge", ["Type"] = "B" },
     ["Rangitor"] = { ["Realm"] = "Khaz'Goroth", ["Type"] = "B" },
     ["Keightie"] = { ["Realm"] = "Detheroc", ["Type"] = "B" },
-        --["Kymax"] = { ["Realm"] = "Detheroc", ["Type"] = "A" },
-        ["Zanier"] = { ["Realm"] = "Cairne", ["Type"] = "B" },
-        --["Cuppycakes"] = { ["Realm"] = "Detheroc", ["Type"] = "A" },
-        ["Sausagefest"] = { ["Realm"] = "Detheroc", ["Type"] = "B" },
-        ["Rogue Angels"] = { ["Realm"] = "Detheroc", ["Type"] = "C" },
+    --["Kymax"] = { ["Realm"] = "Detheroc", ["Type"] = "A" },
+    ["Zanier"] = { ["Realm"] = "Cairne", ["Type"] = "B" },
+    --["Cuppycakes"] = { ["Realm"] = "Detheroc", ["Type"] = "A" },
+    ["Sausagefest"] = { ["Realm"] = "Detheroc", ["Type"] = "B" },
+    ["Rogue Angels"] = { ["Realm"] = "Detheroc", ["Type"] = "C" },
 }
 
 GS_Rarity = {
-    [0] = { Red = 0.55,	Green = 0.55, Blue = 0.55 },
-    [1] = {	Red = 1.00,	Green = 1.00, Blue = 1.00 },
-    [2] = {	Red = 0.12,	Green = 1.00, Blue = 0.00 },
-    [3] = {	Red = 0.00,	Green = 0.50, Blue = 1.00 },
-    [4] = {	Red = 0.69, Green = 0.28, Blue = 0.97 },
-    [5] = { Red = 0.94,	Green = 0.09, Blue = 0.00 },
-    [6] = {	Red = 1.00,	Green = 0.00, Blue = 0.00 },
-    [7] = {	Red = 0.90,	Green = 0.80, Blue = 0.50 },
+    [0] = { Red = 0.55, Green = 0.55, Blue = 0.55 },
+    [1] = { Red = 1.00, Green = 1.00, Blue = 1.00 },
+    [2] = { Red = 0.12, Green = 1.00, Blue = 0.00 },
+    [3] = { Red = 0.00, Green = 0.50, Blue = 1.00 },
+    [4] = { Red = 0.69, Green = 0.28, Blue = 0.97 },
+    [5] = { Red = 0.94, Green = 0.09, Blue = 0.00 },
+    [6] = { Red = 1.00, Green = 0.00, Blue = 0.00 },
+    [7] = { Red = 0.90, Green = 0.80, Blue = 0.50 },
 }
 
 GS_Formula = {
@@ -156,5 +153,5 @@ GS_CommandList = {
     [6] = "/gs compare --> Toggles display of comparative info between you and your target's GearScore.",
 }
 
-GS_ShowSwitch = {[0] = 2,[1] = 3,[2] = 0,[3] = 1}
-GS_ItemSwitch = {[0] = 3,[1] = 2,[2] = 1,[3] = 0}
+GS_ShowSwitch = { [0] = 2, [1] = 3, [2] = 0, [3] = 1 }
+GS_ItemSwitch = { [0] = 3, [1] = 2, [2] = 1, [3] = 0 }
