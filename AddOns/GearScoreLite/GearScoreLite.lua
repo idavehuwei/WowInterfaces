@@ -189,6 +189,8 @@ function GearScore_HookSetUnit(arg1, arg2)
     local MouseOverGearScore, MouseOverAverage = 0, 0
     local targetType;
 
+    if (not unitId) then return; end
+
     if (UnitIsUnit(unitId, "player")) then
         targetType = "player";
     elseif (UnitIsPlayer(unitId)) then
@@ -204,7 +206,7 @@ function GearScore_HookSetUnit(arg1, arg2)
         end
     end
 
-    if (not CheckInteractDistance(targetType, 1)) then
+    if ((not targetType) or (not CheckInteractDistance(targetType, 1))) then
         return;
     end
 
