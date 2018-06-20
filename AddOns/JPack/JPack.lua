@@ -1,16 +1,10 @@
 local DEV_MOD = false
-local debug
-local debugf = tekDebug and tekDebug:GetFrame("JPack") --tekDebug
-if debugf then
-    debug = function(...) debugf:AddMessage(string.join(", ", tostringall(...))) end
-else
-    debug = function() end
-end
+local DEBUG_MOD = true
+local debug, debugf
 
 --[===[@debug@
 DEV_MOD = true
 --@end-debug@]===]
-
 
 --[[===================================
             Local
@@ -26,7 +20,7 @@ JPack.packupguildbank = false
 JPack.bagGroups = {}
 JPack.packingGroupIndex = 1
 JPack.packingBags = {}
-JPack.updatePeriod = .1
+JPack.updatePeriod = 0.3
 
 local version = GetAddOnMetadata("JPack", "Version") or "alpha"
 JPack.version = version
@@ -65,6 +59,17 @@ local function print(msg, r, g, b)
     if (not r) or (not g) or (not b) then r, g, b = .41, .8, .94 end
     msg = 'JPack: ' .. msg
     DEFAULT_CHAT_FRAME:AddMessage(msg, r, g, b)
+end
+
+if DEBUG_MOD then
+    debugf = tekDebug and tekDebug:GetFrame("JPack") --tekDebug
+    if debugf then
+        debug = function(...) debugf:AddMessage(string.join(", ", tostringall(...))) end
+    else
+        debug = function(...) print(string.join(", ", tostringall(...))) end
+    end
+else
+    debug = function() end
 end
 
 local function CheckCursor()
@@ -719,15 +724,13 @@ local function stackOnce()
     return complet
 end
 
-
-
 --[[
         === GuildBank ===
 
     http://wowprogramming.com/docs/api/
-            GetCurrentGuildBankTab	Returns the currently selected guild bank tab (number)
+            GetCurrentGuildBankTab  Returns the currently selected guild bank tab (number)
             PickupGuildBankItem
-            GetGuildBankItemInfo(tab, slot)		返回 材质/堆叠数量/*是否锁定
+            GetGuildBankItemInfo(tab, slot) 返回 材质/堆叠数量/*是否锁定
             GetGuildBankItemLink
             GetGuildBankTabInfo
             GetGuildBankTabPermissions
@@ -766,23 +769,7 @@ local function GBstackOnce()
     return complet
 end
 
-
-
 -- TODO
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 --[[===================================
@@ -798,7 +785,6 @@ local function stopPacking()
         JPack:UnregisterEvent("GUILDBANKBAGSLOTS_CHANGED")
     end
 end
-
 
 JPack.OnLoad = {}
 JPack.OnLoad_GB = {}
@@ -871,7 +857,6 @@ end
 
 ]=]
 
-
 --[[
     GUILDBANKBAGSLOTS_CHANGED will fire THREE times when you move a item
     before this event fired, NOTHING you can do with the guildbank
@@ -895,7 +880,6 @@ function JPack:GBMoved(isTrue)
     end
 end
 
-
 --[[
     bag/bank packup
     onupdate script to move items
@@ -905,7 +889,7 @@ function JPack.OnUpdate(self, el)
     elapsed = elapsed + el
     if elapsed < self.updatePeriod then return end
     elapsed = 0
-    debug("\nOnUpdate!\n")
+    debug("OnUpdate!")
 
     if (InCombatLockdown()) then
         stopPacking()
@@ -1022,7 +1006,7 @@ function JPack.OnUpdate(self, el)
 end
 
 local function pack()
-    debug("\n\n\n\nPACK START")
+    debug("PACK START")
     if CheckCursor() then
         print(L["WARN"], 2, 0.28, 2)
     else
@@ -1080,14 +1064,14 @@ end
 --[[
     JPack:Pack(access, order)
     access
-            1	save
-            2	load
-            3	packup guild bank
-            nil	just pack the bag (and bank)
+            1   save
+            2   load
+            3   packup guild bank
+            nil just pack the bag (and bank)
     order
-            1	asc
-            2	desc
-            nil	last-time-order
+            1   asc
+            2   desc
+            nil last-time-order
 ]]
 function JPack:Pack(access, order)
     JPack.deposit = false
