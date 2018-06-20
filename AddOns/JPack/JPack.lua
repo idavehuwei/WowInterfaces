@@ -1,5 +1,5 @@
 local DEV_MOD = false
-local DEBUG_MOD = true
+local DEBUG_MOD = false
 local debug, debugf
 
 --[===[@debug@
