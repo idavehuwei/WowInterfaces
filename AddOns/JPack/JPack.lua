@@ -128,7 +128,9 @@ end
 local function isBagReady(bag)
     for i = 1, GetContainerNumSlots(bag) do
         local _, _, locked = GetContainerItemInfo(bag, i)
-        if (locked) then return false end
+        if (locked) then
+            return false
+        end
     end
     return true
 end

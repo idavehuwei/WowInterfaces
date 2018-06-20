@@ -25,5 +25,5 @@ JPack.lua
 JPackConfig.lua
 
 JPack_Ex.lua
-core.lua
+JPack_Broker.lua
 
