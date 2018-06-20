@@ -246,6 +246,8 @@ function D:WatchFrame_Expand(frame)
     if (frame == WatchFrame) then
         dwSetCVar("QuestMod", "last_collapsed", 0);
     end
+    --- RESIZE QUEST WATCH FRAME WIDTH
+    self:WatchFrame_Update();
 end
 
 -----------------
@@ -507,20 +509,11 @@ function D:QuestWatchTitleButton_Resize(questWatchTitle, width)
         WatchFrame_Update();
         WatchFrame:SetWidth(width)
     end
-
---    if (WatchFrame.collapsed) then
---        WatchFrame_Expand(WatchFrame);
---        WatchFrame_Collapse(WatchFrame);
---    else
---        WatchFrame_Collapse(WatchFrame);
---        WatchFrame_Expand(WatchFrame);
---    end
 end
 
 function D:WatchFrame_Update()
     local maxWidth = 0;
     if (self.db.Level) then
-        local questWidth = 0;
         local questIndex = 1;
         local questLogTitleText, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily, title;
         local numQuestWatches = GetNumQuestWatches();
@@ -534,13 +527,11 @@ function D:WatchFrame_Update()
                     local line = WATCHFRAME_QUESTLINES[i]
                     local linetext = line.text;
                     local text = linetext:GetText() or ''
-                    questWidth = max(linetext:GetStringWidth() + WATCHFRAME_ITEM_WIDTH, questWidth);
 
                     if strmatch(text, title) then
                         self:ChangeTitle(linetext, title, level, questTag, suggestedGroup, isHeader, isDaily, true);
                         maxWidth = max(maxWidth, linetext:GetWidth())
-                        questWidth = max(maxWidth, questWidth)
-                        self:QuestWatchTitleButton_Resize(linetext, questWidth)
+                        self:QuestWatchTitleButton_Resize(linetext, maxWidth)
                         break
                     else
                         i = i + 1
