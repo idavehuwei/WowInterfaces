@@ -88,6 +88,14 @@ local function IndexOfTable(t, v)
     return 0
 end
 
+local function MoveItem(bagsrc, slotsrc, bagdst, slotdst)
+    ClearCursor();
+    PickupContainerItem(bagsrc, slotsrc);
+    if (CursorHasItem()) then
+        PickupContainerItem(bagdst, slotdst);
+    end
+end
+
 --[[
 获得一个 JPack 格式的物品对象
 isGB = true, 工会银行
@@ -398,8 +406,9 @@ local function moveToSpecialBag(flag)
                 if CheckCursor() then
                     print(L["WARN"], 1, 0, 0)
                 end
-                PickupContainerItem(frombag, fromslot)
-                PickupContainerItem(tobag, toslot)
+                MoveItem(frombag, fromslot, tobag, toslot);
+                --PickupContainerItem(frombag, fromslot)
+                --PickupContainerItem(tobag, toslot)
                 --next
                 frombagIndex, fromslot = getPrevSlot(fromBags, frombagIndex, fromslot)
                 tobagIndex, toslot = getPrevSlot(toBags, tobagIndex, toslot)
@@ -436,8 +445,9 @@ local function saveToBank()
             if CheckCursor() then
                 print(L["WARN"], 1, 0, 0)
             end
-            PickupContainerItem(bagTypes[bag], slot)
-            PickupContainerItem(bkTypes[bkBag], bkSlot)
+            MoveItem(bagTypes[bag], slot, bkTypes[bkBag], bkSlot);
+            --PickupContainerItem(bagTypes[bag], slot)
+            --PickupContainerItem(bkTypes[bkBag], bkSlot)
             --next
             bkBag, bkSlot = getPrevSlot(bkTypes, bkBag, bkSlot)
             bag, slot = getPrevSlot(bagTypes, bag, slot)
@@ -471,8 +481,9 @@ local function loadFromBank()
             if CheckCursor() then
                 print(L["WARN"], 1, 0, 0)
             end
-            PickupContainerItem(bkTypes[bkBag], bkSlot)
-            PickupContainerItem(bagTypes[bag], slot)
+            MoveItem(bkTypes[bkBag], bkSlot, bagTypes[bag], slot);
+            --PickupContainerItem(bkTypes[bkBag], bkSlot)
+            --PickupContainerItem(bagTypes[bag], slot)
             --next
             bkBag, bkSlot = getPrevSlot(bkTypes, bkBag, bkSlot)
             bag, slot = getPrevSlot(bagTypes, bag, slot)
@@ -618,8 +629,11 @@ newIndex 新JPack物品位置索引
 把物品从oldIndex 移动到 newIndex
 ]]
 local function moveTo(oldIndex, newIndex)
-    PickupContainerItem(getSlotId(oldIndex))
-    PickupContainerItem(getSlotId(newIndex))
+    local frombag, fromslot = getSlotId(oldIndex);
+    local tobag, toslot = getSlotId(newIndex);
+    MoveItem(frombag, fromslot, tobag, toslot);
+    --PickupContainerItem(getSlotId(oldIndex))
+    --PickupContainerItem(getSlotId(newIndex))
 end
 
 --[[
@@ -709,8 +723,9 @@ local function stackOnce()
                     if (item.stackCount ~= 1) and (itemCount < item.stackCount) then
                         slotInfo = pendingStack[item.itemid]
                         if (slotInfo) then
-                            PickupContainerItem(bag, slot)
-                            PickupContainerItem(slotInfo[1], slotInfo[2])
+                            MoveItem(bag, slot, slotInfo[1], slotInfo[2]);
+                            --PickupContainerItem(bag, slot)
+                            --PickupContainerItem(slotInfo[1], slotInfo[2])
                             pendingStack[item.itemid] = nil
                             complet = false
                         else
