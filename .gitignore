@@ -1,9 +1,10 @@
 
-/.idea/workspace.xml
-/.idea/checkstyle-idea.xml
 /.idea/codeStyles/
 /.idea/inspectionProfiles/
 /.idea/dictionaries/
+/.idea/misc.xml
+/.idea/workspace.xml
+/.idea/checkstyle-idea.xml
 /AddOns/Blizzard_AchievementUI
 /AddOns/Blizzard_ArenaUI
 /AddOns/Blizzard_AuctionUI
@@ -31,3 +32,8 @@
 /PetActionBar
 /ShapeshiftBar
 /TargetingFrame
+
+*.tmp
+*.old
+*.bak
+*.bk
