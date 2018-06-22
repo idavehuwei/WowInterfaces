@@ -294,7 +294,7 @@ function addon:OnInitialize()
             ignoreexclusionlist = false,
             scanbuttonlocation = "TR",
             spelltooltiplocation = "Right",
-            acquiretooltiplocation = "Right",
+            acquiretooltiplocation = "Mouse",
             recipes_in_tooltips = true,
             max_recipes_in_tooltips = 10,
             hide_tooltip_hint = false,
