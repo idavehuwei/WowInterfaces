@@ -282,7 +282,7 @@ function labelPrototype:SetupCell(tooltip, value, justification, font, l_pad, r_
     fs:SetWidth(0)
     fs:SetPoint("TOPLEFT", self, "TOPLEFT", l_pad, 0)
     fs:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -r_pad, 0)
-    --~ 	fs:SetPoint("TOPRIGHT", self, "TOPRIGHT", -r_pad, 0)
+    --~ fs:SetPoint("TOPRIGHT", self, "TOPRIGHT", -r_pad, 0)
 
     self._paddingL = l_pad
     self._paddingR = r_pad
