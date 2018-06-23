@@ -1,0 +1,645 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+<Script file="localization.en.lua"/>
+<Script file="localization.cn.lua"/>
+<Script file="localization.tw.lua"/>
+<Script file="XBar.lua"/>
+
+<Font name="XBarScrollFrameFont" inherits="ChatFontNormal" virtual="true">
+<Color r="0.9" g="0.9" b="0.9" a="1.0"></Color>
+</Font>
+
+<Button name="XBarScrollLineTemplate" virtual="true" text="BINDING_NAME_XBAR_CONFIG">
+    <Size><AbsDimension x="100" y="16"/></Size>
+    <Frames>
+        <Frame name="$parentText" setAllPoints="true">
+            <Layers>
+                <Layer level="BORDER">
+                    <FontString name="$parentName" inherits="XBarScrollFrameFont">
+                        <Anchors><Anchor point="TOPLEFT"/></Anchors>
+                    </FontString>
+                </Layer>
+            </Layers>
+        </Frame>
+    </Frames>
+    <HighlightTexture name="$parentHighlight" file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD"/>
+</Button>
+<Frame name="XBarScrollFrameTemplate" virtual="true">
+    <Size><AbsDimension x="130" y="160"/></Size>
+    <Layers>
+        <Layer level="ARTWORK">
+            <Texture><Color r="0.0" g="0.0" b="0.0" a="0.7"/></Texture>
+            <Texture name="$parentGliderBar1">
+                <Size>
+                    <AbsDimension x="1" y="159"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPRIGHT">
+                        <Offset><AbsDimension x="13" y="0"/></Offset>
+                    </Anchor>
+                </Anchors>
+                <Color r="0.8" g="0.8" b="0.8" a="1.0"/>
+            </Texture>
+            <Texture name="$parentGliderBar2">
+                <Size>
+                    <AbsDimension x="3" y="159"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeto="$parentGliderBar1">
+                        <Offset><AbsDimension x="3" y="0"/></Offset>
+                    </Anchor>
+                </Anchors>
+                <Color r="0.73" g="0.62" b="0.0" a="1.0"/>
+            </Texture>
+            <Texture name="$parentGliderBar3">
+                <Size>
+                    <AbsDimension x="1" y="159"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeto="$parentGliderBar2">
+                        <Offset><AbsDimension x="1" y="0"/></Offset>
+                    </Anchor>
+                </Anchors>
+                <Color r="0.39" g="0.33" b="0.0" a="1.0"/>
+            </Texture>
+        </Layer>
+    </Layers>
+    <Frames>
+        <ScrollFrame name="$parentScrollFrame" inherits="FauxScrollFrameTemplate">
+            <Size><AbsDimension x="130" y="160"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeto="$parent">
+                    <Offset><AbsDimension x="0" y="0"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnVerticalScroll>
+                    FauxScrollFrame_OnVerticalScroll(self, offset, 16, XBarScrollFrameTemplate_OnScroll);
+                </OnVerticalScroll>
+            </Scripts>
+        </ScrollFrame>
+        <Button name="$parentLine1" inherits="XBarScrollLineTemplate">
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeto="$parent">
+                    <Offset><AbsDimension x="0" y="0"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts><OnClick>
+                XBarScrollFrameTemplate_OnClick(1);
+            </OnClick></Scripts>
+        </Button>
+        <Button name="$parentLine2" inherits="XBarScrollLineTemplate">
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeto="$parentLine1">
+                    <Offset><AbsDimension x="0" y="-16"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts><OnClick>
+                XBarScrollFrameTemplate_OnClick(2);
+            </OnClick></Scripts>
+        </Button>
+        <Button name="$parentLine3" inherits="XBarScrollLineTemplate">
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeto="$parentLine2">
+                    <Offset><AbsDimension x="0" y="-16"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts><OnClick>
+                XBarScrollFrameTemplate_OnClick(3);
+            </OnClick></Scripts>
+        </Button>
+        <Button name="$parentLine4" inherits="XBarScrollLineTemplate">
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeto="$parentLine3">
+                    <Offset><AbsDimension x="0" y="-16"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts><OnClick>
+                XBarScrollFrameTemplate_OnClick(4);
+            </OnClick></Scripts>
+        </Button>
+        <Button name="$parentLine5" inherits="XBarScrollLineTemplate">
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeto="$parentLine4">
+                    <Offset><AbsDimension x="0" y="-16"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts><OnClick>
+                XBarScrollFrameTemplate_OnClick(5);
+            </OnClick></Scripts>
+        </Button>
+        <Button name="$parentLine6" inherits="XBarScrollLineTemplate">
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeto="$parentLine5">
+                    <Offset><AbsDimension x="0" y="-16"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts><OnClick>
+                XBarScrollFrameTemplate_OnClick(6);
+            </OnClick></Scripts>
+        </Button>
+        <Button name="$parentLine7" inherits="XBarScrollLineTemplate">
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeto="$parentLine6">
+                    <Offset><AbsDimension x="0" y="-16"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts><OnClick>
+                XBarScrollFrameTemplate_OnClick(7);
+            </OnClick></Scripts>
+        </Button>
+        <Button name="$parentLine8" inherits="XBarScrollLineTemplate">
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeto="$parentLine7">
+                    <Offset><AbsDimension x="0" y="-16"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts><OnClick>
+                XBarScrollFrameTemplate_OnClick(8);
+            </OnClick></Scripts>
+        </Button>
+        <Button name="$parentLine9" inherits="XBarScrollLineTemplate">
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeto="$parentLine8">
+                    <Offset><AbsDimension x="0" y="-16"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts><OnClick>
+                XBarScrollFrameTemplate_OnClick(9);
+            </OnClick></Scripts>
+        </Button>
+        <Button name="$parentLine10" inherits="XBarScrollLineTemplate">
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeto="$parentLine9">
+                    <Offset><AbsDimension x="0" y="-16"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts><OnClick>
+                XBarScrollFrameTemplate_OnClick(10);
+            </OnClick></Scripts>
+        </Button>
+    </Frames>
+</Frame>
+
+<Frame name="XBarConfig" toplevel="true" parent="UIParent" frameStrata="HIGH" hidden="true" enableMouse="true" movable="true">
+    <Size><AbsDimension x="230" y="455"/></Size>
+    <Anchors>
+        <Anchor point="CENTER"/>
+    </Anchors>
+    <Layers>
+        <Layer level="OVERLAY">
+            <FontString name="$parentCurMod" inherits="GameFontNormal" justifyH="LEFT">
+                <Size><AbsDimension x="170" y="15"/></Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent">
+                        <Offset><AbsDimension x="35" y="-30"/></Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+            <FontString name="$parentCurCheck" inherits="GameFontNormal" justifyH="LEFT">
+                <Size><AbsDimension x="170" y="15"/></Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent">
+                        <Offset><AbsDimension x="35" y="-335"/></Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+            <FontString name="$parentNoSort" inherits="GameFontNormal" justifyH="LEFT">
+                <Size><AbsDimension x="170" y="15"/></Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent">
+                        <Offset><AbsDimension x="35" y="-160"/></Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+            <FontString name="$parentCurSlider" inherits="GameFontNormal" justifyH="LEFT">
+                <Size><AbsDimension x="170" y="15"/></Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentCurCheck">
+                        <Offset><AbsDimension x="0" y="-15"/></Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+        </Layer>
+    </Layers>
+    <Scripts>
+        <OnShow>
+            XBarConfigGUI.OnShow();
+        </OnShow>
+    </Scripts>
+    <Frames>
+        <Button name="$parentBtnHelp" inherits="OptionsButtonTemplate" text="XBAR_HELP_TITLE">
+            <Size><AbsDimension x="200" y="20"/></Size>
+            <Anchors>
+                <Anchor point="TOPRIGHT" relativeTo="$parent" relativepoint="TOPRIGHT">
+                    <Offset><AbsDimension x="-10" y="-10"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnClick>
+                    XBarConfigGUI.BtnHelp_OnClick();
+                </OnClick>
+            </Scripts>
+        </Button>
+        <Frame name="$parentModMenuFrame" inherits="UIDropDownMenuTemplate"/>
+        <Button name="$parentModMenu" inherits="OptionsButtonTemplate" text="+">
+            <Size><AbsDimension x="15" y="15"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parent">
+                    <Offset><AbsDimension x="15" y="-30"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnClick>
+                    XBarConfigGUI.ModMenu_OnClick();
+                </OnClick>
+            </Scripts>
+        </Button>
+        <CheckButton name="$parentCheckButtonH" inherits="OptionsCheckButtonTemplate">
+            <Size><AbsDimension x="20" y="20"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parent">
+                    <Offset><AbsDimension x="20" y="-50"/></Offset>
+                </Anchor>
+            </Anchors>
+            <HitRectInsets>
+                <AbsInset left="0" right="-70" top="0" bottom="0"/>
+            </HitRectInsets>
+            <Scripts>
+                <OnLoad>
+                    getfenv()[this:GetName().."Text"]:SetText(getfenv()["XBAR_HORIZONTAL"]);
+                </OnLoad>
+                <OnClick>
+                    XBarConfigGUI.CheckButtonH_OnClick();
+                </OnClick>
+            </Scripts>
+        </CheckButton>
+        <CheckButton name="$parentCheckButtonO" inherits="OptionsCheckButtonTemplate">
+            <Size><AbsDimension x="20" y="20"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentCheckButtonH">
+                    <Offset><AbsDimension x="100" y="0"/></Offset>
+                </Anchor>
+            </Anchors>
+            <HitRectInsets>
+                <AbsInset left="0" right="-50" top="0" bottom="0"/>
+            </HitRectInsets>
+            <Scripts>
+                <OnLoad>
+                    getfenv()[this:GetName().."Text"]:SetText(getfenv()["XBAR_REVERSE"]);
+                </OnLoad>
+                <OnClick>
+                    XBarConfigGUI.CheckButtonO_OnClick();
+                </OnClick>
+            </Scripts>
+        </CheckButton>
+        <CheckButton name="$parentCheckButtonV" inherits="OptionsCheckButtonTemplate">
+            <Size><AbsDimension x="20" y="20"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentCheckButtonH">
+                    <Offset><AbsDimension x="0" y="-22"/></Offset>
+                </Anchor>
+            </Anchors>
+            <HitRectInsets>
+                <AbsInset left="0" right="-50" top="0" bottom="0"/>
+            </HitRectInsets>
+            <Scripts>
+                <OnLoad>
+                    getfenv()[this:GetName().."Text"]:SetText(getfenv()["XBAR_VISIBLE"]);
+                </OnLoad>
+                <OnClick>
+                    XBarConfigGUI.CheckButtonV_OnClick();
+                </OnClick>
+            </Scripts>
+        </CheckButton>
+        <CheckButton name="$parentCheckButtonTT" inherits="OptionsCheckButtonTemplate">
+            <Size><AbsDimension x="20" y="20"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentCheckButtonO">
+                    <Offset><AbsDimension x="0" y="-22"/></Offset>
+                </Anchor>
+            </Anchors>
+            <HitRectInsets>
+                <AbsInset left="0" right="-50" top="0" bottom="0"/>
+            </HitRectInsets>
+            <Scripts>
+                <OnLoad>
+                    getfenv()[this:GetName().."Text"]:SetText(getfenv()["XBAR_TOOLTIPS"]);
+                </OnLoad>
+                <OnClick>
+                    XBarConfigGUI.CheckButtonTT_OnClick();
+                </OnClick>
+            </Scripts>
+        </CheckButton>
+        <CheckButton name="$parentCheckButtonTG" inherits="OptionsCheckButtonTemplate">
+            <Size><AbsDimension x="20" y="20"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentCheckButtonV">
+                    <Offset><AbsDimension x="0" y="-22"/></Offset>
+                </Anchor>
+            </Anchors>
+            <HitRectInsets>
+                <AbsInset left="0" right="-50" top="0" bottom="0"/>
+            </HitRectInsets>
+            <Scripts>
+                <OnLoad>
+                    getfenv()[this:GetName().."Text"]:SetText(getfenv()["XBAR_TOGGLE"]);
+                </OnLoad>
+                <OnClick>
+                    XBarConfigGUI.CheckButtonTG_OnClick();
+                </OnClick>
+            </Scripts>
+        </CheckButton>
+        <CheckButton name="$parentCheckButtonW" inherits="OptionsCheckButtonTemplate">
+            <Size><AbsDimension x="20" y="20"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentCheckButtonTT">
+                    <Offset><AbsDimension x="0" y="-22"/></Offset>
+                </Anchor>
+            </Anchors>
+            <HitRectInsets>
+                <AbsInset left="0" right="-50" top="0" bottom="0"/>
+            </HitRectInsets>
+            <Scripts>
+                <OnLoad>
+                    getfenv()[this:GetName().."Text"]:SetText(getfenv()["XBAR_WRAP"]);
+                </OnLoad>
+                <OnClick>
+                    XBarConfigGUI.CheckButtonW_OnClick();
+                </OnClick>
+            </Scripts>
+        </CheckButton>
+        <CheckButton name="$parentCheckButtonL" inherits="OptionsCheckButtonTemplate">
+            <Size><AbsDimension x="20" y="20"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentCheckButtonTG">
+                    <Offset><AbsDimension x="0" y="-22"/></Offset>
+                </Anchor>
+            </Anchors>
+            <HitRectInsets>
+                <AbsInset left="0" right="-50" top="0" bottom="0"/>
+            </HitRectInsets>
+            <Scripts>
+                <OnLoad>
+                    getfenv()[this:GetName().."Text"]:SetText(getfenv()["XBAR_HIGHLIGHT"]);
+                </OnLoad>
+                <OnClick>
+                    XBarConfigGUI.CheckButtonL_OnClick();
+                </OnClick>
+            </Scripts>
+        </CheckButton>
+        <Slider name="$parentSliderScale" inherits="OptionsSliderTemplate">
+            <Size><AbsDimension x="150" y="16"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentCheckButtonL">
+                    <Offset><AbsDimension x="0" y="-30"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnLoad>
+                    getfenv()[this:GetName().."Text"]:SetText("Scale");
+                    getfenv()[this:GetName().."High"]:SetText("4");
+                    getfenv()[this:GetName().."Low"]:SetText("0.5");
+                    this:SetMinMaxValues(0.5,4);
+                    this:SetValueStep(0.05);
+                </OnLoad>
+                <OnValueChanged>
+                    XBarConfigGUI.SliderScale_OnChange();
+                </OnValueChanged>
+            </Scripts>
+            <Layers>
+                <Layer level="OVERLAY">
+                    <FontString name="$parentVal" inherits="GameFontNormal" text="n/a">
+                        <Anchors>
+                            <Anchor point="RIGHT" relativeTo="$parent">
+                                <Offset>
+                                    <AbsDimension x="35" y="3"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                    </FontString>
+                </Layer>
+            </Layers>
+        </Slider>
+        <Frame name="$parentCheckMenuFrame" inherits="UIDropDownMenuTemplate"/>
+        <Button name="$parentCheckMenu" inherits="OptionsButtonTemplate" text="+">
+            <Size><AbsDimension x="15" y="15"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentCurCheck">
+                    <Offset><AbsDimension x="-20" y="0"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnClick>
+                    XBarConfigGUI.CheckMenu_OnClick();
+                </OnClick>
+            </Scripts>
+        </Button>
+        <Frame name="$parentScrollOrder" inherits="XBarScrollFrameTemplate" hidden="false">
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentSliderScale" relativePoint="BOTTOMLEFT">
+                    <Offset x="0" y="-10"/>
+                </Anchor>
+            </Anchors>
+        </Frame>
+        <Button name="$parentSortUp" inherits="OptionsButtonTemplate" text="+">
+            <Size><AbsDimension x="30" y="20"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentScrollOrder" relativePoint="TOPRIGHT">
+                    <Offset><AbsDimension x="30" y="0"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnClick>
+                    XBarConfigGUI.SortUp_OnClick()
+                </OnClick>
+            </Scripts>
+        </Button>
+        <Button name="$parentSortDown" inherits="OptionsButtonTemplate" text="-">
+            <Size><AbsDimension x="30" y="20"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentSortUp">
+                    <Offset><AbsDimension x="0" y="-25"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnClick>
+                    XBarConfigGUI.SortDown_OnClick()
+                </OnClick>
+            </Scripts>
+        </Button>
+        <Button name="$parentSetBinding" inherits="OptionsButtonTemplate" text="XBAR_BINDBTN">
+            <Size><AbsDimension x="40" y="20"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentSortDown">
+                    <Offset><AbsDimension x="0" y="-25"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnClick>
+                    XBarConfigGUI.SetBinding_OnClick()
+                </OnClick>
+            </Scripts>
+        </Button>
+        <Frame name="$parentSliderMenuFrame" inherits="UIDropDownMenuTemplate"/>
+        <Button name="$parentSliderMenu" inherits="OptionsButtonTemplate" text="+">
+            <Size><AbsDimension x="15" y="15"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentCurSlider">
+                    <Offset><AbsDimension x="-20" y="0"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnClick>
+                    XBarConfigGUI.SliderMenu_OnClick();
+                </OnClick>
+            </Scripts>
+        </Button>
+        <Slider name="$parentSliderMulti" inherits="OptionsSliderTemplate">
+            <Size><AbsDimension x="170" y="16"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentCurSlider">
+                    <Offset><AbsDimension x="-20" y="-30"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnLoad>
+                    getfenv()[this:GetName().."Text"]:SetText("N/A");
+                    getfenv()[this:GetName().."High"]:SetText("");
+                    getfenv()[this:GetName().."Low"]:SetText("");
+                    this:SetMinMaxValues(0,0);
+                    this:SetValueStep(1);
+                </OnLoad>
+                <OnValueChanged>
+                    XBarConfigGUI.SliderMulti_OnChanged()
+                </OnValueChanged>
+            </Scripts>
+            <Layers>
+                <Layer level="OVERLAY">
+                    <FontString name="$parentVal" inherits="GameFontNormal" text="n/a">
+                        <Anchors>
+                            <Anchor point="RIGHT" relativeTo="$parent">
+                                <Offset>
+                                    <AbsDimension x="35" y="3"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                    </FontString>
+                </Layer>
+            </Layers>
+        </Slider>
+    </Frames>
+</Frame>
+<Frame name="XBarBind" toplevel="true" parent="UIParent" frameStrata="DIALOG" hidden="true" enableMouse="true" movable="true">
+    <Size><AbsDimension x="260" y="100"/></Size>
+    <Anchors>
+        <Anchor point="CENTER"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+        <BackgroundInsets>
+            <AbsInset left="11" right="12" top="12" bottom="11"/>
+        </BackgroundInsets>
+        <TileSize>
+            <AbsValue val="32"/>
+        </TileSize>
+        <EdgeSize>
+            <AbsValue val="32"/>
+        </EdgeSize>
+    </Backdrop>
+    <Layers>
+        <Layer level="ARTWORK">
+            <Texture file="Interface\DialogFrame\UI-DialogBox-Header">
+                <Size>
+                    <AbsDimension x="256" y="64"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOP">
+                        <Offset><AbsDimension x="0" y="12"/></Offset>
+                    </Anchor>
+                </Anchors>
+            </Texture>
+        </Layer>
+        <Layer level="OVERLAY">
+            <FontString inherits="GameFontNormal" text="XBAR_BINDBTN">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="$parent"/>
+                </Anchors>
+            </FontString>
+            <FontString name="$parentKey" justifyH="LEFT" inherits="GameFontNormal" text="NOT_BOUND">
+                <Size><AbsDimension x="150" y="15"/></Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent">
+                        <Offset><AbsDimension x="60" y="-30"/></Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+        </Layer>
+    </Layers>
+    <TitleRegion>
+        <Size>
+            <AbsDimension x="130" y="30"/>
+        </Size>
+        <Anchors>
+            <Anchor point="TOP">
+                <Offset>
+                    <AbsDimension x="0" y="8"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+    </TitleRegion>
+    <Scripts>
+        <OnLoad>
+            tinsert(getfenv()["UISpecialFrames"],this:GetName());
+        </OnLoad>
+        <OnHide>
+            PlaySound("igCharacterInfoClose");
+            this:StopMovingOrSizing();
+        </OnHide>
+        <OnShow>
+            PlaySound("igCharacterInfoOpen");
+            XBarBindGUI.OnShow();
+        </OnShow>
+    </Scripts>
+    <Frames>
+        <Button name="$parentBtnClose" inherits="OptionsButtonTemplate">
+            <Size><AbsDimension x="100" y="23"/></Size>
+            <Anchors>
+                <Anchor point="BOTTOM">
+                    <Offset><AbsDimension x="0" y="15"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnLoad>
+                    getfenv()[this:GetName().."Text"]:SetText(getfenv()["XBAR_CLOSEBTN"]);
+                </OnLoad>
+                <OnClick>
+                    XBarBindGUI.BtnClose_OnClick();
+                </OnClick>
+            </Scripts>
+        </Button>
+        <Button name="$parentBtnBind" inherits="OptionsButtonTemplate">
+            <Size><AbsDimension x="40" y="23"/></Size>
+            <Anchors>
+                <Anchor point="TOPRIGHT" relativeTo="$parentKey" relativePoint="TOPLEFT">
+                    <Offset><AbsDimension x="-5" y="3"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnLoad>
+                    self:SetText(XBAR_BINDBTN);
+                </OnLoad>
+                <OnClick>
+                    XBarBindGUI.BtnBind_OnClick();
+                </OnClick>
+                <OnMouseDown>
+                    XBarBindGUI.BtnBind_OnMouseDown(this,arg1);
+                </OnMouseDown>
+                <OnKeyDown>
+                    XBarBindGUI.BtnBind_OnKeyDown(this,arg1);
+                </OnKeyDown>
+            </Scripts>
+        </Button>
+    </Frames>
+</Frame>
+</Ui>

@@ -1,0 +1,13 @@
+﻿## Interface: 30300
+## Title: XTrackBar |cffff7f7f -XBar-|r
+## Author: Dr Doom
+## Version: 3.05
+## Notes: A row of buttons for tracking abilities
+## Notes-zhTW: XBar 追蹤模組
+## Notes-zhCN: XBar 追踪模块
+## URL:
+## Dependencies: XBar
+## DefaultState: Enabled
+## LoadOnDemand: 0
+
+XTrackBar.xml

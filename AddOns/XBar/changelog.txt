@@ -1,0 +1,515 @@
+VERSION HISTORY
+
+Version 3.34 by Dr. Doom
+
+* Explanation of key bindings added
+* Command line option text moved to another sub-pane
+* XBuffBar: Corrected Holy Shield's spell ID.
+* Drop down list frames in the options menu spontaneously change frame level to behind the backdrop, provided a work-around.
+
+Version 3.33 by Dr. Doom
+
+* Removed text upon using the show or hide slash commands
+* Added the showhide command to remove confusion about toggle
+* Added explanations to the slash commands in the in-game options panel
+* Changed toggle tooltips to clarify its purpose, added coloring.
+* XCompanionBar: Now properly dismounts every time if you click your current mount.
+* XBuffBar: Added Barkskin and a lot of Paladin spells, also pallies now have a wrappable spacer.
+
+Version 3.32 by Dr. Doom
+
+* XBuffBar: Added (Hunters) Feign Death, Readiness, (DK) Vampiric Blood, (Druid) Survival Instincts, Frenzied Regeneration
+* XBuffBar: Moved tanking HP-pool increase spells and self-heal spells that work on a % of total HP (since these are often popped in unison) so they are next to each other on the bar.
+* Revamped the configuration GUI to use the Blizzard interface.
+* Added a profile tab and renamed the "option sets" to "profiles" to remove confusion about how to make different settings per character.
+* Added lots of new help text and replaced the context-sensitive help buttons with larger, more visible "Help" buttons.
+* XCustomBar: Added a pictorial representation of the window in the help text, as well as replaced the ? button with a "Help" button.  The XCustomBar Configuration window is still separate from the main UI, however the button to access it via the GUI still exists.
+* XCustomBar sub-page now directs you to look for the help button on the config window.
+
+Version 3.31 by Dr. Doom
+
+* Fixed an issue in XBar that caused many lines of "Skipping highlights on ..." to happen when you unchecked Highlight for XBuffBar in the options.
+
+Version 3.30 by Dr. Doom
+
+* Fixed an issue with the pet XP bar causing it to be disabled.
+
+Version 3.29 by Dr. Doom
+
+* Changed '/console reloadui' suggestions to just '/reloadui'
+* Added ability to show or hide highlight effects for each bar
+* Removed message: "ERROR - Button x does not exist in sort order"
+* It is now no longer possible to sort buttons past the beginning or end of the list.
+* Added in-game help windows via WoW Interface menu and context sensitive help via a ? button in the config windows (English locale for now).
+
+Version 3.28 by Dr. Doom
+
+* Updated for compatibility with WoW patch 3.3.
+* XTotemBar: Removed Fire Nova Totem
+
+Version 3.27 by Dr. Doom
+
+* Fixed an issue where XCompanionBar would show buttons after they were hidden upon login.
+* All companion type buttons, whether in XCompanionBar or a custom bar, will now dismiss any active companions if you click on it.
+
+Version 3.26 by Dr. Doom
+
+* Added limit sliders to XCompanionBar to change the number of companions shown.
+* Fixed some issues with the slider options being unusable.
+* Fixed issues where XAspectBar and XCompanionBar were storing data in the wrong place internally, increasing memory clutter.
+* Found issues with and improved handling of COMPANION_UPDATE event, should see more consistent updates and less interface lag in a capitol city.
+* Fixed an error where bar updates would not occur due to a problem with LibQueue.  Updated to 1.0.1 to fix.
+
+Version 3.25 by Dr. Doom
+
+* Fixed an error I missed in 3.24.
+
+Version 3.24 by Dr. Doom
+
+* Removed XBarLocalizer helper addon, class localizations for XBuffBar are now done using new internal Blizzard tables.
+* Fixed error where plugins could register if XBar did not initialize properly.
+* Many internal events now queue through LibQueue, you should notice less overall interface latency, with only a slight delay in bar updates.
+* Interface latency caused by XCompanionBar reduced drastically (for all you collectors).
+* All companion type buttons will now show your current summon highlighted correctly; cooldowns and pets missing reagents will not be available, however, due to limitations of the Blizzard API.
+* Took out some code I had put in for testing which caused the toggles not to show the tooltip.
+
+Version 3.23 by Dr. Doom
+
+* Updated TOC for WoW 3.2 patch
+* XSealBar: Removed Seal of the Marty & Seal of Blood
+
+Version 3.22 by Dr. Doom
+
+* XBuffBar: Added Soul Link, Fel Domination, and Shadow Ward
+
+Version 3.21 by Dr. Doom
+
+* Added "/xbar options reset" command
+* Added "/xbar resetmod" command
+* Fixed the errors with XTotemBars
+
+Version 3.20 by Dr. Doom
+
+* Added extra wrapping for the companion bar to shorten length of it.
+* Spell lists reworked to provide easier localization
+* XBarLocalizer functionality and size reduced to save space
+* XBuffBar: Added Evocation, Dispersion, Sweeping Strikes.  Removed Shadowguard.
+* XRogueBar: Added Shadow Dance
+* XTradeBar: Removed Inscription Researches and Decipher (Not yet implemented)
+* XWarlockBar: Removed curse of Idiocy (was removed before WoW beta, but still in some databases)
+
+Version 3.19 by Dr. Doom
+
+* Fixed an error with the bars updated in 3.18
+
+Version 3.18 by Dr. Doom
+
+* XCustomBar: Clarified error message when a bar name is not entered for new bar and import functions
+* XCustomBar: Fixed an error when importing bars with Items
+* XTotemBar: Combined Disease+Poison Cleansing totems into Cleansing Totem
+* XPetStuffBar: Added Call Stabled Pet
+* XBuffBar: Added Hand of Reckoning, removed DK auras as they are no longer castable.
+* XWarlockBar: Removed Curse of Recklessness
+
+Version 3.17 by Dr. Doom
+
+* Updated for compatibility with WoW 3.1 patch.
+
+Version 3.16 by Dr. Doom
+
+* Fixed an error causing XTradeBar not to display spells.
+
+Version 3.15 by Dr. Doom
+
+* Added debug code to track down an elusive error with XCompanionBar
+
+Version 3.14 by Dr. Doom
+
+* Fixed an error that was caused by clicking the +/- buttons since 3.0.8.
+* When a pet dies in combat, pet spell buttons should no longer generate errors when the mouse moves over them
+* The demise of cyCircled is long past now, the plugin for cyCircled will no longer be packaged with XBar, though if you have it from an older version, the folder will still remain and may be deleted at the user's discretion.  Users are encouraged to download ButtonFacade.
+* Some users with Windows Vista may have problems with many addons, including this one.  See FAQ.TXT #17.
+* XCustomBar now ships with XBar as a default plugin.  See XCustomBar\Readme.txt for documentation.
+
+Version 3.13 by Dr. Doom
+
+* Added the ability for plugin bars to create item buttons, fixed the typo in scriptnotes.txt to reflect new changes.
+* Individual button show/hide options will now properly be set to their default value if undefined, this means that all buttons will show by default for bars that auto-generate their buttons (ie. XTrackBar and XCompanionBar).  Plugin bars that do not use the standard ButtonID callback will need to use the new XBarCore.GetOption function to implement this in their bars.
+* Individual button show/hide and slider options will be saved upon new bar versions.
+
+Version 3.12 by Dr. Doom
+
+* Fixed a problem where spells with specific ranks would not show up.
+
+Version 3.11 by Dr. Doom
+
+* Fixed an error causing no bars to apper for first-time users.
+
+Version 3.10 by Dr. Doom
+
+* Runeforging will now appear for XTradeBar
+* XBar now supports Key Bindings through the config screen
+
+Version 3.09 by Dr. Doom
+
+* Fixed an error in LibXSpellID, and re-imported.
+
+Version 3.08 by Dr. Doom
+
+* Fixed a localization issue with XBuffBar for Death Knights
+* Added detection & handling of spells with autocast capability (for pets). Please note that as of WoW patch 3.0.3, there is a bug that caused buttons to break after learning a new rank of a pet spell.  You must log out and back in to fix it.
+* Fixed an issue that caused the pet XP bar to still show while hiding the interface
+* Fixed an issue that sometimes not all of the bar's positioning data would be saved upon upgrade.
+* Added more Death Knight spells to XBuffBar
+* Updated LibXSpellID
+
+Version 3.07 by Dr. Doom
+
+* Fixed an issue in XPetStuffBar where the pet XP bar would always be full
+* Another attempt at fixing the Cooking ability for the German client.
+* Now when bar changes are made that affect the action list, positional and display data are saved.
+* Fixed an error where some items would not display upon initial load even if they existed in your bag, this will also reduce interface lag when zoning into an instance and upon initial login.
+
+Version 3.06 by Dr. Doom
+
+* Brought back some old hacks to fix the cooking ability for the German client.
+* Added show/hide text option for the XP bar
+* Removed taint in the ButtonFacade integration code.
+* Added more display options for the Pet XP bar in XPetStuffBar
+
+Version 3.05 by Dr. Doom
+
+* Chasing more bugs, I think I got them all this time.
+
+Version 3.04 by Dr. Doom
+
+* More minor bug fixes.
+
+Version 3.03 by Dr. Doom
+
+* Minor changes attempting to fix some bars not moving right.
+
+Version 3.02 by Dr. Doom
+
+* cyCircled support plugin has been updated.  cyCircled appears to be deprecated, users are encouraged to switch to ButtonFacade.
+* Added ButtonFacade Support
+* XBuffBar: Hunter buffs now appear under their class header.
+* Macros whose usage cannot be determined as an item or a spell will now show the macro name, instead of the macro text as the tooltip.
+* Greatly improved Range & Usability detection
+* Eliminated the "Cooldown Flicker" effect
+* Tooltip will cause fewer errors if internal data is corrupted/malformed.
+* XTrackBar will now auto-generate tracking abilities, due to this change, it is no longer sortable, but it will include other types such as Repair, Innkeeper, Battlemaster, etc...
+* Items (in macros or by themselves) should now properly show a cooldown when used.
+
+Version 3.01 by Dr. Doom
+
+* XTrapBar: will no longer load for non-Hunter classes.
+* XBuffBar: Added Trueshot Aura back, also added Bestial Wrath and Rapid Fire
+* XTradeBar: Added Runeforging
+* Fixed the Interface->Addons option panel
+
+Version 3.00 by Dr. Doom
+
+Non-Technical Changes (Things most people will notice):
+
+* Revised buff highlight system, your buffs will be a green wisp, buffs from other players will still be a normal wisp.
+* Improved the display and detection of reagent counters on spells that use reagents.
+* All bars now support showing/hiding of buttons.
+* XBar Config window: Made several cosmetic changes to the config window, as well as added a Wrap option for certain bars, and controls to allow the user to reposition buttons on the bars.
+* Companion buttons will now show the tooltip of the actual companion.
+* User-created bindings for the buttons will be available soon.
+* Fixed a typo in XRogueBar, changing "Shadow Step" to "Shadowstep"
+* XAspectBar now swaps action bars in combat once again, just like the good old days!  Read XAspectBar\readme.txt for details.
+* Due to WotLK, I did not have time to fully implement Key Bindings, but they are coming...
+
+Technical Changes (Things other mod authors need to know):
+* Major core re-write to allow XBar to natively support more than just spells.  XCustomBar will create new bars with less overhead than before, causing slightly less interface lag.  Due to major changes, XBar will now start again at version 3.00, and user settings must be re-created (bars re-positioned, etc...).
+* Several options for addons have been standardized, allowing users to more easily create addons for XBar, while not sacrificing the flexibility of the bars.  Authors of existing addons to XBar will have to re-write their mods to make it use the new system, but the mods will require significantly less code than before.
+* Switched to a more secure binding system for the default show/hiding of the bars
+* Made code optimizations to reduce interface lag by throttling event handlers.  Calls to the BAG_UPDATE event are now handled directly by the XBarLoader object, and should be registered through the function provided, unless specific bag-slot related info is handled.
+
+Version 2.08 by Dr. Doom
+
+* The fix for reagent counts in 2.07 broke textures on bars made by XCustomBar, so this is the counter-fix for that.
+
+Version 2.07 by Dr. Doom
+
+* Fixed some minor errors with XAspectBar's config interface.
+* Added Aspect of the Dragonhawk to XAspectBar.
+* Fixed an error where spells with reagents would not update correctly upon gain/loss of the reagent.
+* Found an error where the WoW Client does not report companions after initial login on the latest patch, created a notification.
+
+Version 2.06 by Dr. Doom
+
+* Fixed the error of XAspectBar not localizing properly.
+
+Version 2.05 by Dr. Doom
+
+* Fixed an internal code issue that required XBarLocalizer to be enabled on enUS and enGB clients (you can now fully disable it again on those clients).
+* XCompanionBar options interface improved to make it easier for people who have lots of companions.
+* Added Pet XP bar to XPetStuffBar.  It is movable separate from XPetStuffBar, and you can turn it on and off in the options.
+
+Version 2.04 by Dr. Doom
+
+* Fixed a recurring error with XCompanionbar while zoning.
+
+Version 2.03 by Dr. Doom
+
+* Fixed an error with XCompanionBar the first time it loads
+* XBarLocalizer, updated for compatibility with Babble-3.0, added library LibXSpellID.
+* XBuffBar - Changed Symbol of Hope to Hymn of Hope.
+* Minor changes in localization logic for bars that use menu headings
+* XTotemBar - Shows your totems in a green wisp, as well as totems from others in a blue wisp, and your totems will show a timer.
+
+Version 2.02 by Dr. Doom
+
+* Added Vigilance (Warrior spell) to XBuffBar
+* Improved memory handling in XBarLocalizer for enUS and enGB clients.
+* XBar now natively supports pets and mounts through the &pet& and &mount& meta-commands
+* NEW BAR! XPetBar - Will auto-add all your pets/mounts
+* NEW BAR! Due to popular support, added XPortalsBar. I no longer have a mage, so anyone able to test it for me would have my deepest thanks.
+* XWarlockBar: Added Demon Skin.
+* Fixed an issue with all bars that support spacers where buttons would have an extra space upon a new spell appearing.  This affects XAspectBar,XRogueBar,XTotemBar,XWarlockBar, as well as the new bars.
+* Fixed an issue with TradeBar where spells were not appearing correctly.
+
+Version 2.01 by Dr. Doom
+
+* Fixed some issues XAspectBar had acquired.
+* AspectBar will now let you show/hide Trueshot Aura.
+* Fixed some issues with the Config window (yay for undocumented API changes!).
+
+Version 2.00 by Dr. Doom
+
+* Compatibility update for 3.02 (WotLK content patch) and some minor code cleanup
+* Due to major changes, the configuration database must be reset, and you will have to move your bars around again.
+* XAspectBar: Added Trueshot Aura (Moved here from XBuffBar)
+* XBuffBar: Added Tiger's Fury, Dalaran Intellect, Dalaran Brilliance,Power Infusion, Pain Suppression, Earthliving Weapon, Enraged Regeneration, and various Death Knight spells. Removed Omen of Clarity, Demon Skin, Trueshot Aura. See 3.02 patch notes for Paladin changes
+* XPetStuffBar: Removed Beast Training, added Master's Call
+* XRogueBar: Removed Poisons
+* XSealBar: Added/removed spells to conform to new changes. (See 3.02 patch notes)
+* XTradeBar: Removed Poisons, Added Inscription, Decipher, Milling, Minor Inscription Research, Northrend Inscription Research.  Removed hotfix implemented in XBar 1.09, as the problematic part of the Blizzard UI has been removed (see Scriptnotes.txt)
+* XTrapBar: added Freezing Arrow
+* XTotemBar: Removed Grace of Air, Windwall, and Tranquil Air Totems
+* XWarlockBar: Added Demonic Circle Summon and Teleport, Removed Curse of Doom
+* XBarLocalizer: Updated embedded dependencies to Ace2 82173 and Babble-2.2 81991
+
+Version 1.24 by Dr. Doom
+
+* Updated TOC for patch 2.4
+* Improved range detection
+* Added options access to the new Interface Options GUI
+* Updated library dependencies
+
+Version 1.23 by Dr. Doom
+
+* Fixed some issues with cyCircled support.
+* XWarlockBar and XRogueBar are now fully disabled when not on those classes
+
+Version 1.22 by Dr. Doom
+
+* Fixed an issue where some plugins would cause the cooldown to throw errors.
+* XRogueBar will now show reagent counts for spells
+
+Version 1.21 by Dr. Doom
+
+* Fixed an issue where bars with spacers could cause black boxes to appear.
+* Fixed the wrapping in XWarlockBar and XRogueBar
+* XWarlockBar and XRogueBar now both have their spell list categorized in the options pane
+* Reordered XRogueBar spells to something a bit more logical.
+* Fixed a spacing issue where some bars would not space out properly upon initial load
+* Updated XBarLocalizer's translation libraries.
+
+Version 1.20 by Dr. Doom
+
+* Fixed an issue with CyCircled support.
+
+Version 1.19 by Dr. Doom
+
+* Added compatibility support for cyCircled.
+* Updated Ace2 Libraries in XBarLocalizer.
+* Added the ability to change default spacing increments (see scriptnotes.txt)
+
+Version 1.18 by Dr. Doom
+
+* Added Righteous Fury to XBuffBar
+* XBuffBar now calculates max buttons from the list.
+* Fixed an error caused by right clicking the buttons without moving them.
+* Added reagent counts to XWarlockBar.
+* Fixed an issue where XBar_SetScale was causing an the "Interface action blocked due to an addon" message.
+* XBarLocalizer will now properly detect BabbleSpell-2.2.
+
+Version 1.17 by Dr. Doom
+
+* Increased the flexibility of the cooldown frame to allow items as well.
+* Toggle buttons now function in combat, see scriptnotes.txt for details.
+* XTrackBar now shows/hides buttons correctly when you select it from the menu.
+* Addons now update the number of buttons and spells automatically, except where there is not a 1:1 correllation.
+* enGB is now treated like enUS for localizations.
+
+Version 1.16 by Dr. Doom
+
+* Added Find Fish to XTradeBar and XTrackBar
+* Fixed an error with XWarlockBar where 2 spells would not appear.
+* Fixed a typo in the documentation of XBarLocalizer
+* Converted all 1.14 localizations to a backup database to XBarLocalizer, see XBarLocalizer\readme.txt for details.
+
+Version 1.15 by Dr. Doom
+
+* Updated for compatibility with patch 2.3
+* Added Omen of Clarity to XBuffBar
+* Imported function XBar_ShowCount from XCustomBar
+* XBuffBar will now show how many times you may cast a spell for spells that use reagents
+* Added XBarLocalizer to integrate Ace2 Babble-Spell for non enUS translations.
+* Fixed an error with the binding for XSealBar
+* Fixed an XML errors with the XBar frame, as well as removed bindings.xml from the toc file.
+* Fixed several various sources of taint
+* Changed the way XBar stores meta data about the buttons, see scriptnotes.txt for details.
+
+Version 1.14 by Dr. Doom
+
+* Added Banish and Sense Demons to XWarlockBar
+* Added Kill Command to XPetStuffBar
+* Added the ability to search for a specific rank in XBar_GetSpellID()
+* XBar will not cast a spell when moving the bar.
+
+Version 1.13 by Dr. Doom
+
+* Fixed a bug where XTrackBar would not update immediately when a button was shown/hidden.
+* Organized XTradeBar spells into menus in the config window
+* Improved the logic algorithm in XTradeBar.
+
+Version 1.12 by Dr. Doom
+
+* Changed the button templates so that the Toggle Button does not show a black square or highlight textures when it is hidden.
+* Implemented a method to temporarily fix spells that won't cast by name (like Alchemy as of patch 2.2), see "Meta commands" in Scriptnotes.txt for details on how to implement these in plugin addons.
+* Added forientcb callback function.
+* Added wrapping feature and documentation for XTotemBar, XRogueBar, and XWarlockBar
+* Added the ability to show/hide individual buttons for XTradeBar
+
+Version 1.11 by Dr. Doom
+
+* Added several features that make the bars respond like the standard UI action bars: Disable when unable to cast, highlight and push textures.
+* Plugin authors need to handle the ACTIONBAR_UPDATE_USABLE event, and call the XBar_UpdateCooldowns function now to ensure their bar textures update properly.
+* All buttons now have a Count frame, in which a mod author can put some text or a number.
+* You may now move the bars with the Toggle buttons.
+* All buttons will automatically cast specifically the highest rank spell found.
+
+Version 1.10 by Dr. Doom
+
+* Added the command '/xbar stopmoving <bar>' to fix issues with the UI where the bar becomes stuck to the mouse when moving the bars.
+* XTradeBar now only shows your specialization if you have one
+* Improved the Toggle graphics slightly for a softer and more 3-D appearance
+
+Version 1.09 by Dr. Doom
+
+* Added specialty spells to XTradeBar to overcome patch issues with 2.2.  Settings will be reset for XTradeBar.  (Not sure if this is a permanent change or a bug by Blizzard, but the options to turn it off are there).  Only enUS localization has been completed
+* Added readme.txt files to various bar mods to explain features whose function may not be apparent.
+* Expanded documentation by adding a FAQ/Troubleshooting guide.
+* Added the option to show or hide the toggles for individual bars
+* Fixed the positioning system
+* Due to major changes with the database, all options will be reset.
+
+Version 1.08 by Dr. Doom
+
+* Fixed an error in XSealBar causing it not to display
+* Added a safety feature for missing or malformed addon menus.
+
+Version 1.07 by Dr. Doom
+
+* Corrected a deDE translation error in XWarlockBar.
+* Updated TOC for core and all default bars for the 2.2 patch.
+* Disabled built in screen position save feature, as the new patch changes the way frames are anchored, which may have caused some issues for people involving the bars moving in between game sessions.
+
+Version 1.06 by Dr. Doom
+
+* Fixed an error where multiple consecutive spacers would cause spacing issues.
+* Added tradeskill related tracking and dwarf racial tracking to the XTradeBar.
+* Added the ability to toggle individual buttons in XSealBar.
+* Added the ability to toggle the aura highlights for self-buffs on XBuffBar.
+* Added features to help support XCustomBar 1.02
+
+Version 1.05 by Dr. Doom
+
+* Fixed the toggles so they would hide automatically if the user is hiding the interface for a screenshot.
+* Ensured the toggles would not function when hidden.
+
+Version 1.04 by Dr. Doom
+
+* Changed the spell "Blade Fury" in XRogueBar to "Blade Flurry".
+* Fixed some more esES localizations (thanks to Gerar).
+
+Version 1.03 by Dr. Doom
+
+* Updated Addon screen notes for zhTW in XBuffBar, XRogueBar, and XWarlockBar, and updated corresponding version numbers.
+* Fixed an issue where the Toggle buttons would still function when hidden, making users have to manually show the bar.
+* Modified the default SecureActionButton attributes to reduce redundancy and make it easier for plugins to modify the default behavior of buttons.
+
+Version 1.02 by Dr. Doom
+
+* Fixed a bug in XWarlockBar similar to XRogueBar in 1.00
+* Forced a reset on XRogueBar and XWarlockBar to clean up some old data.
+
+Version 1.01 by Dr. Doom
+
+* Fixed a bug where learning new spells on bars that use spacers would put in additional spacing
+* Fixed a bug in XRogueBar involving the option list that would cause the last 3 buttons to not display.
+* Fixed a bug in XTotemBar where the option to highlight buffs would have no effect.
+* Fixed a few misspellings for the deDE localization.
+
+Version 1.00 Final by Dr. Doom
+
+* Fixed a spanish localization error.
+* Fully localized for French (thanks to Jokhond).
+* Fixed the TrackBar texture update (really this time).
+
+Version 1.00 RC1 by Dr. Doom
+
+* Fully localized the Taiwan locale for updates from beta 4 (thanks again Norova).
+* Fully localized for Spanish.
+* Fixed some other minor localization issues.
+* Changed the default screen position so it does not get covered up by FuBar or TitanPanel.
+* Changed the way cooldowns were handled so that mods like OmniCC, which hook into the blizzard function call 'CooldownFrame_SetTimer' to read cooldowns will be able to detect casting events properly.
+* Removed the need for the spell list argument on the XBar_Update function.
+* Added Toggle buttons to show/hide the spell bar.  To show or hide them, type "/xbar toggle"
+* Found some neat functions to dynamically create bindings without macros, made a link in the readme file.
+* I think it's finally stable enough for release, as far as the data format and features, so I'm taking the individual bars out of beta, and changing the XBar core to a release candidate.
+
+Version 1.00b4 by Dr. Doom
+
+* Added several spells that were not present in some bars, as well as fixed some typos
+* Removed rogue poisons from XBuffBar (as they are items, not spells)
+* Completed esES localizations
+* Forced database reset on upgrading clients to ensure integrity
+
+Version 1.00b3 by Dr. Doom
+
+* Spells should now properly update their texture when they can be used.
+* Fixed the issue where a bar would reappear after you hide it and log out
+* Fixed an issue where the horizontal option would not display properly
+* Changed the data structure to store options in 'optionsets' instead of separately for each player
+* Added fbuttoncb and fbuttonid callback procedures
+* Renamed XBlessBar to XBuffBar, and made it a bit more all inclusive.
+* Added hammers of justice and wrath to XSealBar
+* Now supporting individual button turn offs for XTradeBar, XPetStuffBar, XBuffBar
+* Added submenu support for custom options
+* Changed custom boolean options to use the menu-driven checkmarks
+* Fixed a spacing issue with spacers
+* Added some Taiwan localizations, (thanks to Norova)
+* Fixed several issues where the wisp icon would not update properly
+* Added XWarlockBar and XRogueBar
+
+Version 1.00b2 by Dr. Doom
+
+* Fixed the 'ver' error
+* Fixed an error where the bar would show up after hiding it in the options panel.
+* Added Jewelcrafting to the XTradeBar (woops!)
+* Incorporated functionality of BlessingBar and SealBar
+* Fixed a data storage issue with some tables
+* Added a button callback procedure
+
+Version 1.00b by Dr. Doom
+
+* Original port to custom mod framework
+* Cleaned up code and documentation
+* Imported current features from AspectBar and TrackBar
+* Implemented functionality for TrapBar,TradeBar,PetStuffBar, and TotemBar

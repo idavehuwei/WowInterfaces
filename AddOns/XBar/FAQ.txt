@@ -1,0 +1,102 @@
+Troubleshooting and FAQ
+=======================
+
+1. How do I configure XBar and its associated Addons?
+
+    Type '/xbar config' to bring up the configuration window.  Other actions may be performed as well, type '/xbar' by itself to see a list.
+
+2. How do I make different settings for each character?
+
+    Use the Option Set feature described in Question #3.
+
+3. What is an option set?
+
+    Option sets allow you to have complete flexibility over which characters share settings.  By default, all options are saved in option set #1, 'default'.  If you want to make another character use a different set of settings, log into that character, create a new option set, and set it to use that option set.  Type '/xbar options' for a listing of commands that allow you to do this.
+
+4. I made an option set, how do I get other characters to use that set?
+
+    View a list of the option sets ('/xbar options view'), then select it to use that setting by using the '/xbar options set #' command, where # corresponds to the number next to the option set name from the view command.
+
+5. How come I can't delete an option set?
+
+    You probably are trying to delete the default set, which isn't allowed, or you are trying to delete the current set you are using.  Select another set first, then delete it.  All characters that were using that set will be set to use the default set.
+
+5. How do I tell which option set my character is using?
+
+    The '/xbar options view' output will show an * next to it to indicate that is the set you are currently on.
+
+6. I am getting an error with XBar, what does it mean?
+
+    The error may or may not be associated with XBar itself, it may be that an addon did not properly handle a feature that it requested from XBar.  Try disabling one bar at a time to see which one is causing the issue.  Addons that heavily hack the XBar framework to perform extraneous features that XBar was not designed to perform by itself (such as XCustomBar) are likely causes of errors, and should be disabled first.  If you discover what you believe to be a bug, post a comment at the mod site of the mod you found to be causing the error.  Be specific, give lots of details, and steps that the author can perform to recreate the error.
+
+7. After a patch, I am seeing unexpected behavior, how do I fix it?
+
+    Monitor the mod forums for information on what is going on, how to fix it, and look for updated patches frequently.  This mod is posted at:
+
+    wow.curse.com
+    www.wowinterface.com
+    wowui.incgamers.com
+
+    Search for XBar from these sites to find the mod.  I do check all of these sites on a semi-regular basis for feedback and issues.
+
+8. I was told I should delete the savedvariables file, how do I do that?
+
+    Go to your World of Warcraft\WTF\Account\<your account name>\SavedVariables folder.  Your World of Warcraft folder is probably in your C:\Program Files directory on Windows machines unless you told it to install to a different drive or directory when you installed World of Warcraft.  If you can't find this folder, right click the icon you click on to launch WoW, click Properties, then click on Find Target to open the folder (Windows only, may not work on Macintosh).  Once you have the folder open, navigate to the savedvariables file by clicking on the folder icons (the '\' means its a folder under what you were previously in).
+
+    Once the folder is open, look for two files called xbar.lua and xbar.lua.bak.  Delete both files, then close the folder and run WoW again.  Don't search for the 'xbar.lua' file from the World of Warcraft directory, as you may inadvertently delete the code that the mod runs on.
+
+9. My bar disappeared completely?  Where'd you put it?
+
+    The bar may be hidden, or the associated buttons may be hidden.  Check the Options panel, if you don't see it listed in the selection list at the top, then it is not loaded properly.  Make sure you have it checked in your addons button at your character select screen.  Note that some bars only load for certain classes.
+
+    If the bar is there, check to make sure that 'visible' is checked, then check to see that there are checkmarks by the spells that you want to see in the list below the scale slider (click the + sign, note that this only applies to mods that have this functionality implemented).
+
+    If visible is checked, and the spells are checked or the option to select them is not present, then the bar may not be on the screen.  Try using the '/xbar resetpos <barname>' command, where <barname> is the name of the bar you want to reset (ex. XSealBar).  The bar name is not case sensitive.
+
+    If that does not work, try creating a new option set and set your character to use it.  If the bar shows up in the new option set, then you have a problem with your savedvariables file, and you need to delete it to reset the options for XBar.
+
+10. How do I know if my mod has special features?
+    There is something about this particular mod I don't understand, can you explain it?
+
+    Look for a readme.txt file in the associated addon directory and see if that file has the answers you are looking for, if not post a comment on one of the mod sites listed in #7.
+
+11. I want to rearrange the order of the buttons, how do I do that?
+
+    You can open the localization file for your language in a text editor, and rearrange the order they appear in the code listing.  Keep in mind that some things in the list that aren't spells may have special meaning to XBar.  You should not try to add more spells to the list or take spells out of the list, as changing the number of buttons improperly may cause errors when you log in.
+
+12. What are these little + or - signs?  How do I get rid of them?
+
+    Those are called 'toggles'.  They let you show or hide the bar by clicking on it.  You may find it nice to place these on the edge of the screen and rotate the bar so it comes out from the side by clicking on the + sign.  Keep in mind that this feature does not work in combat due to UI restrictions.  To turn them on or off, type '/xbar toggle'.
+
+13. How can I set up key bindings for XBar?
+
+    Key bindings for showing or hiding the bars are found in the key bindings screen of your main menu in WoW.
+
+    Key bindings for casting spells or other actions are not yet implemented at this time.
+
+14. How do I create my own spell bar?
+    How can I use macros or items with XBar?
+    I want to make a modification to a bar that involves changing the number of buttons, but I don't know how to do it without causing errors.
+
+    Use XCustomBar, it has a built-in GUI interface for creating flexible XBars with your own spell list, items, or macros that you have already created.  See XCustomBar documentation for details.
+
+15. I want to make my own XBar addon.
+    I want to expand the capabilities of an existing bar.
+    How do I put features that I see in another bar into my XBar that I am creating?
+
+    You're on your own for that, I do not provide LUA or XML scripting support.  I do appreciate your interest in creating your own bar using the framework I have created.  I suggest using the user interface forums for obtaining help from the WoW community.
+
+    The only thing I will provide is the scriptnotes.txt file, which explains to other skilled LUA and XML coders certain features of my mod which may assist in the creation or modification of new XBars.
+
+16. I have a question that is not answered here.
+    I have a suggestion for a new feature or change I would like to see in XBar or an addon created by you.
+
+    Post at one of the sites listed in #7.
+
+17. XBar does not function correctly under Windows Vista, along with several other mods, what do I do?
+
+    The problem Windows Vista creates for addons is not something I can fix at the Addon level.  Users are encouraged to install WoW outside of the default directory to a custom directory, such as C:\Programs, C:\Games, et al.  Windows Vista does not apply the special file-system handling rules to these custom-created directories.  This is only applicable until Blizzard resolves the program issues related with Vista.
+
+18. After update, a certain bar keeps giving me errors, how can I fix this?
+
+    This usually results from a mod's internal database being updated incorrectly.  Type "/xbar resetmod barnamehere" to fix it.  If that doesn't work, you can reset the whole option set by typing "/xbar options reset 1" or whichever options set you are using.  Type "/xbar options view" to see a list, the one with the * by it is the one that character is using.

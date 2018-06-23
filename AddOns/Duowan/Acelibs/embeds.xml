@@ -33,6 +33,7 @@
     <Include file="LibGraph-2.0\lib.xml"/><!-- Recount -->
     <Include file="LibAboutPanel\lib.xml"/>
     <Include file="LibQTip-1.0\lib.xml"/>
+    <Include file="LibQueue-1.0\lib.xml"/>
     <Include file="SimpleSticky\lib.xml"/><!-- 简单的吸附 -->
     <Include file="FuBarPlugin-2.0\lib.xml"/>
     <Include file="LibDualSpec-1.0\lib.xml"/>

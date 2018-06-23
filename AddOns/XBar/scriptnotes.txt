@@ -1,0 +1,371 @@
+=======================
+= XBar Addon Creation =
+=======================
+
+By Dr. Doom
+
+Document best viewed in Notepad using a fixed width font like Courier New or Terminal
+
+XBar v3.00 greatly reduced the code required and complexity to make custom bars.  A good baseline bar to use for new bars is XWarlockBar, as it includes all of the features of a standard cast-style bar, including buff tracking, reagent counting, etc...
+
+Simply copy the files over, change all references of XWarlockBar to whatever you want to name it, etc...
+
+XWarlockBar only loads for Warlocks, so if your bar only loads for a specific class, you can easily change the class name to whatever else you have.  If you want it to load for all classes, remove the class check altogether and set "enabled" to true in the ModData structure.
+
+SPELL LIST: To make a list that XBar can import easily in your localization file, use the following key:
+
+# = Menu header (Followed by the header name)
+* = Menu option (Followed by the option name, this will be a check-style menu option, which you must handle the values for yourself)
+(space)/W = spacer (one character only)
+! = companion  (Must follow ! with the type of companion, C for critters (vanity pets), M for mounts.) (ex. "!MEbon Gryphon")
+@ = Tracking  (Followed by the ability name)
+$ = Macro (Followed by the macro name)
+% = Tradeskill Spell (Followed by spell name, this is cast by using the /cast command, only works with Tradeskills, this is like using the &idhack& metacommand in previous versions.  Do not use this unless your tradeskill does not work in XBar.)
+& = Item (Followed by item ID - found at the end of the URL when you click on an item on www.wowhead.com)
+List items that do not start with a specific character will be assumed as a spell name in your main spell book.
+
+EVENT INTERCEPTION: If you do not need to intercept events from the UI, then set the OnEvent tag in your XML file to call the standard event handler, otherwise, set your own and define it in your LUA file.  You can still pass events you don't need to handle yourself to the standard event handler. (See XTrackBar for an example of event interception)
+
+Here is a list of what events you should register the mod for if you use the standard event handler:
+    ACTIONBAR_UPDATE_USABLE - If your bar contains buttons that have conditions to use:
+                - Spells with reagents, range limits, only castable on certain targets, mana cost, etc...
+                - Items
+                - These conditions also apply to the spells/items in macros
+    BAG_UPDATE              - If your bar contains spells with reagents, or items
+    COMPANION_UPDATE        - If your bar contains companions
+    PLAYER_ENTERING_WORLD   - Always
+    SPELL_UPDATE_COOLDOWN   - If your bar contains spells with a detectable cooldown
+    SPELLS_CHANGED          - If your bar contains spells that you may not know on every character at every level
+    UPDATE_MACROS           - If your bar contains macros
+    UNIT_AURA               - If your bar handles buff highlighting
+
+STANDARD LIBRARY FUNCTIONS:
+  XBar provides the following functions to help with standardized event calls (things that most bars will do in a standard manner):
+
+  XBar_StdButtonCB(button,spellname,index,mod)
+    -- This function will update reagent/item counts and show whether an item is equipped by a user.
+    button    - Frame, reference to the button
+    spellname - String, contains Data[1].Data (the first action name) in the corresponding ActionList element
+    index     - Integer, contains the button's index (not necessarily the ActionList element's index)
+    mod       - String, contains the name of the mod
+
+    return    - None
+
+  XBar_StdButtonID(id,spellname,mod)
+    -- This function is used to show/hide buttons using the standard options interface
+    id        - Integer, contains the ID data associated with the data (from Data[1].Data in ActionList).
+    spellname - String, contains Data[1].Data (the first action name) in the corresponding ActionList element
+    mod       - String, contains the name of the mod
+
+    return    - Return the new ID for the data (0 to disable the button).
+
+  XBar_StdEventHandler(mod,event,arg1)
+    -- This function handles event calls to do all the normal stuff XBar does
+    mod       - String, contains the name of the mod
+    event	  - Passed from the OnEvent UI Handler
+    arg1	  - Passed from the OnEvent UI Handler
+
+    return    - None
+
+  XBar_StdOptionCB(option,value,mod,forceupdate)
+    -- This function is used to show/hide buttons using the standard options interface
+    option    - String, contains the name of the option
+    mod       - String, contains the name of the mod
+    value     - Contains the new value
+        Forceupdate - Whether or not we need to force the update of button attributes due to this option (pass along to XBarCore.Update)
+
+    return    - None
+
+  XBar_StdTexture(mod,texture,spellname)
+    -- This function is used to highlight spell buffs
+    mod	  - String, name of the bar we're working with
+    texture   - String, the path to the texture
+    spellname - String, contains Data[1].Data (the first action name) in the corresponding ActionList element
+
+    return    - Return the new texture path
+
+============================
+= Advanced Scripting Notes =
+============================
+
+This section is broken down into notes about particular files.
+
+a) BINDINGS.XML:  Notice that the binding header listed here is the normal XBar.  All XBar bindings will be placed under one common header in the keybinding section.  If you wish to make your own, use the variable listed in localization.en.lua file instead, and change its value to whatever.
+
+b) X....BAR.TOC:  Here is where you can list the version number and set a description for the mod.  Also, you can put your homepage in the URL section.  Notice how the mod name has the color codes after it, this marks the mod to the user as requiring XBar to work.  Where it says dependencies: XBar marks it for the WoW interface.  Also notice, that we only have one file defined, the XML file.  The LUA files (including localizations) are listed in there.
+
+c) X....BAR.XML:  All we need to do here is define the initial Frame object, and specify which LUA files we are using.  The buttons are created dynamically.  Make sure that the frame's name matches the XBARMOD variable in the LUA file EXACTLY.
+
+d) X....BAR.LUA:  This is where the work is done, so I'll list out important elements:
+
+* XBARMOD = This is the internal name of the mod.  It is also the name from which we derive names of Frame objects, and save data internally, so there should be no spaces in it.
+
+* dbver = Note that this may not match the dbver of other mods, or of XBar itself.  This is an internal database format revision number.  Your first one should be 0.  If you add custom options later in the custom checkbox or slider fields, you will need to increment this so that the users' data will reset when they download this.
+
+* XBarModData = This is a data structure that holds internal data to the mod, and is not saved between sessions.  This is where you define aspects of the mod.  The following ones are the only ones you should need to change:
+
+    nbuttons = the number of buttons you have on your bar
+    dhorizontal = true/false - the default value of "horizontal" (is the bar horizontally oriented at first).
+    dorder = "az"/"za" - this corresponds to the "reverse" option, "az" is forward, "za" is backward
+    dtooltips = true/false - this is whether or not tooltips are displayed first.  If you are attempting to
+                force the XBar to do something other than cast spells (use items, macros, etc...), you might
+                want to disable this.
+    enabled = true/false - set this to false if the mod has special load conditions (certain classes, etc...)
+    wrappable = True/false - Set this to allow XBar to auto-wrap bars according to what type of spacer there is
+    sortable = True/false - Set this to allow users to change the order of the buttons (For mods that have a dynamic
+                   action list like XCompanionBar, you must disable this).
+    nchecks = 0 to ??? - this is where you specify how many special checkbox options you want to define.
+              If you define some, you need to add some additional values like so (N = number of the
+              box, 1,2,3...):
+        checkN - the name of the variable
+        dcheckN - default value for this variable
+
+        Example:
+        check1="Bless Rogues"
+        dcheck1=false;
+        check2="Bless Hunter Pets"
+        dcheck2=true;
+
+        To access these values later, use:
+        v1=XBarData[XBarOptionSet]["mods"][XBARMOD]["Bless rogues"];
+        v2=XBarData[XBarOptionSet]["mods"][XBARMOD]["Bless Hunter Pets"];
+        (v1 will be false, v2 will be true, unless these values
+         are changed by the user)
+
+        *** TO CREATE SUB MENUS ***
+        If you want to make your menu options appear in sub menus, do the following:
+        i)   Create values in the checkbox list to represent the menus.
+        ii)  Set these values to "" (empty string)
+        iii) This indicates to XBar to look for a value called mcheck# (where # corresponds)
+        iv)  Set mcheck# to the name of the Menu to hold the submenu.
+
+        Example:
+        mcheck1="Menu1"
+        check1=""
+        check2="Option1"
+        check3="Option2"
+        mcheck4="Menu2"
+        check4=""
+        check5="Option3"
+
+        The menu will have the following structure:
+        |
+        +-Menu1
+        | |
+        | +-Option1
+        | |
+        | +-Option2
+        |
+        +-Menu2
+          |
+          +-Option3
+
+    nsliders = 0 to ??? - Same thing as checks, but using slider bars:
+
+        sliderN	= name of the value
+        dsliderN = default value
+        sliderNmin = minimum value
+        sliderNmax = maximum value
+        sliderNstep = increment value
+        sliderNformat = format string for display
+
+        Example: if you specified a slider to go from 1 to 3 in steps of 0.5,
+                 You'd get to pick values of 1,1.5,2,2.5,3.  and you should
+                 format them using the string "%.1f" (will give you 1 digit
+                 after the decimal point).  If you wanted integer values,
+                 use the format string "%i".
+
+        See XAspectBar for an idea of how this is implemented.
+
+        You can create menus in the same manner as the checkbox values
+
+    ftexint = Texture interrupt function.  This lets you replace the texture with your own.  Example:
+        ["ftexint"]=XBARMOD.."_Texture",
+        -equivalent to-
+        ftexint=XBlessBar_Texture,  -- Notice no quotes or ()
+
+        function XBlessBar_Texture(mod,texture,spellname)
+        -- texture is a string value of the texture about to be used
+        -- spellname is a string value of the name of the spell this is for
+        -- this function returns a string value with a texture in it.
+            t=texture;
+            -- do some stuff
+            return t;
+        end function
+
+    foptioncb = Option callback function.  Lets you know the user has changed your custom defined options.  Example:
+        ["foptioncb"]=XBARMOD.."_OptionCB",
+
+        function XBlessBar_OptionCB(option,value)
+        --option is a string containing the name of the option changed
+        --value is the value it changed to
+        ----boolean for checkboxes
+        ----numeric for sliders
+        --this function does not return any values.
+        end
+
+        NOTE: fbuttoncb is called from the main update function, as well as the CooldownUpdate function, when less-intense
+        updates are necessary (such as the # of reagents for a spell changed).
+
+    fbuttoncb = Callback function to intercept the button right after it is shown.  This is where you could change
+                what the action of the button is, as you have a direct hook to the button.  Example:
+        ["fbuttoncb"]=XBARMOD.."_ButtonCB",
+
+        function XBlessBar_ButtonCB(button,spellname,index)
+        --button is a pointer object to the button we just made
+        --spellname is the name of the spell it will cast
+        --index is an integer containing the index of the button (1,2,3,etc...)
+        --this function does not return any values.
+        end
+
+    fbuttonid = Callback function to intercept the spell ID about to be put into a button.  Keep in mind that
+            if a button encounters a nil ID, it will act as if the player does not know the spell, and hide
+            that button from view.  Example:
+        ["fbuttonid"]=XBARMOD.."_ButtonID",
+
+        function XBlessBar_ButtonID(id,spellname)
+        --id is the spell ID of spellname
+        --spellname is the name of the spell it will cast
+        --this function returns a new spell ID to put in place.
+            newid=id;
+            -- do some stuff
+            return newid;
+        end
+
+        This function is the perfect place to put in custom options to hide each button by setting the
+        id to nil.  Also, you could put in a slider to cast specific ranks of spells.
+
+        NOTE: fbuttonid is called from the main update function only.
+
+    forientcb = Callback function to intercept positioning data for the buttons.  Example:
+        ["forientcb"]=XBARMOD.."_Orient",
+
+        function XTotemBar_Orient(index,point,anchor,anchorpoint,xdir,ydir,magnitude)
+        --index is the actual button frame's index
+        --point is the point on the button we are anchoring to
+        --anchor is the anchor frame we are using
+        --anchorpoint is the point on the anchor frame we are using
+        --xdir indicates the horizontal direction (-1=left,0=no change,1=right)
+        --ydir indicates the vertical direction (-1=down,0=no change,1=up)
+        --magnitude indicates the amount of horizontal and vertical change
+        --    (This will be equal to XBAR_SPSMALL or XBAR_SPBIG)
+        --this function must return all arguments passed (except index) in order
+            pt=point;
+            an=anchor;
+            ap=anchorpoint;
+            xd=xdir;
+            yd=ydir;
+            mag=magnitude;
+            -- do some stuff
+            return pt,an,ap,xd,yd,mag;
+        end
+
+        If you change the magnitude, be sure to set it to XBAR_SPSMALL for normal button spacing, or XBAR_SPBIG for spacers
+
+    fattributecb = Callback function to let you apply your own button attributes for the secure template.  Example:
+        ["fattributecb"]=XBARMOD.."_AttributeCB",
+
+        function XAspectBar_AttributeCB(mod,index,button,action)
+        --mod is the string containing the name of the mod
+        --index is the numeric index of the button
+        --button is a reference to the button frame itself
+        --action is a table reference to the corresponding ActionList element in the ModData table.
+        --Note1: We do not need combat checks here, as that is performed in XBar.
+        --Note2: This function is called when XBar "detects" that we need to update the attributes (ie. something changed)
+        --       So if we need to specify our own criteria, we can send a forceful update to XBarCore.Update
+        --       XBar will send forceful updates by default if a custom slider bar changes values
+        --This function returns a boolean value stating whether or not we need to skip applying normal attributes
+            -- do some tests
+            if somethingwentwrong then
+                return false; -- This will let the button apply normal attributes like it was going to
+                -- So the button still works like the ActionList database tells us it is supposed to.
+            else
+                button:SetAttribute("button*","type");
+                button:SetAttribute("type","macrotext");
+                button:SetAttribute("macrotext*","/say Doing my own embedded macrotext here");
+                return true; -- We set our own stuff, make XBar leave it alone
+            end
+        end
+
+
+        See XAspectBar.lua for an example.
+
+f) LOCALIZATION.xx.LUA = These files contain the various localization values, along with the spell list.
+
+OTHER NOTES:
+It is recommended you examine the data structure in the saved variables if you need to use any other data in your bar-specific functions.
+
+The metacommands were removed in v3.00 due to expanded support for various other types of buttons.
+
+XBarLocalizer will automatically help you get translations for various addons.  If you have spacers, meta commands, menu headers, etc... you need to test for those and react accordingly in the localization loop.  See the other various XBar addons for examples of how they test and handle their spells, it's also a good idea to look in the XBarLocalizer code to see which library the localizations will be in, and call the appropriate function.
+
+DATABASE STRUCTURE:
+-- Here are important elements of the database:
+
+XBarData - This is the database where we save information between login sessions, see the savedvariables for its structure.
+       Importantly, this is where we store the new sortorder added in v3.00, and key bindings.
+
+XBarCore.FrameDB
+    This contains a list of tables referenced by frame name to store metadata associated with the frame.
+    Usage: XBarCore.FrameDB["FrameName"]["VariableName"]
+
+    Examples:
+        Toggle button - "XBarToggle" stores the name of the associated bar frame (which is not its parent)
+        Action buttons - "XBarAction" stores the index of the ActionList element to which it corresponds to
+
+XBarCore.ModData
+    This contains data that the mods supply to XBar when they register about the bar, like custom options, default values, dbver, etc...
+    This also contains the ActionList database, where all the spelllists from the mods are imported to.
+    The sortorder variable from XBarData stores an index to this database. The default sorting order is stored in
+      ModData.dsort, which is generated by GenerateDB in numerical order of the ActionList.
+
+    ActionList Structure:
+
+    -- Generated by ImportList or pre-defined by the mod (as in XCustomBar) --
+    ActionList[i].Data     List of actions:
+        [j].Data         Spell/Item/Macro/Companion name, Emote or chat text, Header Name
+                [j].AuxData      Spell Book, companion type, chat channel
+        [j].ID           Spell ID  -- Spell ID is generated and should not be specified, will be 1 for non-spells
+                                           -- Companion types use this to store the index of the companion for calling.
+                                           -- Can be set to 0 to pre-disable non-spell buttons.
+                [j].Buttons      Buttons to respond to  \
+                [j].IFF          IFF                     >-- Only valid for spells
+                [j].Modifier     ALT-CTRL-SHIFT         /
+    ActionList[i].Type     Spell/Item/Macro/Companion/Emote/Chat   /Separator/Header
+    ActionList[i].Binding  Key Binding
+
+    -- Generated by GenerateDB --
+    ActionList[i].Texture   --Texture
+        ActionList[i].Shown     --Was shown last iteration of Update? (for new button detection)
+        ActionList[i].Tooltip   --Tooltip Text <-- (for spells and items, the name to pull from)
+        ActionList[i].ToolType  Spell / Item / Text
+
+XBarCore.InvCache
+    Local cache of item counts, indexed by item name
+    --Auto Generated--
+
+XBarCore.EqCache
+    Local cache of equipped items (for equipped detection)
+    --Auto Generated--
+
+
+PATCH NOTES:
+  In XBar v3.29, the texture interrupt was changed to include the name of the bar due to the addition of the option to hide the active highlights
+
+  Metadata database:  Many of the old fields in XBarCore.FrameDB were removed due to the internal database upgrade, as most of the information can be pulled from the ActionList element.  Buttons will now have an XBarAction value, containing the numerical index of the ActionList element to which it corresponds.
+
+  SecureHandlerStateTemplate: In XBar v2.00, the SecureAnchorButtonTemplate was moved over to the SecureHandlerStateTemplate.  You can show/hide the bars by calling XBarCore.ShowHide().
+
+  Default spacing: In XBar 1.19, because cyCircled's textures may overlap, the ability to change the default spacing has been added by use of two global variables defined in XBar\XBar.lua (near the top), which may be changed by the user:
+
+    XBAR_SPSMALL = Normal button spacing (default is 1 pixel)
+    XBAR_SPBIG = "Spacer" spacing (default is 10)
+
+    The ability to change these from the command line is not implemented or planned at this time, however if you
+    want to find the right spacing, you can use a macro or simply type the commands consisting of the following:
+        /script XBAR_SPSMALL = 3;
+    /console reloadui
+
+    Change the values according to what and by how much you want to change it.
+
+  The IDHACK meta command was replaced with the type XBAR_TSPELLHAX, which can be specified by using a % in an imported spell list (see XTradeBar).  This should only be used for Trade skills and Lockpicking.

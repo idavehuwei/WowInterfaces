@@ -1,0 +1,416 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+<Script file="localization.en.lua"/>
+<Script file="localization.cn.lua"/>
+<Script file="localization.tw.lua"/>
+<Script file="XBar.lua"/>
+
+<Font name="XBarButtonFont" inherits="NumberFontNormal" outline="NORMAL" virtual="true">
+    <Color r="1.0" g="1.0" b="1.0" a="0.5"/>
+</Font>
+
+<CheckButton name="XBarButtonBaseTemplate" inherits="SecureHandlerStateTemplate,SecureActionButtonTemplate" virtual="true" hidden="true" id="0">
+    <Size>
+        <AbsDimension x="28" y="28"/>
+    </Size>
+    <Layers>
+        <Layer level="BACKGROUND">
+            <Texture name="$parentIcon" alphaMode="BLEND"/>
+        </Layer>
+    </Layers>
+    <Scripts>
+        <OnLoad>
+            this:RegisterForClicks("AnyUp");
+        </OnLoad>
+        <OnEnter>
+            XBarCore.SetTooltip();
+        </OnEnter>
+        <OnLeave>
+            GameTooltip:Hide();
+        </OnLeave>
+        <OnMouseDown>
+            securecall(XBarCore.OnMouseDown);
+        </OnMouseDown>
+        <OnMouseUp>
+            securecall(XBarCore.OnMouseUp);
+        </OnMouseUp>
+    </Scripts>
+</CheckButton>
+<CheckButton name="XBarButtonTemplate" inherits="XBarButtonBaseTemplate" virtual="true" hidden="true" id="0">
+    <Layers>
+        <Layer level="ARTWORK">
+            <FontString name="$parentCount" inherits="XBarButtonFont" justifyH="RIGHT">
+                <Anchors>
+                    <Anchor point="CENTER"/>
+                </Anchors>
+            </FontString>
+            <FontString name="$parentHotKey" inherits="NumberFontNormalSmall" justifyH="RIGHT">
+                <Size>
+                    <AbsDimension x="28" y="10"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="0" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+        </Layer>
+        <Layer level="OVERLAY">
+            <Texture name="$parentAutoCastable" file="Interface\Buttons\UI-AutoCastableOverlay" hidden="true">
+                <Size>
+                    <AbsDimension x="58" y="58"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="CENTER">
+                        <Offset>
+                            <AbsDimension x="0" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </Texture>
+        </Layer>
+    </Layers>
+    <Frames>
+        <Frame name="$parentAutoCast" inherits="AutoCastShineTemplate">
+            <Anchors>
+                <Anchor point="CENTER">
+                    <Offset>
+                        <AbsDimension x="0" y="0"/>
+                    </Offset>
+                </Anchor>
+            </Anchors>
+            <Size>
+                <AbsDimension x="28" y="28"/>
+            </Size>
+        </Frame>
+        <Cooldown name="$parentCooldown" inherits="CooldownFrameTemplate"/>
+    </Frames>
+    <NormalTexture name="$parentNormalTexture" file="">
+        <Size>
+            <AbsDimension x="58" y="58"/>
+        </Size>
+        <Anchors>
+            <Anchor point="CENTER">
+                <Offset>
+                    <AbsDimension x="0" y="-1"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+    </NormalTexture>
+    <PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>
+    <HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+</CheckButton>
+<Frame name="XBarTemplate" inherits="SecureHandlerStateTemplate" toplevel="true" parent="UIParent" movable="true" virtual="true" hidden="true">
+    <Size>
+        <AbsDimension x="50" y="50"/>
+    </Size>
+    <Anchors>
+        <Anchor point="CENTER"/>
+    </Anchors>
+    <Scripts>
+        <OnShow>
+            XBarCore.UpdateToggle(this:GetName());
+        </OnShow>
+        <OnHide>
+            XBarCore.UpdateToggle(this:GetName());
+        </OnHide>
+        <OnUpdate>
+            XBarCore.RangeTimer(this:GetName(),elapsed)
+        </OnUpdate>
+    </Scripts>
+</Frame>
+<Frame name="XBar" hidden="true">
+    <Size>
+        <AbsDimension x="0" y="0"/>
+    </Size>
+    <Scripts>
+        <OnLoad>
+            XBarLoader.OnLoad();
+        </OnLoad>
+        <OnEvent>
+            XBarLoader.OnEvent();
+        </OnEvent>
+    </Scripts>
+</Frame>
+
+<Frame name="XBarOptionsProfiles">
+    <Layers>
+        <Layer level="ARTWORK">
+            <FontString name="$parentTitle" text="XBAR_PROFILES" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="16" y="-16"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+            <FontString name="$parentSubText" text="XBAR_HELP_CONTEXT_PROFILES" inherits="GameFontHighlight" nonspacewrap="true" maxLines="35" justifyH="LEFT" justifyV="TOP">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
+                        <Offset>
+                            <AbsDimension x="0" y="-8"/>
+                        </Offset>
+                    </Anchor>
+                    <Anchor point="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-32" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+            <FontString name="$parentProfileHdr" text="XBAR_PROFILE" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+                <Size>
+                    <AbsDimension y="20" x="0"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentSubText" relativePoint="BOTTOMLEFT">
+                        <Offset><AbsDimension x="0" y="-20"/></Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+            <FontString name="$parentCurProfile" text="" inherits="GameFontHighlight" maxLines="1" justifyH="LEFT" justifyV="CENTER">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentProfileHdr" relativePoint="TOPRIGHT">
+                        <Offset><AbsDimension x="25" y="0"/></Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+        </Layer>
+    </Layers>
+    <Scripts>
+        <OnShow>
+            XBarConfigGUI.ProfileShow();
+        </OnShow>
+    </Scripts>
+    <Frames>
+        <Frame name="$parentProfileMenuFrame" inherits="UIDropDownMenuTemplate"/>
+        <Button name="$parentProfileMenu" inherits="OptionsButtonTemplate" text="+">
+            <Size><AbsDimension x="15" y="15"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentProfileHdr" relativePoint="TOPRIGHT">
+                    <Offset><AbsDimension x="5" y="0"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnClick>
+                    XBarConfigGUI.ProfileMenu_OnClick();
+                </OnClick>
+            </Scripts>
+        </Button>
+        <EditBox name="$parentNewProfile" autoFocus="false" inherits="InputBoxTemplate">
+            <Size><AbsDimension x="114" y="20"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentProfileMenu" relativePoint="BOTTOMLEFT">
+                    <Offset><AbsDimension x="0" y="0"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnLoad>
+                    self:SetMaxLetters(14);
+                </OnLoad>
+                <OnShow>
+                    self:SetText("");
+                </OnShow>
+            </Scripts>
+        </EditBox>
+        <Button name="$parentBtnNew" inherits="OptionsButtonTemplate" text="XBAR_BTNNEW">
+            <Size><AbsDimension x="50" y="20"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentNewProfile" relativePoint="TOPRIGHT">
+                    <Offset><AbsDimension x="5" y="0"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnClick>
+                    XBarConfigGUI.ProfileBtnNew_OnClick();
+                </OnClick>
+            </Scripts>
+        </Button>
+        <Button name="$parentBtnUse" inherits="OptionsButtonTemplate" text="XBAR_BTNUSE">
+            <Size><AbsDimension x="50" y="20"/></Size>
+            <Anchors>
+                <Anchor point="BOTTOMLEFT" relativeTo="$parentBtnNew" relativePoint="TOPLEFT">
+                    <Offset><AbsDimension x="0" y="2"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnClick>
+                    XBarConfigGUI.ProfileBtnUse_OnClick();
+                </OnClick>
+            </Scripts>
+        </Button>
+        <Button name="$parentBtnDel" inherits="OptionsButtonTemplate" text="XBAR_BTNDEL">
+            <Size><AbsDimension x="50" y="20"/></Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentBtnUse" relativePoint="TOPRIGHT">
+                    <Offset><AbsDimension x="2" y="0"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnClick>
+                    XBarConfigGUI.ProfileBtnDel_OnClick();
+                </OnClick>
+            </Scripts>
+        </Button>
+    </Frames>
+</Frame>
+
+<Frame name="XBarCmdLineOptions">
+    <Layers>
+        <Layer level="ARTWORK">
+            <FontString name="$parentTitle" text="BINDING_NAME_XBAR_CONFIG" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="16" y="-16"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+            <FontString name="$parentSubText" text="XBAR_HELP_CONTEXT_CMDLINE" inherits="GameFontHighlight" nonspacewrap="true" maxLines="35" justifyH="LEFT" justifyV="TOP">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
+                        <Offset>
+                            <AbsDimension x="0" y="-8"/>
+                        </Offset>
+                    </Anchor>
+                    <Anchor point="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-32" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+        </Layer>
+    </Layers>
+</Frame>
+
+<Frame name="XBarOptionsParent">
+    <Layers>
+        <Layer level="ARTWORK">
+            <FontString name="$parentTitle" text="BINDING_NAME_XBAR_CONFIG" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="16" y="-16"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+            <FontString name="$parentSubText" text="XBAR_HELP_CONTEXT_MAIN" inherits="GameFontHighlight" nonspacewrap="true" maxLines="35" justifyH="LEFT" justifyV="TOP">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
+                        <Offset>
+                            <AbsDimension x="0" y="-8"/>
+                        </Offset>
+                    </Anchor>
+                    <Anchor point="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-32" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+        </Layer>
+    </Layers>
+    <Scripts>
+        <OnLoad>
+            XBarConfigGUI.OnLoad();
+        </OnLoad>
+    </Scripts>
+</Frame>
+
+<Frame name="XBarHelp" toplevel="true" parent="UIParent" frameStrata="DIALOG" hidden="true" enableMouse="true" movable="true">
+    <Size><AbsDimension x="600" y="400"/></Size>
+    <Anchors>
+        <Anchor point="CENTER"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background-Dark" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+        <BackgroundInsets>
+            <AbsInset left="11" right="12" top="12" bottom="11"/>
+        </BackgroundInsets>
+        <TileSize>
+            <AbsValue val="32"/>
+        </TileSize>
+        <EdgeSize>
+            <AbsValue val="32"/>
+        </EdgeSize>
+    </Backdrop>
+    <Layers>
+        <Layer level="ARTWORK">
+            <Texture file="Interface\DialogFrame\UI-DialogBox-Header">
+                <Size>
+                    <AbsDimension x="256" y="64"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOP">
+                        <Offset><AbsDimension x="0" y="12"/></Offset>
+                    </Anchor>
+                </Anchors>
+            </Texture>
+        </Layer>
+        <Layer level="OVERLAY">
+            <FontString inherits="GameFontNormal" text="XBAR_HELP_TITLE">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="$parent"/>
+                </Anchors>
+            </FontString>
+            <FontString name="$parentText" inherits="SystemFont_Med1" justifyH="LEFT">
+                <Size><AbsDimension x="570" y="350"/></Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent" relativepoint="TOPLEFT">
+                        <Offset><AbsDimension x="10" y="-15"/></Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+        </Layer>
+    </Layers>
+    <TitleRegion>
+        <Size>
+            <AbsDimension x="130" y="30"/>
+        </Size>
+        <Anchors>
+            <Anchor point="TOP">
+                <Offset>
+                    <AbsDimension x="0" y="8"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+    </TitleRegion>
+    <Scripts>
+        <OnLoad>
+            tinsert(getfenv()["UISpecialFrames"],this:GetName());
+        </OnLoad>
+        <OnHide>
+            PlaySound("igCharacterInfoClose");
+            this:StopMovingOrSizing();
+        </OnHide>
+        <OnShow>
+            PlaySound("igCharacterInfoOpen");
+            XBarHelpGUI.OnLoad();
+        </OnShow>
+    </Scripts>
+    <Frames>
+        <Button name="$parentButtonClose" inherits="OptionsButtonTemplate">
+            <Size><AbsDimension x="150" y="23"/></Size>
+            <Anchors>
+                <Anchor point="BOTTOM">
+                    <Offset><AbsDimension x="0" y="15"/></Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnLoad>
+                    getfenv()[this:GetName().."Text"]:SetText(getfenv()["XBAR_CLOSEBTN"]);
+                </OnLoad>
+                <OnClick>
+                    XBarHelpGUI.BtnClose_OnClick();
+                </OnClick>
+            </Scripts>
+        </Button>
+    </Frames>
+</Frame>
+</Ui>
