@@ -397,7 +397,7 @@ function ReleaseCell(cell)
     cell:SetParent(nil)
     cell:SetBackdrop(nil)
     ClearFrameScripts(cell)
-    cell._font, cell._justification, cell._colSpan, cell._line, cell._column = nil
+    cell._font, cell._justification, cell._colSpan, cell._line, cell._column = nil, nil, nil, nil, nil
 
     cell._provider:ReleaseCell(cell)
     cell._provider = nil
