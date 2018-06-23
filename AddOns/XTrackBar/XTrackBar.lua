@@ -19,6 +19,7 @@ XBarCore.ModData[XBARMOD] = {
     ["wrappable"] = false,
     ["sortable"] = false,
     ["ftexint"] = XBARMOD .. "_Texture", --< Have to have a custom Texture Interrupt
+    ["finitonce"] = XBARMOD .. "_InitOnce",
     ["fbuttonid"] = "XBar_StdButtonID",
     ["foptioncb"] = "XBar_StdOptionCB",
 };
@@ -41,6 +42,35 @@ local GameTrackList = {
     [MINIMAP_TRACKING_VENDOR_POISON]        = false,    -- "毒药"
     [MINIMAP_TRACKING_VENDOR_REAGENT]       = false,    -- "材料"
 }
+
+XTrackBarSpells_Clone = {}
+
+function XTrackBar_InitOnce(mod)
+    if (type(XTrackBarSpells_Clone) ~= "table" or table.getn(XTrackBarSpells_Clone) == 0) then
+        return;
+    end
+
+    if (XBarData == nil or
+            XBarCore == nil or
+            XBarCore.XBarOptionSet == nil or
+            XBarData[XBarCore.XBarOptionSet] == nil or
+            XBarData[XBarCore.XBarOptionSet].mods == nil or
+            XBarData[XBarCore.XBarOptionSet].mods[mod] == nil or
+            XBarData[XBarCore.XBarOptionSet].mods[mod].Options == nil
+    ) then
+        return;
+    end
+
+    for i, v in pairs(XTrackBarSpells_Clone) do
+        if (XBarData[XBarCore.XBarOptionSet].mods[mod].Options[v] == nil) then
+            XBarData[XBarCore.XBarOptionSet].mods[mod].Options[v] = GameTrackList[v];
+        end
+    end
+
+    while (getn(XTrackBarSpells_Clone) > 0) do
+        tremove(XTrackBarSpells_Clone); -- Clean up
+    end
+end
 
 function XTrackBar_OnLoad()
     --Each bar must catch its own event notifications
@@ -70,13 +100,14 @@ function XTrackBar_OnEvent(event, arg1)
         XTrackBarSpells = {};
         for i = 1, n do
             s, _, _, c = GetTrackingInfo(i);
+            tinsert(XTrackBarSpells_Clone, s);
             if (c == "other") then
-                if (GameTrackList[s] and GameTrackList[s] == true) then
-                    tinsert(XTrackBarSpells, "@" .. tostring(i));
-                end
+                c = "@"
+                s = tostring(i)
             else
-                tinsert(XTrackBarSpells, s);
+                c = ""
             end
+            tinsert(XTrackBarSpells, c .. s);
         end
         XBar_StdEventHandler(XBARMOD, event, arg1);
     else
@@ -87,10 +118,10 @@ end
 function XTrackBar_Texture(mod, texture, spellname)
     local t = texture;
 
-    if XBarData[XBarCore.XBarOptionSet].mods and
+    if (XBarData[XBarCore.XBarOptionSet].mods and
             XBarData[XBarCore.XBarOptionSet].mods[mod] and
-            XBarData[XBarCore.XBarOptionSet].mods[mod].nohighlight then
-        --        return t;
+            XBarData[XBarCore.XBarOptionSet].mods[mod].nohighlight) then
+        --return t;
     end
     -- Will highlight any tracking textures the player has
     if (ForceTexture == texture) then

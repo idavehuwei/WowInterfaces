@@ -134,6 +134,8 @@ TradeskillInfoFu                | [多玩] 商业技能资料库 - 小地图按�
 TradeskillInfoUI                | [多玩] 商业技能信息库 - 设置
 TrinketMenu                     | [多玩] 饰品管理
 WhisperPop                      | [多玩] 密语聊天
+XBar                            | XBar 显示额外的技能/法术按钮界面
+XTrackBar                       | XBar 追踪模块
 yClassColors                    | [界面] 姓名着色
 YssBossLoot                     | [多玩] 首领掉落
 

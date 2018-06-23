@@ -66,7 +66,7 @@ end
 
 local function XBarDataBuildDefault(mod)
     return {
-        ["dbver"]=v1,
+        ["dbver"]=XBarCore.ModData[mod].dbver,
         ["x"]=150,
         ["y"]=-150,
         ["rp"]="TOPLEFT",
@@ -1172,6 +1172,7 @@ function XBarCore.RegisterAddon(mod,autocheck,skipimport)
             XBarData[XBarCore.XBarOptionSet]["mod"..i]=mod;
             XBarData[XBarCore.XBarOptionSet].mods[mod]={};
         end
+
         i=false;
         v1=XBarCore.ModData[mod].dbver;
         if (XBarData[XBarCore.XBarOptionSet].mods[mod]==nil) then
@@ -1227,6 +1228,10 @@ function XBarCore.RegisterAddon(mod,autocheck,skipimport)
         -- Create user-space variables to store settings
         if (i) then
             XBarData[XBarCore.XBarOptionSet].mods[mod] = XBarDataBuildDefault(mod);
+            local finitonce=getfenv()[XBarCore.ModData[mod].finitonce];
+            if (finitonce~=nil) then
+                finitonce(mod);
+            end
 
             -- Put in any saved info we had from earlier
             for i,n in pairs(dbcache) do
