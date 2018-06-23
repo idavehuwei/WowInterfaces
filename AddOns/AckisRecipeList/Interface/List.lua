@@ -1485,17 +1485,17 @@ do
     local narrowFontObj = CreateFont(MODNAME .. "narrowFontObj")
     local normalFontObj = CreateFont(MODNAME .. "normalFontObj")
 
-    -- I want to do a bit more comprehensive tooltip processing. Things like changing font sizes,
+    --- I want to do a bit more comprehensive tooltip processing. Things like changing font sizes,
     -- adding padding to the left hand side, and using better color handling. So... this function
     -- will do that for me.
-    local function ttAdd(leftPad, -- number of times to pad two spaces on left side
-    textSize, -- add to or subtract from addon.db.profile.tooltip.acquire_fontsize to get fontsize
-    narrow, -- if 1, use ARIALN instead of FRITZQ
-    str1, -- left-hand string
-    hexcolor1, -- hex color code for left-hand side
-    str2, -- if present, this is the right-hand string
-    hexcolor2) -- if present, hex color code for right-hand side
-
+    -- @param leftPad   -- number of times to pad two spaces on left side
+    -- @param textSize  -- add to or subtract from addon.db.profile.tooltip.acquire_fontsize to get fontsize
+    -- @param narrow    -- if 1, use ARIALN instead of FRITZQ
+    -- @param str1      -- left-hand string
+    -- @param hexcolor1 -- hex color code for left-hand side
+    -- @param str2      -- if present, this is the right-hand string
+    -- @param hexcolor2 -- if present, hex color code for right-hand side
+    local function ttAdd(leftPad, textSize, narrow, str1, hexcolor1, str2, hexcolor2)
         -- are we changing fontsize or narrow?
         local fontSize
 
@@ -1522,12 +1522,11 @@ do
         local line = acquire_tip:AddLine()
 
         if str2 then
-            width = width / 2
-
-            acquire_tip:SetCell(line, 1, "|cff" .. hexcolor1 .. leftStr .. "|r", "LEFT", nil, nil, 0, 0, width, width)
-            acquire_tip:SetCell(line, 2, "|cff" .. hexcolor2 .. str2 .. "|r", "RIGHT", nil, nil, 0, 0, width, width)
+            local width_min = width * 0.3
+            acquire_tip:SetCell(line, 1, "|cff" .. hexcolor1 .. leftStr .. "|r", nil, "LEFT", nil, nil, 0, 0, width, width_min)
+            acquire_tip:SetCell(line, 2, "|cff" .. hexcolor2 .. str2 .. "|r", nil, "RIGHT", nil, nil, 0, 0, width, width_min)
         else
-            acquire_tip:SetCell(line, 1, "|cff" .. hexcolor1 .. leftStr .. "|r", nil, "LEFT", 2, nil, 0, 0, width, width)
+            acquire_tip:SetCell(line, 1, "|cff" .. hexcolor1 .. leftStr .. "|r", nil, "LEFT", 2, nil, 0, 0, width, 0)
         end
     end
 
@@ -1916,12 +1915,12 @@ do
             acquire_tip:AddSeparator()
             acquire_tip:AddSeparator()
 
-            ttAdd(0, -1, 0, L["ALT_CLICK"], color_1)
-            ttAdd(0, -1, 0, L["CTRL_CLICK"], color_1)
-            ttAdd(0, -1, 0, L["SHIFT_CLICK"], color_1)
+            ttAdd(0, -1, false, L["ALT_CLICK"], color_1)
+            ttAdd(0, -1, false, L["CTRL_CLICK"], color_1)
+            ttAdd(0, -1, false, L["SHIFT_CLICK"], color_1)
 
             if acquire_id ~= A.WORLD_DROP and acquire_id ~= A.CUSTOM and (_G.TomTom or _G.Cartographer_Waypoints) and (addon.db.profile.worldmap or addon.db.profile.minimap) then
-                ttAdd(0, -1, 0, L["CTRL_SHIFT_CLICK"], color_1)
+                ttAdd(0, -1, false, L["CTRL_SHIFT_CLICK"], color_1)
             end
         end
         acquire_tip:Show()
