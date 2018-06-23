@@ -339,7 +339,7 @@ function GS_Toggle(tog)
     if tog then
         GS_Settings["Player"] = 1
         GS_Settings["Item"] = 1
-        GS_Settings["Compare"] = 1
+        GS_Settings["Compare"] = 0
         GS_Settings["Level"] = 1
         PersonalGearScore:Show()
         GearScore2:Show()
