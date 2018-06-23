@@ -46,7 +46,7 @@
                     <AbsDimension x="3" y="159"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="TOPRIGHT" relativeto="$parentGliderBar1">
+                    <Anchor point="TOPRIGHT" relativeTo="$parentGliderBar1">
                         <Offset><AbsDimension x="3" y="0"/></Offset>
                     </Anchor>
                 </Anchors>
@@ -57,7 +57,7 @@
                     <AbsDimension x="1" y="159"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="TOPRIGHT" relativeto="$parentGliderBar2">
+                    <Anchor point="TOPRIGHT" relativeTo="$parentGliderBar2">
                         <Offset><AbsDimension x="1" y="0"/></Offset>
                     </Anchor>
                 </Anchors>
@@ -69,7 +69,7 @@
         <ScrollFrame name="$parentScrollFrame" inherits="FauxScrollFrameTemplate">
             <Size><AbsDimension x="130" y="160"/></Size>
             <Anchors>
-                <Anchor point="TOPLEFT" relativeto="$parent">
+                <Anchor point="TOPLEFT" relativeTo="$parent">
                     <Offset><AbsDimension x="0" y="0"/></Offset>
                 </Anchor>
             </Anchors>
@@ -81,7 +81,7 @@
         </ScrollFrame>
         <Button name="$parentLine1" inherits="XBarScrollLineTemplate">
             <Anchors>
-                <Anchor point="TOPLEFT" relativeto="$parent">
+                <Anchor point="TOPLEFT" relativeTo="$parent">
                     <Offset><AbsDimension x="0" y="0"/></Offset>
                 </Anchor>
             </Anchors>
@@ -91,7 +91,7 @@
         </Button>
         <Button name="$parentLine2" inherits="XBarScrollLineTemplate">
             <Anchors>
-                <Anchor point="TOPLEFT" relativeto="$parentLine1">
+                <Anchor point="TOPLEFT" relativeTo="$parentLine1">
                     <Offset><AbsDimension x="0" y="-16"/></Offset>
                 </Anchor>
             </Anchors>
@@ -101,7 +101,7 @@
         </Button>
         <Button name="$parentLine3" inherits="XBarScrollLineTemplate">
             <Anchors>
-                <Anchor point="TOPLEFT" relativeto="$parentLine2">
+                <Anchor point="TOPLEFT" relativeTo="$parentLine2">
                     <Offset><AbsDimension x="0" y="-16"/></Offset>
                 </Anchor>
             </Anchors>
@@ -111,7 +111,7 @@
         </Button>
         <Button name="$parentLine4" inherits="XBarScrollLineTemplate">
             <Anchors>
-                <Anchor point="TOPLEFT" relativeto="$parentLine3">
+                <Anchor point="TOPLEFT" relativeTo="$parentLine3">
                     <Offset><AbsDimension x="0" y="-16"/></Offset>
                 </Anchor>
             </Anchors>
@@ -121,7 +121,7 @@
         </Button>
         <Button name="$parentLine5" inherits="XBarScrollLineTemplate">
             <Anchors>
-                <Anchor point="TOPLEFT" relativeto="$parentLine4">
+                <Anchor point="TOPLEFT" relativeTo="$parentLine4">
                     <Offset><AbsDimension x="0" y="-16"/></Offset>
                 </Anchor>
             </Anchors>
@@ -131,7 +131,7 @@
         </Button>
         <Button name="$parentLine6" inherits="XBarScrollLineTemplate">
             <Anchors>
-                <Anchor point="TOPLEFT" relativeto="$parentLine5">
+                <Anchor point="TOPLEFT" relativeTo="$parentLine5">
                     <Offset><AbsDimension x="0" y="-16"/></Offset>
                 </Anchor>
             </Anchors>
@@ -141,7 +141,7 @@
         </Button>
         <Button name="$parentLine7" inherits="XBarScrollLineTemplate">
             <Anchors>
-                <Anchor point="TOPLEFT" relativeto="$parentLine6">
+                <Anchor point="TOPLEFT" relativeTo="$parentLine6">
                     <Offset><AbsDimension x="0" y="-16"/></Offset>
                 </Anchor>
             </Anchors>
@@ -151,7 +151,7 @@
         </Button>
         <Button name="$parentLine8" inherits="XBarScrollLineTemplate">
             <Anchors>
-                <Anchor point="TOPLEFT" relativeto="$parentLine7">
+                <Anchor point="TOPLEFT" relativeTo="$parentLine7">
                     <Offset><AbsDimension x="0" y="-16"/></Offset>
                 </Anchor>
             </Anchors>
@@ -161,7 +161,7 @@
         </Button>
         <Button name="$parentLine9" inherits="XBarScrollLineTemplate">
             <Anchors>
-                <Anchor point="TOPLEFT" relativeto="$parentLine8">
+                <Anchor point="TOPLEFT" relativeTo="$parentLine8">
                     <Offset><AbsDimension x="0" y="-16"/></Offset>
                 </Anchor>
             </Anchors>
@@ -171,7 +171,7 @@
         </Button>
         <Button name="$parentLine10" inherits="XBarScrollLineTemplate">
             <Anchors>
-                <Anchor point="TOPLEFT" relativeto="$parentLine9">
+                <Anchor point="TOPLEFT" relativeTo="$parentLine9">
                     <Offset><AbsDimension x="0" y="-16"/></Offset>
                 </Anchor>
             </Anchors>
@@ -232,7 +232,7 @@
         <Button name="$parentBtnHelp" inherits="OptionsButtonTemplate" text="XBAR_HELP_TITLE">
             <Size><AbsDimension x="200" y="20"/></Size>
             <Anchors>
-                <Anchor point="TOPRIGHT" relativeTo="$parent" relativepoint="TOPRIGHT">
+                <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
                     <Offset><AbsDimension x="-10" y="-10"/></Offset>
                 </Anchor>
             </Anchors>
