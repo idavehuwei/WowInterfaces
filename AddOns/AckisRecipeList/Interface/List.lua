@@ -1543,6 +1543,11 @@ do
             spell_tip:SetPoint("TOPRIGHT", owner, "TOPLEFT")
         elseif loc == "Right" then
             spell_tip:SetPoint("TOPLEFT", owner, "TOPRIGHT")
+        elseif loc == "Mouse" then
+            local x, y = GetCursorPosition()
+            local uiscale = UIParent:GetEffectiveScale()
+
+            spell_tip:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", x / uiscale, y / uiscale)
         end
 
         -- Add TipTac Support
@@ -1804,11 +1809,11 @@ do
         local spell_link = GetSpellLink(recipe.spell_id)
         local MainPanel = addon.Frame
 
-        if acquire_tip_anchor == _G.OFF then
+        if acquire_tip_anchor == "Off" then
             QTip:Release(acquire_tip)
 
             -- If we have the spell link tooltip, anchor it to MainPanel instead so it shows
-            if spell_tip_anchor ~= _G.OFF and spell_link then
+            if spell_tip_anchor ~= "Off" and spell_link then
                 SetSpellTooltip(MainPanel, spell_tip_anchor, spell_link)
             else
                 spell_tip:Hide()
@@ -1922,7 +1927,7 @@ do
         acquire_tip:Show()
 
         -- If we have the spell link tooltip, link it to the acquire tooltip.
-        if spell_tip_anchor ~= _G.OFF and spell_link then
+        if spell_tip_anchor ~= "Off" and spell_link then
             SetSpellTooltip(acquire_tip, spell_tip_anchor, spell_link)
         else
             spell_tip:Hide()

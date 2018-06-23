@@ -718,19 +718,35 @@ local function GetDisplayOptions()
                             name = L["Tooltip (Recipe) Position"],
                             desc = L["SPELLTOOLTIPPOSITION_DESC"],
                             get = function()
+                                if (addon.db.profile.acquiretooltiplocation ~= "Off") then
+                                    if (addon.db.profile.spelltooltiplocation == "Mouse") then
+                                        addon.db.profile.spelltooltiplocation = "Right"
+                                    end
+                                end
                                 return addon.db.profile.spelltooltiplocation
                             end,
                             set = function(info, name)
                                 addon.db.profile.spelltooltiplocation = name
                             end,
                             values = function()
-                                return {
-                                    Right = L["Right"],
-                                    Left = L["Left"],
-                                    Top = L["Top"],
-                                    Bottom = L["Bottom"],
-                                    Off = _G.OFF
-                                }
+                                if (addon.db.profile.acquiretooltiplocation == "Off") then
+                                    return {
+                                        Right = L["Right"],
+                                        Left = L["Left"],
+                                        Top = L["Top"],
+                                        Bottom = L["Bottom"],
+                                        Off = _G.OFF,
+                                        Mouse = _G.MOUSE_LABEL
+                                    }
+                                else
+                                    return {
+                                        Right = L["Right"],
+                                        Left = L["Left"],
+                                        Top = L["Top"],
+                                        Bottom = L["Bottom"],
+                                        Off = _G.OFF,
+                                    }
+                                end
                             end,
                         },
                         spacer1 = {
@@ -814,9 +830,9 @@ end
 -- Description: Function which extends our options table in a modular way
 -- Expected result: add a new modular options table to the modularOptions upvalue as well as the Blizzard config
 -- Input:
---		name			: index of the options table in our main options table
---		optionsTable	: the sub-table to insert
---		displayName	: the name to display in the config interface for this set of options
+--      name            : index of the options table in our main options table
+--      optionsTable    : the sub-table to insert
+--      displayName     : the name to display in the config interface for this set of options
 -- Output: None.
 
 function addon:RegisterModuleOptions(name, optionsTable, displayName)
