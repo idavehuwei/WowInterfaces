@@ -38,7 +38,7 @@ end
 local function hookFrame(f)
 	if f.hookedByAceTab3 then return end
 	f.hookedByAceTab3 = true
-	if f == (is335 and ChatEdit_GetActiveWindow() or SELECTED_CHAT_FRAME.editBox) then
+	if f == (is335 and ChatEdit_GetActiveWindow() or ChatFrameEditBox) then
 		local origCTP = ChatEdit_CustomTabPressed
 		function ChatEdit_CustomTabPressed(...)
 			if AceTab:OnTabPressed(f) then
@@ -82,7 +82,7 @@ local pmolengths = {}  -- holds the number of characters to overwrite according 
 --
 -- usagefunc	function|boolean|nil	Usage statement function.  Defaults to the wordlist, one per line.  A boolean true squelches usage output.
 --
--- listenframes	string|table|nil		EditFrames to monitor.  Defaults to SELECTED_CHAT_FRAME.editBox.
+-- listenframes	string|table|nil		EditFrames to monitor.  Defaults to ChatFrameEditBox.
 --
 -- postfunc		function|nil			Post-processing function.  If supplied, matches will be passed through this function after they've been identified as a match.
 --
@@ -125,7 +125,7 @@ function AceTab:RegisterTabCompletion(descriptor, prematches, wordlist, usagefun
 				listenframes[i] = _G["ChatFrame"..i.."EditBox"]
 			end
 		else
-			listenframes = { SELECTED_CHAT_FRAME.editBox }
+			listenframes = { ChatFrameEditBox }
 		end
 	elseif type(listenframes) ~= 'table' or type(listenframes[0]) == 'userdata' and type(listenframes.IsObjectType) == 'function' then  -- single frame or framename
 		listenframes = { listenframes }
@@ -320,7 +320,7 @@ function AceTab:OnTabPressed(this)
 	if this:GetText() == '' then return true end
 
 	-- allow Blizzard to handle slash commands, themselves
-	if this == (is335 and ChatEdit_GetActiveWindow() or SELECTED_CHAT_FRAME.editBox) then
+	if this == (is335 and ChatEdit_GetActiveWindow() or ChatFrameEditBox) then
 		local command = this:GetText()
 		if strfind(command, "^/[%a%d_]+$") then
 			return true
