@@ -78,9 +78,6 @@ function XTrackBar_OnEvent(event, arg1)
                 tinsert(XTrackBarSpells, s);
             end
         end
-        for i,v in pairs(XTrackBarSpells) do
-            print("XTrackBarSpell i:"..tostring(i).." v:"..tostring(v))
-        end
         XBar_StdEventHandler(XBARMOD, event, arg1);
     else
         XBar_StdEventHandler(XBARMOD, event, arg1);
