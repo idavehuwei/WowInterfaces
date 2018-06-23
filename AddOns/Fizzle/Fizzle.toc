@@ -22,9 +22,6 @@
 ## X-DuowanAddon: 商业物品
 ## Dependencies: Duowan
 ## X-Revision: Duowan
-#@no-lib-strip@
-embeds.xml
-#@end-no-lib-strip@
 
 Locales\locales.xml
 

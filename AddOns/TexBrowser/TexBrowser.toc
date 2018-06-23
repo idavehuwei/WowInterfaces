@@ -24,5 +24,4 @@
 AceGUI3-TextureWidget.lua
 Data.lua
 TexBrowser.lua
-modules.xml
 
