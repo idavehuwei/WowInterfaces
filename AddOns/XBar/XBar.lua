@@ -64,6 +64,29 @@ if (LibStub) then
     end
 end
 
+local function XBarDataBuildDefault(mod)
+    return {
+        ["dbver"]=v1,
+        ["x"]=150,
+        ["y"]=-150,
+        ["rp"]="TOPLEFT",
+        ["pt"]="TOPLEFT",
+        ["toggle"]=false,
+        ["nohighlight"]=true,
+        ["BFSkin"]="Caith",
+        ["BFGloss"]=0,
+        ["BFBackdrop"]=false,
+        ["horizontal"]=XBarCore.ModData[mod].dhorizontal,
+        ["hidebar"]=XBarCore.ModData[mod].dhidebar,
+        ["order"]=XBarCore.ModData[mod].dorder,
+        ["sortorder"]=XBarCore.ModData[mod].dsortorder,
+        ["scale"]=XBarCore.ModData[mod].dscale,
+        ["tooltips"]=XBarCore.ModData[mod].dtooltips,
+        ["Bindings"]={ },
+        ["Options"]={ },
+    };
+end
+
 --==XBAR FUNCTIONS==--
 SLASH_XBAR1 = "/xbar";
 
@@ -258,7 +281,7 @@ function XBarBF_Skin(mod,btn)
 
     -- Set up the skins
     group:AddButton(btn,btndata);
-    group:Skin(s,g,false);
+    group:Skin(s,g,b);
 end
 
 function XBarCore.BuildPlayerName()
@@ -1199,25 +1222,12 @@ function XBarCore.RegisterAddon(mod,autocheck,skipimport)
             end
             if XBarData[XBarCore.XBarOptionSet].mods[mod].nohighlight~=nil then
                 dbcache.Options=XBarData[XBarCore.XBarOptionSet].mods[mod].nohighlight;
-            end		end
+            end
+        end
         -- Create user-space variables to store settings
         if (i) then
-            XBarData[XBarCore.XBarOptionSet].mods[mod] = {
-                ["dbver"]=v1,
-                ["x"]=150,
-                ["y"]=-150,
-                ["rp"]="TOPLEFT",
-                ["pt"]="TOPLEFT",
-                ["toggle"]=true,
-                ["horizontal"]=XBarCore.ModData[mod].dhorizontal,
-                ["hidebar"]=XBarCore.ModData[mod].dhidebar,
-                ["order"]=XBarCore.ModData[mod].dorder,
-                ["sortorder"]=XBarCore.ModData[mod].dsortorder,
-                ["scale"]=XBarCore.ModData[mod].dscale,
-                ["tooltips"]=XBarCore.ModData[mod].dtooltips,
-                ["Bindings"]={ },
-                ["Options"]={ },
-            }
+            XBarData[XBarCore.XBarOptionSet].mods[mod] = XBarDataBuildDefault(mod);
+
             -- Put in any saved info we had from earlier
             for i,n in pairs(dbcache) do
                 XBarData[XBarCore.XBarOptionSet].mods[mod][i]=n;

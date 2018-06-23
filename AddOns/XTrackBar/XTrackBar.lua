@@ -23,6 +23,25 @@ XBarCore.ModData[XBARMOD] = {
     ["foptioncb"] = "XBar_StdOptionCB",
 };
 
+local GameTrackList = {
+    [MINIMAP_TRACKING_AUCTIONEER]           = false,    -- "拍卖师"
+    [MINIMAP_TRACKING_BANKER]               = false,    -- "银行职员"
+    [MINIMAP_TRACKING_BATTLEMASTER]         = false,    -- "战场军官"
+    [MINIMAP_TRACKING_FLIGHTMASTER]         = false,    -- "飞行管理员"
+    [MINIMAP_TRACKING_INNKEEPER]            = false,    -- "旅店老板"
+    [MINIMAP_TRACKING_MAILBOX]              = false,    -- "邮箱"
+    [MINIMAP_TRACKING_REPAIR]               = false,    -- "修理"
+    [MINIMAP_TRACKING_STABLEMASTER]         = false,    -- "兽栏管理员"
+    [MINIMAP_TRACKING_TOOLTIP_NONE]         = false,    -- "点击以选择追踪类型"
+    [MINIMAP_TRACKING_TRAINER_CLASS]        = false,    -- "职业训练师"
+    [MINIMAP_TRACKING_TRAINER_PROFESSION]   = false,    -- "专业训练师"
+    [MINIMAP_TRACKING_TRIVIAL_QUESTS]       = true,     -- "低等级任务"
+    [MINIMAP_TRACKING_VENDOR_AMMO]          = false,    -- "弹药"
+    [MINIMAP_TRACKING_VENDOR_FOOD]          = false,    -- "食物和饮料"
+    [MINIMAP_TRACKING_VENDOR_POISON]        = false,    -- "毒药"
+    [MINIMAP_TRACKING_VENDOR_REAGENT]       = false,    -- "材料"
+}
+
 function XTrackBar_OnLoad()
     --Each bar must catch its own event notifications
     this:RegisterEvent("SPELLS_CHANGED");
@@ -47,18 +66,20 @@ function XTrackBar_OnEvent(event, arg1)
             ForceTexture = "";
         end
     elseif (event == "PLAYER_ENTERING_WORLD") then
-
         n = GetNumTrackingTypes();
         XTrackBarSpells = {};
         for i = 1, n do
             s, _, _, c = GetTrackingInfo(i);
-            if c == "other" then
-                c = "@";
-                s = tostring(i);
+            if (c == "other") then
+                if (GameTrackList[s] and GameTrackList[s] == true) then
+                    tinsert(XTrackBarSpells, "@" .. tostring(i));
+                end
             else
-                c = "";
+                tinsert(XTrackBarSpells, s);
             end
-            tinsert(XTrackBarSpells, c .. s);
+        end
+        for i,v in pairs(XTrackBarSpells) do
+            print("XTrackBarSpell i:"..tostring(i).." v:"..tostring(v))
         end
         XBar_StdEventHandler(XBARMOD, event, arg1);
     else
@@ -72,7 +93,7 @@ function XTrackBar_Texture(mod, texture, spellname)
     if XBarData[XBarCore.XBarOptionSet].mods and
             XBarData[XBarCore.XBarOptionSet].mods[mod] and
             XBarData[XBarCore.XBarOptionSet].mods[mod].nohighlight then
---        return t;
+        --        return t;
     end
     -- Will highlight any tracking textures the player has
     if (ForceTexture == texture) then

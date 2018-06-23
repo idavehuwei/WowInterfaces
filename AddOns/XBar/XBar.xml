@@ -362,7 +362,7 @@
             <FontString name="$parentText" inherits="SystemFont_Med1" justifyH="LEFT">
                 <Size><AbsDimension x="570" y="350"/></Size>
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parent" relativepoint="TOPLEFT">
+                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
                         <Offset><AbsDimension x="10" y="-15"/></Offset>
                     </Anchor>
                 </Anchors>
