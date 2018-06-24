@@ -1,0 +1,28 @@
+## Interface: 30300
+## Title: Plate Buffs
+## Version: r178 (r178)
+## Notes: Show buffs on nameplates
+## Author: Cyprias@gmail.com
+## SavedVariables: PB_DB
+## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibNameplate-1.0
+## X-Curse-Packaged-Version: r178
+## X-Curse-Project-Name: PlateBuffs
+## X-Curse-Project-ID: platebuffs
+## X-Curse-Repository-ID: wow/platebuffs/mainline
+
+## LoadManagers: AddonLoader
+## X-LoadOn-Always: true
+## Dependencies: Duowan
+## X-Revision: Duowan
+
+#@no-lib-strip@
+libs\embeds.xml
+#@end-no-lib-strip@
+
+locales\locales.xml
+
+func.lua
+core.lua
+frames.lua
+options.lua
+combatlog.lua
