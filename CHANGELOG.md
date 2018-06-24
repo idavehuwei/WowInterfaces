@@ -3,6 +3,7 @@
 
 ## 2018-06-24
 * 添加 PlateBuffs 插件, 在姓名板显示 buff 或 debuff
+* 设置 TexBrowser 默认情况下不进行加载 (LoadOnDemand)
 
 ## 2018-06-23
 * 修复 ARL 鼠标提示BUG
