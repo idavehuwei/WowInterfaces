@@ -100,6 +100,7 @@ PhoenixStyle                    | [多玩] 团长助手
 PhoenixStyleMod_Coliseum        | [多玩] 团长助手 - 十字军模块
 PhoenixStyleMod_Icecrown        | [多玩] 团长助手 - 巫妖王模块
 PhoenixStyleMod_Ulduar          | [多玩] 团长助手 - 奥杜尔模块
+PlateBuffs                      | 姓名版显示 buff & debuff
 Postal                          | [多玩] 邮件助手
 PowerSource                     | [辅助] 法术来源
 Quartz                          | 自定义施法条

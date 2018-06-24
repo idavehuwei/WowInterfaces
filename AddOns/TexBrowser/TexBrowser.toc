@@ -4,22 +4,20 @@
 ## Notes: A texture browser for developers and UI modders
 ## Notes-zhCN: 一个用于开发人员和 UI 模型修改人员的纹理浏览器。
 ## Author: Antiarc
-## OptionalDeps: Ace3
-## X-Embeds: Ace3
 ## X-Category: Artwork
 ## Version: 1.0
 ## SavedVariables: TexBrowserDB
-## LoadOnDemand: 1
 ## X-LoadOn-Slash: /tex
 ## X-Curse-Packaged-Version: v3.1
 ## X-Curse-Project-Name: TexBrowser
 ## X-Curse-Project-ID: texbrowser
 ## X-Curse-Repository-ID: wow/texbrowser/mainline
 
+## OptionalDeps: Ace3
 ## Dependencies: Duowan
 ## X-Revision: Duowan
 ## X-DuowanAddon: 界面聊天
-## LoadOnDemand:
+## LoadOnDemand: 1
 
 AceGUI3-TextureWidget.lua
 Data.lua
