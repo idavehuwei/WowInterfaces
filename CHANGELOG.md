@@ -1,6 +1,10 @@
 # Change Log
 基于多玩魔盒 3.3.5, 添加自用单体插件整合而成
 
+## 2018-06-25
+* 移除 "问号物品修复" 插件, 因其会导致战斗中拖动动作栏图标会导致图标不显示的问题
+* 修正 EN_UnitFrames 错误提示
+
 ## 2018-06-24
 * 添加 PlateBuffs 插件, 在姓名板显示 buff 或 debuff
 * 设置 TexBrowser 默认情况下不进行加载 (LoadOnDemand)

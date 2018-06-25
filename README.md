@@ -65,7 +65,7 @@ DWGKP                           | [多玩] 多玩金团助手
 EN_UnitFrames                   | [多玩] 头像增强
 EquipSwitcher                   | [多玩] 快速换装
 EventAlert                      | [多玩] 技能特效报警
-FixItemIcon                     | 问号物品修复 - 熊熊魔兽
+<del> FixItemIcon               | 问号物品修复 - 熊熊魔兽 </del> (已删除)
 Fizzle                          | [多玩] 装备耐久
 FriendsMenuXP                   | [多玩] 右键菜单增强
 GatherMate                      | [多玩] 采集助手
