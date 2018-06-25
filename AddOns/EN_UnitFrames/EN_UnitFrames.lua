@@ -499,6 +499,8 @@ function EN_ShowFramePosition(frame)
 end
 
 function Place(obj, arg1, arg2, arg3, arg4, arg5)
-    obj:ClearAllPoints();
-    obj:SetPoint(arg1, arg2, arg3, arg4, arg5);
+    if (obj) then
+        obj:ClearAllPoints();
+        obj:SetPoint(arg1, arg2, arg3, arg4, arg5);
+    end
 end
