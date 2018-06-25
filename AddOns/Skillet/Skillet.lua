@@ -47,9 +47,10 @@ Skillet:RegisterDefaults('profile', {
     show_detailed_recipe_tooltip = true,
     link_craftable_reagents = true,
     queue_craftable_reagents = true,
-    display_required_level = false,
+    display_required_level = true,
     display_shopping_list_at_bank = false,
     display_shopping_list_at_auction = false,
+    show_craft_counts = true,
     transparency = 1.0,
     scale = 1.0,
 })

@@ -53,12 +53,12 @@
     <Frames>
         <Button name="$parentButton" inherits="GameMenuButtonTemplate" parent="SkilletMerchantBuyFrame" text="Buy Reagents">
           <Size>
-            <AbsDimension x="100" y="18"/>
+            <AbsDimension x="85" y="18"/>
           </Size>
           <Anchors>
-            <Anchor point="TOP">
+            <Anchor point="TOPRIGHT">
                 <Offset>
-                    <AbsDimension x="-50" y="-25"/>
+                    <AbsDimension x="-26" y="-8"/>
                 </Offset>
             </Anchor>
           </Anchors>

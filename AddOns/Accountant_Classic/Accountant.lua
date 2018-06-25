@@ -180,9 +180,9 @@ function Accountant_OnLoad(self)
 
     local button1 = CreateFrame("Button", "AccMerchantToggleButton", MerchantFrame, "UIPanelButtonTemplate");
     button1:SetWidth(100);
-    button1:SetHeight(25);
+    button1:SetHeight(18);
     button1:SetText(ACCLOC_TITLE);
-    button1:SetPoint("TOP", MerchantFrame, "TOP", -60, -45);
+    button1:SetPoint("TOP", MerchantFrame, "TOP", -60, -55);
     button1:SetScript("OnClick", function(self)
         AccountantButton_OnClick();
     end);

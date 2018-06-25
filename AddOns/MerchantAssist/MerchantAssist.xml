@@ -24,7 +24,7 @@ E:\PROGRA~1\Altova\XMLSpy2006\UI.xsd">
 			</OnEnter>
 			<OnLeave function="GameTooltip_Hide"/>
 		</Scripts>
-		<NormalTexture file="Interface\GuildBankFrame\UI-GuildBankFrame-NewTab" setAllPoints="true"/>	
+		<NormalTexture file="Interface\GuildBankFrame\UI-GuildBankFrame-NewTab" setAllPoints="true"/>
 		<PushedTexture file="Interface\AddOns\MerchantAssist\UI-GuildBankFrame-NewTab_Down" setAllPoints="true"/>
 		<HighlightTexture file="Interface\Buttons\CancelButton-Highlight" setAllPoints="true" alphaMode="ADD"/>
 	</Button>
@@ -381,11 +381,11 @@ E:\PROGRA~1\Altova\XMLSpy2006\UI.xsd">
 			<OnLoad>
 				self:SetFrameLevel(self:GetFrameLevel() + 4);
 			</OnLoad>
-			<OnClick>				
+			<OnClick>
 				MerchantAssistFrameTab_OnClick(self, button);
 			</OnClick>
 			<OnShow>
-				PanelTemplates_TabResize(self, 0);				
+				PanelTemplates_TabResize(self, 0);
 			</OnShow>
 		</Scripts>
 	</Button>
@@ -657,7 +657,7 @@ E:\PROGRA~1\Altova\XMLSpy2006\UI.xsd">
 									</Anchor>
 								</Anchors>
 								<Scripts>
-									<OnLoad>										
+									<OnLoad>
 										self.itemIndex = 0;
 										self.isExpanded = 1;
 									</OnLoad>
@@ -753,13 +753,13 @@ E:\PROGRA~1\Altova\XMLSpy2006\UI.xsd">
 		</Frames>
 		<Scripts>
 			<OnShow>
-				MerchantAssistFrame_OnShow(self);				
+				MerchantAssistFrame_OnShow(self);
 			</OnShow>
 			<OnLoad>
 				MerchantAssistFrame_OnLoad(self);
 			</OnLoad>
 			<OnHide>
-				MerchantAssistFrame_OnHide(self);				
+				MerchantAssistFrame_OnHide(self);
 			</OnHide>
 			<OnMouseWheel>
 				return;
@@ -769,12 +769,12 @@ E:\PROGRA~1\Altova\XMLSpy2006\UI.xsd">
 
 	<Button name="MerchantShowFrameButton" inherits="UIPanelButtonTemplate" parent="MerchantFrame" hidden="false">
 		<Size>
-			<AbsDimension x="100" y="24"/>
+			<AbsDimension x="100" y="18"/>
 		</Size>
 		<Anchors>
 			<Anchor point="TOPRIGHT">
 				<Offset>
-					<AbsDimension x="-50" y="-45"/>
+					<AbsDimension x="-50" y="-55"/>
 				</Offset>
 			</Anchor>
 		</Anchors>

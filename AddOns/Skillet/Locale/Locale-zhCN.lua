@@ -27,6 +27,7 @@ local L = AceLibrary("AceLocale-2.2"):new("Skillet")
 
 L:RegisterTranslations("zhCN", function() return {
     ["Skillet Trade Skills"] = "Skillet Trade Skills", -- default message
+    ["Sorting"] = "排序",
     ["Create"] = "制造",
     ["Queue All"] = "队列所有",
     ["Create All"] = "全部制造",
@@ -117,18 +118,18 @@ L:RegisterTranslations("zhCN", function() return {
     ["Selected Addon"]              = "已选择插件",
     ["Library"]                     = "函数库",
     ["SUPPORTEDADDONSDESC"]         = "能监视背包或正在监视背包的兼容插件",
-    -- ["SHOWBANKALTCOUNTSNAME"]       = "Include bank and alt character contents",
-    -- ["SHOWBANKALTCOUNTSDESC"]       = "When calculating and displaying craftable itemn counts, include items from your bank and from your other characters",
-    -- ["ENHANCHEDRECIPEDISPLAYNAME"]  = "Show recipe difficulty as text",
-    -- ["ENHANCHEDRECIPEDISPLAYDESC"]  = "When enabled, recipe names will have one or more '+' characters appeneded to their name to inidcate the difficulty of the recipe.",
-    -- ["SHOWCRAFTCOUNTSNAME"]         = "Show craftable counts",
-    -- ["SHOWCRAFTCOUNTSDESC"]         = "Show the number of times you can craft a recipe, not the total number of items producable",
+    ["SHOWBANKALTCOUNTSNAME"]       = "包括银行及小号",
+    ["SHOWBANKALTCOUNTSDESC"]       = "计算可制造数量时包括银行及小号",
+    ["ENHANCHEDRECIPEDISPLAYNAME"]  = "以文字显示配方难度",
+    ["ENHANCHEDRECIPEDISPLAYDESC"]  = "启用时,配方名称后将显示一个或数个'+'来表示其难度",
+    ["SHOWCRAFTCOUNTSNAME"]         = "显示可制造次数",
+    ["SHOWCRAFTCOUNTSDESC"]         = "显示配方可制造次数,而非可制造数量",
 
     -- New in version 1.11
-    ["Crafted By"]                  = "Crafted by",
+    ["Crafted By"]                  = "可制造",
 
     -- New in 1.13
-    ["SHOWCRAFTERSTOOLTIPNAME"]     = "Show crafters in tooltips",
-    ["SHOWCRAFTERSTOOLTIPDESC"]     = "Display the alternate characters that can craft an item in the item's tooltip",
+    ["SHOWCRAFTERSTOOLTIPNAME"]     = "于物品提示显示制造者",
+    ["SHOWCRAFTERSTOOLTIPDESC"]     = "于物品提示显示可制造的角色",
 
  } end)
