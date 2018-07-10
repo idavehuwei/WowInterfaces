@@ -112,18 +112,18 @@ end
 
 A.spellsDB = {
     ["HUNTER"] = {
-        [1] = 13163,		-- 灵猴守护
-        [2] = 13165,		-- 雄鹰守护
-        [3] = 61846,		-- 龙鹰守护(灵猴+雄鹰)
-        [4] = 5118,		-- 猎豹守护
-        [5] = 13159,		-- 豹群守护
-        [6] = 13161,		-- 野兽守护
-        [7] = 20043,		-- 野性守护
-        [8] = 34074,		-- 蝰蛇守护
+        [1] = 13163,    -- 灵猴守护
+        [2] = 13165,    -- 雄鹰守护
+        [3] = 61846,    -- 龙鹰守护(灵猴+雄鹰)
+        [4] = 5118,     -- 猎豹守护
+        [5] = 13159,    -- 豹群守护
+        [6] = 13161,    -- 野兽守护
+        [7] = 20043,    -- 野性守护
+        [8] = 34074,    -- 蝰蛇守护
     },
     ["ROGUE"] = {
-        [1] = 51713,		-- 潜行
-        [2] = 1787,		-- 暗影之舞
+        [1] = 51713,    -- 潜行
+        [2] = 1787,     -- 暗影之舞
         -- 毒药(itemID可能获取不到信息...)
         [3] = {t = "p", name = L["麻醉药膏"]},
         [4] = {t = "p", name = L["速效药膏"]},
@@ -147,14 +147,14 @@ A.spellsDB = {
         [12] = {t = "d", name = L["雷霆崖"]},
     },
     ["WARLOCK"] = {
-        [1] = 61610,	-- 恶魔变形
-        [2] = 688,		-- 召唤小鬼
-        [3] = 697,		-- 召唤虚空行者
-        [4] = 712,		-- 召唤魅魔
-        [5] = 691,		-- 召唤地狱猎犬
-        [6] = 30146,	-- 召唤恶魔卫士
-        [7] = 1122,	-- 地狱火
-        [8] = 18540,	-- 末日仪式
+        [1] = 61610,    -- 恶魔变形
+        [2] = 688,      -- 召唤小鬼
+        [3] = 697,      -- 召唤虚空行者
+        [4] = 712,      -- 召唤魅魔
+        [5] = 691,      -- 召唤地狱猎犬
+        [6] = 30146,    -- 召唤恶魔卫士
+        [7] = 1122,     -- 地狱火
+        [8] = 18540,    -- 末日仪式
     },
 };
 
@@ -300,12 +300,12 @@ function A:UpdateAspect()
     if (self.spellsDB[	self.class]) then
         for i, spellID in ipairs(self.spellsDB[self.class]) do
             if (type(spellID) == "table") then
-                if (spellID.t and spellID.t == "p") then		-- 毒药
+                if (spellID.t and spellID.t == "p") then        -- 毒药
                     local hasItem, name = self:CheckItem(spellID.name)
                     if (hasItem) then
                         tinsert(self.tmp.items, name);
                     end
-                elseif (spellID.t and spellID.t == "d") then	-- 传送门
+                elseif (spellID.t and spellID.t == "d") then    -- 传送门
                     local check1, check2 = self:CheckSpell(L["传送门: "] .. spellID.name), self:CheckSpell(L["传送: "] .. spellID.name);
                     if (check1 or check2) then
                         tinsert(self.tmp.teleport, spellID.name);
@@ -336,7 +336,7 @@ function A:GetNumShapeshiftForms()
     local num = #(self.actions.spells) + #(self.actions.items) + #(self.actions.teleport);
     num = (num > 0 and num) or GetNumShapeshiftForms() or 0;
     if (num > NUM_SHAPESHIFT_SLOTS) then
-        num = NUM_SHAPESHIFT_SLOTS;	-- 猜测有错误
+        num = NUM_SHAPESHIFT_SLOTS;     -- 猜测有错误
     end
 
     return tonumber(num);
