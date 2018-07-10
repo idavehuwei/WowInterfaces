@@ -20,7 +20,8 @@ JPack.packupguildbank = false
 JPack.bagGroups = {}
 JPack.packingGroupIndex = 1
 JPack.packingBags = {}
-JPack.updatePeriod = 0.3
+JPack.updatePeriod = 0.1
+JPack.updateWorkPeriod = 0.3
 
 local version = GetAddOnMetadata("JPack", "Version") or "alpha"
 JPack.version = version
@@ -905,6 +906,15 @@ local elapsed = 0
 function JPack.OnUpdate(self, el)
     elapsed = elapsed + el
     if elapsed < self.updatePeriod then return end
+
+    if elapsed < self.updateWorkPeriod then
+        if JPACK_STEP == JPACK_GUILDBANK_STACKING or
+                JPACK_STEP == JPACK_STACK_OVER or
+                JPACK_STEP == JPACK_PACKING then
+            return
+        end
+    end
+
     elapsed = 0
     debug("OnUpdate!")
 
