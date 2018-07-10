@@ -447,43 +447,45 @@ function D:Notification(msg, ...)
     end
 end
 
+local tmpFrame = CreateFrame("Frame");
+local tmpFontString = tmpFrame:CreateFontString("tempText", "ARTWORK", "WatchFontTemplate");
 function D:ChangeTitle(questLogTitle, questLogTitleText, level, questTag, suggestedGroup, isHeader, isDaily, Watch)
     local ColorTag = "";
-    local DifTag = "";
     local LevelTag = "";
+    local GroupTag = "";
     local cQuestLevel = GetQuestDifficultyColor(level);
-    local LevelString = "";
+    local QuestFlag = "";
+
     if (questLogTitleText and not isHeader) then
         ColorTag = string.format("|cff%02x%02x%02x", cQuestLevel.r * 255, cQuestLevel.g * 255, cQuestLevel.b * 255);
+
+        QuestFlag = "[" .. level .. "]";
+
+        if (isDaily) then
+            QuestFlag = QuestFlag .. "[" .. DAILY .. "]";
+        end
+
         if (questTag) then
-            if (isDaily) then
-                questTag = format(DAILY_QUEST_TAG_TEMPLATE, questTag);
-            end
-            DifTag = (" (" .. questTag .. ") ");
-
-            if (questTag == LFG_TYPE_DUNGEON) then LevelTag = "D";
-            elseif (questTag == RAID) then LevelTag = "R";
-            elseif (questTag == PVP) then LevelTag = "P";
-            else LevelTag = "+";
-            end
-
-        elseif (isDaily) then
-            DifTag = (" (" .. DAILY .. ") ");
+--            if (questTag == LFG_TYPE_DUNGEON) then
+--                LevelTag = "D";
+--            elseif (questTag == PLAYER_DIFFICULTY2) then
+--                LevelTag = "H";
+--            elseif (questTag == RAID) then
+--                LevelTag = "R";
+--            elseif (questTag == PVP) then
+--                LevelTag = "P";
+--            elseif (questTag == GROUPS) then
+--                LevelTag = "+";
+--                GroupTag = "[" .. GROUPS .. "]";
+--            elseif (questTag == ELITE) then
+--                LevelTag = "+";
+--            end
+            QuestFlag = QuestFlag .. "[" .. questTag .. "]";
         end
+--        QuestFlag = "[" .. level .. LevelTag .. "]" .. GroupTag;
 
-        LevelString = "[" .. level .. LevelTag .. "] ";
-
-        local titleString;
-        if (Watch) then
-            titleString = ColorTag .. LevelString .. questLogTitleText .. DifTag;
-        else
-            if (suggestedGroup > 0) then
-                titleString = ColorTag .. " " .. LevelString .. questLogTitleText .. " (" .. suggestedGroup .. ") ";
-            else
-                titleString = ColorTag .. " " .. LevelString .. questLogTitleText .. " ";
-            end
-        end
-        questLogTitle:SetText(titleString);
+        questLogTitle:SetText(ColorTag .. QuestFlag .. " " .. questLogTitleText);
+        questLogTitle:SetHeight(tmpFontString:GetHeight());
     end
 end
 
@@ -495,20 +497,6 @@ end
 
 function D:GetSafeQuestName(name)
     return name:gsub('%-', '%%-'):gsub('%.', '%%.'):gsub('%?', '%%?')
-end
-
-function D:QuestWatchTitleButton_Resize(questWatchTitle, width)
-    local Contents = questWatchTitle:GetText();
-    questWatchTitle:SetWidth(0);
-    questWatchTitle:SetText(Contents);
-    questWatchTitle:SetWidth(width * 1.2);
-
-    if (width > WatchFrame:GetWidth()) then
-        BlizzardOptionsPanel_SetCVarSafe("watchFrameWidth", "1", nil)
-        WatchFrame_SetWidth(GetCVar("watchFrameWidth"));
-        WatchFrame_Update();
-        WatchFrame:SetWidth(width)
-    end
 end
 
 function D:WatchFrame_Update()
@@ -531,7 +519,6 @@ function D:WatchFrame_Update()
                     if strmatch(text, title) then
                         self:ChangeTitle(linetext, title, level, questTag, suggestedGroup, isHeader, isDaily, true);
                         maxWidth = max(maxWidth, linetext:GetWidth())
-                        self:QuestWatchTitleButton_Resize(linetext, maxWidth)
                         break
                     else
                         i = i + 1
