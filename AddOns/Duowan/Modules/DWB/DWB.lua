@@ -11,33 +11,47 @@ dwPetActionBar = LibStub("AceAddon-3.0"):NewAddon("dwPetActionBar");
 local P = dwPetActionBar;
 ---------------------
 -- 宠物动作条
-local PETACTIONBAR_XPOS = 0;	-- 本地化变量
+local PETACTIONBAR_XPOS = 0;    -- 本地化变量
 local PETACTIONBAR_YPOS = 0;
 local PetActionBarPositionCache = {};
 local EnablePosition = true;
 
 local function UpdatePositionValue()
     -- x pos
-    if ( P:PetActionBarFrame_IsAboveShapeshift(true) ) then
+    --- Fix PetActionBar on right side
+    --if ( P:PetActionBarFrame_IsAboveShapeshift(true) ) then
+    if ( P:PetActionBarFrame_IsAboveShapeshift(false) ) then
+--        print("PetActionBarFrame_IsAboveShapeshift show");
         PETACTIONBAR_XPOS = 36;
     elseif ( MainMenuBarVehicleLeaveButton and MainMenuBarVehicleLeaveButton:IsShown() ) then
+--        print("MainMenuBarVehicleLeaveButton show");
         PETACTIONBAR_XPOS = MainMenuBarVehicleLeaveButton:GetRight() + 20;
     elseif ( ShapeshiftBarFrame and ShapeshiftBarFrame:IsShown() and GetNumShapeshiftForms() > 0 ) then
-        PETACTIONBAR_XPOS = _G["ShapeshiftButton"..GetNumShapeshiftForms()]:GetRight() + 20;
+--        print("ShapeshiftBarFrame show")
+        --- Fix PetActionBar Position bug (WangHong) (DK tested)
+        --PETACTIONBAR_XPOS = _G["ShapeshiftButton"..GetNumShapeshiftForms()]:GetRight() + 20;
+        PETACTIONBAR_XPOS = _G["ShapeshiftButton"..GetNumShapeshiftForms()]:GetRight() - 45;
     elseif ( MultiCastActionBarFrame and HasMultiCastActionBar() ) then
+--        print("MultiCastActionBarFrame show");
         PETACTIONBAR_XPOS = MultiCastActionBarFrame:GetRight() + 20;
     else
+--        print("else show");
         PETACTIONBAR_XPOS = 36;
     end
 
     if ( AspectPosionBar and AspectPosionBar:IsShown() and AspectPosionBarFrame:GetNumShapeshiftForms() > 0) then
+--        print("AspectPosionBar show ScreenWidth:"..tostring(GetScreenWidth()))
         local index = AspectPosionBarFrame:GetNumShapeshiftForms();
-        PETACTIONBAR_XPOS = _G["AspectPosionBarButton" .. index]:GetRight() + 5;
+        --- Fix PetActionBar Position bug (WangHong) (Hunter tested)
+        --PETACTIONBAR_XPOS = _G["AspectPosionBarButton" .. index]:GetRight() + 5;
+        PETACTIONBAR_XPOS = _G["AspectPosionBarButton" .. index]:GetRight() - 190;
     end
 
     -- y pos
     PETACTIONBAR_YPOS = 0;
-    if ( MultiBarBottomLeft:IsShown() ) then
+    --- Fix PetActionBar Position bug (WangHong)
+    --if ( MultiBarBottomLeft:IsShown() ) then
+    if ( MultiBarBottomRight:IsShown() ) then
         PETACTIONBAR_YPOS = 45;
     end
 
@@ -52,8 +66,10 @@ end
 function dwUpdatePetPosition()
     UpdatePositionValue();
 
-    if (EnablePosition and not InCombatLockdown() --[[and
-        (not PetActionBarPositionCache[4] or not PetActionBarPositionCache[5] or
+    if (EnablePosition
+        --- TODO: NEED TEST COMBAT LOCK
+        --[[and not InCombatLockdown()]]
+        --[[and (not PetActionBarPositionCache[4] or not PetActionBarPositionCache[5] or
         math.abs(PetActionBarPositionCache[4] - PETACTIONBAR_XPOS) > 5 or
         (PETACTIONBAR_YPOS - PetActionBarPositionCache[5] > 5))]]) then
         dwPetActionBarFrame:ClearAllPoints();
@@ -61,6 +77,8 @@ function dwUpdatePetPosition()
         if (dwPetActionBarFrame:GetParent() ~= UIParent) then
             anchorTo = dwPetActionBarFrame:GetParent();
         end
+        --- TODO: debug for ajust PetActionBar position
+        --print("PetActionBar AnchorTo:"..tostring(anchorTo:GetName())..", POS:"..PETACTIONBAR_XPOS..","..PETACTIONBAR_YPOS)
         dwPetActionBarFrame:SetPoint("BOTTOMLEFT", anchorTo, "TOPLEFT", PETACTIONBAR_XPOS, PETACTIONBAR_YPOS);
     end
 
