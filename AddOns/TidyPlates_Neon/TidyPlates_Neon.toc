@@ -1,0 +1,18 @@
+## Interface: 30300
+## Title: Tidy Plates: Neon Theme
+## Title-zhCN: [界面] 姓名版增强 - Neon
+## Notes: It glows!
+## Author: Danltiger aka Binny
+## Dependencies: TidyPlates
+## SavedVariablesPerCharacter: TidyPlatesNeonTankSavedVariables, TidyPlatesNeonDPSSavedVariables
+
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+
+Tank\Style.lua
+Tank\Functions.lua
+Tank\Panel.lua
+
+DPS\Style.lua
+DPS\Functions.lua
+DPS\Panel.lua

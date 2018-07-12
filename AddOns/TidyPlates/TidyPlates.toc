@@ -1,0 +1,19 @@
+## Interface: 30300
+## Title: Tidy Plates
+## Title-zhCN: [界面] 姓名版增强
+## Notes: Modifies the default Blizzard nameplates.  Brush your teeth! Do it now!
+## Author: Binny the Love Fool
+## Version: 5.13.3 (R39)
+## SavedVariablesPerCharacter: TidyPlatesOptions
+
+## OptionalDeps: Ace3
+## Dependencies: Duowan
+## X-Revision: Duowan
+## X-DuowanAddon: 界面聊天
+
+widgets\Statusbar.lua
+TidyPlatesCore.lua
+TidyPlatesUtility.lua
+TidyPlatesDefaults.lua
+TidyPlatesPanel.lua
+widgets\Widgets.xml
