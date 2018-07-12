@@ -10,3 +10,5 @@ What's new since 5.12?
 	- Class Icon
 	- Use /neontank or /neondps for shortcuts to the Config Panel
 * Neon and Grey config panels have been moved from the Tidy Plates tree to their own category
+
+L["Show Nameplates:|cFFFFFFFF You can also toggle nameplates on-and-off by using: '|rV|cFFFFFFFF' for Enemies, '|rShift-V|cFFFFFFFF' for friends, and '|rControl-V|cFFFFFFFF' for both."] = "显示姓名板:|cFFFFFFFF 你可以用: '|rV|cFFFFFFFF' 显示/隐藏敌方姓名板, 用'|rShift-V|cFFFFFFFF' 显示/隐藏友方姓名板, 用'|rControl-V|cFFFFFFFF'显示/隐藏所有姓名板."

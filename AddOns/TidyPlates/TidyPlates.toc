@@ -4,12 +4,16 @@
 ## Notes: Modifies the default Blizzard nameplates.  Brush your teeth! Do it now!
 ## Author: Binny the Love Fool
 ## Version: 5.13.3 (R39)
-## SavedVariablesPerCharacter: TidyPlatesOptions
+## SavedVariables: TidyPlatesOptions
 
 ## OptionalDeps: Ace3
 ## Dependencies: Duowan
 ## X-Revision: Duowan
 ## X-DuowanAddon: 界面聊天
+
+locale\enUS.lua
+locale\zhCN.lua
+locale\zhTW.lua
 
 widgets\Statusbar.lua
 TidyPlatesCore.lua

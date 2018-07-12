@@ -325,22 +325,21 @@ do
     -- Mass Gather Functions
     --------------------------------
     local function GatherData_Alpha(plate)
-            -- Alpha/Targeting
-            --if printEvents then print(timeSlice, "GatherData_Alpha", plate.alpha) end
+        -- Alpha/Targeting
+        --if printEvents then print(timeSlice, "GatherData_Alpha", plate.alpha) end
 
+        unit.alpha = plate.alpha -- Set in PlateHandler's OnUpdate
 
-                unit.alpha = plate.alpha -- Set in PlateHandler's OnUpdate
-
-            unit.isTarget = HasTarget and unit.alpha == 1
-            unit.isMouseover = regions.highlight:IsShown()
-            -- GUID
-            if unit.isTarget and (not unit.guid) then
-                -- UpdateCurrentGUID
-                unit.guid = UnitGUID("target")
-                if unit.guid then GUID[unit.guid] = plate end
-                currentTarget = plate
-                if activetheme.OnContextUpdate then activetheme.OnContextUpdate(unit) end
-            end
+        unit.isTarget = HasTarget and unit.alpha == 1
+        unit.isMouseover = regions.highlight:IsShown()
+        -- GUID
+        if unit.isTarget and (not unit.guid) then
+            -- UpdateCurrentGUID
+            unit.guid = UnitGUID("target")
+            if unit.guid then GUID[unit.guid] = plate end
+            currentTarget = plate
+            if activetheme.OnContextUpdate then activetheme.OnContextUpdate(unit) end
+        end
     end
 
     local function GatherData_GUID()
@@ -357,7 +356,6 @@ do
             unit.guid = UnitGUID("pet")
         end
         --]]
-
     end
 
     -- GatherData_Static: Updates Static Information
@@ -675,12 +673,9 @@ do
         local spell, rank, displayName, icon, startTime
         local endTime, isTradeSkill, castID, notInterruptible
 
-
-        spell, rank, displayName, icon, startTime,
-            endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo("target")
+        spell, rank, displayName, icon, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo("target")
         if not spell then
-            spell, rank, displayName, icon, startTime,
-                endTime, isTradeSkill, notInterruptible = UnitChannelInfo("target")
+            spell, rank, displayName, icon, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo("target")
         end
 
         if spell then
@@ -912,7 +907,6 @@ do
             end
         end
     end
-
 
     local func, runIt, existMouseover
     -- OnUpdate: This function is processed every frame

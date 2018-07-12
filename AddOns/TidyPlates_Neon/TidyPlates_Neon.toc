@@ -4,10 +4,14 @@
 ## Notes: It glows!
 ## Author: Danltiger aka Binny
 ## Dependencies: TidyPlates
-## SavedVariablesPerCharacter: TidyPlatesNeonTankSavedVariables, TidyPlatesNeonDPSSavedVariables
+## SavedVariables: TidyPlatesNeonTankSavedVariables, TidyPlatesNeonDPSSavedVariables
 
 ## X-Revision: Duowan
 ## X-DuowanAddon: 界面聊天
+
+locale\enUS.lua
+locale\zhCN.lua
+locale\zhTW.lua
 
 Tank\Style.lua
 Tank\Functions.lua
