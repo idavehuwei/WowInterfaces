@@ -16,7 +16,7 @@ TidyPlatesNeonTankVariables = {
     ScaleIgnoreNonElite = false,
     WidgetTug = false,
     WidgetSelect = true,
-    WidgetDebuff = false,
+    WidgetDebuff = true,
     WidgetDebuffList = { [L["Rip"]] = true, [L["Rake"]] = true, [L["Lacerate"]] = true, },
     WidgetDebuffMode = 1,
     WidgetRange = false,

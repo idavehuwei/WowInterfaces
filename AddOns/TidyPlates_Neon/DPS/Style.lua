@@ -17,7 +17,7 @@ TidyPlatesNeonDPSVariables = {
     WidgetTug = false,
     WidgetSelect = true,
     WidgetCombo = true,
-    WidgetDebuff = false,
+    WidgetDebuff = true,
     WidgetDebuffList = { [L["Rip"]] = true, [L["Rake"]] = true, },
     WidgetDebuffMode = 1,
     WidgetRange = false,

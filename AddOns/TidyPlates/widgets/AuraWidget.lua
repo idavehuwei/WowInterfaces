@@ -113,8 +113,6 @@ do
         end
     end
 
-
-
     -- Individual Aura Frame
     local function UpdateAuraFrame(frame, expiration)
         local timeleft = expiration-GetTime()
@@ -142,7 +140,6 @@ do
         frame.Icon = frame:CreateTexture(nil, "BACKGROUND")
         --frame.Icon:SetTexture("Interface\\Icons\\Spell_Shaman_StormEarthFire")
         frame.Icon:SetAllPoints(frame)
-        --frame.Icon:SetTexCoord(.07, 1-.07, .23, 1-.23)  -- obj:SetTexCoord(left,right,top,bottom)
         frame.Icon:SetTexCoord(.07, 1-.07, .23, 1-.23)  -- obj:SetTexCoord(left,right,top,bottom)
         -- Border
         frame.Border = frame:CreateTexture(nil, "ARTWORK")
@@ -236,7 +233,6 @@ do
             end
 
         --[[
-
         elseif unit.partyID then
             -- unit.partyID
 
@@ -265,11 +261,8 @@ do
                 else AuraFrame:Hide() end
                 if auraCount > 7 then return end
             end
-
         --]]
-
         end
-
     end
 
     local function CreateAuraWidget(parent)

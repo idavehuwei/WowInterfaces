@@ -1,8 +1,0 @@
-------------------------------------------------------------------------
-r178 | cyprias | 2010-10-31 08:02:17 +0000 (Sun, 31 Oct 2010) | 2 lines
-Changed paths:
-   M /trunk/core.lua
-
-Update for 4.0.1 provided by nyoghta on the WoWAce forums. (http://forums.wowace.com/showpost.php?p=308186&postcount=22)
-I'm not playing WoW right now so I cannot confirm if this works.
-------------------------------------------------------------------------
