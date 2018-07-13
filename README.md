@@ -100,7 +100,6 @@ PhoenixStyle                    | [多玩] 团长助手
 PhoenixStyleMod_Coliseum        | [多玩] 团长助手 - 十字军模块
 PhoenixStyleMod_Icecrown        | [多玩] 团长助手 - 巫妖王模块
 PhoenixStyleMod_Ulduar          | [多玩] 团长助手 - 奥杜尔模块
-PlateBuffs                      | 姓名版显示 buff & debuff
 Postal                          | [多玩] 邮件助手
 PowerSource                     | [辅助] 法术来源
 Quartz                          | 自定义施法条
@@ -124,6 +123,8 @@ SpellTimer                      | [多玩] 法术计时器
 tdCooldown2                     | [多玩] 冷却计时
 TexBrowser                      | [界面] 纹理浏览器
 TheBurningTrade                 | [多玩] 交易增强
+TidyPlates                      | [界面] 姓名版增强 (含连击点和减益显示)
+TidyPlates_Neon                 | [界面] 姓名版增强 - Neon 风格
 TipTac                          | [界面] 鼠标提示
 TipTacItemRef                   | [界面] 鼠标提示 - 物品提示
 TipTacOptions                   | [界面] 鼠标提示 - 选项
