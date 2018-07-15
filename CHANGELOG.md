@@ -1,6 +1,10 @@
 # Change Log
 基于多玩魔盒 3.3.5, 添加自用单体插件整合而成
 
+## 2018-07-15
+* 修复 TidyPlates 翻译警告
+* 更换 DBM 为 Sunwell.pl 官方版本(与curseforge版本一致) - RAID 尚未进行测试
+
 ## 2018-07-12
 * 添加姓名版增强插件 TidyPlates 并完成对其汉化
 * 移除姓名版增益减益插件 PlateBuffs (功能与TidyPlates功能重叠)
