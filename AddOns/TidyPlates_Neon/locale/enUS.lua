@@ -1,4 +1,6 @@
-local L = LibStub("AceLocale-3.0"):NewLocale("TidyPlates_Neon", "enUS")
+
+local debug = false
+local L = LibStub("AceLocale-3.0"):NewLocale("TidyPlates_Neon", "enUS", true, debug)
 --if not L then return end
 -- options
 

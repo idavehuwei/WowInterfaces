@@ -1,5 +1,6 @@
-﻿local L = LibStub("AceLocale-3.0"):NewLocale("TidyPlates", "zhTW")
---if not L then return end
+﻿
+local L = LibStub("AceLocale-3.0"):NewLocale("TidyPlates", "zhTW")
+if not L then return end
 -- options
 
 L["Tidy Plates"] = "Tidy Plates";
