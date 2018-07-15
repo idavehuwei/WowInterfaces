@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Gothik", "DBM-Naxx", 4)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4523 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2248 $"):sub(12, -3))
 mod:SetCreatureID(16060)
 
 mod:RegisterCombat("combat")
@@ -78,7 +78,7 @@ local function getWaveString(wave)
 end
 
 function mod:OnCombatStart(delay)
-	if mod:IsDifficulty("normal25") then
+	if mod:IsDifficulty("heroic25") then
 		waves = wavesHeroic
 	else
 		waves = wavesNormal

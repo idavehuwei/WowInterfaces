@@ -22,8 +22,13 @@
 ## X-Revision: Duowan
 
 localization.en.lua
-localization.tw.lua
+localization.de.lua
 localization.cn.lua
+localization.ru.lua
+localization.fr.lua
+localization.tw.lua
+localization.kr.lua
+localization.es.lua
 DBM-GUI_DropDown.xml
 DBM-GUI_Templates.xml
 DBM-GUI.lua

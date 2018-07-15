@@ -32,7 +32,6 @@ local warnFury				= mod:NewTargetAnnounce(63571, 2)
 local warnRoots				= mod:NewTargetAnnounce(62438, 2)
 
 local specWarnFury			= mod:NewSpecialWarningYou(63571)
-local specWarnTree		= mod:NewSpecialWarning("WarningTree")
 local specWarnTremor		= mod:NewSpecialWarningCast(62859)	-- Hard mode
 local specWarnBeam			= mod:NewSpecialWarningMove(62865)	-- Hard mode
 
@@ -89,6 +88,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnFury:Show(args.destName)
 		if args:IsPlayer() then -- only cast on players; no need to check destFlags
 			if self.Options.PlaySoundOnFury then
+				--PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 				PlaySoundFile("Interface\\AddOns\\DBM-Core\\extrasounds\\runout.mp3")
 			end
 			specWarnFury:Show()

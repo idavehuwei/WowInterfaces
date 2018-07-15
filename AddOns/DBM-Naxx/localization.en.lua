@@ -372,13 +372,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerPhase2			= "Show timer for Phase 2",
+	TimerPhase2		= "Show timer for Phase 2",
 	specwarnP2Soon		= "Show special warning 10 seconds before Kel'Thuzad engages",
 	warnAddsSoon		= "Show pre-warning for Guardians of Icecrown",
-	SetIconOnMC			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(28410),
+	BlastAlarm		= "Play custom siren sound when Frost Blast is being cast",
+	SetIconOnMC		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(28410),
 	SetIconOnManaBomb	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(27819),
 	SetIconOnFrostTomb	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(27808),
-	ShowRange			= "Show range frame when Phase 2 starts"
+	ShowRange		= "Show range frame when Phase 2 starts"
 })
 
 L:SetMiscLocalization({

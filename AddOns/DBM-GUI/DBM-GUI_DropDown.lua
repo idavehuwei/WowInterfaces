@@ -46,8 +46,8 @@ do
 		insets={left=11, right=12, top=12, bottom=11}
 	});
 	TabFrame1:EnableMouseWheel(1)
-	TabFrame1:SetScript("OnMouseWheel", function(self, delta) 
-		if delta > 0 then  -- scroll up
+	TabFrame1:SetScript("OnMouseWheel", function(self, arg1) 
+		if arg1 > 0 then  -- scroll up
 			self.offset = self.offset - 1
 			if self.offset < 0 then
 				self.offset = 0
@@ -79,7 +79,7 @@ do
 		if self:GetParent().dropdown.callfunc then
 			self:GetParent().dropdown.callfunc(self.entry.value)
 		end
-		_G[self:GetParent().dropdown:GetName().."Text"]:SetText(self.entry.text)
+		getglobal(self:GetParent().dropdown:GetName().."Text"):SetText(self.entry.text)
 	end
 
 	TabFrame1.buttons = {}
@@ -181,8 +181,8 @@ do
 		dropdown.values = values
 		dropdown.callfunc = callfunc
 		dropdown:SetWidth((width or 120)+30)	-- required to fix some setpoint problems
-		_G[dropdown:GetName().."Middle"]:SetWidth(width or 120)
-		_G[dropdown:GetName().."Button"]:SetScript("OnClick", function(self)
+		getglobal(dropdown:GetName().."Middle"):SetWidth(width or 120)
+		getglobal(dropdown:GetName().."Button"):SetScript("OnClick", function(self)
 			PlaySound("igMainMenuOptionCheckBoxOn")
 			if TabFrame1:IsShown() then
 				TabFrame1:HideMenu()
@@ -197,7 +197,7 @@ do
 
 		for k,v in next, dropdown.values do
 			if v.value ~= nil and v.value == selected or v.text == selected then
-				_G[dropdown:GetName().."Text"]:SetText(v.text)
+				getglobal(dropdown:GetName().."Text"):SetText(v.text)
 				dropdown.value = v.value
 				dropdown.text = v.text
 			end

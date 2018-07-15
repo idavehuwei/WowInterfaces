@@ -55,7 +55,7 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("SetIconOnDominateMind", true)
 mod:AddBoolOption("SetIconOnDeformedFanatic", true)
-mod:AddBoolOption("SetIconOnEmpoweredAdherent", true)
+mod:AddBoolOption("SetIconOnEmpoweredAdherent", false)
 mod:AddBoolOption("ShieldHealthFrame", true, "misc")
 mod:RemoveOption("HealthFrame")
 
@@ -188,13 +188,18 @@ do
 			timerTouchInsignificance:Start(args.destName)
 			if mod:IsTank() or mod:IsHealer() then
 				if (args.amount or 1) >= 3 and (mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25")) then
-					specWarnTouchInsignificance:Show(args.amount)
+					--specWarnTouchInsignificance:Show(args.amount)
 					if args.amount == 3 or args.amount == 5 then
 						sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\changemt.mp3")
 					end
-				elseif (args.amount or 1) >= 5 and (mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25")) then
-					specWarnTouchInsignificance:Show(args.amount)
+				--elseif (args.amount or 1) >= 5 and (mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25")) then
+					--specWarnTouchInsignificance:Show(args.amount)
 				end
+			end
+			if args:IsPlayer() and (args.amount or 1) >= 3 and (mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25")) then
+				specWarnTouchInsignificance:Show(args.amount)
+			elseif args:IsPlayer() and (args.amount or 1) >= 5 and (mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25")) then
+				specWarnTouchInsignificance:Show(args.amount)
 			end
 		end
 	end

@@ -1,7 +1,7 @@
 ﻿local mod	= DBM:NewMod("Jaraxxus", "DBM-Coliseum")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4483 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4346 $"):sub(12, -3))
 mod:SetCreatureID(34780)
 mod:SetMinCombatTime(30)
 mod:SetUsedIcons(7, 8)
@@ -90,6 +90,7 @@ do
 			if GetTime() - 3 > lastflame then
 				specWarnFlame:Show()
 				if self.Options.LegionFlameRunSound then
+					--PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 					PlaySoundFile("Interface\\AddOns\\DBM-Core\\extrasounds\\runaway.mp3")
 				end
 				lastflame = GetTime()
@@ -163,13 +164,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFlame:Show()
 			if self.Options.LegionFlameRunSound then
+				--PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 				PlaySoundFile("Interface\\AddOns\\DBM-Core\\extrasounds\\justrun.mp3")
 			end
 		end		
 		if self.Options.LegionFlameIcon then
 			self:SetIcon(args.destName, 7, 8)
 		end
-		if IsRaidLeader() and self.Options.LegionFlameWhisper then
+		if DBM:GetRaidRank() >= 1 and self.Options.LegionFlameWhisper then
 			self:SendWhisper(L.WhisperFlame, targetname)
 		end
 	elseif args:IsSpellID(66334, 67905, 67906, 67907) and args:IsPlayer() then

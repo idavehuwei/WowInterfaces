@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("ForgemasterGarfrost", "DBM-Party-WotLK", 15)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4498 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4420 $"):sub(12, -3))
 mod:SetCreatureID(36494)
 mod:SetUsedIcons(8)
 
@@ -46,12 +46,14 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 			specWarnPermafrost:Show(args.spellName, args.amount)
 			spam = GetTime()
 		end
-		if self.Options.AchievementCheck and not warnedfailed then
-			if (args.amount or 1) == 9 or (args.amount or 1) == 10 then
-				SendChatMessage(L.AchievementWarning:format(args.destName, (args.amount or 1)), "PARTY")
-			elseif (args.amount or 1) > 11 then
-				SendChatMessage(L.AchievementFailed:format(args.destName, (args.amount or 1)), "PARTY")
-				warnedfailed = true
+		if args:IsDestTypePlayer() then
+			if self.Options.AchievementCheck and not warnedfailed then
+				if (args.amount or 1) == 9 or (args.amount or 1) == 10 then
+					SendChatMessage(L.AchievementWarning:format(args.destName, (args.amount or 1)), "PARTY")
+				elseif (args.amount or 1) > 11 then
+					SendChatMessage(L.AchievementFailed:format(args.destName, (args.amount or 1)), "PARTY")
+					warnedfailed = true
+				end
 			end
 		end
 	end

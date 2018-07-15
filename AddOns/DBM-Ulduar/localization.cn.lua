@@ -346,8 +346,8 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningTree   		= "艾欧娜尔的礼物 - 快打",
-	WarnSimulKill			= "第一只元素死亡 - 大约12秒后复活"
+	WarnSimulKill			= "第一只元素死亡 - 大约12秒后复活",
+	WarningTree			= "艾欧娜尔的礼物 - 快打"
 }
 
 L:SetTimerLocalization{

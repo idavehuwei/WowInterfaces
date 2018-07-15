@@ -341,7 +341,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	WarnSimulKill	= "First add down - Resurrection in ~12 seconds",
-	WarningTree   		= "Lifebinder's Gift - Kill It"
+	WarningTree	= "Lifebinder's Gift - Kill It"
 }
 
 L:SetTimerLocalization{
@@ -350,7 +350,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SoundWOP = "Play Extra Warning Sound",
-	WarningTree   		= "Show Special Warning for Lifebinder's Gift",
+	WarningTree	= "Show Special Warning for Lifebinder's Gift",
 	WarnSimulKill	= "Announce first mob down",
 	PlaySoundOnFury = "Play sound when you are affected by $spell:63571",
 	TimerSimulKill	= "Show timer for mob resurrection"

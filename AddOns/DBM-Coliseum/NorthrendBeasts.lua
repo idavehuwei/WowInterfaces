@@ -122,12 +122,12 @@ end
 function mod:warnToxin()
 	warnToxin:Show(table.concat(toxinTargets, "<, >"))
 	table.wipe(toxinTargets)
-	burnIcon = 8
 end
 
 function mod:warnBile()
 	warnBile:Show(table.concat(bileTargets, "<, >"))
 	table.wipe(bileTargets)
+	burnIcon = 8
 end
 
 function mod:WormsEmerge()
@@ -186,10 +186,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnToxin:Show()
 			sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\poisonrun.mp3")
 		end
-		if self.Options.SetIconOnBileTarget and burnIcon > 0 then
-			self:SetIcon(args.destName, burnIcon, 15)
-			burnIcon = burnIcon - 1
-		end
 		mod:ScheduleMethod(0.2, "warnToxin")
 	elseif args:IsSpellID(66869) then		-- Burning Bile
 		self:UnscheduleMethod("warnBile")
@@ -199,6 +195,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			if not mod:IsTank() then
 				sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\runout.mp3")
 			end
+		end
+		if self.Options.SetIconOnBileTarget and burnIcon > 0 then
+			self:SetIcon(args.destName, burnIcon, 15)
+			burnIcon = burnIcon - 1
 		end
 		mod:ScheduleMethod(0.2, "warnBile")
 	elseif args:IsSpellID(66758) then
@@ -216,7 +216,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		timerNextImpale:Start()
 		warnImpaleOn:Show(args.destName)
 		if (args.amount >= 3 and not self:IsDifficulty("heroic10", "heroic25") ) or ( args.amount >= 2 and self:IsDifficulty("heroic10", "heroic25") ) then 
-			if mod:IsTank() or mod:IsHealer() then
+			if args:IsPlayer() then
 				specWarnImpale3:Show(args.amount)
 			end
 		end

@@ -43,6 +43,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(62344) then 					-- Fists of Stone
 		specWarnFistofStone:Show()
 		if self.Options.PlaySoundOnFistOfStone then
+			--PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 			PlaySoundFile("Interface\\AddOns\\DBM-Core\\extrasounds\\justrun.mp3")
 		end
 	elseif args:IsSpellID(62325, 62932) then		-- Ground Tremor
@@ -63,7 +64,7 @@ end
 
 function mod:UNIT_DIED(args)
 	if self.Options.TrashRespawnTimer and not DBM.Bars:GetBar(L.TrashRespawnTimer) then
-		local guid = tonumber(args.destGUID:sub(7, 10), 16)
+		local guid = tonumber(args.destGUID:sub(9, 12), 16)
 		if guid == 33430 or guid == 33355 or guid == 33354 then		-- guardian lasher / nymph / tree
 			DBM.Bars:CreateBar(7200, L.TrashRespawnTimer)
 		end

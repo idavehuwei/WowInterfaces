@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Razorscale", "DBM-Ulduar")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4523 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4133 $"):sub(12, -3))
 mod:SetCreatureID(33186)
 mod:SetUsedIcons(8)
 
@@ -24,7 +24,6 @@ local warnDevouringFlameCast		= mod:NewAnnounce("WarnDevouringFlameCast", 2, 647
 
 local specWarnDevouringFlame		= mod:NewSpecialWarningMove(64733)
 local specWarnDevouringFlameCast	= mod:NewSpecialWarning("SpecWarnDevouringFlameCast")
-local specWarnFuseArmor		= mod:NewSpecialWarningStack(64771, nil, 2)
 
 local enrageTimer					= mod:NewBerserkTimer(900)
 local timerDeepBreathCooldown		= mod:NewCDTimer(21, 64021)
@@ -37,7 +36,7 @@ local timerGrounded                 = mod:NewTimer(45, "timerGrounded")
 
 local sndWOP				= mod:NewSound(nil, "SoundWOP", true)
 
-mod:AddBoolOption("PlaySoundOnDevouringFlame", true)
+mod:AddBoolOption("PlaySoundOnDevouringFlame", false)
 
 local castFlames
 local combattime = 0
@@ -45,7 +44,7 @@ local combattime = 0
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
 	combattime = GetTime()
-	if mod:IsDifficulty("normal10") then
+	if mod:IsDifficulty("heroic10") then
 		warnTurretsReadySoon:Schedule(53-delay)
 		warnTurretsReady:Schedule(73-delay)
 		timerTurret1:Start(-delay)
@@ -64,6 +63,7 @@ function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(64733, 64704) and args:IsPlayer() then
 		specWarnDevouringFlame:Show()
 		if self.Options.PlaySoundOnDevouringFlame then
+			--PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 			PlaySoundFile("Interface\\AddOns\\DBM-Core\\extrasounds\\runaway.mp3")
 		end		
 	end
@@ -83,7 +83,7 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
 	if (msg == L.YellAir or msg == L.YellAir2) and GetTime() - combattime > 30 then
-		if mod:IsDifficulty("normal10") then -- not sure?
+		if mod:IsDifficulty("heroic10") then -- not sure?
 			warnTurretsReadySoon:Schedule(23)
 			warnTurretsReady:Schedule(43)
 			timerTurret1:Start(23)

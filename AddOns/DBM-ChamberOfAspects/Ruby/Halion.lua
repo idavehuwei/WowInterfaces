@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Halion", "DBM-ChamberOfAspects", 2)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4483 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4390 $"):sub(12, -3))
 mod:SetCreatureID(39863)--40142 (twilight form)
 mod:SetMinSyncRevision(4358)
 mod:SetUsedIcons(7, 8)
@@ -52,7 +52,7 @@ local berserkTimer					= mod:NewBerserkTimer(480)
 local sndWOP				= mod:NewSound(nil, "SoundWOP", true)
 
 mod:AddBoolOption("YellOnConsumption", true, "announce")
-mod:AddBoolOption("AnnounceAlternatePhase", false, "announce")
+mod:AddBoolOption("AnnounceAlternatePhase", true, "announce")
 mod:AddBoolOption("WhisperOnConsumption", false, "announce")
 mod:AddBoolOption("SetIconOnConsumption", true)
 
@@ -135,6 +135,12 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
 	if args:IsSpellID(74792) then
+		if not self.Options.AnnounceAlternatePhase then
+			warningShadowConsumption:Show(args.destName)
+			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
+				SendChatMessage(L.WhisperConsumption, "WHISPER", "COMMON", args.destName)
+			end
+		end
 		if mod:LatencyCheck() then
 			self:SendSync("ShadowTarget", args.destName)
 		end
@@ -148,16 +154,16 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 		else
 			sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\shadowmark.mp3")
 		end
-		if not self.Options.AnnounceAlternatePhase then
-			warningShadowConsumption:Show(args.destName)
-			if IsRaidLeader() and self.Options.WhisperOnConsumption then
-				self:SendWhisper(L.WhisperConsumption, args.destName)
-			end
-		end
 		if self.Options.SetIconOnConsumption then
 			self:SetIcon(args.destName, 7)
 		end
 	elseif args:IsSpellID(74562) then
+		if not self.Options.AnnounceAlternatePhase then
+			warningFieryConsumption:Show(args.destName)
+			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
+				SendChatMessage(L.WhisperCombustion, "WHISPER", "COMMON", args.destName)
+			end
+		end
 		if mod:LatencyCheck() then
 			self:SendSync("FieryTarget", args.destName)
 		end
@@ -170,12 +176,6 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 			end
 		else
 			sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\firemark.mp3")
-		end
-		if not self.Options.AnnounceAlternatePhase then
-			warningFieryConsumption:Show(args.destName)
-			if IsRaidLeader() and self.Options.WhisperOnConsumption then
-				self:SendWhisper(L.WhisperCombustion, args.destName)
-			end
 		end
 		if self.Options.SetIconOnConsumption then
 			self:SetIcon(args.destName, 8)
@@ -208,11 +208,11 @@ end
 function mod:UNIT_HEALTH(uId)
 	if not warned_preP2 and self:GetUnitCreatureId(uId) == 39863 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.79 then
 		warned_preP2 = true
-		warnPhase2Soon:Show()	
+		warnPhase2Soon:Show()
 		sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\ptwo.mp3")
 	elseif not warned_preP3 and self:GetUnitCreatureId(uId) == 40142 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.54 then
 		warned_preP3 = true
-		warnPhase3Soon:Show()	
+		warnPhase3Soon:Show()
 		sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\pthree.mp3")
 	end
 end
@@ -226,7 +226,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		warnPhase2:Show()
 		timerShadowBreathCD:Start(25)
 		timerShadowConsumptionCD:Start(20)--not exact, 15 seconds from tank aggro, but easier to add 5 seconds to it as a estimate timer than trying to detect this
-		timerTwilightCutterCD:Start(35)
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then --These i'm not sure if they start regardless of drake aggro, or if it should be moved too.
+			timerTwilightCutterCD:Start(30)
+		else
+			timerTwilightCutterCD:Start(35)
+		end
 	elseif msg == L.Phase3 or msg:find(L.Phase3) then
 		self:SendSync("Phase3")
 	elseif msg == L.MeteorCast or msg:find(L.MeteorCast) then--There is no CLEU cast trigger for meteor, only yell
@@ -244,17 +248,16 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.twilightcutter or msg:find(L.twilightcutter) then
-			specWarnTwilightCutter:Schedule(3)
+			specWarnTwilightCutter:Schedule(5)
 		if not self.Options.AnnounceAlternatePhase then
-			timerTwilightCutterCD:Cancel()
 			warningTwilightCutter:Show()
 			sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\cutsoon.mp3")
 			sndWOP:Schedule(1.2, "Interface\\AddOns\\DBM-Core\\extrasounds\\countthree.mp3")
 			sndWOP:Schedule(2, "Interface\\AddOns\\DBM-Core\\extrasounds\\counttwo.mp3")
-			sndWOP:Schedule(2.8, "Interface\\AddOns\\DBM-Core\\extrasounds\\countone.mp3")			
+			sndWOP:Schedule(2.8, "Interface\\AddOns\\DBM-Core\\extrasounds\\countone.mp3")
 			sndWOP:Schedule(3.3, "Interface\\AddOns\\DBM-Core\\extrasounds\\cutnow.mp3")
 			timerTwilightCutterCast:Start()
-			timerTwilightCutter:Schedule(3)--Delay it since it happens 5 seconds after the emote
+			timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
 			timerTwilightCutterCD:Schedule(15)
 		end
 		if mod:LatencyCheck() then
@@ -266,15 +269,14 @@ end
 function mod:OnSync(msg, target)
 	if msg == "TwilightCutter" then
 		if self.Options.AnnounceAlternatePhase then
-			timerTwilightCutterCD:Cancel()
 			warningTwilightCutter:Show()
 			sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\cutsoon.mp3")
 			sndWOP:Schedule(1.2, "Interface\\AddOns\\DBM-Core\\extrasounds\\countthree.mp3")
 			sndWOP:Schedule(2, "Interface\\AddOns\\DBM-Core\\extrasounds\\counttwo.mp3")
-			sndWOP:Schedule(2.8, "Interface\\AddOns\\DBM-Core\\extrasounds\\countone.mp3")			
+			sndWOP:Schedule(2.8, "Interface\\AddOns\\DBM-Core\\extrasounds\\countone.mp3")
 			sndWOP:Schedule(3.3, "Interface\\AddOns\\DBM-Core\\extrasounds\\cutnow.mp3")
 			timerTwilightCutterCast:Start()
-			timerTwilightCutter:Schedule(3)--Delay it since it happens 5 seconds after the emote
+			timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
 			timerTwilightCutterCD:Schedule(15)
 		end
 	elseif msg == "Meteor" then
@@ -287,15 +289,15 @@ function mod:OnSync(msg, target)
 	elseif msg == "ShadowTarget" then
 		if self.Options.AnnounceAlternatePhase then
 			warningShadowConsumption:Show(target)
-			if IsRaidLeader() and self.Options.WhisperOnConsumption then
-				self:SendWhisper(L.WhisperConsumption, args.destName)
+			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
+				SendChatMessage(L.WhisperConsumption, "WHISPER", "COMMON", target)
 			end
 		end
 	elseif msg == "FieryTarget" then
 		if self.Options.AnnounceAlternatePhase then
 			warningFieryConsumption:Show(target)
-			if IsRaidLeader() and self.Options.WhisperOnConsumption then
-				self:SendWhisper(L.WhisperCombustion, args.destName)
+			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
+				SendChatMessage(L.WhisperCombustion, "WHISPER", "COMMON", target)
 			end
 		end
 	elseif msg == "ShadowCD" then

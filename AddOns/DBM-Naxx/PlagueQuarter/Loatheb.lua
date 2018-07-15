@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Loatheb", "DBM-Naxx", 3)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4523 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2568 $"):sub(12, -3))
 mod:SetCreatureID(16011)
 
 mod:RegisterCombat("combat")
@@ -32,7 +32,7 @@ local sporeTimer	= 36
 
 function mod:OnCombatStart(delay)
 	doomCounter = 0
-	if mod:IsDifficulty("normal25") then
+	if mod:IsDifficulty("heroic25") then
 		sporeTimer = 18
 	else
 		sporeTimer = 36

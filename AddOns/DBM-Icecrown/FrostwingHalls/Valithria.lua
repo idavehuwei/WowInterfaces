@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Valithria", "DBM-Icecrown", 4)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4502 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4436 $"):sub(12, -3))
 mod:SetCreatureID(36789)
 mod:SetUsedIcons(8)
 mod:RegisterCombat("yell", L.YellPull)
@@ -20,25 +20,25 @@ mod:RegisterEvents(
 
 local warnCorrosion		= mod:NewAnnounce("WarnCorrosion", 2, 70751, false)
 local warnGutSpray		= mod:NewTargetAnnounce(71283, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnManaVoid		= mod:NewSpellAnnounce(71741, 2, nil, mod:IsManaUser())
-local warnSupression	= mod:NewSpellAnnounce(70588, 3)
-local warnPortalSoon	= mod:NewSoonAnnounce(72483, 2, nil)
+local warnManaVoid		= mod:NewSpellAnnounce(71741, 2, nil, not mod:IsMelee())
+local warnSupression		= mod:NewSpellAnnounce(70588, 3)
+local warnPortalSoon		= mod:NewSoonAnnounce(72483, 2, nil)
 local warnPortal		= mod:NewSpellAnnounce(72483, 3, nil)
-local warnPortalOpen	= mod:NewAnnounce("WarnPortalOpen", 4, 72483)
+local warnPortalOpen		= mod:NewAnnounce("WarnPortalOpen", 4, 72483)
 
-local specWarnLayWaste	= mod:NewSpecialWarningSpell(71730)
-local specWarnManaVoid	= mod:NewSpecialWarningMove(71741)
+local specWarnLayWaste		= mod:NewSpecialWarningSpell(71730)
+local specWarnManaVoid		= mod:NewSpecialWarningMove(71741)
 
 local timerLayWaste		= mod:NewBuffActiveTimer(12, 69325)
-local timerNextPortal	= mod:NewCDTimer(46.5, 72483, nil)
-local timerPortalsOpen	= mod:NewTimer(10, "TimerPortalsOpen", 72483)
-local timerHealerBuff	= mod:NewBuffActiveTimer(40, 70873)
+local timerNextPortal		= mod:NewCDTimer(46.5, 72483, nil)
+local timerPortalsOpen		= mod:NewTimer(10, "TimerPortalsOpen", 72483)
+local timerHealerBuff		= mod:NewBuffActiveTimer(40, 70873)
 local timerGutSpray		= mod:NewTargetTimer(12, 71283, nil, mod:IsTank() or mod:IsHealer())
-local timerCorrosion	= mod:NewTargetTimer(6, 70751, nil, false)
+local timerCorrosion		= mod:NewTargetTimer(6, 70751, nil, false)
 local timerBlazingSkeleton	= mod:NewTimer(50, "TimerBlazingSkeleton", 17204)
-local timerAbom				= mod:NewTimer(50, "TimerAbom", 43392)--Experimental
+local timerAbom			= mod:NewTimer(50, "TimerAbom", 43392)--Experimental
 
-local sndWOP				= mod:NewSound(nil, "SoundWOP", true)
+local sndWOP			= mod:NewSound(nil, "SoundWOP", true)
 
 local berserkTimer		= mod:NewBerserkTimer(420)
 
@@ -47,7 +47,6 @@ mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
 local GutSprayTargets = {}
 local spamSupression = 0
 local BlazingSkeletonTimer = 60
-local AbomSpawn = 0
 local AbomTimer = 60
 local blazingSkeleton = nil
 
@@ -61,27 +60,18 @@ function mod:StartBlazingSkeletonTimer()
 	timerBlazingSkeleton:Start(BlazingSkeletonTimer)
 	self:ScheduleMethod(BlazingSkeletonTimer, "StartBlazingSkeletonTimer")
 	sndWOP:Schedule(BlazingSkeletonTimer-4, "Interface\\AddOns\\DBM-Core\\extrasounds\\bonesoon.mp3")
-	if BlazingSkeletonTimer >= 10 then--Keep it from dropping below 5
-		BlazingSkeletonTimer = BlazingSkeletonTimer - 5
 	end
+	BlazingSkeletonTimer = BlazingSkeletonTimer - 5
 end
 
---23, 60, 55, 55, 55, 50, 45, 40, 35, etc (at least on normal, on heroic it might be only 2 55s, need more testing)
 function mod:StartAbomTimer()
-	AbomSpawn = AbomSpawn + 1
-	if AbomSpawn == 1 then
-		timerAbom:Start(AbomTimer)--Timer is 60 seconds after first early abom, it's set to 60 on combat start.
+	if AbomTimer >= 60 then--Keep it from dropping below 55
+		timerAbom:Start(AbomTimer)
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
-		AbomTimer = AbomTimer - 5--Right after first abom timer starts, change it from 60 to 55.
-	elseif AbomSpawn == 2 or AbomSpawn == 3 then
-		timerAbom:Start(AbomTimer)--Start first and second 55 second timer
+		AbomTimer = AbomTimer - 5
+	else
+		timerAbom:Start(AbomTimer)
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
-	elseif AbomSpawn >= 4 then--after 4th abom, the timer starts subtracting again.
-		timerAbom:Start(AbomTimer)--Start third 55 second timer before subtracking from it again.
-		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
-		if AbomTimer >= 10 then--Keep it from dropping below 5
-			AbomTimer = AbomTimer - 5--Rest of timers after 3rd 55 second timer will be 5 less than previous until they come every 5 seconds.
-		end
 	end
 end
 
@@ -94,9 +84,9 @@ function mod:OnCombatStart(delay)
 	self:ScheduleMethod(46.5, "Portals")--This will never be perfect, since it's never same. 45-48sec variations
 	BlazingSkeletonTimer = 60
 	AbomTimer = 60
-	AbomSpawn = 0
 	self:ScheduleMethod(50-delay, "StartBlazingSkeletonTimer")
-	self:ScheduleMethod(23-delay, "StartAbomTimer")--First abom is 23-25 seconds after combat start, cause of variation, it may cause slightly off timer rest of fight
+	--First abom is 23-25 seconds after combat start, cause of variation, it may cause slightly off timer rest of fight
+	self:ScheduleMethod(23-delay, "StartAbomTimer")
 	timerBlazingSkeleton:Start(-delay)
 	timerAbom:Start(23-delay)
 	sndWOP:Schedule(46-delay, "Interface\\AddOns\\DBM-Core\\extrasounds\\bonesoon.mp3")

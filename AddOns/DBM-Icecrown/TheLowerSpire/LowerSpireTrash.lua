@@ -24,7 +24,7 @@ local timerDisruptingShout		= mod:NewCastTimer(3, 71022)
 local timerDarkReckoning		= mod:NewTargetTimer(8, 69483)
 local timerDeathPlague			= mod:NewTargetTimer(15, 72865)
 
---local soundDarkReckoning = mod:NewSound(69483)
+local soundDarkReckoning = mod:NewSound(69483)
 local sndWOP				= mod:NewSound(nil, "SoundWOP", true)
 
 mod:AddBoolOption("SetIconOnDarkReckoning", true)

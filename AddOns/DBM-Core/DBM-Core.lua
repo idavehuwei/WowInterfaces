@@ -14,12 +14,12 @@
 --    * ruRU: BootWin					bootwin@gmail.com
 --    * ruRU: Vampik					admin@vampik.ru
 --    * zhTW: Hman						herman_c1@hotmail.com
---    * zhTW: Azael/kc10577				paul.poon.kw@gmail.com
+--    * zhTW: Azael/kc10577				kc10577@hotmail.com
 --    * koKR: BlueNyx					bluenyx@gmail.com
---    * esES: Snamor/1nn7erpLaY      	romanscat@hotmail.com
+--    * esES: Interplay/1nn7erpLaY      http://www.1nn7erpLaY.com
 --
 -- Special thanks to:
---    * Arta (DBM-Party-WotLK, DBM-Party-Cataclysm)
+--    * Arta (DBM-Party)
 --    * Omegal @ US-Whisperwind (continuing mod support for 3.2+)
 --    * Tennberg (a lot of fixes in the enGB/enUS localization)
 --
@@ -42,9 +42,9 @@
 --  Globals/Default Options  --
 -------------------------------
 DBM = {
-	Revision = ("$Revision: 4556 $"):sub(12, -3),
+	Revision = ("$Revision: 4442 $"):sub(12, -3),
 	Version = "4.52",
-	DisplayVersion = "4.53v alpha", -- the string that is shown as version
+	DisplayVersion = "4.52", -- the string that is shown as version
 	ReleaseRevision = 4442 -- the revision of the latest stable version that is available (for /dbm ver2)
 }
 
@@ -107,10 +107,8 @@ DBM.DefaultOptions = {
 	DontSendBossAnnounces = false,
 	DontSendBossWhispers = false,
 	DontSetIcons = false,
-	LatencyThreshold = 150,
+	LatencyThreshold = 250,
 	BigBrotherAnnounceToRaid = false,
-	SettingsMessageShown = false,
-	AlwaysShowSpeedKillTimer = true,
 --	HelpMessageShown = false,
 }
 
@@ -144,8 +142,7 @@ local loadOptions
 local loadModOptions
 local checkWipe
 local fireEvent
-local is_cata = select(4, _G.GetBuildInfo()) >= 40000--4.0 PTR or Beta
-local is_china = select(4, _G.GetBuildInfo()) == 30200--Chinese wow (3.2.2) No one else should be on 3.2.x, screw private servers.
+local wowVersion = select(4, GetBuildInfo())
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 
@@ -300,19 +297,11 @@ do
 	end
 
 	function argsMT.__index:GetSrcCreatureID()
-		if is_cata or is_china then
-			return tonumber(self.sourceGUID:sub(7, 10), 16) or 0
-		else
-			return tonumber(self.sourceGUID:sub(9, 12), 16) or 0
-		end
+		return tonumber(self.sourceGUID:sub(9, 12), 16) or 0
 	end
 	
 	function argsMT.__index:GetDestCreatureID()
-		if is_cata or is_china then
-			return tonumber(self.sourceGUID:sub(7, 10), 16) or 0
-		else
-			return tonumber(self.sourceGUID:sub(9, 12), 16) or 0
-		end
+		return tonumber(self.destGUID:sub(9, 12), 16) or 0
 	end
 	
 	local function handleEvent(self, event, ...)
@@ -1240,27 +1229,11 @@ do
 				end
 				v.Options = savedOptions[v.id] or {}
 				savedStats[v.id] = savedStats[v.id] or {
-					normalKills = 0,
-					normalPulls = 0,
+					kills = 0,
+					pulls = 0,
 					heroicKills = 0,
 					heroicPulls = 0,
-					normal25Kills = 0,
-					normal25Pulls = 0,
-					heroic25Kills = 0,
-					heroic25Pulls = 0
 				}
-				if not savedStats[v.id].normalPulls then
-					savedStats[v.id] = {
-						normalKills = 0,
-						normalPulls = 0,
-						heroicKills = 0,
-						heroicPulls = 0,
-						normal25Kills = 0,
-						normal25Pulls = 0,
-						heroic25Kills = 0,
-						heroic25Pulls = 0
-					}
-				end
 				v.stats = savedStats[v.id]
 				if v.OnInitialize then v:OnInitialize() end
 				for i, cat in ipairs(v.categorySort) do -- temporary hack
@@ -1314,7 +1287,7 @@ do
 						sort		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
 						category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 						name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
-						zone		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZone") or "BogusZone")},--workaround, so mods with zoneids and no zonetext don't get loaded by default before zoneids even checked
+						zone		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZone") or "")},
 						zoneId		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZoneID") or "")},
 						subTabs		= GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 						hasHeroic	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Heroic-Mode") or 1) == 1,
@@ -1378,20 +1351,16 @@ function DBM:LFG_PROPOSAL_FAILED()
 end
 
 function DBM:LFG_UPDATE()
-    -- simple fix for China wow
-    if(GetLFGInfoServer) then
-        local _, joined = GetLFGInfoServer()
-        if not joined then
-            DBM.Bars:CancelBar(DBM_LFG_INVITE)
-        end
-    end
+	local _, joined = GetLFGInfoServer()
+	if not joined then
+		DBM.Bars:CancelBar(DBM_LFG_INVITE)
+	end
 end
 
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------
 function DBM:ZONE_CHANGED_NEW_AREA()
-	SetMapToCurrentZone()
 	local zoneName = GetRealZoneText()
 	local zoneId = GetCurrentMapAreaID()
 	for i, v in ipairs(self.AddOns) do
@@ -1671,13 +1640,8 @@ do
 			local id = (i == 0 and "target") or uId..i.."target"
 			local guid = UnitGUID(id)
 			if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
-				if is_cata or is_china then
-					local cId = tonumber(guid:sub(7, 10), 16)
-					targetList[cId] = id
-				else
-					local cId = tonumber(guid:sub(9, 12), 16)
-					targetList[cId] = id
-				end
+				local cId = tonumber(guid:sub(9, 12), 16)
+				targetList[cId] = id
 			end
 		end
 	end
@@ -1833,14 +1797,10 @@ function DBM:StartCombat(mod, delay, synced)
 		end
 		table.insert(inCombat, mod)
 		self:AddMsg(DBM_CORE_COMBAT_STARTED:format(mod.combatInfo.name))
-		if mod:IsDifficulty("normal5", "normal10") then
-			mod.stats.normalPulls = mod.stats.normalPulls + 1
-		elseif mod:IsDifficulty("heroic5", "heroic10") then
+		if mod:IsDifficulty("heroic5", "heroic25") then
 			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
-		elseif mod:IsDifficulty("normal25") then
-			mod.stats.normal25Pulls = mod.stats.normal25Pulls + 1
-		elseif mod:IsDifficulty("heroic25") then
-			mod.stats.heroic25Pulls = mod.stats.heroic25Pulls + 1
+		elseif mod:IsDifficulty("normal5", "heroic10") then
+			mod.stats.pulls = mod.stats.pulls + 1
 		end
 		mod.inCombat = true
 		mod.blockSyncs = nil
@@ -1854,22 +1814,6 @@ function DBM:StartCombat(mod, delay, synced)
 				end
 			else
 				DBM.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
-			end
-		end
-		if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and mod.Options.Enabled then
-			local bestTime
-			if mod:IsDifficulty("normal5", "normal10") and mod.stats.normalBestTime then
-				bestTime = mod.stats.normalBestTime
-			elseif mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicBestTime then
-				bestTime = mod.stats.heroicBestTime
-			elseif mod:IsDifficulty("normal25") and mod.stats.normal25BestTime then
-				bestTime = mod.stats.normal25BestTime
-			elseif mod:IsDifficulty("heroic25") and mod.stats.heroic25BestTime then
-				bestTime = mod.stats.heroic25BestTime
-			end
-			if bestTime and bestTime > 0 then	-- only start if you already have a bestTime :)
-				local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-				speedTimer:Start()
 			end
 		end
 		if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
@@ -1905,14 +1849,10 @@ function DBM:EndCombat(mod, wipe)
 		if wipe then
 			local thisTime = GetTime() - mod.combatInfo.pull
 			if thisTime < 30 then
-				if mod:IsDifficulty("normal5", "normal10") then
-					mod.stats.normalPulls = mod.stats.normalPulls - 1
-				elseif mod:IsDifficulty("heroic5", "heroic10") then
+				if mod:IsDifficulty("heroic5", "heroic25") then
 					mod.stats.heroicPulls = mod.stats.heroicPulls - 1
-				elseif mod:IsDifficulty("normal25") then
-					mod.stats.normal25Pulls = mod.stats.normal25Pulls - 1
-				elseif mod:IsDifficulty("heroic25") then
-					mod.stats.heroic25Pulls = mod.stats.heroic25Pulls - 1
+				elseif mod:IsDifficulty("normal5", "heroic10") then
+					mod.stats.pulls = mod.stats.pulls - 1
 				end
 			end
 			self:AddMsg(DBM_CORE_COMBAT_ENDED:format(mod.combatInfo.name, strFromTime(thisTime)))
@@ -1924,24 +1864,16 @@ function DBM:EndCombat(mod, wipe)
 			fireEvent("wipe", mod)
 		else
 			local thisTime = GetTime() - mod.combatInfo.pull
-			local lastTime = (mod:IsDifficulty("normal5", "normal10") and mod.stats.normalLastTime) or (mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicLastTime) or (mod:IsDifficulty("normal25") and mod.stats.normal25LastTime) or (mod:IsDifficulty("heroic25") and mod.stats.heroic25LastTime)
-			local bestTime = (mod:IsDifficulty("normal5", "normal10") and mod.stats.normalBestTime) or (mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicBestTime) or (mod:IsDifficulty("normal25") and mod.stats.normal25BestTime) or (mod:IsDifficulty("heroic25") and mod.stats.heroic25BestTime)
-			if mod:IsDifficulty("normal5", "normal10") then
-				mod.stats.normalKills = mod.stats.normalKills + 1
-				mod.stats.normalLastTime = thisTime
-				mod.stats.normalBestTime = math.min(bestTime or math.huge, thisTime)
-			elseif mod:IsDifficulty("heroic5", "heroic10") then
+			local lastTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicLastTime) or mod:IsDifficulty("normal5", "heroic10") and mod.stats.lastTime
+			local bestTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicBestTime) or mod:IsDifficulty("normal5", "heroic10") and mod.stats.bestTime
+			if mod:IsDifficulty("heroic5", "heroic25") then
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
 				mod.stats.heroicLastTime = thisTime
 				mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)
-			elseif mod:IsDifficulty("normal25") then
-				mod.stats.normal25Kills = mod.stats.normal25Kills + 1
-				mod.stats.normal25LastTime = thisTime
-				mod.stats.normal25BestTime = math.min(bestTime or math.huge, thisTime)
-			elseif mod:IsDifficulty("heroic25") then
-				mod.stats.heroic25Kills = mod.stats.heroic25Kills + 1
-				mod.stats.heroic25LastTime = thisTime
-				mod.stats.heroic25BestTime = math.min(bestTime or math.huge, thisTime)
+			elseif mod:IsDifficulty("normal5", "heroic10") then
+				mod.stats.kills = mod.stats.kills + 1
+				mod.stats.lastTime = thisTime
+				mod.stats.bestTime = math.min(bestTime or math.huge, thisTime)
 			end
 			if not lastTime then
 				self:AddMsg(DBM_CORE_BOSS_DOWN:format(mod.combatInfo.name, strFromTime(thisTime)))
@@ -1996,11 +1928,7 @@ end
 
 function DBM:UNIT_DIED(args)
 	if bit.band(args.destGUID:sub(1, 5), 0x00F) == 3 or bit.band(args.destGUID:sub(1, 5), 0x00F) == 5  then
-		if is_cata or is_china then
-			self:OnMobKill(tonumber(args.destGUID:sub(7, 10), 16))
-		else
-			self:OnMobKill(tonumber(args.destGUID:sub(9, 12), 16))
-		end
+		self:OnMobKill(tonumber(args.destGUID:sub(9, 12), 16))
 	end
 end
 DBM.UNIT_DESTROYED = DBM.UNIT_DIED
@@ -2125,7 +2053,6 @@ do
 		end
 		self:LFG_UPDATE()
 --		self:Schedule(10, function() if not DBM.Options.HelpMessageShown then DBM.Options.HelpMessageShown = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
-		self:Schedule(10, function() if not DBM.Options.SettingsMessageShown then DBM.Options.SettingsMessageShown = true DBM:AddMsg(DBM_HOW_TO_USE_MOD) end end)
 	end
 end
 
@@ -2290,7 +2217,7 @@ do
 	local testSpecialWarning
 	function DBM:DemoMode()
 		if not testMod then
-			testMod = DBM:NewMod("TestMod")
+			testMod = DBM:NewMod("TestMod", "DBM-PvP")	-- temp fix, as it requires a modId
 			testWarning1 = testMod:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Nature_WispSplode")
 			testWarning2 = testMod:NewAnnounce("%s", 2, "Interface\\Icons\\Spell_Shadow_ShadesOfDarkness")
 			testWarning3 = testMod:NewAnnounce("%s", 3, "Interface\\Icons\\Spell_Fire_SelfDestruct")
@@ -2406,7 +2333,6 @@ do
 		if obj.localization.general.name == "name" then obj.localization.general.name = name end
 		table.insert(self.Mods, obj)
 		modsById[name] = obj
-		obj:AddBoolOption("SpeedKillTimer", false, "misc")
 		obj:AddBoolOption("HealthFrame", false, "misc")
 		obj:SetZone()
 		return obj
@@ -2427,7 +2353,7 @@ bossModPrototype.AddMsg = DBM.AddMsg
 
 function bossModPrototype:SetZone(...)
 	if select("#", ...) == 0 then
-		if self.addon and self.addon.zone and #self.addon.zone > 0 and self.addon.zoneId and #self.addon.zoneId > 0 then
+		if self.addon.zone and #self.addon.zone > 0 and self.addon.zoneId and #self.addon.zoneId > 0 then
 			self.zones = {}
 			for i, v in ipairs(self.addon.zone) do
 				self.zones[#self.zones + 1] = v
@@ -2436,7 +2362,7 @@ function bossModPrototype:SetZone(...)
 				self.zones[#self.zones + 1] = v
 			end
 		else
-			self.zones = self.addon and (self.addon.zone and #self.addon.zone > 0 and self.addon.zone or self.addon.zoneId and #self.addon.zoneId > 0 and self.addon.zoneId) or {}
+			self.zones = self.addon.zone and #self.addon.zone > 0 and self.addon.zone or self.addon.zoneId and #self.addon.zoneId > 0 and self.addon.zoneId or {}
 		end
 	elseif select(1, ...) ~= DBM_DISABLE_ZONE_DETECTION then
 		self.zones = {...}
@@ -2489,19 +2415,11 @@ end
 
 function bossModPrototype:GetUnitCreatureId(uId)
 	local guid = UnitGUID(uId)
-	if is_cata or is_china then
-		return (guid and (tonumber(guid:sub(7, 10), 16))) or 0
-	else
-		return (guid and (tonumber(guid:sub(9, 12), 16))) or 0
-	end
+	return (guid and tonumber(guid:sub(9, 12), 16)) or 0
 end
 
 function bossModPrototype:GetCIDFromGUID(guid)
-	if is_cata or is_china then
-		return (guid and (tonumber(guid:sub(7, 10), 16))) or 0
-	else
-		return (guid and (tonumber(guid:sub(9, 12), 16))) or 0
-	end
+	return (guid and tonumber(guid:sub(9, 12), 16)) or 0
 end
 
 function bossModPrototype:GetBossTarget(cid)
@@ -2539,20 +2457,22 @@ end
 -- returns heroic for old instances that do not have a heroic mode (Naxx, Ulduar...)
 function bossModPrototype:GetDifficulty() 
 	local _, instanceType, difficulty, _, _, playerDifficulty, isDynamicInstance = GetInstanceInfo()
-	if instanceType == "raid" and isDynamicInstance then -- "dynamic" instance (ICC)
+	if instanceType == "raid" and isDynamicInstance then -- "new" instance (ICC)
 		if difficulty == 1 then -- 10 men
 			return playerDifficulty == 0 and "normal10" or playerDifficulty == 1 and "heroic10" or "unknown"
 		elseif difficulty == 2 then -- 25 men
 			return playerDifficulty == 0 and "normal25" or playerDifficulty == 1 and "heroic25" or "unknown"
 		end
 	else -- support for "old" instances
-		if difficulty == 1 then 
-			return instanceType == "raid" and "normal10" or "normal5"
-		elseif difficulty == 2 then 
-			return instanceType == "raid" and "normal25" or "heroic5"
-		elseif difficulty == 3 then 
+		if GetInstanceDifficulty() == 1 then 
+			return (self.modId == "DBM-Party-WotLK" or self.modId == "DBM-Party-BC") and "normal5" or 
+			self.hasHeroic and "normal10" or "heroic10" 
+		elseif GetInstanceDifficulty() == 2 then 
+			return (self.modId == "DBM-Party-WotLK" or self.modId == "DBM-Party-BC") and "heroic5" or 
+			self.hasHeroic and "normal25" or "heroic25" 
+		elseif GetInstanceDifficulty() == 3 then 
 			return "heroic10" 
-		elseif difficulty == 4 then 
+		elseif GetInstanceDifficulty() == 4 then 
 			return "heroic25" 
 		end
 	end
@@ -2592,219 +2512,25 @@ local function getTalentpointsSpent(spellID)
 	return 0
 end
 
---Complex talent checker.
---First verifies if it's cata beta or live to determin if it should use 51 pt checks or 31 pt.
---It determins if person is even high enough level for that to even work.
---if not, it only checks class and returns yes to roll to avoid misjudging someones spec and turning options off for them that shouldn't be off.
---(plus fixes nil error if they are below level 11 and have no talents yet)
---Try to avoid using "not" in boss mods for checks if it can be helped, Only 2 mods i know if apsolutely couldn't avoid using not.
-
-if is_cata then--It's Cataclysm
-	function bossModPrototype:IsMelee()
-		if UnitLevel("player") >= 69 then
-			return select(2, UnitClass("player")) == "ROGUE"
-			or select(2, UnitClass("player")) == "WARRIOR"
-			or select(2, UnitClass("player")) == "DEATHKNIGHT"
-			or (select(2, UnitClass("player")) == "PALADIN" and select(5, GetTalentTabInfo(1)) < 31)
-     		or (select(2, UnitClass("player")) == "SHAMAN" and select(5, GetTalentTabInfo(2)) >= 31)
-			or (select(2, UnitClass("player")) == "DRUID" and select(5, GetTalentTabInfo(2)) >= 31)
-		else
-			return select(2, UnitClass("player")) == "ROGUE"
-			or select(2, UnitClass("player")) == "WARRIOR"
-			or select(2, UnitClass("player")) == "DEATHKNIGHT"
-			or (select(2, UnitClass("player")) == "PALADIN")
-     		or (select(2, UnitClass("player")) == "SHAMAN")
-			or (select(2, UnitClass("player")) == "DRUID")
-		end
-	end
-
-	function bossModPrototype:IsRanged()
-		if UnitLevel("player") >= 69 then
-			return select(2, UnitClass("player")) == "MAGE"
-			or select(2, UnitClass("player")) == "HUNTER"
-			or select(2, UnitClass("player")) == "WARLOCK"
-			or select(2, UnitClass("player")) == "PRIEST"
-			or (select(2, UnitClass("player")) == "PALADIN" and select(5, GetTalentTabInfo(1)) >= 31)
-     		or (select(2, UnitClass("player")) == "SHAMAN" and select(5, GetTalentTabInfo(2)) < 31)
-			or (select(2, UnitClass("player")) == "DRUID" and select(5, GetTalentTabInfo(2)) < 31)
-		else
-			return select(2, UnitClass("player")) == "MAGE"
-			or select(2, UnitClass("player")) == "HUNTER"
-			or select(2, UnitClass("player")) == "WARLOCK"
-			or select(2, UnitClass("player")) == "PRIEST"
-			or (select(2, UnitClass("player")) == "PALADIN")
-     		or (select(2, UnitClass("player")) == "SHAMAN")
-			or (select(2, UnitClass("player")) == "DRUID")
-		end
-	end
-
-	function bossModPrototype:IsManaUser()--Similar to ranged, but includes all paladins and all shamens and excludes hunters in cata
-		if UnitLevel("player") >= 69 then
-			return select(2, UnitClass("player")) == "MAGE"
-			or select(2, UnitClass("player")) == "WARLOCK"
-			or select(2, UnitClass("player")) == "PRIEST"
-			or (select(2, UnitClass("player")) == "PALADIN")
-     		or (select(2, UnitClass("player")) == "SHAMAN")
-			or (select(2, UnitClass("player")) == "DRUID" and select(5, GetTalentTabInfo(2)) < 31)
-		else
-			return select(2, UnitClass("player")) == "MAGE"
-			or select(2, UnitClass("player")) == "WARLOCK"
-			or select(2, UnitClass("player")) == "PRIEST"
-			or (select(2, UnitClass("player")) == "PALADIN")
-     		or (select(2, UnitClass("player")) == "SHAMAN")
-			or (select(2, UnitClass("player")) == "DRUID")
-		end
-	end
-
-	local function IsDeathKnightTank()
-		-- idea taken from addon 'ElitistJerks'
-		local tankTalents = (getTalentpointsSpent(50371) >= 2 and 1 or 0) +	-- Improved Blood Presence
-	                    (getTalentpointsSpent(49787) >= 3 and 1 or 0) +		-- Toughness
-						(getTalentpointsSpent(49501) >= 3 and 1 or 0)		-- Blade Barrier
-		return tankTalents >= 2
-	end
-
-	local function IsDruidTank()
-	-- idea taken from addon 'ElitistJerks'
-		local tankTalents = (getTalentpointsSpent(57880) >= 2 and 1 or 0) +	-- Natural Reaction
-	                    (getTalentpointsSpent(16931) >= 3 and 1 or 0) +		-- Thick Hide
-						(getTalentpointsSpent(61336) >= 1 and 1 or 0)		-- Survival Instincts
-		return tankTalents >= 3
-	end
-
-	function bossModPrototype:IsTank()
-		if UnitLevel("player") >= 69 then
-			return (select(2, UnitClass("player")) == "WARRIOR" and select(5, GetTalentTabInfo(3)) >= 31)
-     		or (select(2, UnitClass("player")) == "DEATHKNIGHT" and IsDeathKnightTank())
-			or (select(2, UnitClass("player")) == "PALADIN" and select(5, GetTalentTabInfo(2)) >= 31)
-			or (select(2, UnitClass("player")) == "DRUID" and select(5, GetTalentTabInfo(2)) >= 31 and IsDruidTank())
-		else
-			return (select(2, UnitClass("player")) == "WARRIOR")
-     		or (select(2, UnitClass("player")) == "DEATHKNIGHT")
-			or (select(2, UnitClass("player")) == "PALADIN")
-			or (select(2, UnitClass("player")) == "DRUID")
-		end
-	end
-
-	function bossModPrototype:IsHealer()
-		if UnitLevel("player") >= 69 then
-			return (select(2, UnitClass("player")) == "PALADIN" and select(5, GetTalentTabInfo(1)) >= 31)
-     		or (select(2, UnitClass("player")) == "SHAMAN" and select(5, GetTalentTabInfo(3)) >= 31)
-			or (select(2, UnitClass("player")) == "DRUID" and select(5, GetTalentTabInfo(3)) >= 31)
-			or (select(2, UnitClass("player")) == "PRIEST" and select(5, GetTalentTabInfo(3)) < 31)
-		else
-			return (select(2, UnitClass("player")) == "PALADIN")
-     		or (select(2, UnitClass("player")) == "SHAMAN")
-			or (select(2, UnitClass("player")) == "DRUID")
-			or (select(2, UnitClass("player")) == "PRIEST")
-		end
-	end
-else--It's not cataclysm
-	function bossModPrototype:IsMelee()
-		if UnitLevel("player") >= 62 then
-			return select(2, UnitClass("player")) == "ROGUE"
+function bossModPrototype:IsMelee()
+	return select(2, UnitClass("player")) == "ROGUE"
 			or select(2, UnitClass("player")) == "WARRIOR"
 			or select(2, UnitClass("player")) == "DEATHKNIGHT"
 			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) < 51)
      		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) >= 51)
 			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 51)
-		else
-			return select(2, UnitClass("player")) == "ROGUE"
-			or select(2, UnitClass("player")) == "WARRIOR"
-			or select(2, UnitClass("player")) == "DEATHKNIGHT"
-			or (select(2, UnitClass("player")) == "PALADIN")
-     		or (select(2, UnitClass("player")) == "SHAMAN")
-			or (select(2, UnitClass("player")) == "DRUID")
-		end
-	end
+end
 
-	function bossModPrototype:IsRanged()
-		if UnitLevel("player") >= 62 then
-			return select(2, UnitClass("player")) == "MAGE"
+function bossModPrototype:IsRanged()
+	return select(2, UnitClass("player")) == "MAGE"
 			or select(2, UnitClass("player")) == "HUNTER"
 			or select(2, UnitClass("player")) == "WARLOCK"
 			or select(2, UnitClass("player")) == "PRIEST"
 			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 51)
      		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) < 51)
 			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) < 51)
-		else
-			return select(2, UnitClass("player")) == "MAGE"
-			or select(2, UnitClass("player")) == "HUNTER"
-			or select(2, UnitClass("player")) == "WARLOCK"
-			or select(2, UnitClass("player")) == "PRIEST"
-			or (select(2, UnitClass("player")) == "PALADIN")
-     		or (select(2, UnitClass("player")) == "SHAMAN")
-			or (select(2, UnitClass("player")) == "DRUID")
-		end
-	end
-
-	function bossModPrototype:IsManaUser()--Similar to ranged, but includes all paladins and all shamens and excludes hunters in cata
-		if UnitLevel("player") >= 62 then
-			return select(2, UnitClass("player")) == "MAGE"
-			or select(2, UnitClass("player")) == "HUNTER"
-			or select(2, UnitClass("player")) == "WARLOCK"
-			or select(2, UnitClass("player")) == "PRIEST"
-			or (select(2, UnitClass("player")) == "PALADIN")
-     		or (select(2, UnitClass("player")) == "SHAMAN")
-			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) < 51)
-		else
-			return select(2, UnitClass("player")) == "MAGE"
-			or select(2, UnitClass("player")) == "HUNTER"
-			or select(2, UnitClass("player")) == "WARLOCK"
-			or select(2, UnitClass("player")) == "PRIEST"
-			or (select(2, UnitClass("player")) == "PALADIN")
-     		or (select(2, UnitClass("player")) == "SHAMAN")
-			or (select(2, UnitClass("player")) == "DRUID")
-		end
-	end
-
-	local function IsDeathKnightTank()
-		-- idea taken from addon 'ElitistJerks'
-		local tankTalents = (getTalentpointsSpent(16271) >= 5 and 1 or 0) +		-- Anticipation
-	                    (getTalentpointsSpent(49042) >= 5 and 1 or 0) +		-- Toughness
-						(getTalentpointsSpent(55225) >= 5 and 1 or 0)		-- Blade Barrier
-		return tankTalents >= 2
-	end
-
-	local function IsDruidTank()
-	-- idea taken from addon 'ElitistJerks'
-		local tankTalents = (getTalentpointsSpent(57881) >= 2 and 1 or 0) +		-- Natural Reaction
-	                    (getTalentpointsSpent(16929) >= 3 and 1 or 0) +		-- Thick Hide
-						(getTalentpointsSpent(61336) >= 1 and 1 or 0) +		-- Survival Instincts
-						(getTalentpointsSpent(33856) >= 3 and 1 or 0) +		-- Survival of the Fittest
-						(getTalentpointsSpent(57877) >= 3 and 1 or 0)		-- Protector of the Pack
-		return tankTalents >= 4
-	end
-
-	function bossModPrototype:IsTank()
-		if UnitLevel("player") >= 62 then
-			return (select(2, UnitClass("player")) == "WARRIOR" and select(3, GetTalentTabInfo(3)) >= 51)
-     		or (select(2, UnitClass("player")) == "DEATHKNIGHT" and IsDeathKnightTank())
-			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(2)) >= 51)
-			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 51 and IsDruidTank())
-		else
-			return (select(2, UnitClass("player")) == "WARRIOR")
-     		or (select(2, UnitClass("player")) == "DEATHKNIGHT")
-			or (select(2, UnitClass("player")) == "PALADIN")
-			or (select(2, UnitClass("player")) == "DRUID")
-		end
-	end
-
-	function bossModPrototype:IsHealer()
-		if UnitLevel("player") >= 62 then
-			return (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 51)
-     		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(3)) >= 51)
-			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(3)) >= 51)
-			or (select(2, UnitClass("player")) == "PRIEST" and select(3, GetTalentTabInfo(3)) < 51)
-		else
-			return (select(2, UnitClass("player")) == "PALADIN")
-     		or (select(2, UnitClass("player")) == "SHAMAN")
-			or (select(2, UnitClass("player")) == "DRUID")
-			or (select(2, UnitClass("player")) == "PRIEST")
-		end
-	end
 end
---These don't matter since they don't check talents
+
 function bossModPrototype:IsPhysical()
 	return self:IsMelee() or select(2, UnitClass("player")) == "HUNTER"
 end
@@ -2812,6 +2538,39 @@ end
 function bossModPrototype:CanRemoveEnrage()
 	return select(2, UnitClass("player")) == "HUNTER" or select(2, UnitClass("player")) == "ROGUE"
 end
+
+local function IsDeathKnightTank()
+	-- idea taken from addon 'ElitistJerks'
+	local tankTalents = (getTalentpointsSpent(16271) >= 5 and 1 or 0) +		-- Anticipation
+	                    (getTalentpointsSpent(49042) >= 5 and 1 or 0) +		-- Toughness
+						(getTalentpointsSpent(55225) >= 5 and 1 or 0)		-- Blade Barrier
+	return tankTalents >= 2
+end
+
+local function IsDruidTank()
+	-- idea taken from addon 'ElitistJerks'
+	local tankTalents = (getTalentpointsSpent(57881) >= 2 and 1 or 0) +		-- Natural Reaction
+	                    (getTalentpointsSpent(16929) >= 3 and 1 or 0) +		-- Thick Hide
+						(getTalentpointsSpent(61336) >= 1 and 1 or 0) +		-- Survival Instincts
+						(getTalentpointsSpent(57877) >= 3 and 1 or 0)		-- Protector of the Pack
+	return tankTalents >= 3
+end
+
+function bossModPrototype:IsTank()
+	return (select(2, UnitClass("player")) == "WARRIOR" and select(3, GetTalentTabInfo(3)) >= 51)
+     		or (select(2, UnitClass("player")) == "DEATHKNIGHT" and IsDeathKnightTank())
+			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(2)) >= 51)
+			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 51 and IsDruidTank())
+end
+
+function bossModPrototype:IsHealer()
+	return (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 51)
+     		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(3)) >= 51)
+			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(3)) >= 51)
+			or (select(2, UnitClass("player")) == "PRIEST" and select(3, GetTalentTabInfo(3)) < 51)
+end
+
+
 -------------------------
 --  Boss Health Frame  --
 -------------------------
@@ -2833,7 +2592,7 @@ do
 
 	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
-			if self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces and (IsRaidLeader() or (IsPartyLeader() and GetNumPartyMembers() >= 1)) then
+			if self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces and (DBM:GetRaidRank() > 0 or (GetNumRaidMembers() == 0 and GetNumPartyMembers() >= 1)) then
 				local message = pformat(self.text, ...)
 				message = message:gsub("|3%-%d%((.-)%)", "%1") -- for |3-id(text) encoding in russian localization
 				SendChatMessage(("*** %s ***"):format(message), GetNumRaidMembers() > 0 and "RAID_WARNING" or "PARTY")
@@ -2907,7 +2666,7 @@ do
 	
 	-- new constructor (auto-localized warnings and options, yay!)
 	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime)
-		spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
+		spellName = GetSpellInfo(spellId) or "unknown"
 		icon = icon or spellId
 		local text
 		if announceType == "cast" then
@@ -3096,7 +2855,7 @@ do
 	end
 
 	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound)
-		spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
+		spellName = GetSpellInfo(spellId) or "unknown"
 		local text = DBM_CORE_AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName) 
 		local obj = setmetatable( -- todo: fix duplicate code
 			{
@@ -3711,14 +3470,8 @@ function bossModPrototype:GetBossHPString(cId)
 	for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
 		local unitId = ((i == 0) and "target") or idType..i.."target"
 		local guid = UnitGUID(unitId)
-		if is_cata or is_china then
-			if guid and (tonumber(guid:sub(7, 10), 16)) == cId then
-				return math.floor(UnitHealth(unitId)/UnitHealthMax(unitId) * 100).."%"
-			end
-		else
-			if guid and (tonumber(guid:sub(9, 12), 16)) == cId then
-				return math.floor(UnitHealth(unitId)/UnitHealthMax(unitId) * 100).."%"
-			end
+		if guid and tonumber(guid:sub(9, 12), 16) == cId then
+			return math.floor(UnitHealth(unitId)/UnitHealthMax(unitId) * 100).."%"
 		end
 	end
 	return DBM_CORE_UNKNOWN
@@ -3911,8 +3664,7 @@ do
 	local defaultOptionLocalization = {
 		__index = setmetatable({
 			timer_berserk = DBM_CORE_OPTION_TIMER_BERSERK,
-			HealthFrame = DBM_CORE_OPTION_HEALTH_FRAME,
-			SpeedKillTimer = DBM_SPEED_KILL_TIMER_OPTION
+			HealthFrame = DBM_CORE_OPTION_HEALTH_FRAME
 		}, returnKey)
 	}
 	local defaultMiscLocalization = {

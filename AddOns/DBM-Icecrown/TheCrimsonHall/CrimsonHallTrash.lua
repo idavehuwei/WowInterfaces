@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("CrimsonHallTrash", "DBM-Icecrown", 3)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4494 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 3933 $"):sub(12, -3))
 mod:SetUsedIcons(1, 2)
 
 mod:RegisterEvents(
@@ -30,7 +30,7 @@ local function warnBloodMirrorTargets()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(70451) and args:IsDestTypePlayer() then
+	if args:IsSpellID(70451) then
 		BloodMirrorTargets[#BloodMirrorTargets + 1] = args.destName
 		timerBloodMirror:Start(args.destName)
 		if self.Options.BloodMirrorIcon then
@@ -46,7 +46,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(70432) then
 		warnBloodSap:Show(args.destName)
 		timerBloodSap:Start(args.destName)
-	elseif args:IsSpellID(70645) and args:IsDestTypePlayer() then
+	elseif args:IsSpellID(70645) then
 		warnChainsofShadow:Show(args.destName)
 		timerChainsofShadow:Start(args.destName)
 	end

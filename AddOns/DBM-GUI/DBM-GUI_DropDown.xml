@@ -112,10 +112,10 @@
 				self:OnClick()
 			</OnClick>
 			<OnEnter>
-				_G[self:GetName().."Highlight"]:Show();
+				getglobal(self:GetName().."Highlight"):Show();
 			</OnEnter>
 			<OnLeave>
-				_G[self:GetName().."Highlight"]:Hide();
+				getglobal(self:GetName().."Highlight"):Hide();
 			</OnLeave>
 		</Scripts>
 		<ButtonText name="$parentNormalText">

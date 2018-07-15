@@ -1,5 +1,4 @@
 ## Interface: 30300
-## X-Compatible-With: 40000 
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Naxxramas|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Naxxramas|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Наксрамас|r
@@ -28,14 +27,29 @@
 ## X-DBM-Mod-Name-zhCN: 纳克萨玛斯
 ## X-DBM-Mod-Name-koKR: 낙스라마스
 ## X-DBM-Mod-Name-esES: Naxxramas
-## X-DBM-Mod-Sort: 206
-## X-DBM-Mod-LoadZoneID: 536
+## X-DBM-Mod-Sort: 6
+--## X-DBM-Mod-LoadZoneID: 536
 ## X-DuowanAddon: 团队副本
 ## X-Revision: Duowan
 
+## X-DBM-Mod-LoadZone: Naxxramas
+## X-DBM-Mod-LoadZone-frFR: Naxxramas
+## X-DBM-Mod-LoadZone-deDE: Naxxramas
+## X-DBM-Mod-LoadZone-ruRU: Наксрамас
+## X-DBM-Mod-LoadZone-zhTW: 納克薩瑪斯
+## X-DBM-Mod-LoadZone-zhCN: 纳克萨玛斯
+## X-DBM-Mod-LoadZone-koKR: 낙스라마스
+## X-DBM-Mod-LoadZone-esES: Naxxramas
+## X-DBM-Mod-LoadZone-esMX: Naxxramas
+
 localization.en.lua
+localization.de.lua
+localization.fr.lua
+localization.ru.lua
 localization.tw.lua
 localization.cn.lua
+localization.kr.lua
+localization.es.lua
 MapSizes.lua
 ArachnidQuarter\Anub'Rekhan.lua
 ArachnidQuarter\Faerlina.lua

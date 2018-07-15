@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Archavon", "DBM-VoA")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4460 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4264 $"):sub(12, -3))
 mod:SetCreatureID(31125)
 
 mod:RegisterCombat("combat")
@@ -54,8 +54,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
-	if msg and msg:match(L.TankSwitch) or msg:find(L.TankSwitch) then
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	local target = msg and msg:match(L.TankSwitch) or msg:find(L.TankSwitch)
+	if target then
 		warnGrab:Show(target)
 	end
 end

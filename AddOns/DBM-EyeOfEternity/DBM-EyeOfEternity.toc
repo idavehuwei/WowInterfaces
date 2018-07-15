@@ -1,5 +1,4 @@
 ﻿## Interface: 30300
-## X-Compatible-With: 40000 
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eye of Eternity|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eye of Eternity|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Око Вечности|r
@@ -22,13 +21,28 @@
 ## X-DBM-Mod-Name-koKR: 영원의 눈
 ## X-DBM-Mod-Name-esES: El Ojo de la Eternidad
 ## X-DBM-Mod-Name-esMXS: El Ojo de la Eternidad
-## X-DBM-Mod-Sort: 205
-## X-DBM-Mod-LoadZoneID: 528
+## X-DBM-Mod-Sort: 5
+--## X-DBM-Mod-LoadZoneID: 528
 ## X-DuowanAddon: 团队副本
 ## X-Revision: Duowan
 
+## X-DBM-Mod-LoadZone: The Eye of Eternity
+## X-DBM-Mod-LoadZone-frFR: L'Œil de l'éternité
+## X-DBM-Mod-LoadZone-deDE: Das Auge der Ewigkeit
+## X-DBM-Mod-LoadZone-ruRU: Око Вечности
+## X-DBM-Mod-LoadZone-zhTW: 永恆之眼
+## X-DBM-Mod-LoadZone-zhCN: 永恒之眼
+## X-DBM-Mod-LoadZone-koKR: 영원의 눈
+## X-DBM-Mod-LoadZone-esES: El Ojo de la Eternidad
+## X-DBM-Mod-LoadZone-esMX: El Ojo de la Eternidad
+
 localization.en.lua
+localization.fr.lua
+localization.de.lua
+localization.ru.lua
 localization.tw.lua
 localization.cn.lua
+localization.kr.lua
+localization.es.lua
 MapSizes.lua
 Malygos.lua

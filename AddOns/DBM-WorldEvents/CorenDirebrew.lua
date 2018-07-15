@@ -1,35 +1,31 @@
 local mod	= DBM:NewMod("CorenDirebrew", "DBM-WorldEvents")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4540 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4181 $"):sub(12, -3))
 mod:SetCreatureID(23872)
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
+	"SPELL_CAST_START",
 	"SPELL_AURA_REMOVED"
 )
 
-local warnDisarm			= mod:NewCastAnnounce(47310, 2, nil, nil, mod:IsMelee())
 local warnBarrel			= mod:NewTargetAnnounce(51413, 4)
 local timerBarrel			= mod:NewTargetTimer(8, 51413)
 
-local specWarnDisarm		= mod:NewSpecialWarningRun(47310, false)
+local specWarnDisarm			= mod:NewSpecialWarningRun(47310, mod:IsMelee())
 local specWarnBrew			= mod:NewSpecialWarning("specWarnBrew")
-local specWarnBrewStun		= mod:NewSpecialWarning("specWarnBrewStun")
+local specWarnBrewStun			= mod:NewSpecialWarning("specWarnBrewStun")
 
 local timerBrew				= mod:NewTargetTimer(10, 47376)
 local timerBrewStun			= mod:NewTargetTimer(6, 47340)
-local timerDisarm			= mod:NewCastTimer(4, 47310)
 
-mod:AddBoolOption("YellOnBarrel", mod:IsTank(), "announce")
+mod:AddBoolOption("YellOnBarrel", true, "announce")
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(47310) then
-		warnDisarm:Show()
-		timerDisarm:Start()
 		specWarnDisarm:Show()
 	end
 end

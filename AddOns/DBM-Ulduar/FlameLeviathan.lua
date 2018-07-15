@@ -26,7 +26,7 @@ local timerFlameVents		= mod:NewCastTimer(10, 62396)
 local timerPursued			= mod:NewTargetTimer(30, 62374)
 
 local sndWOP				= mod:NewSound(nil, "SoundWOP", true)
---local soundPursued = mod:NewSound(62374)
+local soundPursued = mod:NewSound(62374)
 
 local guids = {}
 local function buildGuidTable()

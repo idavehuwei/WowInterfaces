@@ -46,6 +46,7 @@ function mod:SPELL_CAST_START(args)
 		warnFlashFreeze:Show()
 		timerFlashFrCD:Start()
 		if self.Options.PlaySoundOnFlashFreeze then
+			--PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 			PlaySoundFile("Interface\\AddOns\\DBM-Core\\extrasounds\\bluecircle.mp3")
 		end
 	end

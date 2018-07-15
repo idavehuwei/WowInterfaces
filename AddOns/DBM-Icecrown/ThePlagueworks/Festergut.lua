@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Festergut", "DBM-Icecrown", 2)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4534 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4404 $"):sub(12, -3))
 mod:SetCreatureID(36626)
 mod:RegisterCombat("combat")
 mod:SetUsedIcons(6, 7, 8)
@@ -23,7 +23,7 @@ local specWarnGasSpore		= mod:NewSpecialWarningYou(69279)
 local specWarnVileGas		= mod:NewSpecialWarningYou(71218)
 local specWarnGastricBloat	= mod:NewSpecialWarningStack(72551, nil, 9)
 local specWarnInhaled3		= mod:NewSpecialWarningStack(71912, mod:IsTank(), 3)
-local specWarnGoo			= mod:NewSpecialWarningSpell(72549, mod:IsMelee())
+local specWarnGoo			= mod:NewSpecialWarningSpell(72549, false)
 
 local timerGasSpore			= mod:NewBuffActiveTimer(12, 69279)
 local timerVileGas			= mod:NewBuffActiveTimer(6, 71218, nil, mod:IsRanged())
@@ -52,10 +52,6 @@ local gasSporeCast 	= 0
 local lastGoo = 0
 local warnedfailed = false
 
-local function ClearSporeTargets()
-	table.wipe(gasSporeIconTargets)
-end
-
 do
 	local function sort_by_group(v1, v2)
 		return DBM:GetRaidSubgroup(UnitName(v1)) < DBM:GetRaidSubgroup(UnitName(v2))
@@ -71,7 +67,7 @@ do
 				self:SetIcon(UnitName(v), gasSporeIcon, 12)
 				gasSporeIcon = gasSporeIcon - 1
 			end
-			self:Schedule(5, ClearSporeTargets)
+			table.wipe(gasSporeIconTargets)
 		end
 	end
 end
@@ -98,7 +94,6 @@ function mod:OnCombatStart(delay)
 	timerGasSporeCD:Start(20-delay)--This may need tweaking
 	table.wipe(gasSporeTargets)
 	table.wipe(vileGasTargets)
-	table.wipe(gasSporeIconTargets)
 	gasSporeIcon = 8
 	gasSporeCast = 0
 	lastGoo = 0
@@ -162,13 +157,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnGasSpore then
 			table.insert(gasSporeIconTargets, DBM:GetRaidUnitId(args.destName))
-			self:UnscheduleMethod("SetSporeIcons")
 			if ((mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) and #gasSporeIconTargets >= 3) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #gasSporeIconTargets >= 2) then
 				self:SetSporeIcons()--Sort and fire as early as possible once we have all targets.
-			else
-				if mod:LatencyCheck() then--Icon sorting is still sensitive and should not be done by laggy members that don't have all targets.
-					self:ScheduleMethod(0.3, "SetSporeIcons")
-				end
 			end
 		end
 		self:Unschedule(warnGasSporeTargets)
@@ -190,8 +180,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnGastricBloat:Show(args.spellName, args.destName, args.amount or 1)
 		timerGastricBloat:Start(args.destName)
 		timerGastricBloatCD:Start()
---		if args:IsPlayer() and (args.amount or 1) >= 9 then
-		if (args.amount or 1) >= 9 then
+		if args:IsPlayer() and (args.amount or 1) >= 9 then
 			specWarnGastricBloat:Show(args.amount)
 			if mod:IsTank() or mod:IsHealer() then
 				sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\changemt.mp3")
@@ -217,3 +206,4 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+

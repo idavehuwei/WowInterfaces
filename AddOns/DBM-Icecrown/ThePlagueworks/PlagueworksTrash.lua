@@ -13,8 +13,8 @@ mod:RegisterEvents(
 )
 
 local warnZombies		= mod:NewSpellAnnounce(71159, 2)
-local warnMortalWound	= mod:NewAnnounce("WarnMortalWound", 2, 71127, false)
-local warnDecimateSoon	= mod:NewSoonAnnounce(71123, 3)
+local warnMortalWound		= mod:NewAnnounce("WarnMortalWound", 2, 71127, false)
+local warnDecimateSoon		= mod:NewSoonAnnounce(71123, 3)
 
 local specWarnDecimate		= mod:NewSpecialWarningSpell(71123)
 local specWarnMortalWound	= mod:NewSpecialWarningStack(71127, nil, 5)
@@ -22,11 +22,11 @@ local specWarnTrap			= mod:NewSpecialWarning("SpecWarnTrap")
 local specWarnBlightBomb	= mod:NewSpecialWarningSpell(71088)
 
 local timerZombies		= mod:NewNextTimer(20, 71159)
-local timerMortalWound	= mod:NewTargetTimer(15, 71127)
+local timerMortalWound		= mod:NewTargetTimer(15, 71127)
 local timerDecimate		= mod:NewNextTimer(33, 71123)
-local timerBlightBomb	= mod:NewCastTimer(5, 71088)
+local timerBlightBomb		= mod:NewCastTimer(5, 71088)
 
-local sndWOP				= mod:NewSound(nil, "SoundWOP", true)
+local sndWOP			= mod:NewSound(nil, "SoundWOP", true)
 
 mod:RemoveOption("HealthFrame")
 
@@ -36,8 +36,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(71127) then
 		warnMortalWound:Show(args.spellName, args.destName, args.amount or 1)
 		timerMortalWound:Start(args.destName)
---		if args:IsPlayer() and (args.amount or 1) >= 5 then
-		if (args.amount or 1) >= 5 then
+		if args:IsPlayer() and (args.amount or 1) >= 5 then
 			specWarnMortalWound:Show(args.amount)
 			if args.amount == 7 or args.amount == 9 then	
 				if mod:IsTank() or mod:IsHealer() then		

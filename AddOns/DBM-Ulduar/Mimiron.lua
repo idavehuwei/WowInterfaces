@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Mimiron", "DBM-Ulduar")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4523 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4338 $"):sub(12, -3))
 mod:SetCreatureID(33432)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
@@ -147,6 +147,7 @@ function mod:SPELL_CAST_START(args)
 		timerShockBlast:Start()
 		timerNextShockblast:Start()
 		if self.Options.PlaySoundOnShockBlast then
+			--PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 			PlaySoundFile("Interface\\AddOns\\DBM-Core\\extrasounds\\boomrun.mp3")
 		end
 	end
@@ -189,6 +190,7 @@ local function show_warning_for_spinup()
 	if is_spinningUp then
 		warnDarkGlare:Show()
 		if mod.Options.PlaySoundOnDarkGlare then
+			--PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 			PlaySoundFile("Interface\\AddOns\\DBM-Core\\extrasounds\\spinrun.mp3")
 		end
 	end
@@ -280,7 +282,7 @@ do
 		if GetTime() - lastPhaseChange > 30 and (cid == 33432 or cid == 33651 or cid == 33670) then
 			if args.timestamp == last then	-- all events in the same tick to detect the phases earlier (than the yell) and localization-independent
 				count = count + 1
-				if (mod:IsDifficulty("normal10") and count > 4) or (mod:IsDifficulty("normal25") and count > 9) then
+				if (mod:IsDifficulty("heroic10") and count > 4) or (mod:IsDifficulty("heroic25") and count > 9) then
 					lastPhaseChange = GetTime()
 					self:NextPhase()
 				end

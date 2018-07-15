@@ -2,7 +2,7 @@
 local mod	= DBM:NewMod("Thaddius", "DBM-Naxx", 2)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4534 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2869 $"):sub(12, -3))
 mod:SetCreatureID(15928)
 
 mod:RegisterCombat("yell", L.Yell)
@@ -15,17 +15,16 @@ mod:RegisterEvents(
 	"UNIT_AURA"
 )
 
-local warnShiftSoon			= mod:NewPreWarnAnnounce(28089, 5, 3)
-local warnShiftCasting		= mod:NewCastAnnounce(28089, 4)
+local warnShiftCasting		= mod:NewCastAnnounce(28089, 3)
 local warnChargeChanged		= mod:NewSpecialWarning("WarningChargeChanged")
 local warnChargeNotChanged	= mod:NewSpecialWarning("WarningChargeNotChanged", false)
-local warnThrow				= mod:NewSpellAnnounce(28338, 2)
-local warnThrowSoon			= mod:NewSoonAnnounce(28338, 1)
+local warnThrow			= mod:NewSpellAnnounce(28338, 2)
+local warnThrowSoon		= mod:NewSoonAnnounce(28338, 1)
 
-local enrageTimer			= mod:NewBerserkTimer(365)
+local enrageTimer		= mod:NewBerserkTimer(365)
 local timerNextShift		= mod:NewNextTimer(30, 28089)
 local timerShiftCast		= mod:NewCastTimer(3, 28089)
-local timerThrow			= mod:NewNextTimer(20.6, 28338)
+local timerThrow		= mod:NewNextTimer(20.6, 28338)
 
 mod:AddBoolOption("ArrowsEnabled", false, "Arrows")
 mod:AddBoolOption("ArrowsRightLeft", false, "Arrows")
@@ -57,7 +56,6 @@ function mod:SPELL_CAST_START(args)
 		timerNextShift:Start()
 		timerShiftCast:Start()
 		warnShiftCasting:Show()
-		warnShiftSoon:Schedule(25)
 		lastShift = GetTime()
 	end
 end

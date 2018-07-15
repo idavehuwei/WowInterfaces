@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("BlackKnight", "DBM-Party-WotLK", 13)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4499 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4440 $"):sub(12, -3))
 mod:SetCreatureID(35451, 10000)		-- work around, DBM API failes to handle a Boss to die, rebirth, die again, rebirth again and die to loot...
 mod:SetUsedIcons(8)
 
@@ -32,20 +32,15 @@ mod:AddBoolOption("SetIconOnMarkedTarget", true)
 mod:AddBoolOption("AchievementCheck", false, "announce")
 
 local warnedfailed = false
-local lastexplode = 0
 
 function mod:OnCombatStart(delay)
 	warnedfailed = false
-	lastexplode = 0
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(67729, 67886) and GetTime() - lastexplode > 2 then
+	if args:IsSpellID(67729, 67886) then							-- Explode (elite explodes self, not BK. Phase 2)
 		warnExplode:Show()
-		specWarnExplode:Show()
-		soundExplode:Play()
-		timerExplode:Start()
-		lastexplode = GetTime()
+		timerExplode:Start(args.destName)
 	end
 end
 
@@ -73,18 +68,21 @@ function mod:SPELL_MISSED(args)
 	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(67823, 67882) and args:IsDestTypePlayer() then-- Marked For Death
-		if self.Options.SetIconOnMarkedTarget then
-			self:SetIcon(args.destName, 8, 10)
+do
+	local lastexplode = 0
+	function mod:SPELL_AURA_APPLIED(args)
+		if args:IsSpellID(67823, 67882) then	-- Marked For Death
+			if self.Options.SetIconOnMarkedTarget then
+				self:SetIcon(args.destName, 8, 10)
+			end
+			warnMarked:Show(args.destName)
+			timerMarked:Show(args.destName)
+		elseif args:IsSpellID(67751) and time() - lastexplode > 2 then	-- Ghoul Explode (BK exlodes Army of the dead. Phase 3)
+			warnGhoulExplode:Show(args.destName)
+			specWarnExplode:Show()
+			soundExplode:Play()
+			lastexplode = time()
 		end
-		warnMarked:Show(args.destName)
-		timerMarked:Show(args.destName)
-	elseif args:IsSpellID(67751) and GetTime() - lastexplode > 2 then	-- Ghoul Explode (BK exlodes Army of the dead. Phase 3)
-		warnGhoulExplode:Show(args.destName)
-		specWarnExplode:Show()
-		soundExplode:Play()
-		lastexplode = GetTime()
 	end
 end
 

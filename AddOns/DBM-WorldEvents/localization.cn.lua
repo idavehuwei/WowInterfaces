@@ -17,6 +17,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
+	--specWarnBrew		= "为黑鐵啤酒辣妹的啤酒显示特别警报",
+	--specWarnBrewStun	= "为黑鐵啤酒辣妹昏迷显示特别警报",
+	--YellOnBarrel		= "当你中了空桶(晕)时大喊"
 	specWarnBrew		= "为$spell:47376显示特别警报",
 	specWarnBrewStun	= "为$spell:47340显示特别警报",
 	YellOnBarrel		= "当你中了$spell:51413时大喊"

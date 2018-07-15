@@ -1,12 +1,11 @@
 ## Interface: 30300
-## X-Compatible-With: 40000 
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Onyxia|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Repaire d'Onyxia|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ониксия|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Onyxia|r
 ## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Onyxia|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奧妮克希亞|r
-## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奥妮克希亚|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奥妮克希亚的巢穴|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0오닉시아|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Onyxias Hort|r
 ## LoadOnDemand: 1
@@ -15,7 +14,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Has-Heroic-Mode: 0
-## X-DBM-Mod-Sort: 203
+## X-DBM-Mod-Sort: 3
 ## X-DBM-Mod-Name: Onyxia's Lair
 ## X-DBM-Mod-Name-frFR: Repaire d'Onyxia
 ## X-DBM-Mod-Name-ruRU: Логово Ониксии
@@ -25,7 +24,6 @@
 ## X-DBM-Mod-Name-zhCN: 奥妮克希亚的巢穴
 ## X-DBM-Mod-Name-koKR: 오닉시아의 둥지
 ## X-DBM-Mod-Name-deDE: Onyxias Hort
---## X-DBM-Mod-LoadZoneID: 718
 ## X-DBM-Mod-LoadZone: Onyxia's Lair
 ## X-DBM-Mod-LoadZone-frFR: Repaire d'Onyxia
 ## X-DBM-Mod-LoadZone-ruRU: Логово Ониксии
@@ -39,7 +37,12 @@
 ## X-Revision: Duowan
 
 localization.en.lua
+localization.de.lua
+localization.fr.lua
+localization.ru.lua
 localization.tw.lua
 localization.cn.lua
-MapSizes.lua
+localization.kr.lua
+localization.tw.lua
+localization.es.lua
 Onyxia.lua

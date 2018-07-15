@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("GunshipBattle", "DBM-Icecrown", 1)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4551 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4380 $"):sub(12, -3))
 local AddsIcon
 if UnitFactionGroup("player") == "Alliance" then
 	mod:RegisterCombat("yell", L.PullAlliance)
@@ -34,15 +34,13 @@ local warnWoundingStrike	= mod:NewTargetAnnounce(69651, 2)
 local warnAddsSoon			= mod:NewAnnounce("WarnAddsSoon", 2, AddsIcon)
 
 local timerCombatStart		= mod:NewTimer(45, "TimerCombatStart", 2457)
-local timerBelowZeroCD		= mod:NewNextTimer(37.5, 69705)
+local timerBelowZeroCD		= mod:NewNextTimer(35, 69705)
 local timerBattleFuryActive	= mod:NewBuffActiveTimer(17, 72306, nil, mod:IsTank() or mod:IsHealer())
 local timerAdds				= mod:NewTimer(60, "TimerAdds", AddsIcon)
 
 local sndWOP				= mod:NewSound(nil, "SoundWOP", true)
 
 mod:RemoveOption("HealthFrame")
-
-local firstMage = false
 
 function mod:Adds()
 	timerAdds:Start()
@@ -55,10 +53,24 @@ end
 function mod:OnCombatStart(delay)
 	DBM.BossHealth:Clear()
 	timerCombatStart:Show(-delay)
-	timerAdds:Start(60-delay)--First adds might come early or late so timer should be taken as a proximity only.
-	warnAddsSoon:Schedule(55)
-	self:ScheduleMethod(60, "Adds")
-	firstMage = false
+	if UnitFactionGroup("player") == "Alliance" then
+		timerAdds:Start(62-delay)
+		warnAddsSoon:Schedule(57)
+		self:ScheduleMethod(62, "Adds")
+		timerBelowZeroCD:Start(75-delay)--This doesn't make sense. Need more logs to verify
+	else
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerAdds:Start(63-delay)
+			warnAddsSoon:Schedule(58)
+			self:ScheduleMethod(63, "Adds")
+			timerBelowZeroCD:Start(102-delay)--This doesn't make sense. Need more logs to verify
+		else
+			timerAdds:Start(57-delay)
+			warnAddsSoon:Schedule(52)
+			self:ScheduleMethod(57, "Adds")
+			timerBelowZeroCD:Start(80-delay)--This doesn't make sense. Need more logs to verify
+		end
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -95,7 +107,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69705) then
-		warnBelowZero:Schedule(1)
+		warnBelowZero:Show()
 		sndWOP:Schedule(1, "Interface\\AddOns\\DBM-Core\\extrasounds\\badgun.mp3")
 	end
 end
@@ -103,12 +115,5 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if ((msg == L.AddsAlliance or msg:find(L.AddsAlliance)) or (msg == L.AddsHorde or msg:find(L.AddsHorde))) and self:IsInCombat() then
 		self:Adds()
-	elseif ((msg == L.MageAlliance or msg:find(L.MageAlliance)) or (msg == L.MageHorde or msg:find(L.MageHorde))) and self:IsInCombat() then
-		if not firstMage then
-			timerBelowZeroCD:Start(6.5)
-			firstMage = true
-		else
-			timerBelowZeroCD:Update(29, 35)--Update the below zero timer to correct it with yells since it tends to be off depending on how bad your cannon operators are.
-		end
 	end
 end

@@ -1,7 +1,7 @@
 ﻿local mod	= DBM:NewMod("Sindragosa", "DBM-Icecrown", 4)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4512 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4438 $"):sub(12, -3))
 mod:SetCreatureID(36853)
 mod:RegisterCombat("combat")
 mod:SetMinSyncRevision(3712)
@@ -53,7 +53,7 @@ local sndWOP				= mod:NewSound(nil, "SoundWOP", true)
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
---local soundBlisteringCold = mod:NewSound(70123)
+local soundBlisteringCold = mod:NewSound(70123)
 mod:AddBoolOption("SetIconOnFrostBeacon", true)
 mod:AddBoolOption("SetIconOnUnchainedMagic", true)
 mod:AddBoolOption("ClearIconsOnAirphase", true)
@@ -68,12 +68,7 @@ local warned_P2 = false
 local warnedfailed = false
 local phase = 0
 local unchainedIcons = 7
-local spamBeaconIcon = 0
 local activeBeacons	= false
-
-local function ClearBeaconTargets()
-	table.wipe(beaconIconTargets)
-end
 
 do
 	local function sort_by_group(v1, v2)
@@ -84,13 +79,13 @@ do
 			table.sort(beaconIconTargets, sort_by_group)
 			local beaconIcons = 8
 			for i, v in ipairs(beaconIconTargets) do
---				if self.Options.AnnounceFrostBeaconIcons then
---					SendChatMessage(L.BeaconIconSet:format(beaconIcons, UnitName(v)), "RAID")
---				end
+				if self.Options.AnnounceFrostBeaconIcons then
+					SendChatMessage(L.BeaconIconSet:format(beaconIcons, UnitName(v)), "RAID")
+				end
 				self:SetIcon(UnitName(v), beaconIcons)
 				beaconIcons = beaconIcons - 1
 			end
-			self:Schedule(5, ClearBeaconTargets)
+			table.wipe(beaconIconTargets)
 		end
 	end
 end
@@ -154,35 +149,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if phase == 1 and self.Options.SetIconOnFrostBeacon then
 			table.insert(beaconIconTargets, DBM:GetRaidUnitId(args.destName))
-			self:UnscheduleMethod("SetBeaconIcons")
 			if (mod:IsDifficulty("normal25") and #beaconIconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconIconTargets >= 6) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #beaconIconTargets >= 2) then
 				self:SetBeaconIcons()--Sort and fire as early as possible once we have all targets.
-			else
-				if mod:LatencyCheck() then--Icon sorting is still sensitive and should not be done by laggy members that don't have all targets.
-					self:ScheduleMethod(0.3, "SetBeaconIcons")
-				end
-			end
-			if self.Options.AnnounceFrostBeaconIcons then
-				if GetTime() - spamBeaconIcon > 30 then
-					if mod:IsDifficulty("heroic25") then
-						SendChatMessage(L.BeaconIconChatHeroic1, "RAID_WARNING")
-						SendChatMessage(L.BeaconIconChatHeroic2, "RAID_WARNING")
-						spamBeaconIcon = GetTime()
-					elseif mod:IsDifficulty("normal25") then
-						SendChatMessage(L.BeaconIconChatNormal1, "RAID_WARNING")
-						SendChatMessage(L.BeaconIconChatNormal2, "RAID_WARNING")
-						spamBeaconIcon = GetTime()
-					end
-				end
 			end
 		end
 		if phase == 2 then--Phase 2 there is only one icon/beacon, don't use sorting method if we don't have to.
 			timerNextBeacon:Start()
 			if self.Options.SetIconOnFrostBeacon then
 				self:SetIcon(args.destName, 8)
---				if self.Options.AnnounceFrostBeaconIcons then
---					SendChatMessage(L.BeaconIconSet:format(8, args.destName), "RAID")
---				end
+				if self.Options.AnnounceFrostBeaconIcons then
+					SendChatMessage(L.BeaconIconSet:format(8, args.destName), "RAID")
+				end
 			end
 		end
 		self:Unschedule(warnBeaconTargets)
@@ -275,10 +252,6 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(69762) then
 		if self.Options.SetIconOnUnchainedMagic and not activeBeacons then
-			self:SetIcon(args.destName, 0)
-		end
-	elseif args:IsSpellID(70157) then
-		if self.Options.SetIconOnFrostBeacon then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif args:IsSpellID(70126) then

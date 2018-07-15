@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Rotface", "DBM-Icecrown", 2)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 4558 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 4408 $"):sub(12, -3))
 mod:SetCreatureID(36627)
 mod:SetUsedIcons(7, 8)
 mod:RegisterCombat("combat")
@@ -22,12 +22,12 @@ local InfectionIcon	-- alternating between 2 icons (2 debuffs can be up at the s
 local warnSlimeSpray			= mod:NewSpellAnnounce(69508, 2)
 local warnMutatedInfection		= mod:NewTargetAnnounce(71224, 4)
 local warnRadiatingOoze			= mod:NewSpellAnnounce(69760, 3)
-local warnOozeSpawn				= mod:NewAnnounce("WarnOozeSpawn", 1)
+local warnOozeSpawn			= mod:NewAnnounce("WarnOozeSpawn", 1)
 local warnStickyOoze			= mod:NewSpellAnnounce(69774, 1)
 local warnUnstableOoze			= mod:NewAnnounce("WarnUnstableOoze", 2, 69558)
-local warnVileGas				= mod:NewTargetAnnounce(72272, 3)
+local warnVileGas			= mod:NewTargetAnnounce(72272, 3)
 
-local specWarnMutatedInfection	= mod:NewSpecialWarningYou(71224)
+local specWarnMutatedInfection		= mod:NewSpecialWarningYou(71224)
 local specWarnStickyOoze		= mod:NewSpecialWarningMove(69774)
 local specWarnOozeExplosion		= mod:NewSpecialWarningRun(69839)
 local specWarnSlimeSpray		= mod:NewSpecialWarningSpell(69508, false)--For people that need a bigger warning to move
@@ -44,7 +44,7 @@ local timerVileGasCD			= mod:NewNextTimer(30, 72272)
 
 local sndWOP				= mod:NewSound(nil, "SoundWOP", true)
 
---local soundMutatedInfection			= mod:NewSound(71224)
+local soundMutatedInfection		= mod:NewSound(71224)
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 mod:AddBoolOption("InfectionIcon", true)
 mod:AddBoolOption("TankArrow")
@@ -75,10 +75,13 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.TankArrow then
-		DBM.Arrow:Hide()
-	end
 end
+--this function seems rathor limited but not entirely hopeless. i imagine it only works if you or someone else targets the big ooze, but that pretty much means it's useless if kiter doesn't have dbm.
+--[[function mod:SlimeTank()
+	local target = self:GetThreatTarget(36897)
+	if not target then return end
+	self:SendSync("OozeTank", target)
+end--]]
 
 function mod:WallSlime()
 	if self:IsInCombat() then
@@ -173,7 +176,8 @@ function mod:SPELL_DAMAGE(args)
 		sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\runaway.mp3")
 	elseif args:IsSpellID(69507, 71213, 73189, 73190) and args:IsPlayer() then
 		sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\runaway.mp3")
-	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() and not (args:IsSpellID(50288) or args:IsSpellID(53189, 53190, 53194, 53195)) then--Any spell damage except for starfall
+	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() and not args:IsSpellID(53189, 53190, 53194, 53195) then--Any spell damage except for starfall (ranks 3 and 4)
+--		self:ScheduleMethod(1, "SlimeTank")
 		if args.sourceName ~= UnitName("player") then
 			if self.Options.TankArrow then
 				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
@@ -186,6 +190,7 @@ function mod:SWING_DAMAGE(args)
 	if args:IsPlayer() and args:GetSrcCreatureID() == 36897 then --Little ooze hitting you
 		specWarnLittleOoze:Show()
 	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() then
+--		self:ScheduleMethod(1, "SlimeTank")
 		if args.sourceName ~= UnitName("player") then
 			if self.Options.TankArrow then
 				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
@@ -199,3 +204,13 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		self:WallSlime()
 	end
 end
+
+--[[function mod:OnSync(msg, target)
+	if msg == "OozeTank" then
+		if target ~= UnitName("player") then
+			if self.Options.TankArrow then
+				DBM.Arrow:ShowRunTo(target, 0, 0)
+			end
+		end
+	end
+end--]]
