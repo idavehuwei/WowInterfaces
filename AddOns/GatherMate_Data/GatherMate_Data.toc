@@ -1,5 +1,5 @@
 ﻿## Interface: 30300
-## Notes: Wowhead Data dump for GatherMate 
+## Notes: Wowhead Data dump for GatherMate
 ## Notes-zhTW: Wowhead 資料轉存至採集助手 GatherMate
 ## Notes-zhCN: Wowhead 资料转存至采集助手 GatherMate
 ## Title: GatherMateData
@@ -11,11 +11,14 @@
 ## Version: 1.0
 ## LoadOnDemand: 1
 ## X-Generated-Version: $Revision: 274 $
-## Dependencies: GatherMate
 ## X-Curse-Packaged-Version: v2.25
 ## X-Curse-Project-Name: GatherMate_Data
 ## X-Curse-Project-ID: gathermate_data
 ## X-Curse-Repository-ID: wow/gathermate_data/mainline
+
+## X-DuowanAddon: 地图
+## Dependencies: GatherMate
+## X-Revision: Duowan
 
 MiningData.lua
 HerbalismData.lua

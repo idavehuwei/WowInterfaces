@@ -9,5 +9,6 @@
 ## Dependencies: XBar
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
+## X-DuowanAddon: 职业辅助
 
 XTrackBar.xml
