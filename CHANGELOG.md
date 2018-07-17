@@ -4,6 +4,7 @@
 ## 2018-07-17
 * 更新 GatherMate
 * 添加 GatherHud 插件(屏幕中央显示追踪分布 HUD)
+* 修复 BuyEmAll 某些情况下工作不正常的问题
 
 ## 2018-07-15
 * 修复 TidyPlates 翻译警告
