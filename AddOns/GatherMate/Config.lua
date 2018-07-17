@@ -1,10 +1,10 @@
 ﻿local GatherMate = LibStub("AceAddon-3.0"):GetAddon("GatherMate")
-local Config = GatherMate:NewModule("Config", "AceConsole-3.0", "AceEvent-3.0")
+local Config = GatherMate:NewModule("Config","AceConsole-3.0","AceEvent-3.0")
 local Display = GatherMate:GetModule("Display")
 local L = LibStub("AceLocale-3.0"):GetLocale("GatherMate", false)
 
 -- Databroker support
-local DataBroker = LibStub:GetLibrary("LibDataBroker-1.1", true)
+local DataBroker = LibStub:GetLibrary("LibDataBroker-1.1",true)
 
 --[[
     Code here for configuring the mod, and making the minimap button
@@ -32,21 +32,20 @@ end
 
 
 local prof_options = {
-    ["always"] = L["Always show"],
+    ["always"]          = L["Always show"],
     ["with_profession"] = L["Only with profession"],
-    ["active"] = L["Only while tracking"],
-    ["never"] = L["Never show"],
+    ["active"]          = L["Only while tracking"],
+    ["never"]           = L["Never show"],
 }
-local prof_options2 = {
-    -- For Gas, which doesn't have tracking as a skill
-    ["always"] = L["Always show"],
-    ["with_profession"] = L["Only with profession"],
-    ["never"] = L["Never show"],
+local prof_options2 = { -- For Gas, which doesn't have tracking as a skill
+    ["always"]           = L["Always show"],
+    ["with_profession"]  = L["Only with profession"],
+    ["never"]            = L["Never show"],
 }
 local prof_options3 = {
-    ["always"] = L["Always show"],
-    ["active"] = L["Only while tracking"],
-    ["never"] = L["Never show"],
+    ["always"]          = L["Always show"],
+    ["active"]          = L["Only while tracking"],
+    ["never"]           = L["Never show"],
 }
 
 local options = {}
@@ -55,8 +54,8 @@ local imported = {}
 -- setup the options, we need to reference GatherMate for this
 options.type = "group"
 options.name = "GatherMate"
-options.get = function(k) return db[k.arg] end
-options.set = function(k, v) db[k.arg] = v; Config:UpdateConfig(); end
+options.get = function( k ) return db[k.arg] end
+options.set = function( k, v ) db[k.arg] = v; Config:UpdateConfig(); end
 options.args = {}
 options.plugins = {}
 
@@ -179,7 +178,7 @@ options.args.display.args.general = {
                             local oldAction = GetBindingAction(key)
                             local frame = LibStub("AceConfigDialog-3.0").OpenFrames["GatherMate"]
                             if frame then
-                                if (oldAction ~= "" and oldAction ~= "TOGGLE_GATHERMATE_MINIMAPICONS") then
+                                if ( oldAction ~= "" and oldAction ~= "TOGGLE_GATHERMATE_MINIMAPICONS" ) then
                                     frame:SetStatusText(KEY_UNBOUND_ERROR:format(GetBindingText(oldAction, "BINDING_NAME_")))
                                 else
                                     frame:SetStatusText(KEY_BOUND)
@@ -201,9 +200,7 @@ options.args.display.args.general = {
                     name = L["Icon Scale"],
                     desc = L["Icon scaling, this lets you enlarge or shrink your icons on both the World Map and Minimap."],
                     type = "range",
-                    min = 0.5,
-                    max = 2,
-                    step = 0.01,
+                    min = 0.5, max = 2, step = 0.01,
                     arg = "scale",
                 },
                 iconAlpha = {
@@ -211,9 +208,7 @@ options.args.display.args.general = {
                     name = L["Icon Alpha"],
                     desc = L["Icon alpha value, this lets you change the transparency of the icons. Only applies on World Map."],
                     type = "range",
-                    min = 0.1,
-                    max = 1,
-                    step = 0.05,
+                    min = 0.1, max = 1, step = 0.05,
                     arg = "alpha",
                 },
                 minimapNodeRange = {
@@ -294,9 +289,7 @@ options.args.display.args.general = {
                             name = L["Tracking Distance"],
                             desc = L["The distance in yards to a node before it turns into a tracking circle"],
                             type = "range",
-                            min = 50,
-                            max = 240,
-                            step = 5,
+                            min = 50, max = 240, step = 5,
                             get = options.get,
                             set = options.set,
                             arg = "trackDistance",
@@ -319,28 +312,26 @@ options.args.display.args.general = {
 }
 
 -- Setup some storage arrays by db to sort node names and zones alphabetically
-local sortedFilter = setmetatable({}, {
-    __index = function(t, k)
-        local new = {}
-        if k == "zones" then
-            for name, zonetable in pairs(GatherMate.zoneData) do
+local sortedFilter = setmetatable({}, {__index = function(t, k)
+    local new = {}
+    if k == "zones" then
+        for name, zonetable in pairs(GatherMate.zoneData) do
+            new[name] = name
+        end
+    else
+        local minHarvestTable = GatherMate.nodeMinHarvest[k]
+        for name, id in pairs(GatherMate.nodeIDs[k]) do
+            local lvl = minHarvestTable[id]
+            if lvl then
+                new[name] = "("..lvl..") "..name
+            else
                 new[name] = name
             end
-        else
-            local minHarvestTable = GatherMate.nodeMinHarvest[k]
-            for name, id in pairs(GatherMate.nodeIDs[k]) do
-                local lvl = minHarvestTable[id]
-                if lvl then
-                    new[name] = "(" .. lvl .. ") " .. name
-                else
-                    new[name] = name
-                end
-            end
         end
-        rawset(t, k, new)
-        return new
     end
-})
+    rawset(t, k, new)
+    return new
+end})
 
 -- Setup some helper functions
 local ConfigFilterHelper = {}
@@ -352,7 +343,6 @@ function ConfigFilterHelper:SelectAll(info)
     end
     Config:UpdateConfig()
 end
-
 function ConfigFilterHelper:SelectNone(info)
     local db = db.filter[info.arg]
     local nids = GatherMate.nodeIDs[info.arg]
@@ -361,64 +351,50 @@ function ConfigFilterHelper:SelectNone(info)
     end
     Config:UpdateConfig()
 end
-
 function ConfigFilterHelper:SetState(info, k, state)
     db.filter[info.arg][GatherMate.nodeIDs[info.arg][k]] = state
     Config:UpdateConfig()
 end
-
 function ConfigFilterHelper:GetState(info, k)
     return db.filter[info.arg][GatherMate.nodeIDs[info.arg][k]]
 end
 
 local ImportHelper = {}
 
-function ImportHelper:GetImportStyle(info, k)
+function ImportHelper:GetImportStyle(info,k)
     return db["importers"][info.arg].Style
 end
-
-function ImportHelper:SetImportStyle(info, k, state)
+function ImportHelper:SetImportStyle(info,k,state)
     db["importers"][info.arg].Style = k
 end
-
-function ImportHelper:GetImportDatabase(info, k)
+function ImportHelper:GetImportDatabase(info,k)
     return db["importers"][info.arg].Databases[k]
 end
-
-function ImportHelper:SetImportDatabase(info, k, state)
-    print("k, state", k, state)
+function ImportHelper:SetImportDatabase(info,k,state)
     db["importers"][info.arg].Databases[k] = state
 end
-
 function ImportHelper:GetAutoImport(info, k)
     return db["importers"][info.arg].autoImport
 end
-
-function ImportHelper:SetAutoImport(info, state)
+function ImportHelper:SetAutoImport(info,state)
     db["importers"][info.arg].autoImport = state
 end
-
-function ImportHelper:GetBCOnly(info, k)
+function ImportHelper:GetBCOnly(info,k)
     return db["importers"][info.arg].bcOnly
 end
-
-function ImportHelper:SetBCOnly(info, state)
+function ImportHelper:SetBCOnly(info,state)
     db["importers"][info.arg].bcOnly = state
 end
-
-function ImportHelper:GetExpacOnly(info, k)
+function ImportHelper:GetExpacOnly(info,k)
     return db["importers"][info.arg].expacOnly
 end
-
-function ImportHelper:SetExpacOnly(info, state)
+function ImportHelper:SetExpacOnly(info,state)
     db["importers"][info.arg].expacOnly = state
 end
-
-function ImportHelper:GetExpac(info, k)
+function ImportHelper:GetExpac(info,k)
     return db["importers"][info.arg].expac
 end
-
-function ImportHelper:SetExpac(info, state)
+function ImportHelper:SetExpac(info,state)
     db["importers"][info.arg].expac = state
 end
 
@@ -792,9 +768,7 @@ options.args.cleanup = {
                     name = L["Mineral Veins"],
                     desc = L["Cleanup radius"],
                     type = "range",
-                    min = 0,
-                    max = 30,
-                    step = 1,
+                    min = 0, max = 30, step = 1,
                     arg = "Mining",
                 },
                 Herb = {
@@ -802,9 +776,7 @@ options.args.cleanup = {
                     name = L["Herb Bushes"],
                     desc = L["Cleanup radius"],
                     type = "range",
-                    min = 0,
-                    max = 30,
-                    step = 1,
+                    min = 0, max = 30, step = 1,
                     arg = "Herb Gathering",
                 },
                 Fish = {
@@ -812,9 +784,7 @@ options.args.cleanup = {
                     name = L["Fishes"],
                     desc = L["Cleanup radius"],
                     type = "range",
-                    min = 0,
-                    max = 30,
-                    step = 1,
+                    min = 0, max = 30, step = 1,
                     arg = "Fishing",
                 },
                 Gas = {
@@ -822,9 +792,7 @@ options.args.cleanup = {
                     name = L["Gas Clouds"],
                     desc = L["Cleanup radius"],
                     type = "range",
-                    min = 0,
-                    max = 100,
-                    step = 1,
+                    min = 0, max = 100, step = 1,
                     arg = "Extract Gas",
                 },
                 Treasure = {
@@ -832,9 +800,7 @@ options.args.cleanup = {
                     name = L["Treasure"],
                     desc = L["Cleanup radius"],
                     type = "range",
-                    min = 0,
-                    max = 30,
-                    step = 1,
+                    min = 0, max = 30, step = 1,
                     arg = "Treasure",
                 }
             },
@@ -847,7 +813,7 @@ options.args.cleanup = {
             get = function(info)
                 return db.dbLocks[info.arg]
             end,
-            set = function(info, v)
+            set = function(info,v)
                 db.dbLocks[info.arg] = v
             end,
             args = {
@@ -896,15 +862,14 @@ options.args.cleanup = {
     },
 }
 
+
 -- GatherMateData Import config tree
---[[
 options.args.importing = {
     type = "group",
     name = L["Import Data"],
     order = 10,
     args = {},
 }
-]]
 ImportHelper.db_options = {
     ["Merge"] = L["Merge"],
     ["Overwrite"] = L["Overwrite"]
@@ -920,9 +885,7 @@ ImportHelper.expac_data = {
     ["TBC"] = L["The Burning Crusades"],
     ["WRATH"] = L["Wrath of the Lich King"],
 }
-
 imported["GatherMate_Data"] = false
---[[
 options.args.importing.args.GatherMateData = {
     type = "group",
     name = "GatherMateData", -- addon name to import from, don't localize
@@ -1030,6 +993,7 @@ options.args.importing.args.GatherMateData = {
         }
     },
 }
+
 options.args.faq_group = {
     type = "group",
     name = L["FAQ"],
@@ -1048,7 +1012,7 @@ options.args.faq_group = {
         },
     },
 }
-]]
+
 
 --[[
     Initialize the Config System
@@ -1059,13 +1023,14 @@ function Config:OnInitialize()
     options.plugins["profiles"] = { profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(GatherMate.db) }
     self.options = options
     self.importHelper = ImportHelper
-    --LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("GatherMate", options)
-    LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("GatherMate", options.args.display.args.filters)
-    --LibStub("AceConfigDialog-3.0"):AddToBlizOptions("GatherMate", "GatherMate")
-    --self:RegisterChatCommand("gathermate", function() LibStub("AceConfigDialog-3.0"):Open("GatherMate") end )
+    LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("GatherMate", options)
+    LibStub("AceConfigDialog-3.0"):AddToBlizOptions("GatherMate", "GatherMate")
+    self:RegisterChatCommand("gathermate", function() LibStub("AceConfigDialog-3.0"):Open("GatherMate") end )
     self:RegisterMessage("GatherMateConfigChanged")
     ---------------
     -- Modified by dugu
+    LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("GatherMateFilters", options.args.display.args.filters)
+
     self.optionButton = CreateFrame("Button", "GatherMapOptionButton", WorldMapFrame, "UIPanelButtonTemplate");
     self.optionButton:SetWidth(100);
     self.optionButton:SetHeight(28);
@@ -1073,9 +1038,12 @@ function Config:OnInitialize()
     self.optionButton:SetFrameLevel(self.optionButton:GetFrameLevel() + 4);
     self.optionButton:SetText(L["GatherMate"]);
     self.optionButton:SetScript("OnClick", function()
-        LibStub("AceConfigDialog-3.0"):Open("GatherMate");
+        if (IsControlKeyDown()) then
+            LibStub("AceConfigDialog-3.0"):Open("GatherMate");
+        else
+            LibStub("AceConfigDialog-3.0"):Open("GatherMateFilters");
+        end
     end);
-
     if DataBroker then
         local launcher = DataBroker:NewDataObject("GatherMate", {
             type = "launcher",
@@ -1109,24 +1077,26 @@ function Config:PreImportData()
 end
 
 function Config:CheckAutoImport()
-    for k, v in pairs(db.importers) do
+    for k,v in pairs(db.importers) do
         local verline = GetAddOnMetadata(k, "X-Generated-Version")
         if verline and v["autoImport"] then
             local dataVersion = tonumber(verline:match("%d+"))
+            --if dataVersion and dataVersion > v["lastImport"] then
             if dataVersion and (not v["lastImport"] or dataVersion > v["lastImport"]) then
                 local loaded, reason = LoadAddOn(k)
                 local addon = LibStub("AceAddon-3.0"):GetAddon(k)
+                --if loaded then
                 if addon then
                     local filter = nil
                     if v.expacOnly then
                         filter = v.expac
                     end
-                    addon:PerformMerge(v.Databases, v.Style, filter)
+                    addon:PerformMerge(v.Databases,v.Style,filter)
                     addon:CleanupImportData()
                     imported[k] = true
                     Config:SendMessage("GatherMateConfigChanged")
                     v["lastImport"] = dataVersion
-                    Config:Print(L["Auto import complete for addon "] .. k)
+                    Config:Print(L["Auto import complete for addon "]..k)
                 end
             end
         end
@@ -1139,7 +1109,6 @@ function Config:RegisterImportModule(moduleName, optionsTable)
     options.args.importing.args[moduleName] = optionsTable
     return db.importers[moduleName]
 end
-
 -- Allows an external module to insert their aceopttable
 function Config:RegisterModule(moduleName, optionsTable)
     options.args[moduleName] = optionsTable

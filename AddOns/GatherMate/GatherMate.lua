@@ -4,8 +4,8 @@
     This mods whole purpose is to be lean, simple and feature complete.
 ]]
 -- Mixin AceEvent
-local GatherMate = LibStub("AceAddon-3.0"):NewAddon("GatherMate", "AceConsole-3.0", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("GatherMate", false)
+local GatherMate = LibStub("AceAddon-3.0"):NewAddon("GatherMate","AceConsole-3.0","AceEvent-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("GatherMate",false)
 _G["GatherMate"] = GatherMate
 
 -- locals
@@ -14,11 +14,12 @@ local reverseTables = {}
 -- defaults for storage
 local defaults = {
     profile = {
-        scale = 0.75,
-        alpha = 1,
+        scale       = 0.75,
+        alpha       = 0.75,
         show = {
-            ["Treasure"] = "always",
-            ["*"] = "with_profession"
+            ["Treasure"] = "never",
+            ["Extract Gas"] = "with_profession",
+            ["*"] = "active"
         },
         showMinimap = true,
         showWorldMap = true,
@@ -29,43 +30,45 @@ local defaults = {
             },
         },
         trackColors = {
-            ["Herb Gathering"] = { Red = 0, Green = 1, Blue = 0, Alpha = 1 },
-            ["Fishing"] = { Red = 1, Green = 1, Blue = 0, Alpha = 1 },
-            ["Mining"] = { Red = 1, Green = 0, Blue = 0, Alpha = 1 },
-            ["Extract Gas"] = { Red = 0, Green = 1, Blue = 1, Alpha = 1 },
-            ["Treasure"] = { Red = 1, Green = 0, Blue = 1, Alpha = 1 },
-            ["*"] = { Red = 1, Green = 0, Blue = 1, Alpha = 1 },
+            ["Herb Gathering"] = {Red = 0, Green = 1, Blue = 0, Alpha = 1},
+            ["Fishing"]        = {Red = 1, Green = 1, Blue = 0, Alpha = 1},
+            ["Mining"]         = {Red = 1, Green = 0, Blue = 0, Alpha = 1},
+            ["Extract Gas"]    = {Red = 0, Green = 1, Blue = 1, Alpha = 1},
+            ["Treasure"]       = {Red = 1, Green = 0, Blue = 1, Alpha = 1},
+            ["*"]              = {Red = 1, Green = 0, Blue = 1, Alpha = 1},
         },
-        trackDistance = 100,
+        trackDistance = 150,
         trackShow = "always",
         nodeRange = true,
         cleanupRange = {
             ["Herb Gathering"] = 15,
-            ["Fishing"] = 15,
-            ["Mining"] = 15,
-            ["Extract Gas"] = 50,
-            ["Treasure"] = 15,
+            ["Fishing"]        = 15,
+            ["Mining"]         = 15,
+            ["Extract Gas"]    = 50,
+            ["Treasure"]       = 15,
         },
         dbLocks = {
             ["Herb Gathering"] = false,
-            ["Fishing"] = false,
-            ["Mining"] = false,
-            ["Extract Gas"] = false,
-            ["Treasure"] = false,
+            ["Fishing"]        = false,
+            ["Mining"]         = false,
+            ["Extract Gas"]    = false,
+            ["Treasure"]       = false,
         },
         importers = {
             ["*"] = {
-                ["Style"] = "Merge",
-                ["Databases"] = {},
-                ["lastImport"] = 0,
-                ["autoImport"] = false,
-                ["bcOnly"] = true,
+                ["Style"]       = "Merge",
+                ["Databases"]   = {},
+                ["lastImport"]  = 0,
+                ["autoImport"]  = false,
+                ["bcOnly"]      = true,
             },
         }
     },
 }
 local floor = floor
 local next = next
+
+local wow40 = select(4,GetBuildInfo()) >= 40000
 
 --[[
     Setup a few databases, we sub divide namespaces for resetting/importing
@@ -94,6 +97,21 @@ function GatherMate:OnInitialize()
     self:RegisterDBType("Treasure", GatherMateTreasureDB)
     db = self.db.profile
     filter = db.filter
+    if wow40 then
+        self:Print("GatherMate has ben reaplced with GatherMate2 for Wow 4.0 and above.")
+        StaticPopupDialogs["GATHERMATE_VERSION"] = {
+          text = "GatherMate has ben replaced with GatherMate2 for Wow 4.0 and above.\nPlease go download GatherMate2 from curse.",
+          button1 = "Okay",
+          OnAccept = function()
+              return false
+          end,
+          timeout = 0,
+          whileDead = 1,
+          hideOnEscape = 1,
+          showAlert = 1,
+        }
+        StaticPopup_Show("GATHERMATE_VERSION")
+    end
 end
 
 --[[
@@ -104,13 +122,12 @@ function GatherMate:RegisterDBType(name, db)
     self.gmdbs[name] = db
 end
 
-function GatherMate:OnProfileChanged(db, name)
+function GatherMate:OnProfileChanged(db,name)
     db = self.db.profile
     filter = db.filter
 
     GatherMate:SendMessage("GatherMateConfigChanged")
 end
-
 --[[
     create a reverse lookup table for input table (we use it for english names of nodes)
 ]]
@@ -125,7 +142,6 @@ function GatherMate:CreateReversedTable(tbl)
     reverseTables[tbl] = reverse
     return setmetatable(reverse, getmetatable(tbl))
 end
-
 --[[
     Clearing function
 ]]
@@ -142,20 +158,18 @@ function GatherMate:ClearDB(dbx)
     elseif dbx == "Treasure" then GatherMateTreasureDB = {}; gmdbs[dbx] = GatherMateTreasureDB
     else -- for custom DBs we dont know the global name, so we clear it old-fashion style
         local db = gmdbs[dbx]
-        if not db then error("Trying to clear unknown database: " .. dbx) end
+        if not db then error("Trying to clear unknown database: "..dbx) end
         for k in pairs(db) do
             db[k] = nil
         end
     end
 end
-
 --[[
     create an ID for an x, y coordinate to save space, we use a very simple format: xxxxyyyy
 ]]
 function GatherMate:getID(x, y)
     return floor(x * 10000 + 0.5) * 10000 + floor(y * 10000 + 0.5)
 end
-
 --[[
     create X,Y from an ID
 ]]
@@ -177,7 +191,6 @@ end
 function GatherMate:GetZoneID(zone)
     return self.zoneData[zone][3]
 end
-
 --[[
     Add an item to the DB
 ]]
@@ -208,7 +221,6 @@ function GatherMate:InjectNode(zoneID, coords, nodeType, nodeID)
     db[zoneID] = db[zoneID] or {}
     db[zoneID][coords] = nodeID
 end
-
 function GatherMate:DeleteNode(zoneID, coords, nodeType)
     -- db lock check
     if GatherMate.db.profile.dbLocks[nodeType] then
@@ -223,7 +235,7 @@ end
 -- Do-end block for iterator
 do
     local emptyTbl = {}
-    local tablestack = setmetatable({}, { __mode = 'k' })
+    local tablestack = setmetatable({}, {__mode = 'k'})
 
     local function dbCoordIterNearby(t, prestate)
         if not t then return nil end
@@ -237,7 +249,7 @@ do
                 local x2, y2 = floor(state / 10000) / 10000, (state % 10000) / 10000
                 local x = (x2 - xLocal) * yw
                 local y = (y2 - yLocal) * yh
-                if x * x + y * y <= radiusSquared then
+                if x*x + y*y <= radiusSquared then
                     return state, value
                 end
             end
@@ -302,51 +314,45 @@ end
 function GatherMate:Distance(...)
     return self:NodeDistanceSquared(...) ^ 0.5
 end
-
 --[[
     convert a point on the map to yard values
 ]]
-function GatherMate:PointToYards(x, y, zone)
+function GatherMate:PointToYards(x,y,zone)
     return self.zoneData[zone][1] * x, self.zoneData[zone][2] * y
 end
-
 --[[
     Distance squared between 2 nodes in the same zone
 ]]
 function GatherMate:NodeDistanceSquared(x1, y1, x2, y2, zone)
     local x = (x2 - x1) * self.zoneData[zone][1]
     local y = (y2 - y1) * self.zoneData[zone][2]
-    return x * x + y * y
+    return x*x + y*y
 end
-
 --[[
     Node id function forward and reverse
 ]]
 function GatherMate:GetIDForNode(type, name)
     return self.nodeIDs[type][name]
 end
-
 --[[
     Get the name for a nodeID
 ]]
 function GatherMate:GetNameForNode(type, nodeID)
     return self.reverseNodeIDs[type][nodeID]
 end
-
 --[[
     Remove an item from the DB
 ]]
 function GatherMate:RemoveNode(zone, x, y, nodeType)
     local zoneID = self.zoneData[zone][3]
     local db = gmdbs[nodeType][zoneID]
-    local coord = self:getID(x, y)
+    local coord = self:getID(x,y)
     if db[coord] then
         local t = self.reverseNodeIDs[nodeType][db[coord]]
         db[coord] = nil
         self:SendMessage("GatherMateNodeDeleted", zone, nodeType, coord, t)
     end
 end
-
 --[[
     Remove an item from the DB by node ID and type
 ]]
@@ -370,12 +376,12 @@ end
 function GatherMate:CleanupDB()
     local Collector = GatherMate:GetModule("Collector")
     local rares = Collector.rareNodes
-    for zone, v in pairs(GatherMate.zoneData) do
+    for zone,v in pairs(GatherMate.zoneData) do
         --self:Print(L["Processing "]..zone)
         for profession in pairs(gmdbs) do
             local range = db.cleanupRange[profession]
             for coord, nodeID in self:GetNodesForZone(zone, profession, true) do
-                local x, y = self:getXY(coord)
+                local x,y = self:getXY(coord)
                 for _coord, _nodeID in self:FindNearbyNode(zone, x, y, profession, range, true) do
                     if coord ~= _coord and (nodeID == _nodeID or (rares[_nodeID] and rares[_nodeID][nodeID])) then
                         self:RemoveNodeByID(zone, profession, _coord)

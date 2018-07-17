@@ -1,5 +1,5 @@
 ﻿local GatherMate = LibStub("AceAddon-3.0"):GetAddon("GatherMate")
-local Display = GatherMate:NewModule("Display", "AceEvent-3.0")
+local Display = GatherMate:NewModule("Display","AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("GatherMate")
 
 -- Current minimap pin set
@@ -26,7 +26,7 @@ local rotateMinimap = GetCVar("rotateMinimap") == "1"
 -- shape of the minimap
 local minimapShape
 -- is the minimap indoors or outdoors
-local indoors = GetCVar("minimapZoom") + 0 == Minimap:GetZoom() and "outdoor" or "indoor"
+local indoors = GetCVar("minimapZoom")+0 == Minimap:GetZoom() and "outdoor" or "indoor"
 -- diameter of the minimap
 local mapRadius, worldmapWidth, worldmapHeight, minimapWidth, minimapHeight, minimapScale, lastFacing, lastZoom
 local minimapStrata, worldmapStrata, minimapFrameLevel, worldmapFrameLevel
@@ -65,26 +65,23 @@ local function recyclePin(pin)
     pin.keep = nil
     pinCache[pin] = true
 end
-
 --[[
     clear a set of pins
 ]]
 local function clearpins(t)
-    for k, v in pairs(t) do
+    for k,v in pairs(t) do
         recyclePin(v)
         t[k] = nil
     end
 end
-
 --[[
     Delete a pin from the DB, then call update to refresh both minimap and world map
 ]]
-local function deletePin(button, pin)
+local function deletePin(button,pin)
     GatherMate:RemoveNodeByID(pin.zone, pin.nodeType, pin.coords)
     Display:UpdateWorldMap(true)
     Display:UpdateMiniMap(true)
 end
-
 --[[
     Pin OnEnter
 ]]
@@ -94,7 +91,8 @@ local function showPin(self)
         local tooltip, pinset
         if self.worldmap then
             -- override default UI to hide the tooltip
-            --WorldMapBlobFrame:SetScript("OnUpdate", nil)
+            -- TODO: need test, maybe make the GUI slowly
+            WorldMapBlobFrame:SetScript("OnUpdate", nil)
             tooltip = WorldMapTooltip
             pinset = worldmapPins
         else
@@ -103,24 +101,24 @@ local function showPin(self)
         end
         local x, y = self:GetCenter()
         local parentX, parentY = UIParent:GetCenter()
-        if (x > parentX) then
+        if ( x > parentX ) then
             tooltip:SetOwner(self, "ANCHOR_LEFT")
         else
             tooltip:SetOwner(self, "ANCHOR_RIGHT")
         end
 
         local t = db.trackColors
-        local text = format(tooltip_template, t[self.nodeType].Alpha * 255, t[self.nodeType].Red * 255, t[self.nodeType].Green * 255, t[self.nodeType].Blue * 255, self.title)
+        local text = format(tooltip_template, t[self.nodeType].Alpha*255, t[self.nodeType].Red*255, t[self.nodeType].Green*255, t[self.nodeType].Blue*255, self.title)
         local lvl = GatherMate.nodeMinHarvest[self.nodeType][self.nodeID]
         if lvl then
-            text = text .. format(" (%d)", lvl)
+            text = text..format(" (%d)", lvl)
         end
         for id, pin in pairs(pinset) do
-            if MouseIsOver(pin) and pin.title and pin ~= self then
-                text = text .. "\n" .. format(tooltip_template, t[pin.nodeType].Alpha * 255, t[pin.nodeType].Red * 255, t[pin.nodeType].Green * 255, t[pin.nodeType].Blue * 255, pin.title)
+            if pin:IsMouseOver() and pin.title and pin ~= self then
+                text = text .. "\n" .. format(tooltip_template, t[pin.nodeType].Alpha*255, t[pin.nodeType].Red*255, t[pin.nodeType].Green*255, t[pin.nodeType].Blue*255, pin.title)
                 local lvl = GatherMate.nodeMinHarvest[pin.nodeType][pin.nodeID]
                 if lvl then
-                    text = text .. format(" (%d)", lvl)
+                    text = text..format(" (%d)", lvl)
                 end
             end
         end
@@ -128,20 +126,18 @@ local function showPin(self)
         tooltip:Show()
     end
 end
-
 --[[
     Pin OnLeave
 ]]
 local function hidePin(self)
     if self.worldmap then
         -- restore default UI
-        --WorldMapBlobFrame:SetScript("OnUpdate", WorldMapBlobFrame_OnUpdate)
+        WorldMapBlobFrame:SetScript("OnUpdate", WorldMapBlobFrame_OnUpdate)
         WorldMapTooltip:Hide()
     else
         GameTooltip:Hide()
     end
 end
-
 --[[
     Pin click handler
 ]]
@@ -157,50 +153,47 @@ local function pinClick(self, button)
         end
     end
 end
-
 --[[
     Add pin location to Cartographer_Waypoints
 ]]
-local function addCartWaypoint(button, pin)
+local function addCartWaypoint(button,pin)
     if Cartographer and Cartographer.HasModule and Cartographer:HasModule("Waypoints") and Cartographer:IsModuleActive("Waypoints") then
         local x, y = GatherMate:getXY(pin.coords)
-        local cartCoordID = floor(x * 10000 + 0.5) + floor(y * 10000 + 0.5) * 10001
+        local cartCoordID = floor(x*10000 + 0.5) + floor(y*10000 + 0.5)*10001
         local BZR = LibStub("LibBabble-Zone-3.0"):GetReverseLookupTable()
         Cartographer_Waypoints:AddRoutesWaypoint(BZR[pin.zone], cartCoordID, pin.title)
     end
 end
-
 --[[
     Add pin location to TomTom waypoints
 ]]
-local function addTomTomWaypoint(button, pin)
+local function addTomTomWaypoint(button,pin)
     if TomTom then
         local c, z = GetCurrentMapContinent(), GetCurrentMapZone()
         local x, y = GatherMate:getXY(pin.coords)
-        TomTom:AddZWaypoint(c, z, x * 100, y * 100, pin.title, nil, true, true)
+        TomTom:AddZWaypoint(c, z, x*100, y*100, pin.title, nil, true, true)
     end
 end
-
 --[[
     Generate a drop down menu for a pin
 ]]
-local function generatePinMenu(self, level)
+local function generatePinMenu(self,level)
     if (not level) then return end
     for k in pairs(info) do info[k] = nil end
     if (level == 1) then
         -- Create the title of the menu
-        info.isTitle = 1
-        info.text = L["GatherMate Pin Options"]
+        info.isTitle      = 1
+        info.text         = L["GatherMate Pin Options"]
         info.notCheckable = 1
         UIDropDownMenu_AddButton(info, level)
 
         -- Generate a menu item for each pin the mouse is on
-        info.disabled = nil
-        info.isTitle = nil
+        info.disabled     = nil
+        info.isTitle      = nil
         info.notCheckable = nil
         for id, pin in pairs(worldmapPins) do
-            if MouseIsOver(pin) and pin.title then
-                info.text = L["Delete"] .. " :" .. pin.title
+            if pin:IsMouseOver() and pin.title then
+                info.text = L["Delete"] .. " :" ..pin.title
                 info.icon = nodeTextures[pin.nodeType][GatherMate:GetIDForNode(pin.nodeType, pin.title)]
                 info.func = deletePin
                 info.arg1 = pin
@@ -226,10 +219,10 @@ local function generatePinMenu(self, level)
         end
 
         -- Close menu item
-        info.text = CLOSE
-        info.icon = nil
-        info.func = function() CloseDropDownMenus() end
-        info.arg1 = nil
+        info.text         = CLOSE
+        info.icon         = nil
+        info.func         = function() CloseDropDownMenus() end
+        info.arg1         = nil
         info.notCheckable = 1
         UIDropDownMenu_AddButton(info, level);
     end
@@ -243,6 +236,9 @@ GatherMate_GenericDropDownMenu.displayMode = "MENU"
 GatherMate_GenericDropDownMenu.initialize = generatePinMenu
 local last_update = 0
 local listening = false
+
+local wow40 = select(4,GetBuildInfo()) >= 40000
+
 --[[
     Enable the mod and add our event listeners and timers
 ]]
@@ -276,10 +272,12 @@ function Display:OnEnable()
     self:RegisterMapEvents()
     self:RegisterEvent("WORLD_MAP_UPDATE", "UpdateWorldMap")
     self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "UpdateMaps")
-    self:RegisterEvent("SKILL_LINES_CHANGED")
-    self:RegisterEvent("MINIMAP_UPDATE_TRACKING")
-    self:SKILL_LINES_CHANGED()
-    self:MINIMAP_UPDATE_TRACKING()
+    if not wow40 then
+        self:RegisterEvent("SKILL_LINES_CHANGED")
+        self:RegisterEvent("MINIMAP_UPDATE_TRACKING")
+        self:SKILL_LINES_CHANGED()
+        self:MINIMAP_UPDATE_TRACKING()
+    end
     self:UpdateVisibility()
     self:UpdateMaps()
     fullInit = true
@@ -289,7 +287,7 @@ function Display:RegisterMapEvents()
     self:RegisterEvent("MINIMAP_ZONE_CHANGED", "MinimapChanged")
     self:RegisterEvent("MINIMAP_UPDATE_ZOOM", "MinimapZoom")
     self:RegisterEvent("CVAR_UPDATE", "ChangedVars")
-    self:RegisterMessage("GatherMateConfigChanged", "ConfigChanged")
+    self:RegisterMessage("GatherMateConfigChanged","ConfigChanged")
     self:RegisterMessage("GatherMateNodeAdded", "ScheduleUpdate")
     self:RegisterMessage("GatherMateDataImport", "DataUpdate")
     self:RegisterMessage("GatherMateCleanup", "DataUpdate")
@@ -322,8 +320,9 @@ end
 
 
 function Display:SKILL_LINES_CHANGED()
+if not wow40 then
     local skillname, isHeader
-    for k, v in pairs(have_prof_skill) do
+    for k,v in pairs(have_prof_skill) do
         have_prof_skill[k] = nil
     end
 
@@ -337,12 +336,15 @@ function Display:SKILL_LINES_CHANGED()
             end
         end
     end
+end
     self:UpdateVisibility()
     self:UpdateMaps()
 end
 
 function Display:MINIMAP_UPDATE_TRACKING()
+if not wow40 then
     active_tracking = texture_to_skill[GetTrackingTexture()]
+end
     self:UpdateVisibility()
     self:UpdateMaps()
 end
@@ -399,7 +401,6 @@ function Display:ConfigChanged()
     self:UpdateMaps()
     -- TODO filter prefs
 end
-
 --[[
     Get a Map pin
 ]]
@@ -411,8 +412,10 @@ function Display:getMapPin()
     end
     -- create a new pin
     pinCount = pinCount + 1
-    pin = CreateFrame("Button", "GatherMatePin" .. pinCount, WorldMapButton)
-    pin:SetFrameLevel(pin:GetFrameLevel() + 10)
+    pin = CreateFrame("Button", "GatherMatePin"..pinCount, WorldMapButton)
+    -- TODO: need test
+    pin:SetFrameLevel(5)
+    --pin:SetFrameLevel(pin:GetFrameLevel() + 10)
     pin:EnableMouse(true)
     pin:SetWidth(16)
     pin:SetHeight(16)
@@ -429,7 +432,6 @@ function Display:getMapPin()
     pin:Hide()
     return pin
 end
-
 --[[
     Add a pin to the world map
 ]]
@@ -456,12 +458,11 @@ function Display:addWorldPin(coord, nodeID, nodeType, zone, index)
         pin.texture:SetVertexColor(1, 1, 1, 1)
         pin:Show()
         pin:ClearAllPoints()
-        pin:SetPoint("CENTER", WorldMapButton, "TOPLEFT", x * worldmapWidth, -y * worldmapHeight)
+        pin:SetPoint("CENTER", WorldMapButton, "TOPLEFT", x *worldmapWidth, -y * worldmapHeight)
         worldmapPins[index] = pin
     end
     return pin
 end
-
 --[[
     Add a new pin to the minimap
 ]]
@@ -487,7 +488,7 @@ function Display:getMiniPin(coord, nodeID, nodeType, zone, index)
         pin.texture:SetTexCoord(0, 1, 0, 1)
         pin.texture:SetVertexColor(1, 1, 1, 1)
         pin.x, pin.y = GatherMate:getXY(coord)
-        pin.x1, pin.y1 = GatherMate:PointToYards(pin.x, pin.y, zone)
+        pin.x1, pin.y1 = GatherMate:PointToYards(pin.x,pin.y,zone)
         minimapPins[index] = pin
     end
     return pin
@@ -496,9 +497,9 @@ end
 function Display:addMiniPin(pin, refresh)
     local xDist, yDist = pin.x1 - lastXY, pin.y1 - lastYY
     -- calculate relative position and distance to the player
-    local dist_2 = xDist * xDist + yDist * yDist
+    local dist_2 = xDist*xDist + yDist*yDist
     -- if distance <= db.trackDistance, convert to the circle texture
-    if (not pin.isCircle or refresh) and trackShow[pin.nodeType] and dist_2 <= db.trackDistance ^ 2 then
+    if (not pin.isCircle or refresh) and trackShow[pin.nodeType] and dist_2 <= db.trackDistance^2 then
         pin.texture:SetTexture(trackingCircle)
         local t = db.trackColors[pin.nodeType]
         pin.texture:SetVertexColor(t.Red, t.Green, t.Blue, t.Alpha)
@@ -506,8 +507,8 @@ function Display:addMiniPin(pin, refresh)
         pin:SetWidth(10 / minimapScale)
         pin.isCircle = true
         pin.texture:SetTexCoord(0, 1, 0, 1)
-        -- if distance > 100, set back to the node texture
-    elseif (pin.isCircle or refresh) and dist_2 > db.trackDistance ^ 2 then
+    -- if distance > 100, set back to the node texture
+    elseif (pin.isCircle or refresh) and dist_2 > db.trackDistance^2 then
         pin:SetHeight(12 * db.scale / minimapScale)
         pin:SetWidth(12 * db.scale / minimapScale)
         pin.texture:SetTexture(nodeTextures[pin.nodeType][pin.nodeID])
@@ -519,8 +520,8 @@ function Display:addMiniPin(pin, refresh)
     -- support for rotating minimap - transpose coordinates for the circular movement
     if rotateMinimap then
         local dx, dy = xDist, yDist
-        xDist = dx * cos - dy * sin
-        yDist = dx * sin + dy * cos
+        xDist = dx*cos - dy*sin
+        yDist = dx*sin + dy*cos
     end
 
     -- place pin on the map
@@ -531,9 +532,9 @@ function Display:addMiniPin(pin, refresh)
 
     -- different minimap shapes
     local isRound = true
-    if (minimapShape and not (xDist == 0 or yDist == 0)) then
+    if ( minimapShape and not (xDist == 0 or yDist == 0) ) then
         isRound = (xDist < 0) and 1 or 3
-        if (yDist < 0) then
+        if ( yDist < 0 ) then
             isRound = minimapShape[isRound]
         else
             isRound = minimapShape[isRound + 1]
@@ -543,40 +544,36 @@ function Display:addMiniPin(pin, refresh)
     -- calculate distance from the center of the map
     local dist
     if isRound then
-        dist = (diffX * diffX + diffY * diffY) / 0.9 ^ 2
+        dist = (diffX*diffX + diffY*diffY) / 0.9^2
     else
-        dist = max(diffX * diffX, diffY * diffY) / 0.9 ^ 2
+        dist = max(diffX*diffX, diffY*diffY) / 0.9^2
     end
     -- if distance > 1, then adapt node position to slide on the border, and set the node alpha accordingly
     if dist > 1 then
-        dist = dist ^ 0.5
-        diffX = diffX / dist
-        diffY = diffY / dist
+        dist = dist^0.5
+        diffX = diffX/dist
+        diffY = diffY/dist
         alpha = 2 - dist
         if alpha < 0 then
             pin.keep = nil
         end
     end
     -- finally show and SetPoint the pin
-
-    --print(diffX * minimapWidth, -diffY * minimapHeight)
     if db.nodeRange or alpha >= 1 then
         pin:Show()
         pin:ClearAllPoints()
         pin:SetPoint("CENTER", Minimap, "CENTER", diffX * minimapWidth, -diffY * minimapHeight)
-        pin:SetAlpha(min(alpha, db.alpha))
+        pin:SetAlpha(min(alpha,db.alpha))
     else
         pin:Hide()
     end
 end
-
 --[[
     Minimap changed
 ]]
 function Display:MinimapChanged()
     self:UpdateMiniMap(true)
 end
-
 --[[
     Minimap zoom changed
 ]]
@@ -585,15 +582,14 @@ function Display:MinimapZoom()
     if GetCVar("minimapZoom") == GetCVar("minimapInsideZoom") then
         Minimap:SetZoom(zoom < 2 and zoom + 1 or zoom - 1)
     end
-    indoors = GetCVar("minimapZoom") + 0 == Minimap:GetZoom() and "outdoor" or "indoor"
+    indoors = GetCVar("minimapZoom")+0 == Minimap:GetZoom() and "outdoor" or "indoor"
     Minimap:SetZoom(zoom)
     self:UpdateMiniMap()
 end
-
 --[[
     Minimap rotation changed
 ]]
-function Display:ChangedVars(event, cvar, value)
+function Display:ChangedVars(event,cvar,value)
     if cvar == "ROTATE_MINIMAP" then
         rotateMinimap = value == "1"
     end
@@ -664,7 +660,7 @@ function Display:UpdateIconPositions()
         mapRadius = self.minimapSize[indoors][zoom] / 2
 
         -- we calculate the distance to the node in yards
-        local _x, _y = GatherMate:PointToYards(x, y, zone)
+        local _x, _y =  GatherMate:PointToYards(x, y, zone)
         -- update upvalues for icon placement
         lastX, lastY = x, y
         lastXY, lastYY = _x, _y
@@ -676,7 +672,7 @@ function Display:UpdateIconPositions()
         end
 
         -- iterate all nodes and check if they are still in range of our minimap display, or even still existing
-        for k, v in pairs(minimapPins) do
+        for k,v in pairs(minimapPins) do
             -- update the position of the node
             self:addMiniPin(v, refresh)
         end
@@ -736,9 +732,9 @@ function Display:UpdateMiniMap(force)
         minimapHeight = Minimap:GetHeight() / 2
         minimapStrata = Minimap:GetFrameStrata()
         minimapFrameLevel = Minimap:GetFrameLevel() + 5
-        --print("mapRadius = ", mapRadius)
+
         -- calculate distance in yards
-        local _x, _y = GatherMate:PointToYards(x, y, zone)
+        local _x, _y =  GatherMate:PointToYards(x, y, zone)
 
         -- update upvalues for icon placement
         lastX, lastY = x, y
@@ -752,9 +748,9 @@ function Display:UpdateMiniMap(force)
         end
 
         -- iterate the node databases and add the nodes
-        for i, db_type in pairs(GatherMate.db_types) do
+        for i,db_type in pairs(GatherMate.db_types) do
             if GatherMate.Visible[db_type] then
-                for coord, nodeID in GatherMate:FindNearbyNode(zone, x, y, db_type, mapRadius * nodeRange) do
+                for coord, nodeID in GatherMate:FindNearbyNode(zone, x, y, db_type, mapRadius*nodeRange) do
                     local pin = self:getMiniPin(coord, nodeID, db_type, zone, (i * 1e9) + coord)
                     pin.keep = true
                     self:addMiniPin(pin, force)
@@ -763,7 +759,7 @@ function Display:UpdateMiniMap(force)
         end
 
         minimapPinCount = 0
-        for k, v in pairs(minimapPins) do
+        for k,v in pairs(minimapPins) do
             if not v.keep then
                 recyclePin(v)
                 minimapPins[k] = nil
@@ -804,7 +800,7 @@ function Display:UpdateWorldMap(force)
     worldmapStrata = WorldMapButton:GetFrameStrata()
     worldmapFrameLevel = WorldMapButton:GetFrameLevel() + 5
 
-    for i, db_type in pairs(GatherMate.db_types) do
+    for i,db_type in pairs(GatherMate.db_types) do
         if GatherMate.Visible[db_type] then
             for coord, nodeID in GatherMate:GetNodesForZone(zname, db_type) do
                 self:addWorldPin(coord, nodeID, db_type, zname, (i * 1e9) + coord).keep = true
@@ -839,7 +835,7 @@ end
 ]]
 function Display:ReparentMinimapPins(parent)
     Minimap = parent
-    GameTooltip:SetFrameLevel(parent:GetFrameLevel() + 2) -- Because Chinchilla_Expander_Minimap is on TOOLTIP strata too
+    GameTooltip:SetFrameLevel(parent:GetFrameLevel()+2) -- Because Chinchilla_Expander_Minimap is on TOOLTIP strata too
     for k, v in pairs(minimapPins) do
         v:SetParent(parent)
     end
