@@ -91,8 +91,7 @@ local function showPin(self)
         local tooltip, pinset
         if self.worldmap then
             -- override default UI to hide the tooltip
-            -- TODO: 此处会造成世界地图拖动延迟
-            --WorldMapBlobFrame:SetScript("OnUpdate", nil)
+            WorldMapBlobFrame:SetScript("OnUpdate", nil)
             tooltip = WorldMapTooltip
             pinset = worldmapPins
         else
