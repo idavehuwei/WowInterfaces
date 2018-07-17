@@ -1,0 +1,31 @@
+﻿## Interface: 30300
+## Title: GatherHud
+## Version: 1.1.6
+## Notes: GatherHud for GatherMate with Routes support
+## Notes-zhCN: 采集助手 HUD
+## Author: Grum, Xinhuan
+## Version: v1.1.6
+## DefaultState: enabled
+## X-Category: Map
+## X-eMail: routes @ grum DOT nl & xinhuan @ gmail DOT com
+## X-Name: GatherHud
+## X-Curse-Packaged-Version: v1.1.6
+## X-Curse-Project-Name: GatherHud
+## X-Curse-Project-ID: gather-hud
+## X-Curse-Repository-ID: wow/gather-hud/mainline
+
+## X-DuowanAddon: 地图
+## Dependencies: Duowan
+## X-Revision: Duowan
+## RequiredDeps: GatherMate
+## OptionalDeps: Routes
+## LoadWith: GatherMate
+## SavedVariables: GatherHudDB
+
+# Locale files
+Locales\Locale-enUS.lua
+Locales\Locale-zhCN.lua
+Locales\Locale-zhTW.lua
+
+# Core files
+GatherHud.lua

@@ -1,0 +1,11 @@
+<Bindings>
+	<Binding name="TOGGLEGATHERHUD" header="GatherHud">
+		if GatherHud:IsEnabled() then
+			GatherHud.db.global.settings.enabled = false
+			GatherHud:Disable()
+		else
+			GatherHud.db.global.settings.enabled = true
+			GatherHud:Enable()
+		end
+	</Binding>
+</Bindings>

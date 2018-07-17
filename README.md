@@ -68,6 +68,7 @@ EventAlert                      | [多玩] 技能特效报警
 <del> FixItemIcon               | 问号物品修复 - 熊熊魔兽 </del> (已删除)
 Fizzle                          | [多玩] 装备耐久
 FriendsMenuXP                   | [多玩] 右键菜单增强
+GatherHud                       | 采集助手 HUD
 GatherMate                      | [多玩] 采集助手
 GatherMate_Data                 | [多玩] 采集助手数据库
 GearScoreLite                   | [多玩] 装备评分

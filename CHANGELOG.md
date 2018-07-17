@@ -1,6 +1,10 @@
 # Change Log
 基于多玩魔盒 3.3.5, 添加自用单体插件整合而成
 
+## 2018-07-17
+* 更新 GatherMate
+* 添加 GatherHud 插件(屏幕中央显示追踪分布 HUD)
+
 ## 2018-07-15
 * 修复 TidyPlates 翻译警告
 * 更换 DBM 为 Sunwell.pl 官方版本(与curseforge版本一致) - RAID 尚未进行测试

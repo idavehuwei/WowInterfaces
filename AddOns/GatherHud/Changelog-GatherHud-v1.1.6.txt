@@ -1,0 +1,14 @@
+tag v1.1.6
+5eda6dd16ebf34a7d2485082750ffda2cd33c781
+Xinhuan <xinhuan@pacific.net.sg>
+2010-07-01 02:03:42 +0800
+
+Tag v1.1.6, fixes errors due to patch 3.3.5
+
+
+--------------------
+
+Xinhuan:
+	- Update TOC to 30300 and version to 1.1.6
+	- Upvalue GetUnitPitch() since we call it OnUpdate.
+	- Remove the option to use camera perspective (Blizzard broke it when they broke the AVR addon). Add the option to use your character's perspective instead (which AVR could technically still use and restore its functionality minus the view updating when left-click camera swivelling).
