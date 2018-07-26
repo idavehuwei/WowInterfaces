@@ -1334,3 +1334,9 @@ L:SetMiscLocalization({
     Wave4 = "How long can you fight it?",
     YellCombatEnd = "FIRE! FIRE!"
 })
+
+do
+    if (L.enUS == nil) then
+        L.enUS = DBM:Clone(L);
+    end
+end

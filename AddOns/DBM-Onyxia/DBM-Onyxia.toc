@@ -33,6 +33,7 @@
 ## X-DBM-Mod-LoadZone-zhCN: 奥妮克希亚的巢穴
 ## X-DBM-Mod-LoadZone-koKR: 오닉시아의 둥지
 ## X-DBM-Mod-LoadZone-deDE: Onyxias Hort
+
 ## X-DuowanAddon: 团队副本
 ## X-Revision: Duowan
 
@@ -45,4 +46,5 @@ localization.cn.lua
 localization.kr.lua
 localization.tw.lua
 localization.es.lua
+
 Onyxia.lua

@@ -12,6 +12,7 @@
 ## SavedVariablesPerCharacter: DBMChamberOfAspects_SavedVars, DBMChamberOfAspects_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Sort: 1
 ## X-DBM-Mod-SubCategories: The Obsidian Sanctum, The Ruby Sanctum
 ## X-DBM-Mod-SubCategories-deDE: Das Obsidiansanktum, Das Rubinsanktum
 ## X-DBM-Mod-SubCategories-ruRU: Обсидиановое святилище, Рубиновое святилище
@@ -30,11 +31,8 @@
 ## X-DBM-Mod-Name-frFR : Chambre des aspects
 ## X-DBM-Mod-Name-esES: Cámara de los Aspectos
 ## X-DBM-Mod-Name-esMX: Cámara de los Aspectos
-## X-DBM-Mod-Sort: 1
 --## X-DBM-Mod-LoadZoneID: 532,610
-## X-DuowanAddon: 团队副本
-## X-Revision: Duowan
-
+## X-DBM-Mod-LoadZone: The Obsidian Sanctum,The Ruby Sanctum
 ## X-DBM-Mod-LoadZone-ruRU: Обсидиановое святилище,Рубиновое святилище
 ## X-DBM-Mod-LoadZone-zhTW: 黑曜聖所, 晶紅聖所
 ## X-DBM-Mod-LoadZone-zhCN: 黑曜石圣殿, 红玉圣殿
@@ -42,6 +40,9 @@
 ## X-DBM-Mod-LoadZone-frFR: Le sanctum Obsidien,Le sanctum Rubis
 ## X-DBM-Mod-LoadZone-esES: El Sagrario Obsidiana,El Sagrario Rubí
 ## X-DBM-Mod-LoadZone-esMX: El Sagrario Obsidiana,El Sagrario Rubí
+
+## X-DuowanAddon: 团队副本
+## X-Revision: Duowan
 
 localization.en.lua
 localization.de.lua
@@ -51,6 +52,7 @@ localization.cn.lua
 localization.kr.lua
 localization.fr.lua
 localization.es.lua
+
 Obsidian\MapSizes.lua
 Obsidian\Shadron.lua
 Obsidian\Tenebron.lua

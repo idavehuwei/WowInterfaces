@@ -37,3 +37,8 @@ L:SetMiscLocalization({
     YellPhase3 = "Now your benefactors make their"
 })
 
+do
+    if (L.enUS == nil) then
+        L.enUS = DBM:Clone(L);
+    end
+end

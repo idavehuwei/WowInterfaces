@@ -10,13 +10,13 @@
 ## SavedVariablesPerCharacter: DBMWorldEvent_SavedVars, DBMWorldEvent_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Sort: 150
 ## X-DBM-Mod-Name: World Events
 ## X-DBM-Mod-Name-esES: Eventos del Mundo
 ## X-DBM-Mod-Name-ruRU: Игровые события
 ## X-DBM-Mod-Name-zhTW: 世界事件
 ## X-DBM-Mod-Name-zhCN: 世界事件
 ## X-DBM-Mod-Name-koKR: 월드 이벤트
-## X-DBM-Mod-Sort: 150
 ## X-DBM-Mod-LoadZone: Blackrock Depths,Scarlet Monastery,Shadowfang Keep,The Slave Pens
 ## X-DBM-Mod-LoadZone-frFR: Profondeurs de Rochenoire,Monastère écarlate,Donjon d'Ombrecroc,Les enclos aux esclaves
 ## X-DBM-Mod-LoadZone-deDE: Schwarzfelstiefen,Das Scharlachrote Kloster,Burg Schattenfang,Die Sklavenunterkünfte
@@ -26,6 +26,7 @@
 ## X-DBM-Mod-LoadZone-koKR: 검은바위 나락,붉은십자군 수도원,그림자송곳니 성채, 강제노역소
 ## X-DBM-Mod-LoadZone-esES: Profundidades de Roca Negra,Monasterio Escarlata,Castillo de Colmillo Oscuro,Recinto de los Esclavos
 ## X-DBM-Mod-LoadZone-esMX: Profundidades de Roca Negra,Monasterio Escarlata,Castillo de Colmillo Oscuro,Recinto de los Esclavos
+
 ## X-DuowanAddon: 团队副本
 ## X-Revision: Duowan
 
@@ -37,6 +38,7 @@ localization.cn.lua
 localization.kr.lua
 localization.de.lua
 localization.es.lua
+
 ApothecaryTrio.lua
 Ahune.lua
 CorenDirebrew.lua

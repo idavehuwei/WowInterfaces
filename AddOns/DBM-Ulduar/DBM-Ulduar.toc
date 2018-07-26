@@ -11,17 +11,14 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Has-Heroic-Mode: 0
+## X-DBM-Mod-Sort: 4
 ## X-DBM-Mod-Name: Ulduar
 ## X-DBM-Mod-Name-ruRU: Ульдуар
 ## X-DBM-Mod-Name-koKR: 울두아르
 ## X-DBM-Mod-Name-zhTW: 奧杜亞
 ## X-DBM-Mod-Name-zhCN: 奥杜尔
 ## X-DBM-Mod-Name-esES: Ulduar
-## X-DBM-Mod-Sort: 4
 --## X-DBM-Mod-LoadZoneID: 530
-## X-DuowanAddon: 团队副本
-## X-Revision: Duowan
-
 ## X-DBM-Mod-LoadZone: Ulduar
 ## X-DBM-Mod-LoadZone-frFR: Ulduar
 ## X-DBM-Mod-LoadZone-ruRU: Ульдуар
@@ -32,6 +29,9 @@
 ## X-DBM-Mod-LoadZone-esMX: Ulduar
 ## X-DBM-Mod-LoadZone-deDE: Ulduar
 
+## X-DuowanAddon: 团队副本
+## X-Revision: Duowan
+
 localization.en.lua
 localization.de.lua
 localization.fr.lua
@@ -41,6 +41,7 @@ localization.cn.lua
 localization.kr.lua
 localization.tw.lua
 localization.es.lua
+
 MapSizes.lua
 FlameLeviathan.lua
 Ignis.lua

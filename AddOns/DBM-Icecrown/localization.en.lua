@@ -591,3 +591,9 @@ L:SetMiscLocalization {
     PlagueStackWarning = "Warning: %s has %d stacks of Necrotic Plague",
     AchievementCompleted = ">> ACHIEVEMENT COMPLETE: %s has %d stacks of Necrotic Plague <<"
 }
+
+do
+    if (L.enUS == nil) then
+        L.enUS = DBM:Clone(L);
+    end
+end

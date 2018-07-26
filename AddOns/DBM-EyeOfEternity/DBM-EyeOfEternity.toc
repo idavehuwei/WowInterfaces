@@ -12,6 +12,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Has-Heroic-Mode: 0
+## X-DBM-Mod-Sort: 5
 ## X-DBM-Mod-Name: Eye of Eternity
 ## X-DBM-Mod-Name-frFR: L'Œil de l'éternité
 ## X-DBM-Mod-Name-deDE: Das Auge der Ewigkeit
@@ -21,11 +22,7 @@
 ## X-DBM-Mod-Name-koKR: 영원의 눈
 ## X-DBM-Mod-Name-esES: El Ojo de la Eternidad
 ## X-DBM-Mod-Name-esMXS: El Ojo de la Eternidad
-## X-DBM-Mod-Sort: 5
 --## X-DBM-Mod-LoadZoneID: 528
-## X-DuowanAddon: 团队副本
-## X-Revision: Duowan
-
 ## X-DBM-Mod-LoadZone: The Eye of Eternity
 ## X-DBM-Mod-LoadZone-frFR: L'Œil de l'éternité
 ## X-DBM-Mod-LoadZone-deDE: Das Auge der Ewigkeit
@@ -36,6 +33,9 @@
 ## X-DBM-Mod-LoadZone-esES: El Ojo de la Eternidad
 ## X-DBM-Mod-LoadZone-esMX: El Ojo de la Eternidad
 
+## X-DuowanAddon: 团队副本
+## X-Revision: Duowan
+
 localization.en.lua
 localization.fr.lua
 localization.de.lua
@@ -44,5 +44,6 @@ localization.tw.lua
 localization.cn.lua
 localization.kr.lua
 localization.es.lua
+
 MapSizes.lua
 Malygos.lua

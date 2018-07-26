@@ -13,6 +13,7 @@
 ## SavedVariablesPerCharacter: DBMPvP_SavedVars
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Sort: 200
 ## X-DBM-Mod-SubCategories: Arena,Battlegrounds
 ## X-DBM-Mod-SubCategories-deDE: Arena,Schlachtfelder
 ## X-DBM-Mod-SubCategories-ruRU: Арена,Поля боя
@@ -30,11 +31,7 @@
 ## X-DBM-Mod-Name-koKR: 전장 및 아카본
 ## X-DBM-Mod-Name-esES: Campos de Batallas
 ## X-DBM-Mod-Name-esMX: Campos de Batallas
-## X-DBM-Mod-Sort: 200
 --## X-DBM-Mod-LoadZoneID: 462,444,402,541,483
-## X-DuowanAddon: 团队副本
-## X-Revision: Duowan
-
 ## X-DBM-Mod-LoadZone: Arathi Basin,Warsong Gulch,Alterac Valley,Eye of the Storm,Isle of Conquest
 ## X-DBM-Mod-LoadZone-deDE: Arathibecken,Kriegshymnenschlucht,Alteractal,Auge des Sturms,Insel der Eroberung
 ## X-DBM-Mod-LoadZone-frFR: Bassin d'Arathi,Goulet des Chanteguerres,Vallée d'Alterac,L'Œil du cyclone,Rivage des anciens,Île des Conquérants
@@ -44,6 +41,10 @@
 ## X-DBM-Mod-LoadZone-zhTW: 阿拉希盆地,戰歌峽谷,奧特蘭克山谷,暴風之眼,征服之島
 ## X-DBM-Mod-LoadZone-zhCN: 阿拉希盆地,战歌峡谷,奥特兰克山谷,风暴之眼,征服之岛
 ## X-DBM-Mod-LoadZone-koKR: 아라시 분지,전쟁노래 협곡,알터랙 계곡,폭풍의 눈,정복의 섬
+
+## X-DuowanAddon: 团队副本
+## X-Revision: Duowan
+
 localization.en.lua
 localization.de.lua
 localization.tw.lua
@@ -52,6 +53,7 @@ localization.es.lua
 localization.ru.lua
 localization.fr.lua
 localization.kr.lua
+
 Battlegrounds\Battlegrounds.lua
 Battlegrounds\Alterac.lua
 Battlegrounds\Arathi.lua

@@ -12,6 +12,7 @@
 ## SavedVariablesPerCharacter: DBMColiseum_SavedVars, DBMColiseum_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Sort: 2
 ## X-DBM-Mod-Name: Crusader's Coliseum
 ## X-DBM-Mod-Name-koKR: 십자군의 시험장
 ## X-DBM-Mod-Name-deDE: Kolosseum der Kreuzfahrer
@@ -21,12 +22,8 @@
 ## X-DBM-Mod-Name-zhCN: 十字军的试炼
 ## X-DBM-Mod-Name-esES: Coliseo de los Cruzados
 ## X-DBM-Mod-Name-esMX: Coliseo de los Cruzados
-## X-DBM-Mod-Sort: 2
 --We do not use areaID for this map because otherwise this mod would load in trial of champion 5 man as well.
 --## X-DBM-Mod-LoadZoneID: 544
-## X-DuowanAddon: 团队副本
-## X-Revision: Duowan
-
 ## X-DBM-Mod-LoadZone: Trial of the Crusader
 ## X-DBM-Mod-LoadZone-koKR: 십자군의 시험장
 ## X-DBM-Mod-LoadZone-deDE: Prüfung des Kreuzfahrers
@@ -36,6 +33,10 @@
 ## X-DBM-Mod-LoadZone-zhCN: 十字军的试炼
 ## X-DBM-Mod-LoadZone-esES: Prueba del Cruzado
 ## X-DBM-Mod-LoadZone-esMX: Prueba del Cruzado
+
+## X-DuowanAddon: 团队副本
+## X-Revision: Duowan
+
 localization.en.lua
 localization.de.lua
 localization.fr.lua
@@ -45,6 +46,7 @@ localization.cn.lua
 localization.kr.lua
 localization.tw.lua
 localization.es.lua
+
 MapSizes.lua
 NorthrendBeasts.lua
 Jaraxxus.lua

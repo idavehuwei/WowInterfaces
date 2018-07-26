@@ -32,3 +32,8 @@ L:SetMiscLocalization {
     YellP3 = "It seems you'll need another lesson, mortals!"
 }
 
+do
+    if (L.enUS == nil) then
+        L.enUS = DBM:Clone(L);
+    end
+end

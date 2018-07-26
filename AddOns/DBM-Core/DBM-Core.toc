@@ -12,6 +12,7 @@
 ## DefaultState: enabled
 ## Author: Tandanu and Nitram
 ## X-Website: http://www.deadlybossmods.com
+
 ## X-DuowanAddon: 团队副本
 ## X-Revision: Duowan
 
@@ -23,6 +24,7 @@ localization.fr.lua
 localization.tw.lua
 localization.kr.lua
 localization.es.lua
+
 DBT-Template.xml
 DBT.lua
 DBM-Core.lua

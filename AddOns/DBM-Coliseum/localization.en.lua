@@ -258,3 +258,8 @@ L:SetOptionLocalization {
     AnnouncePColdIconsRemoved = "Also announce when icons are removed for $spell:68510\n(requires above option)"
 }
 
+do
+    if (L.enUS == nil) then
+        L.enUS = DBM:Clone(L);
+    end
+end

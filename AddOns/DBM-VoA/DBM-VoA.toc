@@ -14,6 +14,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Has-Heroic-Mode: 0
+## X-DBM-Mod-Sort: 7
 ## X-DBM-Mod-Name: Vault of Archavon
 ## X-DBM-Mod-Name-deDE: Archavons Kammer
 ## X-DBM-Mod-Name-frFR: Caveau d'Archavon
@@ -23,11 +24,7 @@
 ## X-DBM-Mod-Name-koKR: 아카본 석실
 ## X-DBM-Mod-Name-esES: La Cámara de Archavon
 ## X-DBM-Mod-Name-esMX: La Cámara de Archavon
-## X-DBM-Mod-Sort: 7
 --## X-DBM-Mod-LoadZoneID: 533
-## X-DuowanAddon: 团队副本
-## X-Revision: Duowan
-
 ## X-DBM-Mod-LoadZone: Vault of Archavon
 ## X-DBM-Mod-LoadZone-deDE: Archavons Kammer
 ## X-DBM-Mod-LoadZone-frFR: Caveau d'Archavon
@@ -38,6 +35,9 @@
 ## X-DBM-Mod-LoadZone-zhCN: 阿尔卡冯的宝库
 ## X-DBM-Mod-LoadZone-koKR: 아카본 석실
 
+## X-DuowanAddon: 团队副本
+## X-Revision: Duowan
+
 localization.en.lua
 localization.de.lua
 localization.tw.lua
@@ -46,6 +46,7 @@ localization.es.lua
 localization.ru.lua
 localization.fr.lua
 localization.kr.lua
+
 MapSizes.lua
 Archavon.lua
 Emalon.lua

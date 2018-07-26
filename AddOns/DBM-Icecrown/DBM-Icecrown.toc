@@ -12,6 +12,7 @@
 ## SavedVariablesPerCharacter: DBMIcecrown_SavedVars, DBMIcecrown_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Sort: 0
 ## X-DBM-Mod-SubCategories: The Lower Spire, The Plagueworks, The Crimson Hall, Frostwing Halls, The Frozen Throne
 ## X-DBM-Mod-SubCategories-deDE: Die untere Spitze, Die Seuchenwerke, Die Blutrote Halle, Hallen der Frostschwingen, Der Gefrorene Thron
 ## X-DBM-Mod-SubCategories-frFR: La Flèche Inférieure, L'Atelier de la Peste, La Salle Cramoisie, Les salles de l'Aile de Glace, Le trône de Glace
@@ -30,11 +31,7 @@
 ## X-DBM-Mod-Name-zhCN: 冰冠堡垒
 ## X-DBM-Mod-Name-esES: Ciudadela de la Corona de Hielo
 ## X-DBM-Mod-Name-esMX: Ciudadela de la Corona de Hielo
-## X-DBM-Mod-Sort: 0
 --## X-DBM-Mod-LoadZoneID: 605
-## X-DuowanAddon: 团队副本
-## X-Revision: Duowan
-
 ## X-DBM-Mod-LoadZone: Icecrown Citadel
 ## X-DBM-Mod-LoadZone-deDE: Eiskronenzitadelle
 ## X-DBM-Mod-LoadZone-frFR: Citadelle de la Couronne de glace
@@ -45,6 +42,9 @@
 ## X-DBM-Mod-LoadZone-esES: Ciudadela de la Corona de Hielo
 ## X-DBM-Mod-LoadZone-esMX: Ciudadela de la Corona de Hielo
 
+## X-DuowanAddon: 团队副本
+## X-Revision: Duowan
+
 localization.en.lua
 localization.de.lua
 localization.kr.lua
@@ -53,6 +53,7 @@ localization.tw.lua
 localization.cn.lua
 localization.fr.lua
 localization.es.lua
+
 MapSizes.lua
 TheLowerSpire\LordMarrowgar.lua
 TheLowerSpire\Deathwhisper.lua
