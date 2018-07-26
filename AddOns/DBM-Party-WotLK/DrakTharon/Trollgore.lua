@@ -1,5 +1,5 @@
-local mod	= DBM:NewMod("Trollgore", "DBM-Party-WotLK", 4)
-local L		= mod:GetLocalizedStrings()
+local mod = DBM:NewMod("Trollgore", "DBM-Party-WotLK", 4)
+local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 2250 $"):sub(12, -3))
 mod:SetCreatureID(26630)
@@ -7,5 +7,4 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-mod:RegisterEvents(
-)
+mod:RegisterEvents()
