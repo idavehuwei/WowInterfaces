@@ -125,14 +125,16 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-    if msg == L.TreeYell or msg:find(L.TreeYell) then
+    if DBM:isStr(msg, L.TreeYell, L.enUS.TreeYell) then
+    --if msg == L.TreeYell or msg:find(L.TreeYell) then
         specWarnTree:Show()
         sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\killtree.mp3")
     end
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.SpawnYell then
+    if DBM:isStr(msg, L.SpawnYell, L.enUS.SpawnYell) then
+    --if msg == L.SpawnYell then
         if self.Options.HealthFrame then
             if not adds[33202] then DBM.BossHealth:AddBoss(33202, L.WaterSpirit) end -- ancient water spirit
             if not adds[32916] then DBM.BossHealth:AddBoss(32916, L.Snaplasher) end  -- snaplasher
@@ -164,5 +166,4 @@ function mod:UNIT_DIED(args)
             timerSimulKill:Stop()
         end
     end
-
 end

@@ -168,6 +168,37 @@ local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 ---------------------------------
 --  General (local) functions  --
 ---------------------------------
+-- deep clone a table: key-values and methods
+function DBM:Clone(object)
+    local lookup_table = {}
+    local function _copy(object)
+        if type(object) ~= "table" then
+            return object
+        elseif lookup_table[object] then
+            return lookup_table[object]
+        end
+        local newObject = {}
+        lookup_table[object] = newObject
+        for key, value in pairs(object) do
+            newObject[_copy(key)] = _copy(value)
+        end
+        return setmetatable(newObject, getmetatable(object))
+    end
+    return _copy(object)
+end
+
+function DBM:isStr(str, ...)
+    if select('#', ...) > 0 then
+        for i,v in ipairs(...) do
+            if str == v or str:find(v) then
+                return true;
+            end
+        end
+    end
+    return false;
+end
+
+
 -- checks if a given value is in an array
 -- returns true if it finds the value, false otherwise
 local function checkEntry(t, val)
@@ -2541,18 +2572,18 @@ end
 
 local function IsDeathKnightTank()
     -- idea taken from addon 'ElitistJerks'
-    local tankTalents = (getTalentpointsSpent(16271) >= 5 and 1 or 0) +		-- Anticipation
-                        (getTalentpointsSpent(49042) >= 5 and 1 or 0) +		-- Toughness
-                        (getTalentpointsSpent(55225) >= 5 and 1 or 0)		-- Blade Barrier
+    local tankTalents = (getTalentpointsSpent(16271) >= 5 and 1 or 0) + -- Anticipation
+                        (getTalentpointsSpent(49042) >= 5 and 1 or 0) + -- Toughness
+                        (getTalentpointsSpent(55225) >= 5 and 1 or 0)   -- Blade Barrier
     return tankTalents >= 2
 end
 
 local function IsDruidTank()
     -- idea taken from addon 'ElitistJerks'
-    local tankTalents = (getTalentpointsSpent(57881) >= 2 and 1 or 0) +		-- Natural Reaction
-                        (getTalentpointsSpent(16929) >= 3 and 1 or 0) +		-- Thick Hide
-                        (getTalentpointsSpent(61336) >= 1 and 1 or 0) +		-- Survival Instincts
-                        (getTalentpointsSpent(57877) >= 3 and 1 or 0)		-- Protector of the Pack
+    local tankTalents = (getTalentpointsSpent(57881) >= 2 and 1 or 0) + -- Natural Reaction
+                        (getTalentpointsSpent(16929) >= 3 and 1 or 0) + -- Thick Hide
+                        (getTalentpointsSpent(61336) >= 1 and 1 or 0) + -- Survival Instincts
+                        (getTalentpointsSpent(57877) >= 3 and 1 or 0)   -- Protector of the Pack
     return tankTalents >= 3
 end
 
@@ -3158,10 +3189,10 @@ do
         if timerType == "achievement" then
             spellName = select(2, GetAchievementInfo(spellId))
             icon = type(texture) == "number" and select(10, GetAchievementInfo(texture)) or texture or spellId and select(10, GetAchievementInfo(spellId))
---			if optionDefault == nil then
---				local completed = select(4, GetAchievementInfo(spellId))
---				optionDefault = not completed
---			end
+            -- if optionDefault == nil then
+            --     local completed = select(4, GetAchievementInfo(spellId))
+            --     optionDefault = not completed
+            -- end
         else
             spellName = GetSpellInfo(spellId or 0)
             if spellName then
@@ -3645,9 +3676,9 @@ do
     local returnKey = {__index = function(t, k) return k end}
     local defaultCatLocalization = {
         __index = setmetatable({
-            timer		= DBM_CORE_OPTION_CATEGORY_TIMERS,
-            announce	= DBM_CORE_OPTION_CATEGORY_WARNINGS,
-            misc		= DBM_CORE_OPTION_CATEGORY_MISC
+            timer = DBM_CORE_OPTION_CATEGORY_TIMERS,
+            announce = DBM_CORE_OPTION_CATEGORY_WARNINGS,
+            misc = DBM_CORE_OPTION_CATEGORY_MISC
         }, returnKey)
     }
     local defaultTimerLocalization = {
@@ -3719,6 +3750,7 @@ do
             cats = setmetatable({}, defaultCatLocalization),
         }
         obj.miscStrings.misc = obj
+        obj.enUS = nil;
         setmetatable(obj, mt)
         modLocalizations[name] = obj
         return obj
