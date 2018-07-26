@@ -27,6 +27,12 @@ function mod:UPDATE_WORLD_STATES(args)
     local text = select(3, GetWorldStateUIInfo(2))
     if not text then return end
     local _, _, wave = string.find(text, L.WavePortal)
+
+    -- TODO: need test
+    if not wave then
+        wave = select(3, string.find(text, L.enUS.WavePortal))
+    end
+
     if not wave then
         wave = 0
     end
@@ -63,7 +69,8 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.Sealbroken or msg:find(L.Sealbroken) then
+    if DBM:isStrFind(msg, L.Sealbroken, L.enUS.Sealbroken) then
+    --if msg == L.Sealbroken or msg:find(L.Sealbroken) then
         self:SendSync("Wipe")
     end
 end

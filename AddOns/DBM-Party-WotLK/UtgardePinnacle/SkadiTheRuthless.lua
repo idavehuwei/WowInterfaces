@@ -6,6 +6,7 @@ mod:SetCreatureID(26693)
 mod:SetMinSyncRevision(3108)
 
 mod:RegisterCombat("yell", L.Phase2)
+mod:RegisterCombat("yell", L.enUS.Phase2)
 
 mod:RegisterEvents("SPELL_AURA_APPLIED",
     "SPELL_AURA_REMOVED",
@@ -42,9 +43,11 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.Phase2 or msg:find(L.Phase2) then
+    if DBM:isStrFind(msg, L.Phase2, L.enUS.Phase2) then
+    --if msg == L.Phase2 or msg:find(L.Phase2) then
         warnPhase2:Show()
-    elseif msg == L.CombatStart or msg:find(L.CombatStart) then
+    elseif DBM:isStrFind(msg, L.CombatStart, L.enUS.CombatStart) then
+    --elseif msg == L.CombatStart or msg:find(L.CombatStart) then
         if mod:IsDifficulty("heroic5") then
             timerAchieve:Start()
         end

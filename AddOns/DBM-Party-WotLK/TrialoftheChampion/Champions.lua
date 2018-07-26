@@ -8,6 +8,7 @@ mod:RegisterCombat("combat")
 mod:SetDetectCombatInVehicle(false)
 
 mod:RegisterKill("yell", L.YellCombatEnd)
+mod:RegisterKill("yell", L.enUS.YellCombatEnd)
 
 mod:RegisterEvents(
     "SPELL_CAST_START",

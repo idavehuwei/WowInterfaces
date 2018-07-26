@@ -67,13 +67,19 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
     local target = msg and msg:match(L.SaroniteRockThrow)
+
+    if not target then
+        target = msg and msg:match(L.enUS.SaroniteRockThrow)
+    end
+
     if target then
         self:SendSync("SaroniteRock", target)
     end
 end
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
-    if msg == L.SaroniteRockThrow or msg:match(L.SaroniteRockThrow) then
+    if DBM:isStrMatch(msg, L.SaroniteRockThrow, L.enUS.SaroniteRockThrow) then
+    --if msg == L.SaroniteRockThrow or msg:match(L.SaroniteRockThrow) then
         self:SendSync("SaroniteRock", UnitName("player"))
     end
 end

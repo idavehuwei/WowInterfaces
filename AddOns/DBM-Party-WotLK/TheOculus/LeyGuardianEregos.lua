@@ -15,7 +15,6 @@ local warningEnraged = mod:NewSpellAnnounce(51170, 3)
 local timerEnraged = mod:NewBuffActiveTimer(12, 51170)
 local timerShift = mod:NewBuffActiveTimer(18, 51162)
 
-
 function mod:OnCombatEnd(wipe)
     if not wipe then
         if DBM.Bars:GetBar(L.MakeitCountTimer) then

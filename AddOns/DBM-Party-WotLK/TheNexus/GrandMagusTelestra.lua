@@ -35,9 +35,11 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.SplitTrigger1 or msg == L.SplitTrigger2 then
+    if DBM:isStr(msg, L.SplitTrigger1, L.enUS.SplitTrigger1, L.SplitTrigger2, L.enUS.SplitTrigger2) then
+    --if msg == L.SplitTrigger1 or msg == L.SplitTrigger2 then
         warningSplitNow:Show()
-    elseif msg == L.MergeTrigger then
+    elseif DBM:isStr(msg, L.MergeTrigger) then
+    --elseif msg == L.MergeTrigger then
         warningMerge:Show()
     end
 end

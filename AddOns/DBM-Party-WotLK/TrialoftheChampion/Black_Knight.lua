@@ -7,6 +7,7 @@ mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.YellCombatEnd)
+mod:RegisterKill("yell", L.enUS.YellCombatEnd)
 
 mod:RegisterEvents(
     "SPELL_CAST_START",
@@ -87,7 +88,8 @@ do
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.Pull or msg:find(L.Pull) then
+    if DBM:isStrFind(msg, L.Pull, L.enUS.Pull) then
+    --if msg == L.Pull or msg:find(L.Pull) then
         timerCombatStart:Start()
     end
 end

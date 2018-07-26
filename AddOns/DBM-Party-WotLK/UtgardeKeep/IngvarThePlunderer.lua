@@ -7,6 +7,7 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.YellCombatEnd)
+mod:RegisterKill("yell", L.enUS.YellCombatEnd)
 
 mod:RegisterEvents(
     "SPELL_CAST_START",

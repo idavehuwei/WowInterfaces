@@ -66,6 +66,12 @@ function mod:UPDATE_WORLD_STATES(args)
     local text = select(3, GetWorldStateUIInfo(2))
     if not text then return end
     local _, _, wave = string.find(text, L.WaveCheck)
+
+    -- TODO: need test
+    if not wave then
+        wave = select(3, string.find(text, L.enUS.WaveCheck))
+    end
+
     if not wave then
         wave = 0
     end
@@ -90,9 +96,11 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_SAY(msg)
-    if msg == L.Roleplay or msg:find(L.Roleplay) then
+    if DBM:isStrFind(msg, L.Roleplay, L.enUS.Roleplay) then
+    --if msg == L.Roleplay or msg:find(L.Roleplay) then
         timerRoleplay:Start() --Arthas preaches to uther and jaina
-    elseif msg == L.Roleplay2 or msg:find(L.Roleplay2) then
+    elseif DBM:isStrFind(msg, L.Roleplay2, L.enUS.Roleplay2) then
+    --elseif msg == L.Roleplay2 or msg:find(L.Roleplay2) then
         timerRoleplay:Start(106) --Arthas prances around blabbing with malganis
     end
 end

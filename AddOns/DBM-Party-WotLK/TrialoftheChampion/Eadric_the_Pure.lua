@@ -8,14 +8,14 @@ mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.YellCombatEnd)
+mod:RegisterKill("yell", L.enUS.YellCombatEnd)
 
 mod:RegisterEvents(
     "SPELL_CAST_START",
     "SPELL_AURA_APPLIED"
 )
 
-local isDispeller = select(2, UnitClass("player")) == "PRIEST"
-        or select(2, UnitClass("player")) == "PALADIN"
+local isDispeller = select(2, UnitClass("player")) == "PRIEST" or select(2, UnitClass("player")) == "PALADIN"
 
 local warnHammerofRighteous = mod:NewSpellAnnounce(66867, 3)
 local warnVengeance = mod:NewSpellAnnounce(66889, 3)

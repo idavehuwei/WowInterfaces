@@ -198,6 +198,28 @@ function DBM:isStr(str, ...)
     return false;
 end
 
+function DBM:isStrFind(str, ...)
+    if select('#', ...) > 0 then
+        for i,v in ipairs(...) do
+            if str == v or str:find(v) then
+                return true;
+            end
+        end
+    end
+    return false;
+end
+
+function DBM:isStrMatch(str, ...)
+    if select('#', ...) > 0 then
+        for i,v in ipairs(...) do
+            if str == v or str:match(v) then
+                return true;
+            end
+        end
+    end
+    return false;
+end
+
 
 -- checks if a given value is in an array
 -- returns true if it finds the value, false otherwise

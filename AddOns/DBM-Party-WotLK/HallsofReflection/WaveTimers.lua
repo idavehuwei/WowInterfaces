@@ -26,6 +26,12 @@ function mod:UPDATE_WORLD_STATES(args)
     local text = select(3, GetWorldStateUIInfo(1))
     if not text then return end
     local _, _, wave = string.find(text, L.WaveCheck)
+
+    -- TODO: need test later
+    if not wave then
+        wave = select(3, string.find(text, L.enUS.WaveCheck))
+    end
+
     if not wave then
         wave = 0
     end
@@ -59,7 +65,8 @@ function mod:UPDATE_WORLD_STATES(args)
 end
 
 function mod:UNIT_DIED(args)
-    if args.sourceName == L.Falric then
+    if DBM:isStr(args.sourceName, L.Falric, L.enUS.Falric) then
+    --if args.sourceName == L.Falric then
         timerNextWave:Start(60)
         warnNewWaveSoon:Schedule(50)
         FalricDead = true

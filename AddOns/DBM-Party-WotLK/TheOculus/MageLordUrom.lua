@@ -6,6 +6,7 @@ mod:SetCreatureID(27655)
 mod:SetMinSyncRevision(2824)
 
 mod:RegisterCombat("yell", L.CombatStart)
+mod:RegisterCombat("yell", L.enUS.CombatStart)
 
 mod:RegisterEvents(
     "SPELL_AURA_APPLIED",

@@ -7,6 +7,7 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.Outro)
+mod:RegisterKill("yell", L.enUS.Outro)
 
 mod:RegisterEvents(
     "SPELL_AURA_APPLIED",

@@ -49,7 +49,8 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.CyanArrived then
+    if DBM:isStr(msg, L.CyanArrived, L.enUS.CyanArrived) then
+    --if msg == L.CyanArrived then
         self:SendSync("CyanArrived")
     end
 end

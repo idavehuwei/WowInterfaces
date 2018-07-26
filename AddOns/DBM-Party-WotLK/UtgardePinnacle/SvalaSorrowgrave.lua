@@ -7,8 +7,10 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-mod:RegisterEvents("SPELL_AURA_APPLIED",
-    "CHAT_MSG_MONSTER_YELL")
+mod:RegisterEvents(
+    "SPELL_AURA_APPLIED",
+    "CHAT_MSG_MONSTER_YELL"
+)
 
 local warningSacrifice = mod:NewTargetAnnounce(48267, 2)
 local timerSacrifice = mod:NewBuffActiveTimer(25, 48276)
@@ -23,7 +25,8 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.SvalaRoleplayStart or msg:find(L.SvalaRoleplayStart) then
+    if DBM:isStrFind(msg, L.SvalaRoleplayStart, L.enUS.SvalaRoleplayStart) then
+    --if msg == L.SvalaRoleplayStart or msg:find(L.SvalaRoleplayStart) then
         timerRoleplay:Start()
     end
 end

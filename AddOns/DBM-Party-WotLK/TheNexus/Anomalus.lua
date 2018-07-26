@@ -7,7 +7,6 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-
 mod:RegisterEvents(
     "SPELL_SUMMON",
     "UNIT_HEALTH"
@@ -29,7 +28,8 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:UNIT_HEALTH(arg1)
-    if UnitName(arg1) == L.name then
+    if DBM:isStr(UnitName(arg1), L.name, L.enUS.name) then
+    --if UnitName(arg1) == L.name then
         local h = UnitHealth(arg1)
         if (h > 80) or (h < 70 and h > 55) or (h < 45 and h > 30) then
             warnedRift = false
