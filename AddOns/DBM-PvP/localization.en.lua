@@ -224,9 +224,3 @@ L:SetMiscLocalization({
     GoblinBrokenAlliance = "It's broken already?! No worries. It's nothing I can't fix.",
     GoblinBrokenHorde = "It's broken again?! I'll fix it... just don't expect the warranty to cover this"
 })
-
-do
-    if (L.enUS == nil) then
-        L.enUS = DBM:Clone(L);
-    end
-end

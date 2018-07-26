@@ -169,7 +169,7 @@ local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 --  General (local) functions  --
 ---------------------------------
 -- deep clone a table: key-values and methods
-function DBM:Clone(object)
+function DBM.Clone(object)
     local lookup_table = {}
     local function _copy(object)
         if type(object) ~= "table" then
@@ -187,7 +187,7 @@ function DBM:Clone(object)
     return _copy(object)
 end
 
-function DBM:isStr(str, ...)
+function DBM.isStr(str, ...)
     if select('#', ...) > 0 then
         for i,v in ipairs(...) do
             if str == v or str:find(v) then
@@ -198,7 +198,7 @@ function DBM:isStr(str, ...)
     return false;
 end
 
-function DBM:isStrFind(str, ...)
+function DBM.isStrFind(str, ...)
     if select('#', ...) > 0 then
         for i,v in ipairs(...) do
             if str == v or str:find(v) then
@@ -209,7 +209,7 @@ function DBM:isStrFind(str, ...)
     return false;
 end
 
-function DBM:isStrMatch(str, ...)
+function DBM.isStrMatch(str, ...)
     if select('#', ...) > 0 then
         for i,v in ipairs(...) do
             if str == v or str:match(v) then
@@ -3391,7 +3391,7 @@ function bossModPrototype:AddSliderOption(name, minValue, maxValue, valueStep, d
 end
 
 function bossModPrototype:AddButton(name, onClick, cat, func)
-    cat = cat or misc
+    cat = cat or "misc"
     self:SetOptionCategory(name, cat)
     self.buttons = self.buttons or {}
     self.buttons[name] = onClick
@@ -3693,6 +3693,7 @@ end
 -- Not really good, needs a few updates
 do
     local modLocalizations = {}
+    local modEnStrings = {}
     local modLocalizationPrototype = {}
     local mt = {__index = modLocalizationPrototype}
     local returnKey = {__index = function(t, k) return k end}
@@ -3729,41 +3730,60 @@ do
     function modLocalizationPrototype:SetGeneralLocalization(t)
         for i, v in pairs(t) do
             self.general[i] = v
+            if self.enTable.general[i] == i then
+                self.enTable.general[i] = v
+            end
         end
     end
 
     function modLocalizationPrototype:SetWarningLocalization(t)
         for i, v in pairs(t) do
             self.warnings[i] = v
+            if self.enTable.warnings[i] == i then
+                self.enTable.warnings[i] = v
+            end
         end
     end
 
     function modLocalizationPrototype:SetTimerLocalization(t)
         for i, v in pairs(t) do
             self.timers[i] = v
+            if self.enTable.timers[i] == i then
+                self.enTable.timers[i] = v
+            end
         end
     end
 
     function modLocalizationPrototype:SetOptionLocalization(t)
         for i, v in pairs(t) do
             self.options[i] = v
+            if self.enTable.options[i] == i then
+                self.enTable.options[i] = v
+            end
         end
     end
 
     function modLocalizationPrototype:SetOptionCatLocalization(t)
         for i, v in pairs(t) do
             self.cats[i] = v
+            if self.enTable.cats[i] == i then
+                self.enTable.cats[i] = v
+            end
         end
     end
 
     function modLocalizationPrototype:SetMiscLocalization(t)
         for i, v in pairs(t) do
             self.miscStrings[i] = v
+            if self.enTable.miscStrings[i] == i then
+                self.enTable.miscStrings[i] = v
+            end
         end
     end
 
     function DBM:CreateModLocalization(name)
         local obj = {
+            id = name,
             general = setmetatable({}, returnKey),
             warnings = setmetatable({}, defaultAnnounceLocalization),
             options = setmetatable({}, defaultOptionLocalization),
@@ -3772,9 +3792,12 @@ do
             cats = setmetatable({}, defaultCatLocalization),
         }
         obj.miscStrings.misc = obj
-        obj.enUS = nil;
         setmetatable(obj, mt)
         modLocalizations[name] = obj
+        obj.enTable = DBM.Clone(obj);
+        obj.enTable.miscStrings.misc = obj.enTable
+        setmetatable(obj.enTable, mt)
+        obj.miscStrings.enUS = obj.enTable.miscStrings
         return obj
     end
 

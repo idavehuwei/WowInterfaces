@@ -607,7 +607,8 @@ function ListFrameButtonsPrototype:CreateCategory(frame, parent)
         return false
     elseif self:IsPresent(frame.name) then
         DBM:AddMsg("Frame ("..frame.name..") already exists")
-        DBM:AddMsg(debugstack())
+        -- TODO: need fix for PVP the X-DBM-Mod-SubCategories has two values
+        --DBM:AddMsg(debugstack())
         return false
     end
 

@@ -110,9 +110,3 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
     Pull = "The Ice Stone has melted!"
 })
-
-do
-    if (L.enUS == nil) then
-        L.enUS = DBM:Clone(L);
-    end
-end

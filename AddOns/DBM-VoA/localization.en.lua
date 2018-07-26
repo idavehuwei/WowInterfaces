@@ -100,9 +100,3 @@ L:SetOptionLocalization {
 L:SetMiscLocalization {
     ToravonEnrage = "Show timer for enrage"
 }
-
-do
-    if (L.enUS == nil) then
-        L.enUS = DBM:Clone(L);
-    end
-end

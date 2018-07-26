@@ -36,9 +36,3 @@ L:SetMiscLocalization({
     YellBreath = "You will not succeed while I draw breath!",
     YellPhase3 = "Now your benefactors make their"
 })
-
-do
-    if (L.enUS == nil) then
-        L.enUS = DBM:Clone(L);
-    end
-end

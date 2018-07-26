@@ -257,9 +257,3 @@ L:SetOptionLocalization {
     AnnouncePColdIcons = "Announce icons for $spell:68510 targets to raid chat\n(requires announce to be enabled and leader/promoted status)",
     AnnouncePColdIconsRemoved = "Also announce when icons are removed for $spell:68510\n(requires above option)"
 }
-
-do
-    if (L.enUS == nil) then
-        L.enUS = DBM:Clone(L);
-    end
-end

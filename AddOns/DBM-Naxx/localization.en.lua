@@ -392,9 +392,3 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
     TimerPhase2 = "Phase 2"
 })
-
-do
-    if (L.enUS == nil) then
-        L.enUS = DBM:Clone(L);
-    end
-end

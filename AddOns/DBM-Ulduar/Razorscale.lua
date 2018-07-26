@@ -120,7 +120,9 @@ function mod:SPELL_AURA_APPLIED(args)
     if args:IsSpellID(64771) then
         local amount = args.amount or 1
         if amount >= 2 then
-            specWarnFuseArmor:Show(args.amount)
+            if specWarnFuseArmor then
+                specWarnFuseArmor:Show(args.amount)
+            end
             sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\changemt.mp3")
         end
     end

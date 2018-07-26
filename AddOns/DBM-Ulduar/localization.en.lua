@@ -519,8 +519,3 @@ L:SetMiscLocalization {
     EmoteDoorOpen = "A cloud of saronite vapors coalesces nearby!"
 }
 
-do
-    if (L.enUS == nil) then
-        L.enUS = DBM:Clone(L);
-    end
-end

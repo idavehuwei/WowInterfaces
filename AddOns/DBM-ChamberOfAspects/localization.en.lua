@@ -196,9 +196,3 @@ L:SetMiscLocalization({
     WhisperConsumption = "Consumption on you! Run to the wall!",
     Kill = "Relish this victory, mortals, for it will be your last. This world will burn with the master's return!"
 })
-
-do
-    if (L.enUS == nil) then
-        L.enUS = DBM:Clone(L);
-    end
-end
