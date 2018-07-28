@@ -1,0 +1,40 @@
+## Interface: 30300
+## Title: EPGP
+## Notes: Effort Points/Gear Points Loot System
+## Author: Alkis Evlogimenos
+## Version: 5.5.19
+## OptionalDeps: DBM-Core BigWigs_Core DXE
+## SavedVariables: EPGP_DB
+## X-Category: Guild
+## X-Website: http://code.google.com/p/epgp/
+## Dependencies: Duowan
+## X-Revision: Duowan
+## X-DuowanAddon: 团队副本
+
+LibDebug-1.0.lua
+LibCoroutine-1.0.lua
+LibGearPoints-1.0.lua
+LibGuildStorage-1.0.lua
+LibItemUtils-1.0.lua
+LibJSON-1.0.lua
+LibLootNotify-1.0.lua
+
+localization\localization.xml
+
+epgp.lua
+epgp_options.lua
+epgp_recurring.lua
+
+announce.lua
+
+boss.lua
+gptooltip.lua
+ldb.lua
+log.lua
+loot.lua
+popups.lua
+ui.lua
+warnings.lua
+whisper.lua
+
+debug.xml

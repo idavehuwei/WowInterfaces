@@ -1,0 +1,23 @@
+digraph LibGuildStorage {
+  STALE
+  STALE_WAITING_FOR_ROSTER_UPDATE
+  CURRENT
+  FLUSHING
+  REMOTE_FLUSHING
+
+  edge [fontcolor=blue]
+
+  STALE_WAITING_FOR_ROSTER_UPDATE -> STALE [label="GUILD_ROSTER_UPDATE(nil) event"]
+  STALE_WAITING_FOR_ROSTER_UPDATE -> FLUSHING [label="GUILD_ROSTER_UPDATE(1) event"]
+  STALE -> CURRENT [label="Finish reading roster"]
+  STALE -> REMOTE_FLUSHING [label="FLUSHING event from remote client"]
+
+  CURRENT -> FLUSHING [label="lib:SetNote call"]
+  CURRENT -> REMOTE_FLUSHING [label="FLUSHING event from remote client"]
+  CURRENT -> STALE [label="GUILD_ROSTER_UPDATE(nil) event"]
+
+  FLUSHING -> STALE_WAITING_FOR_ROSTER_UPDATE [label="Flush complete"]
+
+  REMOTE_FLUSHING -> STALE_WAITING_FOR_ROSTER_UPDATE [label="FLUSHED event from remote client"]
+
+}

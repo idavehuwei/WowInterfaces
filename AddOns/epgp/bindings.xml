@@ -1,0 +1,11 @@
+<Bindings>
+  <Binding name="EPGP" header="EPGP">
+    if EPGPFrame and IsInGuild() then
+      if EPGPFrame:IsShown() then
+        HideUIPanel(EPGPFrame)
+      else
+        ShowUIPanel(EPGPFrame)
+      end
+    end
+  </Binding>
+</Bindings>

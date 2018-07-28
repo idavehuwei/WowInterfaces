@@ -63,6 +63,7 @@ DuowanTradeskill                | [多玩] 制作增强
 DWDKP                           | [多玩] 多玩DKP
 DWGKP                           | [多玩] 多玩金团助手
 EN_UnitFrames                   | [多玩] 头像增强
+eqgp                            | 贡献点统计插件 (EPGP)
 EquipSwitcher                   | [多玩] 快速换装
 EventAlert                      | [多玩] 技能特效报警
 <del> FixItemIcon               | 问号物品修复 - 熊熊魔兽 </del> (已删除)
