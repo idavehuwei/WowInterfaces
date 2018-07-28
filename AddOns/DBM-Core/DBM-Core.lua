@@ -109,7 +109,7 @@ DBM.DefaultOptions = {
     DontSetIcons = false,
     LatencyThreshold = 250,
     BigBrotherAnnounceToRaid = false,
---	HelpMessageShown = false,
+--  HelpMessageShown = false,
 }
 
 DBM.Bars = DBT:New()
@@ -902,19 +902,19 @@ do
             end
         end
         table.sort(sortMe, sort)
-        if not #sortMe then return nil end	-- no raid, no election
+        if not #sortMe then return nil end -- no raid, no election
 
         local p = sortMe[1]
-        if p.revision >= tonumber(DBM.Revision) then	-- first we check the latest revision
+        if p.revision >= tonumber(DBM.Revision) then -- first we check the latest revision
             DBM:AddMsg("Newest Version seems to be Revision of "..p.name.." r"..p.revision.." - local revision = r"..DBM.Revision)
             elect_revision = tonumber(p.revision)
         end
-        for i, v in ipairs(sortMe) do	-- now we kick all assists with a revision lower than the hightest
+        for i, v in ipairs(sortMe) do -- now we kick all assists with a revision lower than the hightest
             if tonumber(v.revision) < elect_revision then
                 table.remove(sortMe, i)
             end
         end
-        for i, v in ipairs(sortMe) do	-- we prefere to elect the Raidleader so we try this
+        for i, v in ipairs(sortMe) do -- we prefere to elect the Raidleader so we try this
             if v.rank >= 2 then
                 DBM:AddMsg("Revision of "..v.name.." is "..v.revision.." and thats the RaidLeader")
                 elect_player = v.name
@@ -962,7 +962,6 @@ end
 function DBM:ShowPizzaInfo(id, sender)
     self:AddMsg(DBM_PIZZA_SYNC_INFO:format(sender, id))
 end
-
 
 
 ------------------
@@ -1337,14 +1336,14 @@ do
             for i = 1, GetNumAddOns() do
                 if GetAddOnMetadata(i, "X-DBM-Mod") and not checkEntry(bannedMods, GetAddOnInfo(i)) then
                     table.insert(self.AddOns, {
-                        sort		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
-                        category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
-                        name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
-                        zone		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZone") or "")},
-                        zoneId		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZoneID") or "")},
-                        subTabs		= GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
-                        hasHeroic	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Heroic-Mode") or 1) == 1,
-                        modId		= GetAddOnInfo(i),
+                        sort        = tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
+                        category    = GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
+                        name        = GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
+                        zone        = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZone") or "")},
+                        zoneId      = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZoneID") or "")},
+                        subTabs     = GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
+                        hasHeroic   = tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Heroic-Mode") or 1) == 1,
+                        modId       = GetAddOnInfo(i),
                     })
                     for k, v in ipairs(self.AddOns[#self.AddOns].zone) do
                         self.AddOns[#self.AddOns].zone[k] = (self.AddOns[#self.AddOns].zone[k]):trim()
@@ -1446,7 +1445,7 @@ function DBM:LoadMod(mod)
         if reason then
             self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(_G["ADDON_"..reason or ""])))
         else
---			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), DBM_CORE_UNKNOWN)) -- wtf, this should never happen....(but it does happen sometimes if you reload your UI in an instance...)
+--          self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), DBM_CORE_UNKNOWN)) -- wtf, this should never happen....(but it does happen sometimes if you reload your UI in an instance...)
         end
         return false
     else
@@ -1486,7 +1485,6 @@ do
         DBM:Schedule(1, checkBG)
     end
 end
-
 
 
 -----------------------------
@@ -2105,7 +2103,7 @@ do
             DBM:Schedule(0, requestTimers)
         end
         self:LFG_UPDATE()
---		self:Schedule(10, function() if not DBM.Options.HelpMessageShown then DBM.Options.HelpMessageShown = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
+--      self:Schedule(10, function() if not DBM.Options.HelpMessageShown then DBM.Options.HelpMessageShown = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
     end
 end
 
@@ -2923,7 +2921,7 @@ do
         if optionName == false then
             obj.option = nil
         else
-            self:AddBoolOption(optionName or text, optionDefault, "announce")		-- todo cleanup core code from that indexing type using options[text] is very bad!!! ;)
+            self:AddBoolOption(optionName or text, optionDefault, "announce") -- todo cleanup core code from that indexing type using options[text] is very bad!!! ;)
         end
         table.insert(self.specwarns, obj)
         if announceType == "stack" then
