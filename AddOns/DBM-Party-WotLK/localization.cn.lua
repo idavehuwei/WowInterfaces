@@ -28,22 +28,11 @@ L:SetGeneralLocalization({
     name = "塔达拉姆王子"
 })
 
-L:SetWarningLocalization({
-    WarningFlame = spell,
-    WarningEmbrace = debuff
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerEmbrace = debuff,
-    TimerFlameCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningFlame = optionWarning:format(GetSpellInfo(55931)),
-    WarningEmbrace = optionWarning:format(GetSpellInfo(55959)),
-    TimerEmbrace = optionTimerDur:format(GetSpellInfo(55959)),
-    TimerFlameCD = optionTimerCD:format(GetSpellInfo(55931))
-})
+L:SetOptionLocalization({})
 
 -------------------
 -- Elder Nadox  --
@@ -54,20 +43,11 @@ L:SetGeneralLocalization({
     name = "纳多克斯长老"
 })
 
-L:SetWarningLocalization({
-    WarningPlague = debuff
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerPlague = debuff,
-    TimerPlagueCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningPlague = optionWarning:format(GetSpellInfo(56130)),
-    TimerPlague = optionTimerDur:format(GetSpellInfo(56130)),
-    TimerPlagueCD = optionTimerCD:format(GetSpellInfo(56130))
-})
+L:SetOptionLocalization({})
 
 ---------------------------
 -- Jedoga Shadowseeker  --
@@ -78,15 +58,11 @@ L:SetGeneralLocalization({
     name = "耶戈达·觅影者"
 })
 
-L:SetWarningLocalization({
-    WarningThundershock = spell
-})
+L:SetWarningLocalization({})
 
 L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningThundershock = optionWarning:format(GetSpellInfo(56926)),
-})
+L:SetOptionLocalization({})
 
 ---------------------
 -- Herald Volazj  --
@@ -97,15 +73,11 @@ L:SetGeneralLocalization({
     name = "传令官沃拉兹"
 })
 
-L:SetWarningLocalization({
-    WarningInsanity = spell
-})
+L:SetWarningLocalization({})
 
 L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningInsanity = optionWarning:format(GetSpellInfo(57496))
-})
+L:SetOptionLocalization({})
 
 ----------------
 -- Amanitar  --
@@ -116,18 +88,11 @@ L:SetGeneralLocalization({
     name = "埃曼尼塔"
 })
 
-L:SetWarningLocalization({
-    WarningMini = spell
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerMiniCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningMini = optionWarning:format(GetSpellInfo(57055)),
-    TimerMiniCD = optionTimerCD:format(GetSpellInfo(57055))
-})
+L:SetOptionLocalization({})
 
 -------------------
 -- Azjol-Nerub  --
@@ -140,18 +105,11 @@ L:SetGeneralLocalization({
     name = "看门者克里克希尔"
 })
 
-L:SetWarningLocalization({
-    WarningCurse = spell
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerCurse = spell
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningCurse = optionWarning:format(GetSpellInfo(52592)),
-    TimerCurse = optionTimerDur:format(GetSpellInfo(52592))
-})
+L:SetOptionLocalization({})
 
 ----------------
 -- Hadronox  --
@@ -162,17 +120,11 @@ L:SetGeneralLocalization({
     name = "哈多诺克斯"
 })
 
-L:SetWarningLocalization({
-    WarningLeech = spell,
-    WarningCloud = spell
-})
+L:SetWarningLocalization({})
 
 L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningLeech = optionWarning:format(GetSpellInfo(53030)),
-    WarningCloud = optionWarning:format(GetSpellInfo(53400))
-})
+L:SetOptionLocalization({})
 
 -------------------------
 -- Anub'arak (Party)  --
@@ -183,15 +135,11 @@ L:SetGeneralLocalization({
     name = "阿努巴拉克(5人副本)"
 })
 
-L:SetWarningLocalization({
-    WarningPound = spell
-})
+L:SetWarningLocalization({})
 
 L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningPound = optionWarning:format(GetSpellInfo(53472)),
-})
+L:SetOptionLocalization({})
 
 ---------------------------------------
 -- Caverns of Time: Old Stratholme  --
@@ -204,20 +152,11 @@ L:SetGeneralLocalization({
     name = "肉钩"
 })
 
-L:SetWarningLocalization({
-    WarningChains = debuff
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerChains = debuff,
-    TimerChainsCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningChains = optionWarning:format(GetSpellInfo(52696)),
-    TimerChains = optionTimerDur:format(GetSpellInfo(52696)),
-    TimerChainsCD = optionTimerCD:format(GetSpellInfo(52696))
-})
+L:SetOptionLocalization({})
 
 --------------------------------
 -- Salramm the Fleshcrafter  --
@@ -228,24 +167,11 @@ L:SetGeneralLocalization({
     name = "塑血者沙尔拉姆"
 })
 
-L:SetWarningLocalization({
-    WarningCurse = debuff,
-    WarningSteal = debuff,
-    WarningGhoul = spell
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerGhoulCD = spellCD,
-    TimerCurse = debuff
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningCurse = optionWarning:format(GetSpellInfo(58845)),
-    WarningSteal = optionWarning:format(GetSpellInfo(52709)),
-    WarningGhoul = optionWarning:format(GetSpellInfo(52451)),
-    TimerGhoulCD = optionTimerCD:format(GetSpellInfo(52451)),
-    TimerCurse = optionTimerDur:format(GetSpellInfo(58845))
-})
+L:SetOptionLocalization({})
 
 -------------------------
 -- Chrono-Lord Epoch  --
@@ -256,22 +182,11 @@ L:SetGeneralLocalization({
     name = "时光领主埃博克"
 })
 
-L:SetWarningLocalization({
-    WarningTime = spell,
-    WarningCurse = debuff
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerTimeCD = spellCD,
-    TimerCurse = debuff
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningTime = optionWarning:format("Time Stop/Warp"), -- requires translation
-    WarningCurse = optionWarning:format(GetSpellInfo(52772)),
-    TimerTimeCD = optionTimerCD:format("Time Stop/Warp"), -- translate
-    TimerCurse = optionTimerDur:format(GetSpellInfo(52772))
-})
+L:SetOptionLocalization({})
 
 -----------------
 -- Mal'Ganis  --
@@ -282,20 +197,11 @@ L:SetGeneralLocalization({
     name = "玛尔加尼斯"
 })
 
-L:SetWarningLocalization({
-    WarningSleep = debuff
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerSleep = debuff,
-    TimerSleepCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningSleep = optionWarning:format(GetSpellInfo(52721)),
-    TimerSleep = optionTimerDur:format(GetSpellInfo(52721)),
-    TimerSleepCD = optionTimerCD:format(GetSpellInfo(52721))
-})
+L:SetOptionLocalization({})
 
 L:SetMiscLocalization({
     Outro = "你的旅程才刚开始，年轻的王子。集合你的部队，到诺森德再次挑战我。在那里，我们将了结彼此之间的恩怨，你将了解到你真正的命运。"
@@ -400,26 +306,11 @@ L:SetGeneralLocalization({
     name = "暴龙之王爵德"
 })
 
-L:SetWarningLocalization({
-    WarningFear = spell,
-    WarningBite = debuff,
-    WarningSlash = spell
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerFear = spellCD,
-    TimerSlash = debuff,
-    TimerSlashCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningSlash = optionWarning:format("Mangling/Piercing Slash"), -- needs translation
-    WarningFear = optionWarning:format(GetSpellInfo(22686)),
-    WarningBite = optionWarning:format(GetSpellInfo(48920)),
-    TimerFear = optionTimerCD:format(GetSpellInfo(22686)),
-    TimerSlash = optionTimerDur:format("Mangling/Piercing Slash"), -- needs translation
-    TimerSlashCD = optionTimerCD:format("Mangling/Piercing Slash") -- needs translation
-})
+L:SetOptionLocalization({})
 
 -----------------------------
 -- The Prophet Tharon'ja  --
@@ -430,15 +321,11 @@ L:SetGeneralLocalization({
     name = "先知萨隆亚"
 })
 
-L:SetWarningLocalization({
-    WarningCloud = spell
-})
+L:SetWarningLocalization({})
 
 L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningCloud = optionWarning:format(GetSpellInfo(49548))
-})
+L:SetOptionLocalization({})
 
 ---------------
 -- Gundrak  --
@@ -451,18 +338,11 @@ L:SetGeneralLocalization({
     name = "斯拉德兰"
 })
 
-L:SetWarningLocalization({
-    WarningNova = spell
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerNovaCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningNova = optionWarning:format(GetSpellInfo(55081)),
-    TimerNovaCD = optionTimerCD:format(GetSpellInfo(55081))
-})
+L:SetOptionLocalization({})
 
 ---------------
 -- Moorabi  --
@@ -473,15 +353,11 @@ L:SetGeneralLocalization({
     name = "莫拉比"
 })
 
-L:SetWarningLocalization({
-    WarningTransform = spell
-})
+L:SetWarningLocalization({})
 
 L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningTransform = optionWarning:format(GetSpellInfo(55098))
-})
+L:SetOptionLocalization({})
 
 -------------------------
 -- Drakkari Colossus  --
@@ -545,15 +421,11 @@ L:SetGeneralLocalization({
     name = "比亚格里将军"
 })
 
-L:SetWarningLocalization({
-    WarningWhirlwind = spell
-})
+L:SetWarningLocalization({})
 
 L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningWhirlwind = optionWarning:format(GetSpellInfo(52027))
-})
+L:SetOptionLocalization({})
 
 -------------
 -- Ionar  --
@@ -564,19 +436,11 @@ L:SetGeneralLocalization({
     name = "艾欧纳尔"
 })
 
-L:SetWarningLocalization({
-    WarningOverload = debuff,
-    WarningSplit = spell
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerOverload = debuff
-})
+L:SetTimerLocalization({})
 
 L:SetOptionLocalization({
-    WarningOverload = optionWarning:format(GetSpellInfo(52658)),
-    WarningSplit = optionWarning:format(GetSpellInfo(52770)),
-    TimerOverload = optionTimerDur:format(GetSpellInfo(52658)),
     SetIconOnOverloadTarget = DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(52658)
 })
 
@@ -611,18 +475,11 @@ L:SetGeneralLocalization({
     name = "洛肯"
 })
 
-L:SetWarningLocalization({
-    WarningNova = spell
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerNovaCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningNova = optionWarning:format(GetSpellInfo(53960)),
-    TimerNovaCD = optionTimerCD:format(GetSpellInfo(53960))
-})
+L:SetOptionLocalization({})
 
 ----------------------
 -- Halls of Stone  --
@@ -635,28 +492,11 @@ L:SetGeneralLocalization({
     name = "悲伤圣女"
 })
 
-L:SetWarningLocalization({
-    WarningWoe = debuff,
-    WarningSorrow = spell,
-    WarningStorm = spell
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerWoe = debuff,
-    TimerSorrow = spell,
-    TimerSorrowCD = spellCD,
-    TimerStormCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningWoe = optionWarning:format(GetSpellInfo(50761)),
-    WarningSorrow = optionWarning:format(GetSpellInfo(50760)),
-    WarningStorm = optionWarning:format(GetSpellInfo(50752)),
-    TimerWoe = optionTimerDur:format(GetSpellInfo(50761)),
-    TimerSorrow = optionTimerDur:format(GetSpellInfo(50760)),
-    TimerSorrowCD = optionTimerCD:format(GetSpellInfo(50760)),
-    TimerStormCD = optionTimerCD:format(GetSpellInfo(50752)),
-})
+L:SetOptionLocalization({})
 
 ------------------
 -- Krystallus  --
@@ -689,24 +529,11 @@ L:SetGeneralLocalization({
     name = "塑铁者斯约尼尔"
 })
 
-L:SetWarningLocalization({
-    WarningCharge = debuff,
-    WarningRing = spell
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerCharge = debuff,
-    TimerChargeCD = spellCD,
-    TimerRingCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningCharge = optionWarning:format(GetSpellInfo(50834)),
-    WarningRing = optionWarning:format(GetSpellInfo(50840)),
-    TimerCharge = optionTimerDur:format(GetSpellInfo(50834)),
-    TimerChargeCD = optionTimerCD:format(GetSpellInfo(50834)),
-    TimerRingCD = optionTimerCD:format(GetSpellInfo(50840))
-})
+L:SetOptionLocalization({})
 
 --------------------------------------
 -- Brann Bronzebeard Escort Event  --
@@ -749,15 +576,9 @@ L:SetGeneralLocalization({
     name = "阿诺玛鲁斯"
 })
 
-L:SetWarningLocalization({
-    WarningRiftSoon = spellSoon,
-    WarningRiftNow = spell,
-})
+L:SetWarningLocalization({})
 
-L:SetOptionLocalization({
-    WarningRiftSoon = optionPreWarning:format(GetSpellInfo(47743)),
-    WarningRiftNow = optionWarning:format(GetSpellInfo(47743))
-})
+L:SetOptionLocalization({})
 
 -------------------------------
 -- Ormorok the Tree-Shaper  --
@@ -768,26 +589,11 @@ L:SetGeneralLocalization({
     name = "塑树者奥莫洛克"
 })
 
-L:SetWarningLocalization({
-    WarningSpikes = spell,
-    WarningReflection = spell,
-    WarningFrenzy = spell,
-    WarningAdd = spell
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerReflection = spell,
-    TimerReflectionCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningSpikes = optionWarning:format(GetSpellInfo(47958)),
-    WarningReflection = optionWarning:format(GetSpellInfo(47981)),
-    WarningFrenzy = optionWarning:format(GetSpellInfo(48017)),
-    WarningAdd = optionWarning:format(GetSpellInfo(61564)),
-    TimerReflection = optionTimerDur:format(GetSpellInfo(47981)),
-    TiemrReflectionCD = optionTimerCD:format(GetSpellInfo(47981))
-})
+L:SetOptionLocalization({})
 
 ----------------------------
 -- Grand Magus Telestra  --
@@ -827,28 +633,11 @@ L:SetGeneralLocalization({
     name = "克莉斯塔萨"
 })
 
-L:SetWarningLocalization({
-    WarningChains = debuff,
-    WarningEnrage = spell,
-    WarningNova = spell
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerChains = debuff,
-    TimerNova = spell,
-    TimerChainsCD = spellCD,
-    TimerNovaCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningChains = optionWarning:format(GetSpellInfo(50997)),
-    WarningNova = optionWarning:format(GetSpellInfo(48179)),
-    WarningEnrage = optionWarning:format(GetSpellInfo(8599)),
-    TimerChains = optionTimerDur:format(GetSpellInfo(50997)),
-    TimerChainsCD = optionTimerCD:format(GetSpellInfo(50997)),
-    TimerNova = optionTimerDur:format(GetSpellInfo(48179)),
-    TimerNovaCD = optionTimerCD:format(GetSpellInfo(48179))
-})
+L:SetOptionLocalization({})
 
 -----------------------------------
 -- Commander Kolurg/Stoutbeard  --
@@ -866,22 +655,11 @@ L:SetGeneralLocalization({
     name = commander
 })
 
-L:SetWarningLocalization({
-    WarningFear = spell,
-    WarningWhirlwind = spell
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerFearCD = spellCD,
-    TimerWhirlwindCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningFear = optionWarning:format(GetSpellInfo(19134)),
-    WarningWhirlwind = optionWarning:format(GetSpellInfo(38619)),
-    TimerFearCD = optionTimerCD:format(GetSpellInfo(19134)),
-    TimerWhirlwindCD = optionTimerCD:format(GetSpellInfo(38619))
-})
+L:SetOptionLocalization({})
 
 ------------------
 -- The Oculus  --
@@ -915,23 +693,11 @@ L:SetGeneralLocalization({
     name = "法师领主伊洛姆"
 })
 
-L:SetWarningLocalization({
-    WarningTimeBomb = debuff,
-    WarningExplosion = spell
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerTimeBomb = debuff,
-    TimerExplosion = spell
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningTimeBomb = optionWarning:format(GetSpellInfo(51121)),
-    WarningExplosion = optionWarning:format(GetSpellInfo(51110)),
-    TimerTimeBomb = optionTimerDur:format(GetSpellInfo(51121)),
-    TimerExplosion = optionTimerDur:format(GetSpellInfo(51110)),
-    SpecWarnBombYou = optionSpecWarning:format(GetSpellInfo(51121))
-})
+L:SetOptionLocalization({})
 
 L:SetMiscLocalization({
     CombatStart = "可怜而无知的蠢货！"
@@ -946,15 +712,11 @@ L:SetGeneralLocalization({
     name = "瓦尔洛斯·云击"
 })
 
-L:SetWarningLocalization({
-    WarningAmplify = debuff
-})
+L:SetWarningLocalization({})
 
 L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningAmplify = optionWarning:format(GetSpellInfo(51054))
-})
+L:SetOptionLocalization({})
 
 ---------------------------
 -- Ley-Guardian Eregos  --
@@ -966,22 +728,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-    WarningShift = spell,
-    WarningEnrage = spell,
     WarningShiftEnd = "位面转移结束"
 })
 
-L:SetTimerLocalization({
-    TimerShift = spell,
-    TimerEnrage = spell
-})
+L:SetTimerLocalization({})
 
 L:SetOptionLocalization({
-    WarningShift = optionWarning:format(GetSpellInfo(51162)),
-    WarningShiftEnd = optionWarning:format(GetSpellInfo(51162) .. "结束"),
-    WarningEnrage = optionWarning:format(GetSpellInfo(51170)),
-    TimerShift = optionTimerDur:format(GetSpellInfo(51162)),
-    TimerEnrage = optionTimerDur:format(GetSpellInfo(51170))
+    WarningShiftEnd = optionWarning:format(GetSpellInfo(51162) .. "结束")
 })
 
 L:SetMiscLocalization({
@@ -999,18 +752,11 @@ L:SetGeneralLocalization({
     name = "凯雷塞斯王子"
 })
 
-L:SetWarningLocalization({
-    WarningTomb = debuff
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerTomb = debuff
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningTomb = optionWarning:format(GetSpellInfo(48400)),
-    TimerTomb = optionTimerDur:format(GetSpellInfo(48400))
-})
+L:SetOptionLocalization({})
 
 --------------------------------
 -- Skarvald the Constructor  --
@@ -1022,20 +768,11 @@ L:SetGeneralLocalization({
     name = "控制者达尔隆"
 })
 
-L:SetWarningLocalization({
-    WarningEnfeeble = debuff,
-    WarningSummon = spell
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerEnfeeble = debuff
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningEnfeeble = optionWarning:format(GetSpellInfo(43650)),
-    WarningSummon = optionWarning:format(GetSpellInfo(52611)),
-    TimerEnfeeble = optionTimerDur:format(GetSpellInfo(43650))
-})
+L:SetOptionLocalization({})
 
 ----------------------------
 -- Ingvar the Plunderer  --
@@ -1046,25 +783,11 @@ L:SetGeneralLocalization({
     name = "劫掠者因格瓦尔"
 })
 
-L:SetWarningLocalization({
-    WarningSmash = spell,
-    WarningGrowl = spell,
-    WarningWoeStrike = debuff,
-    SpecialWarningSpelllock = "Spell-lock - stop casting!" -- translate
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerSmash = spell,
-    TimerWoeStrike = debuff
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningSmash = optionWarning:format(GetSpellInfo(42723)),
-    WarningGrowl = optionWarning:format(GetSpellInfo(42708)),
-    WarningWoeStrike = optionWarning:format(GetSpellInfo(42730)),
-    TimerSmash = optionTimerCast:format(GetSpellInfo(42723)),
-    TimerWoeStrike = optionTimerDur:format(GetSpellInfo(42730))
-})
+L:SetOptionLocalization({})
 
 L:SetMiscLocalization({
     YellCombatEnd = "不！不！我还可以……做得更好。"
@@ -1081,22 +804,11 @@ L:SetGeneralLocalization({
     name = "残忍的斯卡迪"
 })
 
-L:SetWarningLocalization({
-    WarningWhirlwind = spell,
-    WarningPoison = debuff
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerPoison = debuff,
-    TimerWhirlwindCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningWhirlwind = optionWarning:format(GetSpellInfo(59332)),
-    WarningPoison = optionWarning:format(GetSpellInfo(59331)),
-    TimerPoison = optionTimerDur:format(GetSpellInfo(59331)),
-    TimerWhirlwindCD = optionTimerCD:format(GetSpellInfo(59332))
-})
+L:SetOptionLocalization({})
 
 L:SetMiscLocalization({
     CombatStart = "什么样的狗杂种竟然胆敢入侵这里？快点，弟兄们！谁要是能把他们的头提来，就赏他吃肉！",
@@ -1112,15 +824,11 @@ L:SetGeneralLocalization({
     name = "伊米隆国王"
 })
 
-L:SetWarningLocalization({
-    WarningBane = spell
-})
+L:SetWarningLocalization({})
 
 L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningBane = optionWarning:format(GetSpellInfo(48294))
-})
+L:SetOptionLocalization({})
 
 -------------------------
 -- Svala Sorrowgrave  --
@@ -1131,16 +839,13 @@ L:SetGeneralLocalization({
     name = "席瓦拉·索格蕾"
 })
 
-L:SetWarningLocalization({
-    WarningSword = debuff
-})
+L:SetWarningLocalization({})
 
 L:SetTimerLocalization({
     timerRoleplay = "席瓦拉·索格蕾 开始攻击"
 })
 
 L:SetOptionLocalization({
-    WarningSword = optionWarning:format(GetSpellInfo(48276)),
     timerRoleplay = "为席瓦拉·索格蕾开始攻击前的角色扮演显示计时条"
 })
 
@@ -1157,18 +862,11 @@ L:SetGeneralLocalization({
     name = "戈托克·苍蹄"
 })
 
-L:SetWarningLocalization({
-    WarningImpale = debuff
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerImpale = debuff
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningImpale = optionWarning:format(GetSpellInfo(48261)),
-    TimerImpale = optionTimerDur:format(GetSpellInfo(48261))
-})
+L:SetOptionLocalization({})
 
 -----------------------
 -- The Violet Hold  --
@@ -1181,24 +879,13 @@ L:SetGeneralLocalization({
     name = "塞安妮苟萨"
 })
 
-L:SetWarningLocalization({
-    WarningVacuum = spell,
-    WarningBlizzard = spell,
-    WarningMana = debuff
-})
+L:SetWarningLocalization({})
 
 L:SetTimerLocalization({
-    TimerVacuumCD = spellCD,
-    TimerMana = debuff,
     TimerCombatStart = "战斗开始"
 })
 
 L:SetOptionLocalization({
-    WarningVacuum = optionWarning:format(GetSpellInfo(58694)),
-    WarningBlizzard = optionWarning:format(GetSpellInfo(58693)),
-    WarningMana = optionWarning:format(GetSpellInfo(59374)),
-    TimerMana = optionTimerDur:format(GetSpellInfo(59374)),
-    TimerVacuumCD = optionTimerCD:format(GetSpellInfo(58694)),
     TimerCombatStart = "为战斗开始显示计时条"
 })
 
@@ -1215,15 +902,11 @@ L:SetGeneralLocalization({
     name = "埃雷克姆"
 })
 
-L:SetWarningLocalization({
-    WarningES = spell
-})
+L:SetWarningLocalization({})
 
 L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningES = optionWarning:format(GetSpellInfo(54479))
-})
+L:SetOptionLocalization({})
 
 ---------------
 -- Ichoron  --
@@ -1264,20 +947,11 @@ L:SetGeneralLocalization({
     name = "摩拉格"
 })
 
-L:SetWarningLocalization({
-    WarningLink = debuff
-})
+L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
-    TimerLink = debuff,
-    TimerLinkCD = spellCD
-})
+L:SetTimerLocalization({})
 
-L:SetOptionLocalization({
-    WarningLink = optionWarning:format(GetSpellInfo(54396)),
-    TimerLink = optionTimerDur:format(GetSpellInfo(54396)),
-    TimerLinkCD = optionTimerCD:format(GetSpellInfo(54396))
-})
+L:SetOptionLocalization({})
 
 --------------
 -- Xevozz  --
@@ -1503,10 +1177,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-    WarningPortalSoon = "New Portal Soon",
-    WarningPortalNow = "Portal #%d",
-    WarningBossNow = "Boss incoming",
-    WavePortal = "Portals Opened: (%d+)/18",
     specWarnHoarfrost = "你中了霜降 - 快跑开",
     specWarnHoarfrostNear = "你附近有人中了霜降 - 快跑开"
 })
@@ -1517,11 +1187,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-    WarningPortalNow = optionWarning:format("New Portal"),
-    WarningPortalSoon = optionPreWarning:format("New Portal"),
-    WarningBossNow = optionWarning:format("Boss Now"),
-    TimerPortalIn = "Show \"Portal: #\" timer",
-    ShowAllPortalTimers = "Show timers for all waves",
     specWarnHoarfrost = "当你中了$spell:69246时显示特别警告",
     specWarnHoarfrostNear = "你附近有人中了$spell:69246时显示特别警告",
     TimerCombatStart = "为战斗开始显示定时器",
@@ -1529,7 +1194,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-    yell1 = "Prison guards, we are leaving! These adventurers are taking over! Go go go!",
+
     CombatStart = "唉，勇敢的冒险者，你们的路已经到头了。难道你们没有听到身后隧道里钢铁撞击的声音吗？那就是末日降临的乐章。", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
     HoarfrostTarget = "冰霜巨龙霜牙凝视着(%S+)，准备发动一次冰霜袭击！",
     YellCombatEnd = "不可能……霜牙……警报……"
