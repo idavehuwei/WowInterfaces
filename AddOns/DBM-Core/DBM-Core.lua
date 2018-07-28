@@ -187,10 +187,15 @@ function DBM.Clone(object)
     return _copy(object)
 end
 
+local debug = false
+function DBM.debug(...)
+    if debug then print(...) end
+end
+
 function DBM.isStr(str, ...)
     for i = 1, select("#", ...) do
         local v = select(i, ...)
-        if str == v then return true; end
+        if str == v then DBM.debug("DBM.isStr:", str, "v:",v); return true; end
     end
     return false;
 end
@@ -198,7 +203,7 @@ end
 function DBM.isStrFind(str, ...)
     for i = 1, select("#", ...) do
         local v = select(i, ...)
-        if str == v or str:find(v) then return true; end
+        if str == v or str:find(v) then DBM.debug("DBM.isStrFind:", str, "v:",v); return true; end
     end
     return false;
 end
@@ -206,7 +211,7 @@ end
 function DBM.isStrMatch(str, ...)
     for i = 1, select("#", ...) do
         local v = select(i, ...)
-        if str == v or str:match(v) then return true; end
+        if str == v or str:match(v) then DBM.debug("DBM.isStrMatch:", str, "v:",v); return true; end
     end
     return false;
 end
@@ -215,7 +220,7 @@ function DBM.isStrSub(str, ...)
     for i = 1, select("#", ...) do
         local v = select(i, ...)
         local strsub = msg:sub(0, v:len())
-        if strsub == v then return true; end
+        if strsub == v then DBM.debug("DBM.isStrSub:", str, "v:",v); return true; end
     end
     return false;
 end
