@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision: 4181 $"):sub(12, -3))
 mod:SetCreatureID(23682, 23775)
 
 mod:RegisterCombat("combat")
-mod:RegisterKill("say", L.SayCombatEnd)
+mod:RegisterKill("say", L.SayCombatEnd, L.enUS.SayCombatEnd)
 
 mod:RegisterEvents(
     "SPELL_AURA_APPLIED",
@@ -30,9 +30,11 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_SAY(msg)
-    if msg == L.HorsemanHead then           -- No combatlog event for head spawning, Emote works iffy(head doesn't emote First time, only 2nd and forward)
+    if DBM.isStr(msg, L.HorsemanHead, L.enUS.HorsemanHead) then -- No combatlog event for head spawning, Emote works iffy(head doesn't emote First time, only 2nd and forward)
+    --if msg == L.HorsemanHead then -- No combatlog event for head spawning, Emote works iffy(head doesn't emote First time, only 2nd and forward)
         specWarnHorsemanHead:Show()
-    elseif msg == L.HorsemanSoldiers then   -- Warning for adds spawning.
+    elseif DBM.isStr(msg, L.HorsemanSoldiers, L.enUS.HorsemanSoldiers) then -- Warning for adds spawning.
+    --elseif msg == L.HorsemanSoldiers then -- Warning for adds spawning.
         warnHorsemanSoldiers:Show()
     end
 end

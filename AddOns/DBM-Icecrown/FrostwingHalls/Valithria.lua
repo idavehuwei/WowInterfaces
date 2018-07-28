@@ -4,8 +4,8 @@ local L = mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 4436 $"):sub(12, -3))
 mod:SetCreatureID(36789)
 mod:SetUsedIcons(8)
-mod:RegisterCombat("yell", L.YellPull)
-mod:RegisterKill("yell", L.YellKill)
+mod:RegisterCombat("yell", L.YellPull, L.enUS.YellPull)
+mod:RegisterKill("yell", L.YellKill, L.enUS.YellKill)
 
 mod:RegisterEvents(
     "SPELL_CAST_START",
@@ -205,7 +205,8 @@ function mod:UNIT_TARGET()
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if (msg == L.YellPortals or msg:find(L.YellPortals)) and mod:LatencyCheck() then
+    if DBM.isStrFind(msg, L.YellPortals, L.enUS.YellPortals) and mod:LatencyCheck() then
+    --if (msg == L.YellPortals or msg:find(L.YellPortals)) and mod:LatencyCheck() then
         self:SendSync("NightmarePortal")
     end
 end

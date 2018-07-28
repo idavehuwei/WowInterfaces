@@ -55,7 +55,8 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.SummonMinions or msg:match(L.SummonMinions) then
+    if DBM.isStrMatch(msg, L.SummonMinions, L.enUS.SummonMinions) then
+    --if msg == L.SummonMinions or msg:match(L.SummonMinions) then
         warningFear:Show()
         timerAddsCD:Start()
         sndWOP:Schedule(42, "Interface\\AddOns\\DBM-Core\\extrasounds\\mobsoon.mp3")

@@ -5,7 +5,7 @@ local L = mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 2869 $"):sub(12, -3))
 mod:SetCreatureID(15928)
 
-mod:RegisterCombat("yell", L.Yell)
+mod:RegisterCombat("yell", L.Yell, L.enUS.Yell)
 
 mod:EnableModel()
 
@@ -101,7 +101,8 @@ function mod:UNIT_AURA(elapsed)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-    if msg == L.Emote or msg == L.Emote2 then
+    if DBM.isStr(msg, L.Emote, L.enUS.Emote, L.Emote2, L.enUS.Emote2) then
+    --if msg == L.Emote or msg == L.Emote2 then
         down = down + 1
         if down >= 2 then
             self:UnscheduleMethod("TankThrow")

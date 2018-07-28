@@ -60,7 +60,8 @@ function mod:Whelps()
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.YellP2 or msg:find(L.YellP2) then
+    if DBM.isStrFind(msg, L.YellP2, L.enUS.YellP2) then
+    --if msg == L.YellP2 or msg:find(L.YellP2) then
         phase = 2
         warnPhase2:Show()
 --      preWarnDeepBreath:Schedule(72) -- Pre-Warn Deep Breath
@@ -70,7 +71,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
         self:ScheduleMethod(5, "Whelps")
         sndFunny:Schedule(10, "Interface\\AddOns\\DBM-Onyxia\\sounds\\throw-more-dots.mp3")
         sndFunny:Schedule(17, "Interface\\AddOns\\DBM-Onyxia\\sounds\\whelps-left-side-even-side-handle-it.mp3")
-    elseif msg == L.YellP3 or msg:find(L.YellP3) then
+    elseif DBM.isStrFind(msg, L.YellP3, L.enUS.YellP3) then
+    --elseif msg == L.YellP3 or msg:find(L.YellP3) then
         phase = 3
         warnPhase3:Show()
         self:UnscheduleMethod("Whelps")

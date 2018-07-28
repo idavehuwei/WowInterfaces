@@ -4,7 +4,7 @@ local L = mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 2869 $"):sub(12, -3))
 mod:SetCreatureID(16028)
 
-mod:RegisterCombat("yell", L.yell1, L.yell2)
+mod:RegisterCombat("yell", L.yell1, L.enUS.yell1, L.yell2, L.enUS.yell2)
 
 mod:EnableModel()
 

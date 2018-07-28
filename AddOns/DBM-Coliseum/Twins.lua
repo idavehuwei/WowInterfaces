@@ -6,7 +6,7 @@ mod:SetCreatureID(34497, 34496)
 mod:SetMinCombatTime(30)
 mod:SetUsedIcons(5, 6, 7, 8)
 
-mod:RegisterCombat("yell", L.YellPull)
+mod:RegisterCombat("yell", L.YellPull, L.enUS.YellPull)
 
 mod:RegisterEvents(
     "SPELL_CAST_START",

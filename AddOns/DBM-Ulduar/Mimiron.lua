@@ -5,8 +5,8 @@ mod:SetRevision(("$Revision: 4338 $"):sub(12, -3))
 mod:SetCreatureID(33432)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
-mod:RegisterCombat("yell", L.YellPull)
-mod:RegisterCombat("yell", L.YellHardPull)
+mod:RegisterCombat("yell", L.YellPull, L.enUS.YellPull)
+mod:RegisterCombat("yell", L.YellHardPull, L.enUS.YellHardPull)
 
 mod:RegisterEvents(
     "SPELL_CAST_START",
@@ -299,19 +299,23 @@ do
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if (msg == L.YellPhase2 or msg:find(L.YellPhase2)) and mod:LatencyCheck() then
+    if DBM.isStrFind(msg, L.YellPhase2, L.enUS.YellPhase2) and mod:LatencyCheck() then
+    --if (msg == L.YellPhase2 or msg:find(L.YellPhase2)) and mod:LatencyCheck() then
         --DBM:AddMsg("ALPHA: yell detect phase2, syncing to clients")
         self:SendSync("Phase2") -- untested alpha! (this will result in a wrong timer)
 
-    elseif (msg == L.YellPhase3 or msg:find(L.YellPhase3)) and mod:LatencyCheck() then
+    elseif DBM.isStrFind(msg, L.YellPhase3, L.enUS.YellPhase3) and mod:LatencyCheck() then
+    --elseif (msg == L.YellPhase3 or msg:find(L.YellPhase3)) and mod:LatencyCheck() then
         --DBM:AddMsg("ALPHA: yell detect phase3, syncing to clients")
         self:SendSync("Phase3") -- untested alpha! (this will result in a wrong timer)
 
-    elseif (msg == L.YellPhase4 or msg:find(L.YellPhase4)) and mod:LatencyCheck() then
+    elseif DBM.isStrFind(msg, L.YellPhase4, L.enUS.YellPhase4) and mod:LatencyCheck() then
+    --elseif (msg == L.YellPhase4 or msg:find(L.YellPhase4)) and mod:LatencyCheck() then
         --DBM:AddMsg("ALPHA: yell detect phase3, syncing to clients")
         self:SendSync("Phase4") -- SPELL_AURA_REMOVED detection might fail in phase 3...there are simply not enough debuffs on him
 
-    elseif msg:find(L.YellHardPull) then
+    elseif DBM.isStrFind(msg, L.YellHardPull, L.enUS.YellHardPull) then
+    --elseif msg:find(L.YellHardPull) then
         timerHardmode:Start()
         timerFlameSuppressant:Start()
         enrage:Stop()

@@ -211,6 +211,15 @@ function DBM.isStrMatch(str, ...)
     return false;
 end
 
+function DBM.isStrSub(str, ...)
+    for i = 1, select("#", ...) do
+        local v = select(i, ...)
+        local strsub = msg:sub(0, v:len())
+        if strsub == v then return true; end
+    end
+    return false;
+end
+
 
 -- checks if a given value is in an array
 -- returns true if it finds the value, false otherwise

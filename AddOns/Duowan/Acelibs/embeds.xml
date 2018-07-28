@@ -11,6 +11,7 @@
     <Include file="Ace3\lib.xml"/>
 
     <!-- 以下类库根据需要变动 -->
+    <Include file="LibDeformat-3.0\lib.xml"/>
     <Include file="Window-1.0\lib.xml"/>
     <Include file="Waterfall-1.0\lib.xml"/>
     <Include file="LibBabble-3.0\lib.xml"/>

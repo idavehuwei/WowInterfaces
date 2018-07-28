@@ -200,12 +200,13 @@ do
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
-    if msg:match(L.SwarmingShadows) then
+    if DBM.isStrMatch(msg, L.SwarmingShadows, L.enUS.SwarmingShadows) then
+    --if msg:match(L.SwarmingShadows) then
         warnSwarmingShadows:Show(target)
         timerNextSwarmingShadows:Start()
         if target == UnitName("player") then
             specWarnSwarmingShadows:Show()
-            --			soundSwarmingShadows:Play()
+            --soundSwarmingShadows:Play()
             sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\keepmove.mp3")
         end
         if self.Options.SwarmingShadowsIcon then

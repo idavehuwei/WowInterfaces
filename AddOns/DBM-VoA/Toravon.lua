@@ -23,12 +23,12 @@ local timerFrostbite        = mod:NewTargetTimer(20, 72098, nil, mod:IsHealer() 
 local timerWhiteout         = mod:NewNextTimer(38, 72096)
 local timerNextOrb          = mod:NewNextTimer(32, 72095)
 
---local timerToravonEnrage	= mod:NewTimer(300, "ToravonEnrage", 26662)
+--local timerToravonEnrage  = mod:NewTimer(300, "ToravonEnrage", 26662)
 
 function mod:OnCombatStart(delay)
     timerNextOrb:Start(13-delay)
     timerWhiteout:Start(25-delay)
---	timerToravonEnrage:Start(-delay)
+--  timerToravonEnrage:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)

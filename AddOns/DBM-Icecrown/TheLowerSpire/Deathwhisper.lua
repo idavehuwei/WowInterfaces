@@ -4,7 +4,7 @@ local L = mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 4411 $"):sub(12, -3))
 mod:SetCreatureID(36855)
 mod:SetUsedIcons(4, 5, 6, 7, 8)
-mod:RegisterCombat("yell", L.YellPull)
+mod:RegisterCombat("yell", L.YellPull, L.enUS.YellPull)
 
 mod:RegisterEvents(
     "SPELL_AURA_APPLIED",
@@ -278,7 +278,8 @@ function mod:UNIT_TARGET()
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.YellReanimatedFanatic or msg:find(L.YellReanimatedFanatic) then
+    if DBM.isStrFind(msg, L.YellReanimatedFanatic, L.enUS.YellReanimatedFanatic) then
+    --if msg == L.YellReanimatedFanatic or msg:find(L.YellReanimatedFanatic) then
         warnReanimating:Show()
         sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\mobrevive.mp3")
     end

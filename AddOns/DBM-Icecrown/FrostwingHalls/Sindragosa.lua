@@ -282,7 +282,8 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if (msg == L.YellAirphase or msg:find(L.YellAirphase)) or (msg == L.YellAirphaseDem or msg:find(L.YellAirphaseDem)) then
+    if DBM.isStrFind(msg, L.YellAirphase, L.enUS.YellAirphase) or DBM.isStrFind(msg, L.YellAirphaseDem, L.enUS.YellAirphaseDem) then
+    --if (msg == L.YellAirphase or msg:find(L.YellAirphase)) or (msg == L.YellAirphaseDem or msg:find(L.YellAirphaseDem)) then
         if self.Options.ClearIconsOnAirphase then
             self:ClearIcons()
         end
@@ -296,7 +297,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
         timerNextGroundphase:Start()
         warnGroundphaseSoon:Schedule(40)
         activeBeacons = true
-    elseif (msg == L.YellPhase2 or msg:find(L.YellPhase2)) or (msg == L.YellPhase2Dem or msg:find(L.YellPhase2Dem)) then
+    elseif DBM.isStrFind(msg, L.YellPhase2, L.enUS.YellPhase2) or DBM.isStrFind(msg, L.YellPhase2Dem, L.enUS.YellPhase2Dem) then
+    --elseif (msg == L.YellPhase2 or msg:find(L.YellPhase2)) or (msg == L.YellPhase2Dem or msg:find(L.YellPhase2Dem)) then
         phase = phase + 1
         warnPhase2:Show()
         timerNextBeacon:Start(7)

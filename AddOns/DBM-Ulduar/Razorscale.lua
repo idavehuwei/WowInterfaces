@@ -6,7 +6,7 @@ mod:SetCreatureID(33186)
 mod:SetUsedIcons(8)
 
 --mod:RegisterCombat("combat")
-mod:RegisterCombat("yell", L.YellAir)
+mod:RegisterCombat("yell", L.YellAir, L.enUS.YellAir)
 
 mod:RegisterEvents(
     "SPELL_CAST_START",
@@ -71,7 +71,8 @@ end
 
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
-    if emote == L.EmotePhase2 or emote:find(L.EmotePhase2) then
+    if DBM.isStrFind(emote, L.EmotePhase2, L.enUS.EmotePhase2) then
+    --if emote == L.EmotePhase2 or emote:find(L.EmotePhase2) then
         -- phase2
         timerTurret1:Stop()
         timerTurret2:Stop()
@@ -82,7 +83,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
-    if (msg == L.YellAir or msg == L.YellAir2) and GetTime() - combattime > 30 then
+    if DBM.isStrFind(emote, L.YellAir2, L.enUS.YellAir2) and GetTime() - combattime > 30 then
+    --if (msg == L.YellAir or msg == L.YellAir2) and GetTime() - combattime > 30 then
         if mod:IsDifficulty("heroic10") then -- not sure?
             warnTurretsReadySoon:Schedule(23)
             warnTurretsReady:Schedule(43)
@@ -97,7 +99,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
             timerTurret4:Start()
         end
 
-    elseif msg == L.YellGround then
+    elseif DBM.isStr(emote, L.YellGround, L.enUS.YellGround) then
+    --elseif msg == L.YellGround then
         timerGrounded:Start()
     end
 end

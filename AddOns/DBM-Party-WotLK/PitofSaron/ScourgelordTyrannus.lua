@@ -5,10 +5,8 @@ mod:SetRevision(("$Revision: 4373 $"):sub(12, -3))
 mod:SetCreatureID(36658, 36661)
 mod:SetUsedIcons(8)
 
-mod:RegisterCombat("yell", L.CombatStart)
-mod:RegisterCombat("yell", L.enUS.CombatStart)
-mod:RegisterKill("yell", L.YellCombatEnd)
-mod:RegisterKill("yell", L.enUS.YellCombatEnd)
+mod:RegisterCombat("yell", L.CombatStart, L.enUS.CombatStart)
+mod:RegisterKill("yell", L.YellCombatEnd, L.enUS.YellCombatEnd)
 mod:SetMinCombatTime(40)
 
 mod:RegisterEvents(

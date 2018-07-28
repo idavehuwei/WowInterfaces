@@ -5,10 +5,8 @@ mod:SetRevision(("$Revision: 3635 $"):sub(12, -3))
 mod:SetCreatureID(26631)
 mod:SetZone()
 
-mod:RegisterCombat("yell", L.YellPull)
-mod:RegisterCombat("yell", L.enUS.YellPull)
-mod:RegisterKill("yell", L.YellKill)
-mod:RegisterKill("yell", L.enUS.YellKill)
+mod:RegisterCombat("yell", L.YellPull, L.enUS.YellPull)
+mod:RegisterKill("yell", L.YellKill, L.enUS.YellKill)
 mod:SetWipeTime(25)
 
 mod:RegisterEvents("CHAT_MSG_MONSTER_YELL")

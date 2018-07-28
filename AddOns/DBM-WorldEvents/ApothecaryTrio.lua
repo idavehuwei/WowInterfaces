@@ -45,7 +45,8 @@ do
 end
 
 function mod:CHAT_MSG_MONSTER_SAY(msg)
-    if msg == L.SayCombatStart or msg:find(L.SayCombatStart) then
+    if DBM.isStrFind(msg, L.SayCombatStart, L.enUS.SayCombatStart) then
+    --if msg == L.SayCombatStart or msg:find(L.SayCombatStart) then
         if self.Options.TrioActiveTimer then
             timerHummel:Start()
             timerBaxter:Start()

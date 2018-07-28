@@ -4,7 +4,7 @@ local L     = mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 3726 $"):sub(12, -3))
 mod:SetCreatureID(28859)
 
-mod:RegisterCombat("yell", L.YellPull)
+mod:RegisterCombat("yell", L.YellPull, L.enUS.YellPull)
 
 mod:RegisterEvents(
     "CHAT_MSG_RAID_BOSS_EMOTE",
@@ -45,9 +45,11 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-    if msg == L.EmoteSpark or msg:find(L.EmoteSpark) then
+    if DBM.isStrFind(msg, L.EmoteSpark, L.enUS.EmoteSpark) then
+    --if msg == L.EmoteSpark or msg:find(L.EmoteSpark) then
         self:SendSync("Spark")
-    elseif msg == L.EmoteBreath or msg:find(L.EmoteBreath) then
+    elseif DBM.isStrFind(msg, L.EmoteBreath, L.enUS.EmoteBreath) then
+    --elseif msg == L.EmoteBreath or msg:find(L.EmoteBreath) then
         self:SendSync("Breath")
     end
 end
@@ -65,11 +67,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg:sub(0, L.YellPhase2:len()) == L.YellPhase2 then
+    if DBM.isStrSub(msg, L.YellPhase2, L.enUS.YellPhase2) then
+    --if msg:sub(0, L.YellPhase2:len()) == L.YellPhase2 then
         self:SendSync("Phase2")
-    elseif msg == L.YellBreath or msg:find(L.YellBreath) then
+    elseif DBM.isStrSub(msg, L.YellBreath, L.enUS.YellBreath) then
+    --elseif msg == L.YellBreath or msg:find(L.YellBreath) then
         self:SendSync("BreathSoon")
-    elseif msg:sub(0, L.YellPhase3:len()) == L.YellPhase3 then
+    elseif DBM.isStrSub(msg, L.YellPhase3, L.enUS.YellPhase3) then
+    --elseif msg:sub(0, L.YellPhase3:len()) == L.YellPhase3 then
         self:SendSync("Phase3")
     end
 end

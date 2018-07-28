@@ -600,13 +600,15 @@ function mod:NextPhase()
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.LKPull or msg:find(L.LKPull) then
+    if DBM.isStrFind(msg, L.LKPull, L.enUS.LKPull) then
+    --if msg == L.LKPull or msg:find(L.LKPull) then
         timerCombatStart:Start()
     end
 end
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg) --We get this whisper for all plagues, ones cast by lich king and ones from dispel jumps.
-    if msg:find(L.PlagueWhisper) and self:IsInCombat() then --We do a combat check with lich king since rotface uses the same whisper message and we only want this to work on lich king.
+    if DBM.isStrFind(msg, L.PlagueWhisper, L.enUS.PlagueWhisper) and self:IsInCombat() then --We do a combat check with lich king since rotface uses the same whisper message and we only want this to work on lich king.
+    --if msg:find(L.PlagueWhisper) and self:IsInCombat() then --We do a combat check with lich king since rotface uses the same whisper message and we only want this to work on lich king.
         if GetTime() - lastPlagueCast > 1 then --We don't want to send sync if it came from a spell cast though, so we ignore whisper unless it was at least 1 second after a cast.
             specWarnNecroticPlague:Show()
             self:SendSync("PlagueOn", UnitName("player"))

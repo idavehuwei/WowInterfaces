@@ -5,7 +5,8 @@ mod:SetRevision(("$Revision: 4408 $"):sub(12, -3))
 mod:SetCreatureID(37970, 37972, 37973)
 mod:SetUsedIcons(7, 8)
 
-mod:SetBossHealthInfo(37972, L.Keleseth,
+mod:SetBossHealthInfo(
+    37972, L.Keleseth,
     37970, L.Valanar,
     37973, L.Taldaram)
 
@@ -214,11 +215,12 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
-    if msg:match(L.EmpoweredFlames) then
+    if DBM.isStrMatch(msg, L.EmpoweredFlames, L.enUS.EmpoweredFlames) then
+    --if msg:match(L.EmpoweredFlames) then
         warnEmpoweredFlames:Show(target)
         if target == UnitName("player") then
             specWarnEmpoweredFlames:Show()
-            --			soundEmpoweredFlames:Play()
+            --soundEmpoweredFlames:Play()
             sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\justrun.mp3")
         end
         if self.Options.EmpoweredFlameIcon then

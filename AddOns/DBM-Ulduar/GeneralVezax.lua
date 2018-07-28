@@ -150,7 +150,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
-    if emote == L.EmoteSaroniteVapors or emote:find(L.EmoteSaroniteVapors) then
+    if DBM.isStrFind(emote, L.EmoteSaroniteVapors, L.enUS.EmoteSaroniteVapors) then
+    --if emote == L.EmoteSaroniteVapors or emote:find(L.EmoteSaroniteVapors) then
         timerSaroniteVapors:Start()
     end
 end

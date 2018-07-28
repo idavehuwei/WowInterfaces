@@ -212,9 +212,11 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg:find(L.PullAlliance, 1, true) then
+    if msg:find(L.PullAlliance, 1, true) or msg:find(L.enUS.PullAlliance, 1, true) then
+    --if msg:find(L.PullAlliance, 1, true) then
         timerCombatStart:Start()
-    elseif msg:find(L.PullHorde, 1, true) then
+    elseif msg:find(L.PullHorde, 1, true) or msg:find(L.enUS.PullHorde, 1, true) then
+    --elseif msg:find(L.PullHorde, 1, true) then
         timerCombatStart:Start(99)
     end
 end

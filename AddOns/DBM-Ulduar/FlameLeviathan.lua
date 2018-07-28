@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision: 4181 $"):sub(12, -3))
 
 mod:SetCreatureID(33113)
 
-mod:RegisterCombat("yell", L.YellPull)
+mod:RegisterCombat("yell", L.YellPull, L.enUS.YellPull)
 
 mod:RegisterEvents(
     "SPELL_AURA_REMOVED",

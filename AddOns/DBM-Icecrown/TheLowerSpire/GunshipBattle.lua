@@ -4,13 +4,13 @@ local L = mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 4380 $"):sub(12, -3))
 local AddsIcon
 if UnitFactionGroup("player") == "Alliance" then
-    mod:RegisterCombat("yell", L.PullAlliance)
-    mod:RegisterKill("yell", L.KillAlliance)
+    mod:RegisterCombat("yell", L.PullAlliance, L.enUS.PullAlliance)
+    mod:RegisterKill("yell", L.KillAlliance, L.enUS.KillAlliance)
     mod:SetCreatureID(37215) -- Orgrim's Hammer
     AddsIcon = 23334
 else
-    mod:RegisterCombat("yell", L.PullHorde)
-    mod:RegisterKill("yell", L.KillHorde)
+    mod:RegisterCombat("yell", L.PullHorde, L.enUS.PullHorde)
+    mod:RegisterKill("yell", L.KillHorde, L.enUS.KillHorde)
     mod:SetCreatureID(37540) -- The Skybreaker
     AddsIcon = 23336
 end
@@ -113,7 +113,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if ((msg == L.AddsAlliance or msg:find(L.AddsAlliance)) or (msg == L.AddsHorde or msg:find(L.AddsHorde))) and self:IsInCombat() then
+    if (DBM.isStrFind(msg, L.AddsAlliance, L.enUS.AddsAlliance) or DBM.isStrFind(msg, L.AddsHorde, L.enUS.AddsHorde)) and self:IsInCombat() then
+    --if ((msg == L.AddsAlliance or msg:find(L.AddsAlliance)) or (msg == L.AddsHorde or msg:find(L.AddsHorde))) and self:IsInCombat() then
         self:Adds()
     end
 end

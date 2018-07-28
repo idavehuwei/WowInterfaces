@@ -5,12 +5,13 @@ mod:SetRevision(("$Revision: 3592 $"):sub(12, -3))
 mod:SetCreatureID(26693)
 mod:SetMinSyncRevision(3108)
 
-mod:RegisterCombat("yell", L.Phase2)
-mod:RegisterCombat("yell", L.enUS.Phase2)
+mod:RegisterCombat("yell", L.Phase2, L.enUS.Phase2)
 
-mod:RegisterEvents("SPELL_AURA_APPLIED",
+mod:RegisterEvents(
+    "SPELL_AURA_APPLIED",
     "SPELL_AURA_REMOVED",
-    "CHAT_MSG_MONSTER_YELL")
+    "CHAT_MSG_MONSTER_YELL"
+)
 
 local warnPhase2 = mod:NewPhaseAnnounce(2)
 local warningPoison = mod:NewTargetAnnounce(59331, 2)

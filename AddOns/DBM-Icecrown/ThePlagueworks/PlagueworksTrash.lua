@@ -83,7 +83,8 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if (msg == L.FleshreaperTrap1 or msg == L.FleshreaperTrap2 or msg == L.FleshreaperTrap3) and mod:LatencyCheck() then
+    if DBM.isStr(msg, L.FleshreaperTrap1, L.enUS.FleshreaperTrap1, L.FleshreaperTrap2, L.enUS.FleshreaperTrap2, L.FleshreaperTrap3, L.enUS.FleshreaperTrap3) and mod:LatencyCheck() then
+    --if (msg == L.FleshreaperTrap1 or msg == L.FleshreaperTrap2 or msg == L.FleshreaperTrap3) and mod:LatencyCheck() then
         self:SendSync("FleshTrap")
     end
 end

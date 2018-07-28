@@ -3,7 +3,7 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 4408 $"):sub(12, -3))
 mod:SetCreatureID(36678)
-mod:RegisterCombat("yell", L.YellPull)
+mod:RegisterCombat("yell", L.YellPull, L.enUS.YellPull)
 mod:SetMinSyncRevision(3860)
 mod:SetUsedIcons(5, 6, 7, 8)
 
@@ -333,12 +333,12 @@ function mod:SPELL_AURA_APPLIED(args)
                     SendChatMessage(L.YellUnboundUrgent, "YELL")
                 end
             end
-            --			if self.Options.YellOnUnbound then
-            --				SendChatMessage(L.YellUnbound, "SAY")
-            --			end
-            --if self.Options.YellOnUnbound then
-            --	SendChatMessage(L.YellUnbound, "SAY")
-            --end
+            -- if self.Options.YellOnUnbound then
+            --     SendChatMessage(L.YellUnbound, "SAY")
+            -- end
+            -- if self.Options.YellOnUnbound then
+            --     SendChatMessage(L.YellUnbound, "SAY")
+            -- end
         end
     end
 end

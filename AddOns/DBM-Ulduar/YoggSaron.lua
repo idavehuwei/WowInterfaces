@@ -4,7 +4,7 @@ local L     = mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 4338 $"):sub(12, -3))
 mod:SetCreatureID(33288)
 
-mod:RegisterCombat("yell", L.YellPull)
+mod:RegisterCombat("yell", L.YellPull, L.enUS.YellPull)
 
 mod:RegisterEvents(
     "SPELL_CAST_START",
@@ -244,7 +244,8 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
-    if emote == L.EmoteDoorOpen or emote:find(L.EmoteDoorOpen) then
+    if DBM.isStrFind(emote, L.EmoteDoorOpen, L.enUS.EmoteDoorOpen) then
+    --if emote == L.EmoteDoorOpen or emote:find(L.EmoteDoorOpen) then
         sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\indoornow.mp3")
     end
 end

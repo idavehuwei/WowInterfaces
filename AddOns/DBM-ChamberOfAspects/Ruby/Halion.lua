@@ -7,7 +7,7 @@ mod:SetMinSyncRevision(4358)
 mod:SetUsedIcons(7, 8)
 
 mod:RegisterCombat("combat")
---mod:RegisterKill("yell", L.Kill)
+--mod:RegisterKill("yell", L.Kill, L.enUS.Kill)
 
 mod:RegisterEvents(
     "SPELL_CAST_START",
@@ -218,7 +218,8 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.Phase2 or msg:find(L.Phase2) then
+    if DBM.isStrFind(msg, L.Phase2, L.enUS.Phase2) then
+    --if msg == L.Phase2 or msg:find(L.Phase2) then
         updateHealthFrame(2)
         timerFieryBreathCD:Cancel()
         timerMeteorCD:Cancel()
@@ -231,9 +232,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
         else
             timerTwilightCutterCD:Start(35)
         end
-    elseif msg == L.Phase3 or msg:find(L.Phase3) then
+    elseif DBM.isStrFind(msg, L.Phase3, L.enUS.Phase3) then
+    --elseif msg == L.Phase3 or msg:find(L.Phase3) then
         self:SendSync("Phase3")
-    elseif msg == L.MeteorCast or msg:find(L.MeteorCast) then--There is no CLEU cast trigger for meteor, only yell
+    elseif DBM.isStrFind(msg, L.MeteorCast, L.enUS.MeteorCast) then--There is no CLEU cast trigger for meteor, only yell
+    --elseif msg == L.MeteorCast or msg:find(L.MeteorCast) then--There is no CLEU cast trigger for meteor, only yell
         if not self.Options.AnnounceAlternatePhase then
             warningMeteor:Show()
             sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\meteorrun.mp3")
@@ -247,7 +250,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-    if msg == L.twilightcutter or msg:find(L.twilightcutter) then
+    if DBM.isStrFind(msg, L.twilightcutter, L.enUS.twilightcutter) then
+    --if msg == L.twilightcutter or msg:find(L.twilightcutter) then
             specWarnTwilightCutter:Schedule(5)
         if not self.Options.AnnounceAlternatePhase then
             warningTwilightCutter:Show()

@@ -7,12 +7,11 @@ local L     = mod:GetLocalizedStrings()
 --
 --]]
 
-
 mod:SetRevision(("$Revision: 3804 $"):sub(12, -3))
 mod:SetCreatureID(32871)
 
-mod:RegisterCombat("yell", L.YellPull)
-mod:RegisterKill("yell", L.YellKill)
+mod:RegisterCombat("yell", L.YellPull, L.enUS.YellPull)
+mod:RegisterKill("yell", L.YellKill, L.enUS.YellKill)
 mod:SetWipeTime(20)
 
 mod:RegisterEvents(
@@ -120,13 +119,15 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-    if msg == L.Emote_CollapsingStar or msg:find(L.Emote_CollapsingStar) then
+    if DBM.isStrFind(msg, L.Emote_CollapsingStar, L.enUS.Emote_CollapsingStar) then
+    --if msg == L.Emote_CollapsingStar or msg:find(L.Emote_CollapsingStar) then
         timerNextCollapsingStar:Start()
     end
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.Phase2 or msg:find(L.Phase2) then
+    if DBM.isStrFind(msg, L.Phase2, L.enUS.Phase2) then
+    --if msg == L.Phase2 or msg:find(L.Phase2) then
         timerNextCollapsingStar:Cancel()
         warnPhase2:Show()
     end

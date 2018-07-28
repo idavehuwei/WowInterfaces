@@ -4,7 +4,7 @@ local L     = mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 4435 $"):sub(12, -3))
 mod:SetCreatureID(34564)
 
-mod:RegisterCombat("yell", L.YellPull)
+mod:RegisterCombat("yell", L.YellPull, L.enUS.YellPull)
 
 mod:RegisterEvents(
     "SPELL_AURA_APPLIED",
@@ -215,7 +215,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-    if msg and msg:find(L.Burrow) then
+    if msg and msg:find(L.Burrow) or msg:find(L.enUS.Burrow) then
         Burrowed = true
         timerAdds:Cancel()
         warnAdds:Cancel()
@@ -223,7 +223,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
         warnEmergeSoon:Schedule(55)
         timerEmerge:Start()
         timerFreezingSlash:Stop()
-    elseif msg and msg:find(L.Emerge) then
+    elseif msg and msg:find(L.Emerge) or msg:find(L.enUS.Emerge) then
         Burrowed = false
         timerAdds:Start(5)
         warnAdds:Schedule(5)

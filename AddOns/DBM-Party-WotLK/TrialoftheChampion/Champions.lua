@@ -7,8 +7,7 @@ mod:SetCreatureID(34657, 34701, 34702, 34703, 34705, 35569, 35570, 35571, 35572,
 mod:RegisterCombat("combat")
 mod:SetDetectCombatInVehicle(false)
 
-mod:RegisterKill("yell", L.YellCombatEnd)
-mod:RegisterKill("yell", L.enUS.YellCombatEnd)
+mod:RegisterKill("yell", L.YellCombatEnd, L.enUS.YellCombatEnd)
 
 mod:RegisterEvents(
     "SPELL_CAST_START",

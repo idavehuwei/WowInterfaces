@@ -80,7 +80,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if (msg == L.WarderTrap1 or msg == L.WarderTrap2 or msg == L.WarderTrap3) and mod:LatencyCheck() then
+    if DBM.isStr(msg, L.WarderTrap1, L.enUS.WarderTrap1, L.WarderTrap2, L.enUS.WarderTrap2, L.WarderTrap3, L.enUS.WarderTrap3) and mod:LatencyCheck() then
+    --if (msg == L.WarderTrap1 or msg == L.WarderTrap2 or msg == L.WarderTrap3) and mod:LatencyCheck() then
         self:SendSync("WarderTrap")
     end
 end

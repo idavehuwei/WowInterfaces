@@ -6,7 +6,7 @@ mod:SetCreatureID(34797)
 mod:SetMinCombatTime(30)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
-mod:RegisterCombat("yell", L.CombatStart)
+mod:RegisterCombat("yell", L.CombatStart, L.enUS.CombatStart)
 
 mod:RegisterEvents(
     "SPELL_AURA_APPLIED",
@@ -274,7 +274,7 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
-    if msg:match(L.Charge) or msg:find(L.Charge) then
+    if msg:match(L.Charge) or msg:match(L.enUS.Charge) or msg:find(L.Charge) or msg:find(L.enUS.Charge) then
         timerNextCrash:Start()
         sndWOP:Schedule(50, "Interface\\AddOns\\DBM-Core\\extrasounds\\chargesoon.mp3")
         if self.Options.ClearIconsOnIceHowl then
@@ -317,14 +317,16 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.Phase2 or msg:find(L.Phase2) then
+    if DBM.isStrFind(msg, L.Phase2, L.enUS.Phase2) then
+    --if msg == L.Phase2 or msg:find(L.Phase2) then
         self:ScheduleMethod(17, "WormsEmerge")
         timerCombatStart:Show(15)
         updateHealthFrame(2)
         if self.Options.RangeFrame then
             DBM.RangeCheck:Show(10)
         end
-    elseif msg == L.Phase3 or msg:find(L.Phase3) then
+    elseif DBM.isStrFind(msg, L.Phase3, L.enUS.Phase3) then
+    --elseif msg == L.Phase3 or msg:find(L.Phase3) then
         updateHealthFrame(3)
         if self:IsDifficulty("heroic10", "heroic25") then
             enrageTimer:Start()

@@ -6,8 +6,7 @@ mod:SetCreatureID(35451, 10000) -- work around, DBM API failes to handle a Boss 
 mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
-mod:RegisterKill("yell", L.YellCombatEnd)
-mod:RegisterKill("yell", L.enUS.YellCombatEnd)
+mod:RegisterKill("yell", L.YellCombatEnd, L.enUS.YellCombatEnd)
 
 mod:RegisterEvents(
     "SPELL_CAST_START",

@@ -4,7 +4,7 @@ local L     = mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 4198 $"):sub(12, -3))
 mod:SetCreatureID(25740)--25740 Ahune, 25755, 25756 the two types of adds
 
-mod:RegisterCombat("say", L.Pull)
+mod:RegisterCombat("say", L.Pull, L.enUS.Pull)
 mod:SetMinCombatTime(15)
 
 mod:RegisterEvents(

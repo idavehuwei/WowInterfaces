@@ -74,7 +74,8 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
-    if msg:find(L.FocusedEyebeam) then
+    if DBM.isStrFind(msg, L.FocusedEyebeam, L.enUS.FocusedEyebeam) then
+    --if msg:find(L.FocusedEyebeam) then
         self:SendSync("EyeBeamOn", UnitName("player"))
     end
 end

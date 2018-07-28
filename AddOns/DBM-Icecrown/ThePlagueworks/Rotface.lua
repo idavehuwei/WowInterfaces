@@ -78,11 +78,13 @@ function mod:OnCombatEnd()
 end
 
 --this function seems rathor limited but not entirely hopeless. i imagine it only works if you or someone else targets the big ooze, but that pretty much means it's useless if kiter doesn't have dbm.
---[[function mod:SlimeTank()
-	local target = self:GetThreatTarget(36897)
-	if not target then return end
-	self:SendSync("OozeTank", target)
-end--]]
+--[[
+function mod:SlimeTank()
+    local target = self:GetThreatTarget(36897)
+    if not target then return end
+    self:SendSync("OozeTank", target)
+end
+--]]
 
 function mod:WallSlime()
     if self:IsInCombat() then
@@ -132,8 +134,8 @@ function mod:SPELL_AURA_APPLIED(args)
         timerMutatedInfection:Start(args.destName)
         if args:IsPlayer() then
             specWarnMutatedInfection:Show()
+            -- soundMutatedInfection:Play()
             sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\infect.mp3")
-            --			soundMutatedInfection:Play()
         end
         if self.Options.InfectionIcon then
             self:SetIcon(args.destName, InfectionIcon, 12)
@@ -178,7 +180,7 @@ function mod:SPELL_DAMAGE(args)
     elseif args:IsSpellID(69507, 71213, 73189, 73190) and args:IsPlayer() then
         sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\runaway.mp3")
     elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() and not args:IsSpellID(53189, 53190, 53194, 53195) then --Any spell damage except for starfall (ranks 3 and 4)
-        --		self:ScheduleMethod(1, "SlimeTank")
+        -- self:ScheduleMethod(1, "SlimeTank")
         if args.sourceName ~= UnitName("player") then
             if self.Options.TankArrow then
                 DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
@@ -191,7 +193,7 @@ function mod:SWING_DAMAGE(args)
     if args:IsPlayer() and args:GetSrcCreatureID() == 36897 then --Little ooze hitting you
         specWarnLittleOoze:Show()
     elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() then
-        --		self:ScheduleMethod(1, "SlimeTank")
+        -- self:ScheduleMethod(1, "SlimeTank")
         if args.sourceName ~= UnitName("player") then
             if self.Options.TankArrow then
                 DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
@@ -201,17 +203,20 @@ function mod:SWING_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if (msg == L.YellSlimePipes1 or msg:find(L.YellSlimePipes1)) or (msg == L.YellSlimePipes2 or msg:find(L.YellSlimePipes2)) then
+    if DBM.isStrFind(msg, L.YellSlimePipes1, L.enUS.YellSlimePipes1, L.YellSlimePipes2, L.enUS.YellSlimePipes2) then
+    --if (msg == L.YellSlimePipes1 or msg:find(L.YellSlimePipes1)) or (msg == L.YellSlimePipes2 or msg:find(L.YellSlimePipes2)) then
         self:WallSlime()
     end
 end
 
---[[function mod:OnSync(msg, target)
-	if msg == "OozeTank" then
-		if target ~= UnitName("player") then
-			if self.Options.TankArrow then
-				DBM.Arrow:ShowRunTo(target, 0, 0)
-			end
-		end
-	end
-end--]]
+--[[
+function mod:OnSync(msg, target)
+    if msg == "OozeTank" then
+        if target ~= UnitName("player") then
+            if self.Options.TankArrow then
+                DBM.Arrow:ShowRunTo(target, 0, 0)
+            end
+        end
+    end
+end
+--]]

@@ -5,8 +5,8 @@ mod:SetRevision(("$Revision: 4177 $"):sub(12, -3))
 mod:SetCreatureID(32865)
 mod:SetUsedIcons(8)
 
-mod:RegisterCombat("yell", L.YellPhase1)
-mod:RegisterKill("yell", L.YellKill)
+mod:RegisterCombat("yell", L.YellPhase1, L.enUS.YellPhase1)
+mod:RegisterKill("yell", L.YellKill, L.enUS.YellKill)
 
 mod:RegisterEvents(
     "SPELL_AURA_APPLIED",
@@ -73,7 +73,6 @@ end
 function mod:SPELL_AURA_APPLIED(args)
     if args:IsSpellID(62042) then -- Storm Hammer
         warnStormhammer:Show(args.destName)
-
     elseif args:IsSpellID(62130) then -- Unbalancing Strike
         warnUnbalancingStrike:Show(args.destName)
         if mod:IsTank() or mod:IsHealer() then
@@ -98,7 +97,8 @@ end
 
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.YellPhase2 and mod:LatencyCheck() then -- Bossfight (tank and spank)
+    if DBM.isStr(msg, L.YellPhase2, L.enUS.YellPhase2) and mod:LatencyCheck() then -- Bossfight (tank and spank)
+    --if msg == L.YellPhase2 and mod:LatencyCheck() then -- Bossfight (tank and spank)
         self:SendSync("Phase2")
     end
 end

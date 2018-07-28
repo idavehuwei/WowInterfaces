@@ -228,7 +228,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if msg == L.FirstPull or msg:find(L.FirstPull) then
+    if DBM.isStrFind(msg, L.FirstPull, L.enUS.FirstPull) then
+    --if msg == L.FirstPull or msg:find(L.FirstPull) then
         timerCombatStart:Start()
     end
 end
