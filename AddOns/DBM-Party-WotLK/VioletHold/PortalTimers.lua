@@ -69,7 +69,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if DBM:isStrFind(msg, L.Sealbroken, L.enUS.Sealbroken) then
+    if DBM.isStrFind(msg, L.Sealbroken, L.enUS.Sealbroken) then
     --if msg == L.Sealbroken or msg:find(L.Sealbroken) then
         self:SendSync("Wipe")
     end

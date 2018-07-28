@@ -39,7 +39,7 @@ function mod:SPELL_AURA_APPLIED(args)
         warnReflectiveShield:Show(args.destName)
         shielded = true
     elseif args:IsSpellID(66537, 67675) and not args:IsDestTypePlayer() then -- Renew
-        if DBM:isStr(args.destName, L.name, L.enUS.name) and shielded then
+        if DBM.isStr(args.destName, L.name, L.enUS.name) and shielded then
         --if args.destName == L.name and shielded then
             -- nothing, she casted it on herself and you cant dispel
         else

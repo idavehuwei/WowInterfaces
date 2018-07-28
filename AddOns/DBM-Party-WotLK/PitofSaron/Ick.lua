@@ -61,14 +61,14 @@ do
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-    if DBM:isStr(msg, L.Barrage, L.enUS.Barrage) then
+    if DBM.isStr(msg, L.Barrage, L.enUS.Barrage) then
     --if msg == L.Barrage then
         specWarnMines:Show()
     end
 end
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
-    if DBM:isStrMatch(msg, L.IckPursuit, L.enUS.IckPursuit) then
+    if DBM.isStrMatch(msg, L.IckPursuit, L.enUS.IckPursuit) then
     --if msg == L.IckPursuit or msg:match(L.IckPursuit) then
         self:SendSync("Pursuit", UnitName("player"))
     end

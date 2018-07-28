@@ -188,34 +188,25 @@ function DBM.Clone(object)
 end
 
 function DBM.isStr(str, ...)
-    if select('#', ...) > 0 then
-        for i,v in ipairs(...) do
-            if str == v or str:find(v) then
-                return true;
-            end
-        end
+    for i = 1, select("#", ...) do
+        local v = select(i, ...)
+        if str == v then return true; end
     end
     return false;
 end
 
 function DBM.isStrFind(str, ...)
-    if select('#', ...) > 0 then
-        for i,v in ipairs(...) do
-            if str == v or str:find(v) then
-                return true;
-            end
-        end
+    for i = 1, select("#", ...) do
+        local v = select(i, ...)
+        if str == v or str:find(v) then return true; end
     end
     return false;
 end
 
 function DBM.isStrMatch(str, ...)
-    if select('#', ...) > 0 then
-        for i,v in ipairs(...) do
-            if str == v or str:match(v) then
-                return true;
-            end
-        end
+    for i = 1, select("#", ...) do
+        local v = select(i, ...)
+        if str == v or str:match(v) then return true; end
     end
     return false;
 end

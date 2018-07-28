@@ -65,7 +65,7 @@ function mod:UPDATE_WORLD_STATES(args)
 end
 
 function mod:UNIT_DIED(args)
-    if DBM:isStr(args.sourceName, L.Falric, L.enUS.Falric) then
+    if DBM.isStr(args.sourceName, L.Falric, L.enUS.Falric) then
     --if args.sourceName == L.Falric then
         timerNextWave:Start(60)
         warnNewWaveSoon:Schedule(50)

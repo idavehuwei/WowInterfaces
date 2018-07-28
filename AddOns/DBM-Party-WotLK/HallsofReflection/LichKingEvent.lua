@@ -25,22 +25,22 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if DBM:isStrFind(msg, L.Wave1, L.enUS.Wave1) then
+    if DBM.isStrFind(msg, L.Wave1, L.enUS.Wave1) then
     --if msg == L.Wave1 or msg:find(L.Wave1) then
         if self.Options.ShowWaves then
             WarnWave1:Show()
         end
-    elseif DBM:isStrFind(msg, L.Wave2, L.enUS.Wave2) then
+    elseif DBM.isStrFind(msg, L.Wave2, L.enUS.Wave2) then
     --elseif msg == L.Wave2 or msg:find(L.Wave2) then
         if self.Options.ShowWaves then
             WarnWave2:Show()
         end
-    elseif DBM:isStrFind(msg, L.Wave3, L.enUS.Wave3) then
+    elseif DBM.isStrFind(msg, L.Wave3, L.enUS.Wave3) then
     --elseif msg == L.Wave3 or msg:find(L.Wave3) then
         if self.Options.ShowWaves then
             WarnWave3:Show()
         end
-    elseif DBM:isStrFind(msg, L.Wave4, L.enUS.Wave4) then
+    elseif DBM.isStrFind(msg, L.Wave4, L.enUS.Wave4) then
     --elseif msg == L.Wave4 or msg:find(L.Wave4) then
         if self.Options.ShowWaves then
             WarnWave4:Show()

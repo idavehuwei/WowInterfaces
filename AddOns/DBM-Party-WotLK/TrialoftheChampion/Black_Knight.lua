@@ -88,7 +88,7 @@ do
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if DBM:isStrFind(msg, L.Pull, L.enUS.Pull) then
+    if DBM.isStrFind(msg, L.Pull, L.enUS.Pull) then
     --if msg == L.Pull or msg:find(L.Pull) then
         timerCombatStart:Start()
     end

@@ -25,7 +25,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if DBM:isStrFind(msg, L.SvalaRoleplayStart, L.enUS.SvalaRoleplayStart) then
+    if DBM.isStrFind(msg, L.SvalaRoleplayStart, L.enUS.SvalaRoleplayStart) then
     --if msg == L.SvalaRoleplayStart or msg:find(L.SvalaRoleplayStart) then
         timerRoleplay:Start()
     end

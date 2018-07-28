@@ -26,7 +26,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-    if DBM:isStr(msg, L.HandlerYell, L.enUS.HandlerYell) then
+    if DBM.isStr(msg, L.HandlerYell, L.enUS.HandlerYell) then
     --if msg == L.HandlerYell then
         CrystalHandlers = CrystalHandlers - 1
         if CrystalHandlers > 0 then
@@ -35,7 +35,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
         else
             WarnCrystalHandler:Show(CrystalHandlers)
         end
-    elseif DBM:isStr(msg, L.Phase2, L.enUS.Phase2) then
+    elseif DBM.isStr(msg, L.Phase2, L.enUS.Phase2) then
     --elseif msg == L.Phase2 then
         warnPhase2:Show()
     end

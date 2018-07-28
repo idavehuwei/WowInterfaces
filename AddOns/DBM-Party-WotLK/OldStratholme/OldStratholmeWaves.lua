@@ -96,10 +96,10 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_SAY(msg)
-    if DBM:isStrFind(msg, L.Roleplay, L.enUS.Roleplay) then
+    if DBM.isStrFind(msg, L.Roleplay, L.enUS.Roleplay) then
     --if msg == L.Roleplay or msg:find(L.Roleplay) then
         timerRoleplay:Start() --Arthas preaches to uther and jaina
-    elseif DBM:isStrFind(msg, L.Roleplay2, L.enUS.Roleplay2) then
+    elseif DBM.isStrFind(msg, L.Roleplay2, L.enUS.Roleplay2) then
     --elseif msg == L.Roleplay2 or msg:find(L.Roleplay2) then
         timerRoleplay:Start(106) --Arthas prances around blabbing with malganis
     end

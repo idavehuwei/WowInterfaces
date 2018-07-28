@@ -78,7 +78,7 @@ function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
-    if DBM:isStrMatch(msg, L.SaroniteRockThrow, L.enUS.SaroniteRockThrow) then
+    if DBM.isStrMatch(msg, L.SaroniteRockThrow, L.enUS.SaroniteRockThrow) then
     --if msg == L.SaroniteRockThrow or msg:match(L.SaroniteRockThrow) then
         self:SendSync("SaroniteRock", UnitName("player"))
     end

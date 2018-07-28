@@ -23,13 +23,13 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, sender)
-    if DBM:isStr(msg, L.Phase1, L.enUS.Phase1) then
+    if DBM.isStr(msg, L.Phase1, L.enUS.Phase1) then
     --if L.Phase1 == msg then
         warningPhase:Show(1)
-    elseif DBM:isStr(msg, L.Phase2, L.enUS.Phase2) then
+    elseif DBM.isStr(msg, L.Phase2, L.enUS.Phase2) then
     --elseif msg == L.Phase2 then
         warningPhase:Show(2)
-    elseif DBM:isStr(msg, L.Phase3, L.enUS.Phase3) then
+    elseif DBM.isStr(msg, L.Phase3, L.enUS.Phase3) then
     --elseif msg == L.Phase3 then
         warningPhase:Show(3)
     end
