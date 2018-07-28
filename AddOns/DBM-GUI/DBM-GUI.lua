@@ -39,7 +39,7 @@
 --
 
 local revision =("$Revision: 4379 $"):sub(12, -3)
-local FrameTitle = "DBM_GUI_Option_"	-- all GUI frames get automatically a name FrameTitle..ID
+local FrameTitle = "DBM_GUI_Option_" -- all GUI frames get automatically a name FrameTitle..ID
 
 local PanelPrototype = {}
 DBM_GUI = {}
@@ -1975,7 +1975,6 @@ do
             DBM_GUI_OptionsFrame:Show()
         end
     end
-
 
     function DBM_GUI:CreateBossModPanel(mod)
         if not mod.panel then
