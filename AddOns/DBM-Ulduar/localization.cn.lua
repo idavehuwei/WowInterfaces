@@ -32,8 +32,8 @@ L:SetWarningLocalization {
 L:SetOptionLocalization {
     SoundWOP = "为重要技能播放额外的警报语音",
     SpecialPursueWarnYou = "当你被追踪时显示特别警报",
-    PursueWarn = "提示追踪的目标",
-    warnNextPursueSoon = "为下一次追踪显示提前警报",
+    PursueWarn = "提示$spell:62374的目标",
+    warnNextPursueSoon = "为下一次$spell:62374显示预警",
     warnWardofLife = "为生命结界出现显示特别警报"
 }
 
@@ -502,13 +502,13 @@ L:SetOptionLocalization {
     SoundWOP = "为重要技能播放额外的警报语音",
     WarningGuardianSpawned = "为尤格萨隆的卫士出现显示警报",
     WarningCrusherTentacleSpawned = "为重压触须出现显示警报",
-    WarningSanity = "当理智剩下50时显示警报",
-    SpecWarnSanity = "当理智过低(25,15,5)时显示特别警报",
+    WarningSanity = "当$spell:63050剩下50时显示警报",
+    SpecWarnSanity = "当$spell:63050过低(25,15,5)时显示特别警报",
     SpecWarnGuardianLow = "当尤格萨隆的卫士(第1阶段)血量过低时显示特别警报 (输出职业用)",
     WarnBrainPortalSoon = "为脑部传送门显示提前警报",
     SpecWarnMadnessOutNow = "为疯狂诱导结束前显示特别警报",
-    SetIconOnFearTarget = "为心灵疾病的目标设置标记 (骷髅)",
-    SpecWarnFervorCast = "当萨拉的热情正在对你施放时显示特别警报 (必须至少有一名团队成员设置首领为焦点目标)",
+    SetIconOnFearTarget = "为$spell:63881的目标设置标记 (骷髅)",
+    SpecWarnFervorCast = "当正在对你施放$spell:63138时显示特别警报 (必须至少有一名团队成员设置首领为焦点目标)",
     specWarnBrainPortalSoon = "为下一次脑部传送门显示特别警报",
     WarningSqueeze = "当你中了挤压(触须绑人)时大喊",
     NextPortal = "为下一次传送门显示计时条",
