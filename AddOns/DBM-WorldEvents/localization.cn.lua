@@ -65,11 +65,11 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({})
 
-L:SetTimerLocalization({
+L:SetTimerLocalization {
     HummelActive = "胡默尔 开始活动",
     BaxterActive = "巴克斯特 开始活动",
     FryeActive = "弗莱伊 开始活动"
-})
+}
 
 L:SetOptionLocalization({
     TrioActiveTimer = "为药剂师三人组开始活动显示计时条"
@@ -94,11 +94,11 @@ L:SetWarningLocalization({
     specWarnAttack = "埃霍恩拥有易伤 - 现在攻击!"
 })
 
-L:SetTimerLocalization({
+L:SetTimerLocalization {
     SubmergTimer = "隐没",
     EmergeTimer = "现身",
     TimerCombat = "战斗开始"
-})
+}
 
 L:SetOptionLocalization({
     Submerged = "当埃霍恩隐没时显示警报",
