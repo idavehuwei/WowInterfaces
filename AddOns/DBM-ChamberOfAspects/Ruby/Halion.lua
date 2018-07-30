@@ -252,7 +252,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
     if DBM.isStrFind(msg, L.twilightcutter, L.enUS.twilightcutter) then
     --if msg == L.twilightcutter or msg:find(L.twilightcutter) then
-            specWarnTwilightCutter:Schedule(5)
+        specWarnTwilightCutter:Schedule(5)
         if not self.Options.AnnounceAlternatePhase then
             warningTwilightCutter:Show()
             sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\cutsoon.mp3")
@@ -261,7 +261,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
             sndWOP:Schedule(2.8, "Interface\\AddOns\\DBM-Core\\extrasounds\\countone.mp3")
             sndWOP:Schedule(3.3, "Interface\\AddOns\\DBM-Core\\extrasounds\\cutnow.mp3")
             timerTwilightCutterCast:Start()
-            timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
+            timerTwilightCutter:Schedule(5) --Delay it since it happens 5 seconds after the emote
             timerTwilightCutterCD:Schedule(15)
         end
         if mod:LatencyCheck() then

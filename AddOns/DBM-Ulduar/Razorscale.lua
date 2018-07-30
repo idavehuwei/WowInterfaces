@@ -24,6 +24,7 @@ local warnDevouringFlameCast        = mod:NewAnnounce("WarnDevouringFlameCast", 
 
 local specWarnDevouringFlame        = mod:NewSpecialWarningMove(64733)
 local specWarnDevouringFlameCast    = mod:NewSpecialWarning("SpecWarnDevouringFlameCast")
+local specWarnFuseArmor             = mod:NewSpecialWarningStack(64771, nil, 2)
 
 local enrageTimer                   = mod:NewBerserkTimer(900)
 local timerDeepBreathCooldown       = mod:NewCDTimer(21, 64021)
@@ -123,9 +124,7 @@ function mod:SPELL_AURA_APPLIED(args)
     if args:IsSpellID(64771) then
         local amount = args.amount or 1
         if amount >= 2 then
-            if specWarnFuseArmor then
-                specWarnFuseArmor:Show(args.amount)
-            end
+            specWarnFuseArmor:Show(args.amount)
             sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\changemt.mp3")
         end
     end

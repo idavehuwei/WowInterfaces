@@ -32,6 +32,7 @@ local warnFury              = mod:NewTargetAnnounce(63571, 2)
 local warnRoots             = mod:NewTargetAnnounce(62438, 2)
 
 local specWarnFury          = mod:NewSpecialWarningYou(63571)
+local specWarnTree          = mod:NewSpecialWarning("WarningTree")
 local specWarnTremor        = mod:NewSpecialWarningCast(62859) -- Hard mode
 local specWarnBeam          = mod:NewSpecialWarningMove(62865) -- Hard mode
 

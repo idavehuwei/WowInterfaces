@@ -274,7 +274,8 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
-    if msg:match(L.Charge) or msg:match(L.enUS.Charge) or msg:find(L.Charge) or msg:find(L.enUS.Charge) then
+    if DBM.isStrMatch(msg, L.Charge, L.enUS.Charge) or DBM.isStrFind(msg, L.Charge, L.enUS.Charge) then
+    --if msg:match(L.Charge) or msg:find(L.Charge) then
         timerNextCrash:Start()
         sndWOP:Schedule(50, "Interface\\AddOns\\DBM-Core\\extrasounds\\chargesoon.mp3")
         if self.Options.ClearIconsOnIceHowl then

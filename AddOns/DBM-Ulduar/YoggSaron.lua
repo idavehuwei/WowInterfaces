@@ -63,6 +63,8 @@ mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("SetIconOnFearTarget")
 mod:AddBoolOption("SetIconOnFervorTarget")
 mod:AddBoolOption("SetIconOnBrainLinkTarget")
+mod:AddBoolOption("SoundWarnIndoorGroup", false)
+mod:AddBoolOption("SoundWarnTurnAround", mod:IsMelee() or mod:IsRanged())
 mod:AddBoolOption("MaladyArrow")
 
 local phase = 1
@@ -70,9 +72,20 @@ local targetWarningsShown = {}
 local brainLinkTargets = {}
 local brainLinkIcon = 7
 local Guardians = 0
+local nearindoortime = 0
+local lowsanity = 0
+
+local function dangerindoortime()
+    nearindoortime = 1
+end
+
+local function safeindoortime()
+    nearindoortime = 0
+end
 
 function mod:OnCombatStart(delay)
     Guardians = 0
+    lowsanity = 0
     phase = 1
     enrageTimer:Start()
     timerAchieve:Start()
@@ -108,6 +121,8 @@ function mod:SPELL_CAST_START(args)
         warnBrainPortalSoon:Schedule(78)
         specWarnBrainPortalSoon:Schedule(78)
         sndWOP:Schedule(75, "Interface\\AddOns\\DBM-Core\\extrasounds\\indoorsoon.mp3")
+        self:Schedule(75, dangerindoortime)
+        self:Schedule(85, safeindoortime)
         specWarnMadnessOutNow:Schedule(55)
         sndWOP:Schedule(52, "Interface\\AddOns\\DBM-Core\\extrasounds\\outdoornow.mp3")
     elseif args:IsSpellID(64189) then --Deafening Roar
@@ -148,7 +163,7 @@ function mod:SPELL_AURA_APPLIED(args)
             sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\followline.mp3")
         end
         mod:ScheduleMethod(0.2, "warnBrainLink")
-    elseif args:IsSpellID(63830, 63881) then   -- Malady of the Mind (Death Coil)
+    elseif args:IsSpellID(63830, 63881) then -- Malady of the Mind (Death Coil)
         if self.Options.SetIconOnFearTarget then
             self:SetIcon(args.destName, 8, 30)
         end
@@ -194,10 +209,13 @@ function mod:SPELL_AURA_APPLIED(args)
         end
     elseif args:IsSpellID(63894) then -- Shadowy Barrier of Yogg-Saron (this is happens when p2 starts)
         phase = 2
+        nearindoortime = 0
         brainportal:Start(60)
         warnBrainPortalSoon:Schedule(57)
         specWarnBrainPortalSoon:Schedule(57)
         sndWOP:Schedule(55, "Interface\\AddOns\\DBM-Core\\extrasounds\\indoorsoon.mp3")
+        self:Schedule(55, dangerindoortime)
+        self:Schedule(65, safeindoortime)
         warnP2:Show()
         if self.Options.ShowSaraHealth then
             DBM.BossHealth:RemoveBoss(33134)
@@ -224,11 +242,13 @@ function mod:SPELL_AURA_REMOVED(args)
         if mod:LatencyCheck() then
             self:SendSync("Phase3") -- Sync this because you don't get it in your combat log if you are in brain room.
         end
-    elseif args:IsSpellID(64167, 64163) then    -- Lunatic Gaze
+    elseif args:IsSpellID(64167, 64163) then -- Lunatic Gaze
         timerNextLunaricGaze:Start()
         if lowsanity == 1 and self.Options.SoundWarnTurnAround then
             sndWOP:Schedule(8, "Interface\\AddOns\\DBM-Core\\extrasounds\\turnaround.mp3")
         end
+    elseif args:IsSpellID(64126, 64125) then -- Squeeze
+        self:SetIcon(args.destName, 0)
     end
 end
 
@@ -236,16 +256,19 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
     if args:IsSpellID(63050) and args.destGUID == UnitGUID("player") then
         if args.amount == 50 then
             warnSanity:Show(args.amount)
-        elseif args.amount == 25 or args.amount == 15 or args.amount == 5 then
-            warnSanity:Show(args.amount)
-            specWarnSanity:Show(args.amount)
+        elseif args.amount < 26 then
+            lowsanity = 1
+            if args.amount == 25 or args.amount == 15 or args.amount == 5 then
+                warnSanity:Show(args.amount)
+                specWarnSanity:Show(args.amount)
+            end
         end
     end
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
     if DBM.isStrFind(emote, L.EmoteDoorOpen, L.enUS.EmoteDoorOpen) then
-    --if emote == L.EmoteDoorOpen or emote:find(L.EmoteDoorOpen) then
+        --if emote == L.EmoteDoorOpen or emote:find(L.EmoteDoorOpen) then
         sndWOP:Play("Interface\\AddOns\\DBM-Core\\extrasounds\\indoornow.mp3")
     end
 end
@@ -261,6 +284,8 @@ function mod:OnSync(msg)
     if msg == "Phase3" then
         warnP3:Show()
         phase = 3
+        self:Unschedule(dangerindoortime)
+        self:Unschedule(safeindoortime)
         brainportal:Stop()
         timerEmpower:Start()
         warnEmpowerSoon:Schedule(40)
