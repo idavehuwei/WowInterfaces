@@ -39,4 +39,5 @@
     <Include file="FuBarPlugin-2.0\lib.xml"/>
     <Include file="LibDualSpec-1.0\lib.xml"/>
     <Include file="Abacus-2.0\lib.xml"/>
+    <Include file="LibQuixote-2.0\lib.xml"/>
 </Ui>

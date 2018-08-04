@@ -19,8 +19,6 @@
 ## X-Revision: Duowan
 ## LoadOnDemand: 1
 
-embeds.xml
-
 Data\Quest.lua
 Data\NPC.lua
 Data\Zone.lua
