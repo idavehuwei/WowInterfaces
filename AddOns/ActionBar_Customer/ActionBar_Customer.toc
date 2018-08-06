@@ -1,0 +1,12 @@
+## Interface: 30300
+## Title: ActionBar_Customer
+## Title-zhCN: [界面] 动作条定制
+## Notes: Custom ActionBar.
+## Notes-zhCN: 动作条定制, 美化动作条快捷键文本。
+## Author: WangHong
+
+## X-DuowanAddon: 界面聊天
+## X-Revision: Duowan
+## LoadOnDemand:
+
+ActionBar_Customer.lua

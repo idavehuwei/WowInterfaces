@@ -9,6 +9,7 @@ BugSack                         | BUG 显示插件
 _NPCScan                        | 稀有精英探测+地图路径
 Accountant_Classic              | [多玩] 收支统计
 AckisRecipeList                 | [商业] 全商业技能信息列表
+ActionBar_Customer              | [界面] 动作条定制
 AlreadyKnown                    | [商业] 已学配方着色
 AspectPosionBar                 | [多玩] 职业守护条
 Atlas                           | [地图] Atlas [核心]
