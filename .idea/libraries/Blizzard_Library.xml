@@ -4,6 +4,10 @@
       <root url="file://$PROJECT_DIR$/Tools/Blizzard_Interface" />
       <root url="file://$PROJECT_DIR$/Tools/wow_sdk" />
     </CLASSES>
+    <JAVADOC />
+    <NATIVE>
+      <root url="file://$PROJECT_DIR$/Tools/lua-5.1.4" />
+    </NATIVE>
     <SOURCES />
   </library>
 </component>
