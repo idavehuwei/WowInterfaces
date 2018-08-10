@@ -1,131 +1,131 @@
 <Bindings>
-	<Binding name="CLICK DuowanActionBar1Button1:LeftButton" runOnUp="true" header="DUOWANBAR1">DUMMY_FUNC(1)</Binding>
-	<Binding name="CLICK DuowanActionBar1Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
-	<Binding name="CLICK DuowanActionBar1Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
-	<Binding name="CLICK DuowanActionBar1Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
-	<Binding name="CLICK DuowanActionBar1Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
-	<Binding name="CLICK DuowanActionBar1Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
-	<Binding name="CLICK DuowanActionBar1Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
-	<Binding name="CLICK DuowanActionBar1Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
-	<Binding name="CLICK DuowanActionBar1Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
-	<Binding name="CLICK DuowanActionBar1Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
-	<Binding name="CLICK DuowanActionBar1Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
-	<Binding name="CLICK DuowanActionBar1Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
+    <Binding name="CLICK DuowanActionBar1Button1:LeftButton" runOnUp="true" header="DUOWANBAR1">DUMMY_FUNC(1)</Binding>
+    <Binding name="CLICK DuowanActionBar1Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
+    <Binding name="CLICK DuowanActionBar1Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
+    <Binding name="CLICK DuowanActionBar1Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
+    <Binding name="CLICK DuowanActionBar1Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
+    <Binding name="CLICK DuowanActionBar1Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
+    <Binding name="CLICK DuowanActionBar1Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
+    <Binding name="CLICK DuowanActionBar1Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
+    <Binding name="CLICK DuowanActionBar1Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
+    <Binding name="CLICK DuowanActionBar1Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
+    <Binding name="CLICK DuowanActionBar1Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
+    <Binding name="CLICK DuowanActionBar1Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
 
-	<Binding name="CLICK DuowanActionBar2Button1:LeftButton" runOnUp="true" header="DUOWANBAR2">DUMMY_FUNC(1)</Binding>
-	<Binding name="CLICK DuowanActionBar2Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
-	<Binding name="CLICK DuowanActionBar2Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
-	<Binding name="CLICK DuowanActionBar2Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
-	<Binding name="CLICK DuowanActionBar2Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
-	<Binding name="CLICK DuowanActionBar2Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
-	<Binding name="CLICK DuowanActionBar2Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
-	<Binding name="CLICK DuowanActionBar2Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
-	<Binding name="CLICK DuowanActionBar2Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
-	<Binding name="CLICK DuowanActionBar2Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
-	<Binding name="CLICK DuowanActionBar2Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
-	<Binding name="CLICK DuowanActionBar2Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
+    <Binding name="CLICK DuowanActionBar2Button1:LeftButton" runOnUp="true" header="DUOWANBAR2">DUMMY_FUNC(1)</Binding>
+    <Binding name="CLICK DuowanActionBar2Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
+    <Binding name="CLICK DuowanActionBar2Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
+    <Binding name="CLICK DuowanActionBar2Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
+    <Binding name="CLICK DuowanActionBar2Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
+    <Binding name="CLICK DuowanActionBar2Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
+    <Binding name="CLICK DuowanActionBar2Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
+    <Binding name="CLICK DuowanActionBar2Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
+    <Binding name="CLICK DuowanActionBar2Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
+    <Binding name="CLICK DuowanActionBar2Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
+    <Binding name="CLICK DuowanActionBar2Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
+    <Binding name="CLICK DuowanActionBar2Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
 
-	<Binding name="CLICK DuowanActionBar3Button1:LeftButton" runOnUp="true" header="DUOWANBAR3">DUMMY_FUNC(1)</Binding>
-	<Binding name="CLICK DuowanActionBar3Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
-	<Binding name="CLICK DuowanActionBar3Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
-	<Binding name="CLICK DuowanActionBar3Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
-	<Binding name="CLICK DuowanActionBar3Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
-	<Binding name="CLICK DuowanActionBar3Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
-	<Binding name="CLICK DuowanActionBar3Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
-	<Binding name="CLICK DuowanActionBar3Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
-	<Binding name="CLICK DuowanActionBar3Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
-	<Binding name="CLICK DuowanActionBar3Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
-	<Binding name="CLICK DuowanActionBar3Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
-	<Binding name="CLICK DuowanActionBar3Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
+    <Binding name="CLICK DuowanActionBar3Button1:LeftButton" runOnUp="true" header="DUOWANBAR3">DUMMY_FUNC(1)</Binding>
+    <Binding name="CLICK DuowanActionBar3Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
+    <Binding name="CLICK DuowanActionBar3Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
+    <Binding name="CLICK DuowanActionBar3Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
+    <Binding name="CLICK DuowanActionBar3Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
+    <Binding name="CLICK DuowanActionBar3Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
+    <Binding name="CLICK DuowanActionBar3Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
+    <Binding name="CLICK DuowanActionBar3Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
+    <Binding name="CLICK DuowanActionBar3Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
+    <Binding name="CLICK DuowanActionBar3Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
+    <Binding name="CLICK DuowanActionBar3Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
+    <Binding name="CLICK DuowanActionBar3Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
 
-	<Binding name="CLICK DuowanActionBar4Button1:LeftButton" runOnUp="true" header="DUOWANBAR4">DUMMY_FUNC(1)</Binding>
-	<Binding name="CLICK DuowanActionBar4Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
-	<Binding name="CLICK DuowanActionBar4Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
-	<Binding name="CLICK DuowanActionBar4Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
-	<Binding name="CLICK DuowanActionBar4Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
-	<Binding name="CLICK DuowanActionBar4Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
-	<Binding name="CLICK DuowanActionBar4Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
-	<Binding name="CLICK DuowanActionBar4Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
-	<Binding name="CLICK DuowanActionBar4Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
-	<Binding name="CLICK DuowanActionBar4Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
-	<Binding name="CLICK DuowanActionBar4Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
-	<Binding name="CLICK DuowanActionBar4Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
+    <Binding name="CLICK DuowanActionBar4Button1:LeftButton" runOnUp="true" header="DUOWANBAR4">DUMMY_FUNC(1)</Binding>
+    <Binding name="CLICK DuowanActionBar4Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
+    <Binding name="CLICK DuowanActionBar4Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
+    <Binding name="CLICK DuowanActionBar4Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
+    <Binding name="CLICK DuowanActionBar4Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
+    <Binding name="CLICK DuowanActionBar4Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
+    <Binding name="CLICK DuowanActionBar4Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
+    <Binding name="CLICK DuowanActionBar4Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
+    <Binding name="CLICK DuowanActionBar4Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
+    <Binding name="CLICK DuowanActionBar4Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
+    <Binding name="CLICK DuowanActionBar4Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
+    <Binding name="CLICK DuowanActionBar4Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
 
-	<Binding name="CLICK DuowanActionBar5Button1:LeftButton" runOnUp="true" header="DUOWANBAR5">DUMMY_FUNC(1)</Binding>
-	<Binding name="CLICK DuowanActionBar5Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
-	<Binding name="CLICK DuowanActionBar5Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
-	<Binding name="CLICK DuowanActionBar5Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
-	<Binding name="CLICK DuowanActionBar5Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
-	<Binding name="CLICK DuowanActionBar5Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
-	<Binding name="CLICK DuowanActionBar5Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
-	<Binding name="CLICK DuowanActionBar5Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
-	<Binding name="CLICK DuowanActionBar5Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
-	<Binding name="CLICK DuowanActionBar5Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
-	<Binding name="CLICK DuowanActionBar5Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
-	<Binding name="CLICK DuowanActionBar5Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
+    <Binding name="CLICK DuowanActionBar5Button1:LeftButton" runOnUp="true" header="DUOWANBAR5">DUMMY_FUNC(1)</Binding>
+    <Binding name="CLICK DuowanActionBar5Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
+    <Binding name="CLICK DuowanActionBar5Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
+    <Binding name="CLICK DuowanActionBar5Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
+    <Binding name="CLICK DuowanActionBar5Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
+    <Binding name="CLICK DuowanActionBar5Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
+    <Binding name="CLICK DuowanActionBar5Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
+    <Binding name="CLICK DuowanActionBar5Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
+    <Binding name="CLICK DuowanActionBar5Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
+    <Binding name="CLICK DuowanActionBar5Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
+    <Binding name="CLICK DuowanActionBar5Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
+    <Binding name="CLICK DuowanActionBar5Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
 
-	<Binding name="CLICK DuowanActionBar6Button1:LeftButton" runOnUp="true" header="DUOWANBAR6">DUMMY_FUNC(1)</Binding>
-	<Binding name="CLICK DuowanActionBar6Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
-	<Binding name="CLICK DuowanActionBar6Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
-	<Binding name="CLICK DuowanActionBar6Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
-	<Binding name="CLICK DuowanActionBar6Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
-	<Binding name="CLICK DuowanActionBar6Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
-	<Binding name="CLICK DuowanActionBar6Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
-	<Binding name="CLICK DuowanActionBar6Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
-	<Binding name="CLICK DuowanActionBar6Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
-	<Binding name="CLICK DuowanActionBar6Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
-	<Binding name="CLICK DuowanActionBar6Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
-	<Binding name="CLICK DuowanActionBar6Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
+    <Binding name="CLICK DuowanActionBar6Button1:LeftButton" runOnUp="true" header="DUOWANBAR6">DUMMY_FUNC(1)</Binding>
+    <Binding name="CLICK DuowanActionBar6Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
+    <Binding name="CLICK DuowanActionBar6Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
+    <Binding name="CLICK DuowanActionBar6Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
+    <Binding name="CLICK DuowanActionBar6Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
+    <Binding name="CLICK DuowanActionBar6Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
+    <Binding name="CLICK DuowanActionBar6Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
+    <Binding name="CLICK DuowanActionBar6Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
+    <Binding name="CLICK DuowanActionBar6Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
+    <Binding name="CLICK DuowanActionBar6Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
+    <Binding name="CLICK DuowanActionBar6Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
+    <Binding name="CLICK DuowanActionBar6Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
 
-	<Binding name="CLICK DuowanActionBar7Button1:LeftButton" runOnUp="true" header="DUOWANBAR7">DUMMY_FUNC(1)</Binding>
-	<Binding name="CLICK DuowanActionBar7Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
-	<Binding name="CLICK DuowanActionBar7Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
-	<Binding name="CLICK DuowanActionBar7Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
-	<Binding name="CLICK DuowanActionBar7Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
-	<Binding name="CLICK DuowanActionBar7Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
-	<Binding name="CLICK DuowanActionBar7Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
-	<Binding name="CLICK DuowanActionBar7Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
-	<Binding name="CLICK DuowanActionBar7Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
-	<Binding name="CLICK DuowanActionBar7Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
-	<Binding name="CLICK DuowanActionBar7Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
-	<Binding name="CLICK DuowanActionBar7Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
+    <Binding name="CLICK DuowanActionBar7Button1:LeftButton" runOnUp="true" header="DUOWANBAR7">DUMMY_FUNC(1)</Binding>
+    <Binding name="CLICK DuowanActionBar7Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
+    <Binding name="CLICK DuowanActionBar7Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
+    <Binding name="CLICK DuowanActionBar7Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
+    <Binding name="CLICK DuowanActionBar7Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
+    <Binding name="CLICK DuowanActionBar7Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
+    <Binding name="CLICK DuowanActionBar7Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
+    <Binding name="CLICK DuowanActionBar7Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
+    <Binding name="CLICK DuowanActionBar7Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
+    <Binding name="CLICK DuowanActionBar7Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
+    <Binding name="CLICK DuowanActionBar7Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
+    <Binding name="CLICK DuowanActionBar7Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
 
-	<Binding name="CLICK DuowanActionBar8Button1:LeftButton" runOnUp="true" header="DUOWANBAR8">DUMMY_FUNC(1)</Binding>
-	<Binding name="CLICK DuowanActionBar8Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
-	<Binding name="CLICK DuowanActionBar8Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
-	<Binding name="CLICK DuowanActionBar8Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
-	<Binding name="CLICK DuowanActionBar8Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
-	<Binding name="CLICK DuowanActionBar8Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
-	<Binding name="CLICK DuowanActionBar8Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
-	<Binding name="CLICK DuowanActionBar8Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
-	<Binding name="CLICK DuowanActionBar8Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
-	<Binding name="CLICK DuowanActionBar8Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
-	<Binding name="CLICK DuowanActionBar8Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
-	<Binding name="CLICK DuowanActionBar8Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
+    <Binding name="CLICK DuowanActionBar8Button1:LeftButton" runOnUp="true" header="DUOWANBAR8">DUMMY_FUNC(1)</Binding>
+    <Binding name="CLICK DuowanActionBar8Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
+    <Binding name="CLICK DuowanActionBar8Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
+    <Binding name="CLICK DuowanActionBar8Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
+    <Binding name="CLICK DuowanActionBar8Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
+    <Binding name="CLICK DuowanActionBar8Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
+    <Binding name="CLICK DuowanActionBar8Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
+    <Binding name="CLICK DuowanActionBar8Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
+    <Binding name="CLICK DuowanActionBar8Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
+    <Binding name="CLICK DuowanActionBar8Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
+    <Binding name="CLICK DuowanActionBar8Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
+    <Binding name="CLICK DuowanActionBar8Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
 
-	<Binding name="CLICK DuowanActionBar9Button1:LeftButton" runOnUp="true" header="DUOWANBAR9">DUMMY_FUNC(1)</Binding>
-	<Binding name="CLICK DuowanActionBar9Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
-	<Binding name="CLICK DuowanActionBar9Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
-	<Binding name="CLICK DuowanActionBar9Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
-	<Binding name="CLICK DuowanActionBar9Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
-	<Binding name="CLICK DuowanActionBar9Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
-	<Binding name="CLICK DuowanActionBar9Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
-	<Binding name="CLICK DuowanActionBar9Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
-	<Binding name="CLICK DuowanActionBar9Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
-	<Binding name="CLICK DuowanActionBar9Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
-	<Binding name="CLICK DuowanActionBar9Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
-	<Binding name="CLICK DuowanActionBar9Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
+    <Binding name="CLICK DuowanActionBar9Button1:LeftButton" runOnUp="true" header="DUOWANBAR9">DUMMY_FUNC(1)</Binding>
+    <Binding name="CLICK DuowanActionBar9Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
+    <Binding name="CLICK DuowanActionBar9Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
+    <Binding name="CLICK DuowanActionBar9Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
+    <Binding name="CLICK DuowanActionBar9Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
+    <Binding name="CLICK DuowanActionBar9Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
+    <Binding name="CLICK DuowanActionBar9Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
+    <Binding name="CLICK DuowanActionBar9Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
+    <Binding name="CLICK DuowanActionBar9Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
+    <Binding name="CLICK DuowanActionBar9Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
+    <Binding name="CLICK DuowanActionBar9Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
+    <Binding name="CLICK DuowanActionBar9Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
 
-	<Binding name="CLICK DuowanActionBar10Button1:LeftButton" runOnUp="true" header="DUOWANBAR10">DUMMY_FUNC(1)</Binding>
-	<Binding name="CLICK DuowanActionBar10Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
-	<Binding name="CLICK DuowanActionBar10Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
-	<Binding name="CLICK DuowanActionBar10Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
-	<Binding name="CLICK DuowanActionBar10Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
-	<Binding name="CLICK DuowanActionBar10Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
-	<Binding name="CLICK DuowanActionBar10Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
-	<Binding name="CLICK DuowanActionBar10Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
-	<Binding name="CLICK DuowanActionBar10Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
-	<Binding name="CLICK DuowanActionBar10Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
-	<Binding name="CLICK DuowanActionBar10Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
-	<Binding name="CLICK DuowanActionBar10Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
+    <Binding name="CLICK DuowanActionBar10Button1:LeftButton" runOnUp="true" header="DUOWANBAR10">DUMMY_FUNC(1)</Binding>
+    <Binding name="CLICK DuowanActionBar10Button2:LeftButton" runOnUp="true">DUMMY_FUNC(2)</Binding>
+    <Binding name="CLICK DuowanActionBar10Button3:LeftButton" runOnUp="true">DUMMY_FUNC(3)</Binding>
+    <Binding name="CLICK DuowanActionBar10Button4:LeftButton" runOnUp="true">DUMMY_FUNC(4)</Binding>
+    <Binding name="CLICK DuowanActionBar10Button5:LeftButton" runOnUp="true">DUMMY_FUNC(5)</Binding>
+    <Binding name="CLICK DuowanActionBar10Button6:LeftButton" runOnUp="true">DUMMY_FUNC(6)</Binding>
+    <Binding name="CLICK DuowanActionBar10Button7:LeftButton" runOnUp="true">DUMMY_FUNC(7)</Binding>
+    <Binding name="CLICK DuowanActionBar10Button8:LeftButton" runOnUp="true">DUMMY_FUNC(8)</Binding>
+    <Binding name="CLICK DuowanActionBar10Button9:LeftButton" runOnUp="true">DUMMY_FUNC(9)</Binding>
+    <Binding name="CLICK DuowanActionBar10Button10:LeftButton" runOnUp="true">DUMMY_FUNC(10)</Binding>
+    <Binding name="CLICK DuowanActionBar10Button11:LeftButton" runOnUp="true">DUMMY_FUNC(11)</Binding>
+    <Binding name="CLICK DuowanActionBar10Button12:LeftButton" runOnUp="true">DUMMY_FUNC(12)</Binding>
 </Bindings>
